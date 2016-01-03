@@ -8,16 +8,20 @@ versions are asking for options that are easily implemented in a browser extensi
 Rather than ask the YNAB team to implement these features, let's just do it
 ourselves!
 
-Right now this extension only does one thing, which is to hide the Age of Money
-calculation on your budget screen. Pull requests for other features are welcome!
+You can do two things at the moment with this:
+
+- Make the calculator work like YNAB4, e.g. this:
+
+- Make the Age of Money calculation hide itself.
+
+Both of these are configurable with options in the extension options page.
 
 This is early days, but I'm excited!
 
 Next Up in Priorities
 ---------------------
 
-- Build an options panel so people can turn features on and off as they get added to suit them
-- Unhide the Check Number field
+- Unhide the Check Number field (seems to have gone missing? Can't seem to find it on the page.)
 - Add running totals
 
 Features Under Consideration
