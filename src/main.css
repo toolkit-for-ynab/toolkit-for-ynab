@@ -1,0 +1,7 @@
+div.budget-header-days-age, div.budget-header-days-label {
+  visibility: hidden !important;
+}
+
+.budget-header-days {
+  border-left: none !important;
+}

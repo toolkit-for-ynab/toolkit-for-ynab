@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "YNAB Age of Money Hider",
+  "version": "0.1",
+  "description": "Install to hide the Age of Money calculation in YNAB.",
+  "icons": {
+    "128": "icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"],
+      "css": [ "main.css" ]
+    }
+  ]
+}
