@@ -5,7 +5,7 @@ YNAB Enhanced is a general purpose YNAB enhancing chrome extension. Have it your
 
 YNAB have released an exciting new web version. Lots of power users of the older
 versions are asking for options that are easily implemented in a browser extension.
-Rather than ask the YNAB team to implement these features, let's just customise do it
+Rather than ask the YNAB team to implement these features, let's just do it
 ourselves!
 
 Right now this extension only does one thing, which is to hide the Age of Money
