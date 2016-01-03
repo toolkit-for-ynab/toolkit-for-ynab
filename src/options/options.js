@@ -1,8 +1,10 @@
 function save_options() {
+  var colourBlindMode = document.getElementById('colourBlindMode').checked;
   var hideAOM = document.getElementById('hideAOM').checked;
   var enableRetroCalculator = document.getElementById('enableRetroCalculator').checked;
 
   chrome.storage.sync.set({
+    colourBlindMode: colourBlindMode,
     hideAOM: hideAOM,
     enableRetroCalculator: enableRetroCalculator
   }, function() {
@@ -21,9 +23,11 @@ function save_options() {
 function restore_options() {
 
   chrome.storage.sync.get({
+    colourBlindMode: false,
     hideAOM: false,
     enableRetroCalculator: true
   }, function(items) {
+    document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
     document.getElementById('enableRetroCalculator').checked = items.enableRetroCalculator;
   });

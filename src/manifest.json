@@ -19,5 +19,9 @@
     "page": "options/options.html",
     "chrome_style": true
   },
-  "web_accessible_resources": ["hideAOM.css", "ynab4calculator.js"]
+  "web_accessible_resources": [
+    "features/colour-blind-mode/main.css",
+    "features/hide-age-of-money/main.css",
+    "features/ynab-4-calculator/main.js"
+  ]
 }
