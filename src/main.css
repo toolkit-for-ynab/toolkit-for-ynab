@@ -6,6 +6,10 @@ div.budget-header-days-age, div.budget-header-days-label {
   border-left: none !important;
 }
 
-.budget-table-cell-available .cautious {
+.budget-table-row.is-sub-category > .budget-table-cell-available .cautious {
     background-color: #19a3c5 !important;
+}
+
+.budget-table-row.is-sub-category > .budget-table-cell-available .cautious:hover {
+    background-color: #14839e !important;
 }
