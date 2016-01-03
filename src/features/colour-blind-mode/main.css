@@ -1,0 +1,7 @@
+.budget-table-row.is-sub-category > .budget-table-cell-available .cautious {
+    background-color: #19a3c5 !important;
+}
+
+.budget-table-row.is-sub-category > .budget-table-cell-available .cautious:hover {
+    background-color: #14839e !important;
+}
