@@ -14,7 +14,7 @@ You can do 3 things at the moment with this:
 - Make the calculator work like YNAB4. When you press + or - (etc) the calculator moves to the end of the line so your number isn't lost.
 - Hide the Age of Money calculation.
 
-Both of these are configurable with options in the extension options page.
+All of these are configurable with options in the extension options page.
 
 This is early days, but I'm excited!
 
