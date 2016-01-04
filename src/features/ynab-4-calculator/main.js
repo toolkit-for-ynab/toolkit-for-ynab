@@ -7,7 +7,13 @@ function injectInitializer() {
         187, // +
         189, // -
         191, // /
-        56   // *
+        56,  // *
+        
+        // Windows keypad
+        111, // /
+        106, // *
+        109, // -
+        107, // +
       ];
 
       if (characters.indexOf(e.which) > -1) {
