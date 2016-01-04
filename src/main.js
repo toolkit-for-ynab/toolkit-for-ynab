@@ -1,3 +1,20 @@
+function injectCSS(path) {
+  var link = document.createElement('link');
+  link.setAttribute('rel', 'stylesheet');
+  link.setAttribute('type', 'text/css');
+  link.setAttribute('href', chrome.extension.getURL(path));
+
+  document.getElementsByTagName('head')[0].appendChild(link);
+}
+
+function injectScript(path) {
+  var script = document.createElement('script');
+  script.setAttribute('type', 'text/javascript');
+  script.setAttribute('src', chrome.extension.getURL(path));
+
+  document.getElementsByTagName('body')[0].appendChild(script);
+}
+
 chrome.storage.sync.get({
   colourBlindMode: false,
   hideAOM: false,
@@ -5,30 +22,14 @@ chrome.storage.sync.get({
 }, function(options) {
 
   if (options.colourBlindMode) {
-    var link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('type', 'text/css');
-    link.setAttribute('href', chrome.extension.getURL('features/colour-blind-mode/main.css'));
-
-    document.getElementsByTagName('head')[0].appendChild(link);
+    injectCSS('features/colour-blind-mode/main.css');
   }
 
-
   if (options.hideAOM) {
-    var link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('type', 'text/css');
-    link.setAttribute('href', chrome.extension.getURL('features/hide-age-of-money/main.css'));
-
-    document.getElementsByTagName('head')[0].appendChild(link);
+    injectCSS('features/hide-age-of-money/main.css');
   }
 
   if (options.enableRetroCalculator) {
-
-    var script = document.createElement('script');
-    script.setAttribute('type', 'text/javascript');
-    script.setAttribute('src', chrome.extension.getURL('features/ynab-4-calculator/main.js'));
-
-    document.getElementsByTagName('body')[0].appendChild(script);
+    injectScript('features/ynab-4-calculator/main.js');
   }
 });
