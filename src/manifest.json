@@ -20,6 +20,7 @@
     "chrome_style": true
   },
   "web_accessible_resources": [
+    "features/collapse-side-menu/main.js",
     "features/colour-blind-mode/main.css",
     "features/hide-age-of-money/main.css",
     "features/ynab-4-calculator/main.js"

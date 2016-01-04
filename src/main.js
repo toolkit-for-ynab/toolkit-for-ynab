@@ -1,8 +1,17 @@
 chrome.storage.sync.get({
+  collapseSideMenu: true,
   colourBlindMode: false,
   hideAOM: false,
   enableRetroCalculator: true
 }, function(options) {
+
+  if (options.collapseSideMenu) {
+    var script = document.createElement('script');
+    script.setAttribute('type', 'text/javascript');
+    script.setAttribute('src', chrome.extension.getURL('features/collapse-side-menu/main.js'));
+
+    document.getElementsByTagName('body')[0].appendChild(script);
+  }
 
   if (options.colourBlindMode) {
     var link = document.createElement('link');
@@ -31,4 +40,5 @@ chrome.storage.sync.get({
 
     document.getElementsByTagName('body')[0].appendChild(script);
   }
+
 });
