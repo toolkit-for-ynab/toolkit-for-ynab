@@ -3,14 +3,15 @@ function injectInitializer() {
 
     $(document).on('keydown', 'li.budget-table-cell-budgeted div.currency-input', function(e) {
 
-      var characters = [
-        187, // +
-        189, // -
-        191, // /
-        56   // *
-      ];
-
-      if (characters.indexOf(e.which) > -1) {
+      if ((e.which == 187 && e.shiftKey) || // + on main keyboard
+           e.which == 189                || // - on main keyboard
+           e.which == 191                || // / on main keyboard
+          (e.which == 56  && e.shiftKey) || // * on main keyboard
+           e.which == 107                || // + on number pad
+           e.which == 109                || // - on number pad
+           e.which == 111                || // / on number pad
+           e.which == 106                   // * on number pad
+      ) {
         var input = $(this).find('input');
         var length = input.val().length;
 
