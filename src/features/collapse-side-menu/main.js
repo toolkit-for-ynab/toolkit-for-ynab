@@ -28,28 +28,35 @@ function injectInitializer() {
 
       $(".navlink-collapse").on("click", collapseMenu);
       $(".navbar-expand").on("click", expandMenu);
-    })
 
-    function collapseMenu() {
-      $(".sidebar > .ember-view").hide();
-      $(".sidebar").width("40px");
-      $(".content").css("left", "40px");
-      $(".budget-header").css("left", "40px");
-      $(".budget-content").css("width", "73%");
-      $(".budget-inspector").css("width", "27%");
-      $(".ynab-grid-header").removeAttr("style");
-      $(".navbar-expand").show();
-    }
+      var sidebarWidth   = $(".sidebar").width(),
+          contentLeft    = $(".content").css("left"),
+          headerLeft     = $(".budget-header").css("left"),
+          contentWidth   = $(".budget-content").css("width"),
+          inspectorWidth = $(".budget-inspector").css("width");
 
-    function expandMenu() {
-      $(".sidebar > .ember-view").show();
-      $(".sidebar").width("260px");
-      $(".content").css("left", "260px");
-      $(".budget-header").css("left", "260px");
-      $(".budget-content").css("width", "67%");
-      $(".budget-inspector").css("width", "33%");
-      $(".navbar-expand").hide();
-    }
+      function collapseMenu() {
+        $(".sidebar > .ember-view").hide();
+        $(".sidebar").width("40px");
+        $(".content").css("left", "40px");
+        $(".budget-header").css("left", "40px");
+        $(".budget-content").css("width", "73%");
+        $(".budget-inspector").css("width", "27%");
+        $(".ynab-grid-header").removeAttr("style");
+        $(".navbar-expand").show();
+      }
+
+      function expandMenu() {
+        $(".sidebar > .ember-view").show();
+        $(".sidebar").width(sidebarWidth);
+        $(".content").css("left", contentLeft);
+        $(".budget-header").css("left", headerLeft);
+        $(".budget-content").css("width", contentWidth);
+        $(".budget-inspector").css("width", inspectorWidth);
+        $(".navbar-expand").hide();
+      }
+
+    });
 
   } else {
     setTimeout(injectInitializer, 250);
