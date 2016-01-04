@@ -8,11 +8,12 @@ versions are asking for options that are easily implemented in a browser extensi
 Rather than ask the YNAB team to implement these features, let's just do it
 ourselves!
 
-You can do 3 things at the moment with this:
+You can do 4 things at the moment with this:
 
 - Colour Blind Mode - Changes colours of some of the numbers to make the interface easier on people with certain visual disabilities.
 - Make the calculator work like YNAB4. When you press + or - (etc) the calculator moves to the end of the line so your number isn't lost.
 - Hide the Age of Money calculation.
+- Collapse Side Menu - Collapse left navigation bar for more screen room
 
 All of these are configurable with options in the extension options page.
 
