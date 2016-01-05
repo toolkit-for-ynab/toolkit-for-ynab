@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "YNAB Enhanced",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "UI customisations and tweaks for the web version of YNAB.",
   "icons": {
     "128": "icons/icon128.png"
