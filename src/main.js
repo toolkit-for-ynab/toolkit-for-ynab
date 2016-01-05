@@ -19,7 +19,8 @@ chrome.storage.sync.get({
   colourBlindMode: false,
   hideAOM: false,
   enableRetroCalculator: true,
-  budgetRowsHeight: 0
+  budgetRowsHeight: 0,
+  moveMoneyDialog: false
 }, function(options) {
 
   if (options.colourBlindMode) {
@@ -39,5 +40,9 @@ chrome.storage.sync.get({
   }
   else if (options.budgetRowsHeight == 2) {
     injectCSS('features/budget-rows-height/slim.css');
+  }
+
+  if (options.moveMoneyDialog) {
+    injectCSS('features/move-money-dialog/main.css');
   }
 });
