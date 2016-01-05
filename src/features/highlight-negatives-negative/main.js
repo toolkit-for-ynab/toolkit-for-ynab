@@ -1,4 +1,4 @@
-(function highlightNegativesRed_enhancedYNAB() { // give function unique name unlikely to be used by YNAB devs
+(function highlightNegativesNegative_enhancedYNAB() { // give function unique name unlikely to be used by YNAB devs
    
 	if ( typeof Em !== 'undefined' && typeof Ember !== 'undefined' && typeof $ !== 'undefined' && $('.budget-table-cell-available-div.user-data').length ) {
 		
@@ -20,7 +20,7 @@
 		});
 
 	}
-	setTimeout(highlightNegativesRed_enhancedYNAB, 300);
+	setTimeout(highlightNegativesNegative_enhancedYNAB, 300);
 
 })();
 
