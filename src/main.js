@@ -19,7 +19,8 @@ chrome.storage.sync.get({
   colourBlindMode: false,
   hideAOM: false,
   enableRetroCalculator: true,
-  budgetRowsHeight: 0
+  budgetRowsHeight: 0,
+  markOverspendingRed: false
 }, function(options) {
 
   if (options.colourBlindMode) {
@@ -39,5 +40,10 @@ chrome.storage.sync.get({
   }
   else if (options.budgetRowsHeight == 2) {
     injectCSS('features/budget-rows-height/slim.css');
+  }
+
+  if (options.markOverspendingRed) {
+    injectScript('features/overspending-alternate-color/main.js');
+    injectCSS('features/overspending-alternate-color/main.css');
   }
 });
