@@ -24,6 +24,8 @@
     "features/budget-rows-height/slim.css",
     "features/colour-blind-mode/main.css",
     "features/hide-age-of-money/main.css",
+    "features/overspending-alternate-color/main.css",
+    "features/overspending-alternate-color/main.js",
     "features/ynab-4-calculator/main.js"
   ]
 }

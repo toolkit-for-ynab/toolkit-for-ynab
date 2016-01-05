@@ -3,13 +3,15 @@ function save_options() {
   var hideAOM = document.getElementById('hideAOM').checked;
   var enableRetroCalculator = document.getElementById('enableRetroCalculator').checked;
   var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
-  budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
+  var budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
+  var markOverspendingRed = document.getElementById('markOverspendingRed').checked;
 
   chrome.storage.sync.set({
     colourBlindMode: colourBlindMode,
     hideAOM: hideAOM,
     enableRetroCalculator: enableRetroCalculator,
-    budgetRowsHeight: budgetRowsHeight
+    budgetRowsHeight: budgetRowsHeight,
+    markOverspendingRed: markOverspendingRed
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -29,13 +31,15 @@ function restore_options() {
     colourBlindMode: false,
     hideAOM: false,
     enableRetroCalculator: true,
-    budgetRowsHeight: 0
+    budgetRowsHeight: 0,
+    markOverspendingRed: false
   }, function(items) {
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
     document.getElementById('enableRetroCalculator').checked = items.enableRetroCalculator;
     var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
     budgetRowsHeightSelect.value = items.budgetRowsHeight;
+    document.getElementById('markOverspendingRed').checked = items.markOverspendingRed;
   });
 }
 
