@@ -20,11 +20,11 @@
     "chrome_style": true
   },
   "web_accessible_resources": [
+    "features/budget-rows-height/compact.css",
+    "features/budget-rows-height/slim.css",
     "features/collapse-side-menu/main.js",
     "features/colour-blind-mode/main.css",
     "features/hide-age-of-money/main.css",
-    "features/ynab-4-calculator/main.js",
-    "features/budget-rows-height/compact.css",
-    "features/budget-rows-height/slim.css"
+    "features/ynab-4-calculator/main.js"
   ]
 }
