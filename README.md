@@ -18,15 +18,10 @@ All of these are configurable with options in the extension options page.
 
 This is early days, but I'm excited!
 
-Next Up in Priorities
----------------------
+Next Up in Priorities & Features Under Consideration
+----------------------------------------------------
 
-- Unhide the Check Number field (seems to have gone missing? Can't seem to find it on the page.)
-- Add running totals
+See the Trello board at https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap to follow the devleopment and vote for what features you would like to see worked on next.
 
-Features Under Consideration
-----------------------------
-
-- Walled months (e.g. being able to categorise income as Income : Available in <whatever month you want> and have the money stay there)
 
 *NOTE:* This extension is not affiliated with YNAB in any way and YNAB has not endorsed this at all. You Need a Budget and YNAB are registered trademarks of Steine LLC and/or one of its subsidiaries.
