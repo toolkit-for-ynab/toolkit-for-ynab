@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "YNAB Enhanced",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "UI customisations and tweaks for the web version of YNAB.",
   "icons": {
     "128": "icons/icon128.png"
@@ -23,6 +23,8 @@
     "features/collapse-side-menu/main.js",
     "features/colour-blind-mode/main.css",
     "features/hide-age-of-money/main.css",
-    "features/ynab-4-calculator/main.js"
+    "features/ynab-4-calculator/main.js",
+    "features/budget-rows-height/compact.css",
+    "features/budget-rows-height/slim.css"
   ]
 }
