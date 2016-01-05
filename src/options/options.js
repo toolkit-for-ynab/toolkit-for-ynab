@@ -3,7 +3,7 @@ function save_options() {
   var hideAOM = document.getElementById('hideAOM').checked;
   var enableRetroCalculator = document.getElementById('enableRetroCalculator').checked;
   var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
-  budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
+  var budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
   var moveMoneyDialog = document.getElementById('moveMoneyDialog').checked;
 
   chrome.storage.sync.set({
