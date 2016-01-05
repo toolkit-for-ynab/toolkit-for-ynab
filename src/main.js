@@ -18,7 +18,8 @@ function injectScript(path) {
 chrome.storage.sync.get({
   colourBlindMode: false,
   hideAOM: false,
-  enableRetroCalculator: true
+  enableRetroCalculator: true,
+  budgetRowsHeight: 0
 }, function(options) {
 
   if (options.colourBlindMode) {
@@ -31,5 +32,12 @@ chrome.storage.sync.get({
 
   if (options.enableRetroCalculator) {
     injectScript('features/ynab-4-calculator/main.js');
+  }
+
+  if (options.budgetRowsHeight == 1) {
+    injectCSS('features/budget-rows-height/compact.css');
+  }
+  else if (options.budgetRowsHeight == 2) {
+    injectCSS('features/budget-rows-height/slim.css');
   }
 });
