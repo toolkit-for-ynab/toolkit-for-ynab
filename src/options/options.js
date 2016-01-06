@@ -1,6 +1,8 @@
 function save_options() {
   var colourBlindMode = document.getElementById('colourBlindMode').checked;
   var hideAOM = document.getElementById('hideAOM').checked;
+  var checkCreditBalances = document.getElementById('checkCreditBalances').checked;
+  var highlightNegativesNegative = document.getElementById('highlightNegativesNegative').checked;
   var enableRetroCalculator = document.getElementById('enableRetroCalculator').checked;
   var removeZeroCategories = document.getElementById('removeZeroCategories').checked;
   var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
@@ -11,6 +13,8 @@ function save_options() {
   chrome.storage.sync.set({
     colourBlindMode: colourBlindMode,
     hideAOM: hideAOM,
+    checkCreditBalances: checkCreditBalances,
+    highlightNegativesNegative: highlightNegativesNegative,
     enableRetroCalculator: enableRetroCalculator,
     removeZeroCategories: removeZeroCategories,
     budgetRowsHeight: budgetRowsHeight,
@@ -33,6 +37,8 @@ function restore_options() {
   chrome.storage.sync.get({
     colourBlindMode: false,
     hideAOM: false,
+    checkCreditBalances: false,
+    highlightNegativesNegative: false,
     enableRetroCalculator: true,
     removeZeroCategories: true,
     budgetRowsHeight: 0,
@@ -40,6 +46,8 @@ function restore_options() {
   }, function(items) {
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
+    document.getElementById('checkCreditBalances').checked = items.checkCreditBalances;
+    document.getElementById('highlightNegativesNegative').checked = items.highlightNegativesNegative;
     document.getElementById('enableRetroCalculator').checked = items.enableRetroCalculator;
     document.getElementById('removeZeroCategories').checked = items.removeZeroCategories;
     var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');

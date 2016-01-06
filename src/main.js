@@ -18,6 +18,8 @@ function injectScript(path) {
 chrome.storage.sync.get({
   colourBlindMode: false,
   hideAOM: false,
+  checkCreditBalances: false,
+  highlightNegativesNegative: false,
   enableRetroCalculator: true,
   removeZeroCategories: true,
   budgetRowsHeight: 0,
@@ -30,6 +32,14 @@ chrome.storage.sync.get({
 
   if (options.hideAOM) {
     injectCSS('features/hide-age-of-money/main.css');
+  }
+
+  if (options.highlightNegativesNegative) {
+    injectScript('features/highlight-negatives-negative/main.js');
+  }
+
+  if (options.checkCreditBalances) {
+    injectScript('features/check-credit-balances/main.js');
   }
 
   if (options.enableRetroCalculator) {

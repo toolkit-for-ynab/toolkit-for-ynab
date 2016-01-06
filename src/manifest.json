@@ -22,11 +22,13 @@
   "web_accessible_resources": [
     "features/budget-rows-height/compact.css",
     "features/budget-rows-height/slim.css",
+    "features/check-credit-balances/main.js",
     "features/category-popup-width/medium.css",
     "features/category-popup-width/large.css",
     "features/colour-blind-mode/main.css",
     "features/hide-age-of-money/main.css",
-    "features/ynab-4-calculator/main.js",
-    "features/remove-zero-categories/main.js"
+    "features/remove-zero-categories/main.js",
+    "features/highlight-negatives-negative/main.js",
+    "features/ynab-4-calculator/main.js"
   ]
 }
