@@ -8,6 +8,8 @@ function save_options() {
   budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
   var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
   categoryPopupWidth = categoryPopupWidthSelect.options[categoryPopupWidthSelect.selectedIndex].value;
+  var memoWidthSelect = document.getElementById('memoWidth');
+  memoWidth = memoWidthSelect.options[memoWidthSelect.selectedIndex].value;
 
   chrome.storage.sync.set({
     colourBlindMode: colourBlindMode,
