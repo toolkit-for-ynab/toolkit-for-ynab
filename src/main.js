@@ -40,4 +40,7 @@ chrome.storage.sync.get({
   else if (options.budgetRowsHeight == 2) {
     injectCSS('features/budget-rows-height/slim.css');
   }
+  
+  // non-optioned ToggleSplits
+  injectScript('features/toggle-splits/main.js');
 });
