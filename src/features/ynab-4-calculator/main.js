@@ -1,29 +1,33 @@
 function injectInitializer() {
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined') {
 
-    $(document).on('keydown', 'li.budget-table-cell-budgeted div.currency-input', function(e) {
+    (function($){
+      var selector = 'li.budget-table-cell-budgeted div.currency-input, ' +
+                     'div.ynab-grid-cell-outflow div.currency-input, ' +
+                     'div.ynab-grid-cell-inflow div.currency-input';
 
-      if ((e.which == 187 && e.shiftKey) || // + on main keyboard
-           e.which == 189                || // - on main keyboard
-           e.which == 191                || // / on main keyboard
-          (e.which == 56  && e.shiftKey) || // * on main keyboard
-           e.which == 107                || // + on number pad
-           e.which == 109                || // - on number pad
-           e.which == 111                || // / on number pad
-           e.which == 106                   // * on number pad
-      ) {
-        var input = $(this).find('input');
-        var length = input.val().length;
+      $(document).on('keypress', selector, function(e) {
+        e = e || window.event;
+        var charCode = e.which || e.keyCode;
+        var charTyped = String.fromCharCode(charCode);
 
-        // This moves the caret to the end of the input.
-        input[0].focus();
-        input[0].setSelectionRange(length, length);
-      }
+        if (charTyped == '+' ||
+            charTyped == '-' ||
+            charTyped == '*' ||
+            charTyped == '/')
+        {
+          var input = $(this).find('input');
+          var length = input.val().length;
 
-      // Make sure we allow the event to bubble up so we don't mess with anything
-      // that YNAB is doing.
-    })
+          // This moves the caret to the end of the input.
+          input[0].focus();
+          input[0].setSelectionRange(length, length);
+        }
 
+        // Make sure we allow the event to bubble up so we don't mess with anything
+        // that YNAB is doing.
+      })
+    })(jQuery)
   } else {
     setTimeout(injectInitializer, 250);
   }
