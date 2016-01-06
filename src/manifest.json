@@ -26,6 +26,7 @@
     "features/category-popup-width/large.css",
     "features/colour-blind-mode/main.css",
     "features/hide-age-of-money/main.css",
-    "features/ynab-4-calculator/main.js"
+    "features/ynab-4-calculator/main.js",
+    "features/remove-zero-categories/main.js"
   ]
 }

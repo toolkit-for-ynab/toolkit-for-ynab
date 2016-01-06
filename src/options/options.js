@@ -2,6 +2,7 @@ function save_options() {
   var colourBlindMode = document.getElementById('colourBlindMode').checked;
   var hideAOM = document.getElementById('hideAOM').checked;
   var enableRetroCalculator = document.getElementById('enableRetroCalculator').checked;
+  var removeZeroCategories = document.getElementById('removeZeroCategories').checked;
   var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
   budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
   var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
@@ -11,6 +12,7 @@ function save_options() {
     colourBlindMode: colourBlindMode,
     hideAOM: hideAOM,
     enableRetroCalculator: enableRetroCalculator,
+    removeZeroCategories: removeZeroCategories,
     budgetRowsHeight: budgetRowsHeight,
     categoryPopupWidth: categoryPopupWidth
   }, function() {
@@ -32,12 +34,14 @@ function restore_options() {
     colourBlindMode: false,
     hideAOM: false,
     enableRetroCalculator: true,
+    removeZeroCategories: true,
     budgetRowsHeight: 0,
     categoryPopupWidth: 0
   }, function(items) {
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
     document.getElementById('enableRetroCalculator').checked = items.enableRetroCalculator;
+    document.getElementById('removeZeroCategories').checked = items.removeZeroCategories;
     var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
     budgetRowsHeightSelect.value = items.budgetRowsHeight;
     var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
