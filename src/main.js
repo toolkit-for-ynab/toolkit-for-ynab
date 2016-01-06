@@ -19,8 +19,11 @@ chrome.storage.sync.get({
   collapseSideMenu: false,
   colourBlindMode: false,
   hideAOM: false,
+  checkCreditBalances: false,
+  highlightNegativesNegative: false,
   enableRetroCalculator: true,
-  budgetRowsHeight: 0
+  budgetRowsHeight: 0,
+  categoryPopupWidth: 0
 }, function(options) {
 
   if (options.collapseSideMenu) {
@@ -36,6 +39,14 @@ chrome.storage.sync.get({
     injectCSS('features/hide-age-of-money/main.css');
   }
 
+  if (options.highlightNegativesNegative) {
+    injectScript('features/highlight-negatives-negative/main.js');
+  }
+
+  if (options.checkCreditBalances) {
+    injectScript('features/check-credit-balances/main.js');
+  }
+
   if (options.enableRetroCalculator) {
     injectScript('features/ynab-4-calculator/main.js');
   }
@@ -47,4 +58,10 @@ chrome.storage.sync.get({
     injectCSS('features/budget-rows-height/slim.css');
   }
 
+  if (options.categoryPopupWidth == 1) {
+    injectCSS('features/category-popup-width/medium.css');
+  }
+  else if (options.categoryPopupWidth == 2) {
+    injectCSS('features/category-popup-width/large.css');
+  }
 });
