@@ -1,7 +1,9 @@
 .modal-budget-move-money .modal, .modal-budget-overspending .modal {
     width: 20em;
+    height: 15em;
 }
 
 .ynab-select-options {
     height: 15em;
+    top: -86px;
 }
