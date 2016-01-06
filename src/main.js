@@ -24,11 +24,7 @@ chrome.storage.sync.get({
 }, function(options) {
 
   if (options.collapseSideMenu) {
-    var script = document.createElement('script');
-    script.setAttribute('type', 'text/javascript');
-    script.setAttribute('src', chrome.extension.getURL('features/collapse-side-menu/main.js'));
-
-    document.getElementsByTagName('body')[0].appendChild(script);
+    injectScript('features/collapse-side-menu/main.js');
   }
 
   if (options.colourBlindMode) {
