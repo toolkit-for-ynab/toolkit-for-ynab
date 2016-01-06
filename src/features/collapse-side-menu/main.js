@@ -1,4 +1,4 @@
-function injectInitializer() {
+function injectCollapseInitializer() {
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined') {
     (function($){
       $.event.special.destroyed = {
@@ -20,11 +20,11 @@ function injectInitializer() {
       }
     });
   } else {
-    setTimeout(injectInitializer, 250);
+    setTimeout(injectCollapseInitializer, 250);
   }
 }
 
-setTimeout(injectInitializer, 250);
+setTimeout(injectCollapseInitializer, 250);
 
 // Watch for the budget grid
 function watchBudgetGrid() {
