@@ -24,6 +24,7 @@ chrome.storage.sync.get({
 }, function(options) {
 
   if (options.collapseSideMenu) {
+    injectCSS('features/collapse-side-menu/main.css');
     injectScript('features/collapse-side-menu/main.js');
   }
 
