@@ -8,25 +8,20 @@ versions are asking for options that are easily implemented in a browser extensi
 Rather than ask the YNAB team to implement these features, let's just do it
 ourselves!
 
-You can do two things at the moment with this:
+You can do 4 things at the moment with this:
 
-- Make the calculator work like YNAB4, e.g. this:
+- Colour Blind Mode - Changes colours of some of the numbers to make the interface easier on people with certain visual disabilities.
+- Make the calculator work like YNAB4. When you press + or - (etc) the calculator moves to the end of the line so your number isn't lost.
+- Hide the Age of Money calculation.
+- Change the height of the budget rows so you can fit more on the budget screen.
 
-- Make the Age of Money calculation hide itself.
-
-Both of these are configurable with options in the extension options page.
+All of these are configurable with options in the extension options page.
 
 This is early days, but I'm excited!
 
-Next Up in Priorities
----------------------
+Roadmap
+-------
 
-- Unhide the Check Number field (seems to have gone missing? Can't seem to find it on the page.)
-- Add running totals
-
-Features Under Consideration
-----------------------------
-
-- Walled months (e.g. being able to categorise income as Income : Available in <whatever month you want> and have the money stay there)
+Features under consideration and the general status of the project is on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel free to vote, comment and suggest new features.
 
 *NOTE:* This extension is not affiliated with YNAB in any way and YNAB has not endorsed this at all. You Need a Budget and YNAB are registered trademarks of Steine LLC and/or one of its subsidiaries.
