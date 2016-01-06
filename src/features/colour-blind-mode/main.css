@@ -17,6 +17,8 @@ ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-avai
 }
 
 .left-to-budget-is-negative .budget-header-totals-amount {
+    border-radius: 0em;
+    -webkit-border-radius: 0em;
     background-color: #d55e00 !important;
 }
 
