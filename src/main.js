@@ -58,4 +58,8 @@ chrome.storage.sync.get({
   else if (options.categoryPopupWidth == 2) {
     injectCSS('features/category-popup-width/large.css');
   }
+  
+  if (options.memoWidth == 1) {
+    injectCSS('features/memo-width/wide.css');
+  }
 });

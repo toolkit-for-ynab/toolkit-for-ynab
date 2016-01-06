@@ -9,3 +9,23 @@
 .inspector-overview-available .cautious {
     background-color: #19a3c5;
 }
+
+ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-available-div > span.negative {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+    background-color: #d55e00 !important;
+}
+
+.left-to-budget-is-negative .budget-header-totals-amount {
+    border-radius: 0em;
+    -webkit-border-radius: 0em;
+    background-color: #d55e00 !important;
+}
+
+.left-to-budget-is-negative .budget-header-totals-amount-arrow .arrow {
+    border-left-color: #d55e00 !important;
+}
+
+ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-available-div > span.positive {
+    background-color: #009e73 !important;
+}
