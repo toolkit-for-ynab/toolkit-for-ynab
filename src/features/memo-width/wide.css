@@ -1,0 +1,11 @@
+.ynab-grid-cell-payeeName {
+    width: 10%;
+}
+
+.ynab-grid-cell-subCategoryName {
+    width: 13%;
+}
+
+.ynab-grid-cell-memo {
+    width: 25%;
+}
