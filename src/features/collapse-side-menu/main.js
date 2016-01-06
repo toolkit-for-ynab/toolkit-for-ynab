@@ -41,7 +41,7 @@ function watchBudgetGrid() {
  }
 }
 
-// Watch for the budget grid
+// Watch for the account grid
 function watchAccountGrid() {
   exists = false;
 
