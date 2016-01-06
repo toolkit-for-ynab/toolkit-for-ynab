@@ -9,4 +9,4 @@ function removeZeroCategoriesFromCoverOverbudgeting() {
   });
 }
 
-setInterval(removeZeroCategoriesFromCoverOverbudgeting, 50);
+setInterval(removeZeroCategoriesFromCoverOverbudgeting, 250);
