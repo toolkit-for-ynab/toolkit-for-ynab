@@ -29,6 +29,11 @@
     "features/hide-age-of-money/main.css",
     "features/remove-zero-categories/main.js",
     "features/highlight-negatives-negative/main.js",
+    "features/distinguish-reconciled-transactions/main.js",
+    "features/distinguish-reconciled-transactions/lightgray.css",
+    "features/distinguish-reconciled-transactions/darkgray.css",
+    "features/distinguish-reconciled-transactions/green.css",
+    "features/distinguish-reconciled-transactions/chance.css",
     "features/ynab-4-calculator/main.js"
   ]
 }
