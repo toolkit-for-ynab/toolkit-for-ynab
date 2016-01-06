@@ -6,6 +6,8 @@ function save_options() {
   var enableRetroCalculator = document.getElementById('enableRetroCalculator').checked;
   var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
   budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
+  var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
+  categoryPopupWidth = categoryPopupWidthSelect.options[categoryPopupWidthSelect.selectedIndex].value;
 
   chrome.storage.sync.set({
     colourBlindMode: colourBlindMode,
@@ -13,7 +15,8 @@ function save_options() {
     checkCreditBalances: checkCreditBalances,
     highlightNegativesNegative: highlightNegativesNegative,
     enableRetroCalculator: enableRetroCalculator,
-    budgetRowsHeight: budgetRowsHeight
+    budgetRowsHeight: budgetRowsHeight,
+    categoryPopupWidth: categoryPopupWidth
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -35,7 +38,8 @@ function restore_options() {
     checkCreditBalances: false,
     highlightNegativesNegative: false,
     enableRetroCalculator: true,
-    budgetRowsHeight: 0
+    budgetRowsHeight: 0,
+    categoryPopupWidth: 0
   }, function(items) {
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
@@ -44,6 +48,8 @@ function restore_options() {
     document.getElementById('enableRetroCalculator').checked = items.enableRetroCalculator;
     var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
     budgetRowsHeightSelect.value = items.budgetRowsHeight;
+    var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
+    categoryPopupWidthSelect.value = items.categoryPopupWidth;
   });
 }
 

@@ -21,7 +21,8 @@ chrome.storage.sync.get({
   checkCreditBalances: false,
   highlightNegativesNegative: false,
   enableRetroCalculator: true,
-  budgetRowsHeight: 0
+  budgetRowsHeight: 0,
+  categoryPopupWidth: 0
 }, function(options) {
 
   if (options.colourBlindMode) {
@@ -49,5 +50,12 @@ chrome.storage.sync.get({
   }
   else if (options.budgetRowsHeight == 2) {
     injectCSS('features/budget-rows-height/slim.css');
+  }
+
+  if (options.categoryPopupWidth == 1) {
+    injectCSS('features/category-popup-width/medium.css');
+  }
+  else if (options.categoryPopupWidth == 2) {
+    injectCSS('features/category-popup-width/large.css');
   }
 });
