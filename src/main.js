@@ -23,7 +23,9 @@ chrome.storage.sync.get({
   enableRetroCalculator: true,
   removeZeroCategories: true,
   budgetRowsHeight: 0,
-  categoryPopupWidth: 0
+  categoryActivityPopupWidth: 0,
+  budgetRowsHeight: 0,
+  moveMoneyDialog: false
 }, function(options) {
 
   if (options.colourBlindMode) {
@@ -57,11 +59,15 @@ chrome.storage.sync.get({
     injectCSS('features/budget-rows-height/slim.css');
   }
 
-  if (options.categoryPopupWidth == 1) {
-    injectCSS('features/category-popup-width/medium.css');
+  if (options.categoryActivityPopupWidth == 1) {
+    injectCSS('features/category-activity-popup-width/medium.css');
   }
-  else if (options.categoryPopupWidth == 2) {
-    injectCSS('features/category-popup-width/large.css');
+  else if (options.categoryActivityPopupWidth == 2) {
+    injectCSS('features/category-activity-popup-width/large.css');
+  }
+
+  if (options.moveMoneyDialog) {
+    injectCSS('features/move-money-dialog/main.css');
   }
 
   // non-optioned ToggleSplits

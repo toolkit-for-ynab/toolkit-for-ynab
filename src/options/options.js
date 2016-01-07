@@ -7,8 +7,9 @@ function save_options() {
   var removeZeroCategories = document.getElementById('removeZeroCategories').checked;
   var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
   budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
-  var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
-  categoryPopupWidth = categoryPopupWidthSelect.options[categoryPopupWidthSelect.selectedIndex].value;
+  var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
+  categoryActivityPopupWidth = categoryActivityPopupWidthSelect.options[categoryActivityPopupWidthSelect.selectedIndex].value;
+  var moveMoneyDialog = document.getElementById('moveMoneyDialog').checked;
 
   chrome.storage.sync.set({
     colourBlindMode: colourBlindMode,
@@ -18,7 +19,8 @@ function save_options() {
     enableRetroCalculator: enableRetroCalculator,
     removeZeroCategories: removeZeroCategories,
     budgetRowsHeight: budgetRowsHeight,
-    categoryPopupWidth: categoryPopupWidth
+    categoryActivityPopupWidth: categoryActivityPopupWidth,
+    moveMoneyDialog: moveMoneyDialog
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -41,8 +43,10 @@ function restore_options() {
     highlightNegativesNegative: false,
     enableRetroCalculator: true,
     removeZeroCategories: true,
+    moveMoneyDialog: false,
     budgetRowsHeight: 0,
-    categoryPopupWidth: 0
+    categoryActivityPopupWidth: 0,
+    budgetRowsHeight: 0
   }, function(items) {
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
@@ -52,8 +56,9 @@ function restore_options() {
     document.getElementById('removeZeroCategories').checked = items.removeZeroCategories;
     var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
     budgetRowsHeightSelect.value = items.budgetRowsHeight;
-    var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
-    categoryPopupWidthSelect.value = items.categoryPopupWidth;
+    var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
+    categoryActivityPopupWidthSelect.value = items.categoryActivityPopupWidth;
+    document.getElementById('moveMoneyDialog').checked = items.moveMoneyDialog;
   });
 }
 
