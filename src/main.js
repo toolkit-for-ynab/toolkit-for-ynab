@@ -15,6 +15,12 @@ function injectScript(path) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
+/*Features that are on by default*/
+
+//Collapse/Expand Budget Groups
+injectCSS('features/collapse-budget-groups/main.css');
+injectScript('features/collapse-budget-groups/main.js');
+
 chrome.storage.sync.get({
   colourBlindMode: false,
   hideAOM: false,
