@@ -1,3 +1,11 @@
+// Useful for debugging the settings page outside of chrome settings!
+// var chrome = {
+//   storage: { sync: {
+//     set: function (defaults, callback) { callback(defaults); },
+//     get: function (defaults, callback) { callback(defaults); }
+//   }}
+// };
+
 function save_options() {
   var colourBlindMode = document.getElementById('colourBlindMode').checked;
   var hideAOM = document.getElementById('hideAOM').checked;
@@ -10,6 +18,7 @@ function save_options() {
   var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
   categoryActivityPopupWidth = categoryActivityPopupWidthSelect.options[categoryActivityPopupWidthSelect.selectedIndex].value;
   var moveMoneyDialog = document.getElementById('moveMoneyDialog').checked;
+  var moveMoneyAutocomplete = document.getElementById('moveMoneyAutocomplete').checked;
 
   chrome.storage.sync.set({
     colourBlindMode: colourBlindMode,
@@ -20,7 +29,8 @@ function save_options() {
     removeZeroCategories: removeZeroCategories,
     budgetRowsHeight: budgetRowsHeight,
     categoryActivityPopupWidth: categoryActivityPopupWidth,
-    moveMoneyDialog: moveMoneyDialog
+    moveMoneyDialog: moveMoneyDialog,
+    moveMoneyAutocomplete: moveMoneyAutocomplete
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -46,7 +56,8 @@ function restore_options() {
     moveMoneyDialog: false,
     budgetRowsHeight: 0,
     categoryActivityPopupWidth: 0,
-    budgetRowsHeight: 0
+    budgetRowsHeight: 0,
+    moveMoneyAutocomplete: false
   }, function(items) {
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
@@ -59,6 +70,7 @@ function restore_options() {
     var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
     categoryActivityPopupWidthSelect.value = items.categoryActivityPopupWidth;
     document.getElementById('moveMoneyDialog').checked = items.moveMoneyDialog;
+    document.getElementById('moveMoneyAutocomplete').checked = items.moveMoneyAutocomplete;
   });
 }
 
