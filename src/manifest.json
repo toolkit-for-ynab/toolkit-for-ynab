@@ -24,6 +24,8 @@
     "features/budget-rows-height/slim.css",
     "features/collapse-budget-groups/main.css",
     "features/collapse-budget-groups/main.js",
+    "features/collapse-side-menu/main.css",
+    "features/collapse-side-menu/main.js",
     "features/check-credit-balances/main.js",
     "features/category-activity-popup-width/medium.css",
     "features/category-activity-popup-width/large.css",

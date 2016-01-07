@@ -7,6 +7,7 @@
 // };
 
 function save_options() {
+  var collapseSideMenu = document.getElementById('collapseSideMenu').checked;
   var colourBlindMode = document.getElementById('colourBlindMode').checked;
   var hideAOM = document.getElementById('hideAOM').checked;
   var checkCreditBalances = document.getElementById('checkCreditBalances').checked;
@@ -21,6 +22,7 @@ function save_options() {
   var moveMoneyAutocomplete = document.getElementById('moveMoneyAutocomplete').checked;
 
   chrome.storage.sync.set({
+    collapseSideMenu: collapseSideMenu,
     colourBlindMode: colourBlindMode,
     hideAOM: hideAOM,
     checkCreditBalances: checkCreditBalances,
@@ -47,6 +49,7 @@ function save_options() {
 function restore_options() {
 
   chrome.storage.sync.get({
+    collapseSideMenu: true,
     colourBlindMode: false,
     hideAOM: false,
     checkCreditBalances: false,
@@ -59,6 +62,7 @@ function restore_options() {
     budgetRowsHeight: 0,
     moveMoneyAutocomplete: false
   }, function(items) {
+    document.getElementById('collapseSideMenu').checked = items.collapseSideMenu;
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
     document.getElementById('checkCreditBalances').checked = items.checkCreditBalances;

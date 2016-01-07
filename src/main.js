@@ -25,6 +25,7 @@ injectScript('features/collapse-budget-groups/main.js');
 injectScript('features/toggle-splits/main.js');
 
 chrome.storage.sync.get({
+  collapseSideMenu: false,
   colourBlindMode: false,
   hideAOM: false,
   checkCreditBalances: false,
@@ -37,6 +38,11 @@ chrome.storage.sync.get({
   moveMoneyDialog: false,
   moveMoneyAutocomplete: true
 }, function(options) {
+
+  if (options.collapseSideMenu) {
+    injectCSS('features/collapse-side-menu/main.css');
+    injectScript('features/collapse-side-menu/main.js');
+  }
 
   if (options.colourBlindMode) {
     injectCSS('features/colour-blind-mode/main.css');
