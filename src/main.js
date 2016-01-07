@@ -32,7 +32,7 @@ chrome.storage.sync.get({
   enableRetroCalculator: true,
   removeZeroCategories: true,
   budgetRowsHeight: 0,
-  reconciledTextColor: 0
+  reconciledTextColor: 0,
   categoryActivityPopupWidth: 0,
   budgetRowsHeight: 0,
   moveMoneyDialog: false,

@@ -30,7 +30,7 @@ function save_options() {
     enableRetroCalculator: enableRetroCalculator,
     removeZeroCategories: removeZeroCategories,
     budgetRowsHeight: budgetRowsHeight,
-    reconciledTextColor: reconciledTextColor
+    reconciledTextColor: reconciledTextColor,
     categoryActivityPopupWidth: categoryActivityPopupWidth,
     moveMoneyDialog: moveMoneyDialog,
     moveMoneyAutocomplete: moveMoneyAutocomplete
@@ -60,7 +60,7 @@ function restore_options() {
     budgetRowsHeight: 0,
     categoryActivityPopupWidth: 0,
     budgetRowsHeight: 0,
-    reconciledTextColor: 0
+    reconciledTextColor: 0,
     moveMoneyAutocomplete: false
   }, function(items) {
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
