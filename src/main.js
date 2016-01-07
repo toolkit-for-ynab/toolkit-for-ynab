@@ -25,7 +25,8 @@ chrome.storage.sync.get({
   budgetRowsHeight: 0,
   categoryActivityPopupWidth: 0,
   budgetRowsHeight: 0,
-  moveMoneyDialog: false
+  moveMoneyDialog: false,
+  moveMoneyAutocomplete: true
 }, function(options) {
 
   if (options.colourBlindMode) {
@@ -70,6 +71,11 @@ chrome.storage.sync.get({
     injectCSS('features/move-money-dialog/main.css');
   }
 
+  if (options.moveMoneyAutocomplete) {
+    injectCSS('features/move-money-autocomplete/main.css');
+    injectScript('features/move-money-autocomplete/main.js');
+  }
+  
   // non-optioned ToggleSplits
   injectScript('features/toggle-splits/main.js');
 });
