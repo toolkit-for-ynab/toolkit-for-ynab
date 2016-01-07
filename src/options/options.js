@@ -5,9 +5,10 @@ function save_options() {
   var highlightNegativesNegative = document.getElementById('highlightNegativesNegative').checked;
   var enableRetroCalculator = document.getElementById('enableRetroCalculator').checked;
   var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
-  budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
+  var budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
   var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
-  categoryPopupWidth = categoryPopupWidthSelect.options[categoryPopupWidthSelect.selectedIndex].value;
+  var categoryPopupWidth = categoryPopupWidthSelect.options[categoryPopupWidthSelect.selectedIndex].value;
+  var accountsSelectedTotal = document.getElementById('accountsSelectedTotal').checked;
 
   chrome.storage.sync.set({
     colourBlindMode: colourBlindMode,
@@ -16,7 +17,8 @@ function save_options() {
     highlightNegativesNegative: highlightNegativesNegative,
     enableRetroCalculator: enableRetroCalculator,
     budgetRowsHeight: budgetRowsHeight,
-    categoryPopupWidth: categoryPopupWidth
+    categoryPopupWidth: categoryPopupWidth,
+    accountsSelectedTotal: accountsSelectedTotal
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -39,7 +41,8 @@ function restore_options() {
     highlightNegativesNegative: false,
     enableRetroCalculator: true,
     budgetRowsHeight: 0,
-    categoryPopupWidth: 0
+    categoryPopupWidth: 0,
+    accountsSelectedTotal: false
   }, function(items) {
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
@@ -50,6 +53,7 @@ function restore_options() {
     budgetRowsHeightSelect.value = items.budgetRowsHeight;
     var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
     categoryPopupWidthSelect.value = items.categoryPopupWidth;
+    document.getElementById('accountsSelectedTotal').checked = items.accountsSelectedTotal;
   });
 }
 

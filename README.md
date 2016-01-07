@@ -16,6 +16,7 @@ You can do 6 things at the moment with this:
 - Change the height of the budget rows so you can fit more on the budget screen.
 - Make credit card categories in the budget go yellow if their balance doesn't match the account balance for the card.
 - Make all available amounts go red if they're negative on the budget screen.
+- Show the amount of the selected transactions in the account view.
 
 All of these are configurable with options in the extension options page.
 
