@@ -21,9 +21,6 @@ function injectScript(path) {
 injectCSS('features/collapse-budget-groups/main.css');
 injectScript('features/collapse-budget-groups/main.js');
 
-// Toggle Splits button
-injectScript('features/toggle-splits/main.js');
-
 chrome.storage.sync.get({
   colourBlindMode: false,
   hideAOM: false,
@@ -35,7 +32,8 @@ chrome.storage.sync.get({
   categoryActivityPopupWidth: 0,
   budgetRowsHeight: 0,
   moveMoneyDialog: false,
-  moveMoneyAutocomplete: true
+  moveMoneyAutocomplete: true,
+  toggleSplits: false
 }, function(options) {
 
   if (options.colourBlindMode) {
@@ -83,5 +81,9 @@ chrome.storage.sync.get({
   if (options.moveMoneyAutocomplete) {
     injectCSS('features/move-money-autocomplete/main.css');
     injectScript('features/move-money-autocomplete/main.js');
+  }
+
+  if (options.toggleSplits) {
+    injectScript('features/toggle-splits/main.js');
   }
 });

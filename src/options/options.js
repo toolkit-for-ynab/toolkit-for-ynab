@@ -19,6 +19,7 @@ function save_options() {
   categoryActivityPopupWidth = categoryActivityPopupWidthSelect.options[categoryActivityPopupWidthSelect.selectedIndex].value;
   var moveMoneyDialog = false; // Kevin: Hidden until issue #18 is resolved document.getElementById('moveMoneyDialog').checked;
   var moveMoneyAutocomplete = document.getElementById('moveMoneyAutocomplete').checked;
+  var toggleSplits = document.getElementById('toggleSplits').checked;
 
   chrome.storage.sync.set({
     colourBlindMode: colourBlindMode,
@@ -30,7 +31,8 @@ function save_options() {
     budgetRowsHeight: budgetRowsHeight,
     categoryActivityPopupWidth: categoryActivityPopupWidth,
     moveMoneyDialog: moveMoneyDialog,
-    moveMoneyAutocomplete: moveMoneyAutocomplete
+    moveMoneyAutocomplete: moveMoneyAutocomplete,
+    toggleSplits: toggleSplits
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -57,7 +59,8 @@ function restore_options() {
     budgetRowsHeight: 0,
     categoryActivityPopupWidth: 0,
     budgetRowsHeight: 0,
-    moveMoneyAutocomplete: false
+    moveMoneyAutocomplete: false,
+    toggleSplits: false
   }, function(items) {
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
@@ -71,6 +74,7 @@ function restore_options() {
     categoryActivityPopupWidthSelect.value = items.categoryActivityPopupWidth;
     // Kevin: Hidden until issue #18 is resolved document.getElementById('moveMoneyDialog').checked = items.moveMoneyDialog;
     document.getElementById('moveMoneyAutocomplete').checked = items.moveMoneyAutocomplete;
+    document.getElementById('toggleSplits').checked = items.toggleSplits;
   });
 }
 
