@@ -22,6 +22,8 @@
   "web_accessible_resources": [
     "features/budget-rows-height/compact.css",
     "features/budget-rows-height/slim.css",
+    "features/collapse-side-menu/main.css",
+    "features/collapse-side-menu/main.js",
     "features/check-credit-balances/main.js",
     "features/category-popup-width/medium.css",
     "features/category-popup-width/large.css",

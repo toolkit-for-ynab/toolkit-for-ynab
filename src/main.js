@@ -16,6 +16,7 @@ function injectScript(path) {
 }
 
 chrome.storage.sync.get({
+  collapseSideMenu: false,
   colourBlindMode: false,
   hideAOM: false,
   checkCreditBalances: false,
@@ -25,6 +26,11 @@ chrome.storage.sync.get({
   budgetRowsHeight: 0,
   categoryPopupWidth: 0
 }, function(options) {
+
+  if (options.collapseSideMenu) {
+    injectCSS('features/collapse-side-menu/main.css');
+    injectScript('features/collapse-side-menu/main.js');
+  }
 
   if (options.colourBlindMode) {
     injectCSS('features/colour-blind-mode/main.css');
