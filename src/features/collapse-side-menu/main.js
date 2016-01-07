@@ -1,4 +1,4 @@
-function injectCollapseInitializer() {
+function ynabEnhancedCollapseInitializer() {
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined') {
     (function($){
       $.event.special.destroyed = {
