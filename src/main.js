@@ -22,7 +22,8 @@ chrome.storage.sync.get({
   highlightNegativesNegative: false,
   enableRetroCalculator: true,
   budgetRowsHeight: 0,
-  categoryPopupWidth: 0
+  categoryPopupWidth: 0,
+  moveMoneyAutocomplete: true
 }, function(options) {
 
   if (options.colourBlindMode) {
@@ -57,5 +58,10 @@ chrome.storage.sync.get({
   }
   else if (options.categoryPopupWidth == 2) {
     injectCSS('features/category-popup-width/large.css');
+  }
+
+  if (options.moveMoneyAutocomplete) {
+    injectCSS('features/move-money-autocomplete/main.css');
+    injectScript('features/move-money-autocomplete/main.js');
   }
 });

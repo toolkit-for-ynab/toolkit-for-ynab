@@ -8,7 +8,7 @@ versions are asking for options that are easily implemented in a browser extensi
 Rather than ask the YNAB team to implement these features, let's just do it
 ourselves!
 
-You can do 6 things at the moment with this:
+You can do X things at the moment with this:
 
 - Colour Blind Mode - Changes colours of some of the numbers to make the interface easier on people with certain visual disabilities.
 - Make the calculator work like YNAB4. When you press + or - (etc) the calculator moves to the end of the line so your number isn't lost.
@@ -16,6 +16,7 @@ You can do 6 things at the moment with this:
 - Change the height of the budget rows so you can fit more on the budget screen.
 - Make credit card categories in the budget go yellow if their balance doesn't match the account balance for the card.
 - Make all available amounts go red if they're negative on the budget screen.
+- Adds an autocomplete search for categories when moving money.
 
 All of these are configurable with options in the extension options page.
 

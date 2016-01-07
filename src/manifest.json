@@ -28,6 +28,8 @@
     "features/colour-blind-mode/main.css",
     "features/hide-age-of-money/main.css",
     "features/highlight-negatives-negative/main.js",
+    "features/move-money-autocomplete/main.css",
+    "features/move-money-autocomplete/main.js",
     "features/ynab-4-calculator/main.js"
   ]
 }
