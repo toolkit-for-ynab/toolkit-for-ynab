@@ -1,3 +1,11 @@
+// Useful for debugging the settings page outside of chrome settings!
+// var chrome = {
+//   storage: { sync: {
+//     set: function (defaults, callback) { callback(defaults); },
+//     get: function (defaults, callback) { callback(defaults); }
+//   }}
+// };
+
 function save_options() {
   var colourBlindMode = document.getElementById('colourBlindMode').checked;
   var hideAOM = document.getElementById('hideAOM').checked;
@@ -7,10 +15,12 @@ function save_options() {
   var removeZeroCategories = document.getElementById('removeZeroCategories').checked;
   var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
   budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
-  var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
-  categoryPopupWidth = categoryPopupWidthSelect.options[categoryPopupWidthSelect.selectedIndex].value;
   var reconciledTextColorSelect = document.getElementById('reconciledTextColor');
   reconciledTextColor = reconciledTextColorSelect.options[reconciledTextColorSelect.selectedIndex].value;
+  var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
+  categoryActivityPopupWidth = categoryActivityPopupWidthSelect.options[categoryActivityPopupWidthSelect.selectedIndex].value;
+  var moveMoneyDialog = false; // Kevin: Hidden until issue #18 is resolved document.getElementById('moveMoneyDialog').checked;
+  var moveMoneyAutocomplete = document.getElementById('moveMoneyAutocomplete').checked;
 
   chrome.storage.sync.set({
     colourBlindMode: colourBlindMode,
@@ -20,8 +30,10 @@ function save_options() {
     enableRetroCalculator: enableRetroCalculator,
     removeZeroCategories: removeZeroCategories,
     budgetRowsHeight: budgetRowsHeight,
-    categoryPopupWidth: categoryPopupWidth,
     reconciledTextColor: reconciledTextColor
+    categoryActivityPopupWidth: categoryActivityPopupWidth,
+    moveMoneyDialog: moveMoneyDialog,
+    moveMoneyAutocomplete: moveMoneyAutocomplete
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -44,9 +56,12 @@ function restore_options() {
     highlightNegativesNegative: false,
     enableRetroCalculator: true,
     removeZeroCategories: true,
+    moveMoneyDialog: false,
     budgetRowsHeight: 0,
-    categoryPopupWidth: 0,
+    categoryActivityPopupWidth: 0,
+    budgetRowsHeight: 0,
     reconciledTextColor: 0
+    moveMoneyAutocomplete: false
   }, function(items) {
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
@@ -56,10 +71,12 @@ function restore_options() {
     document.getElementById('removeZeroCategories').checked = items.removeZeroCategories;
     var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
     budgetRowsHeightSelect.value = items.budgetRowsHeight;
-    var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
-    categoryPopupWidthSelect.value = items.categoryPopupWidth;
     var reconciledTextColorSelect = document.getElementById('reconciledTextColor');
     reconciledTextColorSelect.value = items.reconciledTextColor;
+    var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
+    categoryActivityPopupWidthSelect.value = items.categoryActivityPopupWidth;
+    // Kevin: Hidden until issue #18 is resolved document.getElementById('moveMoneyDialog').checked = items.moveMoneyDialog;
+    document.getElementById('moveMoneyAutocomplete').checked = items.moveMoneyAutocomplete;
   });
 }
 
