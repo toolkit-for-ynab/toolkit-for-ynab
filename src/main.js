@@ -63,4 +63,7 @@ chrome.storage.sync.get({
   else if (options.categoryPopupWidth == 2) {
     injectCSS('features/category-popup-width/large.css');
   }
+
+  // non-optioned ToggleSplits
+  injectScript('features/toggle-splits/main.js');
 });
