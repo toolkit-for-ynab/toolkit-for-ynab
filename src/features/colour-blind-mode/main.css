@@ -1,11 +1,45 @@
+
+/* ======== Cautious colours / shapes ======== */
 .budget-table-row.is-sub-category > .budget-table-cell-available .cautious {
     background-color: #19a3c5 !important;
+}
+
+.inspector-overview-available .currency.cautious {
+    background-color: #19a3c5;
 }
 
 .budget-table-row.is-sub-category > .budget-table-cell-available .cautious:hover {
     background-color: #14839e !important;
 }
 
-.inspector-overview-available .cautious {
-    background-color: #19a3c5;
+/* ======== Negative colours / shapes ======== */
+ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-available-div > span.negative {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+    background-color: #d55e00 !important;
+}
+
+.inspector-overview-available .currency.negative {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+    background-color: #d55e00 !important;
+}
+
+.left-to-budget-is-negative .budget-header-totals-amount {
+    border-radius: 0em;
+    -webkit-border-radius: 0em;
+    background-color: #d55e00 !important;
+}
+
+.left-to-budget-is-negative .budget-header-totals-amount-arrow .arrow {
+    border-left-color: #d55e00 !important;
+}
+
+/* ======== Positive colours / shapes ======== */
+ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-available-div > span.positive {
+    background-color: #009e73 !important;
+}
+
+.inspector-overview-available .currency.positive {
+    background-color: #009e73 !important;
 }
