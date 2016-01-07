@@ -27,9 +27,10 @@
     "features/category-popup-width/large.css",
     "features/colour-blind-mode/main.css",
     "features/hide-age-of-money/main.css",
-    "features/remove-zero-categories/main.js",
     "features/highlight-negatives-negative/main.js",
-    "features/ynab-4-calculator/main.js",
-    "features/toggle-splits/main.js"
+    "features/move-money-dialog/main.css",
+    "features/remove-zero-categories/main.js",
+    "features/toggle-splits/main.js",
+    "features/ynab-4-calculator/main.js"
   ]
 }

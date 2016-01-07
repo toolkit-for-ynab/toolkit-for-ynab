@@ -9,6 +9,7 @@ function save_options() {
   budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
   var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
   categoryPopupWidth = categoryPopupWidthSelect.options[categoryPopupWidthSelect.selectedIndex].value;
+  var moveMoneyDialog = document.getElementById('moveMoneyDialog').checked;
 
   chrome.storage.sync.set({
     colourBlindMode: colourBlindMode,
@@ -18,7 +19,8 @@ function save_options() {
     enableRetroCalculator: enableRetroCalculator,
     removeZeroCategories: removeZeroCategories,
     budgetRowsHeight: budgetRowsHeight,
-    categoryPopupWidth: categoryPopupWidth
+    categoryPopupWidth: categoryPopupWidth,
+    moveMoneyDialog: moveMoneyDialog
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -43,6 +45,8 @@ function restore_options() {
     removeZeroCategories: true,
     budgetRowsHeight: 0,
     categoryPopupWidth: 0
+    budgetRowsHeight: 0,
+    moveMoneyDialog: false
   }, function(items) {
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
@@ -54,6 +58,7 @@ function restore_options() {
     budgetRowsHeightSelect.value = items.budgetRowsHeight;
     var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
     categoryPopupWidthSelect.value = items.categoryPopupWidth;
+    document.getElementById('moveMoneyDialog').checked = items.moveMoneyDialog;
   });
 }
 

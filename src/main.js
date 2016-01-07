@@ -23,7 +23,9 @@ chrome.storage.sync.get({
   enableRetroCalculator: true,
   removeZeroCategories: true,
   budgetRowsHeight: 0,
-  categoryPopupWidth: 0
+  categoryPopupWidth: 0,
+  budgetRowsHeight: 0,
+  moveMoneyDialog: false
 }, function(options) {
 
   if (options.colourBlindMode) {
@@ -62,6 +64,10 @@ chrome.storage.sync.get({
   }
   else if (options.categoryPopupWidth == 2) {
     injectCSS('features/category-popup-width/large.css');
+  }
+
+  if (options.moveMoneyDialog) {
+    injectCSS('features/move-money-dialog/main.css');
   }
 
   // non-optioned ToggleSplits
