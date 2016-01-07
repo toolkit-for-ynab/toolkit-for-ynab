@@ -4,6 +4,7 @@ function save_options() {
   var checkCreditBalances = document.getElementById('checkCreditBalances').checked;
   var highlightNegativesNegative = document.getElementById('highlightNegativesNegative').checked;
   var enableRetroCalculator = document.getElementById('enableRetroCalculator').checked;
+  var removeZeroCategories = document.getElementById('removeZeroCategories').checked;
   var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
   budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
   var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');
@@ -15,6 +16,7 @@ function save_options() {
     checkCreditBalances: checkCreditBalances,
     highlightNegativesNegative: highlightNegativesNegative,
     enableRetroCalculator: enableRetroCalculator,
+    removeZeroCategories: removeZeroCategories,
     budgetRowsHeight: budgetRowsHeight,
     categoryPopupWidth: categoryPopupWidth
   }, function() {
@@ -38,6 +40,7 @@ function restore_options() {
     checkCreditBalances: false,
     highlightNegativesNegative: false,
     enableRetroCalculator: true,
+    removeZeroCategories: true,
     budgetRowsHeight: 0,
     categoryPopupWidth: 0
   }, function(items) {
@@ -46,6 +49,7 @@ function restore_options() {
     document.getElementById('checkCreditBalances').checked = items.checkCreditBalances;
     document.getElementById('highlightNegativesNegative').checked = items.highlightNegativesNegative;
     document.getElementById('enableRetroCalculator').checked = items.enableRetroCalculator;
+    document.getElementById('removeZeroCategories').checked = items.removeZeroCategories;
     var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
     budgetRowsHeightSelect.value = items.budgetRowsHeight;
     var categoryPopupWidthSelect = document.getElementById('categoryPopupWidth');

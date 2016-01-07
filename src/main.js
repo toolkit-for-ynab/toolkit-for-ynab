@@ -21,6 +21,7 @@ chrome.storage.sync.get({
   checkCreditBalances: false,
   highlightNegativesNegative: false,
   enableRetroCalculator: true,
+  removeZeroCategories: true,
   budgetRowsHeight: 0,
   categoryPopupWidth: 0
 }, function(options) {
@@ -43,6 +44,10 @@ chrome.storage.sync.get({
 
   if (options.enableRetroCalculator) {
     injectScript('features/ynab-4-calculator/main.js');
+  }
+
+  if (options.removeZeroCategories) {
+    injectScript('features/remove-zero-categories/main.js');
   }
 
   if (options.budgetRowsHeight == 1) {
