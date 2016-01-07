@@ -17,7 +17,7 @@ function save_options() {
   budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
   var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
   categoryActivityPopupWidth = categoryActivityPopupWidthSelect.options[categoryActivityPopupWidthSelect.selectedIndex].value;
-  var moveMoneyDialog = document.getElementById('moveMoneyDialog').checked;
+  var moveMoneyDialog = false; // Kevin: Hidden until issue #18 is resolved document.getElementById('moveMoneyDialog').checked;
   var moveMoneyAutocomplete = document.getElementById('moveMoneyAutocomplete').checked;
 
   chrome.storage.sync.set({
@@ -69,7 +69,7 @@ function restore_options() {
     budgetRowsHeightSelect.value = items.budgetRowsHeight;
     var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
     categoryActivityPopupWidthSelect.value = items.categoryActivityPopupWidth;
-    document.getElementById('moveMoneyDialog').checked = items.moveMoneyDialog;
+    // Kevin: Hidden until issue #18 is resolved document.getElementById('moveMoneyDialog').checked = items.moveMoneyDialog;
     document.getElementById('moveMoneyAutocomplete').checked = items.moveMoneyAutocomplete;
   });
 }
