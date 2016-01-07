@@ -20,8 +20,9 @@ This is what the extension can do for you:
 - Remove categories that have a balance at or below 0 from the cover overspending dialog, as they won't help you anyway!
 - Add a button to hide and show the detail of split transactions to make the interface more like YNAB4.
 - Search for target category when moving money with an autocomplete you can type into.
+- Add a button to collapse and expand all budget rows at the top of the budget screen.
 
-All of these are configurable with options in the extension options page. (except the splits button, we assume you want that, please tell us if we're wrong!)
+All of these are configurable with options in the extension options page. (except the splits button and expand/collapse budget rows button, we assume you want that, please tell us if we're wrong!)
 
 Roadmap
 -------
