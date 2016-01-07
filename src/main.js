@@ -15,6 +15,15 @@ function injectScript(path) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
+/* Features that are on permanently without configuration options */
+
+// Collapse/Expand Budget Groups
+injectCSS('features/collapse-budget-groups/main.css');
+injectScript('features/collapse-budget-groups/main.js');
+
+// Toggle Splits button
+injectScript('features/toggle-splits/main.js');
+
 chrome.storage.sync.get({
   colourBlindMode: false,
   hideAOM: false,
@@ -75,7 +84,4 @@ chrome.storage.sync.get({
     injectCSS('features/move-money-autocomplete/main.css');
     injectScript('features/move-money-autocomplete/main.js');
   }
-  
-  // non-optioned ToggleSplits
-  injectScript('features/toggle-splits/main.js');
 });
