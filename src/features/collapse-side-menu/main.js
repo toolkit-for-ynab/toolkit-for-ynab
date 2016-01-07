@@ -20,7 +20,7 @@ function injectCollapseInitializer() {
       }
     });
   } else {
-    setTimeout(injectCollapseInitializer, 250);
+    setTimeout(ynabEnhancedCollapseInitializer, 250);
   }
 
   // Watch for the budget grid
@@ -177,4 +177,4 @@ function injectCollapseInitializer() {
   }
 }
 
-setTimeout(injectCollapseInitializer, 250);
+setTimeout(ynabEnhancedCollapseInitializer, 250);

@@ -49,7 +49,7 @@ function save_options() {
 function restore_options() {
 
   chrome.storage.sync.get({
-    collapseSideMenu: true,
+    collapseSideMenu: false,
     colourBlindMode: false,
     hideAOM: false,
     checkCreditBalances: false,
