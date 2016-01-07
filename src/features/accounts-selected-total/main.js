@@ -47,7 +47,6 @@ function ynabEnhancedSelectedTotalsUpdate(total) {
     for (var i = 0; i < spans.length; i++) {
         spans[i].remove();
     }
-    // '<span class="user-data" title="519&nbsp;879,71kr"><span class="user-data currency positive">519&nbsp;879,71<bdi>kr</bdi></span></span>'
     var totalFormatted = ynabEnhancedFormatCurrency(total);
     var userData = document.createElement("span");
     userData.className = "user-data";
