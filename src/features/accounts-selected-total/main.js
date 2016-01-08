@@ -20,6 +20,9 @@ function ynabEnhancedSelectedTotalsCalculate() {
         if ((' ' + checkbox.className + ' ').indexOf(' is-checked ') == -1) {
             continue;
         }
+        if ((' ' + checkbox.parentElement.parentElement.className + ' ').indexOf(' ynab-grid-header-cell ') > -1) {
+            continue;
+        }
         var parent = document.getElementById(checkbox.parentElement.parentElement.parentElement.id);
         var outflow = parent.getElementsByClassName('ynab-grid-cell-outflow')[0].innerText;
         var inflow = parent.getElementsByClassName('ynab-grid-cell-inflow')[0].innerText;
