@@ -1,0 +1,93 @@
+.. _samples:
+
+=======
+Samples
+=======
+
+BrowserEvents
+-------------
+
+Shows how to handle browser events and work with browser tabs.
+
+Used APIs:
+
+* :js:func:`kango.browser.addEventListener`
+* :js:func:`kango.browser.tabs.getAll`
+* :js:func:`KangoBrowserTab.getUrl`
+* :js:func:`KangoBrowserTab.navigate`
+* :js:func:`kango.ui.browserButton.addEventListener`
+
+.. seealso::
+	
+	:ref:`background-scripts`
+
+`View BrowserEvents source <https://github.com/KangoExtensions/kango-samples/tree/master/BrowserEvents/src/common>`_
+
+ChristmasTree
+-------------
+
+Adds an Christmas tree on each loaded web page using jQuery.
+
+.. seealso::
+	
+	:ref:`content-scripts`
+
+`View ChristmasTree source <https://github.com/KangoExtensions/kango-samples/tree/master/ChristmasTree/src/common>`_
+
+GmailChecker
+------------
+
+Adds an browser button which shows number of unread messages in Gmail inbox.
+
+Used APIs:
+
+* :js:func:`kango.ui.browserButton.addEventListener`
+* :js:func:`kango.ui.browserButton.setTooltipText`
+* :js:func:`kango.ui.browserButton.setIcon`
+* :js:func:`kango.ui.browserButton.setBadgeValue`
+* :js:func:`kango.xhr.send`
+
+.. seealso::
+	
+	:ref:`background-scripts`
+
+`View GmailChecker source <https://github.com/KangoExtensions/kango-samples/tree/master/GmailChecker/src/common>`_
+
+MessagingDemo
+-------------
+
+Shows how to work with :ref:`messaging-api`.
+
+Used APIs:
+
+* :js:func:`kango.addMessageListener`
+* :js:func:`kango.dispatchMessage`
+* :js:func:`kango.browser.addEventListener`
+* :js:func:`KangoBrowserTab.dispatchMessage`
+* :js:func:`KangoBrowserTab.getUrl`
+* :js:func:`KangoBrowserTab.isActive`
+* :js:func:`kango.ui.browserButton.setTooltipText`
+
+.. seealso::
+	
+	:ref:`background-scripts`, :ref:`content-scripts` and  :ref:`messaging-api`
+
+`View MessagingDemo source <https://github.com/KangoExtensions/kango-samples/blob/master/MessagingDemo/src/common>`_
+
+PopupDemo
+---------
+
+Shows how to work with :ref:`popup-api`.
+
+Used APIs:
+
+* :js:func:`kango.storage.getItem`
+* :js:func:`kango.storage.setItem`
+* :js:func:`kango.storage.removeItem`
+* :js:func:`kango.xhr.send`
+
+.. seealso::
+	
+	:ref:`popup-api`
+
+`View PopupDemo source <https://github.com/KangoExtensions/kango-samples/tree/master/PopupDemo/src/common>`_

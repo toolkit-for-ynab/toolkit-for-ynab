@@ -1,0 +1,52 @@
+{
+    "manifest_version": 2,
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ],
+            "all_frames": true,
+            "js": [
+                "kango/utils.js",
+                "kango/invoke_async.js",
+                "kango/storage_sync.js",
+                "kango/message_target.js",
+                "includes/content_kango.js",
+                "includes/content_init.js"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+    "name": "Kango",
+    "icons": {
+        "128": "icons/icon128.png",
+        "16": "icons/button.png",
+        "48": "icons/icon48.png"
+    },
+    "browser_action": {
+        "default_icon": "icons/button.png",
+        "default_title": "Kango",
+        "default_popup": "popup.html"
+    },
+    "version": "1.0.0",
+    "background": {
+        "page": "background.html"
+    },
+    "permissions": [
+        "tabs",
+        "http://*/*",
+        "https://*/*",
+        "contextMenus",
+        "webNavigation",
+        "notifications",
+        "cookies",
+        "nativeMessaging"
+    ],
+    "update_url": "",
+    "homepage_url": "",
+    "description": "Extension description",
+    "options_page": "options.html",
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "web_accessible_resources": ["res/*", "assets/*", "icons/*"]
+}

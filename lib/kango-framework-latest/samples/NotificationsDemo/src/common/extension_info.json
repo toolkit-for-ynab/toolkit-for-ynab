@@ -1,0 +1,21 @@
+{
+    "name": "NotificationsDemo",
+    "version": "1.2.0",
+    "description": "Notifications API demo",
+    "creator": "Kango",
+    "homepage_url": "http://kangoextensions.com/",
+    "background_scripts": [
+        "main.js"
+    ],
+    "content_scripts": [
+        "kango-ui/content_notifications.js"
+    ],
+    "browser_button": {
+        "caption": "Show notification",
+        "icon": "icons/button.png",
+        "tooltipText": "Show notification"
+    },
+    "permissions": {
+        "notifications": true
+    }
+}

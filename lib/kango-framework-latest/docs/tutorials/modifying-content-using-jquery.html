@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Modifying content of web pages using Kango and jQuery &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="Tutorials" href="index.html" />
+    <link rel="prev" title="Creating Gmail checker" href="gmail-checker.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="gmail-checker.html" title="Creating Gmail checker"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="modifying-content-of-web-pages-using-kango-and-jquery">
+<span id="modifying-content-using-jquery"></span><h1>Modifying content of web pages using Kango and jQuery<a class="headerlink" href="#modifying-content-of-web-pages-using-kango-and-jquery" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="content-script">
+<h2>Content script<a class="headerlink" href="#content-script" title="Permalink to this headline">¶</a></h2>
+<p>Kango framework supports Greasemonkey-like user scripts. Content scripts run in the context of web pages and have access to Document Object Model (DOM). You can insert/modify/remove any element on web page, etc.</p>
+<p>Content script can access some <a class="reference internal" href="../general/content-scripts.html#content-scripts-api"><em>Kango APIs</em></a>.</p>
+</div>
+<div class="section" id="adding-content-script-to-your-project">
+<h2>Adding content script to your project<a class="headerlink" href="#adding-content-script-to-your-project" title="Permalink to this headline">¶</a></h2>
+<p>Simply create new JS file, open <a class="reference internal" href="../api-reference/KangoExtensionInfo.html#kangoextensioninfo"><em>extension_info.json</em></a> in your project common directory and add <tt class="docutils literal"><span class="pre">content_scripts</span></tt> section. Now your <a class="reference internal" href="../api-reference/KangoExtensionInfo.html#kangoextensioninfo"><em>extension_info.json</em></a> should look like:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;ChristmasTree&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;1.1.0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Displays Christmas tree on each loaded web page&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;creator&quot;</span><span class="o">:</span> <span class="s2">&quot;KangoExtensions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;homepage_url&quot;</span><span class="o">:</span> <span class="s2">&quot;http://kangoextensions.com/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;content_scripts&quot;</span><span class="o">:</span> <span class="p">[</span>
+        <span class="s2">&quot;tree.js&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="writing-content-script">
+<h2>Writing content script<a class="headerlink" href="#writing-content-script" title="Permalink to this headline">¶</a></h2>
+<p>Content script supports user script headers (include and exclude rules). Add this header at the beginning of <tt class="docutils literal"><span class="pre">tree.js</span></tt>:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// ==UserScript==</span>
+<span class="c1">// @name ChristmasTree</span>
+<span class="c1">// @include http://*</span>
+<span class="c1">// @include https://*</span>
+<span class="c1">// @require jquery-1.9.1.min.js</span>
+<span class="c1">// ==/UserScript==</span>
+</pre></div>
+</div>
+<p>You content script will be executed if it matches any include rule and not matches any exclude rule.</p>
+</div>
+<div class="section" id="adding-jquery-support">
+<h2>Adding jQuery support<a class="headerlink" href="#adding-jquery-support" title="Permalink to this headline">¶</a></h2>
+<p>You can load jQuery in your content script simply adding <a class="reference internal" href="../general/content-scripts.html#content-scripts-require"><em>&#64;require</em></a> key in user script header.</p>
+</div>
+<div class="section" id="using-jquery">
+<h2>Using jQuery<a class="headerlink" href="#using-jquery" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s write code that inserts Christmas tree on each loaded web page:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">$</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">$</span><span class="p">.</span><span class="nx">noConflict</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span> <span class="c1">// Required for IE</span>
+
+<span class="kd">var</span> <span class="nx">tree</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;img&#39;</span><span class="p">)).</span><span class="nx">attr</span><span class="p">({</span>
+    <span class="nx">src</span><span class="o">:</span> <span class="s1">&#39;http://kangoextensions.com/misc/tree.png&#39;</span><span class="p">,</span>
+    <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Christmas tree&#39;</span>
+<span class="p">}).</span><span class="nx">css</span><span class="p">({</span>
+    <span class="nx">position</span><span class="o">:</span> <span class="s1">&#39;absolute&#39;</span><span class="p">,</span>
+    <span class="nx">top</span><span class="o">:</span> <span class="s1">&#39;10px&#39;</span><span class="p">,</span>
+    <span class="nx">left</span><span class="o">:</span> <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">clientWidth</span> <span class="o">-</span> <span class="mi">280</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;z-index&#39;</span><span class="o">:</span> <span class="s1">&#39;10000&#39;</span>
+<span class="p">}).</span><span class="nx">appendTo</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+
+<span class="nx">tree</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Tree click&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="testing-project">
+<h2>Testing project<a class="headerlink" href="#testing-project" title="Permalink to this headline">¶</a></h2>
+<p>After building and installing extension in browser you can see Christmas tree on each loaded http web page.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../_images/kitties.jpg"><img alt="kitties" src="../_images/kitties.jpg" /></a>
+</div>
+</div>
+<div class="section" id="links">
+<h2>Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Full <a class="reference external" href="https://github.com/KangoExtensions/kango-samples/tree/master/ChristmasTree/src/common">source</a> of the ChristmasTree sample.</li>
+<li><a class="reference external" href="http://kangoextensions.com/kango/kango-framework-latest.zip">Framework</a> itself.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Modifying content of web pages using Kango and jQuery</a><ul>
+<li><a class="reference internal" href="#content-script">Content script</a></li>
+<li><a class="reference internal" href="#adding-content-script-to-your-project">Adding content script to your project</a></li>
+<li><a class="reference internal" href="#writing-content-script">Writing content script</a></li>
+<li><a class="reference internal" href="#adding-jquery-support">Adding jQuery support</a></li>
+<li><a class="reference internal" href="#using-jquery">Using jQuery</a></li>
+<li><a class="reference internal" href="#testing-project">Testing project</a></li>
+<li><a class="reference internal" href="#links">Links</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gmail-checker.html"
+                        title="previous chapter">Creating Gmail checker</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="gmail-checker.html" title="Creating Gmail checker"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

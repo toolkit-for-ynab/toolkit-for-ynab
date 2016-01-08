@@ -1,0 +1,100 @@
+.. _messaging-api:
+
+=============
+Messaging API
+=============
+
+Kango framework providing convenient and easy way to pass any JSON serializable data from content script to background script and vice versa. This allows developer to use any combinations of background-content scripts for their needs. Here we will show how data could be passed between scripts.
+
+Please also refer to the ``MessagingDemo`` project.
+
+To send/receive any message we need to use a pair of functions :js:func:`kango.addMessageListener` and :js:func:`kango.dispatchMessage`
+
+What Kango messages are?
+========================
+
+Each Kango message has a name and an optional JSON serializable data attached. For example sending a message could be something like that::
+
+    var data = {
+        policy: 'strict',
+        urls: [	'http://server1.com/', 'http://server2.com/', 'http://server3.com/' ]
+    };
+    kango.dispatchMessage('CheckWithAntivirus', data);
+
+This will send a message named ``CheckWithAntivirus`` with attached data object. Kango will find a listener by message name and call appropriate listener function with data object as param.
+
+The data object must be JSON serializable, for instance you can not pass a function in data object.
+If you want to have a callback after message processing please use event.target to send a message back to sender.
+
+What is the message listener signature?
+=======================================
+
+The message listener is 1 param function::
+
+    function(event) {
+        // message processing goes here
+    }
+
+The event param will be an object::
+
+    event = {
+        data: variant,	// JSON serializable data object attached to the message
+        target: object,	// Point to object sent the message
+        source: KangoMessageSource // Message source
+    }
+	
+**target** field could be either :ref:`KangoBrowserTab` or :ref:`kango` objects. For instance if message came from background to content script then target will be a :ref:`kango` object. And if message came from content to background target will be :ref:`KangoBrowserTab`.
+
+The **event.target.dispatchMessage** function could be used inside message listener.
+
+**source** :ref:`KangoMessageSource` object.
+
+From background to content script
+=================================
+
+Subscribing inside a content script
+-----------------------------------
+Inside the content script where you need to receive a message you need to subscribe for that message by calling :js:func:`kango.addMessageListener` function as follows::
+
+    kango.addMessageListener('Background2Content', function(event) {
+        // event.data - the data sent with message
+        alert('Background script says: ' + event.data);
+    });
+
+Posting message from background script
+--------------------------------------
+Inside the background script you can call :js:func:`dispatchMessage<KangoBrowserTab.dispatchMessage>` function to call the code inside content script::
+
+    kango.browser.tabs.getCurrent(function(tab) {
+        // tab is KangoBrowserTab object
+        tab.dispatchMessage('Background2Content', 'Hello from background');
+    });
+	
+Please note that firstly we choose a tab for posting a message. If you want to post a message to all the tabs you can enumerate them via :js:func:`kango.browser.tabs.getAll` function like follow::
+
+    kango.browser.tabs.getAll(function(tabs) {
+        for (var i = 0; i < tabs.length; i++) {
+         tabs[i].dispatchMessage('MyMessage', 'Hello');
+        }
+    });
+
+From content to background
+==========================
+
+Subscribing inside background script
+------------------------------------
+
+Inside background script you can add a listener by calling the same :js:func:`kango.addMessageListener` function::
+
+    kango.addMessageListener('Content2Background', function(event) {
+        // event.data - point to data attached
+        // event.target - point to the KangoBrowseTab object that sent the message
+        console.log('Content script says: ' + event.data);
+    });
+
+Posting message from content script
+-----------------------------------
+Content to background message could be sent by calling :js:func:`kango.dispatchMessage` function::
+
+    kango.dispatchMessage('Content2Background', 'Hello');
+

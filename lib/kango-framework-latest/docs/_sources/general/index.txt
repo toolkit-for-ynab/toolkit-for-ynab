@@ -1,0 +1,16 @@
+===================
+General information
+===================
+
+.. toctree::
+    :maxdepth: 1
+   
+    creating-and-building-browser-extensions
+    content-scripts
+    background-scripts
+    icons
+    popup-api
+    messaging-api
+    autoupdating-extensions
+    faq
+    samples

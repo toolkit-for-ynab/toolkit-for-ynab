@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>kango.storage &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="API reference" href="index.html" />
+    <link rel="next" title="kango.xhr" href="kango-xhr.html" />
+    <link rel="prev" title="kango.console" href="kango-console.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="kango-xhr.html" title="kango.xhr"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="kango-console.html" title="kango.console"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="kango-storage">
+<span id="id1"></span><h1>kango.storage<a class="headerlink" href="#kango-storage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#kango-storage-getitem"><em>getItem</em></a></td>
+<td>Returns stored item by name</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kango-storage-setitem"><em>setItem</em></a></td>
+<td>Saves named item</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kango-storage-removeitem"><em>removeItem</em></a></td>
+<td>Removes item by name</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kango-storage-getkeys"><em>getKeys</em></a></td>
+<td>Returns array of item names</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kango-storage-clear"><em>clear</em></a></td>
+<td>Delete all the items</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">note:</th><td class="field-body">You can use this module in content scripts.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getitem">
+<span id="kango-storage-getitem"></span><h3>getItem<a class="headerlink" href="#getitem" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.storage.getItem">
+<tt class="descclassname">kango.storage.</tt><tt class="descname">getItem</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#kango.storage.getItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns item stored by name or <em>null</em> if item does not exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; Item name</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">variant</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">homeUrl</span> <span class="o">=</span> <span class="nx">kango</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;home_url&#39;</span><span class="p">);</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;stored value for homeUrl is &#39;</span> <span class="o">+</span> <span class="nx">homeUrl</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setitem">
+<span id="kango-storage-setitem"></span><h3>setItem<a class="headerlink" href="#setitem" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.storage.setItem">
+<tt class="descclassname">kango.storage.</tt><tt class="descname">setItem</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="headerlink" href="#kango.storage.setItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves an item with specified name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; Item name</li>
+<li><strong>value</strong> (<em>variant</em>) &#8211; Data to be saved</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">176</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">storedHeight</span> <span class="o">=</span> <span class="nx">kango</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">);</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;stored height is &#39;</span> <span class="o">+</span> <span class="nx">storedHeight</span> <span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="removeitem">
+<span id="kango-storage-removeitem"></span><h3>removeItem<a class="headerlink" href="#removeitem" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.storage.removeItem">
+<tt class="descclassname">kango.storage.</tt><tt class="descname">removeItem</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#kango.storage.removeItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes item with specified name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; Item name</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="mi">176</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">storedHeight</span> <span class="o">=</span> <span class="nx">kango</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">);</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;stored height is &#39;</span> <span class="o">+</span> <span class="nx">storedHeight</span> <span class="p">);</span>
+
+<span class="nx">kango</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">);</span>
+
+<span class="nx">storedHeight</span> <span class="o">=</span> <span class="nx">kango</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">);</span> <span class="c1">// null</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getkeys">
+<span id="kango-storage-getkeys"></span><h3>getKeys<a class="headerlink" href="#getkeys" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.storage.getKeys">
+<tt class="descclassname">kango.storage.</tt><tt class="descname">getKeys</tt><big>(</big><big>)</big><a class="headerlink" href="#kango.storage.getKeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns array of item names.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">array of item names</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Array of strings</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nx">kango</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">getKeys</span><span class="p">();</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">keys</span><span class="p">.</span><span class="nx">toString</span><span class="p">());</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="clear">
+<span id="kango-storage-clear"></span><h3>clear<a class="headerlink" href="#clear" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.storage.clear">
+<tt class="descclassname">kango.storage.</tt><tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#kango.storage.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all the items from storage.</p>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">storage</span><span class="p">.</span><span class="nx">clear</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">kango.storage</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getitem">getItem</a></li>
+<li><a class="reference internal" href="#setitem">setItem</a></li>
+<li><a class="reference internal" href="#removeitem">removeItem</a></li>
+<li><a class="reference internal" href="#getkeys">getKeys</a></li>
+<li><a class="reference internal" href="#clear">clear</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="kango-console.html"
+                        title="previous chapter">kango.console</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="kango-xhr.html"
+                        title="next chapter">kango.xhr</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="kango-xhr.html" title="kango.xhr"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="kango-console.html" title="kango.console"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >API reference</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

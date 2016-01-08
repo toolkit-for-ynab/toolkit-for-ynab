@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Autoupdating Extensions &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="General information" href="index.html" />
+    <link rel="next" title="FAQ" href="faq.html" />
+    <link rel="prev" title="Messaging API" href="messaging-api.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="faq.html" title="FAQ"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="messaging-api.html" title="Messaging API"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">General information</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="autoupdating-extensions">
+<span id="id1"></span><h1>Autoupdating Extensions<a class="headerlink" href="#autoupdating-extensions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="update-url">
+<h2>Update URL<a class="headerlink" href="#update-url" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re hosting your extension on own server, you need to add the <tt class="docutils literal"><span class="pre">update_path_url</span></tt> key to <a class="reference internal" href="../api-reference/KangoExtensionInfo.html#kangoextensioninfo"><em>extension_info.json</em></a> file:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;update_path_url&quot;</span><span class="o">:</span> <span class="s2">&quot;http://example.com/extensions/&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After building your project you will have files <tt class="docutils literal"><span class="pre">update_chrome.xml</span></tt>, <tt class="docutils literal"><span class="pre">update_firefox.xml</span></tt>, <tt class="docutils literal"><span class="pre">update_ie.xml</span></tt>, <tt class="docutils literal"><span class="pre">update_safari.plist</span></tt> in output directory which you should upload to you server in <tt class="docutils literal"><span class="pre">update_path_url</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Firefox requires https <tt class="docutils literal"><span class="pre">update_path_url</span></tt> with valid certificate.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Before uploading <tt class="docutils literal"><span class="pre">update_chrome.xml</span></tt> you must change appid in XML file to your Chrome extension ID. You can find the ID of your extension by going to the Extensions page (chrome://extensions). In next versions this will be done by framework.</p>
+</div>
+</div>
+<div class="section" id="configuring-server">
+<h2>Configuring server<a class="headerlink" href="#configuring-server" title="Permalink to this headline">¶</a></h2>
+<p>Most HTTP servers are not configured to return correct MIME types for extension packages, so you will need to configure your HTTP server.</p>
+<p>In the Apache HTTP Server, this can be done by adding the following directive to the configuration file or <tt class="docutils literal"><span class="pre">.htaccess</span></tt>:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">AddType</span> <span class="nx">application</span><span class="o">/</span><span class="nx">x</span><span class="o">-</span><span class="nx">xpinstall</span> <span class="p">.</span><span class="nx">xpi</span>
+<span class="nx">AddType</span> <span class="nx">application</span><span class="o">/</span><span class="nx">x</span><span class="o">-</span><span class="nx">chrome</span><span class="o">-</span><span class="nx">extension</span> <span class="p">.</span><span class="nx">crx</span>
+<span class="nx">AddType</span> <span class="nx">application</span><span class="o">/</span><span class="nx">octet</span><span class="o">-</span><span class="nx">stream</span> <span class="p">.</span><span class="nx">safariextz</span>
+</pre></div>
+</div>
+<p>For Nginx server you can add to your website configuration file:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">types</span> <span class="p">{</span>
+  <span class="nx">application</span><span class="o">/</span><span class="nx">x</span><span class="o">-</span><span class="nx">xpinstall</span> <span class="p">.</span><span class="nx">xpi</span>
+  <span class="nx">application</span><span class="o">/</span><span class="nx">x</span><span class="o">-</span><span class="nx">chrome</span><span class="o">-</span><span class="nx">extension</span> <span class="p">.</span><span class="nx">crx</span>
+  <span class="nx">application</span><span class="o">/</span><span class="nx">octet</span><span class="o">-</span><span class="nx">stream</span> <span class="p">.</span><span class="nx">safariextz</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Autoupdating Extensions</a><ul>
+<li><a class="reference internal" href="#update-url">Update URL</a></li>
+<li><a class="reference internal" href="#configuring-server">Configuring server</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="messaging-api.html"
+                        title="previous chapter">Messaging API</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="faq.html"
+                        title="next chapter">FAQ</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="faq.html" title="FAQ"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="messaging-api.html" title="Messaging API"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >General information</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

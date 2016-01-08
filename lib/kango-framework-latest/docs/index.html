@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Kango - cross-browser extension framework &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="#" />
+    <link rel="next" title="API reference" href="api-reference/index.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="api-reference/index.html" title="API reference"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">Kango 1.7.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="kango-cross-browser-extension-framework">
+<h1>Kango - cross-browser extension framework<a class="headerlink" href="#kango-cross-browser-extension-framework" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api-reference/index.html">API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api-reference/index.html#kango-apis">kango.* APIs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango.html">kango</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango-console.html">kango.console</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango-storage.html">kango.storage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango-xhr.html">kango.xhr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango-browser.html">kango.browser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango-browser-tabs.html">kango.browser.tabs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango-browser-windows.html">kango.browser.windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango-ui-browserButton.html">kango.ui.browserButton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango-ui-optionsPage.html">kango.ui.optionsPage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango-ui-notifications.html">kango.ui.notifications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango-i18n.html">kango.i18n</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/kango-io.html">kango.io</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference/index.html#types">Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/KangoExtensionInfo.html">KangoExtensionInfo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/KangoBrowserTab.html">KangoBrowserTab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/KangoBrowserWindow.html">KangoBrowserWindow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-reference/KangoMessageSource.html">KangoMessageSource</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="general/index.html">General information</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="general/creating-and-building-browser-extensions.html">Creating and Building Browser Extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general/content-scripts.html">Content Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general/background-scripts.html">Background Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general/icons.html">Icons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general/popup-api.html">Popup API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general/messaging-api.html">Messaging API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general/autoupdating-extensions.html">Autoupdating Extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general/faq.html">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="general/samples.html">Samples</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/gmail-checker.html">Creating Gmail checker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/modifying-content-using-jquery.html">Modifying content of web pages using Kango and jQuery</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Next topic</h4>
+  <p class="topless"><a href="api-reference/index.html"
+                        title="next chapter">API reference</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="api-reference/index.html" title="API reference"
+             >next</a> |</li>
+        <li><a href="#">Kango 1.7.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

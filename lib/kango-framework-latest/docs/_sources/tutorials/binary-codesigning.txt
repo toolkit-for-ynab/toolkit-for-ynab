@@ -1,0 +1,127 @@
+.. _binary-codesigning:
+
+
+====================
+Signing Binary files
+====================
+
+Introduction
+============
+
+You can sign binary files inside your Kango based extension during build time.
+The signing is possible both on all supported platforms. You need a proper .pfx certificate file for codesign on Windows,
+for codesing on Linux and Mac you need to convert .pfx file.
+
+
+
+Pre Requirements
+================
+
+You will require follow items for codesign.
+
+
+* A proper valid codesign certificate from authorised CA such as `VeriSign <http://www.verisign.com/>`_ or `Thawte <http://www.thawte.com/>`_
+
+On Windows
+
+* signtool.exe tool from `Windows SDK <http://msdn.microsoft.com/en-us/library/8s9b9yaz(v=vs.80).aspx>`_
+
+On Linux and Mac
+
+.. note:: This article is describing signing process using osslsigncode tool, you can also choose signcode  tool from Mono packages.
+
+* osslsigncode tool. You need to download and built `osslsigncode <http://sourceforge.net/projects/osslsigncode/>`_ or on the `GitHub <https://github.com/antoinevg/osslsigncode>`_. You need to have libopenssl and libcurl to build osslsigncode.
+* OpenSSL command line tool for converting .pfx certificate to key/cert pair.
+
+
+
+Converting .pfx to Key/Cert pair for Linux codesinging
+======================================================
+
+Let say you have a extension.pfx that works well for you on Windows. You need to do follow commands to convert it to Key/Cert pair using OpenSSL::
+
+    openssl pkcs12 -in extension.pfx -nocerts -nodes -out mykey.pem
+    openssl pkcs12 -in extension.pfx -nokeys -out mycert.pem
+    openssl crl2pkcs7 -nocrl -certfile mycert.pem -outform DER -out extension.spc
+    openssl rsa  -outform der -in mykey.pem  -out extension.der
+    rm mykey.pem mycert.pem
+
+After executing these commands you will get extension.spc and extension.der files that could be used with osslsigncode
+
+Creating a build step for codesign
+==================================
+
+For signing files inside your extension you need to create a buildstep in your project folder.
+Create a folder named buildsteps on the same level you have src and certificates folders. Place a file named sign.cmd on Windows and sign.sh on Linux.
+
+On Windows sign.cmd file content should be like::
+
+    @echo off
+    SET SIGNTOOL="../../tools/signtool.exe"
+    SET PFXFILE="../../certificates/extension.pfx"
+    SET PFXPASS="TestExtensionPfxPassword"
+
+    FOR /R %%i IN (*.exe *.dll) DO @(
+         %SIGNTOOL% sign /f %PFXFILE%  /p %PFXPASS%  /t http://timestamp.verisign.com/scripts/timstamp.dll %%i
+    )
+
+Where SIGNTOOL, PFXFILE and PFXPASS should have appropriate values.
+
+On Linux sign.sh file content should be::
+
+    #!/bin/sh
+
+    SIGNTOOL="../../tools/osslsigncode"
+    CERT="../../certificates/extension.spc"
+    KEY="../../certificates/extension.der"
+
+    for file in ./*.exe ./*.dll
+    do
+        if [ -f "$file" ]; then
+            $SIGNTOOL -spc $CERT -key $KEY -t "http://timestamp.verisign.com/scripts/timstamp.dll" -in $file -out $file.signed > /dev/null
+            if [ -f "$file.signed" ]; then
+                mv $file.signed $file
+            fi
+        fi
+    done
+
+Where SIGNTOOL, CERT and KEY should have appropriate values.
+
+Signing .exe installer
+======================
+
+After signing all the binaries inside the extension you can sign .exe installer file. You need to add some lines to your build.cmd or build.sh files
+
+build.cmd::
+
+    @echo off
+
+    SET KANGODIR=..\..\
+    SET SIGNTOOL="tools/signtool.exe"
+    SET PFXFILE="certificates/extension.pfx"
+    SET PFXPASS="TestExtensionPfxPassword"
+
+    call "%KANGODIR%\kango.py" build .\
+    FOR /R %%i IN (output\*.exe) DO @(
+		%SIGNTOOL% sign /f %PFXFILE%  /p %PFXPASS%  /t http://timestamp.verisign.com/scripts/timstamp.dll "%%i"
+    )
+
+build.sh::
+
+    #!/bin/bash
+    KANGODIR="../.."
+    SIGNTOOL="./tools/osslsigncode"
+    CERT="./certificates/extension.spc"
+    KEY="./certificates/extension.der"
+
+    python $KANGODIR/kango.py build ./
+
+    for file in ./output/*.exe
+    do
+        if [ -f "$file" ]; then
+            $SIGNTOOL -spc $CERT -key $KEY -t "http://timestamp.verisign.com/scripts/timstamp.dll" -in $file -out $file.signed > /dev/null
+            if [ -f "$file.signed" ]; then
+                mv $file.signed $file
+            fi
+        fi
+    done

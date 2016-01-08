@@ -1,0 +1,17 @@
+{
+    "name": "ContextMenuItemDemo",
+    "version": "1.2.0",
+    "description": "Context menu item demo",
+    "creator": "Kango",
+    "homepage_url": "http://kangoextensions.com/",
+    "background_scripts": ["main.js"],
+    "content_scripts": ["content.js"],
+    "browser_button": {
+        "caption": "ContextMenuItemDemo",
+        "tooltipText": "ContextMenuItemDemo",
+        "icon": "icons/button.png"
+    },
+    "context_menu_item": {
+        "caption": "ContextMenuItemDemo"
+    }
+}

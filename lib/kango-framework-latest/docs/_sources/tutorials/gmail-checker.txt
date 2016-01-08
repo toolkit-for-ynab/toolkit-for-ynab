@@ -1,0 +1,164 @@
+.. _gmail-checker:
+
+======================
+Creating Gmail checker
+======================
+
+Introduction
+============
+
+Kango allows creating extensions for popular browsers using JavaScript only, the code being single for all major browsers.
+Chrome, Firefox, Internet Explorer and Safari are supported currently.
+
+
+The way to create a simple cross browser Gmail Checker is represented below.
+
+You will eventually get this:
+
+.. figure:: /_images/gmail-checker.png
+	:alt: Gmail checker
+
+Preparation of environment to work with Kango
+=============================================
+
+Before you begin working with Kango you should make a few steps:
+
+1. Install Python 2.7 (http://www.python.org/download/).
+2. Download `here <http://kangoextensions.com/kango/kango-framework-latest.zip>`_ and extract the archive with framework to any directory.
+
+Creation of new project
+=======================
+
+Create a directory for the project and run kango.py from the framework directory::
+
+	python kango_dir/kango.py create "my_project_dir"
+
+On request for project name enter ``Gmail Checker``.
+
+Now you may start writing code of your extension.
+
+Later on you can set name and version of your extension using file ``common\extension_info.json``.
+
+Writing Gmail Checker
+=====================
+
+The extension will check number of unread messages on Gmail from time to time and show such number on a browser button.
+After creation of project open directory ``src\common`` to see that template is already created in the file ``main.js.``
+
+Obtain number of unread messages
+================================
+
+Number of unread messages can be obtained on https://mail.google.com/mail/feed/atom in Atom 0.3 format (for correct work it is necessary that user is authorized in Gmail in the current browser).
+
+Method :js:func:`kango.xhr.send` is used for AJAX queries::
+
+	var details = {
+		url: 'https://mail.google.com/mail/feed/atom',
+		method: 'GET',
+		async: true,
+		contentType: 'text'	
+	};
+	kango.xhr.send(details, function(data) {
+		if (data.status == 200 && data.response != null) {
+			var count = 0;
+			var matches = data.response.match(/<fullcount>(\d+)<\/fullcount>/); // Old IE versions don't support getElementsByTagNameNS, so we have to use RegExp
+			if(matches != null && matches.length > 0) {
+				count = matches[1];
+			}
+		}
+	});
+
+Displaying of message number on the button
+==========================================
+
+Adjustment of button properties can be carried out using object kango.ui.browserButton::
+
+	_setUnreadCount: function(count) {
+		kango.ui.browserButton.setTooltipText('Unread count: ' + count);
+		kango.ui.browserButton.setIcon('icons/button.png');
+		kango.ui.browserButton.setBadgeValue(count);
+	};
+
+Getting everything together
+===========================
+
+Let us add a timer which will check number of new messages on a periodic predetermined basis, and error handling. As a result you will have code like this::
+
+	function GmailChecker() {
+		var self = this;
+		self.refresh();	
+		kango.ui.browserButton.addEventListener(kango.ui.browserButton.event.COMMAND, function() {
+			kango.browser.tabs.create({url: 'https://mail.google.com/'});
+			self.refresh();
+		});
+		window.setInterval(function(){self.refresh()}, self._refreshTimeout);
+	}
+
+	GmailChecker.prototype = {
+
+		_refreshTimeout: 60*1000*15,	// 15 minutes
+		_feedUrl: 'https://mail.google.com/mail/feed/atom',
+		
+		_setOffline: function() {
+			kango.ui.browserButton.setTooltipText(kango.i18n.getMessage('Offline'));
+			kango.ui.browserButton.setIcon('icons/button_gray.png');
+			kango.ui.browserButton.setBadgeValue(0);
+		},
+		
+		_setUnreadCount: function(count) {
+			kango.ui.browserButton.setTooltipText(kango.i18n.getMessage('Unread count') + ': ' + count);
+			kango.ui.browserButton.setIcon('icons/button.png');
+			kango.ui.browserButton.setBadgeValue(count);
+		},
+		
+		refresh: function() {		
+			var details = {
+				url: this._feedUrl,
+				method: 'GET',
+				async: true,
+				contentType: 'text'	
+			};
+			var self = this;
+			kango.xhr.send(details, function(data) {
+				if (data.status == 200 && data.response != null) {
+					var count = 0;
+					var matches = data.response.match(/<fullcount>(\d+)<\/fullcount>/); // Old IE versions don't support getElementsByTagNameNS, so we have to use RegExp
+					if(matches != null && matches.length > 0) {
+						count = matches[1];
+					}
+					self._setUnreadCount(count);
+				}
+				else { // something went wrong
+					self._setOffline();
+				}
+			});
+		}
+	};
+
+	var extension = new GmailChecker();
+
+All in all you have just 50 lines of code for you extension, which works with all major browsers.
+
+Icons
+=====
+
+You should place icons in PNG format with names ``button.png``, ``icon32.png``, ``icon48.png``, ``icon100.png``, ``icon128.png`` with dimensions 16x16, 32x32, 48x48, 100x100, 128x128 pixels respectively into directory ``common/icons``, as well as icon ``button_gray.png`` in order to display inactive state.
+
+See :ref:`icons` section for more information.
+
+Project building
+================
+
+In order to build the project run ``kango.py`` with argument ``build`` and path to the project directory::
+
+	python kango_dir/kango.py build "my_project_dir"
+
+Google Chrome or Chromium should be installed so that you could build an extension for Chrome.
+
+In output you are supposed to get ``gmailchecker_1.1.0.crx``, ``gmailchecker_1.1.0.xpi``, ``gmailchecker_1.1.0.exe`` which are ready extension files.
+
+Links
+=====
+
+* Full `source <https://github.com/KangoExtensions/kango-samples/tree/master/GmailChecker/src/common>`_ of the GmailChecker sample.
+* `Framework <http://kangoextensions.com/kango/kango-framework-latest.zip>`_ itself.

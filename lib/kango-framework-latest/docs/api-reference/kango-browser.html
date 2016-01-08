@@ -1,0 +1,331 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>kango.browser &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="API reference" href="index.html" />
+    <link rel="next" title="kango.browser.tabs" href="kango-browser-tabs.html" />
+    <link rel="prev" title="kango.xhr" href="kango-xhr.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="kango-browser-tabs.html" title="kango.browser.tabs"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="kango-xhr.html" title="kango.xhr"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="kango-browser">
+<span id="id1"></span><h1>kango.browser<a class="headerlink" href="#kango-browser" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#kango-browser-addeventlistener"><em>addEventListener</em></a></td>
+<td>Registers an event handler for the specified event type</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kango-browser-removeeventlistener"><em>removeEventListener</em></a></td>
+<td>Removes an event handler that the addEventListener method registered</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kango-browser-getname"><em>getName</em></a></td>
+<td>Returns browser name</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="addeventlistener">
+<span id="kango-browser-addeventlistener"></span><h3>addEventListener<a class="headerlink" href="#addeventlistener" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.browser.addEventListener">
+<tt class="descclassname">kango.browser.</tt><tt class="descname">addEventListener</tt><big>(</big><em>name</em>, <em>callback</em><big>)</big><a class="headerlink" href="#kango.browser.addEventListener" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers an event handler for the specified event type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; event name</li>
+<li><strong>callback</strong> (<em>function(event)</em>) &#8211; callback function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Events list:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">DOCUMENT_COMPLETE</span> <span class="c1">// Fired when document is fully loaded (after DOMContentLoaded page event)</span>
+<span class="nx">event</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">KangoBrowserTab</span> <span class="nx">target</span><span class="p">,</span>
+    <span class="nx">string</span> <span class="nx">url</span><span class="p">,</span>
+    <span class="nx">string</span> <span class="nx">title</span>
+<span class="p">}</span>
+
+<span class="nx">BEFORE_NAVIGATE</span>   <span class="c1">// Fired when request starts</span>
+<span class="nx">event</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">KangoBrowserTab</span> <span class="nx">target</span><span class="p">,</span>
+    <span class="nx">string</span> <span class="nx">url</span>
+<span class="p">}</span>
+
+<span class="nx">TAB_CREATED</span>       <span class="c1">// Fired when new tab created</span>
+<span class="nx">event</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">string</span> <span class="nx">tabId</span><span class="p">,</span>
+    <span class="nx">KangoBrowserTab</span> <span class="nx">target</span>
+<span class="p">}</span>
+
+<span class="nx">TAB_CHANGED</span>       <span class="c1">// Fired when tab changed</span>
+<span class="nx">event</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">string</span> <span class="nx">tabId</span><span class="p">,</span>
+    <span class="nx">KangoBrowserTab</span> <span class="nx">target</span><span class="p">,</span>
+    <span class="nx">string</span> <span class="nx">url</span><span class="p">,</span>
+    <span class="nx">string</span> <span class="nx">title</span>
+<span class="p">}</span>
+
+<span class="nx">TAB_REMOVED</span>       <span class="c1">// Fired when tab removed</span>
+<span class="nx">event</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">string</span> <span class="nx">tabId</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To access tab DOM you should use <a class="reference internal" href="../general/content-scripts.html#content-scripts"><em>content scripts</em></a>.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">TAB_CHANGED</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// event = {string tabId, KangoBrowserTab target, string url, string title};</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Tab was changed to &#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="KangoBrowserTab.html#kangobrowsertab"><em>KangoBrowserTab</em></a></p>
+</div>
+</div>
+<div class="section" id="removeeventlistener">
+<span id="kango-browser-removeeventlistener"></span><h3>removeEventListener<a class="headerlink" href="#removeeventlistener" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.browser.removeEventListener">
+<tt class="descclassname">kango.browser.</tt><tt class="descname">removeEventListener</tt><big>(</big><em>name</em>, <em>callback</em><big>)</big><a class="headerlink" href="#kango.browser.removeEventListener" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes an event handler that the <a class="reference internal" href="#kango.browser.addEventListener" title="kango.browser.addEventListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.browser.addEventListener()</span></tt></a> method registered.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; event name</li>
+<li><strong>callback</strong> (<em>function(event)</em>) &#8211; callback function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// event handler</span>
+<span class="kd">var</span> <span class="nx">onBeforeNavigate</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;BeforeNavigate url=&#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="c1">// add event handler</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">BEFORE_NAVIGATE</span><span class="p">,</span> <span class="nx">onBeforeNavigate</span><span class="p">);</span>
+
+<span class="c1">// remove event handler</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">BEFORE_NAVIGATE</span><span class="p">,</span> <span class="nx">onBeforeNavigate</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getname">
+<span id="kango-browser-getname"></span><h3>getName<a class="headerlink" href="#getname" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.browser.getName">
+<tt class="descclassname">kango.browser.</tt><tt class="descname">getName</tt><big>(</big><big>)</big><a class="headerlink" href="#kango.browser.getName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns browser name.
+Can be used in content scripts.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">browser name</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Possible values:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">browserNames</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;firefox&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;chrome&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;safari&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ie&#39;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// outputs current browser name to console</span>
+<span class="kd">var</span> <span class="nx">browserName</span> <span class="o">=</span> <span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">getName</span><span class="p">();</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">browserName</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">kango.browser</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#addeventlistener">addEventListener</a></li>
+<li><a class="reference internal" href="#removeeventlistener">removeEventListener</a></li>
+<li><a class="reference internal" href="#getname">getName</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="kango-xhr.html"
+                        title="previous chapter">kango.xhr</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="kango-browser-tabs.html"
+                        title="next chapter">kango.browser.tabs</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="kango-browser-tabs.html" title="kango.browser.tabs"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="kango-xhr.html" title="kango.xhr"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >API reference</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

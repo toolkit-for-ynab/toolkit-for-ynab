@@ -1,0 +1,59 @@
+.. _KangoExtensionInfo:
+
+==================
+KangoExtensionInfo
+==================
+
+The KangoExtensionInfo object representing extension manifest from ``extension_info.json`` file. The object could be obtained via call to :js:func:`kango.getExtensionInfo` function.
+
+Fields
+======
+
+==================  ===================  ===========================================
+Name                Type                 Description
+==================  ===================  ===========================================
+name                string               Extension name
+version             string               Extension version
+description         string               Extension description
+creator             string               Extension creator
+homepage_url        string               Extension homepage
+background_scripts  Array of strings     Extension background scripts
+content_scripts     Array of strings     Extension content scripts
+browser_button      object               Browser button properties. Optional
+update_path_url     string               See :ref:`autoupdating-extensions` section
+options_page        string               See :ref:`kango-ui-optionsPage`
+default_locale      string               See :ref:`kango-i18n`
+permissions         object               Extension permissions. Optional
+==================  ===================  ===========================================
+	 
+Sample::
+	 
+    {
+        "name": "PopupDemo",
+        "version": "1.0",
+        "description": "Popup Demo",
+        "creator": "KangoExtensions",
+        "homepage_url": "http://kangoextensions.com/",
+        "background_scripts": [
+            "main.js"
+        ],
+        "browser_button": {
+            "tooltipText": "Popup Demo",
+            "icon": "icons/button.png",
+            "popup": {
+                "url": "test.html",
+                "width": 600,
+                "height": 596
+            }
+        },
+        "default_locale": "en",
+        "permissions": {
+            "tabs": true,
+            "content_scripts": ["http://*/*", "https://*/*"],
+            "context_menu": true,
+            "web_navigation": true,
+            "notifications": false,
+            "cookies": false,
+            "xhr": ["http://*/*", "https://*/*"]
+        }
+    }

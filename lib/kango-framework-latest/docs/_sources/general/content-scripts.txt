@@ -1,0 +1,125 @@
+.. _content-scripts:
+
+===============
+Content Scripts
+===============
+
+Content scripts run on any web page opened by user (by default after *DOMContentLoaded* event).
+
+All the content scripts should be enumerated in ``content_scripts`` section of :ref:`extension_info.json<KangoExtensionInfo>` file::
+
+    {
+        "content_scripts": [
+            "content.js"
+        ]
+    }
+
+.. _content-scripts-api:
+
+kango.* APIs available in content scripts
+=========================================
+
+.. warning:: In content scripts you can use only APIs from the list below.
+
+* :js:func:`kango.getExtensionInfo`
+* :js:func:`kango.addMessageListener`
+* :js:func:`kango.removeMessageListener`
+* :js:func:`kango.dispatchMessage`
+* :js:func:`kango.invokeAsync`
+* :js:func:`kango.xhr.send`
+* :js:func:`kango.console.log`
+* :js:func:`kango.browser.getName`
+* :ref:`kango-storage`
+
+See :ref:`messaging-api` section for more information.
+
+Metadata block syntax
+=====================
+
+The metadata block must follow the format::
+
+    // ==UserScript==
+    // @key value
+    // ==/UserScript==
+
+@name
+-----
+The name of the script.
+
+Example::
+
+    // @name Example Script
+
+@namespace
+----------
+Scripts with the same namespace will have common variables.
+
+Example::
+
+    // @namespace example
+	
+@exclude @include
+-----------------
+The script will execute if it matches any include rule, as long as it does not match an exclude rule.
+
+The rules are URLs, which can have a "wildcard" asterisk \*, which matches any string including the empty string.
+
+There can be any number of @exclude and @include keys in a script.
+
+For example: ``http://www.example.com/foo/*`` will match:
+
+``http://www.example.com/foo/bar`` and ``http://www.example.com/foo/``
+
+but not:
+
+``http://www.example.com/baz/``.
+
+Example::
+
+    // @include http://*.example.*
+    // @exclude http://www.example.com/*
+
+@all-frames
+-----------
+Run script on all frames. Default value is *false*.
+
+Example::
+
+    // @all-frames true
+
+.. _content-scripts-require:
+	
+@require
+--------
+Includes JavaScript file from project common directory.
+
+There can be any number of @require keys in a script.
+
+Example::
+
+    // @require jquery.min.js
+	
+Sample
+======
+::
+
+    // ==UserScript==
+    // @name Test
+    // @include http://*
+    // @include https://*
+    // ==/UserScript==
+
+    // Get last saved color number from storage
+    kango.invokeAsync('kango.storage.getItem', 'colorNumber', function(data) {
+        var colorNumber = data || 0;
+        var colors = ['red','green','blue'];
+        window.setInterval(function() {
+            document.body.style.background = colors[colorNumber++];
+            if (colorNumber > colors.length) {
+                colorNumber = 0;
+            }
+            // Save color number
+            kango.invokeAsync('kango.storage.setItem', 'colorNumber', colorNumber);
+        }, 1000);
+    });
+

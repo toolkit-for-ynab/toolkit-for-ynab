@@ -1,0 +1,13 @@
+{
+    "name": "BrowserEvents",
+    "version": "1.2.0",
+    "description": "Browser API demo",
+    "creator": "Kango",
+    "homepage_url": "http://kangoextensions.com/",
+    "background_scripts": ["main.js"],
+    "browser_button": {
+        "caption": "BrowserEvents",
+        "tooltipText": "BrowserEvents",
+        "icon": "icons/button.png"
+    }
+}

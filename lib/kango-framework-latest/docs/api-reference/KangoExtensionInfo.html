@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>KangoExtensionInfo &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="API reference" href="index.html" />
+    <link rel="next" title="KangoBrowserTab" href="KangoBrowserTab.html" />
+    <link rel="prev" title="kango.io" href="kango-io.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="KangoBrowserTab.html" title="KangoBrowserTab"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="kango-io.html" title="kango.io"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="kangoextensioninfo">
+<span id="id1"></span><h1>KangoExtensionInfo<a class="headerlink" href="#kangoextensioninfo" title="Permalink to this headline">¶</a></h1>
+<p>The KangoExtensionInfo object representing extension manifest from <tt class="docutils literal"><span class="pre">extension_info.json</span></tt> file. The object could be obtained via call to <a class="reference internal" href="kango.html#kango.getExtensionInfo" title="kango.getExtensionInfo"><tt class="xref js js-func docutils literal"><span class="pre">kango.getExtensionInfo()</span></tt></a> function.</p>
+<div class="section" id="fields">
+<h2>Fields<a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="24%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>name</td>
+<td>string</td>
+<td>Extension name</td>
+</tr>
+<tr class="row-odd"><td>version</td>
+<td>string</td>
+<td>Extension version</td>
+</tr>
+<tr class="row-even"><td>description</td>
+<td>string</td>
+<td>Extension description</td>
+</tr>
+<tr class="row-odd"><td>creator</td>
+<td>string</td>
+<td>Extension creator</td>
+</tr>
+<tr class="row-even"><td>homepage_url</td>
+<td>string</td>
+<td>Extension homepage</td>
+</tr>
+<tr class="row-odd"><td>background_scripts</td>
+<td>Array of strings</td>
+<td>Extension background scripts</td>
+</tr>
+<tr class="row-even"><td>content_scripts</td>
+<td>Array of strings</td>
+<td>Extension content scripts</td>
+</tr>
+<tr class="row-odd"><td>browser_button</td>
+<td>object</td>
+<td>Browser button properties. Optional</td>
+</tr>
+<tr class="row-even"><td>update_path_url</td>
+<td>string</td>
+<td>See <a class="reference internal" href="../general/autoupdating-extensions.html#autoupdating-extensions"><em>Autoupdating Extensions</em></a> section</td>
+</tr>
+<tr class="row-odd"><td>options_page</td>
+<td>string</td>
+<td>See <a class="reference internal" href="kango-ui-optionsPage.html#kango-ui-optionspage"><em>kango.ui.optionsPage</em></a></td>
+</tr>
+<tr class="row-even"><td>default_locale</td>
+<td>string</td>
+<td>See <a class="reference internal" href="kango-i18n.html#kango-i18n"><em>kango.i18n</em></a></td>
+</tr>
+<tr class="row-odd"><td>permissions</td>
+<td>object</td>
+<td>Extension permissions. Optional</td>
+</tr>
+</tbody>
+</table>
+<p>Sample:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;PopupDemo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;1.0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;Popup Demo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;creator&quot;</span><span class="o">:</span> <span class="s2">&quot;KangoExtensions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;homepage_url&quot;</span><span class="o">:</span> <span class="s2">&quot;http://kangoextensions.com/&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;background_scripts&quot;</span><span class="o">:</span> <span class="p">[</span>
+        <span class="s2">&quot;main.js&quot;</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;browser_button&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;tooltipText&quot;</span><span class="o">:</span> <span class="s2">&quot;Popup Demo&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;icon&quot;</span><span class="o">:</span> <span class="s2">&quot;icons/button.png&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;popup&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;url&quot;</span><span class="o">:</span> <span class="s2">&quot;test.html&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;width&quot;</span><span class="o">:</span> <span class="mi">600</span><span class="p">,</span>
+            <span class="s2">&quot;height&quot;</span><span class="o">:</span> <span class="mi">596</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;default_locale&quot;</span><span class="o">:</span> <span class="s2">&quot;en&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;permissions&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;tabs&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="s2">&quot;content_scripts&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;http://*/*&quot;</span><span class="p">,</span> <span class="s2">&quot;https://*/*&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;context_menu&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="s2">&quot;web_navigation&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="s2">&quot;notifications&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="s2">&quot;cookies&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="s2">&quot;xhr&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;http://*/*&quot;</span><span class="p">,</span> <span class="s2">&quot;https://*/*&quot;</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">KangoExtensionInfo</a><ul>
+<li><a class="reference internal" href="#fields">Fields</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="kango-io.html"
+                        title="previous chapter">kango.io</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="KangoBrowserTab.html"
+                        title="next chapter">KangoBrowserTab</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="KangoBrowserTab.html" title="KangoBrowserTab"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="kango-io.html" title="kango.io"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >API reference</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

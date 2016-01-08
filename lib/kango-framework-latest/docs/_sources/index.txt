@@ -1,0 +1,19 @@
+=========================================
+Kango - cross-browser extension framework
+=========================================
+
+.. toctree::
+   :maxdepth: 3
+   
+   api-reference/index
+   
+.. toctree::
+   :maxdepth: 2
+
+   general/index
+   
+.. toctree::
+   :maxdepth: 2
+
+   tutorials/index
+

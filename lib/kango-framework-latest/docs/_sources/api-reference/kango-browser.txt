@@ -1,0 +1,142 @@
+.. _kango-browser:
+
+=============
+kango.browser
+=============
+
+Summary
+=======
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+     
+   * - :ref:`kango-browser-addEventListener` 
+     - Registers an event handler for the specified event type
+     
+   * - :ref:`kango-browser-removeEventListener`
+     - Removes an event handler that the addEventListener method registered
+     
+   * - :ref:`kango-browser-getName`
+     - Returns browser name
+
+Methods
+=======
+
+.. _kango-browser-addEventListener:
+
+addEventListener
+----------------
+
+.. js:function:: kango.browser.addEventListener(name, callback)
+
+   Registers an event handler for the specified event type.
+   
+   :param string name: event name
+   :param function(event) callback: callback function
+
+Events list::
+
+    DOCUMENT_COMPLETE // Fired when document is fully loaded (after DOMContentLoaded page event)
+    event = {
+        KangoBrowserTab target,
+        string url,
+        string title
+    }
+    
+    BEFORE_NAVIGATE   // Fired when request starts
+    event = {
+        KangoBrowserTab target,
+        string url
+    }
+    
+    TAB_CREATED       // Fired when new tab created
+    event = {
+        string tabId,
+        KangoBrowserTab target
+    }
+    
+    TAB_CHANGED       // Fired when tab changed
+    event = {
+        string tabId,
+        KangoBrowserTab target,
+        string url,
+        string title
+    }
+    
+    TAB_REMOVED       // Fired when tab removed
+    event = {
+        string tabId
+    }
+
+.. note:: To access tab DOM you should use :ref:`content scripts<content-scripts>`.    
+    
+Example::
+
+    kango.browser.addEventListener(kango.browser.event.TAB_CHANGED, function(event) {
+        // event = {string tabId, KangoBrowserTab target, string url, string title};
+        kango.console.log('Tab was changed to ' + event.url);
+    });
+
+.. seealso::
+    
+    :ref:`KangoBrowserTab`
+
+    
+.. _kango-browser-removeEventListener:
+
+removeEventListener
+-------------------
+
+.. js:function:: kango.browser.removeEventListener(name, callback)
+
+   Removes an event handler that the :js:func:`kango.browser.addEventListener` method registered.
+   
+   :param string name: event name
+   :param function(event) callback: callback function
+
+Example::
+
+    // event handler
+    var onBeforeNavigate = function(event) {
+        kango.console.log('BeforeNavigate url=' + event.url);
+    };
+
+    // add event handler
+    kango.browser.addEventListener(kango.browser.event.BEFORE_NAVIGATE, onBeforeNavigate);
+
+    // remove event handler
+    kango.browser.removeEventListener(kango.browser.event.BEFORE_NAVIGATE, onBeforeNavigate);
+
+    
+.. _kango-browser-getName:
+
+getName
+-------
+
+.. js:function:: kango.browser.getName()
+
+   Returns browser name.
+   Can be used in content scripts.
+   
+   :returns: browser name
+   :rtype: string
+
+Possible values::
+
+    browserNames = [
+        'firefox',
+        'chrome',
+        'safari',
+        'ie'
+    ]
+
+Example::
+
+    // outputs current browser name to console
+    var browserName = kango.browser.getName();
+    kango.console.log(browserName);
+

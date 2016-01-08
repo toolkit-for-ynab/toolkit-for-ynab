@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Author</key>
+    <string>__creator__</string>
+    <key>CFBundleDisplayName</key>
+    <string>__name__</string>
+    <key>CFBundleIdentifier</key>
+    <string>__id__</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleShortVersionString</key>
+    <string>__version__</string>
+    <key>CFBundleVersion</key>
+    <string>__version__</string>
+    <key>Chrome</key>
+    <dict>
+        <key>Database Quota</key>
+        <real>10485760</real>
+        <key>Global Page</key>
+        <string>background.html</string>
+        <key>Popovers</key>
+        <array>
+            <dict>
+                <key>Filename</key>
+                <string>popup.html</string>
+                <key>Identifier</key>
+                <string>kango-ui-popup</string>
+            </dict>
+        </array>
+        <key>Toolbar Items</key>
+        <array>
+            <dict>
+                <key>Command</key>
+                <string></string>
+                <key>Identifier</key>
+                <string>kango-ui-button</string>
+                <key>Image</key>
+                <string>icons/button.png</string>
+                <key>Include By Default</key>
+                <true/>
+                <key>Label</key>
+                <string>__name__</string>
+                <key>Popover</key>
+                <string>kango-ui-popup</string>
+                <key>Tool Tip</key>
+                <string>__name__</string>
+            </dict>
+        </array>
+    </dict>
+    <key>Content</key>
+    <dict>
+        <key>Scripts</key>
+        <dict>
+            <key>Start</key>
+            <array>
+                <string>kango/utils.js</string>
+                <string>kango/invoke_async.js</string>
+                <string>kango/storage_sync.js</string>
+                <string>kango/message_target.js</string>
+                <string>includes/content_kango.js</string>
+                <string>includes/content_init.js</string>
+            </array>
+        </dict>
+        <key>Whitelist</key>
+        <array>
+            <string>http://*/*</string>
+            <string>https://*/*</string>
+        </array>
+    </dict>
+    <key>Description</key>
+    <string>__description__</string>
+    <key>ExtensionInfoDictionaryVersion</key>
+    <string>1.0</string>
+    <key>Permissions</key>
+    <dict>
+        <key>Website Access</key>
+        <dict>
+            <key>Include Secure Pages</key>
+            <true/>
+            <key>Level</key>
+            <string>All</string>
+        </dict>
+    </dict>
+    <key>Update Manifest URL</key>
+    <string>__update_url__</string>
+    <key>Website</key>
+    <string>__homepage_url__</string>
+</dict>
+</plist>
