@@ -18,7 +18,7 @@ function save_options() {
   budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
   var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
   categoryActivityPopupWidth = categoryActivityPopupWidthSelect.options[categoryActivityPopupWidthSelect.selectedIndex].value;
-  var moveMoneyDialog = false; // Kevin: Hidden until issue #18 is resolved document.getElementById('moveMoneyDialog').checked;
+  var moveMoneyDialog = document.getElementById('moveMoneyDialog').checked;
   var moveMoneyAutocomplete = document.getElementById('moveMoneyAutocomplete').checked;
   var toggleSplits = document.getElementById('toggleSplits').checked;
   var accountsSelectedTotal = document.getElementById('accountsSelectedTotal').checked;
@@ -79,7 +79,7 @@ function restore_options() {
     budgetRowsHeightSelect.value = items.budgetRowsHeight;
     var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
     categoryActivityPopupWidthSelect.value = items.categoryActivityPopupWidth;
-    // Kevin: Hidden until issue #18 is resolved document.getElementById('moveMoneyDialog').checked = items.moveMoneyDialog;
+    document.getElementById('moveMoneyDialog').checked = items.moveMoneyDialog;
     document.getElementById('moveMoneyAutocomplete').checked = items.moveMoneyAutocomplete;
     document.getElementById('toggleSplits').checked = items.toggleSplits;
     document.getElementById('accountsSelectedTotal').checked = items.accountsSelectedTotal;
