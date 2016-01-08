@@ -17,14 +17,11 @@ function injectScript(path) {
 
 /* Features that are on permanently without configuration options */
 
-// Collapse/Expand Budget Groups
-injectCSS('features/collapse-budget-groups/main.css');
-injectScript('features/collapse-budget-groups/main.js');
-
 // Toggle Splits button
 injectScript('features/toggle-splits/main.js');
 
 chrome.storage.sync.get({
+  collapseExpandBudgetGroups: true,
   colourBlindMode: false,
   hideAOM: false,
   checkCreditBalances: false,
@@ -37,6 +34,11 @@ chrome.storage.sync.get({
   moveMoneyDialog: false,
   moveMoneyAutocomplete: true
 }, function(options) {
+
+  if (options.collapseExpandBudgetGroups) {
+    injectCSS('features/collapse-budget-groups/main.css');
+    injectScript('features/collapse-budget-groups/main.js');
+  }
 
   if (options.colourBlindMode) {
     injectCSS('features/colour-blind-mode/main.css');
