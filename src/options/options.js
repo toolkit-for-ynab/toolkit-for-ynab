@@ -35,7 +35,7 @@ function save_options() {
     categoryActivityPopupWidth: categoryActivityPopupWidth,
     moveMoneyDialog: moveMoneyDialog,
     moveMoneyAutocomplete: moveMoneyAutocomplete,
-    toggleSplits: toggleSplits
+    toggleSplits: toggleSplits,
     accountsSelectedTotal: accountsSelectedTotal
   }, function() {
     // Update status to let user know options were saved.
