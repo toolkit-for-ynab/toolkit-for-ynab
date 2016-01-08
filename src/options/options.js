@@ -69,7 +69,7 @@ function restore_options() {
     budgetRowsHeight: 0,
     moveMoneyAutocomplete: false,
     toggleSplits: false,
-    accountsSelectedTotal: false
+    accountsSelectedTotal: false,
     reconciledTextColor: 0
   }, function(items) {
     document.getElementById('collapseExpandBudgetGroups').checked = items.collapseExpandBudgetGroups;
