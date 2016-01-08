@@ -132,30 +132,30 @@ function ynabEnhancedCollapseInitializer() {
 
   // Handle clicking expand button. Puts things back to original sizes
   function expandMenu(originalSizes) {
-    $(".sidebar > .ember-view").show();
-    $(".sidebar").width(originalSizes.sidebarWidth);
-    $(".content").css("left", originalSizes.contentLeft);
-    $(".budget-header").css("left", originalSizes.headerLeft);
-    $(".budget-content").css("width", originalSizes.contentWidth);
-    $(".budget-inspector").css("width", originalSizes.inspectorWidth);
     $(".collapsed-buttons").hide();
+    $(".sidebar > .ember-view").fadeIn();
+    $(".sidebar").animate({ width: originalSizes.sidebarWidth });
+    $(".content").animate({ left: originalSizes.contentLeft });
+    $(".budget-header").animate({ left: originalSizes.headerLeft });
+    $(".budget-content").animate({ width: originalSizes.contentWidth });
+    $(".budget-inspector").animate({ width: originalSizes.inspectorWidth });
   }
 
   // Handle clicking the collapse button
   function collapseMenu() {
     setActiveButton();
     $(".sidebar > .ember-view").hide();
-    $(".collapsed-buttons").show();
+    $(".collapsed-buttons").fadeIn();
     setCollapsedSizes();
   }
 
   // Set collapsed sizes
   function setCollapsedSizes() {
-    $(".sidebar").width("40px");
-    $(".content").css("left", "40px");
-    $(".budget-header").css("left", "40px");
-    $(".budget-content").css("width", "73%");
-    $(".budget-inspector").css("width", "27%");
+    $(".sidebar").animate({ width: "40px" });
+    $(".content").animate({ left: "40px" });
+    $(".budget-header").animate({ left: "40px" });
+    $(".budget-content").animate({ width: "73%" });
+    $(".budget-inspector").animate({ width: "27%" });
     $(".ynab-grid-header").removeAttr("style");
   }
 
