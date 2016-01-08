@@ -16,6 +16,8 @@ function save_options() {
   var removeZeroCategories = document.getElementById('removeZeroCategories').checked;
   var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
   budgetRowsHeight = budgetRowsHeightSelect.options[budgetRowsHeightSelect.selectedIndex].value;
+  var reconciledTextColorSelect = document.getElementById('reconciledTextColor');
+  reconciledTextColor = reconciledTextColorSelect.options[reconciledTextColorSelect.selectedIndex].value;
   var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
   categoryActivityPopupWidth = categoryActivityPopupWidthSelect.options[categoryActivityPopupWidthSelect.selectedIndex].value;
   var moveMoneyDialog = document.getElementById('moveMoneyDialog').checked;
@@ -32,6 +34,7 @@ function save_options() {
     enableRetroCalculator: enableRetroCalculator,
     removeZeroCategories: removeZeroCategories,
     budgetRowsHeight: budgetRowsHeight,
+    reconciledTextColor: reconciledTextColor,
     categoryActivityPopupWidth: categoryActivityPopupWidth,
     moveMoneyDialog: moveMoneyDialog,
     moveMoneyAutocomplete: moveMoneyAutocomplete,
@@ -67,6 +70,7 @@ function restore_options() {
     moveMoneyAutocomplete: false,
     toggleSplits: false,
     accountsSelectedTotal: false
+    reconciledTextColor: 0
   }, function(items) {
     document.getElementById('collapseExpandBudgetGroups').checked = items.collapseExpandBudgetGroups;
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
@@ -77,6 +81,8 @@ function restore_options() {
     document.getElementById('removeZeroCategories').checked = items.removeZeroCategories;
     var budgetRowsHeightSelect = document.getElementById('budgetRowsHeight');
     budgetRowsHeightSelect.value = items.budgetRowsHeight;
+    var reconciledTextColorSelect = document.getElementById('reconciledTextColor');
+    reconciledTextColorSelect.value = items.reconciledTextColor;
     var categoryActivityPopupWidthSelect = document.getElementById('categoryActivityPopupWidth');
     categoryActivityPopupWidthSelect.value = items.categoryActivityPopupWidth;
     document.getElementById('moveMoneyDialog').checked = items.moveMoneyDialog;
