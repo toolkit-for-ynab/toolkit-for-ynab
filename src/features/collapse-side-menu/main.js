@@ -94,10 +94,10 @@ function ynabEnhancedCollapseInitializer() {
 
     var expandBtns = '\
     <div class=collapsed-buttons> \
-      <a href="#" data-ember-action="'+budgetAction+'" onClick="watchBudgetGrid()"> \
+      <a href="#" data-ember-action="'+budgetAction+'" onClick="ynabEnhancedCollapseInitializer().watchBudgetGrid()"> \
       <button class="button button-prefs flaticon stroke mail-1 collapsed-budget"></button> \
       </a> \
-      <a href="#" data-ember-action="'+accountAction+'" onClick="watchAccountGrid()"> \
+      <a href="#" data-ember-action="'+accountAction+'" onClick="ynabEnhancedCollapseInitializer().watchAccountGrid()"> \
         <button class="button button-prefs flaticon stroke government-1 collapsed-account"></button> \
       </a> \
       <button class="button button-prefs flaticon stroke right-circle-4 navbar-expand"></button> \
@@ -175,6 +175,11 @@ function ynabEnhancedCollapseInitializer() {
     $(".collapsed-account").removeClass('collapsed-active');
     $(".collapsed-budget").removeClass('collapsed-active');
   }
+
+  return {
+        watchBudgetGrid: watchBudgetGrid,
+        watchAccountGrid: watchAccountGrid
+    };
 }
 
 setTimeout(ynabEnhancedCollapseInitializer, 250);
