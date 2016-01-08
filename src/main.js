@@ -20,6 +20,7 @@ function injectScript(path) {
 
 chrome.storage.sync.get({
   collapseExpandBudgetGroups: true,
+  collapseSideMenu: false,
   colourBlindMode: false,
   hideAOM: false,
   checkCreditBalances: false,
@@ -39,6 +40,11 @@ chrome.storage.sync.get({
   if (options.collapseExpandBudgetGroups) {
     injectCSS('features/collapse-budget-groups/main.css');
     injectScript('features/collapse-budget-groups/main.js');
+  }
+
+  if (options.collapseSideMenu) {
+    injectCSS('features/collapse-side-menu/main.css');
+    injectScript('features/collapse-side-menu/main.js');
   }
 
   if (options.colourBlindMode) {
