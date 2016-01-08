@@ -17,8 +17,7 @@ function injectScript(path) {
 
 /* Features that are on permanently without configuration options */
 
-// Toggle Splits button
-injectScript('features/toggle-splits/main.js');
+/* End of features that are on permanently */
 
 chrome.storage.sync.get({
   collapseExpandBudgetGroups: true,
@@ -32,7 +31,8 @@ chrome.storage.sync.get({
   categoryActivityPopupWidth: 0,
   budgetRowsHeight: 0,
   moveMoneyDialog: false,
-  moveMoneyAutocomplete: true
+  moveMoneyAutocomplete: true,
+  toggleSplits: false
 }, function(options) {
 
   if (options.collapseExpandBudgetGroups) {
@@ -85,5 +85,9 @@ chrome.storage.sync.get({
   if (options.moveMoneyAutocomplete) {
     injectCSS('features/move-money-autocomplete/main.css');
     injectScript('features/move-money-autocomplete/main.js');
+  }
+
+  if (options.toggleSplits) {
+    injectScript('features/toggle-splits/main.js');
   }
 });
