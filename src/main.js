@@ -27,6 +27,7 @@ chrome.storage.sync.get({
   enableRetroCalculator: true,
   removeZeroCategories: true,
   budgetRowsHeight: 0,
+  reconciledTextColor: 0,
   categoryActivityPopupWidth: 0,
   budgetRowsHeight: 0,
   moveMoneyDialog: false,
@@ -94,5 +95,22 @@ chrome.storage.sync.get({
   if (options.accountsSelectedTotal) {
     injectCSS('features/accounts-selected-total/main.css');
     injectScript('features/accounts-selected-total/main.js');
+  }
+
+  if (options.reconciledTextColor != 0) {
+    injectScript('features/distinguish-reconciled-transactions/main.js');
+  }
+
+  if (options.reconciledTextColor == 1) {
+    injectCSS('features/distinguish-reconciled-transactions/green.css');
+  }
+  else if (options.reconciledTextColor == 2) {
+    injectCSS('features/distinguish-reconciled-transactions/lightgray.css');
+  }
+  else if (options.reconciledTextColor == 3) {
+    injectCSS('features/distinguish-reconciled-transactions/darkgray.css');
+  }
+  else if (options.reconciledTextColor == 4) {
+    injectCSS('features/distinguish-reconciled-transactions/chance.css');
   }
 });
