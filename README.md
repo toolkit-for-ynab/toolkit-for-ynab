@@ -22,8 +22,9 @@ This is what the extension can do for you:
 - Search for target category when moving money with an autocomplete you can type into.
 - Add a button to collapse and expand all budget rows at the top of the budget screen.
 - Show a total of the selected transactions in the account view.
+- Make the Move money dialog larger to make more of it fit on the screen at once.
 
-All of these are configurable with options in the extension options page. (except the splits button and expand/collapse budget rows button, we assume you want that, please tell us if we're wrong!)
+All of these are configurable with options in the extension options page.
 
 Roadmap
 -------
@@ -33,3 +34,11 @@ Features under consideration and the general status of the project is on [our Tr
 If you want to contribute, it's best if you can let us know so we don't double up on effort. You can see what is being worked on and by whom on the roadmap.
 
 *NOTE:* This extension is not affiliated with YNAB in any way and YNAB has not endorsed this at all. You Need a Budget and YNAB are registered trademarks of Steine LLC and/or one of its subsidiaries.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
