@@ -17,7 +17,6 @@ function injectScript(path) {
 
 /* Features that are on permanently without configuration options */
 
-/* End of features that are on permanently */
 
 chrome.storage.sync.get({
   collapseExpandBudgetGroups: true,
@@ -32,7 +31,8 @@ chrome.storage.sync.get({
   budgetRowsHeight: 0,
   moveMoneyDialog: false,
   moveMoneyAutocomplete: true,
-  toggleSplits: false
+  toggleSplits: false,
+  accountsSelectedTotal: false
 }, function(options) {
 
   if (options.collapseExpandBudgetGroups) {
@@ -89,5 +89,10 @@ chrome.storage.sync.get({
 
   if (options.toggleSplits) {
     injectScript('features/toggle-splits/main.js');
+  }
+
+  if (options.accountsSelectedTotal) {
+    injectCSS('features/accounts-selected-total/main.css');
+    injectScript('features/accounts-selected-total/main.js');
   }
 });

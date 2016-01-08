@@ -20,6 +20,8 @@
     "chrome_style": true
   },
   "web_accessible_resources": [
+    "features/accounts-selected-total/main.css",
+    "features/accounts-selected-total/main.js",
     "features/budget-rows-height/compact.css",
     "features/budget-rows-height/slim.css",
     "features/collapse-budget-groups/main.css",
