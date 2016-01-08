@@ -30,7 +30,7 @@
     border-top-right-radius: 0;
 }
 
-.ynab-select-label.override {
+.ynab-select-label.autocomplete-override {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     background: #fff;
