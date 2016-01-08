@@ -8,6 +8,7 @@
 
 function save_options() {
   var collapseExpandBudgetGroups = document.getElementById('collapseExpandBudgetGroups').checked;
+  var collapseSideMenu = document.getElementById('collapseSideMenu').checked;
   var colourBlindMode = document.getElementById('colourBlindMode').checked;
   var hideAOM = document.getElementById('hideAOM').checked;
   var checkCreditBalances = document.getElementById('checkCreditBalances').checked;
@@ -27,6 +28,7 @@ function save_options() {
 
   chrome.storage.sync.set({
     collapseExpandBudgetGroups: collapseExpandBudgetGroups,
+    collapseSideMenu: collapseSideMenu,
     colourBlindMode: colourBlindMode,
     hideAOM: hideAOM,
     checkCreditBalances: checkCreditBalances,
@@ -57,6 +59,7 @@ function restore_options() {
 
   chrome.storage.sync.get({
     collapseExpandBudgetGroups: true,
+    collapseSideMenu: false,
     colourBlindMode: false,
     hideAOM: false,
     checkCreditBalances: false,
@@ -73,6 +76,7 @@ function restore_options() {
     reconciledTextColor: 0
   }, function(items) {
     document.getElementById('collapseExpandBudgetGroups').checked = items.collapseExpandBudgetGroups;
+    document.getElementById('collapseSideMenu').checked = items.collapseSideMenu;
     document.getElementById('colourBlindMode').checked = items.colourBlindMode;
     document.getElementById('hideAOM').checked = items.hideAOM;
     document.getElementById('checkCreditBalances').checked = items.checkCreditBalances;
