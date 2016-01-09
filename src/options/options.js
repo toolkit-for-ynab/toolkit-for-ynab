@@ -25,7 +25,9 @@ function save_options() {
   var moveMoneyAutocomplete = document.getElementById('moveMoneyAutocomplete').checked;
   var toggleSplits = document.getElementById('toggleSplits').checked;
   var accountsSelectedTotal = document.getElementById('accountsSelectedTotal').checked;
-
+  var accountsDisplayDensitySelect = document.getElementById('accountsDisplayDensity');
+  accountsDisplayDensity = accountsDisplayDensitySelect.options[accountsDisplayDensitySelect.selectedIndex].value;
+  
   chrome.storage.sync.set({
     collapseExpandBudgetGroups: collapseExpandBudgetGroups,
     collapseSideMenu: collapseSideMenu,
@@ -41,7 +43,8 @@ function save_options() {
     moveMoneyDialog: moveMoneyDialog,
     moveMoneyAutocomplete: moveMoneyAutocomplete,
     toggleSplits: toggleSplits,
-    accountsSelectedTotal: accountsSelectedTotal
+    accountsSelectedTotal: accountsSelectedTotal,
+    accountsDisplayDensity: accountsDisplayDensity
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -73,7 +76,8 @@ function restore_options() {
     moveMoneyAutocomplete: false,
     toggleSplits: false,
     accountsSelectedTotal: false,
-    reconciledTextColor: 0
+    reconciledTextColor: 0,
+    accountsDisplayDensity: 0
   }, function(items) {
     document.getElementById('collapseExpandBudgetGroups').checked = items.collapseExpandBudgetGroups;
     document.getElementById('collapseSideMenu').checked = items.collapseSideMenu;
@@ -93,6 +97,8 @@ function restore_options() {
     document.getElementById('moveMoneyAutocomplete').checked = items.moveMoneyAutocomplete;
     document.getElementById('toggleSplits').checked = items.toggleSplits;
     document.getElementById('accountsSelectedTotal').checked = items.accountsSelectedTotal;
+    var accountsDisplayDensitySelect = document.getElementById('accountsDisplayDensity');
+    accountsDisplayDensitySelect.value = items.accountsDisplayDensity;
   });
 }
 

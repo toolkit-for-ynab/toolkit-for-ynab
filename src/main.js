@@ -34,7 +34,8 @@ chrome.storage.sync.get({
   moveMoneyDialog: false,
   moveMoneyAutocomplete: true,
   toggleSplits: false,
-  accountsSelectedTotal: false
+  accountsSelectedTotal: false,
+  accountsDisplayDensity: 0,
 }, function(options) {
 
   if (options.collapseExpandBudgetGroups) {
@@ -118,5 +119,12 @@ chrome.storage.sync.get({
   }
   else if (options.reconciledTextColor == 4) {
     injectCSS('features/distinguish-reconciled-transactions/chance.css');
+  }
+  
+  if (options.accountsDisplayDensity == 1) {
+    injectCSS('features/accounts-display-density/compact.css');
+  }
+  else if (options.accountsDisplayDensity == 2) {
+    injectCSS('features/accounts-display-density/slim.css');
   }
 });

@@ -44,6 +44,8 @@
     "features/toggle-splits/main.js",
     "features/move-money-autocomplete/main.css",
     "features/move-money-autocomplete/main.js",
-    "features/ynab-4-calculator/main.js"
+    "features/ynab-4-calculator/main.js",
+    "features/accounts-display-density/slim.css",
+    "features/accounts-display-density/compact.css"
   ]
 }
