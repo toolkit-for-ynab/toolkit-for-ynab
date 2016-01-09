@@ -24,6 +24,7 @@ This is what the extension can do for you:
 - Add a button to collapse and expand all budget rows at the top of the budget screen.
 - Show a total of the selected transactions in the account view.
 - Make the Move money dialog larger to make more of it fit on the screen at once.
+- Add a setting to make enter just save the transaction when adding transactions.
 
 All of these are configurable with options in the extension options page.
 

@@ -34,7 +34,8 @@ chrome.storage.sync.get({
   moveMoneyDialog: false,
   moveMoneyAutocomplete: true,
   toggleSplits: false,
-  accountsSelectedTotal: false
+  accountsSelectedTotal: false,
+  changeEnterBehavior: false
 }, function(options) {
 
   if (options.collapseExpandBudgetGroups) {
@@ -118,5 +119,9 @@ chrome.storage.sync.get({
   }
   else if (options.reconciledTextColor == 4) {
     injectCSS('features/distinguish-reconciled-transactions/chance.css');
+  }
+
+  if (options.changeEnterBehavior) {
+    injectScript('features/change-enter-behavior/main.js');
   }
 });
