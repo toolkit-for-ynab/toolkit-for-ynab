@@ -39,6 +39,8 @@
     "features/distinguish-reconciled-transactions/darkgray.css",
     "features/distinguish-reconciled-transactions/green.css",
     "features/distinguish-reconciled-transactions/chance.css",
+    "features/edit-button-position/hidden.css",
+    "features/edit-button-position/left.css",
     "features/move-money-dialog/main.css",
     "features/remove-zero-categories/main.js",
     "features/toggle-splits/main.js",
