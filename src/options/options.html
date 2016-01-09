@@ -7,6 +7,10 @@
 
 <body>
   <div class="option">
+    <label><input type="checkbox" id="collapseSideMenu" name="collapseSideMenu">Collapsible Side Menu</label>
+  </div>
+
+  <div class="option">
     <label><input type="checkbox" id="colourBlindMode" name="colourBlindMode">Colour Blind Mode</label>
   </div>
 
@@ -16,6 +20,10 @@
 
   <div class="option">
     <label title="Ensure all negative balances are highlighted red instead of yellow, even with credit card spending."><input type="checkbox" id="highlightNegativesNegative" name="highlightNegativesNegative">Highlight all negative category balances red</label>
+  </div>
+
+  <div class="option">
+    <label><input type="checkbox" id="collapseExpandBudgetGroups" name="collapseExpandBudgetGroups">Expand/Collapse Budget Groups</label>
   </div>
 
   <div class="option">
@@ -30,20 +38,27 @@
     <label><input type="checkbox" id="removeZeroCategories" name="removeZeroCategories">Remove zero categories when cover overbudgeting</label>
   </div>
 
-<!-- Kevin: Hidden until issue #18 is resolved
   <div class="option">
     <label><input type="checkbox" id="moveMoneyDialog" name="moveMoneyDialog">Make the Move money dialog larger</label>
   </div>
--->
+
   <div class="option">
     <label><input type="checkbox" id="moveMoneyAutocomplete" name="moveMoneyAutocomplete">Enable autocomplete for the Move money dialog</label>
+  </div>
+
+  <div class="option">
+    <label><input type="checkbox" id="toggleSplits" name="toggleSplits">Enable visibility toggling of split transactions</label>
+  </div>
+
+  <div class="option">
+    <label><input type="checkbox" id="accountsSelectedTotal" name="accountsSelectedTotal">Show the total of selected transactions in the account view</label>
   </div>
 
   <div class="option">
     <label>
         Height of budget rows
         <select name="budgetRowsHeight" id="budgetRowsHeight">
-            <option value="0">Normal</option>
+            <option value="0">Default</option>
             <option value="1">Compact</option>
             <option value="2">Slim</option>
         </select>
@@ -54,9 +69,22 @@
     <label>
         Width of category popup
         <select name="categoryActivityPopupWidth" id="categoryActivityPopupWidth">
-            <option value="0">Normal</option>
+            <option value="0">Default</option>
             <option value="1">Medium</option>
             <option value="2">Large</option>
+        </select>
+    </label>
+  </div>
+
+  <div class="option">
+    <label>
+        Reconciled text color
+        <select name="reconciledTextColor" id="reconciledTextColor">
+            <option value="0">Default</option>
+            <option value="1" style="color: #00661d">Green</option>
+            <option value="2" style="color: #cfd5d7">Light Gray</option>
+            <option value="3" style="color: #8e9fb0">Dark Gray</option>
+            <option value="4" style="color: #8e9fb0; background-color: #e7faeb">Any chance</option>
         </select>
     </label>
   </div>

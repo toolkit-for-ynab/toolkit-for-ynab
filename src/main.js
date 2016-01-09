@@ -17,14 +17,10 @@ function injectScript(path) {
 
 /* Features that are on permanently without configuration options */
 
-// Collapse/Expand Budget Groups
-injectCSS('features/collapse-budget-groups/main.css');
-injectScript('features/collapse-budget-groups/main.js');
-
-// Toggle Splits button
-injectScript('features/toggle-splits/main.js');
 
 chrome.storage.sync.get({
+  collapseExpandBudgetGroups: true,
+  collapseSideMenu: false,
   colourBlindMode: false,
   hideAOM: false,
   checkCreditBalances: false,
@@ -32,11 +28,24 @@ chrome.storage.sync.get({
   enableRetroCalculator: true,
   removeZeroCategories: true,
   budgetRowsHeight: 0,
+  reconciledTextColor: 0,
   categoryActivityPopupWidth: 0,
   budgetRowsHeight: 0,
   moveMoneyDialog: false,
-  moveMoneyAutocomplete: true
+  moveMoneyAutocomplete: true,
+  toggleSplits: false,
+  accountsSelectedTotal: false
 }, function(options) {
+
+  if (options.collapseExpandBudgetGroups) {
+    injectCSS('features/collapse-budget-groups/main.css');
+    injectScript('features/collapse-budget-groups/main.js');
+  }
+
+  if (options.collapseSideMenu) {
+    injectCSS('features/collapse-side-menu/main.css');
+    injectScript('features/collapse-side-menu/main.js');
+  }
 
   if (options.colourBlindMode) {
     injectCSS('features/colour-blind-mode/main.css');
@@ -83,5 +92,31 @@ chrome.storage.sync.get({
   if (options.moveMoneyAutocomplete) {
     injectCSS('features/move-money-autocomplete/main.css');
     injectScript('features/move-money-autocomplete/main.js');
+  }
+
+  if (options.toggleSplits) {
+    injectScript('features/toggle-splits/main.js');
+  }
+
+  if (options.accountsSelectedTotal) {
+    injectCSS('features/accounts-selected-total/main.css');
+    injectScript('features/accounts-selected-total/main.js');
+  }
+
+  if (options.reconciledTextColor != 0) {
+    injectScript('features/distinguish-reconciled-transactions/main.js');
+  }
+
+  if (options.reconciledTextColor == 1) {
+    injectCSS('features/distinguish-reconciled-transactions/green.css');
+  }
+  else if (options.reconciledTextColor == 2) {
+    injectCSS('features/distinguish-reconciled-transactions/lightgray.css');
+  }
+  else if (options.reconciledTextColor == 3) {
+    injectCSS('features/distinguish-reconciled-transactions/darkgray.css');
+  }
+  else if (options.reconciledTextColor == 4) {
+    injectCSS('features/distinguish-reconciled-transactions/chance.css');
   }
 });

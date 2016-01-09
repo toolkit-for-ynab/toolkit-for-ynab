@@ -1,4 +1,5 @@
 var originalentries = null;
+
 function ynabEnhancedAutocomplete() {
     var prevTxt = null;
     var input = document.createElement("input");
@@ -9,7 +10,7 @@ function ynabEnhancedAutocomplete() {
     input.title = "Search for a category";
     var dropdown = document.getElementsByClassName("options-shown")[0];
     var selectLabel = document.getElementsByClassName("ynab-select-label")[0];
-    selectLabel.className = selectLabel.className + " override";
+    selectLabel.className = selectLabel.className + " autocomplete-override";
     var list = document.getElementsByClassName("ynab-select-options");
     var options = document.getElementsByClassName("is-selectable");
     o = options.length;
@@ -23,9 +24,9 @@ function ynabEnhancedAutocomplete() {
             } else if (e.keyCode == 38 && e.target.previousElementSibling != null) {
                 e.target.previousElementSibling.focus();
             } else if (e.keyCode == 13) {
-                e.target.click();
                 e.stopPropagation();
                 e.preventDefault();
+                e.target.click();
             }
         }
     }
@@ -51,14 +52,23 @@ function ynabEnhancedAutocomplete() {
         txt[0].onkeydown = function(event) {
             var e = event || window.event;
             if (e.keyCode == 13) {
-                document.getElementsByClassName("is-selectable")[0].click();
                 e.stopPropagation();
                 e.preventDefault();
+                document.getElementsByClassName("is-selectable")[0].click();
+                document.getElementsByClassName('modal-budget-move-money')[0].getElementsByClassName('button-primary')[0].click();
             }
             return true;
         }
     }
     setTimeout(ynabEnhancedAutocompleteRemoved, 250);
+}
+
+function ynabEnhancedAutocompleteFocus() {
+    var selectLabel = document.getElementsByClassName("ynab-select")[0];
+    selectLabel.className += " autocomplete-focus";
+    selectLabel.onfocus = function(event) {
+        event.target.click();
+    }
 }
 
 function ynabEnhancedAutocompleteHandleKeyPress(oldVal, newVal) {
@@ -108,8 +118,12 @@ function ynabEnhancedAutocompleteHandleKeyPress(oldVal, newVal) {
 
 function ynabEnhancedAutocompleteInit() {
     var dialog = document.getElementsByClassName('ynab-select-options');
-    n = dialog.length;
-    if (n > 0) {
+    var label = document.getElementsByClassName('ynab-select-label');
+    var focus = document.getElementsByClassName('autocomplete-focus');
+    if (label.length > 0 && focus.length == 0) {
+        ynabEnhancedAutocompleteFocus();
+    }
+    if (dialog.length > 0) {
         ynabEnhancedAutocomplete();
     } else {
         setTimeout(ynabEnhancedAutocompleteInit, 250);
@@ -118,8 +132,7 @@ function ynabEnhancedAutocompleteInit() {
 
 function ynabEnhancedAutocompleteRemoved() {
     var autocomplete = document.getElementsByClassName('autocomplete-move-money');
-    n = autocomplete.length;
-    if (n == 0) {
+    if (autocomplete.length == 0) {
         var selectLabel = document.getElementsByClassName("ynab-select-label")[0];
         if (selectLabel != undefined) {
             selectLabel.className = "ynab-select-label";
@@ -132,20 +145,6 @@ function ynabEnhancedAutocompleteRemoved() {
 
 function ynabEnhancedAutocompleteSelectOption(target) {
     target.click();
-    // document.getElementsByClassName("ynab-select-label")[0].innerHTML = "\n\t " + target.innerHTML.trim() + '<i id="ember7355" class="ember-view flaticon stroke down-1">';
-    // document.getElementsByClassName("ynab-select-label")[0].className = "ynab-select-label";
-    // document.getElementsByClassName("ynab-select-options")[0].remove();
-    // document.getElementById("autocomplete-move-money").remove();
-    // document.getElementById("autocomplete-label").remove();
-    // var selectClasses = document.getElementsByClassName("ynab-select")[0].classList;
-    // s = selectClasses.length;
-    // var newClasses;
-    // for (var ii = 0; ii < s; ii++) {
-    //     if (selectClasses[ii] != 'options-shown') {
-    //         newClasses += selectClasses[ii] + " ";
-    //     }
-    // }
-    // document.getElementsByClassName("ynab-select")[0].className = newClasses.trim();
 }
 
 setTimeout(ynabEnhancedAutocompleteInit, 250);
