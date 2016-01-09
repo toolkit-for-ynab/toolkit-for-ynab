@@ -5,7 +5,7 @@ function ynabEnhancedSelectedTotals() {
     totals.id = "accounts-selected-total";
     var label = document.createElement("div");
     label.className = "accounts-header-balances-label";
-    label.innerText = "Selected transactions total"
+    label.innerText = "Selected Transactions Total"
     totals.appendChild(label);
     parent.appendChild(totals);
     ynabEnhancedSelectedTotalsPoll();
