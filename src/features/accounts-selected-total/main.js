@@ -22,6 +22,7 @@ function ynabEnhancedSelectedTotalsCalculate() {
     } else {
         transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
     }
+    transactions = transactions.filter((el) => el.displayItemType != "subTransaction");
     for (var i = 0; i < transactions.length; i++) {
         if (transactions[i].isChecked) {
             inflows += transactions[i].inflow;
