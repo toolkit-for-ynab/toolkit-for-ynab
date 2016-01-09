@@ -10,7 +10,7 @@
 			};
 		})(jQuery);
 
-		DEBUG = true;
+		DEBUG = false;
 
 		TransactionAmountTypes = {
 			INFLOW: 0,
