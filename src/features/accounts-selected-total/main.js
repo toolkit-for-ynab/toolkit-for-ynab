@@ -50,10 +50,11 @@ function ynabEnhancedSelectedTotalsUpdate(total) {
     for (var i = 0; i < spans.length; i++) {
         spans[i].remove();
     }
-    var totalFormatted = ynabEnhancedFormatCurrency(total);
+    var totalFormatted = ynabEnhancedFormatCurrency(total, true);
+    var totalFormattedNoHtml = ynabEnhancedFormatCurrency(total, false);
     var userData = document.createElement("span");
     userData.className = "user-data";
-    userData.title = totalFormatted;
+    userData.title = totalFormattedNoHtml;
     var userCurrency = document.createElement("span");
     userCurrency.className = "user-data currency";
     if (total > 0) {
@@ -66,12 +67,14 @@ function ynabEnhancedSelectedTotalsUpdate(total) {
     parent.appendChild(userData);
 }
 
-function ynabEnhancedFormatCurrency(e) {
+function ynabEnhancedFormatCurrency(e, html) {
     var n, r, a;
     e = ynab.formatCurrency(e);
     n = ynab.YNABSharedLib.currencyFormatter.getCurrency();
     a = Ember.Handlebars.Utils.escapeExpression(n.currency_symbol);
-    a = "<bdi>" + a + "</bdi>";
+    if (html) {
+        a = "<bdi>" + a + "</bdi>";
+    }
     n.symbol_first ? (r = "-" === e.charAt(0), e = r ? "-" + a + e.slice(1) : a + e) : e += a;
     return new Ember.Handlebars.SafeString(e);
 }
