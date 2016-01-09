@@ -1,40 +1,41 @@
 function injectCSS(path) {
-	var link = document.createElement('link');
-	link.setAttribute('rel', 'stylesheet');
-	link.setAttribute('type', 'text/css');
-	link.setAttribute('href', chrome.extension.getURL(path));
+  var link = document.createElement('link');
+  link.setAttribute('rel', 'stylesheet');
+  link.setAttribute('type', 'text/css');
+  link.setAttribute('href', chrome.extension.getURL(path));
 
-	document.getElementsByTagName('head')[0].appendChild(link);
+  document.getElementsByTagName('head')[0].appendChild(link);
 }
 
 function injectScript(path) {
-	var script = document.createElement('script');
-	script.setAttribute('type', 'text/javascript');
-	script.setAttribute('src', chrome.extension.getURL(path));
+  var script = document.createElement('script');
+  script.setAttribute('type', 'text/javascript');
+  script.setAttribute('src', chrome.extension.getURL(path));
 
-	document.getElementsByTagName('body')[0].appendChild(script);
+  document.getElementsByTagName('body')[0].appendChild(script);
 }
 
 /* Features that are on permanently without configuration options */
 
 
 chrome.storage.sync.get({
-  accountsSelectedTotal: false
-  budgetRowsHeight: 0,
-  categoryActivityPopupWidth: 0,
-  checkCreditBalances: false,
   collapseExpandBudgetGroups: true,
   collapseSideMenu: false,
   colourBlindMode: false,
-  enableRetroCalculator: true,
   hideAOM: false,
+  checkCreditBalances: false,
   highlightNegativesNegative: false,
-  moveMoneyAutocomplete: true,
-  moveMoneyDialog: false,
-  reconciledTextColor: 0,
+  enableRetroCalculator: true,
   removeZeroCategories: true,
+  budgetRowsHeight: 0,
+  reconciledTextColor: 0,
+  categoryActivityPopupWidth: 0,
+  budgetRowsHeight: 0,
+  moveMoneyDialog: false,
+  moveMoneyAutocomplete: true,
   toggleSplits: false,
-  transferJump: true
+  accountsSelectedTotal: false,
+  transferJump: false
 }, function(options) {
 
   if (options.collapseExpandBudgetGroups) {
@@ -98,11 +99,6 @@ chrome.storage.sync.get({
     injectScript('features/toggle-splits/main.js');
   }
 
-  if (options.transferJump) {
-    injectScript('features/transfer-jump/main.js');
-    injectCSS('features/transfer-jump/main.css');
-  }
-
   if (options.accountsSelectedTotal) {
     injectCSS('features/accounts-selected-total/main.css');
     injectScript('features/accounts-selected-total/main.js');
@@ -123,5 +119,10 @@ chrome.storage.sync.get({
   }
   else if (options.reconciledTextColor == 4) {
     injectCSS('features/distinguish-reconciled-transactions/chance.css');
+  }
+
+  if (options.transferJump) {
+    injectCSS('features/transfer-jump/main.css');
+    injectScript('features/transfer-jump/main.js');
   }
 });
