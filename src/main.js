@@ -17,7 +17,6 @@ function injectScript(path) {
 
 /* Features that are on permanently without configuration options */
 
-
 chrome.storage.sync.get({
   collapseExpandBudgetGroups: true,
   collapseSideMenu: false,
