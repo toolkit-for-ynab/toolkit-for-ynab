@@ -152,13 +152,11 @@ function ynabEnhancedCollapseInitializer() {
   // Set collapsed sizes
   function setCollapsedSizes() {
     $(".sidebar").animate({ width: "40px" });
-    $(".content").animate({ left: "40px" }, 400, 'swing', function() {
-      // Need to remove width after animation completion
-      $(".ynab-grid-header").removeAttr("style");
-    });
+    $(".content").animate({ left: "40px" });
     $(".budget-header").animate({ left: "40px" });
     $(".budget-content").animate({ width: "73%" });
     $(".budget-inspector").animate({ width: "27%" });
+    $(".ynab-grid-header").removeAttr("style");
   }
 
   // Add the active style to correct button
