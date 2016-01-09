@@ -119,7 +119,7 @@
 			transfer_cells.each(function() {
 				var _this = $(this);
 				var id = _this.parent().attr('id') + '_jump';
-				var jump_icon = '<button id="' + id + '" class="transfer-jump"><i class="ember-view flaticon stroke left"><span>Jump</span></i></button>';
+				var jump_icon = '<button id="' + id + '" class="transfer-jump"><span>&#8646;</span></button>';
 
 				if (!$('button#' + id).length) {
 					_this.prepend(jump_icon);
