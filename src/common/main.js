@@ -8,7 +8,7 @@ function injectCSS(path) {
   var link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
   link.setAttribute('type', 'text/css');
-  link.setAttribute('href', chrome.extension.getURL(path));
+  link.setAttribute('href', kango.io.getResourceUrl(path));
 
   document.getElementsByTagName('head')[0].appendChild(link);
 }
@@ -16,7 +16,7 @@ function injectCSS(path) {
 function injectScript(path) {
   var script = document.createElement('script');
   script.setAttribute('type', 'text/javascript');
-  script.setAttribute('src', chrome.extension.getURL(path));
+  script.setAttribute('src', kango.io.getResourceUrl(path));
 
   document.getElementsByTagName('body')[0].appendChild(script);
 }
@@ -45,79 +45,79 @@ if (kango.storage.getItem('collapseExpandBudgetGroups')) {
 }
 
 if (kango.storage.getItem('collapseSideMenu')) {
-  injectCSS('features/collapse-side-menu/main.css');
-  injectScript('features/collapse-side-menu/main.js');
+  injectCSS('res/features/collapse-side-menu/main.css');
+  injectScript('res/features/collapse-side-menu/main.js');
 }
 
 if (kango.storage.getItem('colourBlindMode')) {
-  injectCSS('features/colour-blind-mode/main.css');
+  injectCSS('res/features/colour-blind-mode/main.css');
 }
 
 if (kango.storage.getItem('hideAOM')) {
-  injectCSS('features/hide-age-of-money/main.css');
+  injectCSS('res/features/hide-age-of-money/main.css');
 }
 
 if (kango.storage.getItem('highlightNegativesNegative')) {
-  injectScript('features/highlight-negatives-negative/main.js');
+  injectScript('res/features/highlight-negatives-negative/main.js');
 }
 
 if (kango.storage.getItem('checkCreditBalances')) {
-  injectScript('features/check-credit-balances/main.js');
+  injectScript('res/features/check-credit-balances/main.js');
 }
 
 if (kango.storage.getItem('enableRetroCalculator')) {
-  injectScript('features/ynab-4-calculator/main.js');
+  injectScript('res/features/ynab-4-calculator/main.js');
 }
 
 if (kango.storage.getItem('removeZeroCategories')) {
-  injectScript('features/remove-zero-categories/main.js');
+  injectScript('res/features/remove-zero-categories/main.js');
 }
 
 if (kango.storage.getItem('budgetRowsHeight') == 1) {
-  injectCSS('features/budget-rows-height/compact.css');
+  injectCSS('res/features/budget-rows-height/compact.css');
 }
 else if (kango.storage.getItem('budgetRowsHeight') == 2) {
-  injectCSS('features/budget-rows-height/slim.css');
+  injectCSS('res/features/budget-rows-height/slim.css');
 }
 
 if (kango.storage.getItem('categoryActivityPopupWidth') == 1) {
-  injectCSS('features/category-activity-popup-width/medium.css');
+  injectCSS('res/features/category-activity-popup-width/medium.css');
 }
 else if (kango.storage.getItem('categoryActivityPopupWidth') == 2) {
-  injectCSS('features/category-activity-popup-width/large.css');
+  injectCSS('res/features/category-activity-popup-width/large.css');
 }
 
 if (kango.storage.getItem('moveMoneyDialog')) {
-  injectCSS('features/move-money-dialog/main.css');
+  injectCSS('res/features/move-money-dialog/main.css');
 }
 
 if (kango.storage.getItem('moveMoneyAutocomplete')) {
-  injectCSS('features/move-money-autocomplete/main.css');
-  injectScript('features/move-money-autocomplete/main.js');
+  injectCSS('res/features/move-money-autocomplete/main.css');
+  injectScript('res/features/move-money-autocomplete/main.js');
 }
 
 if (kango.storage.getItem('toggleSplits')) {
-  injectScript('features/toggle-splits/main.js');
+  injectScript('res/features/toggle-splits/main.js');
 }
 
 if (kango.storage.getItem('accountsSelectedTotal')) {
-  injectCSS('features/accounts-selected-total/main.css');
-  injectScript('features/accounts-selected-total/main.js');
+  injectCSS('res/features/accounts-selected-total/main.css');
+  injectScript('res/features/accounts-selected-total/main.js');
 }
 
 if (kango.storage.getItem('reconciledTextColor') != 0) {
-  injectScript('features/distinguish-reconciled-transactions/main.js');
+  injectScript('res/features/distinguish-reconciled-transactions/main.js');
 }
 
 if (kango.storage.getItem('reconciledTextColor') == 1) {
-  injectCSS('features/distinguish-reconciled-transactions/green.css');
+  injectCSS('res/features/distinguish-reconciled-transactions/green.css');
 }
 else if (kango.storage.getItem('reconciledTextColor') == 2) {
-  injectCSS('features/distinguish-reconciled-transactions/lightgray.css');
+  injectCSS('res/features/distinguish-reconciled-transactions/lightgray.css');
 }
 else if (kango.storage.getItem('reconciledTextColor') == 3) {
-  injectCSS('features/distinguish-reconciled-transactions/darkgray.css');
+  injectCSS('res/features/distinguish-reconciled-transactions/darkgray.css');
 }
 else if (kango.storage.getItem('reconciledTextColor') == 4) {
-  injectCSS('features/distinguish-reconciled-transactions/chance.css');
+  injectCSS('res/features/distinguish-reconciled-transactions/chance.css');
 }
