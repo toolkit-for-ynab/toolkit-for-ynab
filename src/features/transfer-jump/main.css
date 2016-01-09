@@ -4,3 +4,8 @@ button.transfer-jump {
   position: relative;
   z-index: 1000;
 }
+
+button.transfer-jump span {
+  position: relative;
+  top: 1px;
+}
