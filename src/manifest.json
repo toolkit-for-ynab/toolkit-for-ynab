@@ -42,6 +42,8 @@
     "features/move-money-dialog/main.css",
     "features/remove-zero-categories/main.js",
     "features/toggle-splits/main.js",
+    "features/transfer-jump/main.css",
+    "features/transfer-jump/main.js",
     "features/move-money-autocomplete/main.css",
     "features/move-money-autocomplete/main.js",
     "features/ynab-4-calculator/main.js"

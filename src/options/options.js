@@ -25,6 +25,7 @@ function save_options() {
   var moveMoneyAutocomplete = document.getElementById('moveMoneyAutocomplete').checked;
   var toggleSplits = document.getElementById('toggleSplits').checked;
   var accountsSelectedTotal = document.getElementById('accountsSelectedTotal').checked;
+  var transferJump = document.getElementById('transferJump').checked;
 
   chrome.storage.sync.set({
     collapseExpandBudgetGroups: collapseExpandBudgetGroups,
@@ -42,6 +43,7 @@ function save_options() {
     moveMoneyAutocomplete: moveMoneyAutocomplete,
     toggleSplits: toggleSplits,
     accountsSelectedTotal: accountsSelectedTotal
+    transferJump: transferJump
   }, function() {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -74,6 +76,7 @@ function restore_options() {
     toggleSplits: false,
     accountsSelectedTotal: false,
     reconciledTextColor: 0
+    transferJump: false
   }, function(items) {
     document.getElementById('collapseExpandBudgetGroups').checked = items.collapseExpandBudgetGroups;
     document.getElementById('collapseSideMenu').checked = items.collapseSideMenu;
@@ -93,6 +96,7 @@ function restore_options() {
     document.getElementById('moveMoneyAutocomplete').checked = items.moveMoneyAutocomplete;
     document.getElementById('toggleSplits').checked = items.toggleSplits;
     document.getElementById('accountsSelectedTotal').checked = items.accountsSelectedTotal;
+    document.getElementById('transferJump').checked = items.transferJump;
   });
 }
 

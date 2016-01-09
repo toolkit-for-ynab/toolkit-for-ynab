@@ -19,22 +19,22 @@ function injectScript(path) {
 
 
 chrome.storage.sync.get({
+  accountsSelectedTotal: false
+  budgetRowsHeight: 0,
+  categoryActivityPopupWidth: 0,
+  checkCreditBalances: false,
   collapseExpandBudgetGroups: true,
   collapseSideMenu: false,
   colourBlindMode: false,
-  hideAOM: false,
-  checkCreditBalances: false,
-  highlightNegativesNegative: false,
   enableRetroCalculator: true,
-  removeZeroCategories: true,
-  budgetRowsHeight: 0,
-  reconciledTextColor: 0,
-  categoryActivityPopupWidth: 0,
-  budgetRowsHeight: 0,
-  moveMoneyDialog: false,
+  hideAOM: false,
+  highlightNegativesNegative: false,
   moveMoneyAutocomplete: true,
+  moveMoneyDialog: false,
+  reconciledTextColor: 0,
+  removeZeroCategories: true,
   toggleSplits: false,
-  accountsSelectedTotal: false
+  transferJump: true
 }, function(options) {
 
   if (options.collapseExpandBudgetGroups) {
@@ -98,6 +98,11 @@ chrome.storage.sync.get({
     injectScript('features/toggle-splits/main.js');
   }
 
+  if (options.transferJump) {
+    injectScript('features/transfer-jump/main.js');
+    injectCSS('features/transfer-jump/main.css');
+  }
+
   if (options.accountsSelectedTotal) {
     injectCSS('features/accounts-selected-total/main.css');
     injectScript('features/accounts-selected-total/main.js');
@@ -118,5 +123,4 @@ chrome.storage.sync.get({
   }
   else if (options.reconciledTextColor == 4) {
     injectCSS('features/distinguish-reconciled-transactions/chance.css');
-  }
 });
