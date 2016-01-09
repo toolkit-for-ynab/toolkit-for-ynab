@@ -38,7 +38,8 @@ Building the Code
 -----------------
 This extension uses Kango Extensions to provide cross browser support. To build:
 
-**Mac / Linux:**
+**Mac / Linux**
+
 1. Clone the repository
 1. Install Python 2.7 (or newer, but I haven't tested that) in your path so it's accessible with just plain ```python``` if you don't have it already.
 1. Run ```./build``` from within the folder you cloned above.
@@ -46,6 +47,7 @@ This extension uses Kango Extensions to provide cross browser support. To build:
 1. Load it into Chrome as an unpacked extension, or load it into Firefox via the .xpi file.
 
 **Windows**
+
 I don't currently have a windows machine to test on, but in general you'd just want to create a ```build.bat``` or ```build.cmd``` file that does what the ```build``` file already does on POSIX systems. Should work fine. Pull requests are welcome for windows support.
 
 Development Methodology
@@ -55,9 +57,10 @@ Development Methodology
 The primary concern for this extension from a development perspective is making it **easy** to work on. Every single one of those technologies above are awesome. I use a lot of them all the time at work. They do make your life easier, but unfortunately they add massively to the learning curve for contributing to the extension. Everyone knows JS and CSS. I want to make sure that working on the extension remains an accessible thing to do.
 
 **Why are you polling the DOM? WTF?**
-We'd love a better way if you know of one. See discussion here: https://trello.com/c/mEPvAQUE
+We'd love a better way if you know of one. See discussion here: [Trello Card: Find a better way to observe DOM changes and inject content, either by hooking Ember internals or by building a concise non-polling trigger set for them.](https://trello.com/c/mEPvAQUE)
 
-
+Legal Stuff
+-----------
 
 **IMPORTANT NOTE:** This extension is not affiliated with YNAB in any way and YNAB has not endorsed this at all. You Need a Budget and YNAB are registered trademarks of Steine LLC and/or one of its subsidiaries.
 
