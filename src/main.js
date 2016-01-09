@@ -1,18 +1,18 @@
 function injectCSS(path) {
-  var link = document.createElement('link');
-  link.setAttribute('rel', 'stylesheet');
-  link.setAttribute('type', 'text/css');
-  link.setAttribute('href', chrome.extension.getURL(path));
+	var link = document.createElement('link');
+	link.setAttribute('rel', 'stylesheet');
+	link.setAttribute('type', 'text/css');
+	link.setAttribute('href', chrome.extension.getURL(path));
 
-  document.getElementsByTagName('head')[0].appendChild(link);
+	document.getElementsByTagName('head')[0].appendChild(link);
 }
 
 function injectScript(path) {
-  var script = document.createElement('script');
-  script.setAttribute('type', 'text/javascript');
-  script.setAttribute('src', chrome.extension.getURL(path));
+	var script = document.createElement('script');
+	script.setAttribute('type', 'text/javascript');
+	script.setAttribute('src', chrome.extension.getURL(path));
 
-  document.getElementsByTagName('body')[0].appendChild(script);
+	document.getElementsByTagName('body')[0].appendChild(script);
 }
 
 /* Features that are on permanently without configuration options */
@@ -123,4 +123,5 @@ chrome.storage.sync.get({
   }
   else if (options.reconciledTextColor == 4) {
     injectCSS('features/distinguish-reconciled-transactions/chance.css');
+  }
 });
