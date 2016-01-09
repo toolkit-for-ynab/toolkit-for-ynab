@@ -42,7 +42,7 @@ function save_options() {
     moveMoneyDialog: moveMoneyDialog,
     moveMoneyAutocomplete: moveMoneyAutocomplete,
     toggleSplits: toggleSplits,
-    accountsSelectedTotal: accountsSelectedTotal
+    accountsSelectedTotal: accountsSelectedTotal,
     transferJump: transferJump
   }, function() {
     // Update status to let user know options were saved.
@@ -75,7 +75,7 @@ function restore_options() {
     moveMoneyAutocomplete: false,
     toggleSplits: false,
     accountsSelectedTotal: false,
-    reconciledTextColor: 0
+    reconciledTextColor: 0,
     transferJump: false
   }, function(items) {
     document.getElementById('collapseExpandBudgetGroups').checked = items.collapseExpandBudgetGroups;
