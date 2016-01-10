@@ -35,6 +35,10 @@ function ensureDefaultsAreSet() {
   if (storedKeys.indexOf('removeZeroCategories') < 0) {
     kango.storage.setItem('removeZeroCategories', true);
   }
+
+  if (storedKeys.indexOf('transferJump') < 0) {
+    kango.storage.setItem('transferJump', true);
+  }
 }
 
 ensureDefaultsAreSet();
@@ -109,7 +113,12 @@ if (kango.storage.getItem('changeEnterBehavior')) {
   injectScript('res/features/change-enter-behavior/main.js');
 }
 
-if (kango.storage.getItem('reconciledTextColor') != 0) {
+if (kango.storage.getItem('transferJump')) {
+  injectCSS('res/features/transfer-jump/main.css');
+  injectScript('res/features/transfer-jump/main.js');
+}
+
+if (kango.storage.getItem('reconciledTextColor')) {
   injectScript('res/features/distinguish-reconciled-transactions/main.js');
 }
 
