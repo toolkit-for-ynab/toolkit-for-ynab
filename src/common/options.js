@@ -63,6 +63,7 @@ function save_options() {
   saveSelectOption('budgetRowsHeight');
   saveSelectOption('reconciledTextColor');
   saveSelectOption('categoryActivityPopupWidth');
+  saveSelectOption('accountsDisplayDensity');
 
   // Update status to let user know options were saved.
   var status = document.getElementById('status');
@@ -96,6 +97,7 @@ function restore_options() {
   restoreSelectOption('budgetRowsHeight');
   restoreSelectOption('reconciledTextColor');
   restoreSelectOption('categoryActivityPopupWidth');
+  restoreSelectOption('accountsDisplayDensity');
 }
 
 KangoAPI.onReady(function() {
