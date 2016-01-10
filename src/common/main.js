@@ -125,3 +125,10 @@ else if (kango.storage.getItem('reconciledTextColor') == 3) {
 else if (kango.storage.getItem('reconciledTextColor') == 4) {
   injectCSS('res/features/distinguish-reconciled-transactions/chance.css');
 }
+
+if (kango.storage.getItem('accountsDisplayDensity') == 1) {
+  injectCSS('res/features/accounts-display-density/compact.css');
+}
+else if (kango.storage.getItem('accountsDisplayDensity') == 2) {
+  injectCSS('res/features/accounts-display-density/slim.css');
+}
