@@ -132,3 +132,10 @@ if (kango.storage.getItem('accountsDisplayDensity') == 1) {
 else if (kango.storage.getItem('accountsDisplayDensity') == 2) {
   injectCSS('res/features/accounts-display-density/slim.css');
 }
+
+if (kango.storage.getItem('editButtonPosition') == 1) {
+  injectCSS('res/features/edit-button-position/left.css');
+}
+else if (kango.storage.getItem('editButtonPosition') == 2) {
+  injectCSS('res/features/edit-button-position/hidden.css');
+}
