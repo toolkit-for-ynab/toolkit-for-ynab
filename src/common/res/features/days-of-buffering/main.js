@@ -52,8 +52,9 @@ function ynabEnhancedDoBCalculate() {
 }
 
 function ynabEnhancedDoBInit() {
+    var elementForAoM = document.getElementsByClassName("budget-header-days");
     var elementForDoB = document.getElementsByClassName('days-of-budgeting');
-    if (elementForDoB.length == 0) {
+    if (elementForAoM.length == 1 && elementForDoB.length == 0) {
         ynabEnhancedDoB();
     } else {
         setTimeout(ynabEnhancedDoBInit, 250);
