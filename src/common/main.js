@@ -127,8 +127,8 @@ else if (kango.storage.getItem('reconciledTextColor') == 4) {
 }
 
 if (kango.storage.getItem('accountsDisplayDensity') == 1) {
-  injectCSS('features/accounts-display-density/compact.css');
+  injectCSS('res/features/accounts-display-density/compact.css');
 }
 else if (kango.storage.getItem('accountsDisplayDensity') == 2) {
-  injectCSS('features/accounts-display-density/slim.css');
+  injectCSS('res/features/accounts-display-density/slim.css');
 }
