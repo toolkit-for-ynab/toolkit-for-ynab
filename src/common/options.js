@@ -63,13 +63,9 @@ function saveOptions() {
   saveSelectOption('accountsDisplayDensity');
   saveSelectOption('editButtonPosition');
 
-  // Update status to let user know options were saved.
-  var status = document.getElementById('status');
-  status.textContent = 'Options saved.';
-
-  setTimeout(function() {
-    status.textContent = '';
-  }, 1000);
+  $('#settingsSaved').fadeIn()
+                     .delay(1500)
+                     .fadeOut();
 }
 
 // Restores select box and checkbox state using the preferences

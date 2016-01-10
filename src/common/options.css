@@ -28,3 +28,8 @@ label {
   -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
+
+#settingsSaved {
+  margin: 15px 0 15px 0;
+  text-align: center;
+}
