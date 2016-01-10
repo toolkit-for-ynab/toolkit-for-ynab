@@ -105,6 +105,10 @@ if (kango.storage.getItem('accountsSelectedTotal')) {
   injectScript('res/features/accounts-selected-total/main.js');
 }
 
+if (kango.storage.getItem('changeEnterBehavior')) {
+  injectScript('res/features/change-enter-behavior/main.js');
+}
+
 if (kango.storage.getItem('reconciledTextColor') != 0) {
   injectScript('res/features/distinguish-reconciled-transactions/main.js');
 }
