@@ -9,7 +9,7 @@ function ynabEnhancedDoB() {
     elementForDoB.children[0].innerText = DoB + " day" + (DoB == 1 ? "" : "s");
     elementForDoB.children[0].className = elementForDoB.children[0].className + " days-of-budgeting";
     elementForDoB.children[1].innerText = "Days of Buffering";
-    elementForDoB.children[1].title = "Don't like AoM? Here you are this new shiny metric! Shows how many days you can live without income on your budget total considering average daily outflow";    
+    elementForDoB.children[1].title = "Don't like AoM? Here you are this new shiny metric! Shows how many days you can live without income on your budget total considering average daily outflow.";    
 
     YNABheader.appendChild(elementForDoB);
 }
@@ -56,9 +56,9 @@ function ynabEnhancedDoBInit() {
     var elementForDoB = document.getElementsByClassName('days-of-budgeting');
     if (elementForAoM.length == 1 && elementForDoB.length == 0) {
         ynabEnhancedDoB();
-    } else {
-        setTimeout(ynabEnhancedDoBInit, 250);
     }
+    
+    setTimeout(ynabEnhancedDoBInit, 250);
 }
 
 setTimeout(ynabEnhancedDoBInit, 250);
