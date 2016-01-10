@@ -58,6 +58,7 @@ function save_options() {
   saveCheckboxOption('moveMoneyAutocomplete');
   saveCheckboxOption('toggleSplits');
   saveCheckboxOption('accountsSelectedTotal');
+  saveCheckboxOption('changeEnterBehavior');
 
   saveSelectOption('budgetRowsHeight');
   saveSelectOption('reconciledTextColor');
@@ -90,6 +91,7 @@ function restore_options() {
   restoreCheckboxOption('moveMoneyAutocomplete');
   restoreCheckboxOption('toggleSplits');
   restoreCheckboxOption('accountsSelectedTotal');
+  restoreCheckboxOption('changeEnterBehavior');
 
   restoreSelectOption('budgetRowsHeight');
   restoreSelectOption('reconciledTextColor');
