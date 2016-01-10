@@ -30,13 +30,13 @@
             <div class="sidebar-collapse">
                 <ul class="nav" id="main-menu">
                   <li>
-                    <a href="#" onclick="loadPanel('general'); return false;"><i class="fa fa-cogs"></i> General</a>
+                    <a href="#" id="generalMenuItem"><i class="fa fa-cogs"></i> General</a>
                   </li>
                   <li>
-                    <a href="#" onclick="loadPanel('accounts'); return false;"><i class="fa fa-university"></i> Accounts Screen</a>
+                    <a href="#" id="accountsMenuItem"><i class="fa fa-university"></i> Accounts Screen</a>
                   </li>
                   <li>
-                    <a href="#" onclick="loadPanel('budget'); return false;"><i class="fa fa-pie-chart"></i> Budget Screen</a>
+                    <a href="#" id="budgetMenuItem"><i class="fa fa-envelope-o"></i> Budget Screen</a>
                   </li>
                 </ul>
             </div>
@@ -51,255 +51,272 @@
                         <h1 class="page-header">
                             Options
                         </h1>
-                        <div class="container">
-	                        <div class="row">
-		                        <div class="col-xs-2">
-			                        <input type="checkbox" id="collapseSideMenu" name="collapseSideMenu" aria-describedby="collapseSideMenuHelpBlock">
-		                        </div>
-		                        <div class="col-xs-8">
-                              <label for="collapseSideMenu">Collapsable Side Menu</label>
-                              <span id="collapseSideMenuHelpBlock" class="help-block">Adds a button that can collapse the menu on the left so you can see more of your accounts or budget data.</span>
+
+                        <!-- ======= GENERAL SETTINGS ======= -->
+                        <div id="generalSettingsPage" class="settingsPage">
+
+                          <div class="container">
+  	                        <div class="row">
+  		                        <div class="col-xs-2">
+  			                        <input type="checkbox" id="collapseSideMenu" name="collapseSideMenu" aria-describedby="collapseSideMenuHelpBlock">
+  		                        </div>
+  		                        <div class="col-xs-8">
+                                <label for="collapseSideMenu">Collapsable Side Menu</label>
+                                <span id="collapseSideMenuHelpBlock" class="help-block">Adds a button that can collapse the menu on the left so you can see more of your accounts or budget data.</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="colourBlindMode" name="colourBlindMode" aria-describedby="colourBlindModeHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="colourBlindMode">Colour Blind Mode</label>
-                              <span id="colourBlindModeHelpBlock" class="help-block">Changes colours like red, yellow and green in the interface to colours and shapes that are more easily distinguishable by colourblind people.</span>
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="colourBlindMode" name="colourBlindMode" aria-describedby="colourBlindModeHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="colourBlindMode">Colour Blind Mode</label>
+                                <span id="colourBlindModeHelpBlock" class="help-block">Changes colours like red, yellow and green in the interface to colours and shapes that are more easily distinguishable by colourblind people.</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="checkCreditBalances" name="checkCreditBalances" aria-describedby="checkCreditBalancesHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="checkCreditBalances">Check Credit Card Balances</label>
-                              <span id="checkCreditBalancesHelpBlock" class="help-block">Highlights credit card category balances with a yellow warning if the balance of the category does not match the account balance.</span>
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="hideAOM" name="hideAOM" aria-describedby="hideAOMHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="hideAOM">Hide Age of Money Calculation</label>
+                                <span id="hideAOMHelpBlock" class="help-block">Hides the Age of Money calculation. Some users find it's not relevant to them and it stresses them out, so they'd rather just hide it.</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="highlightNegativesNegative" name="highlightNegativesNegative" aria-describedby="highlightNegativesNegativeHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="highlightNegativesNegative">Highlight all Negative Category Balances Red</label>
-                              <span id="highlightNegativesNegativeHelpBlock" class="help-block">Ensure all negative balances are highlighted red instead of yellow, even with credit card spending.</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="collapseExpandBudgetGroups" name="collapseExpandBudgetGroups" aria-describedby="collapseExpandBudgetGroupsHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="collapseExpandBudgetGroups">Expand/Collapse budget master categories button</label>
-                              <span id="collapseExpandBudgetGroupsHelpBlock" class="help-block">Adds a button that allows you expand and collapse all budget groups.</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="hideAOM" name="hideAOM" aria-describedby="hideAOMHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="hideAOM">Hide Age of Money Calculation</label>
-                              <span id="hideAOMHelpBlock" class="help-block">Hides the Age of Money calculation. Some users find it's not relevant to them and it stresses them out, so they'd rather just hide it.</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="enableRetroCalculator" name="enableRetroCalculator" aria-describedby="enableRetroCalculatorHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="enableRetroCalculator">Make the Calculator Work Like YNAB4</label>
-                              <span id="enableRetroCalculatorHelpBlock" class="help-block">In YNAB4, typing + on a budget cell meant that you didn't lose what was already in the cell. This setting restores this behaviour.</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="removeZeroCategories" name="removeZeroCategories" aria-describedby="removeZeroCategoriesHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="removeZeroCategories">Remove Zero and Negative Categories When Covering Over-Budgeting</label>
-                              <span id="removeZeroCategoriesHelpBlock" class="help-block">Default YNAB behaviour is to show these categories when covering overbudgeting, but since they've got no money in them they won't help you. Let's clean up the menu.</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="moveMoneyDialog" name="moveMoneyDialog" aria-describedby="moveMoneyDialogHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="moveMoneyDialog">Make the Move Money Dialog Larger</label>
-                              <span id="moveMoneyDialogHelpBlock" class="help-block">The move money dialog is quite small by default. We think you might like to have more space to see what you're doing there.</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="moveMoneyAutocomplete" name="moveMoneyAutocomplete" aria-describedby="moveMoneyAutocompleteHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="moveMoneyAutocomplete">Add a Search with Autocomplete to the Move Money Dialog</label>
-                              <span id="moveMoneyAutocompleteHelpBlock" class="help-block">In the default move money dialog you have to use the mouse to select where you want it to go to. This option adds the ability to type to find the category.</span>
-                            </div>
-                          </div>
-                        </div>
-
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="toggleSplits" name="toggleSplits" aria-describedby="toggleSplitsHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="toggleSplits">Add a Toggle Splits Button</label>
-                              <span id="toggleSplitsHelpBlock" class="help-block">Clicking the toggle splits button shows or hides the sub-transactions within a split.</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="accountsSelectedTotal" name="accountsSelectedTotal" aria-describedby="accountsSelectedTotalHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="accountsSelectedTotal">Show the Total of Selected Transactions</label>
-                              <span id="accountsSelectedTotalHelpBlock" class="help-block">Shows the total of any selected transactions.</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="changeEnterBehavior" name="changeEnterBehavior" aria-describedby="changeEnterBehaviorHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="changeEnterBehavior">Change Behaviour of Enter Key When Adding Transactions</label>
-                              <span id="changeEnterBehaviorHelpBlock" class="help-block">When you press enter while adding transactions, the default behaviour is 'Save and add another'. This option changes it to just 'Save'.</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-2">
-                              <input type="checkbox" id="transferJump" name="transferJump" aria-describedby="transferJumpHelpBlock">
-                            </div>
-                            <div class="col-xs-8">
-                              <label for="transferJump">Add a Button to Jump to the Other Side of a Transfer</label>
-                              <span id="transferJumpHelpBlock" class="help-block">This option adds a button on both sides of a transfer which takes you to the other side.</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-8 col-xs-offset-2">
-                              <label for="budgetRowsHeight">Height of budget rows</label>
-                              <select name="budgetRowsHeight" id="budgetRowsHeight" class="form-control" aria-describedby="budgetRowsHeightHelpBlock">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-8 col-xs-offset-2">
+                                <label for="accountsDisplayDensity">Account Name Height</label>
+                                <select name="accountsDisplayDensity" id="accountsDisplayDensity" class="form-control" aria-describedby="accountsDisplayDensityHelpBlock">
                                   <option value="0">Default</option>
                                   <option value="1">Compact</option>
                                   <option value="2">Slim</option>
-                              </select>
-                              <span id="budgetRowsHeightHelpBlock" class="help-block">Makes the budget rows skinnier than the default YNAB style so that you can fit more on the screen.</span>
+                                </select>
+                                <span id="accountsDisplayDensityHelpBlock" class="help-block">Makes the account names smaller so that you can see more of the account names and fit more on the screen.</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-8 col-xs-offset-2">
-                              <label for="categoryActivityPopupWidth">Width of Category Popup</label>
-                              <select name="categoryActivityPopupWidth" id="categoryActivityPopupWidth" class="form-control" aria-describedby="categoryActivityPopupWidthHelpBlock">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-8 col-xs-offset-2">
+                                <label for="editButtonPosition">Edit Account Button Position</label>
+                                <select name="editButtonPosition" id="editButtonPosition" class="form-control" aria-describedby="editButtonPositionHelpBlock">
                                   <option value="0">Default</option>
-                                  <option value="1">Medium</option>
-                                  <option value="2">Large</option>
-                              </select>
-                              <span id="categoryActivityPopupWidthHelpBlock" class="help-block">Makes the screen that pops up when you click on activity from a budget category wider so you can see more details of the transactions listed.</span>
+                                  <option value="1">Left of name</option>
+                                  <option value="2">Hidden (use right-click)</option>
+                                </select>
+                                <span id="editButtonPositionHelpBlock" class="help-block">Allows you to move or hide the edit account button that we all keep clicking on accidentally.</span>
+                              </div>
                             </div>
                           </div>
+
+                          <!-- END GENERAL SETTINGS -->
                         </div>
 
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-8 col-xs-offset-2">
-                              <label for="reconciledTextColor">Reconciled Text Colour</label>
-                              <select name="reconciledTextColor" id="reconciledTextColor" class="form-control" aria-describedby="reconciledTextColorHelpBlock">
-                                <option value="0">Default</option>
-                                <option value="1" style="color: #00661d">Green</option>
-                                <option value="2" style="color: #cfd5d7">Light Gray</option>
-                                <option value="3" style="color: #8e9fb0">Dark Gray</option>
-                                <option value="4" style="color: #8e9fb0; background-color: #e7faeb">Any chance</option>
-                              </select>
-                              <span id="reconciledTextColorHelpBlock" class="help-block">Makes the text on reconciled transactions appear in a more obvious colour of your choosing.</span>
+                        <!-- ======= ACCOUNTS SETTINGS ======= -->
+                        <div id="accountsSettingsPage" class="settingsPage">
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="toggleSplits" name="toggleSplits" aria-describedby="toggleSplitsHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="toggleSplits">Add a Toggle Splits Button</label>
+                                <span id="toggleSplitsHelpBlock" class="help-block">Clicking the toggle splits button shows or hides the sub-transactions within a split.</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-8 col-xs-offset-2">
-                              <label for="accountsDisplayDensity">Account Name Height</label>
-                              <select name="accountsDisplayDensity" id="accountsDisplayDensity" class="form-control" aria-describedby="accountsDisplayDensityHelpBlock">
-                                <option value="0">Default</option>
-                                <option value="1">Compact</option>
-                                <option value="2">Slim</option>
-                              </select>
-                              <span id="accountsDisplayDensityHelpBlock" class="help-block">Makes the account names smaller so that you can see more of the account names and fit more on the screen.</span>
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="accountsSelectedTotal" name="accountsSelectedTotal" aria-describedby="accountsSelectedTotalHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="accountsSelectedTotal">Show the Total of Selected Transactions</label>
+                                <span id="accountsSelectedTotalHelpBlock" class="help-block">Shows the total of any selected transactions.</span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-8 col-xs-offset-2">
-                              <label for="editButtonPosition">Edit Account Button Position</label>
-                              <select name="editButtonPosition" id="editButtonPosition" class="form-control" aria-describedby="editButtonPositionHelpBlock">
-                                <option value="0">Default</option>
-                                <option value="1">Left of name</option>
-                                <option value="2">Hidden (use right-click)</option>
-                              </select>
-                              <span id="editButtonPositionHelpBlock" class="help-block">Allows you to move or hide the edit account button that we all keep clicking on accidentally.</span>
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="changeEnterBehavior" name="changeEnterBehavior" aria-describedby="changeEnterBehaviorHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="changeEnterBehavior">Change Behaviour of Enter Key When Adding Transactions</label>
+                                <span id="changeEnterBehaviorHelpBlock" class="help-block">When you press enter while adding transactions, the default behaviour is 'Save and add another'. This option changes it to just 'Save'.</span>
+                              </div>
                             </div>
                           </div>
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="transferJump" name="transferJump" aria-describedby="transferJumpHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="transferJump">Add a Button to Jump to the Other Side of a Transfer</label>
+                                <span id="transferJumpHelpBlock" class="help-block">This option adds a button on both sides of a transfer which takes you to the other side.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-8 col-xs-offset-2">
+                                <label for="reconciledTextColor">Reconciled Text Colour</label>
+                                <select name="reconciledTextColor" id="reconciledTextColor" class="form-control" aria-describedby="reconciledTextColorHelpBlock">
+                                  <option value="0">Default</option>
+                                  <option value="1" style="color: #00661d">Green</option>
+                                  <option value="2" style="color: #cfd5d7">Light Gray</option>
+                                  <option value="3" style="color: #8e9fb0">Dark Gray</option>
+                                  <option value="4" style="color: #8e9fb0; background-color: #e7faeb">Any chance</option>
+                                </select>
+                                <span id="reconciledTextColorHelpBlock" class="help-block">Makes the text on reconciled transactions appear in a more obvious colour of your choosing.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- END ACCOUNTS SETTINGS -->
                         </div>
 
-                        <hr>
+                        <!-- ======= BUDGET SETTINGS ======= -->
+                        <div id="budgetSettingsPage" class="settingsPage">
 
-                        <button id="save" class="btn btn-primary btn-lg pull-right">Save</button>
-                        <button id="cancel" class="btn btn-lg pull-right">Cancel</button>
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="checkCreditBalances" name="checkCreditBalances" aria-describedby="checkCreditBalancesHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="checkCreditBalances">Check Credit Card Balances</label>
+                                <span id="checkCreditBalancesHelpBlock" class="help-block">Highlights credit card category balances with a yellow warning if the balance of the category does not match the account balance.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="highlightNegativesNegative" name="highlightNegativesNegative" aria-describedby="highlightNegativesNegativeHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="highlightNegativesNegative">Highlight all Negative Category Balances Red</label>
+                                <span id="highlightNegativesNegativeHelpBlock" class="help-block">Ensure all negative balances are highlighted red instead of yellow, even with credit card spending.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="collapseExpandBudgetGroups" name="collapseExpandBudgetGroups" aria-describedby="collapseExpandBudgetGroupsHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="collapseExpandBudgetGroups">Expand/Collapse budget master categories button</label>
+                                <span id="collapseExpandBudgetGroupsHelpBlock" class="help-block">Adds a button that allows you expand and collapse all budget groups.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="enableRetroCalculator" name="enableRetroCalculator" aria-describedby="enableRetroCalculatorHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="enableRetroCalculator">Make the Calculator Work Like YNAB4</label>
+                                <span id="enableRetroCalculatorHelpBlock" class="help-block">In YNAB4, typing + on a budget cell meant that you didn't lose what was already in the cell. This setting restores this behaviour.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="removeZeroCategories" name="removeZeroCategories" aria-describedby="removeZeroCategoriesHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="removeZeroCategories">Remove Zero and Negative Categories When Covering Over-Budgeting</label>
+                                <span id="removeZeroCategoriesHelpBlock" class="help-block">Default YNAB behaviour is to show these categories when covering overbudgeting, but since they've got no money in them they won't help you. Let's clean up the menu.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="moveMoneyDialog" name="moveMoneyDialog" aria-describedby="moveMoneyDialogHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="moveMoneyDialog">Make the Move Money Dialog Larger</label>
+                                <span id="moveMoneyDialogHelpBlock" class="help-block">The move money dialog is quite small by default. We think you might like to have more space to see what you're doing there.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="moveMoneyAutocomplete" name="moveMoneyAutocomplete" aria-describedby="moveMoneyAutocompleteHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="moveMoneyAutocomplete">Add a Search with Autocomplete to the Move Money Dialog</label>
+                                <span id="moveMoneyAutocompleteHelpBlock" class="help-block">In the default move money dialog you have to use the mouse to select where you want it to go to. This option adds the ability to type to find the category.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-8 col-xs-offset-2">
+                                <label for="budgetRowsHeight">Height of budget rows</label>
+                                <select name="budgetRowsHeight" id="budgetRowsHeight" class="form-control" aria-describedby="budgetRowsHeightHelpBlock">
+                                    <option value="0">Default</option>
+                                    <option value="1">Compact</option>
+                                    <option value="2">Slim</option>
+                                </select>
+                                <span id="budgetRowsHeightHelpBlock" class="help-block">Makes the budget rows skinnier than the default YNAB style so that you can fit more on the screen.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-xs-8 col-xs-offset-2">
+                                <label for="categoryActivityPopupWidth">Width of Category Popup</label>
+                                <select name="categoryActivityPopupWidth" id="categoryActivityPopupWidth" class="form-control" aria-describedby="categoryActivityPopupWidthHelpBlock">
+                                    <option value="0">Default</option>
+                                    <option value="1">Medium</option>
+                                    <option value="2">Large</option>
+                                </select>
+                                <span id="categoryActivityPopupWidthHelpBlock" class="help-block">Makes the screen that pops up when you click on activity from a budget category wider so you can see more details of the transactions listed.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                        <!-- END BUDGET SETTINGS -->
+                        </div>
+
+                        <div class="col-xs-3 col-xs-offset-8">
+                          <button id="save" class="btn btn-lg btn-primary pull-right">Save</button>
+                          <button id="cancel" class="btn btn-lg pull-right">Cancel</button>
+                        </div>
                     </div>
                 </div>
                  <!-- /. ROW  -->
-				 <footer><p>All rights reserved. Template by: <a href="http://webthemez.com">WebThemez</a></p></footer>
 				</div>
              <!-- /. PAGE INNER  -->
             </div>
@@ -307,7 +324,6 @@
         </div>
      <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
-    <!-- jQuery Js -->
     <script type="text/javascript" src="assets/dream-admin-theme/js/jquery-1.10.2.js"></script>
     <script type="text/javascript" src="assets/dream-admin-theme/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="assets/dream-admin-theme/js/jquery.metisMenu.js"></script>

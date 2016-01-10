@@ -1,7 +1,3 @@
-function loadPanel(panel) {
-  alert(panel);
-}
-
 function ensureDefaultsAreSet() {
   var storedKeys = kango.storage.getKeys();
 
@@ -44,7 +40,7 @@ function restoreSelectOption(elementId) {
   select.value = data;
 }
 
-function save_options() {
+function saveOptions() {
 
   saveCheckboxOption('collapseExpandBudgetGroups');
   saveCheckboxOption('collapseSideMenu');
@@ -78,7 +74,7 @@ function save_options() {
 
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
-function restore_options() {
+function restoreOptions() {
 
   ensureDefaultsAreSet();
 
@@ -104,13 +100,33 @@ function restore_options() {
   restoreSelectOption('editButtonPosition');
 }
 
+function loadPanel(panel) {
+
+  // Do we need to do anything?
+  var element = $('#' + panel + 'MenuItem');
+  if (element.hasClass('active-menu')) { return; }
+
+  $('.nav li a').removeClass('active-menu');
+  element.addClass('active-menu');
+
+  $('.settingsPage').hide();
+  $('#' + panel + "SettingsPage").fadeIn();
+}
+
 KangoAPI.onReady(function() {
-  restore_options();
+  restoreOptions();
 
   $('input:checkbox').bootstrapSwitch();
-});
 
-$('#save').click(save_options);
-$('#cancel').click(function() {
-  KangoAPI.closeWindow();
+  loadPanel('general');
+
+  $('#generalMenuItem').click(function(e) { loadPanel('general'); e.preventDefault(); });
+  $('#accountsMenuItem').click(function(e) { loadPanel('accounts'); e.preventDefault(); });
+  $('#budgetMenuItem').click(function(e) { loadPanel('budget'); e.preventDefault(); });
+
+  $('#save').click(saveOptions);
+  $('#cancel').click(function() {
+    KangoAPI.closeWindow();
+  });
+
 });

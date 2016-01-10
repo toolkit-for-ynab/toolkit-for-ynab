@@ -13,3 +13,18 @@ label {
 .container {
   margin-top: 22px;
 }
+
+#main-menu li {
+  font-size: 1.4em;
+}
+
+.btn {
+  margin: 18px 10px 0 0;
+}
+
+.active-menu {
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
