@@ -148,3 +148,8 @@ if (kango.storage.getItem('editButtonPosition') == 1) {
 else if (kango.storage.getItem('editButtonPosition') == 2) {
   injectCSS('res/features/edit-button-position/hidden.css');
 }
+
+if (kango.storage.getItem('daysOfBuffering')) {
+  injectCSS('res/features/days-of-buffering/main.css');
+  injectScript('res/features/days-of-buffering/main.js');
+}
