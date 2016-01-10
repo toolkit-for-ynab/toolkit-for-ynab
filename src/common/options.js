@@ -64,6 +64,7 @@ function save_options() {
   saveSelectOption('reconciledTextColor');
   saveSelectOption('categoryActivityPopupWidth');
   saveSelectOption('accountsDisplayDensity');
+  saveSelectOption('editButtonPosition');
 
   // Update status to let user know options were saved.
   var status = document.getElementById('status');
@@ -98,6 +99,7 @@ function restore_options() {
   restoreSelectOption('reconciledTextColor');
   restoreSelectOption('categoryActivityPopupWidth');
   restoreSelectOption('accountsDisplayDensity');
+  restoreSelectOption('editButtonPosition');
 }
 
 KangoAPI.onReady(function() {
