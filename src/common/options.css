@@ -1,9 +1,10 @@
 .top-navbar .navbar-brand {
   font-size: 2em;
+  text-transform: none;
 }
 
 label {
-  font-size: 1.5em;
+  font-size: 1.3em;
 }
 
 .bootstrap-switch {
@@ -15,7 +16,7 @@ label {
 }
 
 #main-menu li {
-  font-size: 1.4em;
+  font-size: 1.2em;
 }
 
 .btn {
