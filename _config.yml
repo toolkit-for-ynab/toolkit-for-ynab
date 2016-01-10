@@ -7,7 +7,7 @@ description: >
   and functionality.
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://toolkitforynab.com" # the base hostname & protocol for your site
-twitter_username: one_byte_stand
+twitter_username: kevinbrowntech
 github_username:  blargity
 
 # Build settings
