@@ -116,7 +116,7 @@ function ynabEnhancedCollapseInitializer() {
     var originalSizes = {
       sidebarWidth:   $(".sidebar").width(),
       contentLeft:    $(".content").css("left"),
-      headerLeft:     $(".budget-header").css("left"),
+      headerLeft:     $(".budget-header, .accounts-header").css("left"),
       contentWidth:   $(".budget-content").css("width"),
       inspectorWidth: $(".budget-inspector").css("width")
     }
