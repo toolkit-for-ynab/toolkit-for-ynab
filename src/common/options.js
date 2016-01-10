@@ -1,10 +1,6 @@
-// Useful for debugging the settings page outside of chrome settings!
-// var chrome = {
-//   storage: { sync: {
-//     set: function (defaults, callback) { callback(defaults); },
-//     get: function (defaults, callback) { callback(defaults); }
-//   }}
-// };
+function loadPanel(panel) {
+  alert(panel);
+}
 
 function ensureDefaultsAreSet() {
   var storedKeys = kango.storage.getKeys();
@@ -20,7 +16,7 @@ function ensureDefaultsAreSet() {
   if (storedKeys.indexOf('removeZeroCategories') < 0) {
     kango.storage.setItem('removeZeroCategories', true);
   }
-  
+
   if (storedKeys.indexOf('transferJump') < 0) {
     kango.storage.setItem('transferJump', true);
   }
@@ -110,6 +106,8 @@ function restore_options() {
 
 KangoAPI.onReady(function() {
   restore_options();
+
+  $('input:checkbox').bootstrapSwitch();
 });
 
 document.getElementById('save').addEventListener('click', save_options);

@@ -1,0 +1,15 @@
+.top-navbar .navbar-brand {
+  font-size: 2em;
+}
+
+label {
+  font-size: 1.5em;
+}
+
+.bootstrap-switch {
+  float:right;
+}
+
+.container {
+  margin-top: 22px;
+}
