@@ -1,0 +1,279 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>kango.xhr &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="API reference" href="index.html" />
+    <link rel="next" title="kango.browser" href="kango-browser.html" />
+    <link rel="prev" title="kango.storage" href="kango-storage.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="kango-browser.html" title="kango.browser"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="kango-storage.html" title="kango.storage"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="kango-xhr">
+<span id="id1"></span><h1>kango.xhr<a class="headerlink" href="#kango-xhr" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#kango-xhr-getxmlhttprequest"><em>getXMLHttpRequest</em></a></td>
+<td>Returns new XMLHTTPRequest object</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kango-xhr-send"><em>send</em></a></td>
+<td>Performs a cross-domain HTTP request</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getxmlhttprequest">
+<span id="kango-xhr-getxmlhttprequest"></span><h3>getXMLHttpRequest<a class="headerlink" href="#getxmlhttprequest" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.xhr.getXMLHttpRequest">
+<tt class="descclassname">kango.xhr.</tt><tt class="descname">getXMLHttpRequest</tt><big>(</big><big>)</big><a class="headerlink" href="#kango.xhr.getXMLHttpRequest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns new cross-domain XMLHTTPRequest object.</p>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">kango</span><span class="p">.</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">getXMLHttpRequest</span><span class="p">();</span>
+<span class="nx">request</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;http://example.com/&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">);</span>
+<span class="nx">request</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="send">
+<span id="kango-xhr-send"></span><h3>send<a class="headerlink" href="#send" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.xhr.send">
+<tt class="descclassname">kango.xhr.</tt><tt class="descname">send</tt><big>(</big><em>details</em>, <em>callback</em><big>)</big><a class="headerlink" href="#kango.xhr.send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a cross-domain HTTP request.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>details</strong> &#8211; desired request description information</li>
+<li><strong>callback</strong> (<em>function(result)</em>) &#8211; callback function to process response after request sending</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Details object:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">details</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">string</span>  <span class="nx">method</span><span class="p">,</span>      <span class="c1">// HTTP action to perform could be POST or GET</span>
+    <span class="nx">string</span>  <span class="nx">url</span><span class="p">,</span>         <span class="c1">// The URL to use</span>
+    <span class="nx">object</span>  <span class="nx">params</span><span class="p">,</span>      <span class="c1">// Key-Value pairs to sent to the server as POST or GET params</span>
+    <span class="nx">object</span>  <span class="nx">headers</span><span class="p">,</span>     <span class="c1">// Key-Value pairs of headers</span>
+    <span class="nx">string</span>  <span class="nx">contentType</span><span class="p">,</span> <span class="c1">// Type of requested data. Could be either &#39;json&#39;, &#39;text&#39; or &#39;xml&#39;</span>
+    <span class="nx">string</span>  <span class="nx">username</span><span class="p">,</span>    <span class="c1">// Credentials to use for simple authorization (if any)</span>
+    <span class="nx">string</span>  <span class="nx">password</span><span class="p">,</span>    <span class="c1">// Credentials to use for simple authorization (if any)</span>
+    <span class="nx">string</span>  <span class="nx">mimeType</span>     <span class="c1">// Mime type</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Callback argument:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">number</span>                       <span class="nx">status</span><span class="p">,</span>    <span class="c1">// HTTP status code</span>
+    <span class="nx">object</span><span class="o">|</span><span class="nx">string</span><span class="o">|</span><span class="nx">XMLDOMDocument</span> <span class="nx">response</span>   <span class="c1">// Depends on &quot;contentType&quot; set in details argument</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">details</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://example.com/&#39;</span><span class="p">,</span>
+    <span class="nx">params</span><span class="o">:</span> <span class="p">{</span><span class="s1">&#39;param1&#39;</span><span class="o">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;param2&#39;</span><span class="o">:</span> <span class="s1">&#39;2&#39;</span><span class="p">},</span>
+    <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span><span class="s1">&#39;If-Modified-Since&#39;</span><span class="o">:</span> <span class="s1">&#39;Sat, 1 Jan 2000 00:00:00 GMT&#39;</span><span class="p">,</span> <span class="s1">&#39;Cache-Control&#39;</span><span class="o">:</span> <span class="s1">&#39;max-age=0&#39;</span><span class="p">},</span>
+    <span class="nx">contentType</span><span class="o">:</span> <span class="s1">&#39;text&#39;</span>
+<span class="p">};</span>
+
+<span class="nx">kango</span><span class="p">.</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">details</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">response</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">response</span><span class="p">;</span>
+        <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span> <span class="c1">// something went wrong</span>
+        <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;something went wrong&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="c1">// retrieve extension_info.json from extension directory</span>
+<span class="kd">var</span> <span class="nx">details</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;extension_info.json&#39;</span><span class="p">,</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+    <span class="nx">contentType</span><span class="o">:</span> <span class="s1">&#39;json&#39;</span>
+<span class="p">};</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">details</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// in some browsers data.status may be 0 with local files</span>
+    <span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">response</span><span class="p">;</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">kango.xhr</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getxmlhttprequest">getXMLHttpRequest</a></li>
+<li><a class="reference internal" href="#send">send</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="kango-storage.html"
+                        title="previous chapter">kango.storage</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="kango-browser.html"
+                        title="next chapter">kango.browser</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="kango-browser.html" title="kango.browser"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="kango-storage.html" title="kango.storage"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >API reference</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,81 @@
+.. _kango-ui-optionsPage:
+
+====================
+kango.ui.optionsPage
+====================
+
+It's possible to add HTML options page to your extension. Simply add ``options_page`` key to :ref:`extension_info.json<KangoExtensionInfo>` file::
+
+    {
+        "options_page": "options.html",
+    }
+
+To use Kango APIs you must include script ``kango_api.js`` in your html and use it only after **onReady** event:
+
+.. code-block:: html
+
+    <script type="text/javascript" src="kango-ui/kango_api.js"></script>
+	
+You can also open options page programmatically using :js:func:`kango.ui.optionsPage.open`.
+	
+.. note::  Kango API available only in async mode (as in :ref:`content scripts<content-scripts>`).	
+.. warning:: "options_page" key must have value "options.html". This limitation be fixed in future versions.
+
+Summary
+=======
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+	 
+   * - :ref:`kango-ui-optionsPage-open`
+     - Opens options page
+
+Methods
+=======
+
+.. _kango-ui-optionsPage-open:
+
+open
+----
+
+.. js:function:: kango.ui.optionsPage.open(hash)
+
+   Opens the options page.
+   
+   :param string hash: Hash string passed to options URL. Optional.
+	
+Example::
+
+    kango.ui.optionsPage.open()
+
+	
+Sample
+======
+
+options.html:
+
+.. code-block:: html
+
+    <html>
+    <head>
+        <script type="text/javascript" src="kango-ui/kango_api.js"></script>
+        <script type="text/javascript" src="options.js"></script>
+    </head>
+    <body>
+        Options
+    </body>
+    </html>
+	
+options.js::
+
+    KangoAPI.onReady(function() {
+        $('#button-close').click(function(event) {
+            KangoAPI.closeWindow()
+        });
+        alert(kango.browser.getName());
+    });
+

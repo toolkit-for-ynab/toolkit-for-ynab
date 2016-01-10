@@ -1,0 +1,36 @@
+.. _api-reference:
+
+=============
+API reference
+=============
+
+kango.* APIs
+============
+
+.. toctree::
+   :maxdepth: 1
+   
+   kango
+   kango-console
+   kango-storage
+   kango-xhr
+   kango-browser
+   kango-browser-tabs
+   kango-browser-windows
+   kango-ui-browserButton
+   kango-ui-optionsPage
+   kango-ui-notifications
+   kango-i18n
+   kango-io
+
+  
+Types
+=====
+
+.. toctree::
+   :maxdepth: 1
+   
+   KangoExtensionInfo
+   KangoBrowserTab
+   KangoBrowserWindow
+   KangoMessageSource

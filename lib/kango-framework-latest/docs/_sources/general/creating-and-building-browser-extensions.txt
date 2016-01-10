@@ -1,0 +1,153 @@
+.. creating-and-building-browser-extensions:
+
+========================================
+Creating and Building Browser Extensions
+========================================
+
+Requirements
+============
+
+Required software
+-----------------
+* Kango framework: http://kangoextensions.com/kango.html
+* Python 2.7: http://www.python.org/download/
+* Chrome browser: http://www.google.com/chrome
+* Safari browser: http://www.apple.com/safari/download/
+* NSIS installer (IE/Windows only): http://nsis.sourceforge.net/Main_Page
+
+Additional requirements
+-----------------------
+For building a Safari extension you have to `register <http://developer.apple.com/programs/start/register/create.php>`_ as a Safari Developer on Apple website and get Safari developer certificate.
+
+Creating new project
+====================
+1. Create a directory for the project (TestExtension for example)
+
+2. Run ``kango.py`` with ``create`` command::
+
+    python kango_dir/kango.py create "path/to/TestExtension"
+
+After running thus commands you will get extension project you can start to edit.
+
+Adding content script
+=====================
+Kango allows you to run :ref:`content-scripts` on any web page opened by user. Content scripts are running for each webpage shown according to @include / @exclude rules from user js metadata block as follow::
+
+    // ==UserScript==
+    // @name Test
+    // @include http://*
+    // ==/UserScript==
+
+All the content scripts should be enumerated in ``content_scripts`` section of :ref:`extension_info.json<KangoExtensionInfo>` file.
+
+Lets take a look on content script in work. Create ``content.js`` file inside you project common src directory (e.g. ``TestExtension/src/common``) and place follow code in it::
+
+    // ==UserScript==
+    // @name Test
+    // @include http://*
+    // ==/UserScript==
+
+    var colorNumber = 0;
+    var colors = ['red', 'green', 'blue'];
+
+    window.setInterval(function() {
+        document.body.style.background = colors[colorNumber++];
+        if(colorNumber > colors.length) {
+            colorNumber = 0;
+        }
+    }, 1000);
+
+Also add this file in content scripts array in :ref:`extension_info.json<KangoExtensionInfo>` in the same common directory. It should look like::
+
+    {
+        "content_scripts": [
+            "content.js"
+        ]
+    }
+
+After building and installing the extension you will see background color blinking on every http webpage you open in your browser.
+
+Adding background script
+========================
+:ref:`background-scripts` are running as long as extension is enabled in browser and executed once on each browser start.
+
+Background scripts allows you to use all the :ref:`Kango APIs<api-reference>` in synchronous mode.
+
+Background scripts should be enumerated in ``background_scripts`` array of :ref:`extension_info.json<KangoExtensionInfo>` file.
+
+To test it on your own you can create a file named ``background.js`` in your common src directory with follow content::
+
+    var details = {
+    method: 'GET',
+    url: 'http://example.com/',
+    async: true,
+    contentType: 'text'
+    };
+
+    kango.xhr.send(details, function(data) {
+        if(data.status == 200 && data.response != null) {
+        var text = data.response;
+            kango.console.log(text);
+        }
+        else { // something went wrong
+            kango.console.log('something went wrong');
+        }
+    });
+
+Also add it to :ref:`extension_info.json<KangoExtensionInfo>` like that::
+
+    {
+        "background_scripts": [
+            "background.js"
+        ]
+    }
+  
+This will download http://example.com/ page and output the content into console.
+
+Adding a button into browser
+============================
+
+To add a button to user browser you have to add ``browser_button`` section to :ref:`extension_info.json<KangoExtensionInfo>` file like follow::
+
+    {
+        "browser_button": {
+            "caption": "Kango",
+            "tooltipText": "Kango",
+            "icon": "icons/button.png"
+        }
+    }
+
+To handle clicks on this button you have to add follow code in one of your background scripts::
+
+    kango.ui.browserButton.addEventListener(kango.ui.browserButton.event.COMMAND, function() {
+        kango.console.log('Button clicked!');
+    });
+    
+Adding pop-up
+=============
+
+You can add a pop-up window to your extension to show on button click. You can open an HTML file in pop-up and access Kango API from it.
+
+To test how popup works create ``popup.html`` with follow content:
+
+.. code-block:: html
+
+    <html>
+    <head></head>
+    <body>
+        Test
+    </body>
+    </html>
+    
+and add the following line to your background script::
+
+    kango.ui.browserButton.setPopup({url:'popup.html', width: 710, height:510});
+    
+Building extension
+==================
+
+Preparing build for your extensions require you to run ``kango.py`` with ``build`` command as follow::
+
+    python kango_dir/kango.py build "path/to/TestExtension"
+
+After running this command you will get output directory filled with extensions builds.

@@ -1,0 +1,415 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>kango &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="API reference" href="index.html" />
+    <link rel="next" title="kango.console" href="kango-console.html" />
+    <link rel="prev" title="API reference" href="index.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="kango-console.html" title="kango.console"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="API reference"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="kango">
+<span id="id1"></span><h1>kango<a class="headerlink" href="#kango" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#kango-getextensioninfo"><em>getExtensionInfo</em></a></td>
+<td>Returns an object describing the extension</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kango-addmessagelistener"><em>addMessageListener</em></a></td>
+<td>Registers a message handler for the specified message name</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kango-removemessagelistener"><em>removeMessageListener</em></a></td>
+<td>Removes a message handler that the addMessageListener method registered</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kango-dispatchmessage"><em>dispatchMessage</em></a></td>
+<td>Dispatches a message</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kango-invokeasync"><em>invokeAsync</em></a></td>
+<td>Calls function from background script</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kango-invokeasynccallback"><em>invokeAsyncCallback</em></a></td>
+<td>Calls asynchronous function from background script</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getextensioninfo">
+<span id="kango-getextensioninfo"></span><h3>getExtensionInfo<a class="headerlink" href="#getextensioninfo" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.getExtensionInfo">
+<tt class="descclassname">kango.</tt><tt class="descname">getExtensionInfo</tt><big>(</big><big>)</big><a class="headerlink" href="#kango.getExtensionInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="KangoExtensionInfo.html#kangoextensioninfo"><em>KangoExtensionInfo</em></a> object describing the extension.
+Can be used in content scripts.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">object describing the extension</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="KangoExtensionInfo.html#kangoextensioninfo"><em>KangoExtensionInfo</em></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">kango</span><span class="p">.</span><span class="nx">getExtensionInfo</span><span class="p">();</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">info</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span> <span class="c1">// shows extension name</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="addmessagelistener">
+<span id="kango-addmessagelistener"></span><h3>addMessageListener<a class="headerlink" href="#addmessagelistener" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.addMessageListener">
+<tt class="descclassname">kango.</tt><tt class="descname">addMessageListener</tt><big>(</big><em>name</em>, <em>callback</em><big>)</big><a class="headerlink" href="#kango.addMessageListener" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a message handler for the specified message name.
+Can be used in content scripts.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; message name</li>
+<li><strong>callback</strong> (<em>function(event)</em>) &#8211; message handler function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Message handler event:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">event</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">data</span><span class="o">:</span> <span class="nx">variant</span><span class="p">,</span>  <span class="c1">// JSON serializable data object attached to the message</span>
+    <span class="nx">target</span><span class="o">:</span> <span class="nx">object</span><span class="p">,</span> <span class="c1">// Point to object sent the message</span>
+    <span class="nx">source</span><span class="o">:</span> <span class="nx">KangoMessageSource</span> <span class="c1">// Message source</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>target</strong> field could be either <a class="reference internal" href="KangoBrowserTab.html#kangobrowsertab"><em>KangoBrowserTab</em></a> or <a class="reference internal" href="#kango"><em>kango</em></a> objects.</p>
+<p>For instance if message came from background to content script then <em>target</em> will be a kango object. If message came from content to background <em>target</em> will be <a class="reference internal" href="KangoBrowserTab.html#kangobrowsertab"><em>KangoBrowserTab</em></a>.</p>
+<p>The <strong>event.source.dispatchMessage</strong> call could be used inside message handler function to send message back.</p>
+<p><strong>source</strong> <a class="reference internal" href="KangoMessageSource.html#kangomessagesource"><em>KangoMessageSource</em></a> object.</p>
+<p>See <a class="reference internal" href="../general/messaging-api.html#messaging-api"><em>Messaging API</em></a> section for more details.</p>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// background script</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">addMessageListener</span><span class="p">(</span><span class="s1">&#39;GetData&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// send data back to content script</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">dispatchMessage</span><span class="p">(</span><span class="s1">&#39;SetData&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">a</span><span class="o">:</span> <span class="mi">1</span><span class="p">});</span>
+<span class="p">});</span>
+
+<span class="c1">// content script</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">addMessageListener</span><span class="p">(</span><span class="s1">&#39;SetData&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">kango</span><span class="p">.</span><span class="nx">dispatchMessage</span><span class="p">(</span><span class="s1">&#39;GetData&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="removemessagelistener">
+<span id="kango-removemessagelistener"></span><h3>removeMessageListener<a class="headerlink" href="#removemessagelistener" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.removeMessageListener">
+<tt class="descclassname">kango.</tt><tt class="descname">removeMessageListener</tt><big>(</big><em>name</em>, <em>callback</em><big>)</big><a class="headerlink" href="#kango.removeMessageListener" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a message handler that the <a class="reference internal" href="#kango.addMessageListener" title="kango.addMessageListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.addMessageListener()</span></tt></a> method registered.
+Can be used in content scripts.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; message name</li>
+<li><strong>callback</strong> (<em>function(event)</em>) &#8211; message handler function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="dispatchmessage">
+<span id="kango-dispatchmessage"></span><h3>dispatchMessage<a class="headerlink" href="#dispatchmessage" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.dispatchMessage">
+<tt class="descclassname">kango.</tt><tt class="descname">dispatchMessage</tt><big>(</big><em>name</em>, <em>data</em><big>)</big><a class="headerlink" href="#kango.dispatchMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dispatches a message to background script.</p>
+<p>See <a class="reference internal" href="../general/messaging-api.html#messaging-api"><em>Messaging API</em></a> section for more details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; message name</li>
+<li><strong>data</strong> (<em>variant</em>) &#8211; a JSON serializable data to send</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm">    This will send a message to background scripts</span>
+<span class="cm">    In this Example message named &#39;action&#39; will have two fields *data* object</span>
+<span class="cm">    It is possible to use any JSON serializable object</span>
+<span class="cm">*/</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">dispatchMessage</span><span class="p">(</span><span class="s1">&#39;action&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;DoABarrelRoll&#39;</span><span class="p">,</span> <span class="nx">count</span><span class="o">:</span> <span class="mi">5</span><span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="invokeasync">
+<span id="kango-invokeasync"></span><h3>invokeAsync<a class="headerlink" href="#invokeasync" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.invokeAsync">
+<tt class="descclassname">kango.</tt><tt class="descname">invokeAsync</tt><big>(</big><em>functionName</em>, <em>argument1</em>, <em>argument2</em>, <em>...</em>, <em>argumentN</em>, <em>callback</em><big>)</big><a class="headerlink" href="#kango.invokeAsync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls function from background script.
+Can be used in content scripts and options page.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>functionName</strong> (<em>string</em>) &#8211; function name to invoke</li>
+<li><strong>argumentN</strong> (<em>variant</em>) &#8211; variable number of arguments (must be JSON serializable)</li>
+<li><strong>callback</strong> (<em>function(result)</em>) &#8211; callback function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">invokeAsync</span><span class="p">(</span><span class="s1">&#39;kango.storage.setItem&#39;</span><span class="p">,</span> <span class="s1">&#39;Item1&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="nx">kango</span><span class="p">.</span><span class="nx">invokeAsync</span><span class="p">(</span><span class="s1">&#39;kango.storage.getItem&#39;</span><span class="p">,</span> <span class="s1">&#39;Item1&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">kango</span><span class="p">.</span><span class="nx">invokeAsync</span><span class="p">(</span><span class="s1">&#39;kango.storage.removeItem&#39;</span><span class="p">,</span> <span class="s1">&#39;item1&#39;</span><span class="p">);</span>
+
+
+<span class="c1">// invoke user defined function with name &#39;test_func&#39;</span>
+<span class="c1">// &#39;test_func&#39; defined as function test_func(a, b){return a+b;} in background script</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">invokeAsync</span><span class="p">(</span><span class="s1">&#39;test_func&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// invoke function &#39;foo&#39; from object &#39;MyObj&#39;</span>
+<span class="c1">// &#39;MyObj&#39; definition: var MyObj = {foo: function(x) {return x + 2;}};</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">invokeAsync</span><span class="p">(</span><span class="s1">&#39;MyObj.foo&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">val</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="invokeasynccallback">
+<span id="kango-invokeasynccallback"></span><h3>invokeAsyncCallback<a class="headerlink" href="#invokeasynccallback" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.invokeAsyncCallback">
+<tt class="descclassname">kango.</tt><tt class="descname">invokeAsyncCallback</tt><big>(</big><em>functionName</em>, <em>argument1</em>, <em>argument2</em>, <em>...</em>, <em>argumentN</em>, <em>callback</em><big>)</big><a class="headerlink" href="#kango.invokeAsyncCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls asynchronous function from background script.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>functionName</strong> (<em>string</em>) &#8211; function name to invoke</li>
+<li><strong>argumentN</strong> (<em>variant</em>) &#8211; variable number of arguments (must be JSON serializable)</li>
+<li><strong>callback</strong> (<em>function(result)</em>) &#8211; callback function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// background script</span>
+<span class="kd">function</span> <span class="nx">foo</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">setTimeout</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="nx">callback</span><span class="p">(</span><span class="nx">y</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="c1">// content script</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">invokeAsyncCallback</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">kango</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getextensioninfo">getExtensionInfo</a></li>
+<li><a class="reference internal" href="#addmessagelistener">addMessageListener</a></li>
+<li><a class="reference internal" href="#removemessagelistener">removeMessageListener</a></li>
+<li><a class="reference internal" href="#dispatchmessage">dispatchMessage</a></li>
+<li><a class="reference internal" href="#invokeasync">invokeAsync</a></li>
+<li><a class="reference internal" href="#invokeasynccallback">invokeAsyncCallback</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">API reference</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="kango-console.html"
+                        title="next chapter">kango.console</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="kango-console.html" title="kango.console"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="API reference"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >API reference</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

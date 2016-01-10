@@ -1,0 +1,47 @@
+.. _kango-io:
+
+========
+kango.io
+========
+
+Summary
+=======
+
+.. list-table::
+   :widths: 10 70
+   :header-rows: 1
+
+   * - Name
+     - Description
+     
+   * - :ref:`kango-io-getResourceUrl`
+     - Returns local resource URL
+     
+
+Methods
+=======
+
+.. _kango-io-getResourceUrl:
+
+getResourceUrl
+--------------
+
+.. js:function:: kango.io.getResourceUrl(filename)
+
+   Returns resource URL.
+   
+   :param string filename: File name
+
+.. note:: Resources must be placed in ``common/res`` directory.
+   
+Example::
+    
+    $(document.createElement('img')).attr({
+        src: kango.io.getResourceUrl('res/tree.png'),
+        title: 'Christmas tree'
+    }).css({
+        position: 'absolute',
+        top: '10px',
+        left: document.body.clientWidth - 280 + 'px',
+        'z-index': '10000'
+    }).appendTo(document.body);

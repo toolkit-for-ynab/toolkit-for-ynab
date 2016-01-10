@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<update>
+	<version>{version}</version>
+	<url>{update_package_url}</url>
+</update>

@@ -1,0 +1,104 @@
+.. _kango-i18n:
+
+==========
+kango.i18n
+==========
+
+Summary
+=======
+
+.. list-table::
+   :widths: 10 70
+   :header-rows: 1
+
+   * - Name
+     - Description
+     
+   * - :ref:`kango-i18n-getMessage`
+     - Returns localized message
+     
+   * - :ref:`kango-i18n-getMessages`
+     - Returns localized messages map
+     
+
+Methods
+=======
+
+.. _kango-i18n-getMessage:
+
+getMessage
+----------
+
+.. js:function:: kango.i18n.getMessage(name)
+
+   Returns localized message.
+   
+   :param string name: message name
+   :rtype: string
+
+Example::
+
+    kango.console.log(kango.i18n.getMessage('Hello'));
+
+    
+.. _kango-i18n-getMessages:
+
+getMessages
+-----------
+
+.. js:function:: kango.i18n.getMessages()
+
+   Returns localized messages map.
+   
+   :rtype: object
+
+Example::
+
+    kango.console.log('Messages = ' + JSON.stringify(kango.i18n.getMessages()));
+
+    
+Internationalizing your extension
+=================================
+
+Creating locale file
+--------------------
+Create %LocaleName%.json in common/locales directory. For Russian language e.g. common/locales/ru.json::
+
+    {
+        "Logo": "Логотип",
+        "Hello {name}": "Привет {name}"
+    }
+
+.. note:: %LocaleName% is an `ISO-639-1 <http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_ language code.    
+
+To get localized message you should use :js:func:`kango.i18n.getMessage`::
+
+    kango.i18n.getMessage('Logo') // Логотип
+    kango.i18n.getMessage('Hello {name}', {name: 'Bob'}) // Привет Bob
+
+
+Setting default locale
+----------------------
+Use ``default_locale`` key in :ref:`extension_info.json<KangoExtensionInfo>` file to set default locale::
+
+    {
+        ...,
+        
+        "default_locale": "ru",
+        
+        ...
+    }
+    
+Internationalizing extension name and description
+-------------------------------------------------
+You can localize extension name and description using special locale keys ``__info_name__`` and ``__info_description__``.
+
+common/locales/ru.json example::
+
+    {
+        "__info_name__": "Название расширения",
+        "__info_description__": "Описание расширения",
+        "Logo": "Логотип",
+        "Hello {name}": "Привет {name}"
+    }
+

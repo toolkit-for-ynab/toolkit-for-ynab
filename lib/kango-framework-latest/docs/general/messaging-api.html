@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Messaging API &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="General information" href="index.html" />
+    <link rel="next" title="Autoupdating Extensions" href="autoupdating-extensions.html" />
+    <link rel="prev" title="Popup API" href="popup-api.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="autoupdating-extensions.html" title="Autoupdating Extensions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="popup-api.html" title="Popup API"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">General information</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="messaging-api">
+<span id="id1"></span><h1>Messaging API<a class="headerlink" href="#messaging-api" title="Permalink to this headline">¶</a></h1>
+<p>Kango framework providing convenient and easy way to pass any JSON serializable data from content script to background script and vice versa. This allows developer to use any combinations of background-content scripts for their needs. Here we will show how data could be passed between scripts.</p>
+<p>Please also refer to the <tt class="docutils literal"><span class="pre">MessagingDemo</span></tt> project.</p>
+<p>To send/receive any message we need to use a pair of functions <a class="reference internal" href="../api-reference/kango.html#kango.addMessageListener" title="kango.addMessageListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.addMessageListener()</span></tt></a> and <a class="reference internal" href="../api-reference/kango.html#kango.dispatchMessage" title="kango.dispatchMessage"><tt class="xref js js-func docutils literal"><span class="pre">kango.dispatchMessage()</span></tt></a></p>
+<div class="section" id="what-kango-messages-are">
+<h2>What Kango messages are?<a class="headerlink" href="#what-kango-messages-are" title="Permalink to this headline">¶</a></h2>
+<p>Each Kango message has a name and an optional JSON serializable data attached. For example sending a message could be something like that:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">policy</span><span class="o">:</span> <span class="s1">&#39;strict&#39;</span><span class="p">,</span>
+    <span class="nx">urls</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;http://server1.com/&#39;</span><span class="p">,</span> <span class="s1">&#39;http://server2.com/&#39;</span><span class="p">,</span> <span class="s1">&#39;http://server3.com/&#39;</span> <span class="p">]</span>
+<span class="p">};</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">dispatchMessage</span><span class="p">(</span><span class="s1">&#39;CheckWithAntivirus&#39;</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This will send a message named <tt class="docutils literal"><span class="pre">CheckWithAntivirus</span></tt> with attached data object. Kango will find a listener by message name and call appropriate listener function with data object as param.</p>
+<p>The data object must be JSON serializable, for instance you can not pass a function in data object.
+If you want to have a callback after message processing please use event.target to send a message back to sender.</p>
+</div>
+<div class="section" id="what-is-the-message-listener-signature">
+<h2>What is the message listener signature?<a class="headerlink" href="#what-is-the-message-listener-signature" title="Permalink to this headline">¶</a></h2>
+<p>The message listener is 1 param function:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// message processing goes here</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The event param will be an object:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">event</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">data</span><span class="o">:</span> <span class="nx">variant</span><span class="p">,</span>  <span class="c1">// JSON serializable data object attached to the message</span>
+    <span class="nx">target</span><span class="o">:</span> <span class="nx">object</span><span class="p">,</span> <span class="c1">// Point to object sent the message</span>
+    <span class="nx">source</span><span class="o">:</span> <span class="nx">KangoMessageSource</span> <span class="c1">// Message source</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>target</strong> field could be either <a class="reference internal" href="../api-reference/KangoBrowserTab.html#kangobrowsertab"><em>KangoBrowserTab</em></a> or <a class="reference internal" href="../api-reference/kango.html#kango"><em>kango</em></a> objects. For instance if message came from background to content script then target will be a <a class="reference internal" href="../api-reference/kango.html#kango"><em>kango</em></a> object. And if message came from content to background target will be <a class="reference internal" href="../api-reference/KangoBrowserTab.html#kangobrowsertab"><em>KangoBrowserTab</em></a>.</p>
+<p>The <strong>event.target.dispatchMessage</strong> function could be used inside message listener.</p>
+<p><strong>source</strong> <a class="reference internal" href="../api-reference/KangoMessageSource.html#kangomessagesource"><em>KangoMessageSource</em></a> object.</p>
+</div>
+<div class="section" id="from-background-to-content-script">
+<h2>From background to content script<a class="headerlink" href="#from-background-to-content-script" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="subscribing-inside-a-content-script">
+<h3>Subscribing inside a content script<a class="headerlink" href="#subscribing-inside-a-content-script" title="Permalink to this headline">¶</a></h3>
+<p>Inside the content script where you need to receive a message you need to subscribe for that message by calling <a class="reference internal" href="../api-reference/kango.html#kango.addMessageListener" title="kango.addMessageListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.addMessageListener()</span></tt></a> function as follows:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">addMessageListener</span><span class="p">(</span><span class="s1">&#39;Background2Content&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// event.data - the data sent with message</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Background script says: &#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="posting-message-from-background-script">
+<h3>Posting message from background script<a class="headerlink" href="#posting-message-from-background-script" title="Permalink to this headline">¶</a></h3>
+<p>Inside the background script you can call <a class="reference internal" href="../api-reference/KangoBrowserTab.html#KangoBrowserTab.dispatchMessage" title="KangoBrowserTab.dispatchMessage"><tt class="xref js js-func docutils literal"><span class="pre">dispatchMessage</span></tt></a> function to call the code inside content script:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">getCurrent</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// tab is KangoBrowserTab object</span>
+    <span class="nx">tab</span><span class="p">.</span><span class="nx">dispatchMessage</span><span class="p">(</span><span class="s1">&#39;Background2Content&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello from background&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Please note that firstly we choose a tab for posting a message. If you want to post a message to all the tabs you can enumerate them via <a class="reference internal" href="../api-reference/kango-browser-tabs.html#kango.browser.tabs.getAll" title="kango.browser.tabs.getAll"><tt class="xref js js-func docutils literal"><span class="pre">kango.browser.tabs.getAll()</span></tt></a> function like follow:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">getAll</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tabs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">tabs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+     <span class="nx">tabs</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">dispatchMessage</span><span class="p">(</span><span class="s1">&#39;MyMessage&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="from-content-to-background">
+<h2>From content to background<a class="headerlink" href="#from-content-to-background" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="subscribing-inside-background-script">
+<h3>Subscribing inside background script<a class="headerlink" href="#subscribing-inside-background-script" title="Permalink to this headline">¶</a></h3>
+<p>Inside background script you can add a listener by calling the same <a class="reference internal" href="../api-reference/kango.html#kango.addMessageListener" title="kango.addMessageListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.addMessageListener()</span></tt></a> function:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">addMessageListener</span><span class="p">(</span><span class="s1">&#39;Content2Background&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// event.data - point to data attached</span>
+    <span class="c1">// event.target - point to the KangoBrowseTab object that sent the message</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Content script says: &#39;</span> <span class="o">+</span> <span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="posting-message-from-content-script">
+<h3>Posting message from content script<a class="headerlink" href="#posting-message-from-content-script" title="Permalink to this headline">¶</a></h3>
+<p>Content to background message could be sent by calling <a class="reference internal" href="../api-reference/kango.html#kango.dispatchMessage" title="kango.dispatchMessage"><tt class="xref js js-func docutils literal"><span class="pre">kango.dispatchMessage()</span></tt></a> function:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">dispatchMessage</span><span class="p">(</span><span class="s1">&#39;Content2Background&#39;</span><span class="p">,</span> <span class="s1">&#39;Hello&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Messaging API</a><ul>
+<li><a class="reference internal" href="#what-kango-messages-are">What Kango messages are?</a></li>
+<li><a class="reference internal" href="#what-is-the-message-listener-signature">What is the message listener signature?</a></li>
+<li><a class="reference internal" href="#from-background-to-content-script">From background to content script</a><ul>
+<li><a class="reference internal" href="#subscribing-inside-a-content-script">Subscribing inside a content script</a></li>
+<li><a class="reference internal" href="#posting-message-from-background-script">Posting message from background script</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#from-content-to-background">From content to background</a><ul>
+<li><a class="reference internal" href="#subscribing-inside-background-script">Subscribing inside background script</a></li>
+<li><a class="reference internal" href="#posting-message-from-content-script">Posting message from content script</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="popup-api.html"
+                        title="previous chapter">Popup API</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="autoupdating-extensions.html"
+                        title="next chapter">Autoupdating Extensions</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="autoupdating-extensions.html" title="Autoupdating Extensions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="popup-api.html" title="Popup API"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >General information</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,6 @@
+{
+    "__info_name__": "Internationalization demo",
+    "__info_description__": "Extension description",
+    "Logo": "Logo",
+    "Hello": "Hello {name}"
+}

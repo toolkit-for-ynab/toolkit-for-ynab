@@ -1,0 +1,128 @@
+.. _kango-storage:
+
+=============
+kango.storage
+=============
+
+Summary
+=======
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+	 
+   * - :ref:`kango-storage-getItem`
+     - Returns stored item by name
+	 
+   * - :ref:`kango-storage-setItem`
+     - Saves named item
+	 
+   * - :ref:`kango-storage-removeItem`
+     - Removes item by name
+	 
+   * - :ref:`kango-storage-getKeys`
+     - Returns array of item names
+	 
+   * - :ref:`kango-storage-clear`
+     - Delete all the items
+
+
+:note: You can use this module in content scripts.
+	 
+Methods
+=======
+
+.. _kango-storage-getItem:
+
+getItem
+-------
+
+.. js:function:: kango.storage.getItem(name)
+
+   Returns item stored by name or *null* if item does not exist.
+   
+   :param string name: Item name
+   :rtype: variant
+
+Example::
+
+    var homeUrl = kango.storage.getItem('home_url');
+    kango.console.log('stored value for homeUrl is ' + homeUrl);
+
+	
+.. _kango-storage-setItem:
+
+setItem
+-------
+
+.. js:function:: kango.storage.setItem(name, value)
+
+   Saves an item with specified name.
+   
+   :param string name: Item name
+   :param variant value: Data to be saved
+
+Example::
+
+    kango.storage.setItem('height', 176);
+    var storedHeight = kango.storage.getItem('height');
+    kango.console.log('stored height is ' + storedHeight );
+
+	
+.. _kango-storage-removeItem:
+
+removeItem
+----------
+
+.. js:function:: kango.storage.removeItem(name)
+
+   Removes item with specified name.
+   
+   :param string name: Item name
+
+Example::
+
+    kango.storage.setItem('height', 176);
+
+    var storedHeight = kango.storage.getItem('height');
+    kango.console.log('stored height is ' + storedHeight );
+
+    kango.storage.removeItem('height');
+
+    storedHeight = kango.storage.getItem('height'); // null
+
+	
+.. _kango-storage-getKeys:
+
+getKeys
+-------
+
+.. js:function:: kango.storage.getKeys()
+
+   Returns array of item names.
+   
+   :returns: array of item names
+   :rtype: Array of strings
+
+Example::
+
+    var keys = kango.storage.getKeys();
+    kango.console.log(keys.toString());
+	
+	
+.. _kango-storage-clear:
+
+clear
+-----
+
+.. js:function:: kango.storage.clear()
+
+   Removes all the items from storage.
+
+Example::
+
+    kango.storage.clear();
+

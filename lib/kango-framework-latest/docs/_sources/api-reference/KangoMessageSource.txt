@@ -1,0 +1,40 @@
+.. _KangoMessageSource:
+
+=================================
+ KangoMessageSource
+=================================
+
+Summary
+=================================
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+	 
+   * - :ref:`KangoMessageSource.dispatchMessage`
+     - Dispatches a message
+	 
+Methods
+=================================
+
+.. _KangoMessageSource.dispatchMessage:
+
+dispatchMessage
+---------------------------------
+
+.. js:function:: KangoMessageSource.dispatchMessage(name, data)
+
+   Dispatches a message to the message event source.
+   
+   :param string name: message name
+   :param variant data: JSON serializable data to send
+
+Example::
+
+	kango.addMessageListener('GetInfo', function(event) {
+		// send answer to message source
+		event.source.dispatchMessage('SetInfo', {x:2, y:8});
+	});

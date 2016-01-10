@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>kango.browser.windows &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="API reference" href="index.html" />
+    <link rel="next" title="kango.ui.browserButton" href="kango-ui-browserButton.html" />
+    <link rel="prev" title="kango.browser.tabs" href="kango-browser-tabs.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="kango-ui-browserButton.html" title="kango.ui.browserButton"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="kango-browser-tabs.html" title="kango.browser.tabs"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="kango-browser-windows">
+<span id="id1"></span><h1>kango.browser.windows<a class="headerlink" href="#kango-browser-windows" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#kango-browser-windows-getall"><em>getAll</em></a></td>
+<td>Retrieves all windows</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kango-browser-windows-getcurrent"><em>getCurrent</em></a></td>
+<td>Retrieves current active window</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kango-browser-windows-create"><em>create</em></a></td>
+<td>Creates new window</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getall">
+<span id="kango-browser-windows-getall"></span><h3>getAll<a class="headerlink" href="#getall" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.browser.windows.getAll">
+<tt class="descclassname">kango.browser.windows.</tt><tt class="descname">getAll</tt><big>(</big><em>callback</em><big>)</big><a class="headerlink" href="#kango.browser.windows.getAll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function will prepare an array of all the windows available and pass it to callback specified.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>callback</strong> (<em>function(wins)</em>) &#8211; callback function. wins ia an Array of <a class="reference internal" href="KangoBrowserWindow.html#kangobrowserwindow"><em>KangoBrowserWindow</em></a> objects</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// enumerate all the browser windows, look for active window and output URL in selected tab for it</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">windows</span><span class="p">.</span><span class="nx">getAll</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">wins</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// wins is Array of KangoBrowserWindows</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">wins</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">wins</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">isActive</span><span class="p">())</span> <span class="p">{</span>
+                        <span class="nx">wins</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">getCurrentTab</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tab1</span><span class="p">){</span>
+                                <span class="c1">// tab1 is an active tab in active window</span>
+                                <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tab1</span><span class="p">.</span><span class="nx">getUrl</span><span class="p">());</span>
+                        <span class="p">});</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getcurrent">
+<span id="kango-browser-windows-getcurrent"></span><h3>getCurrent<a class="headerlink" href="#getcurrent" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.browser.windows.getCurrent">
+<tt class="descclassname">kango.browser.windows.</tt><tt class="descname">getCurrent</tt><big>(</big><em>callback</em><big>)</big><a class="headerlink" href="#kango.browser.windows.getCurrent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves currently active window and pass <a class="reference internal" href="KangoBrowserWindow.html#kangobrowserwindow"><em>KangoBrowserWindow</em></a> object for it to callback as argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>callback</strong> (<em>function(win)</em>) &#8211; callback function. win is an <a class="reference internal" href="KangoBrowserWindow.html#kangobrowserwindow"><em>KangoBrowserWindow</em></a> object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// output number of tabs in active window</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">windows</span><span class="p">.</span><span class="nx">getCurrent</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">win</span><span class="p">){</span>
+        <span class="c1">// win is KangoBrowserWindow object</span>
+        <span class="nx">win</span><span class="p">.</span><span class="nx">getTabs</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tabs</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+        <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create">
+<span id="kango-browser-windows-create"></span><h3>create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.browser.windows.create">
+<tt class="descclassname">kango.browser.windows.</tt><tt class="descname">create</tt><big>(</big><em>details</em><big>)</big><a class="headerlink" href="#kango.browser.windows.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates new window with specified parameters. Created tab window be in focus after creation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>details</strong> &#8211; create parameters</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Details object:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">details</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">string</span> <span class="nx">url</span>      <span class="c1">// URL of the page to open</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// open URL in new window</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">windows</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span><span class="s1">&#39;http://example.com/&#39;</span><span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">kango.browser.windows</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getall">getAll</a></li>
+<li><a class="reference internal" href="#getcurrent">getCurrent</a></li>
+<li><a class="reference internal" href="#create">create</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="kango-browser-tabs.html"
+                        title="previous chapter">kango.browser.tabs</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="kango-ui-browserButton.html"
+                        title="next chapter">kango.ui.browserButton</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="kango-ui-browserButton.html" title="kango.ui.browserButton"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="kango-browser-tabs.html" title="kango.browser.tabs"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >API reference</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>
