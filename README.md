@@ -30,9 +30,9 @@ All of these are configurable with options in the extension options page.
 Roadmap
 -------
 
-Features under consideration and the general status of the project is on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel free to vote and comment. To suggest new features, please visit the YNAB Forum thread here and comment. Forum user \@stephywephy is managing the features there and will make sure it ends up in Trello.
+Features under consideration and the general status of the project is on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel free to vote and comment. To suggest new features, please visit the YNAB Forum thread here and comment. Forum user @stephywephy is managing the features there and will make sure it ends up in Trello.
 
-If you want to contribute, it's best if you can let us know so we don't double up on effort. You can see what is being worked on and by whom on the roadmap. Contact \@blarg on the forums to get started.
+If you want to contribute, it's best if you can let us know so we don't double up on effort. You can see what is being worked on and by whom on the roadmap. Contact @blarg on the forums to get started.
 
 Building the Code
 -----------------
