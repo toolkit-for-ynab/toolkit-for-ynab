@@ -24,7 +24,9 @@ function ynabEnhancedCollapseInitializer() {
   }
 
   // Watch for the budget grid
-  function watchBudgetGrid() {
+  function watchBudgetGrid(i) {
+    if (typeof i === 'undefined')
+      i = 0;
     exists = false;
 
     if ($(".budget-toolbar").length) {
@@ -33,13 +35,18 @@ function ynabEnhancedCollapseInitializer() {
     if (exists) {
       setCollapsedSizes();
       setActiveButton();
-   } else {
-     setTimeout(watchBudgetGrid, 250);
+   } else if (i < 10) {
+     i++;
+     setTimeout(function() {
+       watchBudgetGrid(i);
+     }, 250);
    }
   }
 
   // Watch for the account grid
-  function watchAccountGrid() {
+  function watchAccountGrid(i) {
+    if (typeof i === 'undefined')
+      i = 0;
     exists = false;
 
     if ($(".accounts-toolbar").length) {
@@ -48,8 +55,11 @@ function ynabEnhancedCollapseInitializer() {
     if (exists) {
       setCollapsedSizes();
       setActiveButton();
-   } else {
-     setTimeout(watchAccountGrid, 250);
+   } else if (i < 10) {
+     i++;
+     setTimeout(function() {
+       watchAccountGrid(i);
+     }, 250);
    }
   }
 
@@ -106,7 +116,7 @@ function ynabEnhancedCollapseInitializer() {
     var originalSizes = {
       sidebarWidth:   $(".sidebar").width(),
       contentLeft:    $(".content").css("left"),
-      headerLeft:     $(".budget-header").css("left"),
+      headerLeft:     $(".budget-header, .accounts-header").css("left"),
       contentWidth:   $(".budget-content").css("width"),
       inspectorWidth: $(".budget-inspector").css("width")
     }
@@ -152,11 +162,13 @@ function ynabEnhancedCollapseInitializer() {
   // Set collapsed sizes
   function setCollapsedSizes() {
     $(".sidebar").animate({ width: "40px" });
-    $(".content").animate({ left: "40px" });
+    $(".content").animate({ left: "40px" }, 400, 'swing', function() {
+      // Need to remove width after animation completion
+      $(".ynab-grid-header").removeAttr("style");
+    });
     $(".budget-header").animate({ left: "40px" });
     $(".budget-content").animate({ width: "73%" });
     $(".budget-inspector").animate({ width: "27%" });
-    $(".ynab-grid-header").removeAttr("style");
   }
 
   // Add the active style to correct button
