@@ -1,7 +1,7 @@
-YNAB Enhanced
+Toolkit for YNAB
 =============
 
-YNAB Enhanced is a general purpose YNAB enhancing chrome extension. Have it your way!
+Toolkit for YNAB is a general purpose YNAB enhancing chrome extension. Have it your way!
 
 YNAB have released an exciting new web version. Lots of power users of the older
 versions are asking for options that are easily implemented in a browser extension.
