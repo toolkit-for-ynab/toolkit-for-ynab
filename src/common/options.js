@@ -110,4 +110,7 @@ KangoAPI.onReady(function() {
   $('input:checkbox').bootstrapSwitch();
 });
 
-document.getElementById('save').addEventListener('click', save_options);
+$('#save').click(save_options);
+$('#cancel').click(function() {
+  KangoAPI.closeWindow();
+});
