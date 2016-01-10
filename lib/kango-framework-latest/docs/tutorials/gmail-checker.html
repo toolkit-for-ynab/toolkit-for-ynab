@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Creating Gmail checker &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="Tutorials" href="index.html" />
+    <link rel="next" title="Modifying content of web pages using Kango and jQuery" href="modifying-content-using-jquery.html" />
+    <link rel="prev" title="Tutorials" href="index.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modifying-content-using-jquery.html" title="Modifying content of web pages using Kango and jQuery"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Tutorials"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="creating-gmail-checker">
+<span id="gmail-checker"></span><h1>Creating Gmail checker<a class="headerlink" href="#creating-gmail-checker" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Kango allows creating extensions for popular browsers using JavaScript only, the code being single for all major browsers.
+Chrome, Firefox, Internet Explorer and Safari are supported currently.</p>
+<p>The way to create a simple cross browser Gmail Checker is represented below.</p>
+<p>You will eventually get this:</p>
+<div class="figure">
+<img alt="Gmail checker" src="../_images/gmail-checker.png" />
+</div>
+</div>
+<div class="section" id="preparation-of-environment-to-work-with-kango">
+<h2>Preparation of environment to work with Kango<a class="headerlink" href="#preparation-of-environment-to-work-with-kango" title="Permalink to this headline">¶</a></h2>
+<p>Before you begin working with Kango you should make a few steps:</p>
+<ol class="arabic simple">
+<li>Install Python 2.7 (<a class="reference external" href="http://www.python.org/download/">http://www.python.org/download/</a>).</li>
+<li>Download <a class="reference external" href="http://kangoextensions.com/kango/kango-framework-latest.zip">here</a> and extract the archive with framework to any directory.</li>
+</ol>
+</div>
+<div class="section" id="creation-of-new-project">
+<h2>Creation of new project<a class="headerlink" href="#creation-of-new-project" title="Permalink to this headline">¶</a></h2>
+<p>Create a directory for the project and run kango.py from the framework directory:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">python</span> <span class="nx">kango_dir</span><span class="o">/</span><span class="nx">kango</span><span class="p">.</span><span class="nx">py</span> <span class="nx">create</span> <span class="s2">&quot;my_project_dir&quot;</span>
+</pre></div>
+</div>
+<p>On request for project name enter <tt class="docutils literal"><span class="pre">Gmail</span> <span class="pre">Checker</span></tt>.</p>
+<p>Now you may start writing code of your extension.</p>
+<p>Later on you can set name and version of your extension using file <tt class="docutils literal"><span class="pre">common\extension_info.json</span></tt>.</p>
+</div>
+<div class="section" id="writing-gmail-checker">
+<h2>Writing Gmail Checker<a class="headerlink" href="#writing-gmail-checker" title="Permalink to this headline">¶</a></h2>
+<p>The extension will check number of unread messages on Gmail from time to time and show such number on a browser button.
+After creation of project open directory <tt class="docutils literal"><span class="pre">src\common</span></tt> to see that template is already created in the file <tt class="docutils literal"><span class="pre">main.js.</span></tt></p>
+</div>
+<div class="section" id="obtain-number-of-unread-messages">
+<h2>Obtain number of unread messages<a class="headerlink" href="#obtain-number-of-unread-messages" title="Permalink to this headline">¶</a></h2>
+<p>Number of unread messages can be obtained on <a class="reference external" href="https://mail.google.com/mail/feed/atom">https://mail.google.com/mail/feed/atom</a> in Atom 0.3 format (for correct work it is necessary that user is authorized in Gmail in the current browser).</p>
+<p>Method <a class="reference internal" href="../api-reference/kango-xhr.html#kango.xhr.send" title="kango.xhr.send"><tt class="xref js js-func docutils literal"><span class="pre">kango.xhr.send()</span></tt></a> is used for AJAX queries:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">details</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;https://mail.google.com/mail/feed/atom&#39;</span><span class="p">,</span>
+        <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+        <span class="nx">async</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nx">contentType</span><span class="o">:</span> <span class="s1">&#39;text&#39;</span>
+<span class="p">};</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">details</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">response</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="kd">var</span> <span class="nx">matches</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/&lt;fullcount&gt;(\d+)&lt;\/fullcount&gt;/</span><span class="p">);</span> <span class="c1">// Old IE versions don&#39;t support getElementsByTagNameNS, so we have to use RegExp</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">matches</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">matches</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">count</span> <span class="o">=</span> <span class="nx">matches</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="displaying-of-message-number-on-the-button">
+<h2>Displaying of message number on the button<a class="headerlink" href="#displaying-of-message-number-on-the-button" title="Permalink to this headline">¶</a></h2>
+<p>Adjustment of button properties can be carried out using object kango.ui.browserButton:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">_setUnreadCount</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">count</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setTooltipText</span><span class="p">(</span><span class="s1">&#39;Unread count: &#39;</span> <span class="o">+</span> <span class="nx">count</span><span class="p">);</span>
+        <span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setIcon</span><span class="p">(</span><span class="s1">&#39;icons/button.png&#39;</span><span class="p">);</span>
+        <span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setBadgeValue</span><span class="p">(</span><span class="nx">count</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-everything-together">
+<h2>Getting everything together<a class="headerlink" href="#getting-everything-together" title="Permalink to this headline">¶</a></h2>
+<p>Let us add a timer which will check number of new messages on a periodic predetermined basis, and error handling. As a result you will have code like this:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">function</span> <span class="nx">GmailChecker</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">refresh</span><span class="p">();</span>
+        <span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">COMMAND</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;https://mail.google.com/&#39;</span><span class="p">});</span>
+                <span class="nx">self</span><span class="p">.</span><span class="nx">refresh</span><span class="p">();</span>
+        <span class="p">});</span>
+        <span class="nb">window</span><span class="p">.</span><span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">self</span><span class="p">.</span><span class="nx">refresh</span><span class="p">()},</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_refreshTimeout</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">GmailChecker</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="nx">_refreshTimeout</span><span class="o">:</span> <span class="mi">60</span><span class="o">*</span><span class="mi">1000</span><span class="o">*</span><span class="mi">15</span><span class="p">,</span>    <span class="c1">// 15 minutes</span>
+        <span class="nx">_feedUrl</span><span class="o">:</span> <span class="s1">&#39;https://mail.google.com/mail/feed/atom&#39;</span><span class="p">,</span>
+
+        <span class="nx">_setOffline</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setTooltipText</span><span class="p">(</span><span class="nx">kango</span><span class="p">.</span><span class="nx">i18n</span><span class="p">.</span><span class="nx">getMessage</span><span class="p">(</span><span class="s1">&#39;Offline&#39;</span><span class="p">));</span>
+                <span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setIcon</span><span class="p">(</span><span class="s1">&#39;icons/button_gray.png&#39;</span><span class="p">);</span>
+                <span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setBadgeValue</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="p">},</span>
+
+        <span class="nx">_setUnreadCount</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">count</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setTooltipText</span><span class="p">(</span><span class="nx">kango</span><span class="p">.</span><span class="nx">i18n</span><span class="p">.</span><span class="nx">getMessage</span><span class="p">(</span><span class="s1">&#39;Unread count&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nx">count</span><span class="p">);</span>
+                <span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setIcon</span><span class="p">(</span><span class="s1">&#39;icons/button.png&#39;</span><span class="p">);</span>
+                <span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setBadgeValue</span><span class="p">(</span><span class="nx">count</span><span class="p">);</span>
+        <span class="p">},</span>
+
+        <span class="nx">refresh</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">details</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="nx">url</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">_feedUrl</span><span class="p">,</span>
+                        <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+                        <span class="nx">async</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+                        <span class="nx">contentType</span><span class="o">:</span> <span class="s1">&#39;text&#39;</span>
+                <span class="p">};</span>
+                <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+                <span class="nx">kango</span><span class="p">.</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">details</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">response</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+                                <span class="kd">var</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+                                <span class="kd">var</span> <span class="nx">matches</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/&lt;fullcount&gt;(\d+)&lt;\/fullcount&gt;/</span><span class="p">);</span> <span class="c1">// Old IE versions don&#39;t support getElementsByTagNameNS, so we have to use RegExp</span>
+                                <span class="k">if</span><span class="p">(</span><span class="nx">matches</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">matches</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                                        <span class="nx">count</span> <span class="o">=</span> <span class="nx">matches</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+                                <span class="p">}</span>
+                                <span class="nx">self</span><span class="p">.</span><span class="nx">_setUnreadCount</span><span class="p">(</span><span class="nx">count</span><span class="p">);</span>
+                        <span class="p">}</span>
+                        <span class="k">else</span> <span class="p">{</span> <span class="c1">// something went wrong</span>
+                                <span class="nx">self</span><span class="p">.</span><span class="nx">_setOffline</span><span class="p">();</span>
+                        <span class="p">}</span>
+                <span class="p">});</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">extension</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">GmailChecker</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>All in all you have just 50 lines of code for you extension, which works with all major browsers.</p>
+</div>
+<div class="section" id="icons">
+<h2>Icons<a class="headerlink" href="#icons" title="Permalink to this headline">¶</a></h2>
+<p>You should place icons in PNG format with names <tt class="docutils literal"><span class="pre">button.png</span></tt>, <tt class="docutils literal"><span class="pre">icon32.png</span></tt>, <tt class="docutils literal"><span class="pre">icon48.png</span></tt>, <tt class="docutils literal"><span class="pre">icon100.png</span></tt>, <tt class="docutils literal"><span class="pre">icon128.png</span></tt> with dimensions 16x16, 32x32, 48x48, 100x100, 128x128 pixels respectively into directory <tt class="docutils literal"><span class="pre">common/icons</span></tt>, as well as icon <tt class="docutils literal"><span class="pre">button_gray.png</span></tt> in order to display inactive state.</p>
+<p>See <a class="reference internal" href="../general/icons.html#icons"><em>Icons</em></a> section for more information.</p>
+</div>
+<div class="section" id="project-building">
+<h2>Project building<a class="headerlink" href="#project-building" title="Permalink to this headline">¶</a></h2>
+<p>In order to build the project run <tt class="docutils literal"><span class="pre">kango.py</span></tt> with argument <tt class="docutils literal"><span class="pre">build</span></tt> and path to the project directory:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">python</span> <span class="nx">kango_dir</span><span class="o">/</span><span class="nx">kango</span><span class="p">.</span><span class="nx">py</span> <span class="nx">build</span> <span class="s2">&quot;my_project_dir&quot;</span>
+</pre></div>
+</div>
+<p>Google Chrome or Chromium should be installed so that you could build an extension for Chrome.</p>
+<p>In output you are supposed to get <tt class="docutils literal"><span class="pre">gmailchecker_1.1.0.crx</span></tt>, <tt class="docutils literal"><span class="pre">gmailchecker_1.1.0.xpi</span></tt>, <tt class="docutils literal"><span class="pre">gmailchecker_1.1.0.exe</span></tt> which are ready extension files.</p>
+</div>
+<div class="section" id="links">
+<h2>Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Full <a class="reference external" href="https://github.com/KangoExtensions/kango-samples/tree/master/GmailChecker/src/common">source</a> of the GmailChecker sample.</li>
+<li><a class="reference external" href="http://kangoextensions.com/kango/kango-framework-latest.zip">Framework</a> itself.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Creating Gmail checker</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#preparation-of-environment-to-work-with-kango">Preparation of environment to work with Kango</a></li>
+<li><a class="reference internal" href="#creation-of-new-project">Creation of new project</a></li>
+<li><a class="reference internal" href="#writing-gmail-checker">Writing Gmail Checker</a></li>
+<li><a class="reference internal" href="#obtain-number-of-unread-messages">Obtain number of unread messages</a></li>
+<li><a class="reference internal" href="#displaying-of-message-number-on-the-button">Displaying of message number on the button</a></li>
+<li><a class="reference internal" href="#getting-everything-together">Getting everything together</a></li>
+<li><a class="reference internal" href="#icons">Icons</a></li>
+<li><a class="reference internal" href="#project-building">Project building</a></li>
+<li><a class="reference internal" href="#links">Links</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Tutorials</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="modifying-content-using-jquery.html"
+                        title="next chapter">Modifying content of web pages using Kango and jQuery</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="modifying-content-using-jquery.html" title="Modifying content of web pages using Kango and jQuery"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Tutorials"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

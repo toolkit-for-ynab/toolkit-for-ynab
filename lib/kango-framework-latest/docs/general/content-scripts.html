@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Content Scripts &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="General information" href="index.html" />
+    <link rel="next" title="Background Scripts" href="background-scripts.html" />
+    <link rel="prev" title="Creating and Building Browser Extensions" href="creating-and-building-browser-extensions.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="background-scripts.html" title="Background Scripts"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="creating-and-building-browser-extensions.html" title="Creating and Building Browser Extensions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">General information</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="content-scripts">
+<span id="id1"></span><h1>Content Scripts<a class="headerlink" href="#content-scripts" title="Permalink to this headline">¶</a></h1>
+<p>Content scripts run on any web page opened by user (by default after <em>DOMContentLoaded</em> event).</p>
+<p>All the content scripts should be enumerated in <tt class="docutils literal"><span class="pre">content_scripts</span></tt> section of <a class="reference internal" href="../api-reference/KangoExtensionInfo.html#kangoextensioninfo"><em>extension_info.json</em></a> file:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;content_scripts&quot;</span><span class="o">:</span> <span class="p">[</span>
+        <span class="s2">&quot;content.js&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="kango-apis-available-in-content-scripts">
+<span id="content-scripts-api"></span><h2>kango.* APIs available in content scripts<a class="headerlink" href="#kango-apis-available-in-content-scripts" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">In content scripts you can use only APIs from the list below.</p>
+</div>
+<ul class="simple">
+<li><a class="reference internal" href="../api-reference/kango.html#kango.getExtensionInfo" title="kango.getExtensionInfo"><tt class="xref js js-func docutils literal"><span class="pre">kango.getExtensionInfo()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango.html#kango.addMessageListener" title="kango.addMessageListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.addMessageListener()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango.html#kango.removeMessageListener" title="kango.removeMessageListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.removeMessageListener()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango.html#kango.dispatchMessage" title="kango.dispatchMessage"><tt class="xref js js-func docutils literal"><span class="pre">kango.dispatchMessage()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango.html#kango.invokeAsync" title="kango.invokeAsync"><tt class="xref js js-func docutils literal"><span class="pre">kango.invokeAsync()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-xhr.html#kango.xhr.send" title="kango.xhr.send"><tt class="xref js js-func docutils literal"><span class="pre">kango.xhr.send()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-console.html#kango.console.log" title="kango.console.log"><tt class="xref js js-func docutils literal"><span class="pre">kango.console.log()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-browser.html#kango.browser.getName" title="kango.browser.getName"><tt class="xref js js-func docutils literal"><span class="pre">kango.browser.getName()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-storage.html#kango-storage"><em>kango.storage</em></a></li>
+</ul>
+<p>See <a class="reference internal" href="messaging-api.html#messaging-api"><em>Messaging API</em></a> section for more information.</p>
+</div>
+<div class="section" id="metadata-block-syntax">
+<h2>Metadata block syntax<a class="headerlink" href="#metadata-block-syntax" title="Permalink to this headline">¶</a></h2>
+<p>The metadata block must follow the format:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// ==UserScript==</span>
+<span class="c1">// @key value</span>
+<span class="c1">// ==/UserScript==</span>
+</pre></div>
+</div>
+<div class="section" id="name">
+<h3>&#64;name<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h3>
+<p>The name of the script.</p>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// @name Example Script</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="namespace">
+<h3>&#64;namespace<a class="headerlink" href="#namespace" title="Permalink to this headline">¶</a></h3>
+<p>Scripts with the same namespace will have common variables.</p>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// @namespace example</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exclude-include">
+<h3>&#64;exclude &#64;include<a class="headerlink" href="#exclude-include" title="Permalink to this headline">¶</a></h3>
+<p>The script will execute if it matches any include rule, as long as it does not match an exclude rule.</p>
+<p>The rules are URLs, which can have a &#8220;wildcard&#8221; asterisk *, which matches any string including the empty string.</p>
+<p>There can be any number of &#64;exclude and &#64;include keys in a script.</p>
+<p>For example: <tt class="docutils literal"><span class="pre">http://www.example.com/foo/*</span></tt> will match:</p>
+<p><tt class="docutils literal"><span class="pre">http://www.example.com/foo/bar</span></tt> and <tt class="docutils literal"><span class="pre">http://www.example.com/foo/</span></tt></p>
+<p>but not:</p>
+<p><tt class="docutils literal"><span class="pre">http://www.example.com/baz/</span></tt>.</p>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// @include http://*.example.*</span>
+<span class="c1">// @exclude http://www.example.com/*</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="all-frames">
+<h3>&#64;all-frames<a class="headerlink" href="#all-frames" title="Permalink to this headline">¶</a></h3>
+<p>Run script on all frames. Default value is <em>false</em>.</p>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// @all-frames true</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="require">
+<span id="content-scripts-require"></span><h3>&#64;require<a class="headerlink" href="#require" title="Permalink to this headline">¶</a></h3>
+<p>Includes JavaScript file from project common directory.</p>
+<p>There can be any number of &#64;require keys in a script.</p>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// @require jquery.min.js</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="sample">
+<h2>Sample<a class="headerlink" href="#sample" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// ==UserScript==</span>
+<span class="c1">// @name Test</span>
+<span class="c1">// @include http://*</span>
+<span class="c1">// @include https://*</span>
+<span class="c1">// ==/UserScript==</span>
+
+<span class="c1">// Get last saved color number from storage</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">invokeAsync</span><span class="p">(</span><span class="s1">&#39;kango.storage.getItem&#39;</span><span class="p">,</span> <span class="s1">&#39;colorNumber&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">colorNumber</span> <span class="o">=</span> <span class="nx">data</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;green&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">];</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="nx">colors</span><span class="p">[</span><span class="nx">colorNumber</span><span class="o">++</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">colorNumber</span> <span class="o">&gt;</span> <span class="nx">colors</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">colorNumber</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c1">// Save color number</span>
+        <span class="nx">kango</span><span class="p">.</span><span class="nx">invokeAsync</span><span class="p">(</span><span class="s1">&#39;kango.storage.setItem&#39;</span><span class="p">,</span> <span class="s1">&#39;colorNumber&#39;</span><span class="p">,</span> <span class="nx">colorNumber</span><span class="p">);</span>
+    <span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Content Scripts</a><ul>
+<li><a class="reference internal" href="#kango-apis-available-in-content-scripts">kango.* APIs available in content scripts</a></li>
+<li><a class="reference internal" href="#metadata-block-syntax">Metadata block syntax</a><ul>
+<li><a class="reference internal" href="#name">&#64;name</a></li>
+<li><a class="reference internal" href="#namespace">&#64;namespace</a></li>
+<li><a class="reference internal" href="#exclude-include">&#64;exclude &#64;include</a></li>
+<li><a class="reference internal" href="#all-frames">&#64;all-frames</a></li>
+<li><a class="reference internal" href="#require">&#64;require</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sample">Sample</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="creating-and-building-browser-extensions.html"
+                        title="previous chapter">Creating and Building Browser Extensions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="background-scripts.html"
+                        title="next chapter">Background Scripts</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="background-scripts.html" title="Background Scripts"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="creating-and-building-browser-extensions.html" title="Creating and Building Browser Extensions"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >General information</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

@@ -30,11 +30,39 @@ All of these are configurable with options in the extension options page.
 Roadmap
 -------
 
-Features under consideration and the general status of the project is on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel free to vote, comment and suggest new features.
+Features under consideration and the general status of the project is on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel free to vote and comment. To suggest new features, please visit the YNAB Forum thread here and comment. Forum user @stephywephy is managing the features there and will make sure it ends up in Trello.
 
-If you want to contribute, it's best if you can let us know so we don't double up on effort. You can see what is being worked on and by whom on the roadmap.
+If you want to contribute, it's best if you can let us know so we don't double up on effort. You can see what is being worked on and by whom on the roadmap. Contact @blarg on the forums to get started.
 
-*NOTE:* This extension is not affiliated with YNAB in any way and YNAB has not endorsed this at all. You Need a Budget and YNAB are registered trademarks of Steine LLC and/or one of its subsidiaries.
+Building the Code
+-----------------
+This extension uses Kango Extensions to provide cross browser support. To build:
+
+**Mac / Linux**
+
+1. Clone the repository
+1. Install Python 2.7 (or newer, but I haven't tested that) in your path so it's accessible with just plain ```python``` if you don't have it already.
+1. Run ```./build``` from within the folder you cloned above.
+1. You'll see platform specific output in the ```output``` folder.
+1. Load it into Chrome as an unpacked extension, or load it into Firefox via the .xpi file.
+
+**Windows**
+
+I don't currently have a windows machine to test on, but in general you'd just want to create a ```build.bat``` or ```build.cmd``` file that does what the ```build``` file already does on POSIX systems. Should work fine. Pull requests are welcome for windows support.
+
+Development Methodology
+-----------------------
+
+**This is janky! Why aren't you using Coffeescript / Typescript / Sass / Less / Compass / etc? Plain JS and CSS, WTF?**
+The primary concern for this extension from a development perspective is making it **easy** to work on. Every single one of those technologies above are awesome. I use a lot of them all the time at work. They do make your life easier, but unfortunately they add massively to the learning curve for contributing to the extension. Everyone knows JS and CSS. I want to make sure that working on the extension remains an accessible thing to do.
+
+**Why are you polling the DOM? WTF?**
+We'd love a better way if you know of one. See discussion here: [Trello Card: Find a better way to observe DOM changes and inject content, either by hooking Ember internals or by building a concise non-polling trigger set for them.](https://trello.com/c/mEPvAQUE)
+
+Legal Stuff
+-----------
+
+**IMPORTANT NOTE:** This extension is not affiliated with YNAB in any way and YNAB has not endorsed this at all. You Need a Budget and YNAB are registered trademarks of Steine LLC and/or one of its subsidiaries.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

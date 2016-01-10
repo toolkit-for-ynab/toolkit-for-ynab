@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Samples &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="General information" href="index.html" />
+    <link rel="next" title="Tutorials" href="../tutorials/index.html" />
+    <link rel="prev" title="FAQ" href="faq.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../tutorials/index.html" title="Tutorials"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="faq.html" title="FAQ"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">General information</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="samples">
+<span id="id1"></span><h1>Samples<a class="headerlink" href="#samples" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="browserevents">
+<h2>BrowserEvents<a class="headerlink" href="#browserevents" title="Permalink to this headline">¶</a></h2>
+<p>Shows how to handle browser events and work with browser tabs.</p>
+<p>Used APIs:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../api-reference/kango-browser.html#kango.browser.addEventListener" title="kango.browser.addEventListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.browser.addEventListener()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-browser-tabs.html#kango.browser.tabs.getAll" title="kango.browser.tabs.getAll"><tt class="xref js js-func docutils literal"><span class="pre">kango.browser.tabs.getAll()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/KangoBrowserTab.html#KangoBrowserTab.getUrl" title="KangoBrowserTab.getUrl"><tt class="xref js js-func docutils literal"><span class="pre">KangoBrowserTab.getUrl()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/KangoBrowserTab.html#KangoBrowserTab.navigate" title="KangoBrowserTab.navigate"><tt class="xref js js-func docutils literal"><span class="pre">KangoBrowserTab.navigate()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-ui-browserButton.html#kango.ui.browserButton.addEventListener" title="kango.ui.browserButton.addEventListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.ui.browserButton.addEventListener()</span></tt></a></li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="background-scripts.html#background-scripts"><em>Background Scripts</em></a></p>
+</div>
+<p><a class="reference external" href="https://github.com/KangoExtensions/kango-samples/tree/master/BrowserEvents/src/common">View BrowserEvents source</a></p>
+</div>
+<div class="section" id="christmastree">
+<h2>ChristmasTree<a class="headerlink" href="#christmastree" title="Permalink to this headline">¶</a></h2>
+<p>Adds an Christmas tree on each loaded web page using jQuery.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="content-scripts.html#content-scripts"><em>Content Scripts</em></a></p>
+</div>
+<p><a class="reference external" href="https://github.com/KangoExtensions/kango-samples/tree/master/ChristmasTree/src/common">View ChristmasTree source</a></p>
+</div>
+<div class="section" id="gmailchecker">
+<h2>GmailChecker<a class="headerlink" href="#gmailchecker" title="Permalink to this headline">¶</a></h2>
+<p>Adds an browser button which shows number of unread messages in Gmail inbox.</p>
+<p>Used APIs:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../api-reference/kango-ui-browserButton.html#kango.ui.browserButton.addEventListener" title="kango.ui.browserButton.addEventListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.ui.browserButton.addEventListener()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-ui-browserButton.html#kango.ui.browserButton.setTooltipText" title="kango.ui.browserButton.setTooltipText"><tt class="xref js js-func docutils literal"><span class="pre">kango.ui.browserButton.setTooltipText()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-ui-browserButton.html#kango.ui.browserButton.setIcon" title="kango.ui.browserButton.setIcon"><tt class="xref js js-func docutils literal"><span class="pre">kango.ui.browserButton.setIcon()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-ui-browserButton.html#kango.ui.browserButton.setBadgeValue" title="kango.ui.browserButton.setBadgeValue"><tt class="xref js js-func docutils literal"><span class="pre">kango.ui.browserButton.setBadgeValue()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-xhr.html#kango.xhr.send" title="kango.xhr.send"><tt class="xref js js-func docutils literal"><span class="pre">kango.xhr.send()</span></tt></a></li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="background-scripts.html#background-scripts"><em>Background Scripts</em></a></p>
+</div>
+<p><a class="reference external" href="https://github.com/KangoExtensions/kango-samples/tree/master/GmailChecker/src/common">View GmailChecker source</a></p>
+</div>
+<div class="section" id="messagingdemo">
+<h2>MessagingDemo<a class="headerlink" href="#messagingdemo" title="Permalink to this headline">¶</a></h2>
+<p>Shows how to work with <a class="reference internal" href="messaging-api.html#messaging-api"><em>Messaging API</em></a>.</p>
+<p>Used APIs:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../api-reference/kango.html#kango.addMessageListener" title="kango.addMessageListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.addMessageListener()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango.html#kango.dispatchMessage" title="kango.dispatchMessage"><tt class="xref js js-func docutils literal"><span class="pre">kango.dispatchMessage()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-browser.html#kango.browser.addEventListener" title="kango.browser.addEventListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.browser.addEventListener()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/KangoBrowserTab.html#KangoBrowserTab.dispatchMessage" title="KangoBrowserTab.dispatchMessage"><tt class="xref js js-func docutils literal"><span class="pre">KangoBrowserTab.dispatchMessage()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/KangoBrowserTab.html#KangoBrowserTab.getUrl" title="KangoBrowserTab.getUrl"><tt class="xref js js-func docutils literal"><span class="pre">KangoBrowserTab.getUrl()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/KangoBrowserTab.html#KangoBrowserTab.isActive" title="KangoBrowserTab.isActive"><tt class="xref js js-func docutils literal"><span class="pre">KangoBrowserTab.isActive()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-ui-browserButton.html#kango.ui.browserButton.setTooltipText" title="kango.ui.browserButton.setTooltipText"><tt class="xref js js-func docutils literal"><span class="pre">kango.ui.browserButton.setTooltipText()</span></tt></a></li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="background-scripts.html#background-scripts"><em>Background Scripts</em></a>, <a class="reference internal" href="content-scripts.html#content-scripts"><em>Content Scripts</em></a> and  <a class="reference internal" href="messaging-api.html#messaging-api"><em>Messaging API</em></a></p>
+</div>
+<p><a class="reference external" href="https://github.com/KangoExtensions/kango-samples/blob/master/MessagingDemo/src/common">View MessagingDemo source</a></p>
+</div>
+<div class="section" id="popupdemo">
+<h2>PopupDemo<a class="headerlink" href="#popupdemo" title="Permalink to this headline">¶</a></h2>
+<p>Shows how to work with <a class="reference internal" href="popup-api.html#popup-api"><em>Popup API</em></a>.</p>
+<p>Used APIs:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../api-reference/kango-storage.html#kango.storage.getItem" title="kango.storage.getItem"><tt class="xref js js-func docutils literal"><span class="pre">kango.storage.getItem()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-storage.html#kango.storage.setItem" title="kango.storage.setItem"><tt class="xref js js-func docutils literal"><span class="pre">kango.storage.setItem()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-storage.html#kango.storage.removeItem" title="kango.storage.removeItem"><tt class="xref js js-func docutils literal"><span class="pre">kango.storage.removeItem()</span></tt></a></li>
+<li><a class="reference internal" href="../api-reference/kango-xhr.html#kango.xhr.send" title="kango.xhr.send"><tt class="xref js js-func docutils literal"><span class="pre">kango.xhr.send()</span></tt></a></li>
+</ul>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="popup-api.html#popup-api"><em>Popup API</em></a></p>
+</div>
+<p><a class="reference external" href="https://github.com/KangoExtensions/kango-samples/tree/master/PopupDemo/src/common">View PopupDemo source</a></p>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Samples</a><ul>
+<li><a class="reference internal" href="#browserevents">BrowserEvents</a></li>
+<li><a class="reference internal" href="#christmastree">ChristmasTree</a></li>
+<li><a class="reference internal" href="#gmailchecker">GmailChecker</a></li>
+<li><a class="reference internal" href="#messagingdemo">MessagingDemo</a></li>
+<li><a class="reference internal" href="#popupdemo">PopupDemo</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="faq.html"
+                        title="previous chapter">FAQ</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../tutorials/index.html"
+                        title="next chapter">Tutorials</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../tutorials/index.html" title="Tutorials"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="faq.html" title="FAQ"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >General information</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

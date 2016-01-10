@@ -1,0 +1,194 @@
+.. _kango-ui-browserButton:
+
+======================
+kango.ui.browserButton
+======================
+
+Summary
+=======
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+	 
+   * - :ref:`kango-ui-browserButton-addEventListener`
+     - Registers an event handler for the specified event type
+	 
+   * - :ref:`kango-ui-browserButton-removeEventListener`
+     - Removes an event handler that the addEventListener method registered
+	 
+   * - :ref:`kango-ui-browserButton-setTooltipText`
+     - Changes tooltip (hint) for the button
+	 
+   * - :ref:`kango-ui-browserButton-setIcon`
+     - Sets Icon for button
+	 
+   * - :ref:`kango-ui-browserButton-setBadgeValue`
+     - Sets badge text
+	 
+   * - :ref:`kango-ui-browserButton-setBadgeBackgroundColor`
+     - Sets badge background color
+	 
+   * - :ref:`kango-ui-browserButton-setPopup`
+     - Sets popup details associated with button
+
+Methods
+=================================
+
+.. _kango-ui-browserButton-addEventListener:
+
+addEventListener
+---------------------------------
+
+.. js:function:: kango.ui.browserButton.addEventListener(name, callback)
+
+   Registers an event handler for the specified event type.
+   
+   :param string name: event name
+   :param function(event) callback: callback function
+
+Events list::
+
+    COMMAND // Fired on browser action icon clicked
+	
+.. note:: *COMMAND* event will not fire if browserButton has a popup.
+	
+Example::
+
+    // Handle button click
+    kango.ui.browserButton.addEventListener(kango.ui.browserButton.event.COMMAND, function(event) {
+        kango.console.log('Button clicked');
+    });
+
+	
+.. _kango-ui-browserButton-removeEventListener:
+
+removeEventListener
+---------------------------------
+
+.. js:function:: kango.ui.browserButton.removeEventListener(name, callback)
+
+   Removes an event handler that the :js:func:`kango.ui.browserButton.addEventListener` method registered.
+   
+   :param string name: event name
+   :param function(event) callback: callback function
+
+Example::
+
+    // event handler
+    var onCommand = function(event) {
+        kango.console.log('Button clicked');
+    };
+
+    // add event handler
+    kango.ui.browserButton.addEventListener(kango.ui.browserButton.event.COMMAND, onCommand);
+
+    // remove event handler
+    kango.ui.browserButton.removeEventListener(kango.ui.browserButton.event.COMMAND, onCommand);
+
+	
+.. _kango-ui-browserButton-setTooltipText:
+
+setTooltipText
+---------------------------------
+
+.. js:function:: kango.ui.browserButton.setTooltipText(text)
+
+   Sets the tooltip text (hint) to be shown for browser button.
+   
+   :param string text: Text to show as tooltip
+   
+.. note:: It's impossible to remove tooltip in Safari.
+
+Example::
+
+    kango.ui.browserButton.setTooltipText('Test')
+
+	
+.. _kango-ui-browserButton-setIcon:
+
+setIcon
+---------------------------------
+
+.. js:function:: kango.ui.browserButton.setIcon(path)
+
+   Sets or changes icon for browser button. Url must point to local file, path must be relative to :ref:`extension_info.json<KangoExtensionInfo>` file.
+   
+   :param string path: Path to the icon
+
+.. note:: Icon must be in .png file, supported sizes are 16x16 to 19x19, all browsers except Safari supporting full color transparent PNG. Safari however can only use black and white icons. Please refer Apple docs to find out how to prepare an Icon for Safari.
+   
+Example::
+
+    kango.ui.browserButton.setIcon('icons/online.png');
+
+	
+.. _kango-ui-browserButton-setBadgeValue:
+
+setBadgeValue
+---------------------------------
+
+.. js:function:: kango.ui.browserButton.setBadgeValue(value)
+
+   Sets number (badge) to show on browser button.
+   
+   :param string|number value: An value to show on the button
+
+.. note:: Safari supports only number values.
+   
+Example::
+
+    kango.ui.browserButton.setBadgeValue(27);
+    kango.ui.browserButton.setBadgeValue('+12');
+	
+
+.. _kango-ui-browserButton-setBadgeBackgroundColor:
+
+setBadgeBackgroundColor
+---------------------------------
+
+.. js:function:: kango.ui.browserButton.setBadgeBackgroundColor(color)
+
+   Sets badge background color.
+   
+   :param array color: An array of four integers in the range [0,255] that make up the RGBA color of the badge
+
+.. note:: Not supported in Safari.
+   
+Example::
+
+    // opaque red
+    kango.ui.browserButton.setBadgeBackgroundColor([255, 0, 0, 255]);
+
+	
+.. _kango-ui-browserButton-setPopup:
+
+setPopup
+---------------------------------
+
+.. js:function:: kango.ui.browserButton.setPopup(details)
+
+   Specifies all the information about popup to open on browser button click.
+
+.. note:: Kango API available only for local pages.
+
+See :ref:`popup-api` section for more details.
+
+Details object::
+
+    details = {
+        string url,   // URL to open in popup
+        number width, // Width of popup
+        number height // Height of popup
+    }
+
+Example::
+
+    kango.ui.browserButton.setPopup({
+        url: 'weather.html',
+        width: 200,
+        height: 300
+    });

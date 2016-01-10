@@ -1,0 +1,51 @@
+.. _popup-api:
+
+=========
+Popup API
+=========
+
+Using kango.* APIs from popup
+=============================
+
+To use :ref:`kango.* APIs<api-reference>` you must include script ``kango_api.js`` in your popup html and use it only after **onReady** event:
+
+.. code-block:: html
+
+    <script type="text/javascript" src="kango-ui/kango_api.js"></script>
+
+Sample
+======
+
+popup.html:
+
+.. code-block:: html
+
+    <html>
+    <head>
+        <script type="text/javascript" src="kango-ui/kango_api.js"></script>
+        <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript" src="popup.js"></script>
+    </head>
+    <body>
+        <textarea id="popup-properies" rows="4" cols="60"></textarea><br/>
+        <button id="popup-close" type="button">Close popup</button>
+        <button id="popup-resize" type="button">Resize popup</button>
+    </body>
+    </html>
+    
+popup.js::
+
+    KangoAPI.onReady(function() {
+    
+        $('#popup-close').click(function(event) {
+            KangoAPI.closeWindow()
+        });    
+
+        $('#popup-resize').click(function(event) {
+            KangoAPI.resizeWindow(600, 600);
+            $('#popup-properies').attr('rows', 8);
+        });
+
+        alert(kango.browser.getName());
+    });
+

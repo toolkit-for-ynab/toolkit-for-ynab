@@ -1,0 +1,422 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>kango.ui.browserButton &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="API reference" href="index.html" />
+    <link rel="next" title="kango.ui.optionsPage" href="kango-ui-optionsPage.html" />
+    <link rel="prev" title="kango.browser.windows" href="kango-browser-windows.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="kango-ui-optionsPage.html" title="kango.ui.optionsPage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="kango-browser-windows.html" title="kango.browser.windows"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="kango-ui-browserbutton">
+<span id="id1"></span><h1>kango.ui.browserButton<a class="headerlink" href="#kango-ui-browserbutton" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#kango-ui-browserbutton-addeventlistener"><em>addEventListener</em></a></td>
+<td>Registers an event handler for the specified event type</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kango-ui-browserbutton-removeeventlistener"><em>removeEventListener</em></a></td>
+<td>Removes an event handler that the addEventListener method registered</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kango-ui-browserbutton-settooltiptext"><em>setTooltipText</em></a></td>
+<td>Changes tooltip (hint) for the button</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kango-ui-browserbutton-seticon"><em>setIcon</em></a></td>
+<td>Sets Icon for button</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kango-ui-browserbutton-setbadgevalue"><em>setBadgeValue</em></a></td>
+<td>Sets badge text</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kango-ui-browserbutton-setbadgebackgroundcolor"><em>setBadgeBackgroundColor</em></a></td>
+<td>Sets badge background color</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kango-ui-browserbutton-setpopup"><em>setPopup</em></a></td>
+<td>Sets popup details associated with button</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="addeventlistener">
+<span id="kango-ui-browserbutton-addeventlistener"></span><h3>addEventListener<a class="headerlink" href="#addeventlistener" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.ui.browserButton.addEventListener">
+<tt class="descclassname">kango.ui.browserButton.</tt><tt class="descname">addEventListener</tt><big>(</big><em>name</em>, <em>callback</em><big>)</big><a class="headerlink" href="#kango.ui.browserButton.addEventListener" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers an event handler for the specified event type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; event name</li>
+<li><strong>callback</strong> (<em>function(event)</em>) &#8211; callback function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Events list:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">COMMAND</span> <span class="c1">// Fired on browser action icon clicked</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><em>COMMAND</em> event will not fire if browserButton has a popup.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// Handle button click</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">COMMAND</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Button clicked&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="removeeventlistener">
+<span id="kango-ui-browserbutton-removeeventlistener"></span><h3>removeEventListener<a class="headerlink" href="#removeeventlistener" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.ui.browserButton.removeEventListener">
+<tt class="descclassname">kango.ui.browserButton.</tt><tt class="descname">removeEventListener</tt><big>(</big><em>name</em>, <em>callback</em><big>)</big><a class="headerlink" href="#kango.ui.browserButton.removeEventListener" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes an event handler that the <a class="reference internal" href="#kango.ui.browserButton.addEventListener" title="kango.ui.browserButton.addEventListener"><tt class="xref js js-func docutils literal"><span class="pre">kango.ui.browserButton.addEventListener()</span></tt></a> method registered.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; event name</li>
+<li><strong>callback</strong> (<em>function(event)</em>) &#8211; callback function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// event handler</span>
+<span class="kd">var</span> <span class="nx">onCommand</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Button clicked&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="c1">// add event handler</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">COMMAND</span><span class="p">,</span> <span class="nx">onCommand</span><span class="p">);</span>
+
+<span class="c1">// remove event handler</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">removeEventListener</span><span class="p">(</span><span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">COMMAND</span><span class="p">,</span> <span class="nx">onCommand</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="settooltiptext">
+<span id="kango-ui-browserbutton-settooltiptext"></span><h3>setTooltipText<a class="headerlink" href="#settooltiptext" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.ui.browserButton.setTooltipText">
+<tt class="descclassname">kango.ui.browserButton.</tt><tt class="descname">setTooltipText</tt><big>(</big><em>text</em><big>)</big><a class="headerlink" href="#kango.ui.browserButton.setTooltipText" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the tooltip text (hint) to be shown for browser button.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>text</strong> (<em>string</em>) &#8211; Text to show as tooltip</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It&#8217;s impossible to remove tooltip in Safari.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setTooltipText</span><span class="p">(</span><span class="s1">&#39;Test&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="seticon">
+<span id="kango-ui-browserbutton-seticon"></span><h3>setIcon<a class="headerlink" href="#seticon" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.ui.browserButton.setIcon">
+<tt class="descclassname">kango.ui.browserButton.</tt><tt class="descname">setIcon</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#kango.ui.browserButton.setIcon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets or changes icon for browser button. Url must point to local file, path must be relative to <a class="reference internal" href="KangoExtensionInfo.html#kangoextensioninfo"><em>extension_info.json</em></a> file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<em>string</em>) &#8211; Path to the icon</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Icon must be in .png file, supported sizes are 16x16 to 19x19, all browsers except Safari supporting full color transparent PNG. Safari however can only use black and white icons. Please refer Apple docs to find out how to prepare an Icon for Safari.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setIcon</span><span class="p">(</span><span class="s1">&#39;icons/online.png&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setbadgevalue">
+<span id="kango-ui-browserbutton-setbadgevalue"></span><h3>setBadgeValue<a class="headerlink" href="#setbadgevalue" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.ui.browserButton.setBadgeValue">
+<tt class="descclassname">kango.ui.browserButton.</tt><tt class="descname">setBadgeValue</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#kango.ui.browserButton.setBadgeValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets number (badge) to show on browser button.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value</strong> (<em>string|number</em>) &#8211; An value to show on the button</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Safari supports only number values.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setBadgeValue</span><span class="p">(</span><span class="mi">27</span><span class="p">);</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setBadgeValue</span><span class="p">(</span><span class="s1">&#39;+12&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setbadgebackgroundcolor">
+<span id="kango-ui-browserbutton-setbadgebackgroundcolor"></span><h3>setBadgeBackgroundColor<a class="headerlink" href="#setbadgebackgroundcolor" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.ui.browserButton.setBadgeBackgroundColor">
+<tt class="descclassname">kango.ui.browserButton.</tt><tt class="descname">setBadgeBackgroundColor</tt><big>(</big><em>color</em><big>)</big><a class="headerlink" href="#kango.ui.browserButton.setBadgeBackgroundColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets badge background color.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>color</strong> (<em>array</em>) &#8211; An array of four integers in the range [0,255] that make up the RGBA color of the badge</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Not supported in Safari.</p>
+</div>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// opaque red</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setBadgeBackgroundColor</span><span class="p">([</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">]);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setpopup">
+<span id="kango-ui-browserbutton-setpopup"></span><h3>setPopup<a class="headerlink" href="#setpopup" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.ui.browserButton.setPopup">
+<tt class="descclassname">kango.ui.browserButton.</tt><tt class="descname">setPopup</tt><big>(</big><em>details</em><big>)</big><a class="headerlink" href="#kango.ui.browserButton.setPopup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies all the information about popup to open on browser button click.</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Kango API available only for local pages.</p>
+</div>
+<p>See <a class="reference internal" href="../general/popup-api.html#popup-api"><em>Popup API</em></a> section for more details.</p>
+<p>Details object:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">details</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">string</span> <span class="nx">url</span><span class="p">,</span>   <span class="c1">// URL to open in popup</span>
+    <span class="nx">number</span> <span class="nx">width</span><span class="p">,</span> <span class="c1">// Width of popup</span>
+    <span class="nx">number</span> <span class="nx">height</span> <span class="c1">// Height of popup</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setPopup</span><span class="p">({</span>
+    <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;weather.html&#39;</span><span class="p">,</span>
+    <span class="nx">width</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="nx">height</span><span class="o">:</span> <span class="mi">300</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">kango.ui.browserButton</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#addeventlistener">addEventListener</a></li>
+<li><a class="reference internal" href="#removeeventlistener">removeEventListener</a></li>
+<li><a class="reference internal" href="#settooltiptext">setTooltipText</a></li>
+<li><a class="reference internal" href="#seticon">setIcon</a></li>
+<li><a class="reference internal" href="#setbadgevalue">setBadgeValue</a></li>
+<li><a class="reference internal" href="#setbadgebackgroundcolor">setBadgeBackgroundColor</a></li>
+<li><a class="reference internal" href="#setpopup">setPopup</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="kango-browser-windows.html"
+                        title="previous chapter">kango.browser.windows</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="kango-ui-optionsPage.html"
+                        title="next chapter">kango.ui.optionsPage</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="kango-ui-optionsPage.html" title="kango.ui.optionsPage"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="kango-browser-windows.html" title="kango.browser.windows"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >API reference</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

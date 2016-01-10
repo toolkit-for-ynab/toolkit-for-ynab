@@ -1,0 +1,32 @@
+.. _faq:
+
+===
+FAQ
+===
+
+.. contents::
+
+Can i use jQuery and other JS libraries in my extension?
+--------------------------------------------------------
+Yes, Kango supports JS libraries in both :ref:`background<background-scripts>` and :ref:`content<content-scripts>` scripts.
+
+.. seealso::
+
+	`ChristmasTree sample source <https://github.com/KangoExtensions/kango-samples/tree/master/ChristmasTree/src/common>`_
+
+Is Kango free?
+--------------
+Kango is free for open source non-profitable projects. Free license package includes support for Chrome, Firefox and Safari.
+
+How can I get IE support?
+-------------------------
+IE support only available in commercial package, contact extensions@kangoextensions.com to get more information.
+
+I have problems with text encoding in my project. How can I fix it?
+-------------------------------------------------------------------
+Try to resave all your project sources using "UTF-8 with BOM" encoding.
+
+Does Kango support Android and iPhone browsers?
+-----------------------------------------------
+Android and iPhone browsers doesn't support extensions.
+

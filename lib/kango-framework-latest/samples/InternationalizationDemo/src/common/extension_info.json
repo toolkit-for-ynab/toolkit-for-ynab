@@ -1,0 +1,16 @@
+{
+    "name": "Extension name",
+    "version": "1.3.0",
+    "description": "Extension description",
+    "creator": "Kango",
+    "homepage_url": "http://kangoextensions.com/",
+    "background_scripts": [
+        "main.js"
+    ],
+    "browser_button": {
+        "caption": "Kango",
+        "icon": "icons/button.png",
+        "tooltipText": "Kango"
+    },
+    "default_locale": "en"
+}

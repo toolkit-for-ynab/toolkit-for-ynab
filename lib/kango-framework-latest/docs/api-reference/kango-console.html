@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>kango.console &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="API reference" href="index.html" />
+    <link rel="next" title="kango.storage" href="kango-storage.html" />
+    <link rel="prev" title="kango" href="kango.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="kango-storage.html" title="kango.storage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="kango.html" title="kango"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="kango-console">
+<span id="id1"></span><h1>kango.console<a class="headerlink" href="#kango-console" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#kango-console-log"><em>log</em></a></td>
+<td>Log a message to the browser console</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="log">
+<span id="kango-console-log"></span><h3>log<a class="headerlink" href="#log" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="kango.console.log">
+<tt class="descclassname">kango.console.</tt><tt class="descname">log</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#kango.console.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Outputs string to the browser console.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>message</strong> (<em>string</em>) &#8211; text to show in the browser console</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello world!&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="see-logs">
+<h2>See logs<a class="headerlink" href="#see-logs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="chrome">
+<h3>Chrome<a class="headerlink" href="#chrome" title="Permalink to this headline">¶</a></h3>
+<p>Background page logs:</p>
+<ul class="simple">
+<li>Tools -&gt; Extensions</li>
+<li>Enable &#8220;Developer mode&#8221;</li>
+<li>Find your extension and click to &#8220;background.html&#8221;</li>
+<li>Open &#8220;Console&#8221; tab</li>
+</ul>
+<p>Content script logs:</p>
+<ul class="simple">
+<li>Click &#8220;Inspect element&#8221; on web page</li>
+<li>Open &#8220;Console&#8221; tab</li>
+</ul>
+</div>
+<div class="section" id="firefox">
+<h3>Firefox<a class="headerlink" href="#firefox" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Tools -&gt; Web Developer -&gt; Error Console (or press Ctrl+Shift+J)</li>
+</ul>
+</div>
+<div class="section" id="safari">
+<h3>Safari<a class="headerlink" href="#safari" title="Permalink to this headline">¶</a></h3>
+<p>Background page logs:</p>
+<ul class="simple">
+<li>Developer -&gt; Show Extension Builder</li>
+<li>Find your extension and click to &#8220;Inspect Global Page&#8221;</li>
+<li>Open &#8220;Console&#8221; tab</li>
+</ul>
+<p>Content script logs:</p>
+<ul class="simple">
+<li>Click &#8220;Inspect element&#8221; on web page</li>
+<li>Open &#8220;Console&#8221; tab</li>
+</ul>
+</div>
+<div class="section" id="internet-explorer">
+<h3>Internet Explorer<a class="headerlink" href="#internet-explorer" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Add &#8220;debug&#8221;: true to extension_info.json</li>
+<li>Console window appears automatically on first kango.console.log call</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">kango.console</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#log">log</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#see-logs">See logs</a><ul>
+<li><a class="reference internal" href="#chrome">Chrome</a></li>
+<li><a class="reference internal" href="#firefox">Firefox</a></li>
+<li><a class="reference internal" href="#safari">Safari</a></li>
+<li><a class="reference internal" href="#internet-explorer">Internet Explorer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="kango.html"
+                        title="previous chapter">kango</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="kango-storage.html"
+                        title="next chapter">kango.storage</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="kango-storage.html" title="kango.storage"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="kango.html" title="kango"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >API reference</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,108 @@
+.. _kango-xhr:
+
+=========
+kango.xhr
+=========
+
+Summary
+=======
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+     
+   * - :ref:`kango-xhr-getXMLHttpRequest`
+     - Returns new XMLHTTPRequest object
+     
+   * - :ref:`kango-xhr-send` 
+     - Performs a cross-domain HTTP request
+
+Methods
+=======
+
+.. _kango-xhr-getXMLHttpRequest:
+
+getXMLHttpRequest
+-----------------
+
+.. js:function:: kango.xhr.getXMLHttpRequest()
+
+   Returns new cross-domain XMLHTTPRequest object.
+
+Example::
+
+    var request = kango.xhr.getXMLHttpRequest();
+    request.open('GET', 'http://example.com/', false);
+    request.send(null);
+    if (request.status == 200) {
+        kango.console.log(request.responseText);
+    }
+    
+    
+.. _kango-xhr-send:
+
+send
+----
+
+.. js:function:: kango.xhr.send(details, callback)
+
+   Performs a cross-domain HTTP request.
+   
+   :param details: desired request description information
+   :param function(result) callback: callback function to process response after request sending
+
+Details object::
+
+    details = {
+        string  method,      // HTTP action to perform could be POST or GET
+        string  url,         // The URL to use
+        object  params,      // Key-Value pairs to sent to the server as POST or GET params
+        object  headers,     // Key-Value pairs of headers
+        string  contentType, // Type of requested data. Could be either 'json', 'text' or 'xml'
+        string  username,    // Credentials to use for simple authorization (if any)
+        string  password,    // Credentials to use for simple authorization (if any)
+        string  mimeType     // Mime type
+    }
+    
+Callback argument::
+
+    result = {
+        number                       status,    // HTTP status code
+        object|string|XMLDOMDocument response   // Depends on "contentType" set in details argument
+    }
+    
+Example::
+
+    var details = {
+        method: 'POST',
+        url: 'http://example.com/',
+        params: {'param1': '1', 'param2': '2'},
+        headers: {'If-Modified-Since': 'Sat, 1 Jan 2000 00:00:00 GMT', 'Cache-Control': 'max-age=0'},
+        contentType: 'text'
+    };
+
+    kango.xhr.send(details, function(data) {
+        if (data.status == 200 && data.response != null) {
+            var text = data.response;
+            kango.console.log(text);
+        }
+        else { // something went wrong
+            kango.console.log('something went wrong');
+        }
+    });
+
+    // retrieve extension_info.json from extension directory
+    var details = {
+        url: 'extension_info.json',
+        method: 'GET',
+        contentType: 'json'
+    };
+    kango.xhr.send(details, function(data) {
+        // in some browsers data.status may be 0 with local files
+        var info = data.response;
+        kango.console.log(info.name)
+    });
+

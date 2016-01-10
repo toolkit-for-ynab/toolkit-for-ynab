@@ -1,0 +1,79 @@
+.. _kango-console:
+
+=============
+kango.console
+=============
+
+Summary
+=======
+
+.. list-table::
+   :widths: 10 70
+   :header-rows: 1
+
+   * - Name
+     - Description
+	 
+   * - :ref:`kango-console-log`
+     - Log a message to the browser console
+	 
+
+Methods
+=======
+
+.. _kango-console-log:
+
+log
+---
+
+.. js:function:: kango.console.log(message)
+
+   Outputs string to the browser console.
+   
+   :param string message: text to show in the browser console
+
+Example::
+
+    kango.console.log('Hello world!');
+	
+See logs
+========
+
+Chrome
+------
+Background page logs:
+
+* Tools -> Extensions
+* Enable "Developer mode"
+* Find your extension and click to "background.html"
+* Open "Console" tab
+
+
+Content script logs:
+
+* Click "Inspect element" on web page
+* Open "Console" tab
+
+Firefox
+-------
+* Tools -> Web Developer -> Error Console (or press Ctrl+Shift+J)
+
+Safari
+------
+Background page logs:
+
+* Developer -> Show Extension Builder
+* Find your extension and click to "Inspect Global Page"
+* Open "Console" tab
+
+
+Content script logs:
+
+* Click "Inspect element" on web page
+* Open "Console" tab
+
+
+Internet Explorer
+-----------------
+* Add "debug": true to extension_info.json
+* Console window appears automatically on first kango.console.log call
