@@ -20,6 +20,10 @@ function ensureDefaultsAreSet() {
   if (storedKeys.indexOf('removeZeroCategories') < 0) {
     kango.storage.setItem('removeZeroCategories', true);
   }
+  
+  if (storedKeys.indexOf('transferJump') < 0) {
+    kango.storage.setItem('transferJump', true);
+  }
 }
 
 function saveCheckboxOption(elementId) {
@@ -59,6 +63,7 @@ function save_options() {
   saveCheckboxOption('toggleSplits');
   saveCheckboxOption('accountsSelectedTotal');
   saveCheckboxOption('changeEnterBehavior');
+  saveCheckboxOption('transferJump');
 
   saveSelectOption('budgetRowsHeight');
   saveSelectOption('reconciledTextColor');
@@ -94,6 +99,7 @@ function restore_options() {
   restoreCheckboxOption('toggleSplits');
   restoreCheckboxOption('accountsSelectedTotal');
   restoreCheckboxOption('changeEnterBehavior');
+  restoreCheckboxOption('transferJump');
 
   restoreSelectOption('budgetRowsHeight');
   restoreSelectOption('reconciledTextColor');
