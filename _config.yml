@@ -1,0 +1,18 @@
+# Site settings
+title: Toolkit for YNAB
+email: kevinbrowntech@gmail.com
+description: >
+  Toolkit for YNAB is a community contributed open-source set of tools to use with
+  You Need a Budget. It extends the base functionality to add additional features
+  and functionality.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://toolkitforynab.com" # the base hostname & protocol for your site
+twitter_username: one_byte_stand
+github_username:  blargity
+
+# Build settings
+markdown: kramdown
+
+# GitHub Pages Redirects
+gems:
+  - jekyll-redirect-from
