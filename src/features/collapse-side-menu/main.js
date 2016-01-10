@@ -24,7 +24,9 @@ function ynabEnhancedCollapseInitializer() {
   }
 
   // Watch for the budget grid
-  function watchBudgetGrid() {
+  function watchBudgetGrid(i) {
+    if (typeof i === 'undefined')
+      i = 0;
     exists = false;
 
     if ($(".budget-toolbar").length) {
@@ -33,13 +35,18 @@ function ynabEnhancedCollapseInitializer() {
     if (exists) {
       setCollapsedSizes();
       setActiveButton();
-   } else {
-     setTimeout(watchBudgetGrid, 250);
+   } else if (i < 10) {
+     i++;
+     setTimeout(function() {
+       watchBudgetGrid(i);
+     }, 250);
    }
   }
 
   // Watch for the account grid
-  function watchAccountGrid() {
+  function watchAccountGrid(i) {
+    if (typeof i === 'undefined')
+      i = 0;
     exists = false;
 
     if ($(".accounts-toolbar").length) {
@@ -48,8 +55,11 @@ function ynabEnhancedCollapseInitializer() {
     if (exists) {
       setCollapsedSizes();
       setActiveButton();
-   } else {
-     setTimeout(watchAccountGrid, 250);
+   } else if (i < 10) {
+     i++;
+     setTimeout(function() {
+       watchAccountGrid(i);
+     }, 250);
    }
   }
 
