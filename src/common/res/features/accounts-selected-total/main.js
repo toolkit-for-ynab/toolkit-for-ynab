@@ -5,7 +5,7 @@ function ynabEnhancedSelectedTotals() {
     totals.id = "accounts-selected-total";
     var label = document.createElement("div");
     label.className = "accounts-header-balances-label";
-    label.innerText = "Selected transactions total"
+    label.innerText = "Selected Transactions Total"
     totals.appendChild(label);
     parent.appendChild(totals);
     ynabEnhancedSelectedTotalsPoll();
@@ -14,22 +14,22 @@ function ynabEnhancedSelectedTotals() {
 function ynabEnhancedSelectedTotalsCalculate() {
     var outflows = 0;
     var inflows = 0;
-    var checkboxes = document.getElementsByClassName("ynab-checkbox-button");
-    for (var i = 0; i < checkboxes.length; i++) {
-        var checkbox = checkboxes[i];
-        if ((' ' + checkbox.className + ' ').indexOf(' is-checked ') == -1) {
-            continue;
-        }
-        if ((' ' + checkbox.parentElement.parentElement.className + ' ').indexOf(' ynab-grid-cell ') == -1) {
-            continue;
-        }
-        var parent = document.getElementById(checkbox.parentElement.parentElement.parentElement.id);
-        var outflow = parent.getElementsByClassName('ynab-grid-cell-outflow')[0].innerText;
-        var inflow = parent.getElementsByClassName('ynab-grid-cell-inflow')[0].innerText;
-        outflows += ynab.YNABSharedLib.currencyFormatter.convertToFixedPrecision(ynab.YNABSharedLib.currencyFormatter.unformat(outflow));
-        inflows += ynab.YNABSharedLib.currencyFormatter.convertToFixedPrecision(ynab.YNABSharedLib.currencyFormatter.unformat(inflow));
-        ynabEnhancedSelectedTotalsUpdate(inflows - outflows);
+    var currentPath = window.location.pathname;
+    var accountId, transactions;
+    if (currentPath.indexOf('/accounts/') > -1) {
+        accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1)
+        transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.transactionDisplayItemsCollection.findItemsByAccountId(accountId);
+    } else {
+        transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
     }
+    transactions = transactions.filter((el) => el.displayItemType != "subTransaction");
+    for (var i = 0; i < transactions.length; i++) {
+        if (transactions[i].isChecked) {
+            inflows += transactions[i].inflow;
+            outflows += transactions[i].outflow;
+        }
+    }
+    ynabEnhancedSelectedTotalsUpdate(inflows - outflows);
 
     setTimeout(ynabEnhancedSelectedTotalsPoll, 750);
 }
@@ -50,10 +50,11 @@ function ynabEnhancedSelectedTotalsUpdate(total) {
     for (var i = 0; i < spans.length; i++) {
         spans[i].remove();
     }
-    var totalFormatted = ynabEnhancedFormatCurrency(total);
+    var totalFormatted = ynabEnhancedFormatCurrency(total, true);
+    var totalFormattedNoHtml = ynabEnhancedFormatCurrency(total, false);
     var userData = document.createElement("span");
     userData.className = "user-data";
-    userData.title = totalFormatted;
+    userData.title = totalFormattedNoHtml;
     var userCurrency = document.createElement("span");
     userCurrency.className = "user-data currency";
     if (total > 0) {
@@ -66,12 +67,14 @@ function ynabEnhancedSelectedTotalsUpdate(total) {
     parent.appendChild(userData);
 }
 
-function ynabEnhancedFormatCurrency(e) {
+function ynabEnhancedFormatCurrency(e, html) {
     var n, r, a;
     e = ynab.formatCurrency(e);
     n = ynab.YNABSharedLib.currencyFormatter.getCurrency();
     a = Ember.Handlebars.Utils.escapeExpression(n.currency_symbol);
-    a = "<bdi>" + a + "</bdi>";
+    if (html) {
+        a = "<bdi>" + a + "</bdi>";
+    }
     n.symbol_first ? (r = "-" === e.charAt(0), e = r ? "-" + a + e.slice(1) : a + e) : e += a;
     return new Ember.Handlebars.SafeString(e);
 }
@@ -90,27 +93,33 @@ function ynabEnhancedSelectedTotalsPoll() {
     var parentDiv = document.getElementsByClassName('accounts-header-balances');
     if (parentDiv.length == 0) {
         setTimeout(ynabEnhancedSelectedTotalsInit, 250);
+        return true;
     }
-    var checkboxes = document.getElementsByClassName('is-checked');
-    c = checkboxes.length;
-    var checkboxesArray = new Array();
-    for (var i = 0; i < c; i++) {
-        checkboxesArray.push(checkboxes[i].parentElement.id);
-    }
-    if (c > 0) {
-        if (checkboxesArray.toString() != previousSet.toString()) {
-            previousSet = checkboxesArray;
-            ynabEnhancedSelectedTotalsCalculate();
-        } else {
-            setTimeout(ynabEnhancedSelectedTotalsPoll, 750);
-        }
+    var currentPath = window.location.pathname;
+    var accountId, transactions;
+    var checkedTransactions = new Array();
+    if (currentPath.indexOf('/accounts/') > -1) {
+        accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1)
+        transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.transactionDisplayItemsCollection.findItemsByAccountId(accountId);
     } else {
-        if (checkboxesArray.toString() != previousSet.toString()) {
-            ynabEnhancedSelectedTotalsUpdate(0);
-            previousSet = checkboxesArray;
-        }
-        setTimeout(ynabEnhancedSelectedTotalsPoll, 750);
+        transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
     }
+    for (var i = 0; i < transactions.length; i++) {
+        if (transactions[i].isChecked) {
+            checkedTransactions.push(transactions[i].entityId);
+        }
+    }
+    if (checkedTransactions.length == 0) {
+        ynabEnhancedSelectedTotalsUpdate(0);
+        previousSet = checkedTransactions;
+    } else {
+        if (checkedTransactions.toString() != previousSet.toString()) {
+            previousSet = checkedTransactions;
+            ynabEnhancedSelectedTotalsCalculate();
+            return true;
+        }
+    }
+    setTimeout(ynabEnhancedSelectedTotalsPoll, 250);
 }
 
 var previousSet = '';
