@@ -1,16 +1,18 @@
 window.ynabToolKit = new function() {
 	
+	// Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
+	// during page interactions and updates to the developer tools console.
 	this.debugNodes = false,
 	
+	// This variable is populated by each active script loaded inside the ynabToolKit object
 	this.featureOptions = {},
 		
-	// setting up a single mutationObserver that can be called by each feature
+	// Setting up a single mutationObserver that can be called by each feature
 	this.actOnChange = function() {
 
 		MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
 		var observer = new MutationObserver(function(mutations, observer) {
-			// Loop through all the mutations and nodes to see if navigation area was added
 			
 			if (ynabToolKit.debugNodes) {
 				console.log('NEW NODES');
@@ -27,7 +29,7 @@ window.ynabToolKit = new function() {
 					var $node = $(this);
 
 					
-						// Changes are detected in the credit balance master category
+						// Changes are detected in the category balances
 						if ($node.hasClass("budget-table-cell-available-div")) {
 							
 							if ( ynabToolKit.featureOptions.checkCreditBalances ){
@@ -39,7 +41,7 @@ window.ynabToolKit = new function() {
 							
 						} else
 						
-						// Maybe we find the screen containing the account balances again
+						// The user has returned back to the budget screen
 						if ($node.hasClass('budget-table-row')) {
 							
 							if ( ynabToolKit.featureOptions.checkCreditBalances ){
@@ -54,7 +56,7 @@ window.ynabToolKit = new function() {
 						if ($node.hasClass( "options-shown")) {
 							
 							if ( ynabToolKit.featureOptions.removeZeroCategories ) {				
-								ynabToolKit.removeZeroCategories(); // do something
+								ynabToolKit.removeZeroCategories();
 							}
 						}				
 
@@ -65,9 +67,10 @@ window.ynabToolKit = new function() {
 			if (ynabToolKit.debugNodes) {
 				console.log('###')
 			}
-			
+		
 		});
 
+		// This finally says 'Watch for changes' and only needs to be called the one time
 		observer.observe($('.ember-view.layout')[0], {
 			subtree : true,
 			childList : true,
@@ -77,22 +80,24 @@ window.ynabToolKit = new function() {
 	};
 
 	
-}; // end new ynabToolKit function
+}; // end ynabToolKit object
 
+// This poll() function will only need to run until we find that the DOM is ready
+// For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
     if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' 
           && typeof $ !== 'undefined' && $('.ember-view.layout').length) {
     	
-    	// Run each activated feature once once the DOM is ready
+
     	if ( ynabToolKit.featureOptions.checkCreditBalances ) {
-    	  ynabToolKit.checkCreditBalances(); // check initial state of credit balances
+    	  ynabToolKit.checkCreditBalances();
     	}
     	
     	if ( ynabToolKit.featureOptions.highlightNegativesNegative ){
-    		ynabToolKit.highlightNegativesNegative(); // set consistent colour for all negative balances
+    		ynabToolKit.highlightNegativesNegative(); 
     	}
     	
-    	// initialize the mutation observer so we don't need to use setTimeout()
+    	// Activate the mutationObserver so we don't need to use setTimeout() anymore
         ynabToolKit.actOnChange(); 
     } else {
        setTimeout(poll, 250);
