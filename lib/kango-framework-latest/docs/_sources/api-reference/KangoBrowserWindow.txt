@@ -1,0 +1,124 @@
+.. _KangoBrowserWindow:
+
+==================
+KangoBrowserWindow
+==================
+
+Summary
+=======
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+   
+   * - :ref:`KangoBrowserWindow.getId`
+     - Returns window unique identifier
+     
+   * - :ref:`KangoBrowserWindow.getTabs`
+     - Retrieves all tabs in window
+     
+   * - :ref:`KangoBrowserWindow.getCurrentTab`
+     - Retrieves current active tab in window
+     
+   * - :ref:`KangoBrowserWindow.isActive`
+     - Returns *true* if the window is in focus now
+     
+Methods
+=======
+
+.. _KangoBrowserWindow.getId:
+
+getId
+---------------------------------
+
+.. js:function:: KangoBrowserWindow.getId()
+
+   Returns window unique identifier.
+   
+   :returns: window unique identifier
+   :rtype: string
+
+Example::
+
+    kango.browser.windows.getCurrent(function(win) {
+        // win is KangoBrowserWindow object
+        kango.console.log(window.getId());
+    });
+    
+
+.. _KangoBrowserWindow.getTabs:
+
+getTabs
+-------
+
+.. js:function:: KangoBrowserWindow.getTabs(callback)
+
+   Retrieves all tabs in window and pass it to callback function.
+   
+   :param function(tabs) callback: callback function. tabs is Array of :ref:`KangoBrowserTab` objects
+
+Example::
+
+    // output number of tabs in current window.
+    kango.browser.windows.getCurrent(function(win) {
+        // win is KangoBrowserWindow object
+        win.getTabs(function(tabs) {
+            kango.console.log(tabs.length);
+        });
+    });
+
+    
+.. _KangoBrowserWindow.getCurrentTab:
+
+getCurrentTab
+-------------
+
+.. js:function:: KangoBrowserWindow.getCurrentTab(callback)
+
+   Retrieves current active tab in window and pass it to callback function.
+   
+   :param function(tab) callback: callback function. tab is :ref:`KangoBrowserTab` object
+
+Example::
+
+    // output url of current tab in current window.
+    kango.browser.windows.getCurrent(function(win) {
+        // win is KangoBrowserWindow object
+        win.getCurrentTab(function(tab) {
+            // tab is KangoBrowserTab object
+            kango.console.log(tab.getUrl());
+        });
+    });
+
+    
+.. _KangoBrowserWindow.isActive:
+
+isActive
+--------
+
+.. js:function:: KangoBrowserWindow.isActive()
+
+   Return *true* if window is in focus and *false* if it is not.
+   
+   :returns: true for active tab and false for not active
+   :rtype: boolean
+
+Example::
+
+    // Find active tab in active window and open http://example.com/ in it
+    kango.browser.windows.getAll(function(wins) {
+        // wins is an Array of KangoBrowserWindow objects
+        for (var i = 0; i < wins.length; i++) {
+            if (wins[i].isActive()) {
+                // wins[i] is KangoBrowserWindow object representing active window
+                wins[i].getCurrentTab(function(tab) {
+                    // tab is KangoBrowserTab objects for active tab in active window
+                    tab.navigate('http://example.com/');
+                });
+            }
+        }
+    });
+

@@ -1,0 +1,183 @@
+.. _KangoBrowserTab:
+
+===============
+KangoBrowserTab
+===============
+
+Summary
+=======
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+
+   * - :ref:`KangoBrowserTab.getId`
+     - Returns tab unique identifier
+     
+   * - :ref:`KangoBrowserTab.getUrl`
+     - Returns URL for the tab
+     
+   * - :ref:`KangoBrowserTab.getTitle`
+     - Returns title for the tab
+     
+   * - :ref:`KangoBrowserTab.isActive`
+     - Returns *true* if the window is in focus now
+     
+   * - :ref:`KangoBrowserTab.navigate`
+     - Navigates current tab to new URL
+     
+   * - :ref:`KangoBrowserTab.dispatchMessage`
+     - Dispatches a messages to the content script(s) in the tab
+     
+   * - :ref:`KangoBrowserTab.close`
+     - Closes tab
+     
+Methods
+=================================
+
+.. _KangoBrowserTab.getId:
+
+getId
+---------------------------------
+
+.. js:function:: KangoBrowserTab.getId()
+
+   Returns tab unique identifier.
+   
+   :returns: tab unique identifier
+   :rtype: string
+
+Example::
+
+    // output ID for current active tab
+    kango.browser.tabs.getCurrent(function(tab) {
+        // tab is KangoBrowserTab object
+        kango.console.log(tab.getId());
+    });
+    
+
+.. _KangoBrowserTab.getUrl:
+
+getUrl
+---------------------------------
+
+.. js:function:: KangoBrowserTab.getUrl()
+
+   Returns URL for tab.
+   
+   :returns: tab URL
+   :rtype: string
+
+Example::
+
+    // output URL for current active tab
+    kango.browser.tabs.getCurrent(function(tab) {
+        // tab is KangoBrowserTab object
+        kango.console.log(tab.getUrl());
+    });
+
+    
+.. _KangoBrowserTab.getTitle:
+
+getTitle
+---------------------------------
+
+.. js:function:: KangoBrowserTab.getTitle()
+
+   Returns title for tab.
+   
+   :returns: tab title
+   :rtype: string
+
+Example::
+
+    // output title for current active tab
+    kango.browser.tabs.getCurrent(function(tab) {
+        // tab is KangoBrowserTab object
+        kango.console.log(tab.getTitle());
+    });
+
+    
+.. _KangoBrowserTab.isActive:
+
+isActive
+---------------------------------
+
+.. js:function:: KangoBrowserTab.isActive()
+
+   Returns *true* for active tab and *false* for not active.
+   
+   :returns: *true* for active tab and *false* for not active
+   :rtype: boolean
+
+Example::
+
+    kango.browser.tabs.getCurrent(function(tab) {
+        // tab is KangoBrowserTab object
+        kango.console.log('Current tab is active: ' + tab.isActive());
+    });
+
+    
+.. _KangoBrowserTab.navigate:
+
+navigate
+---------------------------------
+
+.. js:function:: KangoBrowserTab.navigate(string url)
+
+   Redirects the tab to specified URL.
+   
+   :param string url: URL
+
+Example::
+
+    // navigate current tab to 'http://example.com/'
+    kango.browser.tabs.getCurrent(function(tab) {
+        // tab is KangoBrowserTab object
+        tab.navigate('http://example.com/');
+    });
+
+    
+.. _KangoBrowserTab.dispatchMessage:
+
+dispatchMessage
+---------------------------------
+
+.. js:function:: KangoBrowserTab.dispatchMessage(string name, variant data)
+
+   Dispatches a message to the content script(s) executing in the tab.
+   
+   See :ref:`messaging-api` section for more details.
+   
+   :param string name: message name
+   :param variant data: JSON serializable data to send
+
+Example::
+
+    // This will send a message to current tab content scripts
+    // In this sample message named 'action' will have two fields data object
+    // It is possible to use any JSON serializable object    
+    kango.browser.tabs.getCurrent(function(tab) {
+        // tab is KangoBrowserTab object
+        tab.dispatchMessage('action', {name: 'DoABarrelRoll', count: 5});
+    });
+
+    
+.. _KangoBrowserTab.close:
+
+close
+---------------------------------
+
+.. js:function:: KangoBrowserTab.close()
+
+   Closes tab.
+
+Example::
+
+    kango.browser.tabs.getCurrent(function(tab) {
+        tab.close();
+    });
+

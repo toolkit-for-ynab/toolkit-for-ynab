@@ -1,0 +1,207 @@
+.. _kango:
+
+=====
+kango
+=====
+
+Summary
+=======
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+
+   * - :ref:`kango-getExtensionInfo`
+     - Returns an object describing the extension
+
+   * - :ref:`kango-addMessageListener`
+     - Registers a message handler for the specified message name
+
+   * - :ref:`kango-removeMessageListener`
+     - Removes a message handler that the addMessageListener method registered
+
+   * - :ref:`kango-dispatchMessage`
+     - Dispatches a message
+
+   * - :ref:`kango-invokeAsync`
+     - Calls function from background script
+
+   * - :ref:`kango-invokeAsyncCallback`
+     - Calls asynchronous function from background script
+
+Methods
+=======
+
+.. _kango-getExtensionInfo:
+
+getExtensionInfo
+----------------
+
+.. js:function:: kango.getExtensionInfo()
+
+   Returns a :ref:`KangoExtensionInfo` object describing the extension.
+   Can be used in content scripts.
+   
+   :returns: object describing the extension
+   :rtype: :ref:`KangoExtensionInfo`
+
+Example::
+
+    var info = kango.getExtensionInfo();
+    kango.console.log(info.name); // shows extension name
+
+
+.. _kango-addMessageListener:
+
+addMessageListener
+------------------
+
+.. js:function:: kango.addMessageListener(name, callback)
+
+   Registers a message handler for the specified message name.
+   Can be used in content scripts.
+   
+   :param string name: message name
+   :param function(event) callback: message handler function
+
+Message handler event::
+
+    event = {
+        data: variant,	// JSON serializable data object attached to the message
+        target: object,	// Point to object sent the message
+        source: KangoMessageSource // Message source
+    }
+
+**target** field could be either :ref:`KangoBrowserTab` or :ref:`kango` objects.
+
+For instance if message came from background to content script then *target* will be a kango object. If message came from content to background *target* will be :ref:`KangoBrowserTab`.
+
+The **event.source.dispatchMessage** call could be used inside message handler function to send message back.
+
+**source** :ref:`KangoMessageSource` object.
+
+See :ref:`messaging-api` section for more details.
+	
+Example::
+
+    // background script
+    kango.addMessageListener('GetData', function(event) {
+        // send data back to content script
+        event.source.dispatchMessage('SetData', {a: 1});
+    });
+
+    // content script
+        kango.addMessageListener('SetData', function(event) {
+        kango.console.log(event.data);
+    });
+
+    kango.dispatchMessage('GetData');
+
+	
+.. _kango-removeMessageListener:
+
+removeMessageListener
+---------------------
+
+.. js:function:: kango.removeMessageListener(name, callback)
+
+   Removes a message handler that the :js:func:`kango.addMessageListener` method registered.
+   Can be used in content scripts.
+   
+   :param string name: message name
+   :param function(event) callback: message handler function
+
+	
+.. _kango-dispatchMessage:
+
+dispatchMessage
+---------------
+
+.. js:function:: kango.dispatchMessage(name, data)
+
+   Dispatches a message to background script.
+   
+   See :ref:`messaging-api` section for more details.
+   
+   :param string name: message name
+   :param variant data: a JSON serializable data to send
+
+Example::
+
+    /*
+        This will send a message to background scripts
+        In this Example message named 'action' will have two fields *data* object
+        It is possible to use any JSON serializable object
+    */
+    kango.dispatchMessage('action', {name: 'DoABarrelRoll', count: 5});
+
+	
+.. _kango-invokeAsync:
+
+invokeAsync
+-----------
+
+.. js:function:: kango.invokeAsync(functionName, argument1, argument2, ..., argumentN, callback)
+
+   Calls function from background script.
+   Can be used in content scripts and options page.
+   
+   :param string functionName: function name to invoke
+   :param variant argumentN: variable number of arguments (must be JSON serializable)
+   :param function(result) callback: callback function
+
+Example::
+
+    kango.invokeAsync('kango.storage.setItem', 'Item1', 1);
+
+    kango.invokeAsync('kango.storage.getItem', 'Item1', function(data) {
+        kango.console.log(data);
+    });
+
+    kango.invokeAsync('kango.storage.removeItem', 'item1');
+
+
+    // invoke user defined function with name 'test_func'
+    // 'test_func' defined as function test_func(a, b){return a+b;} in background script
+    kango.invokeAsync('test_func', 1, 2, function(val) {
+        kango.console.log(val);
+    });
+
+    // invoke function 'foo' from object 'MyObj'
+    // 'MyObj' definition: var MyObj = {foo: function(x) {return x + 2;}};
+    kango.invokeAsync('MyObj.foo', 1, function(val) {
+        kango.console.log(val);
+    });
+
+	
+.. _kango-invokeAsyncCallback:
+
+invokeAsyncCallback
+-------------------
+
+.. js:function:: kango.invokeAsyncCallback(functionName, argument1, argument2, ..., argumentN, callback)
+
+   Calls asynchronous function from background script.
+   
+   :param string functionName: function name to invoke
+   :param variant argumentN: variable number of arguments (must be JSON serializable)
+   :param function(result) callback: callback function
+
+Example::
+
+    // background script
+    function foo(x, callback) {
+        window.setTimeout(1000, function() {
+            var y = x + 1;
+            callback(y);
+        });
+    }
+
+    // content script
+    kango.invokeAsyncCallback('foo', 2, function(result) {
+        alert(result);
+    });
+

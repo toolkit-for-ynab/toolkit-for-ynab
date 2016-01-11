@@ -1,0 +1,18 @@
+{
+    "name": "PopupDemo",
+    "version": "1.3.0",
+    "description": "Popup Demo",
+    "creator": "Kango",
+    "homepage_url": "http://kangoextensions.com/",
+    "background_scripts": ["main.js"],
+    "browser_button": {
+        "tooltipText": "Popup Demo",
+        "caption": "Popup Demo",
+        "icon": "icons/button.png",
+        "popup": {
+            "url": "popup.html",
+            "width": 600,
+            "height": 520
+        }
+    }
+}

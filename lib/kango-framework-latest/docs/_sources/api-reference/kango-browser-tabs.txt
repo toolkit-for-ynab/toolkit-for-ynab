@@ -1,0 +1,92 @@
+.. _kango-browser-tabs:
+
+=================================
+ kango.browser.tabs
+=================================
+
+Summary
+=================================
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+	 
+   * - :ref:`kango-browser-tabs-getAll`
+     - Retrieves all tabs
+	 
+   * - :ref:`kango-browser-tabs-getCurrent`
+     - Retrieves current active tab
+	 
+   * - :ref:`kango-browser-tabs-create`
+     - Creates new tab
+
+Methods
+=================================
+
+.. _kango-browser-tabs-getAll:
+
+getAll
+---------------------------------
+
+.. js:function:: kango.browser.tabs.getAll(callback)
+
+   Function will prepare an array of all the tabs available and pass it to callback specified.
+   
+   :param function(tabs) callback: callback function. tabs is an Array of :ref:`KangoBrowserTab` objects
+
+Example::
+
+	// enumerate all the browser tabs and log their urls to console
+	kango.browser.tabs.getAll(function(tabs) {
+		// tabs is Array of KangoBrowserTab
+		for(var i = 0; i < tabs.length; i++){
+			kango.console.log(tabs[i].getUrl());
+		}
+	});
+
+	
+.. _kango-browser-tabs-getCurrent:
+
+getCurrent
+---------------------------------
+
+.. js:function:: kango.browser.tabs.getCurrent(callback)
+
+   Retrieves currently active tab and pass :ref:`KangoBrowserTab` object for it to callback as argument.
+   
+   :param function(tab) callback: callback function. tab is a :ref:`KangoBrowserTab` object
+
+Example::
+
+	// output current tab url to console
+	kango.browser.tabs.getCurrent(function(tab) {
+		// tab is KangoBrowserTab object
+		kango.console.log(tab.getUrl());
+	});
+
+	
+.. _kango-browser-tabs-create:
+
+create
+---------------------------------
+
+.. js:function:: kango.browser.tabs.create(details)
+
+   Creates new tab with specified parameters.
+   
+   :param details: create parameters
+
+Details object::
+
+	details = {
+		string url,	// URL of the tab to open
+		boolean focused	// Tab will be active or not. Default is true.
+	}
+
+Example::
+
+	// open URL in new tab
+	kango.browser.tabs.create({url:'http://example.com/'});

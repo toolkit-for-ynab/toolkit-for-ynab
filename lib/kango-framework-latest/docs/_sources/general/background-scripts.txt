@@ -1,0 +1,47 @@
+.. _background-scripts:
+
+==================
+Background Scripts
+==================
+
+Background scripts are running as long as extension is enabled in browser and executed once on each browser start.
+
+Background scripts should be enumerated in ``background_scripts`` array of :ref:`extension_info.json<KangoExtensionInfo>` file.
+
+You can use any JavaScript libraries in background scipts, just add appropriate file to ``background_scripts``::
+
+	{
+		"background_scripts": [
+			"jquery-1.9.1.min.js",
+			"main.js"
+		]
+	}
+
+See :ref:`api-reference` for list of available APIs.
+
+.. note:: ``alert`` function is not available in some browsers, use :js:func:`kango.console.log`.
+
+Sample
+======
+::
+
+	kango.console.log('Extension initialized');
+	
+	// Handle browser button click
+	kango.ui.browserButton.addEventListener(kango.ui.browserButton.event.COMMAND, function(event) {
+		var details = {
+			method: 'GET',
+			url: 'http://example.com/',
+			async: true,
+			contentType: 'text'
+		};
+		kango.xhr.send(details, function(data) {
+			if (data.status == 200 && data.response != null) {
+				var text = data.response;
+				kango.console.log(text);
+			}
+			else { // something went wrong
+				kango.console.log('something went wrong');
+			}
+		});
+	});

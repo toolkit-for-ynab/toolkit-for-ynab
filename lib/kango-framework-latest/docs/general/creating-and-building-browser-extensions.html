@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Creating and Building Browser Extensions &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="General information" href="index.html" />
+    <link rel="next" title="Content Scripts" href="content-scripts.html" />
+    <link rel="prev" title="General information" href="index.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="content-scripts.html" title="Content Scripts"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="General information"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">General information</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="creating-and-building-browser-extensions">
+<h1>Creating and Building Browser Extensions<a class="headerlink" href="#creating-and-building-browser-extensions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="required-software">
+<h3>Required software<a class="headerlink" href="#required-software" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Kango framework: <a class="reference external" href="http://kangoextensions.com/kango.html">http://kangoextensions.com/kango.html</a></li>
+<li>Python 2.7: <a class="reference external" href="http://www.python.org/download/">http://www.python.org/download/</a></li>
+<li>Chrome browser: <a class="reference external" href="http://www.google.com/chrome">http://www.google.com/chrome</a></li>
+<li>Safari browser: <a class="reference external" href="http://www.apple.com/safari/download/">http://www.apple.com/safari/download/</a></li>
+<li>NSIS installer (IE/Windows only): <a class="reference external" href="http://nsis.sourceforge.net/Main_Page">http://nsis.sourceforge.net/Main_Page</a></li>
+</ul>
+</div>
+<div class="section" id="additional-requirements">
+<h3>Additional requirements<a class="headerlink" href="#additional-requirements" title="Permalink to this headline">¶</a></h3>
+<p>For building a Safari extension you have to <a class="reference external" href="http://developer.apple.com/programs/start/register/create.php">register</a> as a Safari Developer on Apple website and get Safari developer certificate.</p>
+</div>
+</div>
+<div class="section" id="creating-new-project">
+<h2>Creating new project<a class="headerlink" href="#creating-new-project" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Create a directory for the project (TestExtension for example)</p>
+</li>
+<li><p class="first">Run <tt class="docutils literal"><span class="pre">kango.py</span></tt> with <tt class="docutils literal"><span class="pre">create</span></tt> command:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">python</span> <span class="nx">kango_dir</span><span class="o">/</span><span class="nx">kango</span><span class="p">.</span><span class="nx">py</span> <span class="nx">create</span> <span class="s2">&quot;path/to/TestExtension&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>After running thus commands you will get extension project you can start to edit.</p>
+</div>
+<div class="section" id="adding-content-script">
+<h2>Adding content script<a class="headerlink" href="#adding-content-script" title="Permalink to this headline">¶</a></h2>
+<p>Kango allows you to run <a class="reference internal" href="content-scripts.html#content-scripts"><em>Content Scripts</em></a> on any web page opened by user. Content scripts are running for each webpage shown according to &#64;include / &#64;exclude rules from user js metadata block as follow:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// ==UserScript==</span>
+<span class="c1">// @name Test</span>
+<span class="c1">// @include http://*</span>
+<span class="c1">// ==/UserScript==</span>
+</pre></div>
+</div>
+<p>All the content scripts should be enumerated in <tt class="docutils literal"><span class="pre">content_scripts</span></tt> section of <a class="reference internal" href="../api-reference/KangoExtensionInfo.html#kangoextensioninfo"><em>extension_info.json</em></a> file.</p>
+<p>Lets take a look on content script in work. Create <tt class="docutils literal"><span class="pre">content.js</span></tt> file inside you project common src directory (e.g. <tt class="docutils literal"><span class="pre">TestExtension/src/common</span></tt>) and place follow code in it:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// ==UserScript==</span>
+<span class="c1">// @name Test</span>
+<span class="c1">// @include http://*</span>
+<span class="c1">// ==/UserScript==</span>
+
+<span class="kd">var</span> <span class="nx">colorNumber</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">];</span>
+
+<span class="nb">window</span><span class="p">.</span><span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">background</span> <span class="o">=</span> <span class="nx">colors</span><span class="p">[</span><span class="nx">colorNumber</span><span class="o">++</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">colorNumber</span> <span class="o">&gt;</span> <span class="nx">colors</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">colorNumber</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">},</span> <span class="mi">1000</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Also add this file in content scripts array in <a class="reference internal" href="../api-reference/KangoExtensionInfo.html#kangoextensioninfo"><em>extension_info.json</em></a> in the same common directory. It should look like:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;content_scripts&quot;</span><span class="o">:</span> <span class="p">[</span>
+        <span class="s2">&quot;content.js&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After building and installing the extension you will see background color blinking on every http webpage you open in your browser.</p>
+</div>
+<div class="section" id="adding-background-script">
+<h2>Adding background script<a class="headerlink" href="#adding-background-script" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="background-scripts.html#background-scripts"><em>Background Scripts</em></a> are running as long as extension is enabled in browser and executed once on each browser start.</p>
+<p>Background scripts allows you to use all the <a class="reference internal" href="../api-reference/index.html#api-reference"><em>Kango APIs</em></a> in synchronous mode.</p>
+<p>Background scripts should be enumerated in <tt class="docutils literal"><span class="pre">background_scripts</span></tt> array of <a class="reference internal" href="../api-reference/KangoExtensionInfo.html#kangoextensioninfo"><em>extension_info.json</em></a> file.</p>
+<p>To test it on your own you can create a file named <tt class="docutils literal"><span class="pre">background.js</span></tt> in your common src directory with follow content:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">details</span> <span class="o">=</span> <span class="p">{</span>
+<span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+<span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://example.com/&#39;</span><span class="p">,</span>
+<span class="nx">async</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="nx">contentType</span><span class="o">:</span> <span class="s1">&#39;text&#39;</span>
+<span class="p">};</span>
+
+<span class="nx">kango</span><span class="p">.</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">details</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span> <span class="nx">data</span><span class="p">.</span><span class="nx">response</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">response</span><span class="p">;</span>
+        <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span> <span class="c1">// something went wrong</span>
+        <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;something went wrong&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Also add it to <a class="reference internal" href="../api-reference/KangoExtensionInfo.html#kangoextensioninfo"><em>extension_info.json</em></a> like that:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;background_scripts&quot;</span><span class="o">:</span> <span class="p">[</span>
+        <span class="s2">&quot;background.js&quot;</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This will download <a class="reference external" href="http://example.com/">http://example.com/</a> page and output the content into console.</p>
+</div>
+<div class="section" id="adding-a-button-into-browser">
+<h2>Adding a button into browser<a class="headerlink" href="#adding-a-button-into-browser" title="Permalink to this headline">¶</a></h2>
+<p>To add a button to user browser you have to add <tt class="docutils literal"><span class="pre">browser_button</span></tt> section to <a class="reference internal" href="../api-reference/KangoExtensionInfo.html#kangoextensioninfo"><em>extension_info.json</em></a> file like follow:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s2">&quot;browser_button&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;caption&quot;</span><span class="o">:</span> <span class="s2">&quot;Kango&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;tooltipText&quot;</span><span class="o">:</span> <span class="s2">&quot;Kango&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;icon&quot;</span><span class="o">:</span> <span class="s2">&quot;icons/button.png&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To handle clicks on this button you have to add follow code in one of your background scripts:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">event</span><span class="p">.</span><span class="nx">COMMAND</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Button clicked!&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-pop-up">
+<h2>Adding pop-up<a class="headerlink" href="#adding-pop-up" title="Permalink to this headline">¶</a></h2>
+<p>You can add a pop-up window to your extension to show on button click. You can open an HTML file in pop-up and access Kango API from it.</p>
+<p>To test how popup works create <tt class="docutils literal"><span class="pre">popup.html</span></tt> with follow content:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+    Test
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+</div>
+<p>and add the following line to your background script:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">ui</span><span class="p">.</span><span class="nx">browserButton</span><span class="p">.</span><span class="nx">setPopup</span><span class="p">({</span><span class="nx">url</span><span class="o">:</span><span class="s1">&#39;popup.html&#39;</span><span class="p">,</span> <span class="nx">width</span><span class="o">:</span> <span class="mi">710</span><span class="p">,</span> <span class="nx">height</span><span class="o">:</span><span class="mi">510</span><span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-extension">
+<h2>Building extension<a class="headerlink" href="#building-extension" title="Permalink to this headline">¶</a></h2>
+<p>Preparing build for your extensions require you to run <tt class="docutils literal"><span class="pre">kango.py</span></tt> with <tt class="docutils literal"><span class="pre">build</span></tt> command as follow:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">python</span> <span class="nx">kango_dir</span><span class="o">/</span><span class="nx">kango</span><span class="p">.</span><span class="nx">py</span> <span class="nx">build</span> <span class="s2">&quot;path/to/TestExtension&quot;</span>
+</pre></div>
+</div>
+<p>After running this command you will get output directory filled with extensions builds.</p>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Creating and Building Browser Extensions</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a><ul>
+<li><a class="reference internal" href="#required-software">Required software</a></li>
+<li><a class="reference internal" href="#additional-requirements">Additional requirements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-new-project">Creating new project</a></li>
+<li><a class="reference internal" href="#adding-content-script">Adding content script</a></li>
+<li><a class="reference internal" href="#adding-background-script">Adding background script</a></li>
+<li><a class="reference internal" href="#adding-a-button-into-browser">Adding a button into browser</a></li>
+<li><a class="reference internal" href="#adding-pop-up">Adding pop-up</a></li>
+<li><a class="reference internal" href="#building-extension">Building extension</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">General information</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="content-scripts.html"
+                        title="next chapter">Content Scripts</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="content-scripts.html" title="Content Scripts"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="General information"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >General information</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

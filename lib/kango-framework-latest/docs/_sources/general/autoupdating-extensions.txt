@@ -1,0 +1,38 @@
+.. _autoupdating-extensions:
+
+=======================
+Autoupdating Extensions
+=======================
+
+Update URL
+==========
+
+If you're hosting your extension on own server, you need to add the ``update_path_url`` key to :ref:`extension_info.json<KangoExtensionInfo>` file::
+
+    {
+        "update_path_url": "http://example.com/extensions/"
+    }
+
+After building your project you will have files ``update_chrome.xml``, ``update_firefox.xml``, ``update_ie.xml``, ``update_safari.plist`` in output directory which you should upload to you server in ``update_path_url``.
+
+.. note:: Firefox requires https ``update_path_url`` with valid certificate.
+.. note:: Before uploading ``update_chrome.xml`` you must change appid in XML file to your Chrome extension ID. You can find the ID of your extension by going to the Extensions page (chrome://extensions). In next versions this will be done by framework.
+
+Configuring server
+==================
+Most HTTP servers are not configured to return correct MIME types for extension packages, so you will need to configure your HTTP server.
+
+In the Apache HTTP Server, this can be done by adding the following directive to the configuration file or ``.htaccess``::
+
+    AddType application/x-xpinstall .xpi
+    AddType application/x-chrome-extension .crx
+    AddType application/octet-stream .safariextz
+    
+For Nginx server you can add to your website configuration file::
+
+    types { 
+      application/x-xpinstall .xpi
+      application/x-chrome-extension .crx
+      application/octet-stream .safariextz
+    }
+

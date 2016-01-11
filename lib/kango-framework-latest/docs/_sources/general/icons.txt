@@ -1,0 +1,37 @@
+.. _icons:
+
+=================================
+ Icons
+=================================
+
+Icons should be placed in ``src/common/icons/`` project directory.
+
+Required icons:
+
+.. list-table::
+   :widths: 15 15 25
+   :header-rows: 1
+
+   * - File Name
+     - Browser
+     - Description
+
+   * - button.png
+     - All
+     - Default button icon 16x16px
+	 
+   * - icon32.png
+     - Firefox
+     - Extension icon
+   
+   * - icon48.png
+     - Chrome
+     - Extension icon
+	 
+   * - icon100.png
+     - Safari
+     - Extension icon
+	 
+   * - icon128.png
+     - Chrome
+     - Chrome Web Store icon

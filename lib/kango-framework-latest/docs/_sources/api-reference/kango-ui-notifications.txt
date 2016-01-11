@@ -1,0 +1,54 @@
+.. _kango-ui-notifications:
+
+======================
+kango.ui.notifications
+======================
+
+This API can be used to notify the user.
+
+.. note::
+
+  To enable notifications add to :ref:`extension_info.json<KangoExtensionInfo>` file::
+
+    {
+        "permissions": {
+            "notifications": true
+        }
+    }
+
+Summary
+=======
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+	 
+   * - :ref:`kango-ui-notifications-show`
+     - Shows a notification
+
+Methods
+=======
+
+.. _kango-ui-notifications-show:
+
+open
+----
+
+.. js:function:: kango.ui.notifications.show(title, text, icon, onClick)
+
+   Shows a notification.
+
+   :param string title: notification title
+   :param string text: notification text
+   :param string icon: notification icon URL
+   :param function() onClick: callback function
+	
+Example::
+
+    kango.ui.notifications.show('Notification title', 'Notification text', 'http://kangoextensions.com/images/logos/kango.png', function() {
+        kango.console.log('Notification click');
+    });
+

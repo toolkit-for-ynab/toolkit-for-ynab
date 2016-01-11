@@ -1,0 +1,98 @@
+.. _kango-browser-windows:
+
+=================================
+ kango.browser.windows
+=================================
+
+Summary
+=================================
+
+.. list-table::
+   :widths: 20 80
+   :header-rows: 1
+
+   * - Name
+     - Description
+	 
+   * - :ref:`kango-browser-windows-getAll`  
+     - Retrieves all windows
+	 
+   * - :ref:`kango-browser-windows-getCurrent`
+     - Retrieves current active window
+	 
+   * - :ref:`kango-browser-windows-create`
+     - Creates new window
+
+Methods
+=================================
+
+.. _kango-browser-windows-getAll:
+
+getAll
+---------------------------------
+
+.. js:function:: kango.browser.windows.getAll(callback)
+
+   Function will prepare an array of all the windows available and pass it to callback specified.
+   
+   :param function(wins) callback: callback function. wins ia an Array of :ref:`KangoBrowserWindow` objects
+
+Example::
+
+	// enumerate all the browser windows, look for active window and output URL in selected tab for it
+	kango.browser.windows.getAll(function(wins) {
+		// wins is Array of KangoBrowserWindows
+		for (var i=0; i < wins.length; i++) {
+			if(wins[i].isActive()) {
+				wins[i].getCurrentTab(function(tab1){
+					// tab1 is an active tab in active window
+					kango.console.log(tab1.getUrl());
+				});
+			}
+		}
+	});
+	
+	
+.. _kango-browser-windows-getCurrent:
+
+getCurrent
+---------------------------------
+
+.. js:function:: kango.browser.windows.getCurrent(callback)
+
+   Retrieves currently active window and pass :ref:`KangoBrowserWindow` object for it to callback as argument.
+   
+   :param function(win) callback: callback function. win is an :ref:`KangoBrowserWindow` object
+
+Example::
+
+	// output number of tabs in active window
+	kango.browser.windows.getCurrent(function(win){
+		// win is KangoBrowserWindow object
+		win.getTabs(function(tabs) {
+			kango.console.log(tabs.length);
+		});
+	});
+
+	
+.. _kango-browser-windows-create:
+
+create
+---------------------------------
+
+.. js:function:: kango.browser.windows.create(details)
+
+   Creates new window with specified parameters. Created tab window be in focus after creation.
+   
+   :param details: create parameters
+
+Details object::
+
+	details = {
+		string url	// URL of the page to open
+	}
+
+Example::
+
+	// open URL in new window
+	kango.browser.windows.create({url:'http://example.com/'});

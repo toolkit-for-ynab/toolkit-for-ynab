@@ -1,0 +1,390 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>KangoBrowserTab &mdash; Kango 1.7.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.7.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Kango 1.7.0 documentation" href="../index.html" />
+    <link rel="up" title="API reference" href="index.html" />
+    <link rel="next" title="KangoBrowserWindow" href="KangoBrowserWindow.html" />
+    <link rel="prev" title="KangoExtensionInfo" href="KangoExtensionInfo.html" />
+ 
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-23673413-1']);
+  _gaq.push(['_trackPageview']);
+</script>
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="KangoBrowserWindow.html" title="KangoBrowserWindow"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="KangoExtensionInfo.html" title="KangoExtensionInfo"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">API reference</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+
+  <div class="section" id="kangobrowsertab">
+<span id="id1"></span><h1>KangoBrowserTab<a class="headerlink" href="#kangobrowsertab" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#kangobrowsertab-getid"><em>getId</em></a></td>
+<td>Returns tab unique identifier</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kangobrowsertab-geturl"><em>getUrl</em></a></td>
+<td>Returns URL for the tab</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kangobrowsertab-gettitle"><em>getTitle</em></a></td>
+<td>Returns title for the tab</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kangobrowsertab-isactive"><em>isActive</em></a></td>
+<td>Returns <em>true</em> if the window is in focus now</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kangobrowsertab-navigate"><em>navigate</em></a></td>
+<td>Navigates current tab to new URL</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#kangobrowsertab-dispatchmessage"><em>dispatchMessage</em></a></td>
+<td>Dispatches a messages to the content script(s) in the tab</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#kangobrowsertab-close"><em>close</em></a></td>
+<td>Closes tab</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getid">
+<span id="kangobrowsertab-getid"></span><h3>getId<a class="headerlink" href="#getid" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="KangoBrowserTab.getId">
+<tt class="descclassname">KangoBrowserTab.</tt><tt class="descname">getId</tt><big>(</big><big>)</big><a class="headerlink" href="#KangoBrowserTab.getId" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns tab unique identifier.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tab unique identifier</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// output ID for current active tab</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">getCurrent</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// tab is KangoBrowserTab object</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tab</span><span class="p">.</span><span class="nx">getId</span><span class="p">());</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="geturl">
+<span id="kangobrowsertab-geturl"></span><h3>getUrl<a class="headerlink" href="#geturl" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="KangoBrowserTab.getUrl">
+<tt class="descclassname">KangoBrowserTab.</tt><tt class="descname">getUrl</tt><big>(</big><big>)</big><a class="headerlink" href="#KangoBrowserTab.getUrl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns URL for tab.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tab URL</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// output URL for current active tab</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">getCurrent</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// tab is KangoBrowserTab object</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tab</span><span class="p">.</span><span class="nx">getUrl</span><span class="p">());</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="gettitle">
+<span id="kangobrowsertab-gettitle"></span><h3>getTitle<a class="headerlink" href="#gettitle" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="KangoBrowserTab.getTitle">
+<tt class="descclassname">KangoBrowserTab.</tt><tt class="descname">getTitle</tt><big>(</big><big>)</big><a class="headerlink" href="#KangoBrowserTab.getTitle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns title for tab.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">tab title</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// output title for current active tab</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">getCurrent</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// tab is KangoBrowserTab object</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tab</span><span class="p">.</span><span class="nx">getTitle</span><span class="p">());</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="isactive">
+<span id="kangobrowsertab-isactive"></span><h3>isActive<a class="headerlink" href="#isactive" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="KangoBrowserTab.isActive">
+<tt class="descclassname">KangoBrowserTab.</tt><tt class="descname">isActive</tt><big>(</big><big>)</big><a class="headerlink" href="#KangoBrowserTab.isActive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <em>true</em> for active tab and <em>false</em> for not active.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>true</em> for active tab and <em>false</em> for not active</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">getCurrent</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// tab is KangoBrowserTab object</span>
+    <span class="nx">kango</span><span class="p">.</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Current tab is active: &#39;</span> <span class="o">+</span> <span class="nx">tab</span><span class="p">.</span><span class="nx">isActive</span><span class="p">());</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="navigate">
+<span id="kangobrowsertab-navigate"></span><h3>navigate<a class="headerlink" href="#navigate" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="KangoBrowserTab.navigate">
+<tt class="descclassname">KangoBrowserTab.</tt><tt class="descname">navigate</tt><big>(</big><em>string url</em><big>)</big><a class="headerlink" href="#KangoBrowserTab.navigate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redirects the tab to specified URL.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>url</strong> (<em>string</em>) &#8211; URL</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// navigate current tab to &#39;http://example.com/&#39;</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">getCurrent</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// tab is KangoBrowserTab object</span>
+    <span class="nx">tab</span><span class="p">.</span><span class="nx">navigate</span><span class="p">(</span><span class="s1">&#39;http://example.com/&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dispatchmessage">
+<span id="kangobrowsertab-dispatchmessage"></span><h3>dispatchMessage<a class="headerlink" href="#dispatchmessage" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="KangoBrowserTab.dispatchMessage">
+<tt class="descclassname">KangoBrowserTab.</tt><tt class="descname">dispatchMessage</tt><big>(</big><em>string name</em>, <em>variant data</em><big>)</big><a class="headerlink" href="#KangoBrowserTab.dispatchMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dispatches a message to the content script(s) executing in the tab.</p>
+<p>See <a class="reference internal" href="../general/messaging-api.html#messaging-api"><em>Messaging API</em></a> section for more details.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Arguments:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; message name</li>
+<li><strong>data</strong> (<em>variant</em>) &#8211; JSON serializable data to send</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="c1">// This will send a message to current tab content scripts</span>
+<span class="c1">// In this sample message named &#39;action&#39; will have two fields data object</span>
+<span class="c1">// It is possible to use any JSON serializable object</span>
+<span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">getCurrent</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// tab is KangoBrowserTab object</span>
+    <span class="nx">tab</span><span class="p">.</span><span class="nx">dispatchMessage</span><span class="p">(</span><span class="s1">&#39;action&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;DoABarrelRoll&#39;</span><span class="p">,</span> <span class="nx">count</span><span class="o">:</span> <span class="mi">5</span><span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="close">
+<span id="kangobrowsertab-close"></span><h3>close<a class="headerlink" href="#close" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="KangoBrowserTab.close">
+<tt class="descclassname">KangoBrowserTab.</tt><tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#KangoBrowserTab.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes tab.</p>
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">kango</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">tabs</span><span class="p">.</span><span class="nx">getCurrent</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tab</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">tab</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+	var disqus_shortname = 'kangoframework';
+
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">KangoBrowserTab</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#methods">Methods</a><ul>
+<li><a class="reference internal" href="#getid">getId</a></li>
+<li><a class="reference internal" href="#geturl">getUrl</a></li>
+<li><a class="reference internal" href="#gettitle">getTitle</a></li>
+<li><a class="reference internal" href="#isactive">isActive</a></li>
+<li><a class="reference internal" href="#navigate">navigate</a></li>
+<li><a class="reference internal" href="#dispatchmessage">dispatchMessage</a></li>
+<li><a class="reference internal" href="#close">close</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="KangoExtensionInfo.html"
+                        title="previous chapter">KangoExtensionInfo</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="KangoBrowserWindow.html"
+                        title="next chapter">KangoBrowserWindow</a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="KangoBrowserWindow.html" title="KangoBrowserWindow"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="KangoExtensionInfo.html" title="KangoExtensionInfo"
+             >previous</a> |</li>
+        <li><a href="../index.html">Kango 1.7.0 documentation</a> &raquo;</li>
+          <li><a href="index.html" >API reference</a> &raquo;</li> 
+      </ul>
+    </div>
+
+
+    <div class="footer">
+        &copy; Copyright 2011-2014, Kango.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+<script type="text/javascript">
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+ <script type="text/javascript">
+var disqus_shortname = 'kangoframework';
+
+(function () {
+	var s = document.createElement('script'); s.async = true;
+	s.type = 'text/javascript';
+	s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+	(document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+}());
+</script>
+
+  </body>
+</html>

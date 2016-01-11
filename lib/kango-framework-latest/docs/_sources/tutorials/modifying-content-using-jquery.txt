@@ -1,0 +1,83 @@
+.. _modifying-content-using-jquery:
+
+=====================================================
+Modifying content of web pages using Kango and jQuery
+=====================================================
+
+Content script
+==============
+
+Kango framework supports Greasemonkey-like user scripts. Content scripts run in the context of web pages and have access to Document Object Model (DOM). You can insert/modify/remove any element on web page, etc.
+
+Content script can access some :ref:`Kango APIs<content-scripts-api>`.
+
+Adding content script to your project
+=====================================
+
+Simply create new JS file, open :ref:`extension_info.json<KangoExtensionInfo>` in your project common directory and add ``content_scripts`` section. Now your :ref:`extension_info.json<KangoExtensionInfo>` should look like::
+
+    {
+        "name": "ChristmasTree",
+        "version": "1.1.0",
+        "description": "Displays Christmas tree on each loaded web page",
+        "creator": "KangoExtensions",
+        "homepage_url": "http://kangoextensions.com/",
+        "content_scripts": [
+            "tree.js"
+        ]
+    }
+
+Writing content script
+======================
+
+Content script supports user script headers (include and exclude rules). Add this header at the beginning of ``tree.js``::
+
+    // ==UserScript==
+    // @name ChristmasTree
+    // @include http://*
+    // @include https://*
+    // @require jquery-1.9.1.min.js
+    // ==/UserScript==
+	
+You content script will be executed if it matches any include rule and not matches any exclude rule.
+
+Adding jQuery support
+=====================
+
+You can load jQuery in your content script simply adding :ref:`@require<content-scripts-require>` key in user script header.
+
+Using jQuery
+============
+
+Let's write code that inserts Christmas tree on each loaded web page::
+
+    var $ = window.$.noConflict(true); // Required for IE
+
+    var tree = $(document.createElement('img')).attr({
+        src: 'http://kangoextensions.com/misc/tree.png',
+        title: 'Christmas tree'
+    }).css({
+        position: 'absolute',
+        top: '10px',
+        left: document.body.clientWidth - 280 + 'px',
+        'z-index': '10000'
+    }).appendTo(document.body);
+
+    tree.click(function() {
+        alert('Tree click');
+    });
+	
+Testing project
+===============
+
+After building and installing extension in browser you can see Christmas tree on each loaded http web page.
+
+.. figure:: /_images/kitties.jpg
+    :scale: 60 %
+    :alt: kitties
+
+Links
+=====
+
+* Full `source <https://github.com/KangoExtensions/kango-samples/tree/master/ChristmasTree/src/common>`_ of the ChristmasTree sample.
+* `Framework <http://kangoextensions.com/kango/kango-framework-latest.zip>`_ itself.

@@ -1,0 +1,14 @@
+{
+    "name": "Gmail Checker",
+    "version": "1.2.0",
+    "description": "Gmail Checker",
+    "creator": "Kango",
+    "homepage_url": "http://kangoextensions.com/",
+    "background_scripts": ["main.js"],
+    "browser_button": {
+        "icon": "icons/button_gray.png",
+        "tooltipText": "Gmail Checker",
+        "caption": "Gmail Checker"
+    },
+    "default_locale": "en"
+}
