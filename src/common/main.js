@@ -58,7 +58,7 @@ if (kango.storage.getItem('colourBlindMode')) {
 }
 
 if (kango.storage.getItem('hideAOM')) {
-  injectCSS('res/features/hide-age-of-money/main.css');
+  injectScript('res/features/hide-age-of-money/main.js');
 }
 
 if (kango.storage.getItem('highlightNegativesNegative')) {
