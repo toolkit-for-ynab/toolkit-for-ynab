@@ -53,6 +53,7 @@ function saveOptions() {
   saveCheckboxOption('moveMoneyDialog');
   saveCheckboxOption('pacing');
   saveCheckboxOption('moveMoneyAutocomplete');
+  saveCheckboxOption('daysOfBuffering');
   saveCheckboxOption('toggleSplits');
   saveCheckboxOption('accountsSelectedTotal');
   saveCheckboxOption('changeEnterBehavior');
@@ -86,6 +87,7 @@ function restoreOptions() {
   restoreCheckboxOption('moveMoneyDialog');
   restoreCheckboxOption('pacing');
   restoreCheckboxOption('moveMoneyAutocomplete');
+  restoreCheckboxOption('daysOfBuffering');
   restoreCheckboxOption('toggleSplits');
   restoreCheckboxOption('accountsSelectedTotal');
   restoreCheckboxOption('changeEnterBehavior');

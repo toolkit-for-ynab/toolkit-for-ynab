@@ -21,6 +21,9 @@ function injectScript(path) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
+/* Load this to setup behaviors when the DOM updates */
+injectScript('res/features/init/actOnChange.js');
+
 function ensureDefaultsAreSet() {
   var storedKeys = kango.storage.getKeys();
 
@@ -152,4 +155,9 @@ if (kango.storage.getItem('editButtonPosition') == 1) {
 }
 else if (kango.storage.getItem('editButtonPosition') == 2) {
   injectCSS('res/features/edit-button-position/hidden.css');
+}
+
+if (kango.storage.getItem('daysOfBuffering')) {
+  injectCSS('res/features/days-of-buffering/main.css');
+  injectScript('res/features/days-of-buffering/main.js');
 }

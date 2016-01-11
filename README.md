@@ -52,7 +52,7 @@ This extension uses Kango Extensions to provide cross browser support. To build:
 
 1. Clone the repository
 1. Install Python 2.7 (or newer, but I haven't tested that) in your path so it's accessible with just plain ```python``` if you don't have it already.
-1. Run ```build``` from within the folder you cloned above.
+1. Run ```build.bat``` from within the folder you cloned above.
 1. You'll see platform specific output in the ```output``` folder.
 1. Load it into Chrome as an unpacked extension, or load it into Firefox via the .xpi file.
 
