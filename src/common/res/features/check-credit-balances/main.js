@@ -1,58 +1,60 @@
 (function poll() {
-   if ( typeof ynabToolKit !== "undefined") {
-   		
-      ynabToolKit.featureOptions.checkCreditBalances = true;
-   	ynabToolKit.checkCreditBalances = function ()  {
-         
-            var debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
-            var accountName = {};
-            var accountBalance = {};
-            var accountMatch = {};
-      
-            $(debtPaymentCategories).each(function() {
-               accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title')
-      
-               var categoryBalance = $(this).find('.budget-table-cell-available-div .user-data.currency').html();
-               categoryBalance = Number(categoryBalance.replace(/[^\d.-]/g, ''));
-      
-               $('.nav-account-row').each(function() {
-      
-                  if ( $(this).find('.nav-account-name').prop('title') == accountName) {
-                  	accountMatch = true;
-                  	accountBalance = $(this).find('.user-data.currency').html();
-                  	accountBalance = Number(accountBalance.replace(/[^\d.-]/g, ''));
-                  }
-      
-               });
-      
-               if (accountMatch) {
-      
-               	if (accountBalance + categoryBalance !== 0) { // warn if funds do not balance to 0
-      
-               		var $thisCategoryBalance = $(this).find('.budget-table-cell-available-div .user-data.currency');
-      
-               		if ($thisCategoryBalance.hasClass('positive')) {
-               			$thisCategoryBalance.removeClass('positive').addClass('cautious');
-               		}
-      
-               	}
-               	
-               	accountMatch = false; // reset
-               } // account match
-               
-            });
-         
-      };
-      
-   } else {
-   	setTimeout(poll, 250);
-   }		
+  if (typeof ynabToolKit !== 'undefined') {
+
+    ynabToolKit.featureOptions.checkCreditBalances = true;
+    ynabToolKit.checkCreditBalances = function() {
+
+      var budgetView = ynab.YNABSharedLib
+        .getBudgetViewModel_AllBudgetMonthsViewModel()._result;
+
+      var categoryEntityId = budgetView.categoriesViewModel
+        .debtPaymentMasterCategory.entityId;
+
+      var debtAccounts = budgetView.categoriesViewModel.subCategoriesCollection
+        .findItemsByMasterCategoryId(categoryEntityId);
+
+      debtAccounts.forEach(function(a) {
+        var accountName = a.name;
+        var account = budgetView.sidebarViewModel
+          .accountCalculationsCollection.findItemByAccountId(a.accountId);
+
+        var clearedBalance = account.clearedBalance;
+
+        var monthlyBudget = budgetView.monthlySubCategoryBudgetCalculationsCollection
+          .findItemByEntityId('mcbc/2016-01/' + a.entityId);
+
+        var available = monthlyBudget.balance;
+
+        if (available != (clearedBalance * -1)) {
+          updateRow(a.name);
+          updateInspector(a.name);
+        }
+      });
+
+      function updateRow(name) {
+        var rows = $('.is-sub-category.is-debt-payment-category');
+        rows.each(function(i) {
+          var accountName = $(this)
+            .find('.budget-table-cell-name div.button-truncate').prop('title');
+          if (name === accountName) {
+            var categoryBalance = $(this)
+              .find('.budget-table-cell-available-div .user-data.currency');
+            categoryBalance.removeClass('positive negative')
+              .addClass('cautious');
+          }
+        });
+      }
+
+      function updateInspector(name) {
+        var inspectorName = $('.inspector-category-name.user-data').text().trim();
+        if (name === inspectorName) {
+          var inspectorBalance = $('.inspector-overview-available .user-data .user-data.currency');
+          inspectorBalance.removeClass('positive negative')
+            .addClass('cautious');
+        }
+      }
+    };
+  } else {
+    setTimeout(poll, 250);
+  }
 })();
-
-
-
-
-
-
-
-
