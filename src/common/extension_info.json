@@ -1,5 +1,5 @@
 {
-    "name": "YNAB Enhanced",
+    "name": "Toolkit for YNAB",
     "version": "0.3.0",
     "creator": "Open Source Community",
     "description": "UI customisations and tweaks for the web version of YNAB.",
@@ -11,8 +11,8 @@
 
     "browser_button": {
         "icon": "icons/button.png",
-        "tooltipText": "YNAB Enhanced",
-        "caption": "YNAB Enhanced"
+        "tooltipText": "Toolkit for YNAB",
+        "caption": "Toolkit for YNAB"
     },
 
     "options_page": "options.html",

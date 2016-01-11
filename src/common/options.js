@@ -1,11 +1,3 @@
-// Useful for debugging the settings page outside of chrome settings!
-// var chrome = {
-//   storage: { sync: {
-//     set: function (defaults, callback) { callback(defaults); },
-//     get: function (defaults, callback) { callback(defaults); }
-//   }}
-// };
-
 function ensureDefaultsAreSet() {
   var storedKeys = kango.storage.getKeys();
 
@@ -20,7 +12,7 @@ function ensureDefaultsAreSet() {
   if (storedKeys.indexOf('removeZeroCategories') < 0) {
     kango.storage.setItem('removeZeroCategories', true);
   }
-  
+
   if (storedKeys.indexOf('transferJump') < 0) {
     kango.storage.setItem('transferJump', true);
   }
@@ -48,7 +40,7 @@ function restoreSelectOption(elementId) {
   select.value = data;
 }
 
-function save_options() {
+function saveOptions() {
 
   saveCheckboxOption('collapseExpandBudgetGroups');
   saveCheckboxOption('collapseSideMenu');
@@ -71,18 +63,14 @@ function save_options() {
   saveSelectOption('accountsDisplayDensity');
   saveSelectOption('editButtonPosition');
 
-  // Update status to let user know options were saved.
-  var status = document.getElementById('status');
-  status.textContent = 'Options saved.';
-
-  setTimeout(function() {
-    status.textContent = '';
-  }, 1000);
+  $('#settingsSaved').fadeIn()
+                     .delay(1500)
+                     .fadeOut();
 }
 
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
-function restore_options() {
+function restoreOptions() {
 
   ensureDefaultsAreSet();
 
@@ -108,8 +96,33 @@ function restore_options() {
   restoreSelectOption('editButtonPosition');
 }
 
-KangoAPI.onReady(function() {
-  restore_options();
-});
+function loadPanel(panel) {
 
-document.getElementById('save').addEventListener('click', save_options);
+  // Do we need to do anything?
+  var element = $('#' + panel + 'MenuItem');
+  if (element.hasClass('active-menu')) { return; }
+
+  $('.nav li a').removeClass('active-menu');
+  element.addClass('active-menu');
+
+  $('.settingsPage').hide();
+  $('#' + panel + "SettingsPage").fadeIn();
+}
+
+KangoAPI.onReady(function() {
+  restoreOptions();
+
+  $('input:checkbox').bootstrapSwitch();
+
+  loadPanel('general');
+
+  $('#generalMenuItem').click(function(e) { loadPanel('general'); e.preventDefault(); });
+  $('#accountsMenuItem').click(function(e) { loadPanel('accounts'); e.preventDefault(); });
+  $('#budgetMenuItem').click(function(e) { loadPanel('budget'); e.preventDefault(); });
+
+  $('#save').click(saveOptions);
+  $('#cancel').click(function() {
+    KangoAPI.closeWindow();
+  });
+
+});

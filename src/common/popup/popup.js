@@ -1,9 +1,11 @@
 KangoAPI.onReady(function() {
 
-  var button = document.getElementById('openSettings');
-
-  button.addEventListener('click', function() {
+  $('#openSettings').click(function() {
     kango.ui.optionsPage.open();
-  }, false);
+    KangoAPI.closeWindow();
+  });
 
+  $('#versionNumber').text(kango.getExtensionInfo().version);
+
+  $('#openSettings').focus();
 });
