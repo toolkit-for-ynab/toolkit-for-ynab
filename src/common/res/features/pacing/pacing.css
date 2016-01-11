@@ -1,0 +1,34 @@
+.budget-table-header .budget-table-cell-pacing {
+  padding-right: 1em;
+  font-size: .75em;
+  font-weight: 700;
+}
+.budget-table-cell-pacing {
+  width: 10%;
+}
+.is-master-category .budget-table-cell-pacing {
+  display: none; 
+}
+
+.budget-table-uncategorized-transactions .budget-table-cell-pacing {
+  display: none;
+}
+.budget-table-cell-pacing-display {
+  background-color: black;
+  border-radius: 1em;
+  padding: .125em .5em .175em .5em;
+  color: white;
+}
+.budget-table-cell-pacing-display.hot {
+  background-color: #d33c2d;
+}
+.budget-table-cell-pacing-display.warm {
+  background-color: orange;
+}
+.budget-table-cell-pacing-display.cool {
+  background-color: blue; 
+}
+.budget-table-cell-pacing-display.neutral {
+  color: ##cfd5d7;
+  background-color: white;
+}

@@ -121,6 +121,11 @@ if (kango.storage.getItem('transferJump')) {
   injectScript('res/features/transfer-jump/main.js');
 }
 
+if (kango.storage.getItem('pacing')) {
+  injectCSS('res/features/pacing/pacing.css');
+  injectScript('res/features/pacing/main.js');
+}
+
 if (kango.storage.getItem('reconciledTextColor')) {
   injectScript('res/features/distinguish-reconciled-transactions/main.js');
 }

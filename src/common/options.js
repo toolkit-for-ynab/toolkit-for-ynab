@@ -51,6 +51,7 @@ function saveOptions() {
   saveCheckboxOption('enableRetroCalculator');
   saveCheckboxOption('removeZeroCategories');
   saveCheckboxOption('moveMoneyDialog');
+  saveCheckboxOption('pacing');
   saveCheckboxOption('moveMoneyAutocomplete');
   saveCheckboxOption('daysOfBuffering');
   saveCheckboxOption('toggleSplits');
@@ -84,6 +85,7 @@ function restoreOptions() {
   restoreCheckboxOption('enableRetroCalculator');
   restoreCheckboxOption('removeZeroCategories');
   restoreCheckboxOption('moveMoneyDialog');
+  restoreCheckboxOption('pacing');
   restoreCheckboxOption('moveMoneyAutocomplete');
   restoreCheckboxOption('daysOfBuffering');
   restoreCheckboxOption('toggleSplits');
