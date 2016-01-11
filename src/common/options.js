@@ -52,6 +52,7 @@ function saveOptions() {
   saveCheckboxOption('removeZeroCategories');
   saveCheckboxOption('moveMoneyDialog');
   saveCheckboxOption('moveMoneyAutocomplete');
+  saveCheckboxOption('daysOfBuffering');
   saveCheckboxOption('toggleSplits');
   saveCheckboxOption('accountsSelectedTotal');
   saveCheckboxOption('changeEnterBehavior');
@@ -84,6 +85,7 @@ function restoreOptions() {
   restoreCheckboxOption('removeZeroCategories');
   restoreCheckboxOption('moveMoneyDialog');
   restoreCheckboxOption('moveMoneyAutocomplete');
+  restoreCheckboxOption('daysOfBuffering');
   restoreCheckboxOption('toggleSplits');
   restoreCheckboxOption('accountsSelectedTotal');
   restoreCheckboxOption('changeEnterBehavior');
