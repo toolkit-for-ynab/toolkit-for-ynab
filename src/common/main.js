@@ -21,6 +21,9 @@ function injectScript(path) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
+/* Load this to setup behaviors when the DOM updates */
+injectScript('res/features/init/actOnChange.js');
+
 function ensureDefaultsAreSet() {
   var storedKeys = kango.storage.getKeys();
 
@@ -119,6 +122,11 @@ if (kango.storage.getItem('changeEnterBehavior')) {
 if (kango.storage.getItem('transferJump')) {
   injectCSS('res/features/transfer-jump/main.css');
   injectScript('res/features/transfer-jump/main.js');
+}
+
+if (kango.storage.getItem('pacing')) {
+  injectCSS('res/features/pacing/pacing.css');
+  injectScript('res/features/pacing/main.js');
 }
 
 if (kango.storage.getItem('reconciledTextColor')) {
