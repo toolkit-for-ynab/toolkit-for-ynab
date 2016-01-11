@@ -25,6 +25,7 @@ This is what the extension can do for you:
 - Show a total of the selected transactions in the account view.
 - Make the Move money dialog larger to make more of it fit on the screen at once.
 - Add a setting to make enter just save the transaction when adding transactions.
+- Show your your spending pacing mid-month to ensure you're on track to meet your budget.
 
 All of these are configurable with options in the extension options page.
 
