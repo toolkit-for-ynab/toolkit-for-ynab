@@ -1,2 +1,7 @@
 .sass-cache/*
 _site/*
+.DS_Store
+output/*
+certificates/*
+*.pyc
+/.project
