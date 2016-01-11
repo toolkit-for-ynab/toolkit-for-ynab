@@ -1,17 +1,12 @@
 (function ynabEnhancedInjectCollapseBudgetInitializer() {
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined') {
-    (function($) {
-      $.event.special.destroyed = {
-        remove: function(o) {
-          if (o.handler) {
-            o.handler();
-          }
-        },
-      };
-    })(jQuery);
 
     $(document).on('click', '.undo-redo-container', function(e) {
-      if (e.offsetX > this.offsetLeft + this.offsetWidth) {
+      var container = $('.undo-redo-container');
+      var min = container.offset().left + container.outerWidth() - 2;
+      var max = min + 28;
+
+      if (e.pageX >= min && e.pageX <= max) {
         collapseGroups();
       }
     });
