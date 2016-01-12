@@ -14,7 +14,7 @@ function ynabEnhancedSelectedTotals() {
 function ynabEnhancedSelectedTotalsCalculate() {
     var outflows = 0;
     var inflows = 0;
-    var currentPath = window.location.pathname;
+    var transactionsFound = false;
     var accountId, transactions;
     accountId = 'null';
     if (currentPath.indexOf('/accounts/') > -1) {
@@ -25,9 +25,14 @@ function ynabEnhancedSelectedTotalsCalculate() {
         if (transactions[i].isChecked) {
             inflows += transactions[i].inflow;
             outflows += transactions[i].outflow;
+            transactionsFound = true;
         }
     }
-    ynabEnhancedSelectedTotalsUpdate(inflows - outflows);
+    var total = inflows - outflows;
+    if (!transactionsFound) {
+        total = false;
+    }
+    ynabEnhancedSelectedTotalsUpdate(total);
 
     setTimeout(ynabEnhancedSelectedTotalsPoll, 750);
 }
@@ -37,10 +42,10 @@ function ynabEnhancedSelectedTotalsUpdate(total) {
     if (parent == null) {
         return false;
     }
-    if ((' ' + parent.className + ' ').indexOf(' hidden ') == -1 && total < 0) {
+    if ((' ' + parent.className + ' ').indexOf(' hidden ') == -1 && total === false) {
         parent.className += " hidden";
         return true;
-    } else if (total == -1) {
+    } else if (total === false) {
         return true;
     }
     parent.className = "accounts-header-balances-selected";
@@ -99,6 +104,7 @@ function ynabEnhancedSelectedTotalsPoll() {
     if (windowPath != currentPath) {
         currentPath = windowPath;
         previousSet = '';
+        ynabEnhancedSelectedTotalsUpdate(-1);
     }
     if (currentPath.indexOf('/accounts/') > -1) {
         accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1)
@@ -112,7 +118,7 @@ function ynabEnhancedSelectedTotalsPoll() {
         }
     }
     if (checkedTransactions.length == 0) {
-        ynabEnhancedSelectedTotalsUpdate(-1);
+        ynabEnhancedSelectedTotalsUpdate(false);
         previousSet = checkedTransactions;
     } else {
         if (checkedTransactions.toString() != previousSet.toString()) {
