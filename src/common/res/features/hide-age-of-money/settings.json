@@ -4,5 +4,10 @@
       "default": false,
       "section": "general",
         "title": "Hide Age of Money Calculation",
-  "description": "Hides the Age of Money calculation. Some users find it's not relevant to them and it stresses them out, so they'd rather just hide it."
+  "description": "Hides the Age of Money calculation. Some users find it's not relevant to them and it stresses them out, so they'd rather just hide it.",
+      "actions": {
+                    "true": {
+                      "injectScript": "main.js"
+                    }
+                 }
 }
