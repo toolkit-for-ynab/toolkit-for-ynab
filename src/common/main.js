@@ -22,6 +22,7 @@ function injectScript(path) {
 }
 
 /* Load this to setup behaviors when the DOM updates */
+injectScript('res/features/allSettings.js');
 injectScript('res/features/init/actOnChange.js');
 
 function ensureDefaultsAreSet() {
