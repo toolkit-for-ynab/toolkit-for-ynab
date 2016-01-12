@@ -8,6 +8,10 @@ function ynabEnhancedSelectedTotals() {
     label.innerText = "Selected Transactions Total"
     totals.appendChild(label);
     parent.appendChild(totals);
+    var dataSetParent = document.getElementsByClassName('ynab-grid-body')[0].getElementsByClassName('ynab-grid-body-row');
+    for (var i = 0; i < dataSetParent.length; i++) {
+        dataSet.push(dataSetParent[i].id);
+    }
     ynabEnhancedSelectedTotalsPoll();
 }
 
@@ -101,9 +105,15 @@ function ynabEnhancedSelectedTotalsPoll() {
     var accountId, transactions;
     var checkedTransactions = new Array();
     var windowPath = window.location.pathname;
-    if (windowPath != currentPath) {
+    var newDataSetParent = document.getElementsByClassName('ynab-grid-body')[0].getElementsByClassName('ynab-grid-body-row');
+    var newDataSet = new Array();
+    for (var i = 0; i < newDataSetParent.length; i++) {
+        newDataSet.push(newDataSetParent[i].id);
+    }
+    if (windowPath != currentPath || newDataSet.toString() != dataSet.toString()) {
         currentPath = windowPath;
         previousSet = '';
+        dataSet = newDataSet;
         ynabEnhancedSelectedTotalsUpdate(-1);
     }
     if (currentPath.indexOf('/accounts/') > -1) {
@@ -131,4 +141,5 @@ function ynabEnhancedSelectedTotalsPoll() {
 }
 var currentPath = window.location.pathname;
 var previousSet = '';
+var dataSet = new Array();
 setTimeout(ynabEnhancedSelectedTotalsInit, 250);
