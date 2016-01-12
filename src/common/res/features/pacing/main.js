@@ -14,7 +14,7 @@ function ynabEnhancedFormatCurrency(e, html) {
 function timeSpent() {
   var today = new Date();
   var daysInMonth = new Date(today.getYear(), today.getMonth(), 0).getDate();
-  var day = today.getDate();
+  var day = Math.max(today.getDate()-1,1);
 
   return day/daysInMonth;
 }
