@@ -21,8 +21,8 @@ function injectScript(path) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
-/* Load this to setup behaviors when the DOM updates */
-injectScript('res/features/init/actOnChange.js');
+/* Load this to setup behaviors when the DOM updates and shared functions */
+injectScript('res/features/init/ynabToolKit.js');
 
 function ensureDefaultsAreSet() {
   var storedKeys = kango.storage.getKeys();

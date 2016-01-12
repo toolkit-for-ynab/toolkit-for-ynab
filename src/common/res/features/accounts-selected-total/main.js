@@ -37,10 +37,10 @@ function ynabEnhancedSelectedTotalsUpdate(total) {
     if (parent == null) {
         return false;
     }
-    if ((' ' + parent.className + ' ').indexOf(' hidden ') == -1 && total == 0) {
+    if ((' ' + parent.className + ' ').indexOf(' hidden ') == -1 && total < 0) {
         parent.className += " hidden";
         return true;
-    } else if (total == 0) {
+    } else if (total == -1) {
         return true;
     }
     parent.className = "accounts-header-balances-selected";
@@ -55,7 +55,7 @@ function ynabEnhancedSelectedTotalsUpdate(total) {
     userData.title = totalFormattedNoHtml;
     var userCurrency = document.createElement("span");
     userCurrency.className = "user-data currency";
-    if (total > 0) {
+    if (total >= 0) {
         userCurrency.className += " positive";
     } else {
         userCurrency.className += " negative";
@@ -112,7 +112,7 @@ function ynabEnhancedSelectedTotalsPoll() {
         }
     }
     if (checkedTransactions.length == 0) {
-        ynabEnhancedSelectedTotalsUpdate(0);
+        ynabEnhancedSelectedTotalsUpdate(-1);
         previousSet = checkedTransactions;
     } else {
         if (checkedTransactions.toString() != previousSet.toString()) {
