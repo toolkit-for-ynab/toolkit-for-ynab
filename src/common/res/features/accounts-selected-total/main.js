@@ -14,22 +14,25 @@ function ynabEnhancedSelectedTotals() {
 function ynabEnhancedSelectedTotalsCalculate() {
     var outflows = 0;
     var inflows = 0;
-    var currentPath = window.location.pathname;
+    var transactionsFound = false;
     var accountId, transactions;
+    accountId = 'null';
     if (currentPath.indexOf('/accounts/') > -1) {
         accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1)
-        transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.transactionDisplayItemsCollection.findItemsByAccountId(accountId);
-    } else {
-        transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
     }
-    transactions = transactions.filter((el) => el.displayItemType != "subTransaction");
+    transactions = ynabToolKit.getVisibleTransactions(accountId);
     for (var i = 0; i < transactions.length; i++) {
         if (transactions[i].isChecked) {
             inflows += transactions[i].inflow;
             outflows += transactions[i].outflow;
+            transactionsFound = true;
         }
     }
-    ynabEnhancedSelectedTotalsUpdate(inflows - outflows);
+    var total = inflows - outflows;
+    if (!transactionsFound) {
+        total = false;
+    }
+    ynabEnhancedSelectedTotalsUpdate(total);
 
     setTimeout(ynabEnhancedSelectedTotalsPoll, 750);
 }
@@ -39,10 +42,10 @@ function ynabEnhancedSelectedTotalsUpdate(total) {
     if (parent == null) {
         return false;
     }
-    if ((' ' + parent.className + ' ').indexOf(' hidden ') == -1 && total == 0) {
+    if ((' ' + parent.className + ' ').indexOf(' hidden ') == -1 && total === false) {
         parent.className += " hidden";
         return true;
-    } else if (total == 0) {
+    } else if (total === false) {
         return true;
     }
     parent.className = "accounts-header-balances-selected";
@@ -57,7 +60,7 @@ function ynabEnhancedSelectedTotalsUpdate(total) {
     userData.title = totalFormattedNoHtml;
     var userCurrency = document.createElement("span");
     userCurrency.className = "user-data currency";
-    if (total > 0) {
+    if (total >= 0) {
         userCurrency.className += " positive";
     } else {
         userCurrency.className += " negative";
@@ -95,9 +98,14 @@ function ynabEnhancedSelectedTotalsPoll() {
         setTimeout(ynabEnhancedSelectedTotalsInit, 250);
         return true;
     }
-    var currentPath = window.location.pathname;
     var accountId, transactions;
     var checkedTransactions = new Array();
+    var windowPath = window.location.pathname;
+    if (windowPath != currentPath) {
+        currentPath = windowPath;
+        previousSet = '';
+        ynabEnhancedSelectedTotalsUpdate(-1);
+    }
     if (currentPath.indexOf('/accounts/') > -1) {
         accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1)
         transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.transactionDisplayItemsCollection.findItemsByAccountId(accountId);
@@ -110,7 +118,7 @@ function ynabEnhancedSelectedTotalsPoll() {
         }
     }
     if (checkedTransactions.length == 0) {
-        ynabEnhancedSelectedTotalsUpdate(0);
+        ynabEnhancedSelectedTotalsUpdate(false);
         previousSet = checkedTransactions;
     } else {
         if (checkedTransactions.toString() != previousSet.toString()) {
@@ -121,6 +129,6 @@ function ynabEnhancedSelectedTotalsPoll() {
     }
     setTimeout(ynabEnhancedSelectedTotalsPoll, 250);
 }
-
+var currentPath = window.location.pathname;
 var previousSet = '';
 setTimeout(ynabEnhancedSelectedTotalsInit, 250);
