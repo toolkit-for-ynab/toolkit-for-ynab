@@ -79,7 +79,7 @@ function inCurrentMonth() {
           var temperature = 'neutral';
         }
         if(display >= 0) {
-          var tooltip = 'You have spent '+ynabEnhancedFormatCurrency(display, true)+' less than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.';
+          var tooltip = 'You have spent '+ynabEnhancedFormatCurrency(display, false)+' less than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.';
         } else if(display < 0) {
           var tooltip = 'You have spent '+ynabEnhancedFormatCurrency(-display, false)+' more than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.';
         }
