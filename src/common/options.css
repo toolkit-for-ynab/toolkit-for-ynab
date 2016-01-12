@@ -1,3 +1,7 @@
+body {
+  min-width: 1100px;
+}
+
 .top-navbar .navbar-brand {
   font-size: 2em;
   text-transform: none;
