@@ -46,6 +46,9 @@ function ensureDefaultsAreSet() {
 
 ensureDefaultsAreSet();
 
+// Global toolkit css.
+injectCSS('res/features/main.css');
+
 if (kango.storage.getItem('collapseExpandBudgetGroups')) {
   injectCSS('res/features/collapse-budget-groups/main.css');
   injectScript('res/features/collapse-budget-groups/main.js');
@@ -61,7 +64,7 @@ if (kango.storage.getItem('colourBlindMode')) {
 }
 
 if (kango.storage.getItem('hideAOM')) {
-  injectCSS('res/features/hide-age-of-money/main.css');
+  injectScript('res/features/hide-age-of-money/main.js');
 }
 
 if (kango.storage.getItem('highlightNegativesNegative')) {
