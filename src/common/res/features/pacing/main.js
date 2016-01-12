@@ -95,10 +95,10 @@ function inCurrentMonth() {
         }
 
         if(display >= 0) {
-          var tooltip = 'In '+transactionCount+' transaction'+(transactionCount > 1 ? 's' : '')+' you have spent '+ynabEnhancedFormatCurrency(display, false)+
+          var tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+ynabEnhancedFormatCurrency(display, false)+
 						' less than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.';
         } else if(display < 0) {
-          var tooltip = 'In '+transactionCount+' transaction'+(transactionCount > 1 ? 's' : '')+' you have spent '+ynabEnhancedFormatCurrency(-display, false)+
+          var tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+ynabEnhancedFormatCurrency(-display, false)+
 						' more than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.';
         }
         $(this).append('<li class="budget-table-cell-pacing"><span title="'+tooltip+'" class="budget-table-cell-pacing-display '+temperature+'">'+ynabEnhancedFormatCurrency(display, true)+'</span></li>');
