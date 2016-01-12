@@ -13,7 +13,7 @@ function ynabEnhancedDoB() {
         "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(result["averageDailyOutflow"]) + 
         "\nAverage daily transactions: " + result["averageDailyTransactions"].toFixed(1);
     elementForDoB.children[1].innerText = "Days of Buffering";
-    elementForDoB.children[1].title = "Don't like AoM? Here you are this new shiny metric!";
+    elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
     elementForDoB.className = elementForDoB.className.replace(/\bhidden\b/,'');
 
     YNABheader.appendChild(elementForDoB);
