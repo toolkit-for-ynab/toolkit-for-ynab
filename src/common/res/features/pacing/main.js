@@ -28,7 +28,12 @@ function inCurrentMonth() {
 
 (
  function addPacingColumnToBudget() {
-  if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' && typeof $ !== 'undefined') {
+  if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' && typeof $ !== 'undefined' && !$('body').hasClass('is-init-loading')
+    && typeof ynab !== 'undefined') {
+    var tv = ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result.getAllAccountTransactionsViewModel();
+    var month = tv.getBudgetMonthViewModelForCurrentMonth().getMonth();
+    var allTransactions = tv.getVisibleTransactionDisplayItemsForMonth(month);
+
     if(inCurrentMonth()) {
       // Make room for the column
       $('#ynab-toolkit-pacing-style').remove();
@@ -49,7 +54,13 @@ function inCurrentMonth() {
       var budgeted = available+activity;
       var burned = activity/budgeted;
       var pace = burned/timeSpent();
-    
+   
+      var masterName = $.trim($(this).prevAll('.is-master-category').first().find('.budget-table-cell-name').text());
+      var subcatName = $.trim($(this).find('.budget-table-cell-name').text());
+
+      var transactionCount = allTransactions.filter((el) => el.transferAccountId == null 
+        && el.outflow > 0 && el.subCategoryNameWrapped == (masterName+": "+subcatName)).length;
+
       var displayType = 'dollars';
       if(displayType == 'percentage') {
         if(pace > 1.25) {
@@ -69,19 +80,26 @@ function inCurrentMonth() {
         }
       } else if (displayType == 'dollars') {
         display = Math.round((budgeted*timeSpent()-activity)*1000);
-        if(pace > 1.25) {
-          var temperature = 'hot';
-        } else if(pace > 1) {
-          var temperature = 'warm';
-        } else if(activity > 0) {
-          var temperature = 'cool';
+        if(available != 0 && activity != 0 && masterName != 'Credit Card Payments') {
+          if(pace > 1.25) {
+            var temperature = 'hot';
+          } else if(pace > 1) {
+            var temperature = 'warm';
+          } else if(activity != 0) {
+            var temperature = 'cool';
+          } else {
+            var temperature = 'neutral';
+          }
         } else {
-          var temperature = 'neutral';
+          var temperature = 'neutral'; 
         }
+
         if(display >= 0) {
-          var tooltip = 'You have spent '+ynabEnhancedFormatCurrency(display, false)+' less than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.';
+          var tooltip = 'In '+transactionCount+' transaction'+(transactionCount > 1 ? 's' : '')+' you have spent '+ynabEnhancedFormatCurrency(display, false)+
+						' less than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.';
         } else if(display < 0) {
-          var tooltip = 'You have spent '+ynabEnhancedFormatCurrency(-display, false)+' more than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.';
+          var tooltip = 'In '+transactionCount+' transaction'+(transactionCount > 1 ? 's' : '')+' you have spent '+ynabEnhancedFormatCurrency(-display, false)+
+						' more than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.';
         }
         $(this).append('<li class="budget-table-cell-pacing"><span title="'+tooltip+'" class="budget-table-cell-pacing-display '+temperature+'">'+ynabEnhancedFormatCurrency(display, true)+'</span></li>');
       }
