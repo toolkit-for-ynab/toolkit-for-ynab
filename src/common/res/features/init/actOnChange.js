@@ -3,7 +3,7 @@ window.ynabToolKit = new function() {
 	// Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
 	// during page interactions and updates to the developer tools console.
 	this.debugNodes = false,
-
+	
 	// This variable is populated by each active script loaded inside the ynabToolKit object
 	this.featureOptions = {},
 
