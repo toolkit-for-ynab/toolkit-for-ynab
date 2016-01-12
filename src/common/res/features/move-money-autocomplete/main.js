@@ -1,6 +1,19 @@
-var originalentries = null;
+(function poll() {
+    
+	if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true) {
 
-function ynabEnhancedAutocomplete() {
+        ynabToolKit.featureOptions.moveMoneyAutoComplete = true;
+
+var originalentries = null;
+        ynabToolKit.moveMoneyAutoComplete = function ()  {
+
+            function autoCompleteApply() {
+
+                var selectLabel = document.getElementsByClassName("ynab-select-label")[0];
+                if ( $(selectLabel).hasClass('autocomplete-override') ) {
+                    return
+                };
+                selectLabel.className = selectLabel.className + " autocomplete-override";
     var prevTxt = null;
     var input = document.createElement("input");
     input.type = "text";
@@ -9,8 +22,7 @@ function ynabEnhancedAutocomplete() {
     input.className = "autocomplete-move-money";
     input.title = "Search for a category";
     var dropdown = document.getElementsByClassName("options-shown")[0];
-    var selectLabel = document.getElementsByClassName("ynab-select-label")[0];
-    selectLabel.className = selectLabel.className + " autocomplete-override";
+                
     var list = document.getElementsByClassName("ynab-select-options");
     var options = document.getElementsByClassName("is-selectable");
     o = options.length;
@@ -45,7 +57,7 @@ function ynabEnhancedAutocomplete() {
                 document.getElementsByClassName("is-selectable")[0].focus();
             }
             var curTxt = txt[0].value;
-            ynabEnhancedAutocompleteHandleKeyPress(prevTxt, curTxt);
+                        autoCompleteHandleKeyPress(prevTxt, curTxt);
             prevTxt = curTxt;
             return true;
         }
@@ -60,10 +72,10 @@ function ynabEnhancedAutocomplete() {
             return true;
         }
     }
-    setTimeout(ynabEnhancedAutocompleteRemoved, 250);
+                setTimeout(autoCompleteRemoved, 250);
 }
 
-function ynabEnhancedAutocompleteFocus() {
+            function autoCompleteFocus() {
     var selectLabel = document.getElementsByClassName("ynab-select")[0];
     selectLabel.className += " autocomplete-focus";
     selectLabel.onfocus = function(event) {
@@ -71,7 +83,7 @@ function ynabEnhancedAutocompleteFocus() {
     }
 }
 
-function ynabEnhancedAutocompleteHandleKeyPress(oldVal, newVal) {
+            function autoCompleteHandleKeyPress(oldVal, newVal) {
     var components = document.getElementsByClassName('ynab-select-options');
     var select = components[0];
 
@@ -116,35 +128,34 @@ function ynabEnhancedAutocompleteHandleKeyPress(oldVal, newVal) {
     }
 }
 
-function ynabEnhancedAutocompleteInit() {
-    var dialog = document.getElementsByClassName('ynab-select-options');
-    var label = document.getElementsByClassName('ynab-select-label');
-    var focus = document.getElementsByClassName('autocomplete-focus');
-    if (label.length > 0 && focus.length == 0) {
-        ynabEnhancedAutocompleteFocus();
-    }
-    if (dialog.length > 0) {
-        ynabEnhancedAutocomplete();
-    } else {
-        setTimeout(ynabEnhancedAutocompleteInit, 250);
-    }
-}
-
-function ynabEnhancedAutocompleteRemoved() {
+            function autoCompleteRemoved() {
     var autocomplete = document.getElementsByClassName('autocomplete-move-money');
     if (autocomplete.length == 0) {
         var selectLabel = document.getElementsByClassName("ynab-select-label")[0];
         if (selectLabel != undefined) {
             selectLabel.className = "ynab-select-label";
         }
-        setTimeout(ynabEnhancedAutocompleteInit, 250);
     } else {
-        setTimeout(ynabEnhancedAutocompleteRemoved, 250);
+                    setTimeout(autoCompleteRemoved, 250);
     }
 }
 
-function ynabEnhancedAutocompleteSelectOption(target) {
+            function autoCompleteSelectOption(target) {
     target.click();
 }
 
-setTimeout(ynabEnhancedAutocompleteInit, 250);
+            var dialog = document.getElementsByClassName('ynab-select-options');
+            var label = document.getElementsByClassName('ynab-select-label');
+            var focus = document.getElementsByClassName('autocomplete-focus');
+            if (label.length > 0 && focus.length == 0) {
+                autoCompleteFocus();
+            }
+            if (dialog.length > 0) {
+                autoCompleteApply();
+            }
+
+        }
+    } else {
+        setTimeout(poll, 250);
+    }       
+})();
