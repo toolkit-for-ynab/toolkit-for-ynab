@@ -19,11 +19,11 @@
 
     "permissions": {
         "content_scripts": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"],
-        "tabs": true,
-        "context_menu": true,
+        "tabs": false,
+        "context_menu": false,
         "web_navigation": false,
         "notifications": false,
-        "cookies": true,
+        "cookies": false,
         "xhr": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"]
     }
 }
