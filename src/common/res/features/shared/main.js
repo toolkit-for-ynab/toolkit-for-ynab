@@ -1,10 +1,15 @@
-(function poll() {
-if ( typeof ynabToolKit !== "undefined") {
+window.ynabToolKit = new function() {
+    
+    // This variable is populated by each active script loaded inside the ynabToolKit object
+    this.featureOptions = {},
+    
+    //When this is true, the feature scripts will know they are ready to execute
+    this.pageReady = {},
 
     // This function returns all visible transactions matching accountId.
     // If accountId === 'null' then all transactions for all accounts are returned with the visibility
     // settings for All accounts applied.
-    ynabToolKit.getVisibleTransactions = function (accountId)  {
+    this.getVisibleTransactions = function (accountId)  {
         var e, t, n, r, a, i, o, s, c, l, d, u, h, p, m, g, f, y, v, b, C, _, M, T, w, A, E, x, N, F, I, S, B, D, k, L, P, R, O, Y, V, H;
         if (accountId === 'null') {
             e = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
@@ -13,7 +18,8 @@ if ( typeof ynabToolKit !== "undefined") {
         }
         n = null;
         t = e;
-        if (w = jQuery.parseJSON(localStorage.getItem("." + accountId + "_account_filter")),
+        if (
+        w = jQuery.parseJSON(localStorage.getItem("." + accountId + "_account_filter")),
         c = w.fromMonth,
         l = w.fromYear,
         L = w.toMonth,
@@ -30,7 +36,7 @@ if ( typeof ynabToolKit !== "undefined") {
         k = Object.create(null ),
         N = [],
         R = 0,
-        n)
+        n) {
             for (u = m = 0,
             y = t.length; y > m; u = ++m)
                 if (Y = t[u],
@@ -38,6 +44,7 @@ if ( typeof ynabToolKit !== "undefined") {
                     t.splice(u, 1, a);
                     break
                 }
+            };
         V = t.filter(function(e) {
             var t, r, a, o, s, c, l, d, u, p, m;
             return m = e.getProperties("entityId", "isTombstone", "displayItemType", "date", "cleared", "needsApproval", "needsCategory", "isSplit"),
@@ -93,7 +100,18 @@ if ( typeof ynabToolKit !== "undefined") {
         return V;
     };
 
-} else {
-    setTimeout(poll, 250);
-}
-})();
+}; // end ynabToolKit object
+
+
+// This poll() function will only need to run until we find that the DOM is ready
+// For certain functions, we may run them once automatically on page load before 'changes' occur
+(function poll() {
+    if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' 
+          && typeof $ !== 'undefined' && $('.ember-view.layout').length) {
+        
+      ynabToolKit.pageReady = true;
+      
+    } else {
+       setTimeout(poll, 250);
+    }
+ })();
