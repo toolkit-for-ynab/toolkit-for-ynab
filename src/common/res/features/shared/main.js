@@ -18,7 +18,8 @@ window.ynabToolKit = new function() {
         }
         n = null;
         t = e;
-        if (w = jQuery.parseJSON(localStorage.getItem("." + accountId + "_account_filter")),
+        if (
+        w = jQuery.parseJSON(localStorage.getItem("." + accountId + "_account_filter")),
         c = w.fromMonth,
         l = w.fromYear,
         L = w.toMonth,
@@ -35,7 +36,7 @@ window.ynabToolKit = new function() {
         k = Object.create(null ),
         N = [],
         R = 0,
-        n)
+        n) {
             for (u = m = 0,
             y = t.length; y > m; u = ++m)
                 if (Y = t[u],
@@ -43,6 +44,7 @@ window.ynabToolKit = new function() {
                     t.splice(u, 1, a);
                     break
                 }
+            };
         V = t.filter(function(e) {
             var t, r, a, o, s, c, l, d, u, p, m;
             return m = e.getProperties("entityId", "isTombstone", "displayItemType", "date", "cleared", "needsApproval", "needsCategory", "isSplit"),
