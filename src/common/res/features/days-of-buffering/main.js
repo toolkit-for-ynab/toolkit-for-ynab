@@ -6,13 +6,13 @@ function ynabEnhancedDoB() {
     var elementForDoB = elementForAoM.cloneNode(true);
 
     var result = ynabEnhancedDoBCalculate();
-    elementForDoB.children[0].innerText = result["DoB"] + " day" + (result["DoB"] == 1 ? "" : "s");
+    elementForDoB.children[0].textContent = result["DoB"] + " day" + (result["DoB"] == 1 ? "" : "s");
     elementForDoB.children[0].className = elementForDoB.children[0].className + " days-of-budgeting";
     elementForDoB.children[0].title = "Total outflow: " + ynab.YNABSharedLib.currencyFormatter.format(result["totalOutflow"]) + 
         "\nTotal days of budgeting: " + result["totalDays"] + 
         "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(result["averageDailyOutflow"]) + 
         "\nAverage daily transactions: " + result["averageDailyTransactions"].toFixed(1);
-    elementForDoB.children[1].innerText = "Days of Buffering";
+    elementForDoB.children[1].textContent = "Days of Buffering";
     elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
     elementForDoB.className = elementForDoB.className.replace(/\bhidden\b/,'');
 
