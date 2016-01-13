@@ -1,6 +1,6 @@
 	
 (function poll() {
-	if ( typeof ynabToolKit !== "undefined") {
+	if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true ) {
 
 		ynabToolKit.featureOptions.highlightNegativesNegative = true;
 		ynabToolKit.highlightNegativesNegative = function ()  {
@@ -23,6 +23,7 @@
 			});
 	
 		};
+		ynabToolKit.highlightNegativesNegative(); // call itself once
 		
 	} else {
 		setTimeout(poll, 250);

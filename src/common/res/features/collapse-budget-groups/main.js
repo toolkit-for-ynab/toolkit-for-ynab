@@ -56,8 +56,8 @@
       }
       
     };
-
-    setTimeout(ynabToolKit.collapseBudget, 250); 
+    setTimeout(ynabToolKit.collapseBudget, 250); // Call itself
+    
   } else {
     setTimeout(poll, 250);  
   }

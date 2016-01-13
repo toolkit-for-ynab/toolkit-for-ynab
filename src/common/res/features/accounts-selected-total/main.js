@@ -151,7 +151,7 @@
       setTimeout(enhancedSelectedTotalsInit, 250);
 
     };
-    ynabToolKit.enhancedSelectedTotals(); // Call itself once
+    ynabToolKit.enhancedSelectedTotals(); // Activate itself
 
   } else {
     setTimeout(poll, 250);  

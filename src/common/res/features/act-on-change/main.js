@@ -85,7 +85,7 @@
       
       ynabToolKit.actOnChangeInit = true;
     };
-    ynabToolKit.actOnChange(); // Call itself once
+    ynabToolKit.actOnChange(); // Run itself once
 
   } else {
     setTimeout(poll, 250);

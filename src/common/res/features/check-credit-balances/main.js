@@ -1,5 +1,5 @@
 (function poll() {
-   if ( typeof ynabToolKit !== "undefined") {
+   if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true ) {
    		
       ynabToolKit.featureOptions.checkCreditBalances = true;
    	ynabToolKit.checkCreditBalances = function ()  {
@@ -43,6 +43,7 @@
             });
          
       };
+      ynabToolKit.checkCreditBalances(); // Run itself once
       
    } else {
    	setTimeout(poll, 250);

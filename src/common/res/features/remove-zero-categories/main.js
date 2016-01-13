@@ -1,7 +1,7 @@
 	
 (function poll() {
 	
-	if ( typeof ynabToolKit !== "undefined") {
+	if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true) {
 
 		ynabToolKit.featureOptions.removeZeroCategories = true;
 		ynabToolKit.removeZeroCategories = function ()  {
@@ -14,6 +14,7 @@
 		      }
 		    });
 		};
+		ynabToolKit.removeZeroCategories(); // Run itself once
 		
 	} else {
 		setTimeout(poll, 250);
