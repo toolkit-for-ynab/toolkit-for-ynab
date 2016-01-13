@@ -63,9 +63,7 @@ function inCurrentMonth() {
 
       var displayType = 'dollars';
       if(displayType == 'percentage') {
-        if(pace > 1.25) {
-          var temperature = 'hot';
-        } else if(pace > .75) {
+        if(pace > 1) {
           var temperature = 'warm';
         } else {
           var temperature = 'cool';
@@ -81,9 +79,7 @@ function inCurrentMonth() {
       } else if (displayType == 'dollars') {
         display = Math.round((budgeted*timeSpent()-activity)*1000);
         if(available != 0 && activity != 0 && masterName != 'Credit Card Payments') {
-          if(pace > 1.25) {
-            var temperature = 'hot';
-          } else if(pace > 1) {
+          if(pace > 1) {
             var temperature = 'warm';
           } else if(activity != 0) {
             var temperature = 'cool';
