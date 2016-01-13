@@ -105,13 +105,9 @@ window.ynabToolKit = new function() {
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
     if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' 
-          && typeof $ !== 'undefined' && $('.ember-view.layout').length 
-          && typeof ynabToolKit.actOnChange === 'function') {
+          && typeof $ !== 'undefined' && $('.ember-view.layout').length) {
         
       ynabToolKit.pageReady = true;
-      
-      // Activate the mutationObserver so we don't need to use setTimeout() anymore
-      ynabToolKit.actOnChange(); 
       
     } else {
        setTimeout(poll, 250);
