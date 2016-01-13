@@ -41,10 +41,6 @@ function ensureDefaultsAreSet() {
   if (storedKeys.indexOf('removeZeroCategories') < 0) {
     kango.storage.setItem('removeZeroCategories', true);
   }
-
-  if (storedKeys.indexOf('transferJump') < 0) {
-    kango.storage.setItem('transferJump', true);
-  }
 }
 
 ensureDefaultsAreSet();

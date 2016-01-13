@@ -12,32 +12,47 @@ function ensureDefaultsAreSet() {
   if (storedKeys.indexOf('removeZeroCategories') < 0) {
     kango.storage.setItem('removeZeroCategories', true);
   }
-
-  if (storedKeys.indexOf('transferJump') < 0) {
-    kango.storage.setItem('transferJump', true);
-  }
 }
 
 function saveCheckboxOption(elementId) {
-  var checked = document.getElementById(elementId).checked;
-  kango.storage.setItem(elementId, checked);
+  var element = document.getElementById(elementId);
+
+  if (element) {
+    kango.storage.setItem(elementId, element.checked);
+  } else {
+    console.log("WARNING: Tried to saveCheckboxOption but couldn't find element " + elementId + " on the page.");
+  }
 }
 
 function saveSelectOption(elementId) {
   var select = document.getElementById(elementId);
-  kango.storage.setItem(elementId, select.options[select.selectedIndex].value);
+
+  if (select) {
+    kango.storage.setItem(elementId, select.options[select.selectedIndex].value);
+  } else {
+    console.log("WARNING: Tried to saveSelectOption but couldn't find element " + elementId + " on the page.");
+  }
 }
 
 function restoreCheckboxOption(elementId) {
-  var checked = kango.storage.getItem(elementId);
-  document.getElementById(elementId).checked = checked;
+  var element = document.getElementById(elementId);
+
+  if (element) {
+    element.checked = kango.storage.getItem(elementId);
+  } else {
+    console.log("WARNING: Tried to restoreCheckboxOption but couldn't find element " + elementId + " on the page.");
+  }
 }
 
 function restoreSelectOption(elementId) {
   var data = kango.storage.getItem(elementId) || 0;
   var select = document.getElementById(elementId);
 
-  select.value = data;
+  if (select) {
+    select.value = data;
+  } else {
+    console.log("WARNING: Tried to restoreSelectOption but couldn't find element " + elementId + " on the page.");
+  }
 }
 
 function saveOptions() {
