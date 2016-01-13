@@ -120,7 +120,7 @@
 				for (i = 0; i < select.children.length; i++) {
 					var entry = select.children[i];
 					var match = true;
-					var entryTxt = entry.innerText;
+					var entryTxt = entry.textContent;
 					for (p = 0; p < parts.length; p++) {
 						var part = parts[p].toUpperCase();
 						if (entryTxt.toUpperCase().lastIndexOf(part) < 0) {
