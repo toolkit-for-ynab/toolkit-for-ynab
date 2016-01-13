@@ -167,3 +167,7 @@ if (kango.storage.getItem('daysOfBuffering')) {
   injectCSS('res/features/days-of-buffering/main.css');
   injectScript('res/features/days-of-buffering/main.js');
 }
+
+if (kango.storage.getItem('removePositiveHighlight')) {
+  injectCSS('res/features/remove-positive-highlight/main.css');
+}
