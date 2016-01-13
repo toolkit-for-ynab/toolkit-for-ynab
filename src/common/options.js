@@ -48,6 +48,7 @@ function saveOptions() {
   saveCheckboxOption('hideAOM');
   saveCheckboxOption('checkCreditBalances');
   saveCheckboxOption('highlightNegativesNegative');
+  saveCheckboxOption('removePositiveHighlight');
   saveCheckboxOption('enableRetroCalculator');
   saveCheckboxOption('removeZeroCategories');
   saveCheckboxOption('moveMoneyDialog');
@@ -82,6 +83,7 @@ function restoreOptions() {
   restoreCheckboxOption('hideAOM');
   restoreCheckboxOption('checkCreditBalances');
   restoreCheckboxOption('highlightNegativesNegative');
+  restoreCheckboxOption('removePositiveHighlight');
   restoreCheckboxOption('enableRetroCalculator');
   restoreCheckboxOption('removeZeroCategories');
   restoreCheckboxOption('moveMoneyDialog');
