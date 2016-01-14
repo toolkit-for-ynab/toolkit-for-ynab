@@ -47,6 +47,7 @@ ensureDefaultsAreSet();
 
 // Global toolkit css.
 injectCSS('res/features/main.css');
+injectScript('res/features/goal-indicator/main.js');
 
 if (kango.storage.getItem('collapseExpandBudgetGroups')) {
   injectCSS('res/features/collapse-budget-groups/main.css');
