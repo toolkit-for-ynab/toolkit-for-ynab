@@ -10,63 +10,61 @@ window.ynabToolKit = new function() {
     // If accountId === 'null' then all transactions for all accounts are returned with the visibility
     // settings for All accounts applied.
     this.getVisibleTransactions = function (accountId)  {
-        var transactions, t, n, r, a, i, o, s, c, l, d, u, h, p, m, g, f, y, v, b, C, _, M, T, w, A, E, x, N, F, I, S, B, D, k, L, P, R, O, Y, V, H;
+        var transactions, originalTransactions, n, r, a, endDate, o, s, startMonth, startYear, d, u, scheduledTransactions, p, m, g, f, y, v, b, C, _, showReconciled, T, accountSettings, A, E, x, singleOccurringTransactions, F, I, S, startDateUTC, D, subTransactions, endMonth, endYear, R, O, Y, visibleTransactions, showNotifications;
         if (accountId === 'null') {
             transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
         } else {
             transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.transactionDisplayItemsCollection.findItemsByAccountId(accountId);
         }
-        t = transactions;
-        w = jQuery.parseJSON(localStorage.getItem("." + accountId + "_account_filter")),
-        c = w.fromMonth,
-        l = w.fromYear,
-        L = w.toMonth,
-        P = w.toYear,
-        M = w.reconciled,
-        F = w.scheduled,
-        H = w.withNotification,
-        null  !== c && null  !== l && (B = new ynab.utilities.DateWithoutTime(l,c).getUTCTime()),
-        null  !== L && null  !== P && (i = new ynab.utilities.DateWithoutTime(P,L),
-        i.addMonths(1),
-        i = i.getUTCTime()),
-        h = Object.create(null),
-        k = Object.create(null),
-        N = [],
-        R = 0;
-        V = transactions.filter(function(transaction) {
-            var t, r, a, o, s, c, l, d, u, p, m;
-            return m = transaction.getProperties("entityId", "isTombstone", "displayItemType", "date", "cleared", "needsApproval", "needsCategory", "isSplit"),
-            s = m.entityId,
-            l = m.isTombstone,
-            o = m.displayItemType,
-            r = m.date,
-            t = m.cleared,
-            d = m.needsApproval,
-            u = m.needsCategory,
-            c = m.isSplit,
-            l ? (R++,
-            !1) : (a = r.getUTCTime(),
-            s !== n && B && B > a || i && a >= i ? !1 : M === !1 && t === ynab.constants.TransactionState.Reconciled ? !1 : "needsApproval" === H && !d || "needsCategory" === H && (!u || d) ? !1 : o === ynab.constants.TransactionDisplayItemType.ScheduledTransaction ? (F && (N.push(transaction),
-            h[s] = transaction),
-            !1) : o === ynab.constants.TransactionDisplayItemType.SubTransaction || o === ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction ? (p = transaction.get("parentEntityId"),
-            Array.isArray(k[p]) || (k[p] = []),
-            k[p].push(transaction),
-            !1) : (c && (h[s] = transaction),
+        originalTransactions = transactions;
+        accountSettings = jQuery.parseJSON(localStorage.getItem("." + accountId + "_account_filter")),
+        startMonth = accountSettings.fromMonth,
+        startYear = accountSettings.fromYear,
+        endMonth = accountSettings.toMonth,
+        endYear = accountSettings.toYear,
+        showReconciled = accountSettings.reconciled,
+        showScheduled = accountSettings.scheduled,
+        showNotifications = accountSettings.withNotification,
+        null !== startMonth && null !== startYear && (startDateUTC = new ynab.utilities.DateWithoutTime(startYear, startMonth).getUTCTime()),
+        null !== endMonth && null !== endYear && (endDate = new ynab.utilities.DateWithoutTime(endYear, endMonth),
+        endDate.addMonths(1),
+        endDateUTC = endDate.getUTCTime()),
+        scheduledTransactions = Object.create(null),
+        subTransactions = Object.create(null),
+        singleOccurringTransactions = [];
+        visibleTransactions = transactions.filter(function(transaction) {
+            var transactionCleared, transactionDate, transactionDateUTC, transactionDisplayItemType, transactionEntityId, transactionIsSplit, transactionIsTombstone, transactionNeedsApproval, transactionNeedsCategory, parentEntityId, transactionProperties;
+            return transactionProperties = transaction.getProperties("entityId", "isTombstone", "displayItemType", "date", "cleared", "needsApproval", "needsCategory", "isSplit"),
+            transactionEntityId = transactionProperties.entityId, //s
+            transactionIsTombstone = transactionProperties.isTombstone, //l
+            transactionDisplayItemType = transactionProperties.displayItemType, //o
+            transactionDate = transactionProperties.date, //r
+            transactionCleared = transactionProperties.cleared, //t
+            transactionNeedsApproval = transactionProperties.needsApproval, //d
+            transactionNeedsCategory = transactionProperties.needsCategory, //u
+            transactionIsSplit = transactionProperties.isSplit, //c
+            transactionIsTombstone ? (!1) : (transactionDateUTC = transactionDate.getUTCTime(),
+            startDateUTC && startDateUTC > transactionDateUTC || endDateUTC && transactionDateUTC >= endDateUTC ? !1 : showReconciled === !1 && transactionCleared === ynab.constants.TransactionState.Reconciled ? !1 : "needsApproval" === showNotifications && !transactionNeedsApproval || "needsCategory" === showNotifications && (!transactionNeedsCategory || transactionNeedsApproval) ? !1 : transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.ScheduledTransaction ? (showScheduled && (singleOccurringTransactions.push(transaction),
+            scheduledTransactions[transactionEntityId] = transaction),
+            !1) : transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.SubTransaction || transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction ? (parentEntityId = transaction.get("parentEntityId"),
+            Array.isArray(subTransactions[parentEntityId]) || (subTransactions[parentEntityId] = []),
+            subTransactions[parentEntityId].push(transaction),
+            !1) : (transactionIsSplit && (scheduledTransactions[transactionEntityId] = transaction),
             !0))
         }),
-        V.push.apply(V, N),
-        p = function(transactions, t) {
+        visibleTransactions.push.apply(visibleTransactions, singleOccurringTransactions),
+        p = function(transactions, originalTransactions) {
             var n;
-            return n = V.length,
-            transactions >= n ? V.push(t) : V.splice(transactions, 0, t)
+            return n = visibleTransactions.length,
+            transactions >= n ? visibleTransactions.push(originalTransactions) : visibleTransactions.splice(transactions, 0, originalTransactions)
         },
         s = function(transactions) {
             return transactions.sortBy("sortableIndex")
         };
-        for (C in h)
-            if (_ = V.indexOf(h[C]),
+        for (scheduledTransaction in scheduledTransactions)
+            if (_ = visibleTransactions.indexOf(scheduledTransactions[scheduledTransaction]),
             -1 !== _)
-                if (n === C && r.length > 0) {
+                if (n === scheduledTransaction && r.length > 0) {
                     for (A = s(r),
                     d = g = 0,
                     v = A.length; v > g; d = ++g)
@@ -75,15 +73,15 @@ window.ynabToolKit = new function() {
                     p(r.length + _ + 1, {
                         type: "split"
                     })
-                } else if (k[C])
+                } else if (subTransactions[scheduledTransaction])
                     for (d = 0,
-                    E = s(k[C]),
+                    E = s(subTransactions[scheduledTransaction]),
                     f = 0,
                     b = E.length; b > f; f++)
                         D = E[f],
                         D.get("isTombstone") || (d++,
                         p(d + _, D));
-        return V;
+        return visibleTransactions;
     };
 
 }; // end ynabToolKit object
