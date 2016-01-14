@@ -64,6 +64,14 @@
                 }
                 
               }
+
+              if ($node.hasClass('is-sub-category') && $node.hasClass('is-checked')) {
+
+                if ( ynabToolKit.featureOptions.inspectorColours ) {  
+                  ynabToolKit.inspectorColours();
+                }
+
+              }
   
           }); // each node mutation event
   
