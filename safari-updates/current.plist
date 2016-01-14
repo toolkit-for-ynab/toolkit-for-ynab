@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+   <key>Extension Updates</key>
+   <array>
+     <dict>
+       <key>CFBundleIdentifier</key>
+       <string>com.kangoextensions.ynabenhanced</string>
+       <key>Developer Identifier</key>
+       <string>YourCertificateID</string>
+       <key>CFBundleVersion</key>
+       <string>0.3.1</string>
+       <key>CFBundleShortVersionString</key>
+       <string>0.3.1</string>
+       <key>URL</key>
+       <string>http://toolkitforynab.com/safari-updates/toolkitforynab_0.3.1.safariextz</string>
+     </dict>
+   </array>
+</dict>
+</plist>
