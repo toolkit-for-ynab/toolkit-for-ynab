@@ -1,8 +1,8 @@
 window.ynabToolKit = new function() {
-    
+
     // This variable is populated by each active script loaded inside the ynabToolKit object
     this.featureOptions = {},
-    
+
     //When this is true, the feature scripts will know they are ready to execute
     this.pageReady = {},
 
@@ -25,15 +25,14 @@ window.ynabToolKit = new function() {
         L = w.toMonth,
         P = w.toYear,
         M = w.reconciled,
-        x = w.scheduled,
+        F = w.scheduled,
         H = w.withNotification,
-        F = x,
         null  !== c && null  !== l && (B = new ynab.utilities.DateWithoutTime(l,c).getUTCTime()),
         null  !== L && null  !== P && (i = new ynab.utilities.DateWithoutTime(P,L),
         i.addMonths(1),
         i = i.getUTCTime()),
-        h = Object.create(null ),
-        k = Object.create(null ),
+        h = Object.create(null),
+        k = Object.create(null),
         N = [],
         R = 0,
         n) {
@@ -106,11 +105,11 @@ window.ynabToolKit = new function() {
 // This poll() function will only need to run until we find that the DOM is ready
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
-    if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' 
+    if (typeof Em !== 'undefined' && typeof Ember !== 'undefined'
           && typeof $ !== 'undefined' && $('.ember-view.layout').length) {
-        
+
       ynabToolKit.pageReady = true;
-      
+
     } else {
        setTimeout(poll, 250);
     }
