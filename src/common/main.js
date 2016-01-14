@@ -74,6 +74,11 @@ if (kango.storage.getItem('checkCreditBalances')) {
   injectScript('res/features/check-credit-balances/main.js');
 }
 
+if (kango.storage.getItem('checkCreditBalances') || kango.storage.getItem('highlightNegativesNegative')) {
+  // features that update presentation classes should have this enabled by default for consistency
+  injectScript('res/features/inspector-colours/main.js'); 
+}
+
 if (kango.storage.getItem('enableRetroCalculator')) {
   injectScript('res/features/ynab-4-calculator/main.js');
 }

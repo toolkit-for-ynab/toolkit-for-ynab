@@ -4,7 +4,8 @@
 	font-weight: bold;
 }
 
-.budget-table-row.is-sub-category > .budget-table-cell-available .positive:hover {
+.budget-table-row.is-sub-category > .budget-table-cell-available .positive:hover,
+.inspector-overview-available .positive {
 	background-color: transparent;
 	color: #138b2e;
 }

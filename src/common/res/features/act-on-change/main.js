@@ -38,6 +38,9 @@
                 if ( ynabToolKit.featureOptions.highlightNegativesNegative ){
                   ynabToolKit.highlightNegativesNegative();
                 }
+                if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
+                    ynabToolKit.updateInspectorColours();
+                  }
                 
               } else
               
@@ -63,6 +66,14 @@
                   ynabToolKit.moveMoneyAutoComplete();
                 }
                 
+              }
+
+              if ($node.hasClass('is-sub-category') && $node.hasClass('is-checked')) {
+
+                if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
+                  ynabToolKit.updateInspectorColours();
+                }
+
               }
   
           }); // each node mutation event
