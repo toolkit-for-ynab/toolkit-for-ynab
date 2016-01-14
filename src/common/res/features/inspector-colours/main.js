@@ -10,7 +10,7 @@
         var inspectorAvailableText = $('.inspector-overview-available').find('dt');
         var inspectorAvailableFunds = $('.inspector-overview-available').find('span');
         if (!$(selectedSubCat).hasClass('positive')) {
-          $(inspectorAvailableText).attr("class", $(selectedSubCat).attr("class"));
+          $(inspectorAvailableText).attr("class", $(selectedSubCat).attr("class")).removeClass('currency');
         }
         $(inspectorAvailableFunds).attr("class", $(selectedSubCat).attr("class"));
 
