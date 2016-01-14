@@ -10,15 +10,13 @@ window.ynabToolKit = new function() {
     // If accountId === 'null' then all transactions for all accounts are returned with the visibility
     // settings for All accounts applied.
     this.getVisibleTransactions = function (accountId)  {
-        var e, t, n, r, a, i, o, s, c, l, d, u, h, p, m, g, f, y, v, b, C, _, M, T, w, A, E, x, N, F, I, S, B, D, k, L, P, R, O, Y, V, H;
+        var transactions, t, n, r, a, i, o, s, c, l, d, u, h, p, m, g, f, y, v, b, C, _, M, T, w, A, E, x, N, F, I, S, B, D, k, L, P, R, O, Y, V, H;
         if (accountId === 'null') {
-            e = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
+            transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
         } else {
-            e = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.transactionDisplayItemsCollection.findItemsByAccountId(accountId);
+            transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.transactionDisplayItemsCollection.findItemsByAccountId(accountId);
         }
-        n = null;
-        t = e;
-        if (
+        t = transactions;
         w = jQuery.parseJSON(localStorage.getItem("." + accountId + "_account_filter")),
         c = w.fromMonth,
         l = w.fromYear,
@@ -34,19 +32,10 @@ window.ynabToolKit = new function() {
         h = Object.create(null),
         k = Object.create(null),
         N = [],
-        R = 0,
-        n) {
-            for (u = m = 0,
-            y = t.length; y > m; u = ++m)
-                if (Y = t[u],
-                Y.get("entityId") === n) {
-                    t.splice(u, 1, a);
-                    break
-                }
-            };
-        V = t.filter(function(e) {
+        R = 0;
+        V = transactions.filter(function(transaction) {
             var t, r, a, o, s, c, l, d, u, p, m;
-            return m = e.getProperties("entityId", "isTombstone", "displayItemType", "date", "cleared", "needsApproval", "needsCategory", "isSplit"),
+            return m = transaction.getProperties("entityId", "isTombstone", "displayItemType", "date", "cleared", "needsApproval", "needsCategory", "isSplit"),
             s = m.entityId,
             l = m.isTombstone,
             o = m.displayItemType,
@@ -57,25 +46,23 @@ window.ynabToolKit = new function() {
             c = m.isSplit,
             l ? (R++,
             !1) : (a = r.getUTCTime(),
-            s !== n && B && B > a || i && a >= i ? !1 : M === !1 && t === ynab.constants.TransactionState.Reconciled ? !1 : "needsApproval" === H && !d || "needsCategory" === H && (!u || d) ? !1 : o === ynab.constants.TransactionDisplayItemType.ScheduledTransaction ? (F && (N.push(e),
-            h[s] = e),
-            !1) : o === ynab.constants.TransactionDisplayItemType.SubTransaction || o === ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction ? (p = e.get("parentEntityId"),
+            s !== n && B && B > a || i && a >= i ? !1 : M === !1 && t === ynab.constants.TransactionState.Reconciled ? !1 : "needsApproval" === H && !d || "needsCategory" === H && (!u || d) ? !1 : o === ynab.constants.TransactionDisplayItemType.ScheduledTransaction ? (F && (N.push(transaction),
+            h[s] = transaction),
+            !1) : o === ynab.constants.TransactionDisplayItemType.SubTransaction || o === ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction ? (p = transaction.get("parentEntityId"),
             Array.isArray(k[p]) || (k[p] = []),
-            k[p].push(e),
-            !1) : (c && (h[s] = e),
+            k[p].push(transaction),
+            !1) : (c && (h[s] = transaction),
             !0))
         }),
         V.push.apply(V, N),
-        p = function(e, t) {
+        p = function(transactions, t) {
             var n;
             return n = V.length,
-            e >= n ? V.push(t) : V.splice(e, 0, t)
-        }
-        ,
-        s = function(e) {
-            return e.sortBy("sortableIndex")
-        }
-        ;
+            transactions >= n ? V.push(t) : V.splice(transactions, 0, t)
+        },
+        s = function(transactions) {
+            return transactions.sortBy("sortableIndex")
+        };
         for (C in h)
             if (_ = V.indexOf(h[C]),
             -1 !== _)
