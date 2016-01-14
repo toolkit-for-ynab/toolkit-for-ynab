@@ -46,7 +46,8 @@ function ynabEnhancedDoBCalculate() {
     // scheduledTransaction shouldn't count too because they are not paid.
     var outflow_transactions = transactions.filter((el) => el.displayItemType == "transaction" 
                                                     && el.transferAccountId == null 
-                                                    && el.outflow > 0);
+                                                    && el.outflow > 0
+                                                    && el.getAccount().onBudget);
     var totalOutflow = Array.from(outflow_transactions, (i) => i.outflow).reduce((a, b) => a + b, 0);
     var averageDailyOutflow = totalOutflow / totalDays;
     var budgetAccountsTotal = ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel()._result.getOnBudgetAccountsBalance();
