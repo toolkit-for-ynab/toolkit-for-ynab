@@ -40,7 +40,7 @@
                 }
                 if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
                     ynabToolKit.updateInspectorColours();
-                  }
+                }
                 
               } else
               
@@ -67,7 +67,8 @@
                 }
                 
               }
-
+              
+              // User has selected a specific sub-category
               if ($node.hasClass('is-sub-category') && $node.hasClass('is-checked')) {
 
                 if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
@@ -75,6 +76,16 @@
                 }
 
               }
+              
+              // Values in the header total have changed
+              if ($node.hasClass('budget-header-totals-cell-value')) {
+            	  
+            	  if ( ynabToolKit.featureOptions.insertPacingColumns ){
+            		  ynabToolKit.insertPacingColumns();
+            	  }
+            	  
+              }
+              
   
           }); // each node mutation event
   
