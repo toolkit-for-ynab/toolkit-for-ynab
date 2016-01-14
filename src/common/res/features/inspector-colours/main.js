@@ -1,8 +1,8 @@
 (function poll() {
   if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true ) {
 
-    ynabToolKit.featureOptions.inspectorColours = true;
-    ynabToolKit.inspectorColours = function ()  {
+    ynabToolKit.featureOptions.updateInspectorColours = true;
+    ynabToolKit.updateInspectorColours = function ()  {
 
       if ( !$('.budget-inspector-multiple').length ) {
 

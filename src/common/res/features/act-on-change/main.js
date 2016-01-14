@@ -67,8 +67,8 @@
 
               if ($node.hasClass('is-sub-category') && $node.hasClass('is-checked')) {
 
-                if ( ynabToolKit.featureOptions.inspectorColours ) {  
-                  ynabToolKit.inspectorColours();
+                if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
+                  ynabToolKit.updateInspectorColours();
                 }
 
               }
