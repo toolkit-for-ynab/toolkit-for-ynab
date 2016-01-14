@@ -38,6 +38,9 @@
                 if ( ynabToolKit.featureOptions.highlightNegativesNegative ){
                   ynabToolKit.highlightNegativesNegative();
                 }
+                if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
+                    ynabToolKit.updateInspectorColours();
+                  }
                 
               } else
               
