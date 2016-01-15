@@ -48,7 +48,7 @@
                   ynabToolKit.highlightNegativesNegative();
                 }
                 if ( ynabToolKit.featureOptions.insertPacingColumns ){
-          		  ynabToolKit.insertPacingColumns();
+                  ynabToolKit.insertPacingColumns();
           	  	}
                 
               }
