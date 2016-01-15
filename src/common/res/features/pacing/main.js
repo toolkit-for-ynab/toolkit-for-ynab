@@ -49,7 +49,7 @@
 		
 		$('.budget-table-cell-pacing').remove()
 		
-		$(".budget-table-header .budget-table-cell-available").after($('<li class="budget-table-cell-pacing"><strong>PACING</strong></li>'));
+		$(".budget-table-header .budget-table-cell-available").after($('<li class="budget-table-cell-available budget-table-cell-pacing"><strong>PACING</strong></li>'));
 		
 		$('.budget-table-row').each(function(){ 
 		  var available = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-available').text());
