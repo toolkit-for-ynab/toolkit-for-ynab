@@ -5,11 +5,16 @@ function ynabEnhancedDoB() {
     var elementForAoM = document.getElementsByClassName("budget-header-days")[0];
     var elementForDoB = elementForAoM.cloneNode(true);
 
-    var DoB = ynabEnhancedDoBCalculate();
-    elementForDoB.children[0].innerText = DoB + " day" + (DoB == 1 ? "" : "s");
+    var result = ynabEnhancedDoBCalculate();
+    elementForDoB.children[0].textContent = result["DoB"] + " day" + (result["DoB"] == 1 ? "" : "s");
     elementForDoB.children[0].className = elementForDoB.children[0].className + " days-of-budgeting";
-    elementForDoB.children[1].innerText = "Days of Buffering";
-    elementForDoB.children[1].title = "Don't like AoM? Here you are this new shiny metric! Shows how many days you can live without income on your budget total considering average daily outflow.";    
+    elementForDoB.children[0].title = "Total outflow: " + ynab.YNABSharedLib.currencyFormatter.format(result["totalOutflow"]) + 
+        "\nTotal days of budgeting: " + result["totalDays"] + 
+        "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(result["averageDailyOutflow"]) + 
+        "\nAverage daily transactions: " + result["averageDailyTransactions"].toFixed(1);
+    elementForDoB.children[1].textContent = "Days of Buffering";
+    elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
+    elementForDoB.className = elementForDoB.className.replace(/\bhidden\b/,'');
 
     YNABheader.appendChild(elementForDoB);
 }
@@ -19,13 +24,10 @@ function onlyUnique(value, index, self) {
 }
 
 function ynabEnhancedCheckTransactionTypes(transactions) {
-    // There must be exactly 3 types that are described.
+    // Describe all handeled transaction types and check that no other got.
+    var handeledTransactionTypes = ["subTransaction", "transaction", "scheduledTransaction", "scheduledSubTransaction"];
     var uniqueTransactionTypes = Array.from(transactions, (el) => el.displayItemType).filter(onlyUnique);
-    var handeledTransactionTypes = ["subTransaction", "transaction", "scheduledTransaction"];
-    var allTypesHandeled = (uniqueTransactionTypes.length == handeledTransactionTypes.length) && 
-        uniqueTransactionTypes.every(function(element, index) {
-            return element === handeledTransactionTypes[index]; 
-        }); 
+    var allTypesHandeled = uniqueTransactionTypes.every(el => uniqueTransactionTypes.includes(el)); 
     if (!allTypesHandeled) {
         throw "Found unhandeled transaction type. " + uniqueTransactionTypes;
     }  
@@ -48,7 +50,13 @@ function ynabEnhancedDoBCalculate() {
     var totalOutflow = Array.from(outflow_transactions, (i) => i.outflow).reduce((a, b) => a + b, 0);
     var averageDailyOutflow = totalOutflow / totalDays;
     var budgetAccountsTotal = ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel()._result.getOnBudgetAccountsBalance();
-    return Math.floor(budgetAccountsTotal/averageDailyOutflow);
+    return {
+        DoB: Math.floor(budgetAccountsTotal/averageDailyOutflow),
+        totalOutflow: totalOutflow,
+        totalDays: totalDays,
+        averageDailyOutflow: averageDailyOutflow,
+        averageDailyTransactions: transactions.length/totalDays,
+    }
 }
 
 function ynabEnhancedDoBInit() {

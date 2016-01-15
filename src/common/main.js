@@ -21,8 +21,11 @@ function injectScript(path) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
-/* Load this to setup behaviors when the DOM updates */
-injectScript('res/features/init/actOnChange.js');
+/* Load this to setup shared utility functions */
+injectScript('res/features/shared/main.js');
+
+/* Load this to setup behaviors when the DOM updates and shared functions */
+injectScript('res/features/act-on-change/main.js');
 
 function ensureDefaultsAreSet() {
   var storedKeys = kango.storage.getKeys();
@@ -38,13 +41,12 @@ function ensureDefaultsAreSet() {
   if (storedKeys.indexOf('removeZeroCategories') < 0) {
     kango.storage.setItem('removeZeroCategories', true);
   }
-
-  if (storedKeys.indexOf('transferJump') < 0) {
-    kango.storage.setItem('transferJump', true);
-  }
 }
 
 ensureDefaultsAreSet();
+
+// Global toolkit css.
+injectCSS('res/features/main.css');
 
 if (kango.storage.getItem('collapseExpandBudgetGroups')) {
   injectCSS('res/features/collapse-budget-groups/main.css');
@@ -61,7 +63,7 @@ if (kango.storage.getItem('colourBlindMode')) {
 }
 
 if (kango.storage.getItem('hideAOM')) {
-  injectCSS('res/features/hide-age-of-money/main.css');
+  injectScript('res/features/hide-age-of-money/main.js');
 }
 
 if (kango.storage.getItem('highlightNegativesNegative')) {
@@ -70,6 +72,11 @@ if (kango.storage.getItem('highlightNegativesNegative')) {
 
 if (kango.storage.getItem('checkCreditBalances')) {
   injectScript('res/features/check-credit-balances/main.js');
+}
+
+if (kango.storage.getItem('checkCreditBalances') || kango.storage.getItem('highlightNegativesNegative')) {
+  // features that update presentation classes should have this enabled by default for consistency
+  injectScript('res/features/inspector-colours/main.js'); 
 }
 
 if (kango.storage.getItem('enableRetroCalculator')) {
@@ -160,4 +167,8 @@ else if (kango.storage.getItem('editButtonPosition') == 2) {
 if (kango.storage.getItem('daysOfBuffering')) {
   injectCSS('res/features/days-of-buffering/main.css');
   injectScript('res/features/days-of-buffering/main.js');
+}
+
+if (kango.storage.getItem('removePositiveHighlight')) {
+  injectCSS('res/features/remove-positive-highlight/main.css');
 }
