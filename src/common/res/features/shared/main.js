@@ -10,13 +10,12 @@ window.ynabToolKit = new function() {
     // If accountId === 'null' then all transactions for all accounts are returned with the visibility
     // settings for All accounts applied.
     this.getVisibleTransactions = function (accountId)  {
-        var transactions, originalTransactions, endDate, endDateUTC, sortBySortableIndex, accountStartMonth, accountStartYear, subTransactionsAdded, scheduledTransactions, addSubTransactionToVisibleTransactions, transactionPosition, accountShowReconciled, accountSettings, subTransaction, singleOccurranceTransactions, accountShowScheduled, startDateUTC, sortedSubTransactions, subTransactions, accountEndMonth, accountEndYear, visibleTransactions, accountShowWithNotifications, b, f;
+        var transactions, endDate, endDateUTC, sortBySortableIndex, accountStartMonth, accountStartYear, subTransactionsAdded, scheduledTransactions, addSubTransactionToVisibleTransactions, transactionPosition, accountShowReconciled, accountSettings, subTransaction, singleOccurranceTransactions, accountShowScheduled, startDateUTC, sortedSubTransactions, subTransactions, accountEndMonth, accountEndYear, visibleTransactions, accountShowWithNotifications, b, f;
         if (accountId === 'null') {
             transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
         } else {
             transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.transactionDisplayItemsCollection.findItemsByAccountId(accountId);
         }
-        originalTransactions = transactions;
         accountSettings = jQuery.parseJSON(localStorage.getItem("." + accountId + "_account_filter"));
         accountStartMonth = accountSettings.fromMonth;
         accountStartYear = accountSettings.fromYear;
