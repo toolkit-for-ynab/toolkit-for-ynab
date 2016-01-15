@@ -67,9 +67,9 @@
 		  var displayType = 'dollars';
 		  if(displayType == 'percentage') {
 		    if(pace > 1) {
-		      var temperature = 'cautious';
+		      var temperature = 'warm cautious';
 		    } else {
-		      var temperature = 'positive';
+		      var temperature = 'cool positive';
 		    }
 		    if(!isFinite(pace)) {
 		      var display = 999;
@@ -83,9 +83,9 @@
 		    display = Math.round((budgeted*timeSpent()-activity)*1000);
 		    if(available != 0 && activity != 0 && masterName != 'Credit Card Payments') {
 		      if(pace > 1) {
-		        var temperature = 'cautious';
+		        var temperature = 'warm cautious';
 		      } else if(activity != 0) {
-		        var temperature = 'positive';
+		        var temperature = 'cool positive';
 		      } else {
 		        var temperature = 'neutral';
 		      }

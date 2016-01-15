@@ -19,14 +19,15 @@
   padding: .125em .5em .175em .5em;
   color: white;
 }
+
 .budget-table-cell-pacing-display.hot {
-  background-color: #d33c2d;
+/*  background-color: #d33c2d; */
 }
 .budget-table-cell-pacing-display.warm {
-  background-color: orange;
+/*  background-color: orange; */
 }
 .budget-table-cell-pacing-display.cool {
-  background-color: #16a336; 
+/*  background-color: #16a336; */
 }
 .budget-table-cell-pacing-display.neutral {
   color: #cfd5d7;
