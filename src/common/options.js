@@ -131,19 +131,20 @@ function loadPanel(panel) {
 }
 
 KangoAPI.onReady(function() {
-  restoreOptions();
+  setTimeout(function() {
+    restoreOptions();
 
-  $('input:checkbox').bootstrapSwitch();
+    $('input:checkbox').bootstrapSwitch();
 
-  loadPanel('general');
+    loadPanel('general');
 
-  $('#generalMenuItem').click(function(e) { loadPanel('general'); e.preventDefault(); });
-  $('#accountsMenuItem').click(function(e) { loadPanel('accounts'); e.preventDefault(); });
-  $('#budgetMenuItem').click(function(e) { loadPanel('budget'); e.preventDefault(); });
+    $('#generalMenuItem').click(function(e) { loadPanel('general'); e.preventDefault(); });
+    $('#accountsMenuItem').click(function(e) { loadPanel('accounts'); e.preventDefault(); });
+    $('#budgetMenuItem').click(function(e) { loadPanel('budget'); e.preventDefault(); });
 
-  $('#save').click(saveOptions);
-  $('#cancel').click(function() {
-    KangoAPI.closeWindow();
-  });
-
+    $('#save').click(saveOptions);
+    $('#cancel').click(function() {
+      KangoAPI.closeWindow();
+    });
+  }, 100);
 });
