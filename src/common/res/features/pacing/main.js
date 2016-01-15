@@ -67,9 +67,9 @@
 		  var displayType = 'dollars';
 		  if(displayType == 'percentage') {
 		    if(pace > 1) {
-		      var temperature = 'warm';
+		      var temperature = 'cautious';
 		    } else {
-		      var temperature = 'cool';
+		      var temperature = 'positive';
 		    }
 		    if(!isFinite(pace)) {
 		      var display = 999;
@@ -77,15 +77,15 @@
 		      var display = Math.max(0,Math.round(pace*100));
 		    }
 		    if(pace > 0) {
-		      $(this).append('<li class="budget-table-cell-pacing"><span class="budget-table-cell-pacing-display '+temperature+'">'+display+'%</span></li>');
+		      $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span class="budget-table-cell-pacing-display '+temperature+'">'+display+'%</span></li>');
 		    }
 		  } else if (displayType == 'dollars') {
 		    display = Math.round((budgeted*timeSpent()-activity)*1000);
 		    if(available != 0 && activity != 0 && masterName != 'Credit Card Payments') {
 		      if(pace > 1) {
-		        var temperature = 'warm';
+		        var temperature = 'cautious';
 		      } else if(activity != 0) {
-		        var temperature = 'cool';
+		        var temperature = 'positive';
 		      } else {
 		        var temperature = 'neutral';
 		      }
@@ -100,7 +100,7 @@
 		      var tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+ formatCurrency(-display, false)+
 							' more than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.';
 		    }
-		    $(this).append('<li class="budget-table-cell-pacing"><span title="'+tooltip+'" class="budget-table-cell-pacing-display '+temperature+'">'+ formatCurrency(display, true)+'</span></li>');
+		    $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="'+tooltip+'" class="budget-table-cell-pacing-display '+temperature+'">'+ formatCurrency(display, true)+'</span></li>');
 		  }
 		});
 		
