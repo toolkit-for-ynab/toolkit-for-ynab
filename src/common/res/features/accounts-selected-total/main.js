@@ -1,6 +1,6 @@
 (function poll() {
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
-  
+
     ynabToolKit.featureOptions.enhancedSelectedTotals = true;
     ynabToolKit.enhancedSelectedTotals = function ()  {
 
@@ -20,7 +20,7 @@
           }
           enhancedSelectedTotalsPoll();
       }
-      
+
       function enhancedSelectedTotalsCalculate() {
           var outflows = 0;
           var inflows = 0;
@@ -31,10 +31,11 @@
               accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1)
           }
           transactions = ynabToolKit.getVisibleTransactions(accountId);
-          for (var i = 0; i < transactions.length; i++) {
-              if (transactions[i].isChecked) {
-                  inflows += transactions[i].inflow;
-                  outflows += transactions[i].outflow;
+          notSubTransactions = transactions.filter((el) => el.displayItemType != ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType != ynab.constants.TransactionDisplayItemType.SubTransaction);
+          for (var i = 0; i < notSubTransactions.length; i++) {
+              if (notSubTransactions[i].isChecked) {
+                  inflows += notSubTransactions[i].inflow;
+                  outflows += notSubTransactions[i].outflow;
                   transactionsFound = true;
               }
           }
@@ -43,10 +44,10 @@
               total = false;
           }
           enhancedSelectedTotalsUpdate(total);
-      
+
           setTimeout(enhancedSelectedTotalsPoll, 750);
       }
-      
+
       function enhancedSelectedTotalsUpdate(total) {
           var parent = document.getElementById('accounts-selected-total');
           if (parent == null) {
@@ -79,7 +80,7 @@
           userData.appendChild(userCurrency);
           parent.appendChild(userData);
       }
-      
+
       function enhancedFormatCurrency(e, html) {
           var n, r, a;
           e = ynab.formatCurrency(e);
@@ -91,7 +92,7 @@
           n.symbol_first ? (r = "-" === e.charAt(0), e = r ? "-" + a + e.slice(1) : a + e) : e += a;
           return new Ember.Handlebars.SafeString(e);
       }
-      
+
       function enhancedSelectedTotalsInit() {
           var parentDiv = document.getElementsByClassName('accounts-header-balances');
           n = parentDiv.length;
@@ -101,7 +102,7 @@
               setTimeout(enhancedSelectedTotalsInit, 250);
           }
       }
-      
+
       function enhancedSelectedTotalsPoll() {
           var parentDiv = document.getElementsByClassName('accounts-header-balances');
           if (parentDiv.length == 0) {
@@ -154,6 +155,6 @@
     ynabToolKit.enhancedSelectedTotals(); // Activate itself
 
   } else {
-    setTimeout(poll, 250);  
+    setTimeout(poll, 250);
   }
 })();

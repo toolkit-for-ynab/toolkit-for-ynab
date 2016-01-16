@@ -13,6 +13,7 @@ function ynabEnhancedDoB() {
         "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(result["averageDailyOutflow"]) + 
         "\nAverage daily transactions: " + result["averageDailyTransactions"].toFixed(1);
     elementForDoB.children[1].textContent = "Days of Buffering";
+    elementForDoB.children[1].className = elementForDoB.children[1].className + " days-of-budgeting"
     elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
     elementForDoB.className = elementForDoB.className.replace(/\bhidden\b/,'');
 
@@ -24,7 +25,7 @@ function onlyUnique(value, index, self) {
 }
 
 function ynabEnhancedCheckTransactionTypes(transactions) {
-    // Describe all handeled transaction types and check that no other got.
+    // Describe all handled transaction types and check that no other got.
     var handeledTransactionTypes = ["subTransaction", "transaction", "scheduledTransaction", "scheduledSubTransaction"];
     var uniqueTransactionTypes = Array.from(transactions, (el) => el.displayItemType).filter(onlyUnique);
     var allTypesHandeled = uniqueTransactionTypes.every(el => uniqueTransactionTypes.includes(el)); 
