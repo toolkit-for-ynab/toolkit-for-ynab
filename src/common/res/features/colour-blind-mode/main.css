@@ -40,7 +40,7 @@ ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-avai
 }
 
 /* ======== Positive colours / shapes ======== */
-ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-available-div > span.positive {
+ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-available > span.positive {
     background-color: #009e73 !important;
     color: #fff !important;
     font-weight: normal !important;
