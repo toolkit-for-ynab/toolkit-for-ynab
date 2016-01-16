@@ -1,76 +1,77 @@
-function parseSelectedMonth() {
-  // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
-  var headerView = Ember.View.views[$('.ember-view .budget-header').attr("id")];
-  var endOfLastMonth = headerView.get("currentMonth").toNativeDate();
-  return new Date(endOfLastMonth.getFullYear(), endOfLastMonth.getMonth()+1, 1);
-}
-
-// Calculate the proportion of the month that has been spent -- only works for the current month
-function timeSpent() {
-  var today = new Date();
-
-  var selectedMonth = parseSelectedMonth();
-  var lastDayOfThisMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth()+1, 0);
-  var daysInMonth = lastDayOfThisMonth.getDate(); // The date of the last day in the month is the number of days in the month
-  var day = Math.max(today.getDate()-1,1);
-
-  return day/daysInMonth;
-}
-
-function formatCurrency(e, html) {
-	var n, r, a;
-	e = ynab.formatCurrency(e);
-	n = ynab.YNABSharedLib.currencyFormatter.getCurrency();
-	a = Ember.Handlebars.Utils.escapeExpression(n.currency_symbol);
-	if (html) {
-    a = '<bdi>' + a + '</bdi>';
-	}
-	n.symbol_first ? (r = '-' === e.charAt(0), e = r ? '-' + a + e.slice(1) : a + e) : e += a;
-	return new Ember.Handlebars.SafeString(e);
-}
-
-// Determine whether the selected month is the current month
-function inCurrentMonth() {
-  var today = new Date();
-  var selectedMonth = parseSelectedMonth();
-  return selectedMonth.getMonth() == today.getMonth() && selectedMonth.getFullYear() == today.getFullYear();
-}
-
-function getDeemphasizedCategoriesSetting() {
-  var userId = ynab.YNABSharedLib.defaultInstance.loggedInUser.entityId;
-  return ynab.YNABSharedLib.defaultInstance.entityManager.getUserSettingByUserIdAndSettingName(userId, 'ynab_toolkit_pacing_deemphasized_categories');
-}
-
-function getDeemphasizedCategories() {
-  var value = getDeemphasizedCategoriesSetting();
-  if(typeof value !== 'undefined') {
-    return JSON.parse(value.getSettingValue());
-  } else {
-    return [];
-  }
-}
-
-function setDeemphasizedCategories(value) {
-  var stringValue = JSON.stringify(value);
-
-  var setting = getDeemphasizedCategoriesSetting();
-  if(setting == null || typeof setting == 'undefined') {
-    var userId = ynab.YNABSharedLib.defaultInstance.loggedInUser.entityId;
-    setting = ynab.YNABSharedLib.defaultInstance.entityManager.createNewUserSetting(userId, 'ynab_toolkit_pacing_deemphasized_categories');
-  }  
-  
-  setting.setSettingValue(stringValue);
-
-  if(setting.getEntityState() == "detachedNew") {
-    setting.mergeBackDetachedEntity();
-  }
-}
 
 (function poll() {
   if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true ) {
 
     ynabToolKit.featureOptions.insertPacingColumns = true;
     ynabToolKit.insertPacingColumns = function ()  {
+
+			function parseSelectedMonth() {
+				// TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
+				var headerView = Ember.View.views[$('.ember-view .budget-header').attr("id")];
+				var endOfLastMonth = headerView.get("currentMonth").toNativeDate();
+				return new Date(endOfLastMonth.getFullYear(), endOfLastMonth.getMonth()+1, 1);
+			}
+
+			// Calculate the proportion of the month that has been spent -- only works for the current month
+			function timeSpent() {
+				var today = new Date();
+
+				var selectedMonth = parseSelectedMonth();
+				var lastDayOfThisMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth()+1, 0);
+				var daysInMonth = lastDayOfThisMonth.getDate(); // The date of the last day in the month is the number of days in the month
+				var day = Math.max(today.getDate()-1,1);
+
+				return day/daysInMonth;
+			}
+
+			function formatCurrency(e, html) {
+				var n, r, a;
+				e = ynab.formatCurrency(e);
+				n = ynab.YNABSharedLib.currencyFormatter.getCurrency();
+				a = Ember.Handlebars.Utils.escapeExpression(n.currency_symbol);
+				if (html) {
+					a = '<bdi>' + a + '</bdi>';
+				}
+				n.symbol_first ? (r = '-' === e.charAt(0), e = r ? '-' + a + e.slice(1) : a + e) : e += a;
+				return new Ember.Handlebars.SafeString(e);
+			}
+
+			// Determine whether the selected month is the current month
+			function inCurrentMonth() {
+				var today = new Date();
+				var selectedMonth = parseSelectedMonth();
+				return selectedMonth.getMonth() == today.getMonth() && selectedMonth.getFullYear() == today.getFullYear();
+			}
+
+			function getDeemphasizedCategoriesSetting() {
+				var userId = ynab.YNABSharedLib.defaultInstance.loggedInUser.entityId;
+				return ynab.YNABSharedLib.defaultInstance.entityManager.getUserSettingByUserIdAndSettingName(userId, 'ynab_toolkit_pacing_deemphasized_categories');
+			}
+
+			function getDeemphasizedCategories() {
+				var value = getDeemphasizedCategoriesSetting();
+				if(typeof value !== 'undefined') {
+					return JSON.parse(value.getSettingValue());
+				} else {
+					return [];
+				}
+			}
+
+			function setDeemphasizedCategories(value) {
+				var stringValue = JSON.stringify(value);
+
+				var setting = getDeemphasizedCategoriesSetting();
+				if(setting == null || typeof setting == 'undefined') {
+					var userId = ynab.YNABSharedLib.defaultInstance.loggedInUser.entityId;
+					setting = ynab.YNABSharedLib.defaultInstance.entityManager.createNewUserSetting(userId, 'ynab_toolkit_pacing_deemphasized_categories');
+				}  
+				
+				setting.setSettingValue(stringValue);
+
+				if(setting.getEntityState() == "detachedNew") {
+					setting.mergeBackDetachedEntity();
+				}
+			}
 
 			if(inCurrentMonth()) {
 				// Make room for the column
