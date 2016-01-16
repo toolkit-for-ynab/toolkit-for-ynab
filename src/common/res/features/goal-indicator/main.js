@@ -6,13 +6,23 @@
     ynabToolKit.goalIndicator = function ()  { // Keep feature functions contained within this
     	function addIndicator (element, inticator) {
     		var budgetedCell = $(element).find(".budget-table-cell-budgeted");
-    		if (budgetedCell.has(".has-goal").length == 0) {
-    			budgetedCell.prepend('<div class="has-goal">' + inticator + '</div>')
+    		if (budgetedCell.has(".goal-indicator").length == 0) {
+    			budgetedCell.prepend('<div class="goal-indicator">' + inticator + '</div>')
     		}
     	}
 
-    	function getCurrentDate () {
-    		// TODO
+    	function pad(num, size) {
+		    var s = "0" + num;
+		    return s.substr(s.length-size);
+		}
+
+    	function getCurrentYM () {
+    		dateText = $(".budget-header-calendar-date-button").text();
+    		months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    		monthText = dateText.match(/[a-z]{3}/i)[0];
+			year = dateText.match(/\d{4}/i)[0];
+			month = months.indexOf(dateText.match(/[a-z]{3}/i)[0]) + 1;
+			return year + "-" + pad(month, 2);
     	}
 
 		var entityManager = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.getEntityManager();
@@ -20,7 +30,7 @@
 		var subCategories = $("ul.is-sub-category");
 		$(subCategories).each(function () {
 			var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
-			var crazyInternalId = "mcbc/2016-01/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
+			var crazyInternalId = "mcbc/" + getCurrentYM() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
 			var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
 
 			if (calculation.goalExpectedCompletion > 0) { 
@@ -51,7 +61,7 @@
 				budgetedCell.style.background = "-webkit-linear-gradient(top, white, white 13%, rgba(22, 163, 54, 0.0) 13%, rgba(22, 163, 54, 0.00) 87%, white 87%),-webkit-linear-gradient(left, rgba(22, 163, 54, 0.3) " + percent + "%, white " + percent+ "%)";				
 			}
 			else {
-				$(budgetedCell).find(".has-goal").remove();
+				$(budgetedCell).find(".goal-indicator").remove();
 				budgetedCell.removeAttribute("style");
 			}
 		})
