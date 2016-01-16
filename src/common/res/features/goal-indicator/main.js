@@ -4,6 +4,8 @@
   
     ynabToolKit.featureOptions.goalIndicator = true;
     ynabToolKit.goalIndicator = function ()  { // Keep feature functions contained within this
+    	var entityManager = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.getEntityManager();
+
     	function addIndicator (element, inticator) {
     		var budgetedCell = $(element).find(".budget-table-cell-budgeted");
     		if (budgetedCell.has(".goal-indicator").length == 0) {
@@ -25,13 +27,16 @@
 			return year + "-" + pad(month, 2);
     	}
 
-		var entityManager = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.getEntityManager();
+    	function getCalculation(subCategoryName) {
+    		var crazyInternalId = "mcbc/" + getCurrentYM() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
+			var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
+			return calculation;
+    	}
 
 		var subCategories = $("ul.is-sub-category");
 		$(subCategories).each(function () {
 			var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
-			var crazyInternalId = "mcbc/" + getCurrentYM() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
-			var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
+			calculation = getCalculation(subCategoryName);
 
 			if (calculation.goalExpectedCompletion > 0) { 
 				// Target total goal
