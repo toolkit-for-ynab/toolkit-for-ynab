@@ -15,7 +15,7 @@
       var observer = new MutationObserver(function(mutations, observer) {
         
         if (ynabToolKit.debugNodes) {
-          console.log('NEW NODES');
+          console.log('MODIFIED NODES');
         }
         
         mutations.forEach(function(mutation) {
@@ -32,20 +32,14 @@
               // Changes are detected in the category balances
               if ($node.hasClass("budget-table-cell-available-div")) {
                 
-                if ( ynabToolKit.featureOptions.checkCreditBalances ){
-                  ynabToolKit.checkCreditBalances();
-                }
-                if ( ynabToolKit.featureOptions.highlightNegativesNegative ){
-                  ynabToolKit.highlightNegativesNegative();
-                }
                 if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
                     ynabToolKit.updateInspectorColours();
-                  }
+                }
                 
               } else
               
               // The user has returned back to the budget screen
-              if ($node.hasClass('budget-table-row')) {
+              if ($node.hasClass('budget-inspector')) {
                 
                 if ( ynabToolKit.featureOptions.checkCreditBalances ){
                   ynabToolKit.checkCreditBalances();
@@ -53,6 +47,10 @@
                 if ( ynabToolKit.featureOptions.highlightNegativesNegative ){
                   ynabToolKit.highlightNegativesNegative();
                 }
+                if ( ynabToolKit.featureOptions.insertPacingColumns ){
+                  ynabToolKit.insertPacingColumns();
+          	  	}
+                
               }
               
               // We found a modal pop-up
@@ -67,7 +65,8 @@
                 }
                 
               }
-
+              
+              // User has selected a specific sub-category
               if ($node.hasClass('is-sub-category') && $node.hasClass('is-checked')) {
 
                 if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
@@ -75,6 +74,9 @@
                 }
 
               }
+              
+              
+              
   
           }); // each node mutation event
   
