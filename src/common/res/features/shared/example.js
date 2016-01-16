@@ -30,7 +30,7 @@
       };
 
 
-      setTimeOut(setUpAwesome, 250); // We are working on deprecating the need for this soon
+      setTimeout(setUpAwesome, 250); // We are working on deprecating the need for this soon
 
     }; // Keep feature functions contained within this
     ynabToolKit.awesomeFeature(); // Run once and activate setTimeOut()
