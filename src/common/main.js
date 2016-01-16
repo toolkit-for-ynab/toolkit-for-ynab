@@ -47,7 +47,6 @@ ensureDefaultsAreSet();
 
 // Global toolkit css.
 injectCSS('res/features/main.css');
-injectScript('res/features/goal-indicator/main.js');
 
 if (kango.storage.getItem('collapseExpandBudgetGroups')) {
   injectCSS('res/features/collapse-budget-groups/main.css');
@@ -132,6 +131,10 @@ if (kango.storage.getItem('transferJump')) {
 if (kango.storage.getItem('pacing')) {
   injectCSS('res/features/pacing/pacing.css');
   injectScript('res/features/pacing/main.js');
+}
+
+if (kango.storage.getItem('goalIndicator')) {
+  injectScript('res/features/goal-indicator/main.js');
 }
 
 if (kango.storage.getItem('reconciledTextColor')) {

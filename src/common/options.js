@@ -68,6 +68,7 @@ function saveOptions() {
   saveCheckboxOption('removeZeroCategories');
   saveCheckboxOption('moveMoneyDialog');
   saveCheckboxOption('pacing');
+  saveCheckboxOption('goalIndicator');
   saveCheckboxOption('moveMoneyAutocomplete');
   saveCheckboxOption('daysOfBuffering');
   saveCheckboxOption('toggleSplits');
@@ -103,6 +104,7 @@ function restoreOptions() {
   restoreCheckboxOption('removeZeroCategories');
   restoreCheckboxOption('moveMoneyDialog');
   restoreCheckboxOption('pacing');
+  restoreCheckboxOption('goalIndicator');
   restoreCheckboxOption('moveMoneyAutocomplete');
   restoreCheckboxOption('daysOfBuffering');
   restoreCheckboxOption('toggleSplits');
