@@ -50,6 +50,9 @@
                 if ( ynabToolKit.featureOptions.insertPacingColumns ){
                   ynabToolKit.insertPacingColumns();
           	  	}
+                if ( ynabToolKit.featureOptions.goalIndicator ){
+                  ynabToolKit.goalIndicator();
+                }
                 
               }
               
