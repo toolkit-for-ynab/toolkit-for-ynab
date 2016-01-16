@@ -135,6 +135,7 @@ if (kango.storage.getItem('pacing')) {
 
 if (kango.storage.getItem('goalIndicator')) {
   injectScript('res/features/goal-indicator/main.js');
+  injectCSS('res/features/goal-indicator/main.css');
 }
 
 if (kango.storage.getItem('reconciledTextColor')) {
