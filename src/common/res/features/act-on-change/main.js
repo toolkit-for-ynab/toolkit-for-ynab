@@ -49,7 +49,10 @@
                 }
                 if ( ynabToolKit.featureOptions.insertPacingColumns ){
                   ynabToolKit.insertPacingColumns();
-          	  	}
+                }
+                if ( ynabToolKit.featureOptions.budgetProgressBars ){
+                  ynabToolKit.budgetProgressBars();
+                }
                 
               }
               
