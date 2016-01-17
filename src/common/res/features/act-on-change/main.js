@@ -18,6 +18,7 @@
           console.log('MODIFIED NODES');
         }
         
+        // Reset the digest of changed nodes on each unique mutation event
         ynabToolKit.digest = new Array();
         
         mutations.forEach(function(mutation) {
@@ -82,15 +83,14 @@
         	// We found a modal pop-up
         	if ($(ynabToolKit.digest[i]).hasClass( "options-shown")) {
         	  
-        	  if ( ynabToolKit.featureOptions.removeZeroCategories ) {        
-        	    ynabToolKit.removeZeroCategories();
-        	  }
-        	
-        	  if ( ynabToolKit.featureOptions.moveMoneyAutoComplete ) {       
-        	    ynabToolKit.moveMoneyAutoComplete();
-        	  }
+				if ( ynabToolKit.featureOptions.removeZeroCategories ) {        
+				  ynabToolKit.removeZeroCategories();
+				}
+				if ( ynabToolKit.featureOptions.moveMoneyAutoComplete ) {       
+				  ynabToolKit.moveMoneyAutoComplete();
+				}
 
-        	  break;
+				break;
         	  
         	}
         }
@@ -100,11 +100,11 @@
         	// User has selected a specific sub-category
         	if ( $(ynabToolKit.digest[i]).hasClass('is-sub-category') && $(ynabToolKit.digest[i]).hasClass('is-checked')) {
 
-        	  if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
-        	    ynabToolKit.updateInspectorColours();
-        	  }
+				if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
+				  ynabToolKit.updateInspectorColours();
+				}
 
-        	  break;
+				break;
 
         	}
         }
