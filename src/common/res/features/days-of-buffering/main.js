@@ -40,15 +40,13 @@ function ynabEnhancedDoBCalculate() {
     var lastTransactionDate = accounts.maxTransactionDate._internalUTCMoment._d;
     var totalDays = (lastTransactionDate - firstTransactionDate)/3600/24/1000;
 
-    var transactions = accounts.visibleTransactionDisplayItems;
-    ynabEnhancedCheckTransactionTypes(transactions);
-    // All subTransaction (comes from split) have their parent transaction so they shouldn't count.
-    // scheduledTransaction shouldn't count too because they are not paid.
-    var outflow_transactions = transactions.filter((el) => el.displayItemType == "transaction" 
-                                                    && el.transferAccountId == null 
-                                                    && el.outflow > 0
-                                                    && el.getAccount().onBudget);
-    var totalOutflow = Array.from(outflow_transactions, (i) => i.outflow).reduce((a, b) => a + b, 0);
+    var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
+    var transactions = entityManager.getAllTransactions();
+    var outflow_transactions = transactions.filter((el) => !el.isTombstone
+                                                        && el.transferAccountId == null 
+                                                        && el.amount < 0
+                                                        && el.getAccount().onBudget);
+    var totalOutflow = Array.from(outflow_transactions, (i) => -i.amount).reduce((a, b) => a + b, 0);
     var averageDailyOutflow = totalOutflow / totalDays;
     var budgetAccountsTotal = ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel()._result.getOnBudgetAccountsBalance();
     return {
