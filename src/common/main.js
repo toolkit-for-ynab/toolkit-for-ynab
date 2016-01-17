@@ -137,6 +137,16 @@ if (kango.storage.getItem('reconciledTextColor')) {
   injectScript('res/features/distinguish-reconciled-transactions/main.js');
 }
 
+if (kango.storage.getItem('budgetProgressBars') == 1) {
+  injectScript('res/features/budget-progress-bars/goals.js');
+}
+else if (kango.storage.getItem('budgetProgressBars') == 2) {
+  injectScript('res/features/budget-progress-bars/pacing.js');
+}
+else if (kango.storage.getItem('budgetProgressBars') == 3) {
+  injectScript('res/features/budget-progress-bars/both.js');
+}
+
 if (kango.storage.getItem('reconciledTextColor') == 1) {
   injectCSS('res/features/distinguish-reconciled-transactions/green.css');
 }
