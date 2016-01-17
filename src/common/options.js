@@ -74,6 +74,7 @@ function saveOptions() {
   saveCheckboxOption('accountsSelectedTotal');
   saveCheckboxOption('changeEnterBehavior');
   saveCheckboxOption('transferJump');
+  saveCheckboxOption('importNotification');
 
   saveSelectOption('budgetRowsHeight');
   saveSelectOption('reconciledTextColor');
@@ -109,6 +110,7 @@ function restoreOptions() {
   restoreCheckboxOption('accountsSelectedTotal');
   restoreCheckboxOption('changeEnterBehavior');
   restoreCheckboxOption('transferJump');
+  restoreCheckboxOption('importNotification');
 
   restoreSelectOption('budgetRowsHeight');
   restoreSelectOption('reconciledTextColor');
