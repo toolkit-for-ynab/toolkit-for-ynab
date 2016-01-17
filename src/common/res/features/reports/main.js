@@ -227,6 +227,9 @@
             responsive: true,
             scales: {
               xAxes: [{
+                gridLines: {
+                  display: false
+                },
                 labels: {
                   show: true,
                   fontFamily: "'Lato',Arial,'Helvetica Neue',Helvetica,sans-serif"
