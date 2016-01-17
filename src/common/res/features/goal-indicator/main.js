@@ -18,17 +18,8 @@
 		    return s.substr(s.length-size);
 		}
 
-    	function getCurrentYM () {
-    		dateText = $(".budget-header-calendar-date-button").text();
-    		months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    		monthText = dateText.match(/[a-z]{3}/i)[0];
-			year = dateText.match(/\d{4}/i)[0];
-			month = months.indexOf(dateText.match(/[a-z]{3}/i)[0]) + 1;
-			return year + "-" + pad(month, 2);
-    	}
-
     	function getCalculation(subCategoryName) {
-    		var crazyInternalId = "mcbc/" + getCurrentYM() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
+    		var crazyInternalId = "mcbc/" + ynabToolKit.parseSelectedMonth().yyyymm() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
 			var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
 			return calculation;
     	}
