@@ -32,7 +32,7 @@
 			if (calculation.goalExpectedCompletion > 0) { 
 				// Target total goal
 				var hasGoal = true;
-				var status = calculation.balance / (calculation.goalOverallFunded + calculation.goalOverallLeft);
+				var status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
 				addIndicator(this, "T");
 			}
 			else if (calculation.goalTarget > 0) {
