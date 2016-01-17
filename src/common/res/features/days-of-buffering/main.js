@@ -5,16 +5,22 @@ function ynabEnhancedDoB() {
     var elementForAoM = document.getElementsByClassName("budget-header-days")[0];
     var elementForDoB = elementForAoM.cloneNode(true);
 
-    var result = ynabEnhancedDoBCalculate();
     elementForDoB.className = elementForDoB.className + " days-of-buffering";
-    elementForDoB.children[0].textContent = result["DoB"] + " day" + (result["DoB"] == 1 ? "" : "s");
-    elementForDoB.children[0].title = "Total outflow: " + ynab.YNABSharedLib.currencyFormatter.format(result["totalOutflow"]) + 
-        "\nTotal days of budgeting: " + result["totalDays"] + 
-        "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(result["averageDailyOutflow"]) + 
-        "\nAverage daily transactions: " + result["averageDailyTransactions"].toFixed(1);
     elementForDoB.children[1].textContent = "Days of Buffering";
     elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
-    elementForDoB.className = elementForDoB.className.replace(/\bhidden\b/,'');
+
+    var calculation = ynabEnhancedDoBCalculate();
+    if (!calculation){
+        elementForDoB.children[0].textContent = "???";
+        elementForDoB.children[0].title = "Your budget history is less than 15 days. Go on with YNAB a while.";
+    }
+    else {
+        elementForDoB.children[0].textContent = calculation["DoB"] + " day" + (calculation["DoB"] == 1 ? "" : "s");
+        elementForDoB.children[0].title = "Total outflow: " + ynab.YNABSharedLib.currencyFormatter.format(calculation["totalOutflow"]) + 
+            "\nTotal days of budgeting: " + calculation["totalDays"] + 
+            "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(calculation["averageDailyOutflow"]) + 
+            "\nAverage daily transactions: " + calculation["averageDailyTransactions"].toFixed(1);        
+    }
 
     YNABheader.appendChild(elementForDoB);
 }
@@ -34,19 +40,31 @@ function ynabEnhancedCheckTransactionTypes(transactions) {
 }
 
 function ynabEnhancedDoBCalculate() {
-    var accounts = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result;
-
-    var firstTransactionDate = accounts.minTransactionDate._internalUTCMoment._d;
-    var lastTransactionDate = accounts.maxTransactionDate._internalUTCMoment._d;
-    var totalDays = (lastTransactionDate - firstTransactionDate)/3600/24/1000;
-
+    // Get outflow transactions.
     var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
     var transactions = entityManager.getAllTransactions();
-    var outflow_transactions = transactions.filter((el) => !el.isTombstone
+    var outflowTransactions = transactions.filter((el) => !el.isTombstone
                                                         && el.transferAccountId == null 
                                                         && el.amount < 0
                                                         && el.getAccount().onBudget);
-    var totalOutflow = Array.from(outflow_transactions, (i) => -i.amount).reduce((a, b) => a + b, 0);
+
+    // Filter outflow transactions by Date for history lookup option.
+    if (daysOfBufferingHistoryLookup > 0) {
+        dateNow = Date.now();
+        var outflowTransactions = outflowTransactions.filter((el) => 
+            (dateNow - el.getDate().getUTCTime()) / 3600/24/1000/(365/12) < daysOfBufferingHistoryLookup)
+    }
+
+    // Get outflow transactions period
+    outflowTransactionsDates = Array.from(outflowTransactions, (el) => el.getDate().getUTCTime());
+    var firstTransactionDate = Math.min.apply(null, outflowTransactionsDates);
+    var lastTransactionDate = Math.max.apply(null, outflowTransactionsDates);
+    var totalDays = (lastTransactionDate - firstTransactionDate)/3600/24/1000;
+    if (totalDays < 15){
+        return false;
+    }
+
+    var totalOutflow = Array.from(outflowTransactions, (i) => -i.amount).reduce((a, b) => a + b, 0);
     var averageDailyOutflow = totalOutflow / totalDays;
     var budgetAccountsTotal = ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel()._result.getOnBudgetAccountsBalance();
     return {
