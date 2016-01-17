@@ -331,6 +331,22 @@
                           <div class="container col-xs-11">
                             <div class="row col-xs-10">
                               <div class="col-xs-8 col-xs-offset-2">
+                                <label for="daysOfBufferingHistoryLookup">Days of Buffering history lookup</label>
+                                <select name="daysOfBufferingHistoryLookup" id="daysOfBufferingHistoryLookup" class="form-control" aria-describedby="daysOfBufferingHistoryLookupHelpBlock">
+                                    <option value="0">All</option>
+                                    <option value="12">1 year</option>
+                                    <option value="6">6 months</option>
+                                    <option value="3">3 months</option>
+                                    <option value="1">1 month</option>
+                                </select>
+                                <span id="daysOfBufferingHistoryLookupHelpBlock" class="help-block">How old transactions should be used for average daily outflow calculation.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
+                              <div class="col-xs-8 col-xs-offset-2">
                                 <label for="budgetRowsHeight">Height of budget rows</label>
                                 <select name="budgetRowsHeight" id="budgetRowsHeight" class="form-control" aria-describedby="budgetRowsHeightHelpBlock">
                                     <option value="0">Default</option>
