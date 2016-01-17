@@ -4,7 +4,7 @@
   
     ynabToolKit.featureOptions.goalIndicator = true;
     ynabToolKit.goalIndicator = function ()  { // Keep feature functions contained within this
-    	var entityManager = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.getEntityManager();
+    	var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
 
     	function addIndicator (element, inticator) {
     		var budgetedCell = $(element).find(".budget-table-cell-budgeted");
