@@ -83,6 +83,17 @@ window.ynabToolKit = new function() {
         return visibleTransactions;
     };
 
+    this.parseSelectedMonth = function () {
+        // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
+        if($('.ember-view .budget-header').length) {
+            var headerView = Ember.View.views[$('.ember-view .budget-header').attr("id")];
+            var endOfLastMonth = headerView.get("currentMonth").toNativeDate();
+            return new Date(endOfLastMonth.getFullYear(), endOfLastMonth.getMonth(), 1);
+        } else {
+            return null;
+        }
+    }
+
 }; // end ynabToolKit object
 
 
@@ -98,3 +109,11 @@ window.ynabToolKit = new function() {
        setTimeout(poll, 250);
     }
  })();
+
+
+// Add formatting method to Date to get YYYY-MM.
+Date.prototype.yyyymm = function() {
+    var yyyy = this.getFullYear().toString();
+    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+    return yyyy + '-' + (mm[1]?mm:"0"+mm[0]); // padding
+};
