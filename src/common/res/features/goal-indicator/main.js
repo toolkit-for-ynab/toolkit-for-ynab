@@ -13,11 +13,6 @@
     		}
     	}
 
-    	function pad(num, size) {
-		    var s = "0" + num;
-		    return s.substr(s.length-size);
-		}
-
     	function getCalculation(subCategoryName) {
     		var crazyInternalId = "mcbc/" + ynabToolKit.parseSelectedMonth().yyyymm() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
 			var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
@@ -31,34 +26,16 @@
 
 			if (calculation.goalExpectedCompletion > 0) { 
 				// Target total goal
-				var hasGoal = true;
-				var status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
 				addIndicator(this, "T");
 			}
 			else if (calculation.goalTarget > 0) {
 				// Taget by date
 				// or Montly goal
-				var hasGoal = true;
-				var status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
 				addIndicator(this, "M");
 			}
 			else if (calculation.upcomingTransactions < 0) {
 				// Upcoming transactions "goal"
-				var hasGoal = true;
-				var status = - calculation.balance / calculation.upcomingTransactions;
 				addIndicator(this, "U");
-			}
-
-			var budgetedCell = $(this).find("li.budget-table-cell-budgeted")[0];
-			if (hasGoal) {
-				status = status > 1 ? 1 : status;
-				status = status < 0 ? 0 : status;
-				var percent = Math.round(parseFloat(status)*100);
-				budgetedCell.style.background = "-webkit-linear-gradient(top, white, white 13%, rgba(22, 163, 54, 0.0) 13%, rgba(22, 163, 54, 0.00) 87%, white 87%),-webkit-linear-gradient(left, rgba(22, 163, 54, 0.3) " + percent + "%, white " + percent+ "%)";				
-			}
-			else {
-				$(budgetedCell).find(".goal-indicator").remove();
-				budgetedCell.removeAttribute("style");
 			}
 		})
      
