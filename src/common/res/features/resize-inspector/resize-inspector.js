@@ -3,7 +3,7 @@
        
       ynabToolKit.featureOptions.resizeInspector = true;
       ynabToolKit.resizeInspector = function ()  {
-        $('aside').html('<div class="inspector-resize-handle">&nbsp;</div><div class="inspector-resize-content">'+$('aside').html()+'</div></div>');
+        $('aside').before('<div class="inspector-resize-handle">&nbsp;</div>');
         $('section').resizable({
           handleSelector: '.inspector-resize-handle',
           resizeHeight: false
