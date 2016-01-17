@@ -83,7 +83,7 @@
 
 			$('.budget-table-cell-pacing').remove()
 			
-			$(".budget-table-header .budget-table-cell-available").after($('<li class="budget-table-cell-pacing"><strong>PACING</strong></li>'));
+			$(".budget-table-header .budget-table-cell-available").after($('<li class="budget-table-cell-pacing">PACING</li>'));
 		 
 			var deemphasizedCategories = getDeemphasizedCategories();
 			$('.budget-table-row').each(function(){ 
