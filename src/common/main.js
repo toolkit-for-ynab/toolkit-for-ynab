@@ -41,6 +41,10 @@ function ensureDefaultsAreSet() {
   if (storedKeys.indexOf('removeZeroCategories') < 0) {
     kango.storage.setItem('removeZeroCategories', true);
   }
+
+  if (storedKeys.indexOf('enableReports') < 0) {
+    kango.storage.setItem('enableReports', true);
+  }
 }
 
 ensureDefaultsAreSet();
@@ -76,7 +80,7 @@ if (kango.storage.getItem('checkCreditBalances')) {
 
 if (kango.storage.getItem('checkCreditBalances') || kango.storage.getItem('highlightNegativesNegative')) {
   // features that update presentation classes should have this enabled by default for consistency
-  injectScript('res/features/inspector-colours/main.js'); 
+  injectScript('res/features/inspector-colours/main.js');
 }
 
 if (kango.storage.getItem('enableRetroCalculator')) {
@@ -171,4 +175,9 @@ if (kango.storage.getItem('daysOfBuffering')) {
 
 if (kango.storage.getItem('removePositiveHighlight')) {
   injectCSS('res/features/remove-positive-highlight/main.css');
+}
+
+if (kango.storage.getItem('enableReports')) {
+  injectScript('res/features/reports/Chart.min.js');
+  injectScript('res/features/reports/main.js');
 }
