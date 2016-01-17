@@ -75,6 +75,14 @@
 
               }
               
+              // We found Account transactions rows
+              if ($node.hasClass('ynab-grid-body-row')) {
+
+                if ( ynabToolKit.featureOptions.swapClearedFlagged ) {
+                  ynabToolKit.swapClearedFlagged();
+                }
+
+              }
               
               
   
