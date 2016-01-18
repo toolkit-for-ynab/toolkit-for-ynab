@@ -149,6 +149,10 @@ if (kango.storage.getItem('reconciledTextColor')) {
   injectScript('res/features/distinguish-reconciled-transactions/main.js');
 }
 
+if (kango.storage.getItem('swapClearedFlagged')) {
+  injectScript('res/features/swap-cleared-flagged/main.js');
+}
+
 if (kango.storage.getItem('reconciledTextColor') == 1) {
   injectCSS('res/features/distinguish-reconciled-transactions/green.css');
 }

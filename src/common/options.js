@@ -76,6 +76,7 @@ function saveOptions() {
   saveCheckboxOption('changeEnterBehavior');
   saveCheckboxOption('transferJump');
   saveCheckboxOption('importNotification');
+  saveCheckboxOption('swapClearedFlagged');
 
   saveSelectOption('daysOfBufferingHistoryLookup');
   saveSelectOption('budgetRowsHeight');
@@ -114,6 +115,7 @@ function restoreOptions() {
   restoreCheckboxOption('changeEnterBehavior');
   restoreCheckboxOption('transferJump');
   restoreCheckboxOption('importNotification');
+  restoreCheckboxOption('swapClearedFlagged');
 
   restoreSelectOption('daysOfBufferingHistoryLookup');
   restoreSelectOption('budgetRowsHeight');
