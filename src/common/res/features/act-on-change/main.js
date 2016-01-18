@@ -76,6 +76,8 @@
               ynabToolKit.budgetProgressBars();
             }
 
+            ynabToolKit.l10nInspector(ynabToolKit.digest[i]);
+
         		break;
         	}
         	  
