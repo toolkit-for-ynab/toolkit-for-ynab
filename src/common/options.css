@@ -35,6 +35,10 @@ label {
 }
 
 #settingsSaved {
-  margin: 15px 0 15px 0;
+  position: fixed;
   text-align: center;
+  z-index: 99;
+  top: 0px;
+  left: 0px;
+  width: 100%;
 }
