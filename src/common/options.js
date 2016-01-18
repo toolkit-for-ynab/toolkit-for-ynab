@@ -84,6 +84,7 @@ function saveOptions() {
   saveSelectOption('categoryActivityPopupWidth');
   saveSelectOption('accountsDisplayDensity');
   saveSelectOption('editButtonPosition');
+  saveSelectOption('budgetProgressBars');
 
   $('#settingsSaved').fadeIn()
                      .delay(1500)
@@ -123,6 +124,7 @@ function restoreOptions() {
   restoreSelectOption('categoryActivityPopupWidth');
   restoreSelectOption('accountsDisplayDensity');
   restoreSelectOption('editButtonPosition');
+  restoreSelectOption('budgetProgressBars');
 }
 
 function loadPanel(panel) {
