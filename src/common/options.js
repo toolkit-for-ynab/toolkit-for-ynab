@@ -76,6 +76,7 @@ function saveOptions() {
   saveCheckboxOption('transferJump');
   saveCheckboxOption('importNotification');
 
+  saveSelectOption('daysOfBufferingHistoryLookup');
   saveSelectOption('budgetRowsHeight');
   saveSelectOption('reconciledTextColor');
   saveSelectOption('categoryActivityPopupWidth');
@@ -112,6 +113,7 @@ function restoreOptions() {
   restoreCheckboxOption('transferJump');
   restoreCheckboxOption('importNotification');
 
+  restoreSelectOption('daysOfBufferingHistoryLookup');
   restoreSelectOption('budgetRowsHeight');
   restoreSelectOption('reconciledTextColor');
   restoreSelectOption('categoryActivityPopupWidth');

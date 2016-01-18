@@ -21,6 +21,13 @@ function injectScript(path) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
+function injectJSString(js) {
+  var script = document.createElement('script');
+  script.text = js;
+
+  document.getElementsByTagName('body')[0].appendChild(script);
+}
+
 /* Load this to setup shared utility functions */
 injectScript('res/features/shared/main.js');
 
@@ -165,6 +172,8 @@ else if (kango.storage.getItem('editButtonPosition') == 2) {
 }
 
 if (kango.storage.getItem('daysOfBuffering')) {
+  daysOfBufferingHistoryLookup = kango.storage.getItem('daysOfBufferingHistoryLookup')
+  injectJSString('var daysOfBufferingHistoryLookup = ' + daysOfBufferingHistoryLookup + ';');
   injectCSS('res/features/days-of-buffering/main.css');
   injectScript('res/features/days-of-buffering/main.js');
 }
