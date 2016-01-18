@@ -83,6 +83,23 @@ window.ynabToolKit = new function() {
         return visibleTransactions;
     };
 
+    // This function formats a number to a currency.
+    // number is the number you want to format, and html dictates if the <bdi> tag should be added or not.
+    this.formatCurrency = function (number, html) {
+        var formatted, currency, negative, currencySymbol;
+        formatted = ynab.formatCurrency(number);
+        currency = ynab.YNABSharedLib.currencyFormatter.getCurrency();
+        if (!currency.display_symbol) {
+            return new Ember.Handlebars.SafeString(formatted);
+        }
+        currencySymbol = Ember.Handlebars.Utils.escapeExpression(currency.currency_symbol);
+        if (html) {
+            currencySymbol = "<bdi>" + currencySymbol + "</bdi>";
+        }
+        currency.symbol_first ? (negative = "-" === formatted.charAt(0), formatted = negative ? "-" + currencySymbol + formatted.slice(1) : currencySymbol + formatted) : formatted += currencySymbol;
+        return new Ember.Handlebars.SafeString(formatted);
+    }
+
 }; // end ynabToolKit object
 
 

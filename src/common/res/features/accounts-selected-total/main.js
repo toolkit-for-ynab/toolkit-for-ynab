@@ -64,8 +64,8 @@
           for (var i = 0; i < spans.length; i++) {
               spans[i].remove();
           }
-          var totalFormatted = enhancedFormatCurrency(total, true);
-          var totalFormattedNoHtml = enhancedFormatCurrency(total, false);
+          var totalFormatted = ynabToolKit.formatCurrency(total, true);
+          var totalFormattedNoHtml = ynabToolKit.formatCurrency(total, false);
           var userData = document.createElement("span");
           userData.className = "user-data";
           userData.title = totalFormattedNoHtml;
@@ -79,18 +79,6 @@
           userCurrency.innerHTML = totalFormatted;
           userData.appendChild(userCurrency);
           parent.appendChild(userData);
-      }
-
-      function enhancedFormatCurrency(e, html) {
-          var n, r, a;
-          e = ynab.formatCurrency(e);
-          n = ynab.YNABSharedLib.currencyFormatter.getCurrency();
-          a = Ember.Handlebars.Utils.escapeExpression(n.currency_symbol);
-          if (html) {
-              a = "<bdi>" + a + "</bdi>";
-          }
-          n.symbol_first ? (r = "-" === e.charAt(0), e = r ? "-" + a + e.slice(1) : a + e) : e += a;
-          return new Ember.Handlebars.SafeString(e);
       }
 
       function enhancedSelectedTotalsInit() {
