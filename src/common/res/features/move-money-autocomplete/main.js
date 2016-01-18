@@ -2,7 +2,6 @@
 
 	if (typeof ynabToolKit !== "undefined" && ynabToolKit.pageReady === true) {
 
-		ynabToolKit.featureOptions.moveMoneyAutoComplete = true;
 
 		var originalentries = null;
 		ynabToolKit.moveMoneyAutoComplete = function() {

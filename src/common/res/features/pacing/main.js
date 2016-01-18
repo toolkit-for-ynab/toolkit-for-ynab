@@ -1,7 +1,6 @@
 (function poll() {
   if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true ) {
 
-    ynabToolKit.featureOptions.insertPacingColumns = true;
     ynabToolKit.insertPacingColumns = function ()  {
 
 		// Calculate the proportion of the month that has been spent -- only works for the current month

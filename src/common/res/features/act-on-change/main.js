@@ -49,7 +49,7 @@
         	// Changes are detected in the category balances
         	if ($(ynabToolKit.digest[i]).hasClass("budget-table-cell-available-div")) {
         	  
-        	  if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
+        	  if ( ynabToolKitOptions.updateInspectorColours ) {  
         	      ynabToolKit.updateInspectorColours();
         	  }
 
@@ -63,16 +63,16 @@
         	// The user has returned back to the budget screen
         	if ($(ynabToolKit.digest[i]).hasClass('budget-inspector')) {
         	  
-        		if ( ynabToolKit.featureOptions.checkCreditBalances ){
+        		if ( ynabToolKitOptions.checkCreditBalances ){
         		  ynabToolKit.checkCreditBalances();
         		}
-        		if ( ynabToolKit.featureOptions.highlightNegativesNegative ){
+        		if ( ynabToolKitOptions.highlightNegativesNegative ){
         		  ynabToolKit.highlightNegativesNegative();
         		}
-        		if ( ynabToolKit.featureOptions.insertPacingColumns ){
+        		if ( ynabToolKitOptions.insertPacingColumns ){
         		  ynabToolKit.insertPacingColumns();
         		}
-            if ( ynabToolKit.featureOptions.budgetProgressBars ){
+            if ( ynabToolKitOptions.budgetProgressBars ){
               ynabToolKit.budgetProgressBars();
             }
 
@@ -86,10 +86,10 @@
         	// We found a modal pop-up
         	if ($(ynabToolKit.digest[i]).hasClass( "options-shown")) {
         	  
-				if ( ynabToolKit.featureOptions.removeZeroCategories ) {        
+				if ( ynabToolKitOptions.removeZeroCategories ) {        
 				  ynabToolKit.removeZeroCategories();
 				}
-				if ( ynabToolKit.featureOptions.moveMoneyAutoComplete ) {       
+				if ( ynabToolKitOptions.moveMoneyAutoComplete ) {       
 				  ynabToolKit.moveMoneyAutoComplete();
 				}
 
@@ -103,7 +103,7 @@
         	// User has selected a specific sub-category
         	if ( $(ynabToolKit.digest[i]).hasClass('is-sub-category') && $(ynabToolKit.digest[i]).hasClass('is-checked')) {
 
-				if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
+				if ( ynabToolKitOptions.updateInspectorColours ) {  
 				  ynabToolKit.updateInspectorColours();
 				}
 
