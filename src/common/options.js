@@ -75,6 +75,7 @@ function saveOptions() {
   saveCheckboxOption('changeEnterBehavior');
   saveCheckboxOption('transferJump');
   saveCheckboxOption('resizeInspector');
+  saveCheckboxOption('importNotification');
 
   saveSelectOption('budgetRowsHeight');
   saveSelectOption('reconciledTextColor');
@@ -111,6 +112,7 @@ function restoreOptions() {
   restoreCheckboxOption('changeEnterBehavior');
   restoreCheckboxOption('transferJump');
   restoreCheckboxOption('resizeInspector');
+  restoreCheckboxOption('importNotification');
 
   restoreSelectOption('budgetRowsHeight');
   restoreSelectOption('reconciledTextColor');
