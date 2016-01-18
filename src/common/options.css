@@ -27,6 +27,16 @@ label {
   margin: 18px 10px 0 0;
 }
 
+.page-header {
+  margin: 10px 0;
+}
+
+.page-header-buttons {
+  position: relative;
+  top: -6em;
+  margin-bottom: -6em;
+}
+
 .active-menu {
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
@@ -35,10 +45,10 @@ label {
 }
 
 #settingsSaved {
-  position: fixed;
-  text-align: center;
-  z-index: 99;
-  top: 0px;
-  left: 0px;
-  width: 100%;
+    position: fixed;
+    text-align: center;
+    z-index: 99;
+    top: 0px;
+    left: 0px;
+    width: 100%;
 }
