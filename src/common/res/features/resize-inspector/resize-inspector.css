@@ -1,0 +1,37 @@
+.budget-table {
+  position: static !important;
+  overflow: scroll;
+  height: 100%;
+}
+
+.budget-content {
+  height: 100%;
+  padding-top: 8em;
+  position: static !important;
+  flex: 0 0 auto;
+  width: 80%;
+  overflow: hidden;
+}
+
+.budget-table-header {
+  position: static !important;
+}
+
+.budget-inspector {
+  flex: 1 1 auto;
+  position: static !important;
+  width: auto !important;
+  margin-top: 9.7em;
+  overflow-x: hidden;
+}
+
+.scroll-wrap {
+  display: flex;
+  height: 100%;
+}
+
+.inspector-resize-handle {
+  min-width: 13px;
+  background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #227e99;
+  cursor: col-resize;
+}

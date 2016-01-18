@@ -169,6 +169,12 @@ if (kango.storage.getItem('daysOfBuffering')) {
   injectScript('res/features/days-of-buffering/main.js');
 }
 
+if (kango.storage.getItem('resizeInspector')) {
+  injectScript('res/features/resize-inspector/jquery-resizable.min.js');
+  injectScript('res/features/resize-inspector/resize-inspector.js');
+  injectCSS('res/features/resize-inspector/resize-inspector.css');
+}
+
 if (kango.storage.getItem('removePositiveHighlight')) {
   injectCSS('res/features/remove-positive-highlight/main.css');
 }
