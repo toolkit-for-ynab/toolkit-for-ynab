@@ -140,6 +140,11 @@ if (kango.storage.getItem('pacing')) {
   injectScript('res/features/pacing/main.js');
 }
 
+if (kango.storage.getItem('goalIndicator')) {
+  injectScript('res/features/goal-indicator/main.js');
+  injectCSS('res/features/goal-indicator/main.css');
+}
+
 if (kango.storage.getItem('reconciledTextColor')) {
   injectScript('res/features/distinguish-reconciled-transactions/main.js');
 }
