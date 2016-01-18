@@ -12,13 +12,23 @@
 			return calculation;
     	}
 
-    	var date = new Date();
-   		var monthProgress = new Date().getDate() / new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-   		var monthProgressPercent = Math.round(parseFloat(monthProgress)*100);
-   		console.log(monthProgressPercent);
-    	var s = 0.5; // Current month progress indicator size
+		// Takes N colors and N-1 sorted points from (0, 1) to make color1|color2|color3 bg style.
+		function generateProgressBarStyle(colors, points) {
+			points.unshift(0);
+			points.push(1);
+			var pointsPercent = Array.from(points, (p) => p*100);
+			style = "linear-gradient(to right, ";
+			for (var i = 0; i < colors.length; i++) {
+				style += colors[i] + " " + pointsPercent[i] + "%, ";
+				style += colors[i] + " " + pointsPercent[i + 1] + "%";
+				style += (i + 1 == colors.length) ? ")" : ", ";
+				}
+				return style;
+		}
 
-    	// TODO: Fix this for monthProgress = 1
+		var date = new Date();
+		var monthProgress = new Date().getDate() / new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+		var s = 0.005; // Current month progress indicator width
 
 		var subCategories = $("ul.is-sub-category");
 		$(subCategories).each(function () {
@@ -30,22 +40,29 @@
     		
 			if (budgeted > 0) {
 				var pacing = (budgeted - available) / budgeted;
-				var pacingPercent = Math.round(parseFloat(pacing)*100);
-				if (monthProgressPercent > pacingPercent) {
-					this.style.background = "-webkit-linear-gradient(left, #c0e2e9 " + pacingPercent + "%, white " + pacingPercent + "%, white " + monthProgressPercent + "%, #CFD5D8 " + monthProgressPercent + "%, #CFD5D8 " + (monthProgressPercent + s) + "%, white " + (monthProgressPercent + s) + "%)";
+				if (monthProgress > pacing) {
+					this.style.background = generateProgressBarStyle(
+						["#c0e2e9", "white", "#CFD5D8", "white"],
+						[pacing, monthProgress - s, monthProgress]);
 				}
 				else {
-					this.style.background = "-webkit-linear-gradient(left, #c0e2e9 " + monthProgressPercent + "%, #CFD5D8 " + monthProgressPercent + "%, #CFD5D8 " + (monthProgressPercent + s) + "%, #c0e2e9 " + (monthProgressPercent + s) + "%, #c0e2e9 " + pacingPercent + "%, white " + pacingPercent + "%)";
+					this.style.background = generateProgressBarStyle(
+						["#c0e2e9", "#CFD5D8", "#c0e2e9", "white"],
+						[monthProgress - s, monthProgress, pacing]);
 				}
 			}
 			else {
-				this.style.background = "-webkit-linear-gradient(left, white " + monthProgressPercent + "%, #CFD5D8 " + monthProgressPercent + "%, #CFD5D8 " + (monthProgressPercent + s) + "%, white " + (monthProgressPercent + s) + "%)";
+				this.style.background = generateProgressBarStyle(
+						["white", "#CFD5D8", "white"],
+						[monthProgress - s, monthProgress]);
 			}
 		})
 
 		var masterCategories = $("ul.is-master-category");
 		$(masterCategories).each(function () {
-			this.style.background = "-webkit-linear-gradient(left, #E5F5F9, #E5F5F9 " + monthProgressPercent + "%, #CFD5D8 " + monthProgressPercent + "%, #CFD5D8 " + (monthProgressPercent + s) + "%, #E5F5F9 " + (monthProgressPercent + s) +"%, #E5F5F9)";
+			this.style.background = generateProgressBarStyle(
+						["#E5F5F9", "#CFD5D8", "#E5F5F9"],
+						[monthProgress - s, monthProgress]);
 		})
      
     }; // Keep feature functions contained within this
