@@ -38,7 +38,7 @@
 				status = status > 1 ? 1 : status;
 				status = status < 0 ? 0 : status;
 				var percent = Math.round(parseFloat(status)*100);
-				this.style.background = "-webkit-linear-gradient(left, #c1e8c0 " + percent + "%, white " + percent+ "%)";				
+				this.style.background = "linear-gradient(to right, #c1e8c0 " + percent + "%, white " + percent+ "%)";
 			}
 			else {
 				this.removeAttribute("style");
