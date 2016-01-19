@@ -21,6 +21,13 @@ function injectScript(path) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
+function injectJSString(js) {
+  var script = document.createElement('script');
+  script.text = js;
+
+  document.getElementsByTagName('body')[0].appendChild(script);
+}
+
 /* Load this to setup shared utility functions */
 injectScript('res/features/shared/main.js');
 
@@ -133,8 +140,27 @@ if (kango.storage.getItem('pacing')) {
   injectScript('res/features/pacing/main.js');
 }
 
+if (kango.storage.getItem('goalIndicator')) {
+  injectScript('res/features/goal-indicator/main.js');
+  injectCSS('res/features/goal-indicator/main.css');
+}
+
 if (kango.storage.getItem('reconciledTextColor')) {
   injectScript('res/features/distinguish-reconciled-transactions/main.js');
+}
+
+if (kango.storage.getItem('swapClearedFlagged')) {
+  injectScript('res/features/swap-cleared-flagged/main.js');
+}
+
+if (kango.storage.getItem('budgetProgressBars') == 1) {
+  injectScript('res/features/budget-progress-bars/goals.js');
+}
+else if (kango.storage.getItem('budgetProgressBars') == 2) {
+  injectScript('res/features/budget-progress-bars/pacing.js');
+}
+else if (kango.storage.getItem('budgetProgressBars') == 3) {
+  injectScript('res/features/budget-progress-bars/both.js');
 }
 
 if (kango.storage.getItem('reconciledTextColor') == 1) {
@@ -165,6 +191,8 @@ else if (kango.storage.getItem('editButtonPosition') == 2) {
 }
 
 if (kango.storage.getItem('daysOfBuffering')) {
+  daysOfBufferingHistoryLookup = kango.storage.getItem('daysOfBufferingHistoryLookup')
+  injectJSString('var daysOfBufferingHistoryLookup = ' + daysOfBufferingHistoryLookup + ';');
   injectCSS('res/features/days-of-buffering/main.css');
   injectScript('res/features/days-of-buffering/main.js');
 }
@@ -177,4 +205,9 @@ if (kango.storage.getItem('resizeInspector')) {
 
 if (kango.storage.getItem('removePositiveHighlight')) {
   injectCSS('res/features/remove-positive-highlight/main.css');
+}
+
+if (kango.storage.getItem('importNotification')) {
+  injectCSS('res/features/import-notification/import-notification.css');
+  injectScript('res/features/import-notification/import-notification.js');
 }

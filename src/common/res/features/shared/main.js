@@ -83,6 +83,34 @@ window.ynabToolKit = new function() {
         return visibleTransactions;
     };
 
+    // This function formats a number to a currency.
+    // number is the number you want to format, and html dictates if the <bdi> tag should be added or not.
+    this.formatCurrency = function (number, html) {
+        var formatted, currency, negative, currencySymbol;
+        formatted = ynab.formatCurrency(number);
+        currency = ynab.YNABSharedLib.currencyFormatter.getCurrency();
+        if (!currency.display_symbol) {
+            return new Ember.Handlebars.SafeString(formatted);
+        }
+        currencySymbol = Ember.Handlebars.Utils.escapeExpression(currency.currency_symbol);
+        if (html) {
+            currencySymbol = "<bdi>" + currencySymbol + "</bdi>";
+        }
+        currency.symbol_first ? (negative = "-" === formatted.charAt(0), formatted = negative ? "-" + currencySymbol + formatted.slice(1) : currencySymbol + formatted) : formatted += currencySymbol;
+        return new Ember.Handlebars.SafeString(formatted);
+    };
+
+    this.parseSelectedMonth = function () {
+        // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
+        if($('.ember-view .budget-header').length) {
+            var headerView = Ember.View.views[$('.ember-view .budget-header').attr("id")];
+            var endOfLastMonth = headerView.get("currentMonth").toNativeDate();
+            return new Date(endOfLastMonth.getFullYear(), endOfLastMonth.getMonth(), 1);
+        } else {
+            return null;
+        }
+    };
+
 }; // end ynabToolKit object
 
 
@@ -98,3 +126,11 @@ window.ynabToolKit = new function() {
        setTimeout(poll, 250);
     }
  })();
+
+
+// Add formatting method to Date to get YYYY-MM.
+Date.prototype.yyyymm = function() {
+    var yyyy = this.getFullYear().toString();
+    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+    return yyyy + '-' + (mm[1]?mm:"0"+mm[0]); // padding
+};

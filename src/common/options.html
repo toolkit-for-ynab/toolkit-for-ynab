@@ -88,7 +88,7 @@
                               </div>
                               <div class="col-xs-8">
                                 <label for="hideAOM">Hide Age of Money Calculation</label>
-                                <span id="hideAOMHelpBlock" class="help-block">Hides the Age of Money calculation. Some users find it's not relevant to them and it stresses them out, so they'd rather just hide it.</span>
+                                <span id="hideAOMHelpBlock" class="help-block">Hides the Age of Money calculation. Some users find it's not relevant or helpful for them, so they'd rather hide it.<br><strong>NOTE:</strong> YNAB will continue to run its Age of Money calculations, so the data will be up to date if you decide to show it again.</span>
                               </div>
                             </div>
                           </div>
@@ -116,7 +116,19 @@
                                   <option value="1">Left of name</option>
                                   <option value="2">Hidden (use right-click)</option>
                                 </select>
-                                <span id="editButtonPositionHelpBlock" class="help-block">Allows you to move or hide the edit account button that we all keep clicking on accidentally.</span>
+                                <span id="editButtonPositionHelpBlock" class="help-block">Allows you to move or hide the edit account button to help prevent accidentally clicking on it.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="importNotification" name="importNotification" aria-describedby="importNotificationHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="importNotification">Show Import Notifications in Sidebar</label>
+                                <span id="importNotificationHelpBlock" class="help-block">Display a notification in the sidebar when there are transactions to be imported.</span>
                               </div>
                             </div>
                           </div>
@@ -197,6 +209,18 @@
                             </div>
                           </div>
 
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="swapClearedFlagged" name="swapClearedFlagged" aria-describedby="swapClearedFlaggedHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="swapClearedFlagged">Swap cleared and flagged columns on Account screen</label>
+                                <span id="swapClearedFlaggedHelpBlock" class="help-block"></span>
+                              </div>
+                            </div>
+                          </div>
+
                           <!-- END ACCOUNTS SETTINGS -->
                         </div>
 
@@ -239,7 +263,7 @@
                               </div>
                               <div class="col-xs-8">
                                 <label for="removePositiveHighlight">Unhighlight all Positive Category Balances</label>
-                                <span id="removePositiveHighlightHelpBlock" class="help-block">Removes distracting highlight color from positive (or zero) category balances, and colors positive balances green instead.</span>
+                                <span id="removePositiveHighlightHelpBlock" class="help-block">Removes the highlight colour from positive (or zero) category balances and colours positive balances green instead.</span>
                               </div>
                             </div>
                           </div>
@@ -287,7 +311,7 @@
                               </div>
                               <div class="col-xs-8">
                                 <label for="moveMoneyDialog">Make the Move Money Dialog Larger</label>
-                                <span id="moveMoneyDialogHelpBlock" class="help-block">The move money dialog is quite small by default. We think you might like to have more space to see what you're doing there.</span>
+                                <span id="moveMoneyDialogHelpBlock" class="help-block">This makes the move money dialog larger, giving you more space to see what you're doing there.</span>
                               </div>
                             </div>
                           </div>
@@ -300,6 +324,33 @@
                               <div class="col-xs-8">
                                 <label for="pacing">Add Pacing to the Budget</label>
                                 <span id="pacingHelpBlock" class="help-block">Add a column for "pacing" which shows you how much money you've spent based on how far you are through the month.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
+                              <div class="col-xs-8 col-xs-offset-2">
+                                <label for="budgetProgressBars">Budget rows progress bars</label>
+                                <select name="budgetProgressBars" id="budgetProgressBars" class="form-control" aria-describedby="budgetProgressBarsHelpBlock">
+                                    <option value="0">Default</option>
+                                    <option value="1">Goals progress</option>
+                                    <option value="2">Pacing progress</option>
+                                    <option value="3">Pacing on name column and goals on budgeted</option>
+                                </select>
+                                <span id="budgetProgressBarsHelpBlock" class="help-block">Add progress bars to categories rows.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="goalIndicator" name="goalIndicator" aria-describedby="goalIndicatorHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="goalIndicator">Add goals indication</label>
+                                <span id="goalIndicatorHelpBlock" class="help-block">Add goal indicators for subcategories with goals. Types: (M)onthly goal or target by date that is sort of monthly, (T)arget without date, (U)pcoming transactions that is sort of goal.</span>
                               </div>
                             </div>
                           </div>
@@ -336,6 +387,22 @@
                               <div class="col-xs-8">
                                 <label for="resizeInspector">Allow Resizing of Inspector</label>
                                 <span id="resizeInspectorHelpBlock" class="help-block">Add the ability to drag and resize the inspector.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
+                              <div class="col-xs-8 col-xs-offset-2">
+                                <label for="daysOfBufferingHistoryLookup">Days of Buffering history lookup</label>
+                                <select name="daysOfBufferingHistoryLookup" id="daysOfBufferingHistoryLookup" class="form-control" aria-describedby="daysOfBufferingHistoryLookupHelpBlock">
+                                    <option value="0">All</option>
+                                    <option value="12">1 year</option>
+                                    <option value="6">6 months</option>
+                                    <option value="3">3 months</option>
+                                    <option value="1">1 month</option>
+                                </select>
+                                <span id="daysOfBufferingHistoryLookupHelpBlock" class="help-block">How old transactions should be used for average daily outflow calculation.</span>
                               </div>
                             </div>
                           </div>

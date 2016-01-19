@@ -68,6 +68,7 @@ function saveOptions() {
   saveCheckboxOption('removeZeroCategories');
   saveCheckboxOption('moveMoneyDialog');
   saveCheckboxOption('pacing');
+  saveCheckboxOption('goalIndicator');
   saveCheckboxOption('moveMoneyAutocomplete');
   saveCheckboxOption('daysOfBuffering');
   saveCheckboxOption('toggleSplits');
@@ -75,12 +76,16 @@ function saveOptions() {
   saveCheckboxOption('changeEnterBehavior');
   saveCheckboxOption('transferJump');
   saveCheckboxOption('resizeInspector');
+  saveCheckboxOption('importNotification');
+  saveCheckboxOption('swapClearedFlagged');
 
+  saveSelectOption('daysOfBufferingHistoryLookup');
   saveSelectOption('budgetRowsHeight');
   saveSelectOption('reconciledTextColor');
   saveSelectOption('categoryActivityPopupWidth');
   saveSelectOption('accountsDisplayDensity');
   saveSelectOption('editButtonPosition');
+  saveSelectOption('budgetProgressBars');
 
   $('#settingsSaved').fadeIn()
                      .delay(1500)
@@ -104,6 +109,7 @@ function restoreOptions() {
   restoreCheckboxOption('removeZeroCategories');
   restoreCheckboxOption('moveMoneyDialog');
   restoreCheckboxOption('pacing');
+  restoreCheckboxOption('goalIndicator');
   restoreCheckboxOption('moveMoneyAutocomplete');
   restoreCheckboxOption('daysOfBuffering');
   restoreCheckboxOption('toggleSplits');
@@ -111,12 +117,16 @@ function restoreOptions() {
   restoreCheckboxOption('changeEnterBehavior');
   restoreCheckboxOption('transferJump');
   restoreCheckboxOption('resizeInspector');
+  restoreCheckboxOption('importNotification');
+  restoreCheckboxOption('swapClearedFlagged');
 
+  restoreSelectOption('daysOfBufferingHistoryLookup');
   restoreSelectOption('budgetRowsHeight');
   restoreSelectOption('reconciledTextColor');
   restoreSelectOption('categoryActivityPopupWidth');
   restoreSelectOption('accountsDisplayDensity');
   restoreSelectOption('editButtonPosition');
+  restoreSelectOption('budgetProgressBars');
 }
 
 function loadPanel(panel) {
