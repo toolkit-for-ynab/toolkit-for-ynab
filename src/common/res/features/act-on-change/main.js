@@ -49,7 +49,7 @@
           // Changes are detected in the category balances
           if ($(ynabToolKit.digest[i]).hasClass("budget-table-cell-available-div")) {
 
-            if ( ynabToolKit.options.updateInspectorColours ) {
+            if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
                 ynabToolKit.updateInspectorColours();
             }
 
@@ -81,7 +81,7 @@
             if ( ynabToolKit.options.highlightNegativesNegative ){
               ynabToolKit.highlightNegativesNegative();
             }
-            if ( ynabToolKit.options.insertPacingColumns ){
+            if ( ynabToolKit.options.pacing ){
               ynabToolKit.insertPacingColumns();
             }
             if ( ynabToolKit.options.budgetProgressBars ){
@@ -118,7 +118,7 @@
               // User has selected a specific sub-category
               if ($(ynabToolKit.digest[i]).hasClass('is-sub-category') && $(ynabToolKit.digest[i]).hasClass('is-checked')) {
 
-                if (ynabToolKit.options.updateInspectorColours) {
+                if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
                   ynabToolKit.updateInspectorColours();
                 }
 
