@@ -2,6 +2,9 @@
   if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true ) {
 
     ynabToolKit.insertPacingColumns = function ()  {
+      
+      var storePacingLocally = true;
+
       function parseSelectedMonth() {
         // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
         var headerView = Ember.View.views[$('.ember-view .budget-header').attr("id")];
@@ -55,7 +58,7 @@
       }
 
       function getDeemphasizedCategories() {
-        if(ynabToolKit.featureOptions.storePacingLocally) {
+        if(storePacingLocally) {
           return JSON.parse(localStorage.getItem('ynab_toolkit_pacing_deemphasized_categories')) || [];
         } else {
           var value = getDeemphasizedCategoriesSetting();
@@ -70,7 +73,7 @@
       function setDeemphasizedCategories(value) {
         var stringValue = JSON.stringify(value);
   
-        if(ynabToolKit.featureOptions.storePacingLocally) {
+        if(storePacingLocally) {
           localStorage.setItem('ynab_toolkit_pacing_deemphasized_categories', stringValue);
         } else {
           var setting = getDeemphasizedCategoriesSetting();
