@@ -34,10 +34,10 @@
 .inspector-resize-handle {
   margin-top: 7.8em;
   min-width: 13px;
-  background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #e5f5f9;
+  background: #e5f5f9 no-repeat center center;
   cursor: col-resize;
 }
 
 .inspector-resize-handle:hover {
-  background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #227e99;
+  background-color: #227e99;
 }
