@@ -1,0 +1,25 @@
+li.budget-table-cell-available > div.budget-table-cell-available-div > span.negative {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+}
+
+.inspector-overview-available .currency.negative {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+}
+
+.left-to-budget-is-negative .budget-header-totals-amount {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+}
+
+.accounts-header .accounts-header-total-inner.negative-working-balance {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+}
+
+.nav-accounts .negative {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+}
+
