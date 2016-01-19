@@ -28,8 +28,9 @@ function injectJSString(js) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
-/* Import options from ynabToolKit  */
-injectJSString("var ynabToolKitOptions = {" + Array.from(kango.storage.getKeys(), el=> el + " : " + kango.storage.getItem(el) + ", ").reduce((a, b) => a + b, "") + "}")
+/* Init ynabToolKit object and import options from Kango  */
+injectJSString("window.ynabToolKit = {};")
+injectJSString("ynabToolKit.options = {" + Array.from(kango.storage.getKeys(), el=> el + " : " + kango.storage.getItem(el) + ", ").reduce((a, b) => a + b, "") + "}")
 
 /* Load this to setup shared utility functions */
 injectScript('res/features/shared/main.js');
