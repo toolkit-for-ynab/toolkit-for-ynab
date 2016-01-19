@@ -1,7 +1,6 @@
 (function poll() {
    if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true ) {
    		
-      ynabToolKit.featureOptions.checkCreditBalances = true;
    	ynabToolKit.checkCreditBalances = function ()  {
          
             var debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
