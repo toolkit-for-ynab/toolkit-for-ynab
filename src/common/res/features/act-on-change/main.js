@@ -87,6 +87,9 @@
             if ( ynabToolKit.options.budgetProgressBars ){
               ynabToolKit.budgetProgressBars();
             }
+            if ( ynabToolKit.featureOptions.goalIndicator ){
+              ynabToolKit.goalIndicator();
+            }
             
                 break;
               }
