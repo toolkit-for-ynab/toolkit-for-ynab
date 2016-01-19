@@ -157,6 +157,10 @@ if (kango.storage.getItem('swapClearedFlagged')) {
   injectScript('res/features/swap-cleared-flagged/main.js');
 }
 
+if (kango.storage.getItem('budgetProgressBars') > 0) {
+  injectCSS('res/features/budget-progress-bars/main.css');
+}
+
 if (kango.storage.getItem('budgetProgressBars') == 1) {
   injectScript('res/features/budget-progress-bars/goals.js');
 }
@@ -195,10 +199,17 @@ else if (kango.storage.getItem('editButtonPosition') == 2) {
 }
 
 if (kango.storage.getItem('daysOfBuffering')) {
-  daysOfBufferingHistoryLookup = kango.storage.getItem('daysOfBufferingHistoryLookup')
+  daysOfBufferingHistoryLookup = kango.storage.getItem('daysOfBufferingHistoryLookup');
   injectJSString('var daysOfBufferingHistoryLookup = ' + daysOfBufferingHistoryLookup + ';');
   injectCSS('res/features/days-of-buffering/main.css');
   injectScript('res/features/days-of-buffering/main.js');
+}
+
+if (kango.storage.getItem('resizeInspector')) {
+  injectScript('res/features/resize-inspector/jquery-resizable.min.js');
+  injectScript('res/features/resize-inspector/resize-inspector.js');
+  injectCSS('res/features/resize-inspector/resize-inspector.css');
+  injectJSString('window.resizeInspectorAsset = "'+kango.io.getResourceUrl('assets/vsizegrip.png')+'";');
 }
 
 if (kango.storage.getItem('removePositiveHighlight')) {

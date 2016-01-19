@@ -1,10 +1,11 @@
 .budget-table-header .budget-table-cell-pacing {
-  padding-right: 1em;
+  padding-right: 2em !important;
   font-size: .75em;
-  font-weight: 700;
 }
 .budget-table-cell-pacing {
   width: 10%;
+  padding: 2px 0px !important;
+  margin-left: 10px;
 }
 .is-master-category .budget-table-cell-pacing {
   display: none; 
@@ -14,22 +15,13 @@
   display: none;
 }
 .budget-table-cell-pacing-display {
-  background-color: black;
   border-radius: 1em;
-  padding: .125em .5em .175em .5em;
+  padding: .125em .5em .175em .5em !important;
   color: white;
+  cursor: pointer;
 }
 
-.budget-table-cell-pacing-display.hot {
-/*  background-color: #d33c2d; */
-}
-.budget-table-cell-pacing-display.warm {
-/*  background-color: orange; */
-}
-.budget-table-cell-pacing-display.cool {
-/*  background-color: #16a336; */
-}
-.budget-table-cell-pacing-display.neutral {
-  color: #cfd5d7;
-  background-color: transparent;
+.budget-table-cell-pacing-display.deemphasized {
+  color: #cfd5d7 !important;
+  background-color: transparent !important;
 }

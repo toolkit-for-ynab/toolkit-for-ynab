@@ -75,6 +75,7 @@ function saveOptions() {
   saveCheckboxOption('accountsSelectedTotal');
   saveCheckboxOption('changeEnterBehavior');
   saveCheckboxOption('transferJump');
+  saveCheckboxOption('resizeInspector');
   saveCheckboxOption('importNotification');
   saveCheckboxOption('swapClearedFlagged');
 
@@ -115,6 +116,7 @@ function restoreOptions() {
   restoreCheckboxOption('accountsSelectedTotal');
   restoreCheckboxOption('changeEnterBehavior');
   restoreCheckboxOption('transferJump');
+  restoreCheckboxOption('resizeInspector');
   restoreCheckboxOption('importNotification');
   restoreCheckboxOption('swapClearedFlagged');
 
@@ -152,8 +154,8 @@ KangoAPI.onReady(function() {
     $('#accountsMenuItem').click(function(e) { loadPanel('accounts'); e.preventDefault(); });
     $('#budgetMenuItem').click(function(e) { loadPanel('budget'); e.preventDefault(); });
 
-    $('#save').click(saveOptions);
-    $('#cancel').click(function() {
+    $('.save-button').click(saveOptions);
+    $('.cancel-button').click(function() {
       KangoAPI.closeWindow();
     });
   }, 100);

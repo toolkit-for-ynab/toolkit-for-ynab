@@ -57,6 +57,11 @@
                               <i class="fa fa-cogs"></i> General Settings
                           </h2>
 
+                          <div class="col-xs-3 col-xs-offset-8 page-header-buttons">
+                            <button class="btn btn-lg btn-primary pull-right save-button">Save</button>
+                            <button class="btn btn-lg pull-right cancel-button">Cancel</button>
+                          </div>
+
                           <div class="container col-xs-11">
   	                        <div class="row col-xs-10">
   		                        <div class="col-xs-2">
@@ -142,6 +147,11 @@
                           <h2 class="page-header">
                               <i class="fa fa-university"></i> Accounts Screen Settings
                           </h2>
+
+                          <div class="col-xs-3 col-xs-offset-8 page-header-buttons">
+                            <button class="btn btn-lg btn-primary pull-right save-button">Save</button>
+                            <button class="btn btn-lg pull-right cancel-button">Cancel</button>
+                          </div>
 
                           <div class="container col-xs-11">
                             <div class="row col-xs-10">
@@ -230,6 +240,11 @@
                           <h2 class="page-header">
                               <i class="fa fa-envelope-o"></i> Budget Screen Settings
                           </h2>
+
+                          <div class="col-xs-3 col-xs-offset-8 page-header-buttons">
+                            <button class="btn btn-lg btn-primary pull-right save-button">Save</button>
+                            <button class="btn btn-lg pull-right cancel-button">Cancel</button>
+                          </div>
 
 
                           <div class="container col-xs-11">
@@ -323,7 +338,7 @@
                               </div>
                               <div class="col-xs-8">
                                 <label for="pacing">Add Pacing to the Budget</label>
-                                <span id="pacingHelpBlock" class="help-block">Add a column for "pacing" which shows you how much money you've spent based on how far you are through the month.</span>
+                                <span id="pacingHelpBlock" class="help-block">Add a column for "pacing" which shows you how much money you've spent based on how far you are through the month. Note that clicking on the pacing value will toggle emphasis, allowing you to selectively enable the feature per category.</span>
                               </div>
                             </div>
                           </div>
@@ -381,6 +396,18 @@
 
                           <div class="container col-xs-11">
                             <div class="row col-xs-10">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="resizeInspector" name="resizeInspector" aria-describedby="resizeInspectorHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="resizeInspector">Allow Resizing of Inspector</label>
+                                <span id="resizeInspectorHelpBlock" class="help-block">Add the ability to drag and resize the inspector.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
                               <div class="col-xs-8 col-xs-offset-2">
                                 <label for="daysOfBufferingHistoryLookup">Days of Buffering history lookup</label>
                                 <select name="daysOfBufferingHistoryLookup" id="daysOfBufferingHistoryLookup" class="form-control" aria-describedby="daysOfBufferingHistoryLookupHelpBlock">
@@ -431,8 +458,8 @@
                         </div>
 
                         <div class="col-xs-3 col-xs-offset-8">
-                          <button id="save" class="btn btn-lg btn-primary pull-right">Save</button>
-                          <button id="cancel" class="btn btn-lg pull-right">Cancel</button>
+                          <button class="btn btn-lg btn-primary pull-right save-button">Save</button>
+                          <button class="btn btn-lg pull-right cancel-button">Cancel</button>
                         </div>
 
 
