@@ -104,8 +104,8 @@
                 if (ynabToolKit.options.removeZeroCategories) {
                   ynabToolKit.removeZeroCategories();
                 }
-                if (ynabToolKit.options.moveMoneyAutoComplete) {
-                  ynabToolKit.moveMoneyAutoComplete();
+                if (ynabToolKit.options.moveMoneyAutocomplete) {
+                  ynabToolKit.moveMoneyAutocomplete();
                 }
 
                 break;

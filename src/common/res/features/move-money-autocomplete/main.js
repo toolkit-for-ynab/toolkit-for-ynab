@@ -4,7 +4,7 @@
 
 
 		var originalentries = null;
-		ynabToolKit.moveMoneyAutoComplete = function() {
+		ynabToolKit.moveMoneyAutocomplete = function() {
 
 			function autoCompleteApply() {
 
