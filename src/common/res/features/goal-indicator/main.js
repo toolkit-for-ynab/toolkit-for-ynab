@@ -13,7 +13,7 @@
     	}
 
     	function getCalculation(subCategoryName) {
-    		var crazyInternalId = "mcbc/" + ynabToolKit.parseSelectedMonth().yyyymm() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
+    		var crazyInternalId = "mcbc/" + ynabToolKit.shared.parseSelectedMonth().yyyymm() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
 			var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
 			return calculation;
     	}

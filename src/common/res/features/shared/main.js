@@ -1,10 +1,4 @@
-window.ynabToolKit = new function() {
-
-    // This variable is populated by each active script loaded inside the ynabToolKit object
-    this.featureOptions = {},
-
-    //When this is true, the feature scripts will know they are ready to execute
-    this.pageReady = {},
+ynabToolKit.shared = new function() {
 
     // This function returns all visible transactions matching accountId.
     // If accountId === 'null' then all transactions for all accounts are returned with the visibility
@@ -118,7 +112,8 @@ window.ynabToolKit = new function() {
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
     if (typeof Em !== 'undefined' && typeof Ember !== 'undefined'
-          && typeof $ !== 'undefined' && $('.ember-view.layout').length) {
+          && typeof $ !== 'undefined' && $('.ember-view.layout').length 
+          && typeof ynabToolKit !== 'undefined') {
 
       ynabToolKit.pageReady = true;
 
