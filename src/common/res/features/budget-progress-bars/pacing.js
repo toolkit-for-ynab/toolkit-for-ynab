@@ -32,6 +32,8 @@
 
 		var subCategories = $("ul.is-sub-category");
 		$(subCategories).each(function () {
+			$(this).addClass('goal-progress');
+			
 			var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
 			var calculation = getCalculation(subCategoryName);
 

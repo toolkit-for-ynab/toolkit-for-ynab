@@ -23,8 +23,8 @@
 				var status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
 			}
 			else if (calculation.goalTarget > 0) {
-				// Taget by date
-				// or Montly goal
+				// Target by date
+				// or Monthly goal
 				var hasGoal = true;
 				var status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
 			}
@@ -35,6 +35,7 @@
 			}
 
 			if (hasGoal) {
+				$(this).addClass('goal-progress');
 				status = status > 1 ? 1 : status;
 				status = status < 0 ? 0 : status;
 				var percent = Math.round(parseFloat(status)*100);
