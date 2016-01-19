@@ -14,7 +14,6 @@
 .is-checked.goal-progress-both .button-truncate {
   color: #003440 !important;
   font-weight: bold;
-
 }
 
 .budget-table-row.is-checked.goal-progress-both {
@@ -23,5 +22,9 @@
 
 .ember-view .ynab-checkbox  {
   margin-right: 3px;
+}
+
+.budget-table-row.is-sub-category.is-checked > .budget-table-cell-available .zero {
+  color: black !important;
 }
 
