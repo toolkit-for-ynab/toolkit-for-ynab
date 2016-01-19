@@ -75,7 +75,7 @@ ynabToolKit.shared = new function() {
             }
         }
         return visibleTransactions;
-    };
+    },
 
     // This function formats a number to a currency.
     // number is the number you want to format, and html dictates if the <bdi> tag should be added or not.
@@ -92,7 +92,7 @@ ynabToolKit.shared = new function() {
         }
         currency.symbol_first ? (negative = "-" === formatted.charAt(0), formatted = negative ? "-" + currencySymbol + formatted.slice(1) : currencySymbol + formatted) : formatted += currencySymbol;
         return new Ember.Handlebars.SafeString(formatted);
-    };
+    },
 
     this.parseSelectedMonth = function () {
         // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
@@ -103,7 +103,31 @@ ynabToolKit.shared = new function() {
         } else {
             return null;
         }
-    };
+    },
+
+    // Pass over each available category balance and provide a total. This can be used to
+    // evaluate if a feature script needs to continue based on an update to the budget.
+    this.availableBalance = new function() {
+
+        this.presentTotal = 0,
+
+        this.cachedTotal = 'init',
+
+        this.snapshot = function() {
+            var totalAvailable = 0;
+            
+            // Find and collect the available balances of each category in the budget
+            var availableBalances = $('.budget-table-cell-available').find('span.user-data.currency').map(function() {
+                availableBalance = $(this).html();
+                return Number(availableBalance.replace(/[^\d.-]/g, '')); 
+            });
+            
+            // Add each balance together to get the total available sum
+            $.each(availableBalances,function(){totalAvailable+=parseFloat(this) || 0;});
+            return totalAvailable;
+        }
+
+    }
 
 }; // end ynabToolKit object
 
