@@ -1,6 +1,6 @@
 (function poll() {
    if ( typeof ynabToolKit !== 'undefined' && typeof $ !== 'undefined' && $('aside').length > 0 && $('section').length > 0 && ynabToolKit.actOnChangeInit) {
-      ynabToolKit.featureOptions.resizeInspector = true;
+
       ynabToolKit.resizeInspector = function ()  {
         if($('.ember-view.content .budget-inspector').length > 0 ) {
           if($('.resize-inspector').length == 0) {
