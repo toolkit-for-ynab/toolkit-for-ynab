@@ -56,7 +56,7 @@
         	  break;
         	  
         	} 
-        }
+        };
 
         for ( var i = 0; i < ynabToolKit.digest.length; i++ ) { 
 
@@ -79,37 +79,51 @@
         		break;
         	}
         	  
-        }
+        };
 
         for ( var i = 0; i < ynabToolKit.digest.length; i++ ) { 
 
         	// We found a modal pop-up
         	if ($(ynabToolKit.digest[i]).hasClass( "options-shown")) {
         	  
-				if ( ynabToolKit.featureOptions.removeZeroCategories ) {        
-				  ynabToolKit.removeZeroCategories();
-				}
-				if ( ynabToolKit.featureOptions.moveMoneyAutoComplete ) {       
-				  ynabToolKit.moveMoneyAutoComplete();
-				}
+            if ( ynabToolKit.featureOptions.removeZeroCategories ) {        
+              ynabToolKit.removeZeroCategories();
+            }
+            if ( ynabToolKit.featureOptions.moveMoneyAutoComplete ) {       
+              ynabToolKit.moveMoneyAutoComplete();
+            }
 
-				break;
+            break;
         	  
         	}
-        }
+        };
 
         for ( var i = 0; i < ynabToolKit.digest.length; i++ ) { 
 
         	// User has selected a specific sub-category
         	if ( $(ynabToolKit.digest[i]).hasClass('is-sub-category') && $(ynabToolKit.digest[i]).hasClass('is-checked')) {
 
-				if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
-				  ynabToolKit.updateInspectorColours();
-				}
-
-				break;
+				    if ( ynabToolKit.featureOptions.updateInspectorColours ) {  
+				      ynabToolKit.updateInspectorColours();
+				    }
+    
+				    break;
 
         	}
+        };
+
+        for ( var i = 0; i < ynabToolKit.digest.length; i++ ) { 
+
+          // We found Account transactions rows
+          if ( $(ynabToolKit.digest[i]).hasClass('ynab-grid-body')) {
+
+            if ( ynabToolKit.featureOptions.swapClearedFlagged ) {
+              ynabToolKit.swapClearedFlagged();
+            }
+
+            break;
+
+          }
         }
       
       });
