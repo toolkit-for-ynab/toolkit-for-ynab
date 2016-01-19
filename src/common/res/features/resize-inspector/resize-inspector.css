@@ -9,7 +9,7 @@
   padding-top: 8em;
   position: static !important;
   flex: 0 0 auto;
-  width: 80%;
+  width: 67%;
   overflow: hidden;
 }
 
@@ -23,15 +23,21 @@
   width: auto !important;
   margin-top: 9.7em;
   overflow-x: hidden;
+  padding: 1em 1em 1em .5em !important;
 }
 
-.scroll-wrap {
-  display: flex;
+.resize-inspector {
   height: 100%;
+  display: flex !important; 
 }
 
 .inspector-resize-handle {
+  margin-top: 7.8em;
   min-width: 13px;
-  background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #227e99;
+  background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #e5f5f9;
   cursor: col-resize;
+}
+
+.inspector-resize-handle:hover {
+  background: url(https://raw.githubusercontent.com/RickStrahl/jquery-resizable/master/assets/vsizegrip.png) center center no-repeat #227e99;
 }

@@ -60,6 +60,18 @@
 
         for ( var i = 0; i < ynabToolKit.digest.length; i++ ) { 
 
+        	// The user has switched screens
+        	if ($(ynabToolKit.digest[i]).hasClass('layout')) {
+        		if ( ynabToolKit.featureOptions.resizeInspector ){
+        		  ynabToolKit.resizeInspector();
+        		}
+        		break;
+        	}
+        	  
+        }
+
+        for ( var i = 0; i < ynabToolKit.digest.length; i++ ) { 
+
         	// The user has returned back to the budget screen
         	if ($(ynabToolKit.digest[i]).hasClass('budget-inspector')) {
         	  
