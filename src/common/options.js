@@ -75,6 +75,7 @@ function saveOptions() {
   saveCheckboxOption('accountsSelectedTotal');
   saveCheckboxOption('changeEnterBehavior');
   saveCheckboxOption('transferJump');
+  saveCheckboxOption('resizeInspector');
   saveCheckboxOption('importNotification');
   saveCheckboxOption('swapClearedFlagged');
 
@@ -115,6 +116,7 @@ function restoreOptions() {
   restoreCheckboxOption('accountsSelectedTotal');
   restoreCheckboxOption('changeEnterBehavior');
   restoreCheckboxOption('transferJump');
+  restoreCheckboxOption('resizeInspector');
   restoreCheckboxOption('importNotification');
   restoreCheckboxOption('swapClearedFlagged');
 
