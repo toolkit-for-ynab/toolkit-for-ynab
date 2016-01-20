@@ -75,6 +75,10 @@ if (kango.storage.getItem('colourBlindMode')) {
   injectCSS('res/features/colour-blind-mode/main.css');
 }
 
+if (kango.storage.getItem('squareNegativeMode')) {
+  injectCSS('res/features/square-negative/square.css');
+}
+
 if (kango.storage.getItem('hideAOM')) {
   injectCSS('res/features/hide-age-of-money/main.css');
 }
