@@ -60,6 +60,7 @@ function saveOptions() {
   saveCheckboxOption('collapseExpandBudgetGroups');
   saveCheckboxOption('collapseSideMenu');
   saveCheckboxOption('colourBlindMode');
+  saveCheckboxOption('squareNegativeMode');
   saveCheckboxOption('hideAOM');
   saveCheckboxOption('checkCreditBalances');
   saveCheckboxOption('highlightNegativesNegative');
@@ -101,6 +102,7 @@ function restoreOptions() {
   restoreCheckboxOption('collapseExpandBudgetGroups');
   restoreCheckboxOption('collapseSideMenu');
   restoreCheckboxOption('colourBlindMode');
+  restoreCheckboxOption('squareNegativeMode');
   restoreCheckboxOption('hideAOM');
   restoreCheckboxOption('checkCreditBalances');
   restoreCheckboxOption('highlightNegativesNegative');
