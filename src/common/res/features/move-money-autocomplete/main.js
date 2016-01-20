@@ -170,7 +170,7 @@
 			}
 
 		};
-        ynabToolKit.moveMoneyAutoComplete(); // Activate itself
+        ynabToolKit.moveMoneyAutocomplete(); // Activate itself
 
 	} else {
 		setTimeout(poll, 250);
