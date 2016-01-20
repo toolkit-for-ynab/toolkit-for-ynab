@@ -1,7 +1,6 @@
 (function poll() {
    if ( typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true && typeof ynab.utilities.TransactionImportUtilities !== 'undefined' ) {
-       
-      ynabToolKit.featureOptions.importNotification = true;
+
       ynabToolKit.importNotification = function ()  {
         $('.import-notification').remove();
         $('.nav-account-row').each(function(index, row) {

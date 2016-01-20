@@ -49,10 +49,10 @@ function ynabEnhancedDoBCalculate() {
                                                         && el.getAccount().onBudget);
 
     // Filter outflow transactions by Date for history lookup option.
-    if (daysOfBufferingHistoryLookup > 0) {
+    if (ynabToolKit.options.daysOfBufferingHistoryLookup > 0) {
         dateNow = Date.now();
         var outflowTransactions = outflowTransactions.filter((el) => 
-            (dateNow - el.getDate().getUTCTime()) / 3600/24/1000/(365/12) < daysOfBufferingHistoryLookup)
+            (dateNow - el.getDate().getUTCTime()) / 3600/24/1000/(365/12) < ynabToolKit.options.daysOfBufferingHistoryLookup)
     }
 
     // Get outflow transactions period

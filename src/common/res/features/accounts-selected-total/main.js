@@ -1,7 +1,6 @@
 (function poll() {
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
 
-    ynabToolKit.featureOptions.enhancedSelectedTotals = true;
     ynabToolKit.enhancedSelectedTotals = function ()  {
 
       function enhancedSelectedTotalsApply() {
@@ -30,7 +29,7 @@
           if (currentPath.indexOf('/accounts/') > -1) {
               accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1)
           }
-          transactions = ynabToolKit.getVisibleTransactions(accountId);
+          transactions = ynabToolKit.shared.getVisibleTransactions(accountId);
           notSubTransactions = transactions.filter((el) => el.displayItemType != ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType != ynab.constants.TransactionDisplayItemType.SubTransaction);
           for (var i = 0; i < notSubTransactions.length; i++) {
               if (notSubTransactions[i].isChecked) {
@@ -64,8 +63,8 @@
           for (var i = 0; i < spans.length; i++) {
               spans[i].remove();
           }
-          var totalFormatted = ynabToolKit.formatCurrency(total, true);
-          var totalFormattedNoHtml = ynabToolKit.formatCurrency(total, false);
+          var totalFormatted = ynabToolKit.shared.formatCurrency(total, true);
+          var totalFormattedNoHtml = ynabToolKit.shared.formatCurrency(total, false);
           var userData = document.createElement("span");
           userData.className = "user-data";
           userData.title = totalFormattedNoHtml;

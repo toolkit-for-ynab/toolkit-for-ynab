@@ -3,7 +3,6 @@
 	
 	if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true) {
 
-		ynabToolKit.featureOptions.removeZeroCategories = true;
 		ynabToolKit.removeZeroCategories = function ()  {
 		    var coverOverbudgetingCategories = $( ".modal-budget-overspending .options-shown .ynab-select-options" ).children('li');
 		    coverOverbudgetingCategories.each(function(i) {

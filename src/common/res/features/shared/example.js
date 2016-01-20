@@ -17,7 +17,6 @@
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
   
-    ynabToolKit.featureOptions.awesomeFeature = true;
     ynabToolKit.awesomeFeature = function ()  { // Keep feature functions contained within this
 
 

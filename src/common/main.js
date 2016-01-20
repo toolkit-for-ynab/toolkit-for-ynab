@@ -28,6 +28,9 @@ function injectJSString(js) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
+/* Init ynabToolKit object and import options from Kango  */
+injectJSString("window.ynabToolKit = {}; ynabToolKit.options = {" + Array.from(kango.storage.getKeys(), el=> el + " : " + kango.storage.getItem(el) + ", ").reduce((a, b) => a + b, "") + "}")
+
 /* Load this to setup shared utility functions */
 injectScript('res/features/shared/main.js');
 

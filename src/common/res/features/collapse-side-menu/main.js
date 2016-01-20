@@ -1,7 +1,6 @@
 (function poll() { 
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
   
-    ynabToolKit.featureOptions.collapseSideMenu = true;
     ynabToolKit.collapseSideMenu = function ()  {
 
 

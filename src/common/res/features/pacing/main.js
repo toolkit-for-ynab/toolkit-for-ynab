@@ -1,41 +1,22 @@
 (function poll() {
   if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true ) {
 
-    ynabToolKit.featureOptions.insertPacingColumns = true;
-    ynabToolKit.featureOptions.storePacingLocally = true;
-
     ynabToolKit.insertPacingColumns = function ()  {
-      function parseSelectedMonth() {
-        // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
-        var headerView = Ember.View.views[$('.ember-view .budget-header').attr("id")];
-        var endOfLastMonth = headerView.get("currentMonth").toNativeDate();
-        return new Date(endOfLastMonth.getFullYear(), endOfLastMonth.getMonth()+1, 1);
-      }
+      
+      var storePacingLocally = true;
 
       // Calculate the proportion of the month that has been spent -- only works for the current month
       function timeSpent() {
         var today = new Date();
 
-        var selectedMonth = parseSelectedMonth();
+        var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
         var lastDayOfThisMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth()+1, 0);
         var daysInMonth = lastDayOfThisMonth.getDate(); // The date of the last day in the month is the number of days in the month
         var day = Math.max(today.getDate()-1,1);
 
         return day/daysInMonth;
       }
-
-      function  formatCurrency(e, html) {
-        var n, r, a;
-        e = ynab.formatCurrency(e);
-        n = ynab.YNABSharedLib.currencyFormatter.getCurrency();
-        a = Ember.Handlebars.Utils.escapeExpression(n.currency_symbol);
-        if (html) {
-            a = '<bdi>' + a + '</bdi>';
-        }
-        n.symbol_first ? (r = '-' === e.charAt(0), e = r ? '-' + a + e.slice(1) : a + e) : e += a;
-        return new Ember.Handlebars.SafeString(e);
-      }
-      
+     
       // Calculate the proportion of the month that has been spent -- only works for the current month
       function timeSpent() {
         var today = new Date();
@@ -58,7 +39,7 @@
       }
 
       function getDeemphasizedCategories() {
-        if(ynabToolKit.featureOptions.storePacingLocally) {
+        if(storePacingLocally) {
           return JSON.parse(localStorage.getItem('ynab_toolkit_pacing_deemphasized_categories')) || [];
         } else {
           var value = getDeemphasizedCategoriesSetting();
@@ -73,7 +54,7 @@
       function setDeemphasizedCategories(value) {
         var stringValue = JSON.stringify(value);
   
-        if(ynabToolKit.featureOptions.storePacingLocally) {
+        if(storePacingLocally) {
           localStorage.setItem('ynab_toolkit_pacing_deemphasized_categories', stringValue);
         } else {
           var setting = getDeemphasizedCategoriesSetting();
@@ -133,13 +114,13 @@
           var deemphasized = (masterName == 'Credit Card Payments') || $.inArray(masterName+': '+subcatName, deemphasizedCategories) >= 0;
           var display = Math.round((budgeted*timeSpent()-activity)*1000);
           if(display >= 0) {
-            var tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+formatCurrency(display, false)+
+            var tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+ynabToolKit.shared.formatCurrency(display, false)+
               ' less than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.&#13;&#13;'+(deemphasized ? 'Click to unhide.' : 'Click to hide.');
           } else if(display < 0) {
-            var tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+formatCurrency(-display, false)+
+            var tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+ynabToolKit.shared.formatCurrency(-display, false)+
               ' more than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.&#13;&#13;'+(deemphasized ? 'Click to unhide.' : 'Click to hide.');
           }
-          $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="'+tooltip+'" class="budget-table-cell-pacing-display '+temperature+' '+(deemphasized ? 'deemphasized' : '')+'" data-name="'+masterName+": "+subcatName+'">'+formatCurrency(display, true)+'</span></li>');
+          $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="'+tooltip+'" class="budget-table-cell-pacing-display '+temperature+' '+(deemphasized ? 'deemphasized' : '')+'" data-name="'+masterName+": "+subcatName+'">'+ynabToolKit.shared.formatCurrency(display, true)+'</span></li>');
 
         });
 

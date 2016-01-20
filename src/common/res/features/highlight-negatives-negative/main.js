@@ -2,7 +2,6 @@
 (function poll() {
 	if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true ) {
 
-		ynabToolKit.featureOptions.highlightNegativesNegative = true;
 		ynabToolKit.highlightNegativesNegative = function ()  {
 	   		
 			var availableBalances = $('.budget-table-cell-available-div.user-data');

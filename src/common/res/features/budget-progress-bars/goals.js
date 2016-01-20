@@ -2,12 +2,11 @@
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
   
-    ynabToolKit.featureOptions.budgetProgressBars = true;
     ynabToolKit.budgetProgressBars = function ()  { // Keep feature functions contained within this
     	var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
 
 	   	function getCalculation(subCategoryName) {
-    		var crazyInternalId = "mcbc/" + ynabToolKit.parseSelectedMonth().yyyymm() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
+    		var crazyInternalId = "mcbc/" + ynabToolKit.shared.parseSelectedMonth().yyyymm() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
 			var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
 			return calculation;
     	}

@@ -49,7 +49,7 @@
           // Changes are detected in the category balances
           if ($(ynabToolKit.digest[i]).hasClass("budget-table-cell-available-div")) {
 
-            if ( ynabToolKit.featureOptions.updateInspectorColours ) {
+            if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
                 ynabToolKit.updateInspectorColours();
             }
 
@@ -62,7 +62,7 @@
 
           // The user has switched screens
           if ($(ynabToolKit.digest[i]).hasClass('layout')) {
-            if ( ynabToolKit.featureOptions.resizeInspector ){
+            if ( ynabToolKit.options.resizeInspector ){
               ynabToolKit.resizeInspector();
             }
             break;
@@ -75,19 +75,19 @@
           // The user has returned back to the budget screen
           if ($(ynabToolKit.digest[i]).hasClass('budget-inspector')) {
 
-            if ( ynabToolKit.featureOptions.checkCreditBalances ){
+            if ( ynabToolKit.options.checkCreditBalances ){
               ynabToolKit.checkCreditBalances();
             }
-            if ( ynabToolKit.featureOptions.highlightNegativesNegative ){
+            if ( ynabToolKit.options.highlightNegativesNegative ){
               ynabToolKit.highlightNegativesNegative();
             }
-            if ( ynabToolKit.featureOptions.insertPacingColumns ){
+            if ( ynabToolKit.options.pacing ){
               ynabToolKit.insertPacingColumns();
             }
-            if ( ynabToolKit.featureOptions.budgetProgressBars ){
+            if ( ynabToolKit.options.budgetProgressBars ){
               ynabToolKit.budgetProgressBars();
             }
-            if ( ynabToolKit.featureOptions.goalIndicator ){
+            if ( ynabToolKit.options.goalIndicator ){
               ynabToolKit.goalIndicator();
             }
             
@@ -101,11 +101,11 @@
               // We found a modal pop-up
               if ($(ynabToolKit.digest[i]).hasClass("options-shown")) {
 
-                if (ynabToolKit.featureOptions.removeZeroCategories) {
+                if (ynabToolKit.options.removeZeroCategories) {
                   ynabToolKit.removeZeroCategories();
                 }
-                if (ynabToolKit.featureOptions.moveMoneyAutoComplete) {
-                  ynabToolKit.moveMoneyAutoComplete();
+                if (ynabToolKit.options.moveMoneyAutocomplete) {
+                  ynabToolKit.moveMoneyAutocomplete();
                 }
 
                 break;
@@ -118,7 +118,7 @@
               // User has selected a specific sub-category
               if ($(ynabToolKit.digest[i]).hasClass('is-sub-category') && $(ynabToolKit.digest[i]).hasClass('is-checked')) {
 
-                if (ynabToolKit.featureOptions.updateInspectorColours) {
+                if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
                   ynabToolKit.updateInspectorColours();
                 }
 
@@ -132,7 +132,7 @@
               // We found Account transactions rows
               if ($(ynabToolKit.digest[i]).hasClass('ynab-grid-body')) {
 
-                if (ynabToolKit.featureOptions.swapClearedFlagged) {
+                if (ynabToolKit.options.swapClearedFlagged) {
                   ynabToolKit.swapClearedFlagged();
                 }
 
