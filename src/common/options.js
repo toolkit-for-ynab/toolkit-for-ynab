@@ -131,7 +131,10 @@ function restoreOptions() {
   restoreSelectOption('budgetProgressBars');
 }
 
-function loadPanel(panel) {
+function loadPanel(panel, animated) {
+  if (typeof animated === 'undefined') {
+    animated = true;
+  }
 
   // Do we need to do anything?
   var element = $('#' + panel + 'MenuItem');
@@ -141,7 +144,12 @@ function loadPanel(panel) {
   element.addClass('active-menu');
 
   $('.settingsPage').hide();
-  $('#' + panel + "SettingsPage").fadeIn();
+
+  if (animated) {
+    $('#' + panel + "SettingsPage").fadeIn();
+  } else {
+    $('#' + panel + "SettingsPage").show();
+  }
 }
 
 KangoAPI.onReady(function() {
@@ -150,7 +158,7 @@ KangoAPI.onReady(function() {
 
     $('input:checkbox').bootstrapSwitch();
 
-    loadPanel('general');
+    loadPanel('general', false);
 
     $('#generalMenuItem').click(function(e) { loadPanel('general'); e.preventDefault(); });
     $('#accountsMenuItem').click(function(e) { loadPanel('accounts'); e.preventDefault(); });
