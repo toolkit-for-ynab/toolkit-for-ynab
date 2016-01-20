@@ -2,9 +2,14 @@ body {
   min-width: 1100px;
 }
 
-.top-navbar .navbar-brand {
-  font-size: 2em;
-  text-transform: none;
+.navbar-header {
+  width: 100%;
+}
+
+#logo {
+  display: block;
+  margin: 10px auto 0;
+  height: 91px;
 }
 
 label {
@@ -23,8 +28,36 @@ label {
   font-size: 1.2em;
 }
 
+/* Make all icons green to match the logo */
+i {
+  color: #3CB54A;
+}
+
+/* All switches should be green when they're on too */
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
+  background: #3CB54A;
+}
+
 .btn {
   margin: 18px 10px 0 0;
+  background: ##D6D6D6;
+}
+
+.btn:hover {
+  background: #ccc;
+}
+
+.btn:focus {
+  outline: 0 !important;
+}
+
+.btn-primary {
+  background: #3CB54A;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #66CC72;
 }
 
 .page-header {

@@ -160,5 +160,9 @@ KangoAPI.onReady(function() {
     $('.cancel-button').click(function() {
       KangoAPI.closeWindow();
     });
-  }, 100);
+  }, 0); // A zero set timeout allows KangoAPI to work without needing to be async
+         // which looks like it'd be hugely painful to implement. The docs say
+         // we should be doing async here, and if it stops working, revisit this decision.
+
+  $('#logo').attr('src', kango.io.getResourceUrl('assets/logos/toolkitforynab-logo-200.png'));
 });
