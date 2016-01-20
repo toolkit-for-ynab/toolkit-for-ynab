@@ -14,13 +14,13 @@ body {
 
  #wrapper {
     width: 100%;
-    background-color: #F5F5F5;
+    background-color: white;
 }
 
 #page-wrapper {
     padding: 15px 15px;
     min-height: 600px;
-    background:#F5F5F5;
+    background: white;
     border-top: 1px solid rgba(107, 108, 109, 0.19);
     border-left: 1px solid rgba(107, 108, 109, 0.19);
 }
@@ -276,7 +276,7 @@ width: 255px;
 height: 8px;
 margin-bottom: 8px;
 overflow: hidden;
-background-color: #f5f5f5;
+background-color: white;
 border-radius: 0px;
 }
 .dropdown-tasks > li > a {
