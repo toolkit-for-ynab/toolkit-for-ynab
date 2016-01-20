@@ -6,6 +6,14 @@ body {
   width: 100%;
 }
 
+.top-navbar {
+  height: 120px;
+}
+
+.navbar-default {
+  background-color: #f5f5f5;
+}
+
 #logo {
   display: block;
   margin: 10px auto 0;
