@@ -77,6 +77,10 @@ i {
   transition: all 0.3s ease;
 }
 
+.help-block {
+  color: #292929;
+}
+
 #settingsSaved {
     position: fixed;
     text-align: center;
