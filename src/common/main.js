@@ -93,7 +93,7 @@ if (kango.storage.getItem('checkCreditBalances')) {
 
 if (kango.storage.getItem('checkCreditBalances') || kango.storage.getItem('highlightNegativesNegative')) {
   // features that update presentation classes should have this enabled by default for consistency
-  injectScript('res/features/inspector-colours/main.js'); 
+  injectScript('res/features/inspector-colours/main.js');
 }
 
 if (kango.storage.getItem('enableRetroCalculator')) {
@@ -109,6 +109,9 @@ if (kango.storage.getItem('budgetRowsHeight') == 1) {
 }
 else if (kango.storage.getItem('budgetRowsHeight') == 2) {
   injectCSS('res/features/budget-rows-height/slim.css');
+}
+else if (kango.storage.getItem('budgetRowsHeight') == 3) {
+  injectCSS('res/features/budget-rows-height/slim-fonts.css');
 }
 
 if (kango.storage.getItem('categoryActivityPopupWidth') == 1) {
