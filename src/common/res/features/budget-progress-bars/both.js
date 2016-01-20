@@ -3,7 +3,7 @@
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
   
-    ynabToolKit.featureOptions.budgetProgressBars = true;
+    ynabToolKit.options.budgetProgressBars = true;
     ynabToolKit.budgetProgressBars = function ()  { // Keep feature functions contained within this
     	var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
 
