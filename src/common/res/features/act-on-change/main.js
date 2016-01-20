@@ -1,5 +1,5 @@
 (function poll() {
-  if (typeof ynabToolKit !== "undefined" && ynabToolKit.pageReady === true) {
+  if (ynabToolKit.pageReady === true && typeof ynabToolKit.shared.feedChanges !== 'undefined') {
 
     // When this is true, the feature scripts will know they can use the mutationObserver
     ynabToolKit.actOnChangeInit = {};
@@ -81,9 +81,6 @@
             if ( ynabToolKit.options.highlightNegativesNegative ){
               ynabToolKit.highlightNegativesNegative();
             }
-            if ( ynabToolKit.options.pacing ){
-              ynabToolKit.insertPacingColumns();
-            }
             if ( ynabToolKit.options.budgetProgressBars ){
               ynabToolKit.budgetProgressBars();
             }
@@ -140,6 +137,10 @@
 
               }
             }
+            
+            // Now we are ready to feed the change digest to the
+            // automatically setup feedChanges file/function
+            ynabToolKit.shared.feedChanges(ynabToolKit.digest);
 
           });
 

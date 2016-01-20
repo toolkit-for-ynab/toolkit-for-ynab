@@ -1,7 +1,7 @@
 (function poll() {
   if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true ) {
 
-    ynabToolKit.insertPacingColumns = function ()  {
+    ynabToolKit.insertPacingColumns = new function ()  {
       
       var storePacingLocally = true;
 
@@ -14,15 +14,6 @@
         var daysInMonth = lastDayOfThisMonth.getDate(); // The date of the last day in the month is the number of days in the month
         var day = Math.max(today.getDate()-1,1);
 
-        return day/daysInMonth;
-      }
-     
-      // Calculate the proportion of the month that has been spent -- only works for the current month
-      function timeSpent() {
-        var today = new Date();
-        var daysInMonth = new Date(today.getYear(), today.getMonth(), 0).getDate();
-        var day = Math.max(today.getDate()-1,1);
-      
         return day/daysInMonth;
       }
       
@@ -72,6 +63,7 @@
       }
       
 
+      this.invoke = function() {
       var tv = ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result.getAllAccountTransactionsViewModel();
       var month = tv.getBudgetMonthViewModelForCurrentMonth().getMonth();
       var allTransactions = tv.getVisibleTransactionDisplayItemsForMonth(month);
@@ -141,15 +133,33 @@
           }
           e.stopPropagation();
         });
+    }
+
+
+    this.observe = function(digest) {
+
+      for ( var i = 0; i < digest.length; i++ ) {
+        // The user has returned back to the budget screen
+        if ($(digest[i]).hasClass('budget-inspector')) {
+          ynabToolKit.insertPacingColumns.invoke();
+          break;
+        }
+      }
+
+    }
         
 
       }
     };
 
-    ynabToolKit.insertPacingColumns();
+    ynabToolKit.insertPacingColumns.invoke(); // call itself once
+
 
   } else {
     setTimeout(poll, 250);
   }   
 })();
+
+
+
 
