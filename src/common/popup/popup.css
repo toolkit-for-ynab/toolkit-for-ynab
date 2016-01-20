@@ -36,7 +36,7 @@ body {
   outline: 0 !important;
 }
 
-.btn-primary {
+.btn-primary,.btn-primary:focus {
   background: #3CB54A;
   color: #ffffff;
 }
