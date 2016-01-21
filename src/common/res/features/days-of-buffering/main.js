@@ -72,7 +72,7 @@ function ynabEnhancedDoBCalculate() {
         totalOutflow: totalOutflow,
         totalDays: totalDays,
         averageDailyOutflow: averageDailyOutflow,
-        averageDailyTransactions: transactions.length/totalDays,
+        averageDailyTransactions: outflowTransactions.length/totalDays,
     }
 }
 
