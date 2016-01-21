@@ -20,6 +20,7 @@
 
         // Reset the digest of changed nodes on each unique mutation event
         ynabToolKit.digest = new Array();
+        ynabToolKit.digestClasses = new Set();
 
         mutations.forEach(function(mutation) {
           var newNodes = mutation.target;
@@ -31,8 +32,9 @@
           $nodes.each(function() {
             var $node = $(this);
   
-  
             ynabToolKit.digest.push($node);
+            nodeClasses = new Set($node[0].className.split(' '));
+            ynabToolKit.digestClasses = new Set([...ynabToolKit.digestClasses, ...nodeClasses]);
             
 
           }); // each node mutation event
@@ -44,37 +46,28 @@
         }
 
         // Loop through the array and act if we find a relevant changed node in the digest
-        for ( var i = 0; i < ynabToolKit.digest.length; i++ ) {
+        // for ( var i = 0; i < ynabToolKit.digest.length; i++ ) { 
+        //   if ($(ynabToolKit.digest[i]).hasClass("budget-table-cell-available-div")) {
+        //   }
+        // }
+        //
 
           // Changes are detected in the category balances
-          if ($(ynabToolKit.digest[i]).hasClass("budget-table-cell-available-div")) {
-
+          if (ynabToolKit.digestClasses.has('budget-table-cell-available-div')) {
             if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
                 ynabToolKit.updateInspectorColours();
             }
-
-            break;
-
           }
-        }
-
-        for ( var i = 0; i < ynabToolKit.digest.length; i++ ) {
 
           // The user has switched screens
-          if ($(ynabToolKit.digest[i]).hasClass('layout')) {
+          if (ynabToolKit.digestClasses.has('layout')) {
             if ( ynabToolKit.options.resizeInspector ){
               ynabToolKit.resizeInspector();
             }
-            break;
           }
 
-        }
-
-        for ( var i = 0; i < ynabToolKit.digest.length; i++ ) {
-
           // The user has returned back to the budget screen
-          if ($(ynabToolKit.digest[i]).hasClass('budget-inspector')) {
-
+          if (ynabToolKit.digestClasses.has('budget-inspector')) {
             if ( ynabToolKit.options.checkCreditBalances ){
               ynabToolKit.checkCreditBalances();
             }
@@ -87,56 +80,32 @@
             if ( ynabToolKit.options.goalIndicator ){
               ynabToolKit.goalIndicator();
             }
-            
-                break;
-              }
-
-            }
-
-            for (var i = 0; i < ynabToolKit.digest.length; i++) {
+          }
 
               // We found a modal pop-up
-              if ($(ynabToolKit.digest[i]).hasClass("options-shown")) {
-
+              if (ynabToolKit.digestClasses.has('options-shown')) {
                 if (ynabToolKit.options.removeZeroCategories) {
                   ynabToolKit.removeZeroCategories();
                 }
                 if (ynabToolKit.options.moveMoneyAutocomplete) {
                   ynabToolKit.moveMoneyAutocomplete();
                 }
-
-                break;
-
               }
-            }
-
-            for (var i = 0; i < ynabToolKit.digest.length; i++) {
 
               // User has selected a specific sub-category
-              if ($(ynabToolKit.digest[i]).hasClass('is-sub-category') && $(ynabToolKit.digest[i]).hasClass('is-checked')) {
+              if (ynabToolKit.digestClasses.has('is-sub-category') && ynabToolKit.digestClasses.has('is-checked')) {
 
                 if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
                   ynabToolKit.updateInspectorColours();
                 }
-
-                break;
-
               }
-            }
-
-            for (var i = 0; i < ynabToolKit.digest.length; i++) {
 
               // We found Account transactions rows
-              if ($(ynabToolKit.digest[i]).hasClass('ynab-grid-body')) {
-
+              if (ynabToolKit.digestClasses.has('ynab-grid-body')) {
                 if (ynabToolKit.options.swapClearedFlagged) {
                   ynabToolKit.swapClearedFlagged();
                 }
-
-                break;
-
               }
-            }
             
             // Now we are ready to feed the change digest to the
             // automatically setup feedChanges file/function
