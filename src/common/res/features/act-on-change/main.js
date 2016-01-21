@@ -123,20 +123,6 @@
 
               }
             }
-
-            for (var i = 0; i < ynabToolKit.digest.length; i++) {
-
-              // We found Account transactions rows
-              if ($(ynabToolKit.digest[i]).hasClass('ynab-grid-body')) {
-
-                if (ynabToolKit.options.swapClearedFlagged) {
-                  ynabToolKit.swapClearedFlagged();
-                }
-
-                break;
-
-              }
-            }
             
             // Now we are ready to feed the change digest to the
             // automatically setup feedChanges file/function
