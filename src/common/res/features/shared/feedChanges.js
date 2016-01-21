@@ -9,7 +9,7 @@
 
     	if ( ynabToolKit.swapClearedFlagged ){
             ynabToolKit.swapClearedFlagged.observe(digest);
-          }
+      }
       if ( ynabToolKit.insertPacingColumns ){
         ynabToolKit.insertPacingColumns.observe(digest);
       }
