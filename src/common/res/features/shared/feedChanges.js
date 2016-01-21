@@ -10,6 +10,9 @@
       if ( ynabToolKit.insertPacingColumns ){
         ynabToolKit.insertPacingColumns.observe(digest);
       }
+      if ( ynabToolKit.toggleSplits ){
+    	  ynabToolKit.toggleSplits.observe(digest);
+      }
 
     };
 
