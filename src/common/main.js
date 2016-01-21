@@ -128,6 +128,7 @@ if (kango.storage.getItem('moveMoneyAutocomplete')) {
 }
 
 if (kango.storage.getItem('toggleSplits')) {
+  injectCSS('res/features/toggle-splits/main.css')
   injectScript('res/features/toggle-splits/main.js');
 }
 
