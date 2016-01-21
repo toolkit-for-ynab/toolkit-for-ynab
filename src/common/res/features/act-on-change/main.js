@@ -72,7 +72,7 @@
 
         for ( var i = 0; i < ynabToolKit.digest.length; i++ ) {
 
-          // The user has returned back to the budget screen or clicks on a different budget row
+          // The user has returned back to the budget screen
           if ($(ynabToolKit.digest[i]).hasClass('navlink-budget') && $(ynabToolKit.digest[i]).hasClass('active')) {
 
             if ( ynabToolKit.options.checkCreditBalances ){
