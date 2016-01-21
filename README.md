@@ -60,7 +60,9 @@ This extension uses Kango Extensions to provide cross browser support. To build:
 
 Browser Support
 ---------------
-The ToolKit is available for Chrome, Firefox, and Safari. The lead platform is Chrome, but we are actively working on making it equal across all three browsers. If you don't want to build the extension from the source yourself, you can get it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl) as well as the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/). There is currently no version of the extension available at the Safari Extensions Gallery, but it's in the process of being reviewed and should be available soon.
+The ToolKit is available for Chrome, Firefox, and Safari. The lead platform is Chrome, but we are actively working on making it equal across all three browsers.
+If you don't want to build the extension from the source yourself, you can get it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl) as well as the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/).
+There is currently no version of the extension available at the Safari Extensions Gallery, but it's in the process of being reviewed and should be available soon.
 
 Development Methodology
 -----------------------
