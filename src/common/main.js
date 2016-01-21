@@ -229,3 +229,7 @@ if (kango.storage.getItem('importNotification')) {
   injectCSS('res/features/import-notification/import-notification.css');
   injectScript('res/features/import-notification/import-notification.js');
 }
+
+if (kango.storage.getItem('warnOnQuickBudget')) {
+  injectScript('res/features/warn-on-quick-budget/main.js');
+}
