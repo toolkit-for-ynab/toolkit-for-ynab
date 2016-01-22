@@ -56,12 +56,6 @@
         // The user has returned back to the budget screen
         if (ynabToolKit.observedNodes.has('navlink-budget') && ynabToolKit.observedNodes.has('active')) {
         
-          if ( ynabToolKit.options.checkCreditBalances ){
-            ynabToolKit.checkCreditBalances();
-          }
-          if ( ynabToolKit.options.highlightNegativesNegative ){
-            ynabToolKit.highlightNegativesNegative();
-          }
           if ( ynabToolKit.options.budgetProgressBars ){
             ynabToolKit.budgetProgressBars();
           }
@@ -110,6 +104,12 @@
 
           if ( ynabToolKit.options.warnOnQuickBudget ){
             ynabToolKit.warnOnQuickBudget();
+          }
+          if ( ynabToolKit.options.checkCreditBalances ){
+              ynabToolKit.checkCreditBalances();
+          }
+          if ( ynabToolKit.options.highlightNegativesNegative ){
+            ynabToolKit.highlightNegativesNegative();
           }
 
         }
