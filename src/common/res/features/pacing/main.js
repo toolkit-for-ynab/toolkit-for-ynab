@@ -145,6 +145,7 @@
          
       };
     }
+    ynabToolKit.insertPacingColumns.invoke();
 
   } else {
     setTimeout(poll, 250);
