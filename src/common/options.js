@@ -60,6 +60,7 @@ function saveOptions() {
   saveCheckboxOption('collapseExpandBudgetGroups');
   saveCheckboxOption('collapseSideMenu');
   saveCheckboxOption('colourBlindMode');
+  saveCheckboxOption('squareNegativeMode');
   saveCheckboxOption('hideAOM');
   saveCheckboxOption('checkCreditBalances');
   saveCheckboxOption('highlightNegativesNegative');
@@ -75,6 +76,7 @@ function saveOptions() {
   saveCheckboxOption('accountsSelectedTotal');
   saveCheckboxOption('changeEnterBehavior');
   saveCheckboxOption('transferJump');
+  saveCheckboxOption('resizeInspector');
   saveCheckboxOption('importNotification');
   saveCheckboxOption('swapClearedFlagged');
 
@@ -100,6 +102,7 @@ function restoreOptions() {
   restoreCheckboxOption('collapseExpandBudgetGroups');
   restoreCheckboxOption('collapseSideMenu');
   restoreCheckboxOption('colourBlindMode');
+  restoreCheckboxOption('squareNegativeMode');
   restoreCheckboxOption('hideAOM');
   restoreCheckboxOption('checkCreditBalances');
   restoreCheckboxOption('highlightNegativesNegative');
@@ -115,6 +118,7 @@ function restoreOptions() {
   restoreCheckboxOption('accountsSelectedTotal');
   restoreCheckboxOption('changeEnterBehavior');
   restoreCheckboxOption('transferJump');
+  restoreCheckboxOption('resizeInspector');
   restoreCheckboxOption('importNotification');
   restoreCheckboxOption('swapClearedFlagged');
 
@@ -127,7 +131,10 @@ function restoreOptions() {
   restoreSelectOption('budgetProgressBars');
 }
 
-function loadPanel(panel) {
+function loadPanel(panel, animated) {
+  if (typeof animated === 'undefined') {
+    animated = true;
+  }
 
   // Do we need to do anything?
   var element = $('#' + panel + 'MenuItem');
@@ -137,7 +144,12 @@ function loadPanel(panel) {
   element.addClass('active-menu');
 
   $('.settingsPage').hide();
-  $('#' + panel + "SettingsPage").fadeIn();
+
+  if (animated) {
+    $('#' + panel + "SettingsPage").fadeIn();
+  } else {
+    $('#' + panel + "SettingsPage").show();
+  }
 }
 
 KangoAPI.onReady(function() {
@@ -146,15 +158,19 @@ KangoAPI.onReady(function() {
 
     $('input:checkbox').bootstrapSwitch();
 
-    loadPanel('general');
+    loadPanel('general', false);
 
     $('#generalMenuItem').click(function(e) { loadPanel('general'); e.preventDefault(); });
     $('#accountsMenuItem').click(function(e) { loadPanel('accounts'); e.preventDefault(); });
     $('#budgetMenuItem').click(function(e) { loadPanel('budget'); e.preventDefault(); });
 
-    $('#save').click(saveOptions);
-    $('#cancel').click(function() {
+    $('.save-button').click(saveOptions);
+    $('.cancel-button').click(function() {
       KangoAPI.closeWindow();
     });
-  }, 100);
+  }, 50); // A small setTimeout allows KangoAPI to work without needing to be async
+          // which looks like it'd be hugely painful to implement. The docs say
+          // we should be doing async here, and if it stops working, revisit this decision.
+
+  $('#logo').attr('src', kango.io.getResourceUrl('assets/logos/toolkitforynab-logo-200.png'));
 });

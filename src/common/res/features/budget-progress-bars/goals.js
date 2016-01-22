@@ -2,12 +2,11 @@
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
   
-    ynabToolKit.featureOptions.budgetProgressBars = true;
     ynabToolKit.budgetProgressBars = function ()  { // Keep feature functions contained within this
     	var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
 
 	   	function getCalculation(subCategoryName) {
-    		var crazyInternalId = "mcbc/" + ynabToolKit.parseSelectedMonth().yyyymm() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
+    		var crazyInternalId = "mcbc/" + ynabToolKit.shared.parseSelectedMonth().yyyymm() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
 			var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
 			return calculation;
     	}
@@ -23,8 +22,8 @@
 				var status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
 			}
 			else if (calculation.goalTarget > 0) {
-				// Taget by date
-				// or Montly goal
+				// Target by date
+				// or Monthly goal
 				var hasGoal = true;
 				var status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
 			}
@@ -35,6 +34,7 @@
 			}
 
 			if (hasGoal) {
+				$(this).addClass('goal-progress');
 				status = status > 1 ? 1 : status;
 				status = status < 0 ? 0 : status;
 				var percent = Math.round(parseFloat(status)*100);

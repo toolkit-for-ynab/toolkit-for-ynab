@@ -2,7 +2,7 @@
   kango.ui.browserButton.setPopup({
     url: 'popup/popup.html',
     width: 330,
-    height: 190
+    height: 260
   });
 }
 

@@ -17,5 +17,7 @@ KangoAPI.onReady(function() {
 
   $('#versionNumber').text(kango.getExtensionInfo().version);
 
+  $('#logo').attr('src', kango.io.getResourceUrl('assets/logos/toolkitforynab-logo-200.png'));
+
   $('#openSettings').focus();
 });

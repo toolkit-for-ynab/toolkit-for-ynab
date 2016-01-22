@@ -9,20 +9,20 @@
     <link href="assets/dream-admin-theme/css/font-awesome.min.css" rel="stylesheet" />
     <link href="assets/dream-admin-theme/css/custom-styles.css" rel="stylesheet" />
     <link href="assets/bootstrap-switch/bootstrap-switch.min.css" rel="stylesheet" />
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
     <link href="options.css" rel="stylesheet" />
 </head>
 <body>
     <div id="wrapper">
         <nav class="navbar navbar-default top-navbar" role="navigation">
             <div class="navbar-header">
+                <img src="#" id="logo" />
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Toolkit for YNAB</a>
             </div>
         </nav>
         <!--/. NAV TOP  -->
@@ -57,6 +57,11 @@
                               <i class="fa fa-cogs"></i> General Settings
                           </h2>
 
+                          <div class="col-xs-4 col-xs-offset-8 page-header-buttons">
+                            <button class="btn btn-lg btn-primary pull-right save-button">Save</button>
+                            <button class="btn btn-lg pull-right cancel-button">Cancel</button>
+                          </div>
+
                           <div class="container col-xs-11">
   	                        <div class="row col-xs-10">
   		                        <div class="col-xs-2">
@@ -84,11 +89,35 @@
                           <div class="container col-xs-11">
                             <div class="row col-xs-10">
                               <div class="col-xs-2">
+                                <input type="checkbox" id="squareNegativeMode" name="squareNegativeMode" aria-describedby="squareNegativeModeHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="squareNegativeMode">Square Negatives Mode</label>
+                                <span id="squareNegativeModeHelpBlock" class="help-block">Changes the round borders on all negative numbers to square. Helps them become more of an eyesore so you want to get rid of them!</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
+                              <div class="col-xs-2">
                                 <input type="checkbox" id="hideAOM" name="hideAOM" aria-describedby="hideAOMHelpBlock">
                               </div>
                               <div class="col-xs-8">
                                 <label for="hideAOM">Hide Age of Money Calculation</label>
                                 <span id="hideAOMHelpBlock" class="help-block">Hides the Age of Money calculation. Some users find it's not relevant or helpful for them, so they'd rather hide it.<br><strong>NOTE:</strong> YNAB will continue to run its Age of Money calculations, so the data will be up to date if you decide to show it again.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="importNotification" name="importNotification" aria-describedby="importNotificationHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="importNotification">Show Import Notifications in Sidebar</label>
+                                <span id="importNotificationHelpBlock" class="help-block">Display a notification in the sidebar when there are transactions to be imported.</span>
                               </div>
                             </div>
                           </div>
@@ -121,18 +150,6 @@
                             </div>
                           </div>
 
-                          <div class="container col-xs-11">
-                            <div class="row col-xs-10">
-                              <div class="col-xs-2">
-                                <input type="checkbox" id="importNotification" name="importNotification" aria-describedby="importNotificationHelpBlock">
-                              </div>
-                              <div class="col-xs-8">
-                                <label for="importNotification">Show Import Notifications in Sidebar</label>
-                                <span id="importNotificationHelpBlock" class="help-block">Display a notification in the sidebar when there are transactions to be imported.</span>
-                              </div>
-                            </div>
-                          </div>
-
                           <!-- END GENERAL SETTINGS -->
                         </div>
 
@@ -142,6 +159,11 @@
                           <h2 class="page-header">
                               <i class="fa fa-university"></i> Accounts Screen Settings
                           </h2>
+
+                          <div class="col-xs-4 col-xs-offset-8 page-header-buttons">
+                            <button class="btn btn-lg btn-primary pull-right save-button">Save</button>
+                            <button class="btn btn-lg pull-right cancel-button">Cancel</button>
+                          </div>
 
                           <div class="container col-xs-11">
                             <div class="row col-xs-10">
@@ -179,6 +201,18 @@
                             </div>
                           </div>
 
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="swapClearedFlagged" name="swapClearedFlagged" aria-describedby="swapClearedFlaggedHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="swapClearedFlagged">Swap cleared and flagged columns on Account screen</label>
+                                <span id="swapClearedFlaggedHelpBlock" class="help-block"></span>
+                              </div>
+                            </div>
+                          </div>
+
                           <!-- Kevin: Removing Transfer jump until it scrolls to the correct part of the grid
                                       even if it isn't visible.
                           <!--div class="container col-xs-11">
@@ -209,18 +243,6 @@
                             </div>
                           </div>
 
-                          <div class="container col-xs-11">
-                            <div class="row col-xs-10">
-                              <div class="col-xs-2">
-                                <input type="checkbox" id="swapClearedFlagged" name="swapClearedFlagged" aria-describedby="swapClearedFlaggedHelpBlock">
-                              </div>
-                              <div class="col-xs-8">
-                                <label for="swapClearedFlagged">Swap cleared and flagged columns on Account screen</label>
-                                <span id="swapClearedFlaggedHelpBlock" class="help-block"></span>
-                              </div>
-                            </div>
-                          </div>
-
                           <!-- END ACCOUNTS SETTINGS -->
                         </div>
 
@@ -230,6 +252,11 @@
                           <h2 class="page-header">
                               <i class="fa fa-envelope-o"></i> Budget Screen Settings
                           </h2>
+
+                          <div class="col-xs-4 col-xs-offset-8 page-header-buttons">
+                            <button class="btn btn-lg btn-primary pull-right save-button">Save</button>
+                            <button class="btn btn-lg pull-right cancel-button">Cancel</button>
+                          </div>
 
 
                           <div class="container col-xs-11">
@@ -323,22 +350,7 @@
                               </div>
                               <div class="col-xs-8">
                                 <label for="pacing">Add Pacing to the Budget</label>
-                                <span id="pacingHelpBlock" class="help-block">Add a column for "pacing" which shows you how much money you've spent based on how far you are through the month.</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="container col-xs-11">
-                            <div class="row col-xs-10">
-                              <div class="col-xs-8 col-xs-offset-2">
-                                <label for="budgetProgressBars">Budget rows progress bars</label>
-                                <select name="budgetProgressBars" id="budgetProgressBars" class="form-control" aria-describedby="budgetProgressBarsHelpBlock">
-                                    <option value="0">Default</option>
-                                    <option value="1">Goals progress</option>
-                                    <option value="2">Pacing progress</option>
-                                    <option value="3">Pacing on name column and goals on budgeted</option>
-                                </select>
-                                <span id="budgetProgressBarsHelpBlock" class="help-block">Add progress bars to categories rows.</span>
+                                <span id="pacingHelpBlock" class="help-block">Add a column for "pacing" which shows you how much money you've spent based on how far you are through the month. Note that clicking on the pacing value will toggle emphasis, allowing you to selectively enable the feature per category.</span>
                               </div>
                             </div>
                           </div>
@@ -375,6 +387,33 @@
                               <div class="col-xs-8">
                                 <label for="daysOfBuffering">Add Days of Buffering Metric</label>
                                 <span id="daysOfBufferingHelpBlock" class="help-block">This calculation shows how long your money would likely last if you never earned another cent based on your average spending. We know that no month is 'average' but this should give you some idea of how much of a buffer you have. Equal to budget accs total divided by the average daily outflow. That comes from sum of all outflow transactions from budget accs only divided by the age of budget in days.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
+                              <div class="col-xs-2">
+                                <input type="checkbox" id="resizeInspector" name="resizeInspector" aria-describedby="resizeInspectorHelpBlock">
+                              </div>
+                              <div class="col-xs-8">
+                                <label for="resizeInspector">Allow Resizing of Inspector</label>
+                                <span id="resizeInspectorHelpBlock" class="help-block">Add the ability to drag and resize the inspector.</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="container col-xs-11">
+                            <div class="row col-xs-10">
+                              <div class="col-xs-8 col-xs-offset-2">
+                                <label for="budgetProgressBars">Budget rows progress bars</label>
+                                <select name="budgetProgressBars" id="budgetProgressBars" class="form-control" aria-describedby="budgetProgressBarsHelpBlock">
+                                    <option value="0">Default</option>
+                                    <option value="1">Goals progress</option>
+                                    <option value="2">Pacing progress</option>
+                                    <option value="3">Pacing on name column and goals on budgeted</option>
+                                </select>
+                                <span id="budgetProgressBarsHelpBlock" class="help-block">Add progress bars to categories rows.</span>
                               </div>
                             </div>
                           </div>
@@ -431,8 +470,8 @@
                         </div>
 
                         <div class="col-xs-3 col-xs-offset-8">
-                          <button id="save" class="btn btn-lg btn-primary pull-right">Save</button>
-                          <button id="cancel" class="btn btn-lg pull-right">Cancel</button>
+                          <button class="btn btn-lg btn-primary pull-right save-button">Save</button>
+                          <button class="btn btn-lg pull-right cancel-button">Cancel</button>
                         </div>
 
 

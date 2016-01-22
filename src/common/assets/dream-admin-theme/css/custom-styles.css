@@ -6,29 +6,29 @@ http://creativecommons.org/licenses/by/3.0/
 
 
 /*----------------------------------------------
-    COMMON  STYLES    
+    COMMON  STYLES
 ------------------------------------------------*/
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
  #wrapper {
     width: 100%;
-    background:#09192A;
+    background-color: white;
 }
 
 #page-wrapper {
     padding: 15px 15px;
     min-height: 600px;
-    background:#E5EBF2;
-   
+    background: white;
+    border-top: 1px solid rgba(107, 108, 109, 0.19);
+    border-left: 1px solid rgba(107, 108, 109, 0.19);
 }
 #page-inner {
     width:100%;
     margin:10px 20px 10px 0px;
     background-color:transparent;
     padding:10px;
-    min-height:1200px;
 }
 
 .text-center {
@@ -49,7 +49,7 @@ h4 {
     padding-top:10px;
 }
 .square-btn-adjust {
-    border: 0px solid transparent; 
+    border: 0px solid transparent;
    -webkit-border-radius: 0px;
 -moz-border-radius: 0px;
 border-radius: 0px;
@@ -61,7 +61,7 @@ p {
     padding-top:20px;
 }
 /*----------------------------------------------
-   DASHBOARD STYLES    
+   DASHBOARD STYLES
 ------------------------------------------------*/
 .page-header {
 padding-bottom: 9px;
@@ -220,7 +220,7 @@ footer p{
 font-size: 14px;
 }
 /*----------------------------------------------
-    MENU STYLES    
+    MENU STYLES
 ------------------------------------------------*/
 
 
@@ -236,7 +236,7 @@ max-width:170px;
 margin:0px;
 }
 .top-navbar .navbar-brand {
-color: #fff;
+color: black;
 width: 260px;
 text-align: left;
 height: 60px;
@@ -253,12 +253,12 @@ display: inline-block;
 position: relative;
 display: block;
 padding: 19px 15px;
-color: #77C0FD;
+color: black;
 }
 .top-navbar .nav > li > a:hover, .top-navbar .nav > li > a:focus {
 text-decoration: none;
-background-color: #225081;
-color: #fff;
+background-color: #D6D6D6;
+color: black;
 }
 .top-navbar .dropdown-menu{
 min-width: 230px;
@@ -275,10 +275,10 @@ width: 255px;
 height: 8px;
 margin-bottom: 8px;
 overflow: hidden;
-background-color: #f5f5f5;
+background-color: white;
 border-radius: 0px;
 }
-.dropdown-tasks > li > a { 
+.dropdown-tasks > li > a {
 padding: 0px 15px;
 }
 .dropdown-tasks p {
@@ -287,7 +287,7 @@ line-height: 21px;
 padding-top: 4px;
 }
 .active-menu {
-    background-color:#225081!important;
+    background-color:#D6D6D6!important;
 }
 
 .arrow {
@@ -322,10 +322,10 @@ padding-top: 4px;
 	padding:0;
 }
 .sidebar-collapse .nav > li > a {
-	color:#fff;
+	color:black;
 	background:transparent;
 	text-shadow:none;
-	
+
 }
 .sidebar-collapse > .nav > li > a {
 	padding:15px 10px;
@@ -338,24 +338,24 @@ background: #172D44;
 }
 .sidebar-collapse .nav > li > a:hover,
 .sidebar-collapse .nav > li > a:focus {
-	 
+
 	outline:0;
 }
- 
+
 .navbar-side {
 	border:none;
 	background-color: transparent;
-	
+
 }
 .top-navbar {
-	background:#09192A;
 	border-bottom:none;
-	
+  height: 100px;
 }
+
 .top-navbar .nav > li > a > i {
 margin-right: 2px;
 }
-.top-navbar .navbar-brand:hover { 
+.top-navbar .navbar-brand:hover {
 color:#fff;
 
 }
@@ -364,26 +364,20 @@ margin: 8px 0;
 }
 .navbar-default {
 border:0px solid black;
-     
-}
-.navbar-header {
-    background: #09192A;
-}
-.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-background-color: #B40101;
+
 }
 .navbar-default .navbar-toggle {
-border-color: #fff;
+border-color: black;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
-background-color: #FFF;
+background-color: white;
 }
 .nav > li > a > i {
     margin-right:10px;
 }
 /*----------------------------------------------
-    UI ELEMENTS STYLES     
+    UI ELEMENTS STYLES
 ------------------------------------------------*/
 .btn-circle {
 width: 50px;
@@ -398,18 +392,16 @@ line-height: 1.428571429;
 }
 
 /*----------------------------------------------
-    MEDIA QUERIES     
+    MEDIA QUERIES
 ------------------------------------------------*/
- 
+
  @media(min-width:768px) {
      #page-wrapper{
                margin: 0 0 0 260px;
         padding: 15px 30px;
-        min-height: 1200px;
-		
     }
-	
-	
+
+
     .navbar-side {
         z-index: 1;
         position: absolute;
@@ -417,9 +409,9 @@ line-height: 1.428571429;
     }
 
    .navbar {
- border-radius: 0px; 
+ border-radius: 0px;
 }
-   
+
 }
  @media(max-width:480px) {
 .page-header small {
@@ -428,5 +420,3 @@ padding-top: 14px;
 font-size: 19px;
 }
 }
-
-

@@ -28,8 +28,14 @@ function injectJSString(js) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
+/* Init ynabToolKit object and import options from Kango  */
+injectJSString("window.ynabToolKit = {}; ynabToolKit.options = {" + Array.from(kango.storage.getKeys(), el=> el + " : " + kango.storage.getItem(el) + ", ").reduce((a, b) => a + b, "") + "}")
+
 /* Load this to setup shared utility functions */
 injectScript('res/features/shared/main.js');
+
+/* This script to be built automatically by the python script */
+injectScript('res/features/shared/feedChanges.js');
 
 /* Load this to setup behaviors when the DOM updates and shared functions */
 injectScript('res/features/act-on-change/main.js');
@@ -70,6 +76,10 @@ if (kango.storage.getItem('collapseSideMenu')) {
 
 if (kango.storage.getItem('colourBlindMode')) {
   injectCSS('res/features/colour-blind-mode/main.css');
+}
+
+if (kango.storage.getItem('squareNegativeMode')) {
+  injectCSS('res/features/square-negative/square.css');
 }
 
 if (kango.storage.getItem('hideAOM')) {
@@ -156,6 +166,10 @@ if (kango.storage.getItem('swapClearedFlagged')) {
   injectScript('res/features/swap-cleared-flagged/main.js');
 }
 
+if (kango.storage.getItem('budgetProgressBars') > 0) {
+  injectCSS('res/features/budget-progress-bars/main.css');
+}
+
 if (kango.storage.getItem('budgetProgressBars') == 1) {
   injectScript('res/features/budget-progress-bars/goals.js');
 }
@@ -194,10 +208,17 @@ else if (kango.storage.getItem('editButtonPosition') == 2) {
 }
 
 if (kango.storage.getItem('daysOfBuffering')) {
-  daysOfBufferingHistoryLookup = kango.storage.getItem('daysOfBufferingHistoryLookup')
+  daysOfBufferingHistoryLookup = kango.storage.getItem('daysOfBufferingHistoryLookup');
   injectJSString('var daysOfBufferingHistoryLookup = ' + daysOfBufferingHistoryLookup + ';');
   injectCSS('res/features/days-of-buffering/main.css');
   injectScript('res/features/days-of-buffering/main.js');
+}
+
+if (kango.storage.getItem('resizeInspector')) {
+  injectScript('res/features/resize-inspector/jquery-resizable.min.js');
+  injectScript('res/features/resize-inspector/resize-inspector.js');
+  injectCSS('res/features/resize-inspector/resize-inspector.css');
+  injectJSString('window.resizeInspectorAsset = "'+kango.io.getResourceUrl('assets/vsizegrip.png')+'";');
 }
 
 if (kango.storage.getItem('removePositiveHighlight')) {

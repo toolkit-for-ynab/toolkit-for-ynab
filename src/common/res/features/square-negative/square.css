@@ -1,0 +1,30 @@
+/* =============== Budget Numbers =============== */
+li.budget-table-cell-available > div.budget-table-cell-available-div > span.negative {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+}
+
+/* =============== Budget Inspector =============== */
+.inspector-overview-available .currency.negative {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+}
+
+/* =============== Bugdet Header =============== */
+.left-to-budget-is-negative .budget-header-totals-amount {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+}
+
+/* ============== Accounts Header =============== */
+.accounts-header .accounts-header-total-inner.negative-working-balance {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+}
+
+/* ============== Sidebar Numbers =============== */
+.nav-accounts .negative {
+    border-radius: 0em !important;
+    -webkit-border-radius: 0em !important;
+}
+
