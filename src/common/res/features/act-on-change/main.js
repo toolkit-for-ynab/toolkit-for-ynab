@@ -18,9 +18,6 @@
           console.log('MODIFIED NODES');
         }
 
-        // Reset the digest of changed nodes on each unique mutation event
-        ynabToolKit.digest = new Array();
-
         mutations.forEach(function(mutation) {
           var newNodes = mutation.target;
           if (ynabToolKit.debugNodes) {
@@ -31,12 +28,8 @@
           $nodes.each(function() {
             var $node = $(this);
 
-
-  
-            ynabToolKit.digest.push($node);
             nodeClasses = new Set($node[0].className.split(' '));
-            ynabToolKit.digestClasses = new Set([...ynabToolKit.digestClasses, ...nodeClasses]);
-
+            ynabToolKit.observedNodes = new Set([...ynabToolKit.observedNodes, ...nodeClasses]);
 
           }); // each node mutation event
 
@@ -46,29 +39,22 @@
           console.log('###')
         }
 
-        // Loop through the array and act if we find a relevant changed node in the digest
-        // for ( var i = 0; i < ynabToolKit.digest.length; i++ ) { 
-        //   if ($(ynabToolKit.digest[i]).hasClass("budget-table-cell-available-div")) {
-        //   }
-        // }
-        //
-
         // Changes are detected in the category balances
-        if (ynabToolKit.digestClasses.has('budget-table-cell-available-div')) {
+        if (ynabToolKit.observedNodes.has('budget-table-cell-available-div')) {
           if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
               ynabToolKit.updateInspectorColours();
           }
         }
         
         // The user has switched screens
-        if (ynabToolKit.digestClasses.has('layout')) {
+        if (ynabToolKit.observedNodes.has('layout')) {
           if ( ynabToolKit.options.resizeInspector ){
             ynabToolKit.resizeInspector();
           }
         }
 
         // The user has returned back to the budget screen
-        if (ynabToolKit.digestClasses.has('navlink-budget') && ynabToolKit.digestClasses.has('active')) {
+        if (ynabToolKit.observedNodes.has('navlink-budget') && ynabToolKit.observedNodes.has('active')) {
         
           if ( ynabToolKit.options.checkCreditBalances ){
             ynabToolKit.checkCreditBalances();
@@ -89,7 +75,7 @@
         }
 
         // We found a modal pop-up
-        if (ynabToolKit.digestClasses.has('options-shown')) {
+        if (ynabToolKit.observedNodes.has('options-shown')) {
 
           if (ynabToolKit.options.removeZeroCategories) {
             ynabToolKit.removeZeroCategories();
@@ -101,7 +87,7 @@
         }
 
         // User has selected a specific sub-category
-        if (ynabToolKit.digestClasses.has('is-sub-category') && ynabToolKit.digestClasses.has('is-checked')) {
+        if (ynabToolKit.observedNodes.has('is-sub-category') && ynabToolKit.observedNodes.has('is-checked')) {
 
           if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
             ynabToolKit.updateInspectorColours();
@@ -111,7 +97,7 @@
 
 
         // We found Account transactions rows
-        if (ynabToolKit.digestClasses.has('ynab-grid-body')) {
+        if (ynabToolKit.observedNodes.has('ynab-grid-body')) {
 
           if (ynabToolKit.options.swapClearedFlagged) {
             ynabToolKit.swapClearedFlagged();
@@ -120,7 +106,7 @@
         }
 
         // The user has changed their budget row selection
-        if (ynabToolKit.digestClasses.has('budget-inspector')) {
+        if (ynabToolKit.observedNodes.has('budget-inspector')) {
 
           if ( ynabToolKit.options.warnOnQuickBudget ){
             ynabToolKit.warnOnQuickBudget();
@@ -130,7 +116,7 @@
 
         // Now we are ready to feed the change digest to the
         // automatically setup feedChanges file/function
-        ynabToolKit.shared.feedChanges(ynabToolKit.digest);
+        ynabToolKit.shared.feedChanges(ynabToolKit.observedNodes);
 
       });
 

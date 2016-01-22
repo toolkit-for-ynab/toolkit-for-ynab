@@ -136,24 +136,14 @@
     }
 
 
-    this.observe = function(digest) {
+    this.observe = function(changedNodes) {
 
-      for ( var i = 0; i < digest.length; i++ ) {
+      if (changedNodes('budget-inspector')) {
         // The user has returned back to the budget screen
-        if ($(digest[i]).hasClass('budget-inspector')) {
-          ynabToolKit.insertPacingColumns.invoke();
-          break;
-        }
+        ynabToolKit.insertPacingColumns.invoke();
       }
-
-    }
-        
-
-      }
+       
     };
-
-    ynabToolKit.insertPacingColumns.invoke(); // call itself once
-
 
   } else {
     setTimeout(poll, 250);

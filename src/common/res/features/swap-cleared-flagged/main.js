@@ -37,30 +37,28 @@
       this.swapYnabGridActions = function() {
         
         $('.ember-view.ynab-grid-actions').css({
-      	  "right" : 54,
-      	  "bottom" : "initial",
-      	  "margin-top" : "2px"
-      	  })
+          "right" : 54,
+          "bottom" : "initial",
+          "margin-top" : "2px"
+          })
         var ynabGridActions = $('.ember-view.ynab-grid-actions').detach();
         $('.ynab-grid-cell.ynab-grid-cell-inflow.user-data').eq('0').append(ynabGridActions);
         
       },
       
-      this.observe = function() {
-        for (var i = 0; i < ynabToolKit.digest.length; i++) {
+      this.observe = function(changedNodes) {
 
+        if (changedNodes.has('ynab-grid-body')) {
           // We found Account transactions rows
-          if ($(ynabToolKit.digest[i]).hasClass('ynab-grid-body')) {
-
-            ynabToolKit.swapClearedFlagged.invoke();
-            
-            if ( $('.ember-view.ynab-grid-actions') ) {
-              ynabToolKit.swapClearedFlagged.swapYnabGridActions(); 
-            }
-            break;
+          ynabToolKit.swapClearedFlagged.invoke();
+          
+          if ( $('.ember-view.ynab-grid-actions') ) {
+            ynabToolKit.swapClearedFlagged.swapYnabGridActions(); 
           }
+
         }
-      }
+      
+      };
       
     }; // Keep feature functions contained within this
 

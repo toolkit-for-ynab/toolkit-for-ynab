@@ -41,17 +41,14 @@
         });
       },
       
-      this.observe = function(digest) {
+      this.observe = function(changedNodes) {
       
-        for ( var i = 0; i < digest.length; i++ ) {
-          // We found Account transactions rows
-          if ($(digest[i]).hasClass('ynab-grid-body')) {
+          if (changedNodes.has('ynab-grid-body')) {
+        	// We found Account transactions rows
             ynabToolKit.toggleSplits.invoke();
-            break;
           }
-        }
           
-      }
+      };
     };
 
   } else {
