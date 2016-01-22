@@ -53,85 +53,86 @@
         // }
         //
 
-          // Changes are detected in the category balances
-          if (ynabToolKit.digestClasses.has('budget-table-cell-available-div')) {
-            if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
-                ynabToolKit.updateInspectorColours();
-            }
+        // Changes are detected in the category balances
+        if (ynabToolKit.digestClasses.has('budget-table-cell-available-div')) {
+          if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
+              ynabToolKit.updateInspectorColours();
+          }
+        }
+        
+        // The user has switched screens
+        if (ynabToolKit.digestClasses.has('layout')) {
+          if ( ynabToolKit.options.resizeInspector ){
+            ynabToolKit.resizeInspector();
           }
         }
 
-        for ( var i = 0; i < ynabToolKit.digest.length; i++ ) {
-
-          // The user has switched screens
-          if (ynabToolKit.digestClasses.has('layout')) {
-            if ( ynabToolKit.options.resizeInspector ){
-              ynabToolKit.resizeInspector();
-            }
+        // The user has returned back to the budget screen
+        if (ynabToolKit.digestClasses.has('navlink-budget') && ynabToolKit.digestClasses.has('active')) {
+        
+          if ( ynabToolKit.options.checkCreditBalances ){
+            ynabToolKit.checkCreditBalances();
+          }
+          if ( ynabToolKit.options.highlightNegativesNegative ){
+            ynabToolKit.highlightNegativesNegative();
+          }
+          if ( ynabToolKit.options.budgetProgressBars ){
+            ynabToolKit.budgetProgressBars();
+          }
+          if ( ynabToolKit.options.goalIndicator ){
+            ynabToolKit.goalIndicator();
+          }
+          if ( ynabToolKit.options.warnOnQuickBudget ){
+            ynabToolKit.warnOnQuickBudget();
           }
 
-          // The user has returned back to the budget screen
-          if (ynabToolKit.digestClasses.has('navlink-budget') && ynabToolKit.digestClasses.has('active')) {
-          
-            if ( ynabToolKit.options.checkCreditBalances ){
-              ynabToolKit.checkCreditBalances();
-            }
-            if ( ynabToolKit.options.highlightNegativesNegative ){
-              ynabToolKit.highlightNegativesNegative();
-            }
-            if ( ynabToolKit.options.budgetProgressBars ){
-              ynabToolKit.budgetProgressBars();
-            }
-            if ( ynabToolKit.options.goalIndicator ){
-              ynabToolKit.goalIndicator();
-            }
-            if ( ynabToolKit.options.warnOnQuickBudget ){
-              ynabToolKit.warnOnQuickBudget();
-            }
+        }
 
+        // We found a modal pop-up
+        if (ynabToolKit.digestClasses.has('options-shown')) {
+
+          if (ynabToolKit.options.removeZeroCategories) {
+            ynabToolKit.removeZeroCategories();
+          }
+          if (ynabToolKit.options.moveMoneyAutocomplete) {
+            ynabToolKit.moveMoneyAutocomplete();
           }
 
-            for (var i = 0; i < ynabToolKit.digest.length; i++) {
+        }
 
-              // We found a modal pop-up
-              if (ynabToolKit.digestClasses.has('options-shown')) {
-                if (ynabToolKit.options.removeZeroCategories) {
-                  ynabToolKit.removeZeroCategories();
-                }
-                if (ynabToolKit.options.moveMoneyAutocomplete) {
-                  ynabToolKit.moveMoneyAutocomplete();
-                }
-              }
+        // User has selected a specific sub-category
+        if (ynabToolKit.digestClasses.has('is-sub-category') && ynabToolKit.digestClasses.has('is-checked')) {
 
-              // User has selected a specific sub-category
-              if (ynabToolKit.digestClasses.has('is-sub-category') && ynabToolKit.digestClasses.has('is-checked')) {
+          if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
+            ynabToolKit.updateInspectorColours();
+          }
 
-                if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
-                  ynabToolKit.updateInspectorColours();
-                }
-              }
+        }
 
 
-              // We found Account transactions rows
-              if (ynabToolKit.digestClasses.has('ynab-grid-body')) {
-                if (ynabToolKit.options.swapClearedFlagged) {
-                  ynabToolKit.swapClearedFlagged();
-                }
-              }
+        // We found Account transactions rows
+        if (ynabToolKit.digestClasses.has('ynab-grid-body')) {
 
-              // The user has changed their budget row selection
-            if (ynabToolKit.digestClasses.has('budget-inspector')) {
+          if (ynabToolKit.options.swapClearedFlagged) {
+            ynabToolKit.swapClearedFlagged();
+          }
 
-              if ( ynabToolKit.options.warnOnQuickBudget ){
-                ynabToolKit.warnOnQuickBudget();
-              }
-            }
+        }
 
-            // Now we are ready to feed the change digest to the
-            // automatically setup feedChanges file/function
-            ynabToolKit.shared.feedChanges(ynabToolKit.digest);
+        // The user has changed their budget row selection
+        if (ynabToolKit.digestClasses.has('budget-inspector')) {
 
-          });
+          if ( ynabToolKit.options.warnOnQuickBudget ){
+            ynabToolKit.warnOnQuickBudget();
+          }
+
+        }
+
+        // Now we are ready to feed the change digest to the
+        // automatically setup feedChanges file/function
+        ynabToolKit.shared.feedChanges(ynabToolKit.digest);
+
+      });
 
       // This finally says 'Watch for changes' and only needs to be called the one time
       observer.observe($('.ember-view.layout')[0], {
