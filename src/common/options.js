@@ -79,6 +79,7 @@ function saveOptions() {
   saveCheckboxOption('resizeInspector');
   saveCheckboxOption('importNotification');
   saveCheckboxOption('swapClearedFlagged');
+  saveCheckboxOption('warnOnQuickBudget');
 
   saveSelectOption('daysOfBufferingHistoryLookup');
   saveSelectOption('budgetRowsHeight');
@@ -121,6 +122,7 @@ function restoreOptions() {
   restoreCheckboxOption('resizeInspector');
   restoreCheckboxOption('importNotification');
   restoreCheckboxOption('swapClearedFlagged');
+  restoreCheckboxOption('warnOnQuickBudget');
 
   restoreSelectOption('daysOfBufferingHistoryLookup');
   restoreSelectOption('budgetRowsHeight');

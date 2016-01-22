@@ -30,10 +30,10 @@
           var $nodes = $(newNodes); // jQuery set
           $nodes.each(function() {
             var $node = $(this);
-  
-  
+
+
             ynabToolKit.digest.push($node);
-            
+
 
           }); // each node mutation event
 
@@ -73,7 +73,7 @@
         for ( var i = 0; i < ynabToolKit.digest.length; i++ ) {
 
           // The user has returned back to the budget screen
-          if ($(ynabToolKit.digest[i]).hasClass('budget-inspector')) {
+          if ($(ynabToolKit.digest[i]).hasClass('navlink-budget') && $(ynabToolKit.digest[i]).hasClass('active')) {
 
             if ( ynabToolKit.options.checkCreditBalances ){
               ynabToolKit.checkCreditBalances();
@@ -87,7 +87,10 @@
             if ( ynabToolKit.options.goalIndicator ){
               ynabToolKit.goalIndicator();
             }
-            
+            if ( ynabToolKit.options.warnOnQuickBudget ){
+              ynabToolKit.warnOnQuickBudget();
+            }
+
                 break;
               }
 
@@ -123,7 +126,39 @@
 
               }
             }
+<<<<<<< HEAD
             
+=======
+
+            for (var i = 0; i < ynabToolKit.digest.length; i++) {
+
+              // We found Account transactions rows
+              if ($(ynabToolKit.digest[i]).hasClass('ynab-grid-body')) {
+
+                if (ynabToolKit.options.swapClearedFlagged) {
+                  ynabToolKit.swapClearedFlagged();
+                }
+
+                break;
+
+              }
+            }
+
+            for (var i = 0; i < ynabToolKit.digest.length; i++) {
+
+              // The user has changed their budget row selection
+              if ($(ynabToolKit.digest[i]).hasClass('budget-inspector')) {
+
+              if ( ynabToolKit.options.warnOnQuickBudget ){
+                ynabToolKit.warnOnQuickBudget();
+              }
+
+                break;
+
+              }
+            }
+
+>>>>>>> warn-on-quick-budget
             // Now we are ready to feed the change digest to the
             // automatically setup feedChanges file/function
             ynabToolKit.shared.feedChanges(ynabToolKit.digest);
