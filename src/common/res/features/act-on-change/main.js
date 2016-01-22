@@ -17,6 +17,8 @@
         if (ynabToolKit.debugNodes) {
           console.log('MODIFIED NODES');
         }
+        
+        ynabToolKit.observedNodes = new Set();
 
         mutations.forEach(function(mutation) {
           var newNodes = mutation.target;
@@ -85,16 +87,6 @@
 
           if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
             ynabToolKit.updateInspectorColours();
-          }
-
-        }
-
-
-        // We found Account transactions rows
-        if (ynabToolKit.observedNodes.has('ynab-grid-body')) {
-
-          if (ynabToolKit.options.swapClearedFlagged) {
-            ynabToolKit.swapClearedFlagged();
           }
 
         }
