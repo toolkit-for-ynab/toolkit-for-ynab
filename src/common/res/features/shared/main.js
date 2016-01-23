@@ -99,7 +99,7 @@ ynabToolKit.shared = new function() {
         if($('.ember-view .budget-header').length) {
             var headerView = Ember.View.views[$('.ember-view .budget-header').attr("id")];
             var endOfLastMonth = headerView.get("currentMonth").toNativeDate();
-            return new Date(endOfLastMonth.getFullYear(), endOfLastMonth.getMonth()+1, 1);
+            return new Date(endOfLastMonth.getFullYear(), endOfLastMonth.getMonth(), 1);
         } else {
             return null;
         }
@@ -115,13 +115,13 @@ ynabToolKit.shared = new function() {
 
         this.snapshot = function() {
             var totalAvailable = 0;
-            
+
             // Find and collect the available balances of each category in the budget
             var availableBalances = $('.budget-table-cell-available').find('span.user-data.currency').map(function() {
                 availableBalance = $(this).html();
-                return Number(availableBalance.replace(/[^\d.-]/g, '')); 
+                return Number(availableBalance.replace(/[^\d.-]/g, ''));
             });
-            
+
             // Add each balance together to get the total available sum
             $.each(availableBalances,function(){totalAvailable+=parseFloat(this) || 0;});
             return totalAvailable;
@@ -136,7 +136,7 @@ ynabToolKit.shared = new function() {
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
     if (typeof Em !== 'undefined' && typeof Ember !== 'undefined'
-          && typeof $ !== 'undefined' && $('.ember-view.layout').length 
+          && typeof $ !== 'undefined' && $('.ember-view.layout').length
           && typeof ynabToolKit !== 'undefined') {
 
       ynabToolKit.pageReady = true;

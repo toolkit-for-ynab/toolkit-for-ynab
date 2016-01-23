@@ -67,6 +67,11 @@
       if (calendarNote.textContent == "Enter a note...") {
         calendarNote.textContent = ynabToolKit.l10n.Data.Budget.Header.Placeholder.Note;
       }
+
+      if (!ynabToolKit.options.hideAOM) {
+        $('.budget-header-days-label')[0].textContent = ynabToolKit.l10n.Data.Budget.Header.Metric.AoM;
+      }
+
     };
     ynabToolKit.l10n.localize.budgetHeader();
 

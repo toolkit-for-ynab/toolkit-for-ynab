@@ -36,8 +36,8 @@ ynabToolKit.l10n.Data = {
         "BIF" : "На будущее",
       },
       "Metric" : {
-        "AoM" : "Age of Money",
-        "DoB" : "Days of Buffering",
+        "AoM" : "Возраст Денег",
+        "DoB" : "Размер Буфера",
       }
     },
     "Table" : {

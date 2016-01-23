@@ -6,7 +6,7 @@ function ynabEnhancedDoB() {
     var elementForDoB = elementForAoM.cloneNode(true);
 
     elementForDoB.className = elementForDoB.className + " days-of-buffering";
-    elementForDoB.children[1].textContent = "Days of Buffering";
+    elementForDoB.children[1].textContent = ynabToolKit.l10n.Data.Budget.Header.Metric.DoB || "Days of Buffering";
     elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
 
     var calculation = ynabEnhancedDoBCalculate();
@@ -16,16 +16,16 @@ function ynabEnhancedDoB() {
     }
     else {
         elementForDoB.children[0].textContent = calculation["DoB"] + " day" + (calculation["DoB"] == 1 ? "" : "s");
-        elementForDoB.children[0].title = "Total outflow: " + ynab.YNABSharedLib.currencyFormatter.format(calculation["totalOutflow"]) + 
-            "\nTotal days of budgeting: " + calculation["totalDays"] + 
-            "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(calculation["averageDailyOutflow"]) + 
-            "\nAverage daily transactions: " + calculation["averageDailyTransactions"].toFixed(1);        
+        elementForDoB.children[0].title = "Total outflow: " + ynab.YNABSharedLib.currencyFormatter.format(calculation["totalOutflow"]) +
+            "\nTotal days of budgeting: " + calculation["totalDays"] +
+            "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(calculation["averageDailyOutflow"]) +
+            "\nAverage daily transactions: " + calculation["averageDailyTransactions"].toFixed(1);
     }
 
     YNABheader.appendChild(elementForDoB);
 }
 
-function onlyUnique(value, index, self) { 
+function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
@@ -33,10 +33,10 @@ function ynabEnhancedCheckTransactionTypes(transactions) {
     // Describe all handled transaction types and check that no other got.
     var handeledTransactionTypes = ["subTransaction", "transaction", "scheduledTransaction", "scheduledSubTransaction"];
     var uniqueTransactionTypes = Array.from(transactions, (el) => el.displayItemType).filter(onlyUnique);
-    var allTypesHandeled = uniqueTransactionTypes.every(el => uniqueTransactionTypes.includes(el)); 
+    var allTypesHandeled = uniqueTransactionTypes.every(el => uniqueTransactionTypes.includes(el));
     if (!allTypesHandeled) {
         throw "Found unhandeled transaction type. " + uniqueTransactionTypes;
-    }  
+    }
 }
 
 function ynabEnhancedDoBCalculate() {
@@ -44,14 +44,14 @@ function ynabEnhancedDoBCalculate() {
     var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
     var transactions = entityManager.getAllTransactions();
     var outflowTransactions = transactions.filter((el) => !el.isTombstone
-                                                        && el.transferAccountId == null 
+                                                        && el.transferAccountId == null
                                                         && el.amount < 0
                                                         && el.getAccount().onBudget);
 
     // Filter outflow transactions by Date for history lookup option.
     if (ynabToolKit.options.daysOfBufferingHistoryLookup > 0) {
         dateNow = Date.now();
-        var outflowTransactions = outflowTransactions.filter((el) => 
+        var outflowTransactions = outflowTransactions.filter((el) =>
             (dateNow - el.getDate().getUTCTime()) / 3600/24/1000/(365/12) < ynabToolKit.options.daysOfBufferingHistoryLookup)
     }
 
@@ -82,7 +82,7 @@ function ynabEnhancedDoBInit() {
     if (elementForAoM.length == 1 && elementForDoB.length == 0) {
         ynabEnhancedDoB();
     }
-    
+
     setTimeout(ynabEnhancedDoBInit, 250);
 }
 
