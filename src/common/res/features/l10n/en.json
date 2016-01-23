@@ -63,8 +63,17 @@
         "Available" : "TOTAL AVAILABLE",
         "Inflows" : "TOTAL INFLOWS",
         "Quick" : "QUICK BUDGET",
+        "QuickSelected" : "QUICK BUDGET SELECTED",
         "Goals" : "Goals",
-        "Notes" : "Notes"
+        "Notes" : "Notes",
+        "CategoriesSelected" : "Categories Selected"
+      },
+      "Title" : {
+        "CashLeft" : "Cash Left Over From",
+        "Budgeted" : "Budgeted This Month",
+        "CashSpending" : "Cash Spending",
+        "CreditSpending" : "Credit Spending",
+        "Available" : "Available",
       },
       "Button" : {
         "Underfunded" : "Underfunded",

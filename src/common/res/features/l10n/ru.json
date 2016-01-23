@@ -63,8 +63,17 @@ ynabToolKit.l10n.Data = {
         "Available" : "ДОСТУПНО",
         "Inflows" : "ПОСТУПЛЕНИЯ",
         "Quick" : "БЫСТРОЕ БЮДЖЕТИРОВАНИЕ",
+        "QuickSelected" : "БЫСТРОЕ БЮДЖЕТИРОВАНИЕ ВЫБРАННЫХ",
         "Goals" : "Цели",
-        "Notes" : "Заметки"
+        "Notes" : "Заметки",
+        "CategoriesSelected" : "Выбрано"
+      },
+      "Title" : {
+        "CashLeft" : "Остаток с прошлого месяца",
+        "Budgeted" : "Бюджет в этом месяце",
+        "CashSpending" : "Расходы наличными",
+        "CreditSpending" : "Расходы с кредитных карт",
+        "Available" : "Доступно",
       },
       "Button" : {
         "Underfunded" :  "Недобюджетировано",
