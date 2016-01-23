@@ -81,6 +81,8 @@ ynabToolKit.l10n.Data = {
         "SpentLastMonth" :  "Расходы предыдущего месяца",
         "AverageBudgeted" :  "Средний бюджет",
         "AverageSpent" :  "Средние расходы",
+        "Edit" : "Изменить",
+        "CreateGoal" : "Задайте Цель"
       },
     },
   },

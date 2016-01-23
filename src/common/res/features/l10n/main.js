@@ -54,11 +54,13 @@
         headers[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Goals;
         headers[2].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Notes;
 
-        var buttons = $(inspector).find('.budget-inspector-button');
-        buttons[0].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.BudgetedLastMonth;
-        buttons[1].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.SpentLastMonth;
-        buttons[2].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageBudgeted;
-        buttons[3].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageSpent;
+        var buttons = $(inspector).find('button');
+        buttons[0].childNodes[1].textContent = " " + ynabToolKit.l10n.Data.Budget.Inspector.Button.Edit;
+        buttons[1].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.BudgetedLastMonth;
+        buttons[2].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.SpentLastMonth;
+        buttons[3].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageBudgeted;
+        buttons[4].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageSpent;
+        buttons[5].childNodes[3].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.CreateGoal;
 
         categoryNote = $(inspector).find('.inspector-category-note').contents()[3];
         if (categoryNote.textContent == "Enter a note...") {
@@ -127,7 +129,7 @@
       $(budgetTableHeader).find('.budget-table-cell-activity')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Activity;
       $(budgetTableHeader).find('.budget-table-cell-available')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Available;
 
-      $('.budget-toolbar-add-category').contents()[4].textContent = ynabToolKit.l10n.Data.Budget.Table.Button.CategoryGroup;
+      $('.budget-toolbar-add-category').contents()[4].textContent = " " + ynabToolKit.l10n.Data.Budget.Table.Button.CategoryGroup;
     }
     ynabToolKit.l10n.localize.budgetTable();
 

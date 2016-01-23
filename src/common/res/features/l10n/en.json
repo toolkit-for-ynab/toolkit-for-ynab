@@ -81,6 +81,8 @@
         "SpentLastMonth" : "Spent Last Month",
         "AverageBudgeted" : "Average Budgeted",
         "AverageSpent" : "Average Spent",
+        "Edit" : "Edit",
+        "CreateGoal" : "Create a goal"
       },
     },
   },
