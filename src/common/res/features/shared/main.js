@@ -98,8 +98,8 @@ ynabToolKit.shared = new function() {
         // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
         if($('.ember-view .budget-header').length) {
             var headerView = Ember.View.views[$('.ember-view .budget-header').attr("id")];
-            var endOfLastMonth = headerView.get("currentMonth").toNativeDate();
-            return new Date(endOfLastMonth.getFullYear(), endOfLastMonth.getMonth()+1, 1);
+            var selectedMonthUTC = headerView.get("currentMonth").toNativeDate();
+            return new Date(selectedMonthUTC.getUTCFullYear(), selectedMonthUTC.getUTCMonth(), 1);
         } else {
             return null;
         }
