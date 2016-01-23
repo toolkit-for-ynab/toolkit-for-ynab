@@ -17,7 +17,7 @@
         if (ynabToolKit.debugNodes) {
           console.log('MODIFIED NODES');
         }
-        
+
         ynabToolKit.changedNodes = new Set();
 
         mutations.forEach(function(mutation) {
@@ -49,17 +49,10 @@
               ynabToolKit.updateInspectorColours();
           }
         }
-        
-        // The user has switched screens
-        if (ynabToolKit.changedNodes.has('layout')) {
-          if ( ynabToolKit.options.resizeInspector ){
-            ynabToolKit.resizeInspector();
-          }
-        }
 
         // The user has returned back to the budget screen
         if (ynabToolKit.changedNodes.has('navlink-budget') && ynabToolKit.changedNodes.has('active')) {
-        
+
           if ( ynabToolKit.options.budgetProgressBars ){
             ynabToolKit.budgetProgressBars();
           }
