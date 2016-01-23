@@ -3,6 +3,22 @@
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
   
     ynabToolKit.l10nData = {
+      // Global names
+      Global_Button_Ok : "OK",
+      Global_Button_Cancel : "Отмена",
+      Global_Month_1 : "Янв",
+      Global_Month_2 : "Фев",
+      Global_Month_3 : "Мар",
+      Global_Month_4 : "Апр",
+      Global_Month_5 : "Май",
+      Global_Month_6 : "Июнь",
+      Global_Month_7 : "Июль",
+      Global_Month_8 : "Авг",
+      Global_Month_9 : "Сент",
+      Global_Month_10 : "Окт",
+      Global_Month_11 : "Ноя",
+      Global_Month_12 : "Дек",
+      
       // Inspector
       TOTAL_BUDGETED : "ЗАБЮДЖЕТИРОВАНО",
       TOTAL_ACTIVITY : "АКТИВНОСТЬ",
@@ -10,6 +26,7 @@
       TOTAL_INFLOWS : "ПОСТУПЛЕНИЯ",
       QUICK_BUDGET : "БЫСТРОЕ БЮДЖЕТИРОВАНИЕ",
       // Inspector buttons
+
     } 
 
     //   buttons = $(inspector).find("button");

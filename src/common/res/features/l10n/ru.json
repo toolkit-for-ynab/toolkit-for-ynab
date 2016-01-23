@@ -1,0 +1,89 @@
+ynabToolKit.l10nData = {
+  "Global" : {
+    "Button" : {
+      "Ok": "OK",
+      "Cancel" : "Cancel"
+    },
+    "Month" : {
+      "1" : "Jan",
+      "2" : "Feb",
+      "3" : "Mar",
+      "4" : "Apr",
+      "5" : "May",
+      "6" : "Jun",
+      "7" : "Jul",
+      "8" : "Aug",
+      "9" : "Sep",
+      "10" : "Oct",
+      "11" : "Nov",
+      "12" : "Dec",
+    }
+  },
+  "BudgetHeader" : {
+    "Placeholder" : {
+      "Note" : "Enter a note..."
+    },
+    "Totals" : {
+      "TBB" : "To be Budgeted",
+      "Funds" : "Funds for",
+      "Overspent" : "Overspent in",
+      "Budgeted" : "Budgeted in",
+      "BIF" : "Budgeted in Future",
+    },
+    "Metric" : {
+      "AoM" : "Age of Money",
+      "DoB" : "Days of Buffering",
+    }
+  },
+  "BudgetTable" : {
+    "Button" : {
+      "CategoryGroup" : "Category Group",
+    },
+    "Placeholder" : {
+      "NewCategoryGroup" : "New Category Group",
+    },
+    "Header" : {
+      "Category" : "CATEGORY",
+      "Budgeted" : "BUDGETED",
+      "Activity" : "ACTIVITY",
+      "Available" : "AVAILABLE",
+      "Pacing" : "PACING",
+    }
+  },
+  "BudgetOptionsModal" : {
+    "Button" : {
+      "New" : "Create a new budget",
+      "Open" : "Open a budget",
+      "Setting" : "Budget Settings",
+      "FreshStart" : "Make a fresh start",
+    }
+  },
+  "Sidebar" : {
+    "Button" : {
+      "Budget" : "Budget",
+      "AllAccounts" : "All Accounts",
+      "Collapse" : "Collapse",
+      "AddAccount" : "Add Account",
+    },
+    "Title" : {
+      "Budget" : "BUDGET",
+      "Tracking" : "TRACKING",
+      "Closed  " : "CLOSED",
+    }
+  },
+  "AccountOptionsModal" : {
+    "Placeholder" : {
+      "About" : "Enter a note (not your account number)..."
+    },
+    "Title" : {
+      "DirectImport" : "Use your bank login to import transactions",
+      "TodaysBalance" : "Today's Balance:"
+    },
+    "Button" : {
+      "Close" : "Close Account",
+      "Reopen" : "Re-open",
+      "Delete" : "Delete",      
+    }
+  }
+
+}

@@ -1,0 +1,139 @@
+{
+  "Global" : {
+    "Button" : {
+      "Ok": "OK",
+      "Cancel" : "Cancel"
+    },
+    "Month" : {
+      "1" : "Jan",
+      "2" : "Feb",
+      "3" : "Mar",
+      "4" : "Apr",
+      "5" : "May",
+      "6" : "Jun",
+      "7" : "Jul",
+      "8" : "Aug",
+      "9" : "Sep",
+      "10" : "Oct",
+      "11" : "Nov",
+      "12" : "Dec",
+    },
+    "Title" : {
+      "TodaysBalance" : "Today's Balance:",
+      "DirectImport" : "Use your bank login to import transactions",
+    }
+  },
+  "Budget" : {
+    "Header" : {
+      "Placeholder" : {
+        "Note" : "Enter a note..."
+      },
+      "Totals" : {
+        "TBB" : "To be Budgeted",
+        "Funds" : "Funds for",
+        "Overspent" : "Overspent in",
+        "Budgeted" : "Budgeted in",
+        "BIF" : "Budgeted in Future",
+      },
+      "Metric" : {
+        "AoM" : "Age of Money",
+        "DoB" : "Days of Buffering",
+      }
+    },
+    "Table" : {
+      "Button" : {
+        "CategoryGroup" : "Category Group",
+      },
+      "Placeholder" : {
+        "NewCategoryGroup" : "New Category Group",
+      },
+      "Header" : {
+        "Category" : "CATEGORY",
+        "Budgeted" : "BUDGETED",
+        "Activity" : "ACTIVITY",
+        "Available" : "AVAILABLE",
+        "Pacing" : "PACING",
+      }
+    },
+    "Inspector" : {
+      "Totals" : {
+        "Budgeted" : "TOTAL BUDGETED",
+        "Activity" : "TOTAL ACTIVITY",
+        "Available" : "TOTAL AVAILABLE",
+        "Inflows" : "TOTAL INFLOWS",
+        "Quick" : "QUICK BUDGET",
+      },
+      "QuickBudgeting" : {
+
+      },
+    },
+  },
+  "Sidebar" : {
+    "Button" : {
+      "Budget" : "Budget",
+      "AllAccounts" : "All Accounts",
+      "Collapse" : "Collapse",
+      "AddAccount" : "Add Account",
+    },
+    "Title" : {
+      "Budget" : "BUDGET",
+      "Tracking" : "TRACKING",
+      "Closed  " : "CLOSED",
+    }
+  },
+  "AccountOptionsModal" : {
+    "Placeholder" : {
+      "About" : "Enter a note (not your account number)..."
+    },
+    "Button" : {
+      "Close" : "Close Account",
+      "Reopen" : "Re-open",
+      "Delete" : "Delete",      
+    }
+  },
+  "BudgetOptionsModal" : {
+    "Button" : {
+      "New" : "Create a new budget",
+      "Open" : "Open a budget",
+      "Setting" : "Budget Settings",
+      "FreshStart" : "Make a fresh start",
+    }
+  },
+  "AddAccountModal" : {
+    "Title" : {
+      "NewAccount" : "Add a New Account",
+      "AccountName" : "Account Name:",
+      "AccountType" : "Account Type:",
+      "TransactionImport" : "Transaction Import:",
+      "Examples" : "Examples:",
+      "Or" : "or",
+      "Popular" : "Popular Options:",
+      },
+    "Placeholder" : {
+      "NewAccount" : "New Account",
+      "AccountType" : "Select an Account Type...",
+      "Balance" : "What is the balance of this account right now?",
+      "Search" : "search for your bank’s name",
+    },
+    "Button" : {
+      "AddAccount" : "Add Account",
+      "Next" : "Next",
+      "Back" : "Back",
+    },
+    "AccountType" : {
+      "Budget" : "Budget",
+      "Tracking" : "Tracking",
+      "Checking" : "Checking",
+      "Savings" : "Savings",
+      "CreditCard" : "Credit Card",
+      "Cash" : "Cash",
+      "LineOfCredit" : "Line of Credit",
+      "PayPal" : "PayPal",
+      "Merchant" : "Merchant Account",
+      "Investment" : "Investment Account",
+      "Mortgage" : "Mortgage",
+      "OtherAsset" : "Other Asset",
+      "OtherLiability" : "Other Liability",
+    }
+  },
+}
