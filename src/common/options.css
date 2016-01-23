@@ -31,14 +31,6 @@ label {
   font-size: 1.3em;
 }
 
-.bootstrap-switch {
-  float:right;
-}
-
-.container {
-  margin-top: 22px;
-}
-
 #main-menu li {
   font-size: 1.2em;
 }
@@ -46,6 +38,28 @@ label {
 /* Make all icons green to match the logo */
 i {
   color: #3CB54A;
+}
+
+.option-row {
+  margin-top: 25px;
+}
+
+.option-description {
+  display: inline-block;
+  width: 70%;
+}
+
+.option-row > label, .option-row > select, .option-row > span {
+  margin-left: 143px;
+}
+
+.option-row > .form-control {
+  width: 70%;
+}
+
+.bootstrap-switch {
+  vertical-align: top;
+  margin: 0 15px;
 }
 
 /* All switches should be green when they're on too */
@@ -66,7 +80,7 @@ i {
   outline: 0 !important;
 }
 
-.btn-primary {
+.btn-primary, .btn-primary:focus {
   background: #3CB54A;
   color: #ffffff;
 }
@@ -97,10 +111,10 @@ i {
 }
 
 #settingsSaved {
-    position: fixed;
-    text-align: center;
-    z-index: 99;
-    top: 0px;
-    left: 0px;
-    width: 100%;
+  position: fixed;
+  text-align: center;
+  z-index: 99;
+  top: 0px;
+  left: 0px;
+  width: 100%;
 }
