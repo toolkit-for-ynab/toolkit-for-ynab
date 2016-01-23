@@ -21,19 +21,46 @@
     ynabToolKit.l10n.localize.inspector = function () { // Keep feature functions contained within this
       var inspector = $('.budget-inspector');
 
-      var headers = $(inspector).find("h3");
-      headers[0].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Totals.Budgeted;
-      headers[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Totals.Activity;
-      headers[2].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Totals.Available;
-      headers[3].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Totals.Inflows;
-      headers[4].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Totals.Quick;
+      // No categories selected
+      if ($(inspector).find('div').hasClass('budget-inspector-default-inspector')) {
+        var headers = $(inspector).find("h3");
+        headers[0].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Budgeted;
+        headers[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Activity;
+        headers[2].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Available;
+        headers[3].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Inflows;
+        headers[4].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Quick;
 
-      var buttons = $(inspector).find("button");
-      buttons[0].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.QuickBudgeting.Underfunded;
-      buttons[1].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.QuickBudgeting.BudgetedLastMonth;
-      buttons[2].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.QuickBudgeting.SpentLastMonth;
-      buttons[3].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.QuickBudgeting.AverageBudgeted;
-      buttons[4].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.QuickBudgeting.AverageSpent;
+        var buttons = $(inspector).find("button");
+        buttons[0].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.Underfunded;
+        buttons[1].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.BudgetedLastMonth;
+        buttons[2].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.SpentLastMonth;
+        buttons[3].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageBudgeted;
+        buttons[4].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageSpent;
+      }
+
+      // One category selected
+      if ($(inspector).find('div').hasClass('ember-view budget-inspector-category-header')) {
+        var headers = $(inspector).find("h3");
+        headers[0].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Quick;
+        headers[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Goals;
+        headers[2].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Notes;
+
+        var buttons = $(inspector).find('.budget-inspector-button');
+        buttons[0].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.BudgetedLastMonth;
+        buttons[1].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.SpentLastMonth;
+        buttons[2].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageBudgeted;
+        buttons[3].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageSpent;
+
+        categoryNote = $(inspector).find('.inspector-category-note').contents()[3];
+        if (categoryNote.textContent == "Enter a note...") {
+          categoryNote.textContent = ynabToolKit.l10n.Data.Global.Placeholder.Note;
+        }
+      }
+
+      // Multiple categories selected
+      if ($(inspector).find('div').hasClass('budget-inspector-multi-select-inspector')) {
+
+      }
 
     }; // Keep feature functions contained within this
     ynabToolKit.l10n.localize.inspector();
@@ -65,7 +92,7 @@
 
       var calendarNote = $('.budget-header-calendar-note').contents()[1];
       if (calendarNote.textContent == "Enter a note...") {
-        calendarNote.textContent = ynabToolKit.l10n.Data.Budget.Header.Placeholder.Note;
+        calendarNote.textContent = ynabToolKit.l10n.Data.Global.Placeholder.Note;
       }
 
       if (!ynabToolKit.options.hideAOM) {
@@ -80,9 +107,6 @@
       $(budgetTableHeader).find('.budget-table-cell-budgeted')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Budgeted;
       $(budgetTableHeader).find('.budget-table-cell-activity')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Activity;
       $(budgetTableHeader).find('.budget-table-cell-available')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Available;
-      if (ynabToolKit.options.insertPacingColumns) {
-        $(budgetTableHeader).find('.budget-table-cell-pacing')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Pacing;
-      }
 
       $('.budget-toolbar-add-category').contents()[4].textContent = ynabToolKit.l10n.Data.Budget.Table.Button.CategoryGroup;
     }

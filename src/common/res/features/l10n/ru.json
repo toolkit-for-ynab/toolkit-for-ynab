@@ -21,13 +21,13 @@ ynabToolKit.l10n.Data = {
     "Title" : {
       "TodaysBalance" : "Today's Balance:",
       "DirectImport" : "Use your bank login to import transactions",
-    }
+    },
+    "Placeholder" : {
+      "Note" : "Заметка..."
+    },
   },
   "Budget" : {
     "Header" : {
-      "Placeholder" : {
-        "Note" : "Заметка..."
-      },
       "Totals" : {
         "TBB" : "Доступно",
         "Funds" : "Средства на ",
@@ -57,14 +57,16 @@ ynabToolKit.l10n.Data = {
       }
     },
     "Inspector" : {
-      "Totals" : {
+      "Header" : {
         "Budgeted" : "БЮДЖЕТ",
         "Activity" : "АКТИВНОСТЬ",
         "Available" : "ДОСТУПНО",
         "Inflows" : "ПОСТУПЛЕНИЯ",
         "Quick" : "БЫСТРОЕ БЮДЖЕТИРОВАНИЕ",
+        "Goals" : "Цели",
+        "Notes" : "Заметки"
       },
-      "QuickBudgeting" : {
+      "Button" : {
         "Underfunded" :  "Недобюджетировано",
         "BudgetedLastMonth" :  "Бюджет предыдущего месяца",
         "SpentLastMonth" :  "Расходы предыдущего месяца",
