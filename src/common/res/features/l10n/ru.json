@@ -65,7 +65,11 @@ ynabToolKit.l10n.Data = {
         "Quick" : "БЫСТРОЕ БЮДЖЕТИРОВАНИЕ",
       },
       "QuickBudgeting" : {
-
+        "Underfunded" :  "Недобюджетировано",
+        "BudgetedLastMonth" :  "Бюджет предыдущего месяца",
+        "SpentLastMonth" :  "Расходы предыдущего месяца",
+        "AverageBudgeted" :  "Средний бюджет",
+        "AverageSpent" :  "Средние расходы",
       },
     },
   },

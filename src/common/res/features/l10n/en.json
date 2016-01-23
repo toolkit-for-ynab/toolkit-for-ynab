@@ -46,6 +46,7 @@
       },
       "Placeholder" : {
         "NewCategoryGroup" : "New Category Group",
+        "NewCategory" : "New Category",
       },
       "Header" : {
         "Category" : "CATEGORY",
@@ -64,7 +65,11 @@
         "Quick" : "QUICK BUDGET",
       },
       "QuickBudgeting" : {
-
+        "Underfunded" : "Underfunded",
+        "BudgetedLastMonth" : "Budgeted Last Month",
+        "SpentLastMonth" : "Spent Last Month",
+        "AverageBudgeted" : "Average Budgeted",
+        "AverageSpent" : "Average Spent",
       },
     },
   },
@@ -88,7 +93,7 @@
     "Button" : {
       "Close" : "Close Account",
       "Reopen" : "Re-open",
-      "Delete" : "Delete",      
+      "Delete" : "Delete",
     }
   },
   "BudgetOptionsModal" : {

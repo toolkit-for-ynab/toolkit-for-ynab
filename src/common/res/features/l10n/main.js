@@ -29,11 +29,11 @@
       headers[4].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Totals.Quick;
 
       var buttons = $(inspector).find("button");
-      buttons[0].childNodes[1].textContent = "Недобюджетировано";
-      buttons[1].childNodes[1].textContent = "Бюджет предыдущего месяца";
-      buttons[2].childNodes[1].textContent = "Траты предыдущего месяца";
-      buttons[3].childNodes[1].textContent = "Средний бюджет";
-      buttons[4].childNodes[1].textContent = "Средние траты";
+      buttons[0].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.QuickBudgeting.Underfunded;
+      buttons[1].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.QuickBudgeting.BudgetedLastMonth;
+      buttons[2].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.QuickBudgeting.SpentLastMonth;
+      buttons[3].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.QuickBudgeting.AverageBudgeted;
+      buttons[4].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.QuickBudgeting.AverageSpent;
 
     }; // Keep feature functions contained within this
     ynabToolKit.l10n.localize.inspector();
