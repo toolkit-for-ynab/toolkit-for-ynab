@@ -42,10 +42,11 @@ ynabToolKit.l10n.Data = {
     },
     "Table" : {
       "Button" : {
-        "CategoryGroup" : "Category Group",
+        "CategoryGroup" : "Новая группа",
       },
       "Placeholder" : {
-        "NewCategoryGroup" : "New Category Group",
+        "NewCategoryGroup" : "Новая группа",
+        "NewCategory" : "Новая категория",
       },
       "Header" : {
         "Category" : "КАТЕГОРИЯ",

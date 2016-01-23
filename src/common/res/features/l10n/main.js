@@ -83,8 +83,24 @@
       if (ynabToolKit.options.insertPacingColumns) {
         $(budgetTableHeader).find('.budget-table-cell-pacing')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Pacing;
       }
+
+      $('.budget-toolbar-add-category').contents()[4].textContent = ynabToolKit.l10n.Data.Budget.Table.Button.CategoryGroup;
     }
     ynabToolKit.l10n.localize.budgetTable();
+
+    ynabToolKit.l10n.localize.addCategoryGroupModal = function () {
+      var modal = $('.modal-add-master-category');
+      $(modal).find('input')[0].setAttribute("placeholder", ynabToolKit.l10n.Data.Budget.Table.Placeholder.NewCategoryGroup);
+      $(modal).find('.button-primary').contents()[0].textContent = ynabToolKit.l10n.Data.Global.Button.Ok;
+      $(modal).find('.button-cancel').contents()[0].textContent = ynabToolKit.l10n.Data.Global.Button.Cancel;
+    }
+
+    ynabToolKit.l10n.localize.addCategoryModal = function () {
+      var modal = $('.modal-add-sub-category');
+      $(modal).find('input')[0].setAttribute("placeholder", ynabToolKit.l10n.Data.Budget.Table.Placeholder.NewCategory);
+      $(modal).find('.button-primary').contents()[0].textContent = ynabToolKit.l10n.Data.Global.Button.Ok;
+      $(modal).find('.button-cancel').contents()[0].textContent = ynabToolKit.l10n.Data.Global.Button.Cancel;
+    }
 
   } else {
     setTimeout(poll, 250);

@@ -55,9 +55,19 @@
           ynabToolKit.l10n.localize.budgetHeader();
         }
 
-        // Budget header
+        // Budget table
         if (ynabToolKit.changedNodes.has('budget-table')) {
           ynabToolKit.l10n.localize.budgetTable();
+        }
+
+        // Add master category modal
+        if (ynabToolKit.changedNodes.has('modal-add-master-category')) {
+          ynabToolKit.l10n.localize.addCategoryGroupModal();
+        }
+
+        // Add sub category modal
+        if (ynabToolKit.changedNodes.has('modal-add-sub-category')) {
+          ynabToolKit.l10n.localize.addCategoryModal();
         }
 
         // Changes are detected in the category balances
