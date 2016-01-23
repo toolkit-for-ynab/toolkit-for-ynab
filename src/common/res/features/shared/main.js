@@ -99,7 +99,7 @@ ynabToolKit.shared = new function() {
         if($('.ember-view .budget-header').length) {
             var headerView = Ember.View.views[$('.ember-view .budget-header').attr("id")];
             var endOfLastMonth = headerView.get("currentMonth").toNativeDate();
-            return new Date(endOfLastMonth.getFullYear(), endOfLastMonth.getMonth(), 1);
+            return new Date(endOfLastMonth.getFullYear(), endOfLastMonth.getMonth()+1, 1);
         } else {
             return null;
         }
