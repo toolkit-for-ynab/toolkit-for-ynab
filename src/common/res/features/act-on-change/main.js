@@ -97,6 +97,9 @@
             ynabToolKit.warnOnQuickBudget();
           }
 
+          ynabToolKit.l10n.localize.budgetHeader();
+          ynabToolKit.l10n.localize.budgetTable();
+
         }
 
         // We found a modal pop-up
