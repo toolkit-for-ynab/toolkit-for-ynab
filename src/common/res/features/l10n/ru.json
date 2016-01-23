@@ -26,14 +26,14 @@ ynabToolKit.l10n.Data = {
   "Budget" : {
     "Header" : {
       "Placeholder" : {
-        "Note" : "Enter a note..."
+        "Note" : "Заметка..."
       },
       "Totals" : {
-        "TBB" : "To be Budgeted",
-        "Funds" : "Funds for",
-        "Overspent" : "Overspent in",
-        "Budgeted" : "Budgeted in",
-        "BIF" : "Budgeted in Future",
+        "TBB" : "Доступно",
+        "Funds" : "Средства на ",
+        "Overspent" : "Перерасход в ",
+        "Budgeted" : "Бюджет в ",
+        "BIF" : "На будущее",
       },
       "Metric" : {
         "AoM" : "Age of Money",

@@ -6,7 +6,7 @@
 
     // Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
     // during page interactions and updates to the developer tools console.
-    ynabToolKit.debugNodes = true;
+    ynabToolKit.debugNodes = false;
 
     ynabToolKit.actOnChange = function() {
 
@@ -35,22 +35,24 @@
             }
             ynabToolKit.changedNodes = new Set([...ynabToolKit.changedNodes, ...nodeClasses]);
 
-            // Inspector
-            if ($node.hasClass('budget-inspector')) {
-              ynabToolKit.l10n.localize.Inspector($node);
-            }
-
-            // Calendar modal
-            if ($node.hasClass('modal-calendar')) {
-              ynabToolKit.l10n.localize.ModalCalendar($node);
-            }
-
           }); // each node mutation event
 
         }); // each mutation event
 
         if (ynabToolKit.debugNodes) {
-          console.log('###')
+          console.log('###');
+        }
+
+        console.log(ynabToolKit.changedNodes);
+
+        // Calendar modal
+        if (ynabToolKit.changedNodes.has('modal-calendar')) {
+          ynabToolKit.l10n.localize.calendarModal();
+        }
+
+        // Budget header
+        if (ynabToolKit.changedNodes.has('budget-header')) {
+          ynabToolKit.l10n.localize.budgetHeader();
         }
 
         // Changes are detected in the category balances
@@ -115,6 +117,8 @@
           if ( ynabToolKit.options.highlightNegativesNegative ){
             ynabToolKit.highlightNegativesNegative();
           }
+
+          ynabToolKit.l10n.localize.inspector();
 
         }
 

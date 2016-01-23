@@ -1,8 +1,25 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
+    function getDateInfo() {
+      var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
+      var currentMonthName = ynabToolKit.l10n.Data.Global.Month[selectedMonth.getMonth() + 1];
+      var previousMonthName;
+      if (selectedMonth.getMonth() == 0) {
+        previousMonthName = ynabToolKit.l10n.Data.Global.Month[12];
+      }
+      else {
+        previousMonthName = ynabToolKit.l10n.Data.Global.Month[selectedMonth.getMonth()];
+      }
+      return {
+        selectedMonth: selectedMonth,
+        currentMonthName: currentMonthName,
+        previousMonthName: previousMonthName
+      }
+    }
 
-    ynabToolKit.l10n.localize.Inspector = function (inspector)  { // Keep feature functions contained within this
+    ynabToolKit.l10n.localize.inspector = function () { // Keep feature functions contained within this
+      var inspector = $('.budget-inspector');
 
       var headers = $(inspector).find("h3");
       headers[0].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Totals.Budgeted;
@@ -19,27 +36,39 @@
       buttons[4].childNodes[1].textContent = "Средние траты";
 
     }; // Keep feature functions contained within this
-    ynabToolKit.l10n.localize.Inspector($('.budget-inspector'));
+    ynabToolKit.l10n.localize.inspector();
 
-    ynabToolKit.l10n.localize.ModalCalendar = function (calendar)  {
-      months = $(calendar).find('ul.ynab-calendar-months>li>button');
+    ynabToolKit.l10n.localize.calendarModal = function () {
+      var calendar = $('.modal-calendar');
+      var months = $(calendar).find('ul.ynab-calendar-months>li>button');
       for (var i = 0; i < months.length; i++) {
         months[i].textContent = ynabToolKit.l10n.Data.Global.Month[i + 1];
       }
     };
-    ynabToolKit.l10n.localize.ModalCalendar($('.modal-calendar'));
+    ynabToolKit.l10n.localize.calendarModal();
 
-    ynabToolKit.l10n.localize.BudgetHeaderTotals = function (budgetHeaderTotals)  { // Keep feature functions contained within this
+    ynabToolKit.l10n.localize.budgetHeader = function ()  {
+      var dateInfo = getDateInfo();
+      var selectedMonth = dateInfo.selectedMonth;
+      var currentMonthName = dateInfo.currentMonthName;
+      var previousMonthName = dateInfo.previousMonthName;
 
-      budgetHeaderTotals.find(".budget-header-totals-amount-label")[0].textContent = "К бюджетированию";
+      var button = $('.budget-header-calendar-date-button')[0];
+      $(button).contents()[1].textContent = currentMonthName + " " + selectedMonth.getFullYear();
 
-      budgetHeaderTotals.find(".budget-header-totals-cell-name")[0].textContent = "Средства на январь";
-      budgetHeaderTotals.find(".budget-header-totals-cell-name")[1].textContent = "Перерасход в январе";
-      budgetHeaderTotals.find(".budget-header-totals-cell-name")[2].textContent = "Забюджетировано в январе";
-      budgetHeaderTotals.find(".budget-header-totals-cell-name")[3].textContent = "На будущее";
+      $('.budget-header-totals-amount-label')[0].textContent = ynabToolKit.l10n.Data.Budget.Header.Totals.TBB;
+      var stats = $(".budget-header-totals-cell-name");
+      stats[0].textContent = ynabToolKit.l10n.Data.Budget.Header.Totals.Funds + " " + currentMonthName;
+      stats[1].textContent = ynabToolKit.l10n.Data.Budget.Header.Totals.Overspent + " " + previousMonthName;
+      stats[2].textContent = ynabToolKit.l10n.Data.Budget.Header.Totals.Budgeted + " " + currentMonthName;
+      stats[3].textContent = ynabToolKit.l10n.Data.Budget.Header.Totals.BIF;
 
-    }; // Keep feature functions contained within this
-    ynabToolKit.l10n.localize.BudgetHeaderTotals($('.budget-header-totals'));
+      var calendarNote = $('.budget-header-calendar-note').contents()[1];
+      if (calendarNote.textContent == "Enter a note...") {
+        calendarNote.textContent = ynabToolKit.l10n.Data.Budget.Header.Placeholder.Note;
+      }
+    };
+    ynabToolKit.l10n.localize.budgetHeader();
 
   } else {
     setTimeout(poll, 250);
