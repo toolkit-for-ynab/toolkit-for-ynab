@@ -5,16 +5,22 @@ function ynabEnhancedDoB() {
     var elementForAoM = document.getElementsByClassName("budget-header-days")[0];
     var elementForDoB = elementForAoM.cloneNode(true);
 
-    var result = ynabEnhancedDoBCalculate();
-    elementForDoB.children[0].innerText = result["DoB"] + " day" + (result["DoB"] == 1 ? "" : "s");
-    elementForDoB.children[0].className = elementForDoB.children[0].className + " days-of-budgeting";
-    elementForDoB.children[0].title = "Total outflow: " + ynab.YNABSharedLib.currencyFormatter.format(result["totalOutflow"]) + 
-        "\nTotal days of budgeting: " + result["totalDays"] + 
-        "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(result["averageDailyOutflow"]) + 
-        "\nAverage daily transactions: " + result["averageDailyTransactions"].toFixed(1);
-    elementForDoB.children[1].innerText = "Days of Buffering";
+    elementForDoB.className = elementForDoB.className + " days-of-buffering";
+    elementForDoB.children[1].textContent = "Days of Buffering";
     elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
-    elementForDoB.className = elementForDoB.className.replace(/\bhidden\b/,'');
+
+    var calculation = ynabEnhancedDoBCalculate();
+    if (!calculation){
+        elementForDoB.children[0].textContent = "???";
+        elementForDoB.children[0].title = "Your budget history is less than 15 days. Go on with YNAB a while.";
+    }
+    else {
+        elementForDoB.children[0].textContent = calculation["DoB"] + " day" + (calculation["DoB"] == 1 ? "" : "s");
+        elementForDoB.children[0].title = "Total outflow: " + ynab.YNABSharedLib.currencyFormatter.format(calculation["totalOutflow"]) + 
+            "\nTotal days of budgeting: " + calculation["totalDays"] + 
+            "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(calculation["averageDailyOutflow"]) + 
+            "\nAverage daily transactions: " + calculation["averageDailyTransactions"].toFixed(1);        
+    }
 
     YNABheader.appendChild(elementForDoB);
 }
@@ -24,7 +30,7 @@ function onlyUnique(value, index, self) {
 }
 
 function ynabEnhancedCheckTransactionTypes(transactions) {
-    // Describe all handeled transaction types and check that no other got.
+    // Describe all handled transaction types and check that no other got.
     var handeledTransactionTypes = ["subTransaction", "transaction", "scheduledTransaction", "scheduledSubTransaction"];
     var uniqueTransactionTypes = Array.from(transactions, (el) => el.displayItemType).filter(onlyUnique);
     var allTypesHandeled = uniqueTransactionTypes.every(el => uniqueTransactionTypes.includes(el)); 
@@ -34,20 +40,31 @@ function ynabEnhancedCheckTransactionTypes(transactions) {
 }
 
 function ynabEnhancedDoBCalculate() {
-    var accounts = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result;
+    // Get outflow transactions.
+    var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
+    var transactions = entityManager.getAllTransactions();
+    var outflowTransactions = transactions.filter((el) => !el.isTombstone
+                                                        && el.transferAccountId == null 
+                                                        && el.amount < 0
+                                                        && el.getAccount().onBudget);
 
-    var firstTransactionDate = accounts.minTransactionDate._internalUTCMoment._d;
-    var lastTransactionDate = accounts.maxTransactionDate._internalUTCMoment._d;
+    // Filter outflow transactions by Date for history lookup option.
+    if (ynabToolKit.options.daysOfBufferingHistoryLookup > 0) {
+        dateNow = Date.now();
+        var outflowTransactions = outflowTransactions.filter((el) => 
+            (dateNow - el.getDate().getUTCTime()) / 3600/24/1000/(365/12) < ynabToolKit.options.daysOfBufferingHistoryLookup)
+    }
+
+    // Get outflow transactions period
+    outflowTransactionsDates = Array.from(outflowTransactions, (el) => el.getDate().getUTCTime());
+    var firstTransactionDate = Math.min.apply(null, outflowTransactionsDates);
+    var lastTransactionDate = Math.max.apply(null, outflowTransactionsDates);
     var totalDays = (lastTransactionDate - firstTransactionDate)/3600/24/1000;
+    if (totalDays < 15){
+        return false;
+    }
 
-    var transactions = accounts.visibleTransactionDisplayItems;
-    ynabEnhancedCheckTransactionTypes(transactions);
-    // All subTransaction (comes from split) have their parent transaction so they shouldn't count.
-    // scheduledTransaction shouldn't count too because they are not paid.
-    var outflow_transactions = transactions.filter((el) => el.displayItemType == "transaction" 
-                                                    && el.transferAccountId == null 
-                                                    && el.outflow > 0);
-    var totalOutflow = Array.from(outflow_transactions, (i) => i.outflow).reduce((a, b) => a + b, 0);
+    var totalOutflow = Array.from(outflowTransactions, (i) => -i.amount).reduce((a, b) => a + b, 0);
     var averageDailyOutflow = totalOutflow / totalDays;
     var budgetAccountsTotal = ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel()._result.getOnBudgetAccountsBalance();
     return {
@@ -55,13 +72,13 @@ function ynabEnhancedDoBCalculate() {
         totalOutflow: totalOutflow,
         totalDays: totalDays,
         averageDailyOutflow: averageDailyOutflow,
-        averageDailyTransactions: transactions.length/totalDays,
+        averageDailyTransactions: outflowTransactions.length/totalDays,
     }
 }
 
 function ynabEnhancedDoBInit() {
     var elementForAoM = document.getElementsByClassName("budget-header-days");
-    var elementForDoB = document.getElementsByClassName('days-of-budgeting');
+    var elementForDoB = document.getElementsByClassName('days-of-buffering');
     if (elementForAoM.length == 1 && elementForDoB.length == 0) {
         ynabEnhancedDoB();
     }

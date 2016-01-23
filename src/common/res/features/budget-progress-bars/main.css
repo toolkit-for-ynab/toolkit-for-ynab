@@ -1,0 +1,30 @@
+.is-checked.goal-progress .button-truncate {
+  width: 98%;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  border-radius: 12px;
+  background-color: #003440 !important;
+  padding-left: 1em;
+}
+
+.budget-table-row.is-checked.goal-progress {
+  color: black;
+}
+
+.is-checked.goal-progress-both .button-truncate {
+  color: #003440 !important;
+  font-weight: bold;
+}
+
+.budget-table-row.is-checked.goal-progress-both {
+  color: #cd8ef5;
+}
+
+.ember-view .ynab-checkbox  {
+  margin-right: 3px;
+}
+
+.budget-table-row.is-sub-category.is-checked > .budget-table-cell-available .zero {
+  color: black !important;
+}
+

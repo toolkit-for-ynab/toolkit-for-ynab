@@ -1,22 +1,17 @@
 body {
-  font-family: 'Open Sans', sans-serif;
-  background-color: #E5EBF2;
+  font-family: 'Montserrat', sans-serif;
   width: 330px;
-  height: 190px;
+  height: 240px;
 }
 
 .brandBar {
-  display: table;
   width: 100%;
-  height: 60px;
-  background-color: #09192A;
+  height: 110px;
 }
 
-.brandBar h2 {
-  display: table-cell;
-  vertical-align: middle;
-  padding-left: 10px;
-  color: white;
+.brandBar img {
+  display: block;
+  margin: 20px 0 4px 67px;
 }
 
 .divider {
@@ -39,4 +34,13 @@ body {
 
 .btn:focus {
   outline: 0 !important;
+}
+
+.btn-primary,.btn-primary:focus {
+  background: #3CB54A;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #66CC72;
 }

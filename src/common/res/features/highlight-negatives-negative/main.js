@@ -1,8 +1,7 @@
 	
 (function poll() {
-	if ( typeof ynabToolKit !== "undefined") {
+	if ( typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true ) {
 
-		ynabToolKit.featureOptions.highlightNegativesNegative = true;
 		ynabToolKit.highlightNegativesNegative = function ()  {
 	   		
 			var availableBalances = $('.budget-table-cell-available-div.user-data');
@@ -23,6 +22,7 @@
 			});
 	
 		};
+		ynabToolKit.highlightNegativesNegative(); // call itself once
 		
 	} else {
 		setTimeout(poll, 250);

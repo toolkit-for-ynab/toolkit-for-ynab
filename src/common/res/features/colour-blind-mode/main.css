@@ -1,3 +1,7 @@
+/* ======== General colours / shapes ======== */
+.inspector dt {
+	color: black !important;
+}
 
 /* ======== Cautious colours / shapes ======== */
 .budget-table-row.is-sub-category > .budget-table-cell-available .cautious {
@@ -5,7 +9,7 @@
 }
 
 .inspector-overview-available .currency.cautious {
-    background-color: #19a3c5;
+    background-color: #19a3c5 !important;;
 }
 
 .budget-table-row.is-sub-category > .budget-table-cell-available .cautious:hover {
@@ -36,10 +40,14 @@ ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-avai
 }
 
 /* ======== Positive colours / shapes ======== */
-ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-available-div > span.positive {
+ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-available > span.positive {
     background-color: #009e73 !important;
+    color: #fff !important;
+    font-weight: normal !important;
 }
 
 .inspector-overview-available .currency.positive {
-    background-color: #009e73 !important;
+    background-color: #009e73 !important;;
+    color: #fff !important;
+    font-weight: normal !important;
 }
