@@ -1,7 +1,6 @@
 (function poll() {
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
 
-    ynabToolKit.featureOptions.enhancedSelectedTotals = true;
     ynabToolKit.enhancedSelectedTotals = function ()  {
 
       function enhancedSelectedTotalsApply() {
@@ -30,7 +29,7 @@
           if (currentPath.indexOf('/accounts/') > -1) {
               accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1)
           }
-          transactions = ynabToolKit.getVisibleTransactions(accountId);
+          transactions = ynabToolKit.shared.getVisibleTransactions(accountId);
           notSubTransactions = transactions.filter((el) => el.displayItemType != ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType != ynab.constants.TransactionDisplayItemType.SubTransaction);
           for (var i = 0; i < notSubTransactions.length; i++) {
               if (notSubTransactions[i].isChecked) {
@@ -64,8 +63,8 @@
           for (var i = 0; i < spans.length; i++) {
               spans[i].remove();
           }
-          var totalFormatted = enhancedFormatCurrency(total, true);
-          var totalFormattedNoHtml = enhancedFormatCurrency(total, false);
+          var totalFormatted = ynabToolKit.shared.formatCurrency(total, true);
+          var totalFormattedNoHtml = ynabToolKit.shared.formatCurrency(total, false);
           var userData = document.createElement("span");
           userData.className = "user-data";
           userData.title = totalFormattedNoHtml;
@@ -79,18 +78,6 @@
           userCurrency.innerHTML = totalFormatted;
           userData.appendChild(userCurrency);
           parent.appendChild(userData);
-      }
-
-      function enhancedFormatCurrency(e, html) {
-          var n, r, a;
-          e = ynab.formatCurrency(e);
-          n = ynab.YNABSharedLib.currencyFormatter.getCurrency();
-          a = Ember.Handlebars.Utils.escapeExpression(n.currency_symbol);
-          if (html) {
-              a = "<bdi>" + a + "</bdi>";
-          }
-          n.symbol_first ? (r = "-" === e.charAt(0), e = r ? "-" + a + e.slice(1) : a + e) : e += a;
-          return new Ember.Handlebars.SafeString(e);
       }
 
       function enhancedSelectedTotalsInit() {

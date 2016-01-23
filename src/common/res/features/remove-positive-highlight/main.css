@@ -1,4 +1,5 @@
-.budget-table-row.is-sub-category > .budget-table-cell-available .positive {
+.budget-table-row.is-sub-category > .budget-table-cell-available .positive,
+.budget-table-row.is-sub-category.is-checked.goal-progress > .budget-table-cell-available .positive {
 	background-color: transparent;
 	color: #16a336;
 	font-weight: bold;
@@ -13,9 +14,18 @@
 .budget-table-row.is-sub-category > .budget-table-cell-available .zero {
 	background-color: transparent;
 	color: #cfd5d8;
+	font-weight: normal;
+}
+
+.budget-table-row.is-sub-category.is-checked.goal-progress > .budget-table-cell-available .positive
+{
+	color: #16a336;
+	font-weight: bold;
 }
 
 .budget-table-row.is-sub-category.is-checked > .budget-table-cell-available .positive,
 .budget-table-row.is-sub-category.is-checked > .budget-table-cell-available .zero {
 	color: #fff;
 }
+
+

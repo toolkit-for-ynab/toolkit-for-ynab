@@ -1,10 +1,4 @@
-window.ynabToolKit = new function() {
-
-    // This variable is populated by each active script loaded inside the ynabToolKit object
-    this.featureOptions = {},
-
-    //When this is true, the feature scripts will know they are ready to execute
-    this.pageReady = {},
+ynabToolKit.shared = new function() {
 
     // This function returns all visible transactions matching accountId.
     // If accountId === 'null' then all transactions for all accounts are returned with the visibility
@@ -81,7 +75,59 @@ window.ynabToolKit = new function() {
             }
         }
         return visibleTransactions;
-    };
+    },
+
+    // This function formats a number to a currency.
+    // number is the number you want to format, and html dictates if the <bdi> tag should be added or not.
+    this.formatCurrency = function (number, html) {
+        var formatted, currency, negative, currencySymbol;
+        formatted = ynab.formatCurrency(number);
+        currency = ynab.YNABSharedLib.currencyFormatter.getCurrency();
+        if (!currency.display_symbol) {
+            return new Ember.Handlebars.SafeString(formatted);
+        }
+        currencySymbol = Ember.Handlebars.Utils.escapeExpression(currency.currency_symbol);
+        if (html) {
+            currencySymbol = "<bdi>" + currencySymbol + "</bdi>";
+        }
+        currency.symbol_first ? (negative = "-" === formatted.charAt(0), formatted = negative ? "-" + currencySymbol + formatted.slice(1) : currencySymbol + formatted) : formatted += currencySymbol;
+        return new Ember.Handlebars.SafeString(formatted);
+    },
+
+    this.parseSelectedMonth = function () {
+        // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
+        if($('.ember-view .budget-header').length) {
+            var headerView = Ember.View.views[$('.ember-view .budget-header').attr("id")];
+            var endOfLastMonth = headerView.get("currentMonth").toNativeDate();
+            return new Date(endOfLastMonth.getFullYear(), endOfLastMonth.getMonth()+1, 1);
+        } else {
+            return null;
+        }
+    },
+
+    // Pass over each available category balance and provide a total. This can be used to
+    // evaluate if a feature script needs to continue based on an update to the budget.
+    this.availableBalance = new function() {
+
+        this.presentTotal = 0,
+
+        this.cachedTotal = 'init',
+
+        this.snapshot = function() {
+            var totalAvailable = 0;
+            
+            // Find and collect the available balances of each category in the budget
+            var availableBalances = $('.budget-table-cell-available').find('span.user-data.currency').map(function() {
+                availableBalance = $(this).html();
+                return Number(availableBalance.replace(/[^\d.-]/g, '')); 
+            });
+            
+            // Add each balance together to get the total available sum
+            $.each(availableBalances,function(){totalAvailable+=parseFloat(this) || 0;});
+            return totalAvailable;
+        }
+
+    }
 
 }; // end ynabToolKit object
 
@@ -90,7 +136,8 @@ window.ynabToolKit = new function() {
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
     if (typeof Em !== 'undefined' && typeof Ember !== 'undefined'
-          && typeof $ !== 'undefined' && $('.ember-view.layout').length) {
+          && typeof $ !== 'undefined' && $('.ember-view.layout').length 
+          && typeof ynabToolKit !== 'undefined') {
 
       ynabToolKit.pageReady = true;
 
@@ -98,3 +145,11 @@ window.ynabToolKit = new function() {
        setTimeout(poll, 250);
     }
  })();
+
+
+// Add formatting method to Date to get YYYY-MM.
+Date.prototype.yyyymm = function() {
+    var yyyy = this.getFullYear().toString();
+    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+    return yyyy + '-' + (mm[1]?mm:"0"+mm[0]); // padding
+};

@@ -21,8 +21,21 @@ function injectScript(path) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
+function injectJSString(js) {
+  var script = document.createElement('script');
+  script.text = js;
+
+  document.getElementsByTagName('body')[0].appendChild(script);
+}
+
+/* Init ynabToolKit object and import options from Kango  */
+injectJSString("window.ynabToolKit = {}; ynabToolKit.options = {" + Array.from(kango.storage.getKeys(), el=> el + " : " + kango.storage.getItem(el) + ", ").reduce((a, b) => a + b, "") + "}")
+
 /* Load this to setup shared utility functions */
 injectScript('res/features/shared/main.js');
+
+/* This script to be built automatically by the python script */
+injectScript('res/features/shared/feedChanges.js');
 
 /* Load this to setup behaviors when the DOM updates and shared functions */
 injectScript('res/features/act-on-change/main.js');
@@ -66,6 +79,10 @@ if (kango.storage.getItem('colourBlindMode')) {
   injectCSS('res/features/colour-blind-mode/main.css');
 }
 
+if (kango.storage.getItem('squareNegativeMode')) {
+  injectCSS('res/features/square-negative/square.css');
+}
+
 if (kango.storage.getItem('hideAOM')) {
   injectCSS('res/features/hide-age-of-money/main.css');
 }
@@ -97,6 +114,9 @@ if (kango.storage.getItem('budgetRowsHeight') == 1) {
 else if (kango.storage.getItem('budgetRowsHeight') == 2) {
   injectCSS('res/features/budget-rows-height/slim.css');
 }
+else if (kango.storage.getItem('budgetRowsHeight') == 3) {
+  injectCSS('res/features/budget-rows-height/slim-fonts.css');
+}
 
 if (kango.storage.getItem('categoryActivityPopupWidth') == 1) {
   injectCSS('res/features/category-activity-popup-width/medium.css');
@@ -115,6 +135,7 @@ if (kango.storage.getItem('moveMoneyAutocomplete')) {
 }
 
 if (kango.storage.getItem('toggleSplits')) {
+  injectCSS('res/features/toggle-splits/main.css')
   injectScript('res/features/toggle-splits/main.js');
 }
 
@@ -137,8 +158,31 @@ if (kango.storage.getItem('pacing')) {
   injectScript('res/features/pacing/main.js');
 }
 
+if (kango.storage.getItem('goalIndicator')) {
+  injectScript('res/features/goal-indicator/main.js');
+  injectCSS('res/features/goal-indicator/main.css');
+}
+
 if (kango.storage.getItem('reconciledTextColor')) {
   injectScript('res/features/distinguish-reconciled-transactions/main.js');
+}
+
+if (kango.storage.getItem('swapClearedFlagged')) {
+  injectScript('res/features/swap-cleared-flagged/main.js');
+}
+
+if (kango.storage.getItem('budgetProgressBars') > 0) {
+  injectCSS('res/features/budget-progress-bars/main.css');
+}
+
+if (kango.storage.getItem('budgetProgressBars') == 1) {
+  injectScript('res/features/budget-progress-bars/goals.js');
+}
+else if (kango.storage.getItem('budgetProgressBars') == 2) {
+  injectScript('res/features/budget-progress-bars/pacing.js');
+}
+else if (kango.storage.getItem('budgetProgressBars') == 3) {
+  injectScript('res/features/budget-progress-bars/both.js');
 }
 
 if (kango.storage.getItem('reconciledTextColor') == 1) {
@@ -169,8 +213,17 @@ else if (kango.storage.getItem('editButtonPosition') == 2) {
 }
 
 if (kango.storage.getItem('daysOfBuffering')) {
+  daysOfBufferingHistoryLookup = kango.storage.getItem('daysOfBufferingHistoryLookup');
+  injectJSString('var daysOfBufferingHistoryLookup = ' + daysOfBufferingHistoryLookup + ';');
   injectCSS('res/features/days-of-buffering/main.css');
   injectScript('res/features/days-of-buffering/main.js');
+}
+
+if (kango.storage.getItem('resizeInspector')) {
+  injectScript('res/features/resize-inspector/jquery-resizable.min.js');
+  injectScript('res/features/resize-inspector/resize-inspector.js');
+  injectCSS('res/features/resize-inspector/resize-inspector.css');
+  injectJSString('window.resizeInspectorAsset = "'+kango.io.getResourceUrl('assets/vsizegrip.png')+'";');
 }
 
 if (kango.storage.getItem('removePositiveHighlight')) {
@@ -180,4 +233,13 @@ if (kango.storage.getItem('removePositiveHighlight')) {
 if (kango.storage.getItem('enableReports')) {
   injectScript('res/features/reports/Chart.min.js');
   injectScript('res/features/reports/main.js');
+}
+
+if (kango.storage.getItem('importNotification')) {
+  injectCSS('res/features/import-notification/import-notification.css');
+  injectScript('res/features/import-notification/import-notification.js');
+}
+
+if (kango.storage.getItem('warnOnQuickBudget')) {
+  injectScript('res/features/warn-on-quick-budget/main.js');
 }

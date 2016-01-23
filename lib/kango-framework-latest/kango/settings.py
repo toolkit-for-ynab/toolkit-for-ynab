@@ -2,8 +2,8 @@ import os
 import json
 
 
-VERSION = '1.7.9'
-BUILD = 'e39b6ff2fcc8'
+VERSION = '1.8.0'
+BUILD = '3dc957b83b36'
 PACKAGE_ID = 'dev'
 
 KEYWORDS = {
@@ -11,10 +11,3 @@ KEYWORDS = {
     "ie.engine": "KangoEngine",
     "ie.bho": "KangoBHO"
 }
-
-try:
-    with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'settings.json'), 'r') as f:
-        settings = json.load(f)
-        KEYWORDS.update(settings.get('keywords', {}))
-except IOError:
-    pass

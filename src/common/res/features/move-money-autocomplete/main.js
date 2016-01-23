@@ -2,10 +2,9 @@
 
 	if (typeof ynabToolKit !== "undefined" && ynabToolKit.pageReady === true) {
 
-		ynabToolKit.featureOptions.moveMoneyAutoComplete = true;
 
 		var originalentries = null;
-		ynabToolKit.moveMoneyAutoComplete = function() {
+		ynabToolKit.moveMoneyAutocomplete = function() {
 
 			function autoCompleteApply() {
 
@@ -171,7 +170,7 @@
 			}
 
 		};
-        ynabToolKit.moveMoneyAutoComplete(); // Activate itself
+        ynabToolKit.moveMoneyAutocomplete(); // Activate itself
 
 	} else {
 		setTimeout(poll, 250);

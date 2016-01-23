@@ -1,6 +1,11 @@
 Kango framework changelog
 =========================
 
+Version 1.8.0
+-------------
+- Firefox: Electrolysis compatibility
+- Core: Synchronous access to kango.i18n in content script
+
 Version 1.7.9
 -------------
 - Chrome: Fix "no tab with id" / "no window with id" error messages

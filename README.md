@@ -10,6 +10,7 @@ ourselves!
 
 This is what the extension can do for you:
 
+- Days of Buffering Calculation - Forecasts how long it'll take to burn through all your available money using averages. We know there's no such thing as an average month, but some people prefer this calculation over the Age of Money calculation.
 - Colour Blind Mode - Changes colours of some of the numbers to make the interface easier on people with certain visual disabilities.
 - Make the calculator work like YNAB4. When you press + or - (etc) the calculator moves to the end of the line so your number isn't lost.
 - Hide the Age of Money calculation.
@@ -25,7 +26,8 @@ This is what the extension can do for you:
 - Show a total of the selected transactions in the account view.
 - Make the Move money dialog larger to make more of it fit on the screen at once.
 - Add a setting to make enter just save the transaction when adding transactions.
-- Show your your spending pacing mid-month to ensure you're on track to meet your budget.
+- Show your spending pacing mid-month to ensure you're on track to meet your budget. You can enable and disable this setting per budget column by clicking on the value.
+- Make negative numbers anywhere in the application have square corners so they stand out even more.
 
 All of these are configurable with options in the extension options page.
 
@@ -55,6 +57,12 @@ This extension uses Kango Extensions to provide cross browser support. To build:
 1. Run ```build.bat``` from within the folder you cloned above.
 1. You'll see platform specific output in the ```output``` folder.
 1. Load it into Chrome as an unpacked extension, or load it into Firefox via the .xpi file.
+
+Browser Support
+---------------
+The ToolKit is available for Chrome, Firefox, and Safari. The lead platform is Chrome, but we are actively working on making it equal across all three browsers.
+If you don't want to build the extension from the source yourself, you can get it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl) as well as the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/).
+There is currently no version of the extension available at the Safari Extensions Gallery, but it's in the process of being reviewed and should be available soon.
 
 Development Methodology
 -----------------------
