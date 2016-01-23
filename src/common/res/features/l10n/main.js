@@ -71,9 +71,20 @@
       if (!ynabToolKit.options.hideAOM) {
         $('.budget-header-days-label')[0].textContent = ynabToolKit.l10n.Data.Budget.Header.Metric.AoM;
       }
-
     };
     ynabToolKit.l10n.localize.budgetHeader();
+
+    ynabToolKit.l10n.localize.budgetTable = function ()  {
+      budgetTableHeader = $('.budget-table-header');
+      $(budgetTableHeader).find('.budget-table-cell-name')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Category;
+      $(budgetTableHeader).find('.budget-table-cell-budgeted')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Budgeted;
+      $(budgetTableHeader).find('.budget-table-cell-activity')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Activity;
+      $(budgetTableHeader).find('.budget-table-cell-available')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Available;
+      if (ynabToolKit.options.insertPacingColumns) {
+        $(budgetTableHeader).find('.budget-table-cell-pacing')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Pacing;
+      }
+    }
+    ynabToolKit.l10n.localize.budgetTable();
 
   } else {
     setTimeout(poll, 250);

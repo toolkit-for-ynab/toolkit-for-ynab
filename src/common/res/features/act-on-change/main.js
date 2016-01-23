@@ -55,6 +55,11 @@
           ynabToolKit.l10n.localize.budgetHeader();
         }
 
+        // Budget header
+        if (ynabToolKit.changedNodes.has('budget-table')) {
+          ynabToolKit.l10n.localize.budgetTable();
+        }
+
         // Changes are detected in the category balances
         if (ynabToolKit.changedNodes.has('budget-table-cell-available-div')) {
           if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {

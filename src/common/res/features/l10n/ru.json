@@ -48,11 +48,11 @@ ynabToolKit.l10n.Data = {
         "NewCategoryGroup" : "New Category Group",
       },
       "Header" : {
-        "Category" : "CATEGORY",
-        "Budgeted" : "BUDGETED",
-        "Activity" : "ACTIVITY",
-        "Available" : "AVAILABLE",
-        "Pacing" : "PACING",
+        "Category" : "КАТЕГОРИЯ",
+        "Budgeted" : "БЮДЖЕТ",
+        "Activity" : "РАСХОДЫ",
+        "Available" : "ДОСТУПНО",
+        "Pacing" : "ВЕДЕНИЕ",
       }
     },
     "Inspector" : {
