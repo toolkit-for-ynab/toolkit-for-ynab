@@ -6,7 +6,7 @@
 
     // Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
     // during page interactions and updates to the developer tools console.
-    ynabToolKit.debugNodes = false;
+    ynabToolKit.debugNodes = true;
 
     ynabToolKit.actOnChange = function() {
 
@@ -17,7 +17,7 @@
         if (ynabToolKit.debugNodes) {
           console.log('MODIFIED NODES');
         }
-        
+
         ynabToolKit.changedNodes = new Set();
 
         mutations.forEach(function(mutation) {
@@ -35,6 +35,16 @@
             }
             ynabToolKit.changedNodes = new Set([...ynabToolKit.changedNodes, ...nodeClasses]);
 
+            // Inspector
+            if ($node.hasClass('budget-inspector')) {
+              ynabToolKit.l10n.localize.Inspector($node);
+            }
+
+            // Calendar modal
+            if ($node.hasClass('modal-calendar')) {
+              ynabToolKit.l10n.localize.ModalCalendar($node);
+            }
+
           }); // each node mutation event
 
         }); // each mutation event
@@ -48,10 +58,8 @@
           if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
               ynabToolKit.updateInspectorColours();
           }
-
-          ynabToolKit.l10nInspector(ynabToolKit.digest[i]);
         }
-        
+
         // The user has switched screens
         if (ynabToolKit.changedNodes.has('layout')) {
           if ( ynabToolKit.options.resizeInspector ){
@@ -61,7 +69,7 @@
 
         // The user has returned back to the budget screen
         if (ynabToolKit.changedNodes.has('navlink-budget') && ynabToolKit.changedNodes.has('active')) {
-        
+
           if ( ynabToolKit.options.budgetProgressBars ){
             ynabToolKit.budgetProgressBars();
           }

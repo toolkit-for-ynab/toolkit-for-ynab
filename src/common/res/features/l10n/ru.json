@@ -1,62 +1,72 @@
-ynabToolKit.l10nData = {
+ynabToolKit.l10n.Data = {
   "Global" : {
     "Button" : {
-      "Ok": "OK",
-      "Cancel" : "Cancel"
+      "Ok": "ОК",
+      "Cancel" : "Отмена"
     },
     "Month" : {
-      "1" : "Jan",
-      "2" : "Feb",
-      "3" : "Mar",
-      "4" : "Apr",
-      "5" : "May",
-      "6" : "Jun",
-      "7" : "Jul",
-      "8" : "Aug",
-      "9" : "Sep",
-      "10" : "Oct",
-      "11" : "Nov",
-      "12" : "Dec",
+      "1" : "Янв",
+      "2" : "Фев",
+      "3" : "Мар",
+      "4" : "Апр",
+      "5" : "Май",
+      "6" : "Июнь",
+      "7" : "Июль",
+      "8" : "Авг",
+      "9" : "Сент",
+      "10" : "Окт",
+      "11" : "Ноя",
+      "12" : "Дек",
+    },
+    "Title" : {
+      "TodaysBalance" : "Today's Balance:",
+      "DirectImport" : "Use your bank login to import transactions",
     }
   },
-  "BudgetHeader" : {
-    "Placeholder" : {
-      "Note" : "Enter a note..."
-    },
-    "Totals" : {
-      "TBB" : "To be Budgeted",
-      "Funds" : "Funds for",
-      "Overspent" : "Overspent in",
-      "Budgeted" : "Budgeted in",
-      "BIF" : "Budgeted in Future",
-    },
-    "Metric" : {
-      "AoM" : "Age of Money",
-      "DoB" : "Days of Buffering",
-    }
-  },
-  "BudgetTable" : {
-    "Button" : {
-      "CategoryGroup" : "Category Group",
-    },
-    "Placeholder" : {
-      "NewCategoryGroup" : "New Category Group",
-    },
+  "Budget" : {
     "Header" : {
-      "Category" : "CATEGORY",
-      "Budgeted" : "BUDGETED",
-      "Activity" : "ACTIVITY",
-      "Available" : "AVAILABLE",
-      "Pacing" : "PACING",
-    }
-  },
-  "BudgetOptionsModal" : {
-    "Button" : {
-      "New" : "Create a new budget",
-      "Open" : "Open a budget",
-      "Setting" : "Budget Settings",
-      "FreshStart" : "Make a fresh start",
-    }
+      "Placeholder" : {
+        "Note" : "Enter a note..."
+      },
+      "Totals" : {
+        "TBB" : "To be Budgeted",
+        "Funds" : "Funds for",
+        "Overspent" : "Overspent in",
+        "Budgeted" : "Budgeted in",
+        "BIF" : "Budgeted in Future",
+      },
+      "Metric" : {
+        "AoM" : "Age of Money",
+        "DoB" : "Days of Buffering",
+      }
+    },
+    "Table" : {
+      "Button" : {
+        "CategoryGroup" : "Category Group",
+      },
+      "Placeholder" : {
+        "NewCategoryGroup" : "New Category Group",
+      },
+      "Header" : {
+        "Category" : "CATEGORY",
+        "Budgeted" : "BUDGETED",
+        "Activity" : "ACTIVITY",
+        "Available" : "AVAILABLE",
+        "Pacing" : "PACING",
+      }
+    },
+    "Inspector" : {
+      "Totals" : {
+        "Budgeted" : "БЮДЖЕТ",
+        "Activity" : "АКТИВНОСТЬ",
+        "Available" : "ДОСТУПНО",
+        "Inflows" : "ПОСТУПЛЕНИЯ",
+        "Quick" : "БЫСТРОЕ БЮДЖЕТИРОВАНИЕ",
+      },
+      "QuickBudgeting" : {
+
+      },
+    },
   },
   "Sidebar" : {
     "Button" : {
@@ -75,15 +85,55 @@ ynabToolKit.l10nData = {
     "Placeholder" : {
       "About" : "Enter a note (not your account number)..."
     },
-    "Title" : {
-      "DirectImport" : "Use your bank login to import transactions",
-      "TodaysBalance" : "Today's Balance:"
-    },
     "Button" : {
       "Close" : "Close Account",
       "Reopen" : "Re-open",
-      "Delete" : "Delete",      
+      "Delete" : "Delete",
     }
-  }
-
+  },
+  "BudgetOptionsModal" : {
+    "Button" : {
+      "New" : "Create a new budget",
+      "Open" : "Open a budget",
+      "Setting" : "Budget Settings",
+      "FreshStart" : "Make a fresh start",
+    }
+  },
+  "AddAccountModal" : {
+    "Title" : {
+      "NewAccount" : "Add a New Account",
+      "AccountName" : "Account Name:",
+      "AccountType" : "Account Type:",
+      "TransactionImport" : "Transaction Import:",
+      "Examples" : "Examples:",
+      "Or" : "or",
+      "Popular" : "Popular Options:",
+      },
+    "Placeholder" : {
+      "NewAccount" : "New Account",
+      "AccountType" : "Select an Account Type...",
+      "Balance" : "What is the balance of this account right now?",
+      "Search" : "search for your bank’s name",
+    },
+    "Button" : {
+      "AddAccount" : "Add Account",
+      "Next" : "Next",
+      "Back" : "Back",
+    },
+    "AccountType" : {
+      "Budget" : "Budget",
+      "Tracking" : "Tracking",
+      "Checking" : "Checking",
+      "Savings" : "Savings",
+      "CreditCard" : "Credit Card",
+      "Cash" : "Cash",
+      "LineOfCredit" : "Line of Credit",
+      "PayPal" : "PayPal",
+      "Merchant" : "Merchant Account",
+      "Investment" : "Investment Account",
+      "Mortgage" : "Mortgage",
+      "OtherAsset" : "Other Asset",
+      "OtherLiability" : "Other Liability",
+    }
+  },
 }

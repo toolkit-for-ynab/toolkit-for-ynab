@@ -40,6 +40,7 @@ injectScript('res/features/shared/feedChanges.js');
 /* Load this to setup behaviors when the DOM updates and shared functions */
 injectScript('res/features/act-on-change/main.js');
 
+injectJSString("ynabToolKit.l10n = {localize: {}};")
 injectScript('res/features/l10n/ru.json');
 injectScript('res/features/l10n/main.js');
 
