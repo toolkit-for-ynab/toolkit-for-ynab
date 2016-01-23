@@ -64,96 +64,88 @@
       
 
       this.invoke = function() {
-      var tv = ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result.getAllAccountTransactionsViewModel();
-      var month = tv.getBudgetMonthViewModelForCurrentMonth().getMonth();
-      var allTransactions = tv.getVisibleTransactionDisplayItemsForMonth(month);
-      
-      if($('.ember-view .budget-header').length) {
-        if(inCurrentMonth()) {
-          // Make room for the column
-          $('#ynab-toolkit-pacing-style').remove();
-          $('<style type="text/css" id="ynab-toolkit-pacing-style"> .budget-table-cell-available { width: 10% !important; } </style>').appendTo('head');
-        } else {
-          $('#ynab-toolkit-pacing-style').remove();
-          $('<style type="text/css" id="ynab-toolkit-pacing-style"> .budget-table-cell-pacing { display: none; } </style>').appendTo('head');
-        }
+        var tv = ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result.getAllAccountTransactionsViewModel();
+        var month = tv.getBudgetMonthViewModelForCurrentMonth().getMonth();
+        var allTransactions = tv.getVisibleTransactionDisplayItemsForMonth(month);
         
-        
-        $('.budget-table-cell-pacing').remove()
-        
-        $(".budget-table-header .budget-table-cell-available").after($('<li class="budget-table-cell-pacing">PACING</li>'));
-       
-        var deemphasizedCategories = getDeemphasizedCategories();
-        $('.budget-table-row').each(function(){ 
-          var available = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-available').text());
-          var activity = -ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-activity').text());
-          var budgeted = available+activity;
-          var burned = activity/budgeted;
-          var pace = burned/timeSpent();
-        
-          var masterName = $.trim($(this).prevAll('.is-master-category').first().find('.budget-table-cell-name').text());
-          var subcatName = $.trim($(this).find('.budget-table-cell-name').text());
-        
-          var transactionCount = allTransactions.filter((el) => el.transferAccountId == null 
-            && el.outflow > 0 && el.subCategoryNameWrapped == (masterName+": "+subcatName)).length;
-        
-          if(pace > 1) {
-            var temperature = 'cautious';
+        if($('.ember-view .budget-header').length) {
+          if(inCurrentMonth()) {
+            // Make room for the column
+            $('#ynab-toolkit-pacing-style').remove();
+            $('<style type="text/css" id="ynab-toolkit-pacing-style"> .budget-table-cell-available { width: 10% !important; } </style>').appendTo('head');
           } else {
-            var temperature = 'positive'; 
+            $('#ynab-toolkit-pacing-style').remove();
+            $('<style type="text/css" id="ynab-toolkit-pacing-style"> .budget-table-cell-pacing { display: none; } </style>').appendTo('head');
           }
-
-          var deemphasized = (masterName == 'Credit Card Payments') || $.inArray(masterName+': '+subcatName, deemphasizedCategories) >= 0;
-          var display = Math.round((budgeted*timeSpent()-activity)*1000);
-          if(display >= 0) {
-            var tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+ynabToolKit.shared.formatCurrency(display, false)+
-              ' less than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.&#13;&#13;'+(deemphasized ? 'Click to unhide.' : 'Click to hide.');
-          } else if(display < 0) {
-            var tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+ynabToolKit.shared.formatCurrency(-display, false)+
-              ' more than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.&#13;&#13;'+(deemphasized ? 'Click to unhide.' : 'Click to hide.');
-          }
-          $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="'+tooltip+'" class="budget-table-cell-pacing-display '+temperature+' '+(deemphasized ? 'deemphasized' : '')+'" data-name="'+masterName+": "+subcatName+'">'+ynabToolKit.shared.formatCurrency(display, true)+'</span></li>');
-
-        });
-
-        $('.budget-table-cell-pacing-display').click(function(e) { 
+          
+          
+          $('.budget-table-cell-pacing').remove()
+          
+          $(".budget-table-header .budget-table-cell-available").after($('<li class="budget-table-cell-pacing">PACING</li>'));
+         
           var deemphasizedCategories = getDeemphasizedCategories();
-          var name = $(this).data("name");
+          $('.budget-table-row').each(function(){ 
+            var available = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-available').text());
+            var activity = -ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-activity').text());
+            var budgeted = available+activity;
+            var burned = activity/budgeted;
+            var pace = burned/timeSpent();
+          
+            var masterName = $.trim($(this).prevAll('.is-master-category').first().find('.budget-table-cell-name').text());
+            var subcatName = $.trim($(this).find('.budget-table-cell-name').text());
+          
+            var transactionCount = allTransactions.filter((el) => el.transferAccountId == null 
+              && el.outflow > 0 && el.subCategoryNameWrapped == (masterName+": "+subcatName)).length;
+          
+            if(pace > 1) {
+              var temperature = 'cautious';
+            } else {
+              var temperature = 'positive'; 
+            }
 
-          if($.inArray(name, deemphasizedCategories) >= 0) {
-            deemphasizedCategories.splice($.inArray(name, deemphasizedCategories), 1);
-            ynab.utilities.ConsoleUtilities.logWithColor(ynab.constants.LogLevels.Debug, 'Re-emphasizing category '+name+', new hide list '+JSON.stringify(deemphasizedCategories));
-            setDeemphasizedCategories(deemphasizedCategories);
-            $(this).removeClass('deemphasized');
-          } else {
-            deemphasizedCategories.push(name);
-            ynab.utilities.ConsoleUtilities.logWithColor(ynab.constants.LogLevels.Debug, 'De-emphasizing category '+name+', new hide list '+JSON.stringify(deemphasizedCategories));
-            setDeemphasizedCategories(deemphasizedCategories);
-            $(this).addClass('deemphasized');
-          }
-          e.stopPropagation();
-        });
-    }
+            var deemphasized = (masterName == 'Credit Card Payments') || $.inArray(masterName+': '+subcatName, deemphasizedCategories) >= 0;
+            var display = Math.round((budgeted*timeSpent()-activity)*1000);
+            if(display >= 0) {
+              var tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+ynabToolKit.shared.formatCurrency(display, false)+
+                ' less than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.&#13;&#13;'+(deemphasized ? 'Click to unhide.' : 'Click to hide.');
+            } else if(display < 0) {
+              var tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+ynabToolKit.shared.formatCurrency(-display, false)+
+                ' more than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.&#13;&#13;'+(deemphasized ? 'Click to unhide.' : 'Click to hide.');
+            }
+            $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="'+tooltip+'" class="budget-table-cell-pacing-display '+temperature+' '+(deemphasized ? 'deemphasized' : '')+'" data-name="'+masterName+": "+subcatName+'">'+ynabToolKit.shared.formatCurrency(display, true)+'</span></li>');
 
+          });
 
-    this.observe = function(digest) {
+          $('.budget-table-cell-pacing-display').click(function(e) { 
+            var deemphasizedCategories = getDeemphasizedCategories();
+            var name = $(this).data("name");
 
-      for ( var i = 0; i < digest.length; i++ ) {
-        // The user has returned back to the budget screen
-        if ($(digest[i]).hasClass('budget-inspector')) {
-          ynabToolKit.insertPacingColumns.invoke();
-          break;
+            if($.inArray(name, deemphasizedCategories) >= 0) {
+              deemphasizedCategories.splice($.inArray(name, deemphasizedCategories), 1);
+              ynab.utilities.ConsoleUtilities.logWithColor(ynab.constants.LogLevels.Debug, 'Re-emphasizing category '+name+', new hide list '+JSON.stringify(deemphasizedCategories));
+              setDeemphasizedCategories(deemphasizedCategories);
+              $(this).removeClass('deemphasized');
+            } else {
+              deemphasizedCategories.push(name);
+              ynab.utilities.ConsoleUtilities.logWithColor(ynab.constants.LogLevels.Debug, 'De-emphasizing category '+name+', new hide list '+JSON.stringify(deemphasizedCategories));
+              setDeemphasizedCategories(deemphasizedCategories);
+              $(this).addClass('deemphasized');
+            }
+            e.stopPropagation();
+          });
         }
-      }
+      },
 
+      this.observe = function(changedNodes) {
+
+        if (changedNodes.has('budget-inspector')) {
+          // The user has returned back to the budget screen
+          ynabToolKit.insertPacingColumns.invoke();
+        }
+         
+      };
     }
-        
-
-      }
-    };
-
-    ynabToolKit.insertPacingColumns.invoke(); // call itself once
-
+    ynabToolKit.insertPacingColumns.invoke();
 
   } else {
     setTimeout(poll, 250);
