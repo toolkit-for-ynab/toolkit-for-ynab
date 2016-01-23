@@ -7,15 +7,20 @@
       // Python script auto builds up this list of features
       // that will use the mutation observer from actOnChange()
 
-      if ( ynabToolKit.swapClearedFlagged ){
+      // If a feature doesn't need to use observe(), we
+      // just let it fail silently
+
+      try {
         ynabToolKit.swapClearedFlagged.observe(changedNodes);
-      }
-      if ( ynabToolKit.insertPacingColumns ){
+      } catch(err) {/* ignore */}
+
+      try {
         ynabToolKit.insertPacingColumns.observe(changedNodes);
-      }
-      if ( ynabToolKit.toggleSplits ){
+      } catch(err) {/* ignore */}
+
+      try {
         ynabToolKit.toggleSplits.observe(changedNodes);
-      }
+      } catch(err) {/* ignore */}
 
     };
 
