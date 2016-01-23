@@ -22,6 +22,42 @@
         ynabToolKit.toggleSplits.observe(changedNodes);
       } catch(err) {/* ignore */}
 
+      try {
+        ynabToolKit.updateInspectorColours.observe(changedNodes);
+      } catch(err) {/* ignore */}
+
+      try {
+        ynabToolKit.resizeInspector.observe(changedNodes);
+      } catch(err) {/* ignore */}
+
+      try {
+        ynabToolKit.budgetProgressBars.observe(changedNodes);
+      } catch(err) {/* ignore */}
+
+      try {
+        ynabToolKit.goalIndicator.observe(changedNodes);
+      } catch(err) {/* ignore */}
+
+      try {
+        ynabToolKit.warnOnQuickBudget.observe(changedNodes);
+      } catch(err) {/* ignore */}
+
+      try {
+        ynabToolKit.removeZeroCategories.observe(changedNodes);
+      } catch(err) {/* ignore */}
+
+      try {
+        ynabToolKit.moveMoneyAutocomplete.observe(changedNodes);
+      } catch(err) {/* ignore */}
+
+      try {
+        ynabToolKit.highlightNegativesNegative.observe(changedNodes);
+      } catch(err) {/* ignore */}
+
+      try {
+        ynabToolKit.checkCreditBalances.observe(changedNodes);
+      } catch(err) {/* ignore */}
+
     };
 
   } else {
