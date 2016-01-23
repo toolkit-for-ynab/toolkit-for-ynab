@@ -20,9 +20,7 @@ body {
 #page-wrapper {
     padding: 15px 15px;
     min-height: 600px;
-    background: white;
-    border-top: 1px solid rgba(107, 108, 109, 0.19);
-    border-left: 1px solid rgba(107, 108, 109, 0.19);
+    background: #F4F4F4;
 }
 #page-inner {
     width:100%;
@@ -287,7 +285,7 @@ line-height: 21px;
 padding-top: 4px;
 }
 .active-menu {
-    background-color:#D6D6D6!important;
+    background-color:#F4F4F4 !important;
 }
 
 .arrow {
@@ -330,8 +328,12 @@ padding-top: 4px;
 .sidebar-collapse > .nav > li > a {
 	padding:15px 10px;
 }
+.sidebar-collapse > .nav > li:first-child {
+	border-top: 1px solid #F4F4F4;
+}
+
 .sidebar-collapse > .nav > li {
-	border-bottom: 1px solid rgba(107, 108, 109, 0.19);
+	border-bottom: 1px solid #F4F4F4;
 }
 ul.nav.nav-second-level.collapse.in {
 background: #172D44;
