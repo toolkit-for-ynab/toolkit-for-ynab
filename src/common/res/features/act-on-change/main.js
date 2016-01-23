@@ -43,13 +43,6 @@
           console.log('###')
         }
 
-        // Changes are detected in the category balances
-        if (ynabToolKit.changedNodes.has('budget-table-cell-available-div')) {
-          if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
-              ynabToolKit.updateInspectorColours();
-          }
-        }
-
         // The user has returned back to the budget screen
         if (ynabToolKit.changedNodes.has('navlink-budget') && ynabToolKit.changedNodes.has('active')) {
 
@@ -73,15 +66,6 @@
           }
           if (ynabToolKit.options.moveMoneyAutocomplete) {
             ynabToolKit.moveMoneyAutocomplete();
-          }
-
-        }
-
-        // User has selected a specific sub-category
-        if (ynabToolKit.changedNodes.has('is-sub-category') && ynabToolKit.changedNodes.has('is-checked')) {
-
-          if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {
-            ynabToolKit.updateInspectorColours();
           }
 
         }
