@@ -2,6 +2,13 @@ body {
   min-width: 900px;
 }
 
+/* Start the whole page hidden, then we'll show it with JS once
+   everything has loaded. The page is async, and we don't want to show
+   it until it's ready. */
+#wrapper {
+  display: none;
+}
+
 .navbar-header {
   width: 100%;
 }
