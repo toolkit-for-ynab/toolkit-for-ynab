@@ -219,7 +219,7 @@ function buildOptionsPage() {
         '<select name="' + setting.name + '" id="' + setting.name + '" class="form-control" aria-describedby="' + setting.name + 'HelpBlock">';
 
       setting.options.forEach(function(option) {
-        template += '<option value="' + option.value + '">' + option.name + '</option>';
+        template += '<option value="' + option.value + '" style="' + (option.style || '') + '">' + option.name + '</option>';
       });
 
       template += '</select>' +

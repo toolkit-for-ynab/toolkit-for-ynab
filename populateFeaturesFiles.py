@@ -7,10 +7,16 @@ import urllib
 
 allSettings = []
 allInitContent = []
+previousNames = set()
 
 def checkIndividualSetting(setting, dirName):
     if not 'name' in setting:
         raise ValueError('Every setting must have a name property.')
+
+    if setting['name'] in previousNames:
+        raise ValueError('Duplicate setting name: ' + setting['name'])
+
+    previousNames.add(setting['name'])
 
     if not 'type' in setting:
         raise ValueError('Every setting must have a type property.')
@@ -20,9 +26,6 @@ def checkIndividualSetting(setting, dirName):
 
     if not 'title' in setting:
         raise ValueError('Every setting must have a title.')
-
-    if not 'description' in setting:
-        raise ValueError('Every setting must have a description.')
 
     if not 'actions' in setting:
         raise ValueError('Every setting must declare actions that happen when the setting is activated.')
@@ -47,6 +50,9 @@ def checkIndividualSetting(setting, dirName):
 
     if not 'default' in setting:
         setting['default'] = False
+
+    if not 'description' in setting:
+        setting['description'] = ''
 
     # Give a relative path to the files in the actions section that the settings system can understand
     # what URL to load when it takes an action
@@ -97,12 +103,14 @@ for dirName, subdirList, fileList in os.walk('./src/common/res/features/'):
                 print ""
                 exit(1)
 
-            # Ok, we're happy, add it to the optput.
-            if (isinstance(settingsContents, dict)):
-                allSettings.append(settingsContents)
+            # Ok, we're happy, add it to the output.
+            if isinstance(settingsContents, dict):
+                if not 'hidden' in settingsContents or not settingsContents['hidden']:
+                    allSettings.append(settingsContents)
             else:
                 for setting in settingsContents:
-                    allSettings.append(setting)
+                    if not 'hidden' in settingsContents or not settingsContents['hidden']:
+                        allSettings.append(setting)
 
     if ('init.js' in fileList):
         with open(os.path.join(dirName, 'init.js'), 'r') as initFile:

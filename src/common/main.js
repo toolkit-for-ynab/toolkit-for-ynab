@@ -123,20 +123,6 @@ ensureDefaultsAreSet().then(applySettingsToDom);
 //   injectScript('res/features/move-money-autocomplete/main.js');
 // }
 //
-// if (kango.storage.getItem('toggleSplits')) {
-//   injectCSS('res/features/toggle-splits/main.css')
-//   injectScript('res/features/toggle-splits/main.js');
-// }
-//
-// if (kango.storage.getItem('accountsSelectedTotal')) {
-//   injectCSS('res/features/accounts-selected-total/main.css');
-//   injectScript('res/features/accounts-selected-total/main.js');
-// }
-//
-// if (kango.storage.getItem('changeEnterBehavior')) {
-//   injectScript('res/features/change-enter-behavior/main.js');
-// }
-//
 // if (kango.storage.getItem('transferJump')) {
 //   injectCSS('res/features/transfer-jump/main.css');
 //   injectScript('res/features/transfer-jump/main.js');
@@ -172,33 +158,6 @@ ensureDefaultsAreSet().then(applySettingsToDom);
 // }
 // else if (kango.storage.getItem('budgetProgressBars') == 3) {
 //   injectScript('res/features/budget-progress-bars/both.js');
-// }
-//
-// if (kango.storage.getItem('reconciledTextColor') == 1) {
-//   injectCSS('res/features/distinguish-reconciled-transactions/green.css');
-// }
-// else if (kango.storage.getItem('reconciledTextColor') == 2) {
-//   injectCSS('res/features/distinguish-reconciled-transactions/lightgray.css');
-// }
-// else if (kango.storage.getItem('reconciledTextColor') == 3) {
-//   injectCSS('res/features/distinguish-reconciled-transactions/darkgray.css');
-// }
-// else if (kango.storage.getItem('reconciledTextColor') == 4) {
-//   injectCSS('res/features/distinguish-reconciled-transactions/chance.css');
-// }
-//
-// if (kango.storage.getItem('accountsDisplayDensity') == 1) {
-//   injectCSS('res/features/accounts-display-density/compact.css');
-// }
-// else if (kango.storage.getItem('accountsDisplayDensity') == 2) {
-//   injectCSS('res/features/accounts-display-density/slim.css');
-// }
-//
-// if (kango.storage.getItem('editButtonPosition') == 1) {
-//   injectCSS('res/features/edit-button-position/left.css');
-// }
-// else if (kango.storage.getItem('editButtonPosition') == 2) {
-//   injectCSS('res/features/edit-button-position/hidden.css');
 // }
 //
 // if (kango.storage.getItem('daysOfBuffering')) {
