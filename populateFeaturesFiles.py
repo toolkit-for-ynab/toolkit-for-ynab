@@ -64,8 +64,10 @@ for dirName, subdirList, fileList in os.walk('./src/common/res/features/'):
                 formatted_lines = traceback.format_exc().splitlines()
                 print "[  ERROR] Settings error: {0}".format(formatted_lines[-1])
                 print "[  ERROR] While processing file: {0}".format(settingsFile.name)
-                print ""
+                print "--------------------------------------------------------------------------------"
                 print "[  ERROR] EXTENSION WAS NOT BUILT. Please fix the settings errors and try again."
+                print "--------------------------------------------------------------------------------"
+                print ""
                 exit(1)
 
             # Ok, we're happy, add it to the optput.
