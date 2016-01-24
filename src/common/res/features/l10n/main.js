@@ -47,14 +47,20 @@
         titles[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Title.Budgeted;
         titles[2].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Title.CashSpending;
         titles[3].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Title.CreditSpending;
-        titles[4].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Title.Available;
+        if (titles[4]) titles[4].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Title.Available;
 
-        var headers = $(inspector).find("h3");
-        headers[0].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Quick;
-        headers[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Goals;
-        headers[2].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Notes;
+        try {
+          $(inspector).find(".budget-inspector-payment h3")[0].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Payment;
+        }
+        catch(err) {
+          console.log(err);
+        }
+        $(inspector).find(".inspector-quick-budget h3")[0].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Quick;
+        $(inspector).find(".budget-inspector-goals h3")[0].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Goals;
+        $(inspector).find(".inspector-notes h3")[0].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Notes;
 
-        $('.inspector-category-edit')[0].childNodes[1].textContent = " " + ynabToolKit.l10n.Data.Budget.Inspector.Button.Edit;
+        var editButton = $(inspector).find('.inspector-category-edit')[0];
+        if (editButton) editButton.childNodes[1].textContent = " " + ynabToolKit.l10n.Data.Budget.Inspector.Button.Edit;
 
         var buttons = $(inspector).find('.budget-inspector-button');
         k = 0;
@@ -128,7 +134,7 @@
       if (!ynabToolKit.options.hideAOM) {
         var daysAge = $('.budget-header-days-age');
         var daysNumber = $(daysAge).text().split(' ')[0]
-        // TODO Create Russian option check.
+        // TODO Add Russian option check.
         $(daysAge)[0].textContent = daysNumber + " " + ynabToolKit.shared.declension('ru', daysNumber, {nom: 'день', gen: 'дня', plu: 'дней'});
         $('.budget-header-days-label')[0].textContent = ynabToolKit.l10n.Data.Budget.Header.Metric.AoM;
       }

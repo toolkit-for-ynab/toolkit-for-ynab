@@ -71,6 +71,7 @@
         "Inflows" : "TOTAL INFLOWS",
         "Quick" : "QUICK BUDGET",
         "QuickSelected" : "QUICK BUDGET SELECTED",
+        "Payment" : "Payment",
         "Goals" : "Goals",
         "Notes" : "Notes",
         "CategoriesSelected" : "Categories Selected"

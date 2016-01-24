@@ -71,6 +71,7 @@ ynabToolKit.l10n.Data = {
         "Inflows" : "ПОСТУПЛЕНИЯ",
         "Quick" : "БЫСТРОЕ БЮДЖЕТИРОВАНИЕ",
         "QuickSelected" : "БЫСТРОЕ БЮДЖЕТИРОВАНИЕ ВЫБРАННЫХ",
+        "Payment" : "Платежи",
         "Goals" : "Цели",
         "Notes" : "Заметки",
         "CategoriesSelected" : "Выбрано"
