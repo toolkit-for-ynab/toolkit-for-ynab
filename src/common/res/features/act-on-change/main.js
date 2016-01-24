@@ -49,9 +49,6 @@
         // The user has returned back to the budget screen
         if (ynabToolKit.changedNodes.has('navlink-budget') && ynabToolKit.changedNodes.has('active')) {
 
-          if ( ynabToolKit.options.goalIndicator ){
-            ynabToolKit.goalIndicator();
-          }
           if ( ynabToolKit.options.warnOnQuickBudget ){
             ynabToolKit.warnOnQuickBudget();
           }
