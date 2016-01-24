@@ -26,6 +26,9 @@ ynabToolKit.l10n.Data = {
     "Placeholder" : {
       "Note" : "Заметка..."
     },
+    "Category" : {
+      "CreditCardPayments" : "Кредитные карты"
+    }
   },
   "Budget" : {
     "Header" : {
@@ -57,7 +60,6 @@ ynabToolKit.l10n.Data = {
         "Pacing" : "ВЕДЕНИЕ",
       },
       "Category" : {
-        "CreditCardPayments" : "Платежи по кредитным картам",
         "HiddenCategories" : "Скрытые категории"
       }
     },
@@ -160,4 +162,12 @@ ynabToolKit.l10n.Data = {
       "OtherLiability" : "Other Liability",
     }
   },
+  "HiddenCategoriesModal" : {
+    "Title" : {
+      "ClickCategory" : "Нажмите для показа"
+    },
+    "Button" : {
+      "ShowAllHidden" : "Показать все скрытые"
+    }
+  }
 }

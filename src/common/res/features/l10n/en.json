@@ -26,6 +26,9 @@
     "Placeholder" : {
       "Note" : "Enter a note..."
     },
+    "Category" : {
+      "CreditCardPayments" : "Credit Card Payments"
+    }
   },
   "Budget" : {
     "Header" : {
@@ -57,7 +60,6 @@
         "Pacing" : "PACING",
       },
       "Category" : {
-        "CreditCardPayments" : "Credit Card Payments",
         "HiddenCategories" : "Hidden Categories"
       }
     },
@@ -160,4 +162,12 @@
       "OtherLiability" : "Other Liability",
     }
   },
+  "HiddenCategoriesModal" : {
+    "Title" : {
+      "ClickCategory" : "Click a category to show it"
+    },
+    "Button" : {
+      "ShowAllHidden" : "Show all hidden categories"
+    }
+  }
 }

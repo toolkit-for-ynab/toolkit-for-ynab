@@ -140,7 +140,7 @@
 
       $('.budget-toolbar-add-category').contents()[4].textContent = " " + ynabToolKit.l10n.Data.Budget.Table.Button.CategoryGroup;
 
-      $('.is-master-category.is-debt-payment-category .button-truncate')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Category.CreditCardPayments;
+      $('.is-master-category.is-debt-payment-category .button-truncate')[0].textContent = ynabToolKit.l10n.Data.Global.Category.CreditCardPayments;
       $('.is-master-category.budget-table-hidden-row .budget-table-cell-edit-category')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Category.HiddenCategories;
     }
     ynabToolKit.l10n.localize.budgetTable();
@@ -157,6 +157,14 @@
       $(modal).find('input')[0].setAttribute("placeholder", ynabToolKit.l10n.Data.Budget.Table.Placeholder.NewCategory);
       $(modal).find('.button-primary').contents()[0].textContent = ynabToolKit.l10n.Data.Global.Button.Ok;
       $(modal).find('.button-cancel').contents()[0].textContent = ynabToolKit.l10n.Data.Global.Button.Cancel;
+    }
+
+    ynabToolKit.l10n.localize.hiddenCategoriesModal = function () {
+      var modal = $('.modal-budget-hidden-categories');
+      $(modal).find('.modal-header').contents()[1].textContent = ynabToolKit.l10n.Data.HiddenCategoriesModal.Title.ClickCategory;
+      $(modal).find('.button')[0].textContent = ynabToolKit.l10n.Data.HiddenCategoriesModal.Button.ShowAllHidden;
+      $(modal).find('.modal-budget-hidden-categories-master-unhidden:contains("Credit Card Payments")').contents()[1].textContent =
+        ynabToolKit.l10n.Data.Global.Category.CreditCardPayments + " ";
     }
 
   } else {
