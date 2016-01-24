@@ -37,7 +37,7 @@ function injectJSString(js) {
 }
 
 function applySettingsToDom() {
-  ynabToolKit.allSettings.forEach(function(setting) {
+  ynabToolKit.settings.forEach(function(setting) {
 
     getKangoSetting(setting.name).then(function (data) {
       if (data in setting.actions) {
@@ -62,7 +62,7 @@ function applySettingsToDom() {
 }
 
 /* Init ynabToolKit object and import options from Kango  */
-injectJSString("window.ynabToolKit = {}; ynabToolKit.options = {" + Array.from(kango.storage.getKeys(), el=> el + " : " + kango.storage.getItem(el) + ", ").reduce((a, b) => a + b, "") + "}")
+injectJSString("window.ynabToolKit = {};");
 
 /* Load this to setup shared utility functions */
 injectScript('res/features/shared/main.js');

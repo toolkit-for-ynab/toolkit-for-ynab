@@ -159,7 +159,7 @@ with open('./src/common/res/features/allSettings.js', 'w') as settingsFile:
 
           var promises = [];
 
-          ynabToolKit.allSettings.forEach(function(setting) {
+          ynabToolKit.settings.forEach(function(setting) {
             if (storedKeys.indexOf(setting.name) < 0) {
               promises.push(setKangoSetting(setting.name, setting.default));
             }
@@ -172,7 +172,7 @@ with open('./src/common/res/features/allSettings.js', 'w') as settingsFile:
       });
     }\n\n''')
 
-    settingsFile.write('window.ynabToolKit.allSettings = ' + json.dumps(allSettings))
+    settingsFile.write('window.ynabToolKit.settings = ' + json.dumps(allSettings))
 
 
 # Write the init file:

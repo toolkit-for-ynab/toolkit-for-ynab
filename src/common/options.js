@@ -66,7 +66,7 @@ function saveOptions() {
 
   var promises = [];
 
-  ynabToolKit.allSettings.forEach(function(setting) {
+  ynabToolKit.settings.forEach(function(setting) {
     if (setting.type == "checkbox") {
       promises.push(saveCheckboxOption(setting.name));
     } else if (setting.type == "select") {
@@ -93,7 +93,7 @@ function restoreOptions() {
 
       var promises = [];
 
-      ynabToolKit.allSettings.forEach(function(setting) {
+      ynabToolKit.settings.forEach(function(setting) {
         if (setting.type == "checkbox") {
           promises.push(restoreCheckboxOption(setting.name));
         } else if (setting.type == "select") {
@@ -109,7 +109,7 @@ function restoreOptions() {
 function buildOptionsPage() {
 
   // Order by section, then type, then name.
-  ynabToolKit.allSettings.sort(function(a, b) {
+  ynabToolKit.settings.sort(function(a, b) {
     if (a.section != b.section) {
       return a.section.localeCompare(b.section);
     }
@@ -121,7 +121,7 @@ function buildOptionsPage() {
     return a.title.localeCompare(b.title);
   })
 
-  ynabToolKit.allSettings.forEach(function(setting) {
+  ynabToolKit.settings.forEach(function(setting) {
     if (setting.type == 'checkbox') {
 
       var template =
