@@ -30,9 +30,10 @@
           $nodes.each(function() {
             var $node = $(this);
 
-            if ( typeof $node[0].className !== 'undefined' ) {
-            	nodeClasses = new Set($node[0].className.split(' '));
-            }
+            try {
+              nodeClasses = new Set($node[0].className.split(' '));
+            } catch(err) { var ynabToolKit.debugNodes.errors = err }
+
             ynabToolKit.changedNodes = new Set([...ynabToolKit.changedNodes, ...nodeClasses]);
 
           }); // each node mutation event
