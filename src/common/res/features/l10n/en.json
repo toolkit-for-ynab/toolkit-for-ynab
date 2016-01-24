@@ -54,6 +54,10 @@
         "Activity" : "ACTIVITY",
         "Available" : "AVAILABLE",
         "Pacing" : "PACING",
+      },
+      "Category" : {
+        "CreditCardPayments" : "Credit Card Payments",
+        "HiddenCategories" : "Hidden Categories"
       }
     },
     "Inspector" : {

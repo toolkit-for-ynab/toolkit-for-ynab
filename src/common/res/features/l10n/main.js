@@ -86,6 +86,8 @@
         buttons[4].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageSpent;
       }
 
+      // TODO Add credit cards inspector handling
+
     }; // Keep feature functions contained within this
     ynabToolKit.l10n.localize.inspector();
 
@@ -130,6 +132,9 @@
       $(budgetTableHeader).find('.budget-table-cell-available')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Header.Available;
 
       $('.budget-toolbar-add-category').contents()[4].textContent = " " + ynabToolKit.l10n.Data.Budget.Table.Button.CategoryGroup;
+
+      $('.is-master-category.is-debt-payment-category .button-truncate')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Category.CreditCardPayments;
+      $('.is-master-category.budget-table-hidden-row .budget-table-cell-edit-category')[0].textContent = ynabToolKit.l10n.Data.Budget.Table.Category.HiddenCategories;
     }
     ynabToolKit.l10n.localize.budgetTable();
 

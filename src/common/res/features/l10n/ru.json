@@ -54,6 +54,10 @@ ynabToolKit.l10n.Data = {
         "Activity" : "РАСХОДЫ",
         "Available" : "ДОСТУПНО",
         "Pacing" : "ВЕДЕНИЕ",
+      },
+      "Category" : {
+        "CreditCardPayments" : "Платежи по кредитным картам",
+        "HiddenCategories" : "Скрытые категории"
       }
     },
     "Inspector" : {
