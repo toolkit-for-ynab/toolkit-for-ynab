@@ -69,22 +69,11 @@ injectScript('res/features/act-on-change/main.js');
 // Global toolkit css.
 injectCSS('res/features/main.css');
 
-debugger;
-
 ensureDefaultsAreSet().then(applySettingsToDom);
-
 
 // if (kango.storage.getItem('collapseExpandBudgetGroups')) {
 //   injectCSS('res/features/collapse-budget-groups/main.css');
 //   injectScript('res/features/collapse-budget-groups/main.js');
-// }
-//
-// if (kango.storage.getItem('colourBlindMode')) {
-//   injectCSS('res/features/colour-blind-mode/main.css');
-// }
-//
-// if (kango.storage.getItem('squareNegativeMode')) {
-//   injectCSS('res/features/square-negative/square.css');
 // }
 //
 // if (kango.storage.getItem('highlightNegativesNegative')) {
@@ -228,11 +217,6 @@ ensureDefaultsAreSet().then(applySettingsToDom);
 //
 // if (kango.storage.getItem('removePositiveHighlight')) {
 //   injectCSS('res/features/remove-positive-highlight/main.css');
-// }
-//
-// if (kango.storage.getItem('importNotification')) {
-//   injectCSS('res/features/import-notification/import-notification.css');
-//   injectScript('res/features/import-notification/import-notification.js');
 // }
 //
 // if (kango.storage.getItem('warnOnQuickBudget')) {

@@ -1,0 +1,13 @@
+{
+         "name": "squareNegativeMode",
+         "type": "checkbox",
+      "default": false,
+      "section": "general",
+        "title": "Square Negatives Mode",
+  "description": "Changes the round borders on all negative numbers to square. Helps them become more of an eyesore so you want to get rid of them!",
+      "actions": {
+                    "true": [
+                      "injectCSS", "square.css"
+                    ]
+                 }
+}

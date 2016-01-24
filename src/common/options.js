@@ -223,7 +223,7 @@ function buildOptionsPage() {
       });
 
       template += '</select>' +
-        '<span id="' + setting.name + 'HelpBlock" class="help-block">' + option.description + '</span>' +
+        '<span id="' + setting.name + 'HelpBlock" class="help-block">' + setting.description + '</span>' +
       '</div>';
 
       $('#' + setting.section + 'SettingsPage').append(template);
