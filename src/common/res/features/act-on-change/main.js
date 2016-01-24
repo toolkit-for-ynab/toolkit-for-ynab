@@ -32,7 +32,9 @@
 
             try {
               nodeClasses = new Set($node[0].className.split(' '));
-            } catch(err) {/* ignore */}
+            } catch(err) {
+              ynabToolKit.debugNodes.errors = err
+            }
 
             ynabToolKit.changedNodes = new Set([...ynabToolKit.changedNodes, ...nodeClasses]);
 
