@@ -82,45 +82,6 @@ function saveOptions() {
 
   });
 
-  // Promise.all([
-  //   saveCheckboxOption('collapseExpandBudgetGroups'),
-  //   saveCheckboxOption('collapseSideMenu'),
-  //   saveCheckboxOption('colourBlindMode'),
-  //   saveCheckboxOption('squareNegativeMode'),
-  //   saveCheckboxOption('hideAOM'),
-  //   saveCheckboxOption('checkCreditBalances'),
-  //   saveCheckboxOption('highlightNegativesNegative'),
-  //   saveCheckboxOption('removePositiveHighlight'),
-  //   saveCheckboxOption('enableRetroCalculator'),
-  //   saveCheckboxOption('removeZeroCategories'),
-  //   saveCheckboxOption('moveMoneyDialog'),
-  //   saveCheckboxOption('pacing'),
-  //   saveCheckboxOption('goalIndicator'),
-  //   saveCheckboxOption('moveMoneyAutocomplete'),
-  //   saveCheckboxOption('daysOfBuffering'),
-  //   saveCheckboxOption('toggleSplits'),
-  //   saveCheckboxOption('accountsSelectedTotal'),
-  //   saveCheckboxOption('changeEnterBehavior'),
-  //   saveCheckboxOption('transferJump'),
-  //   saveCheckboxOption('resizeInspector'),
-  //   saveCheckboxOption('importNotification'),
-  //   saveCheckboxOption('swapClearedFlagged'),
-  //   saveCheckboxOption('warnOnQuickBudget'),
-  //
-  //   saveSelectOption('daysOfBufferingHistoryLookup'),
-  //   saveSelectOption('budgetRowsHeight'),
-  //   saveSelectOption('reconciledTextColor'),
-  //   saveSelectOption('categoryActivityPopupWidth'),
-  //   saveSelectOption('accountsDisplayDensity'),
-  //   saveSelectOption('editButtonPosition'),
-  //   saveSelectOption('budgetProgressBars')
-  // ]).then(function() {
-  //
-  //   $('#settingsSaved').fadeIn()
-  //                      .delay(1500)
-  //                      .fadeOut();
-  //
-  // });
 }
 
 // Restores select box and checkbox state using the preferences
@@ -141,43 +102,6 @@ function restoreOptions() {
       });
 
       Promise.all(promises).then(resolve);
-      // Promise.all([
-      //   restoreCheckboxOption('collapseExpandBudgetGroups'),
-      //   restoreCheckboxOption('collapseSideMenu'),
-      //   restoreCheckboxOption('colourBlindMode'),
-      //   restoreCheckboxOption('squareNegativeMode'),
-      //   restoreCheckboxOption('hideAOM'),
-      //   restoreCheckboxOption('checkCreditBalances'),
-      //   restoreCheckboxOption('highlightNegativesNegative'),
-      //   restoreCheckboxOption('removePositiveHighlight'),
-      //   restoreCheckboxOption('enableRetroCalculator'),
-      //   restoreCheckboxOption('removeZeroCategories'),
-      //   restoreCheckboxOption('moveMoneyDialog'),
-      //   restoreCheckboxOption('pacing'),
-      //   restoreCheckboxOption('goalIndicator'),
-      //   restoreCheckboxOption('moveMoneyAutocomplete'),
-      //   restoreCheckboxOption('daysOfBuffering'),
-      //   restoreCheckboxOption('toggleSplits'),
-      //   restoreCheckboxOption('accountsSelectedTotal'),
-      //   restoreCheckboxOption('changeEnterBehavior'),
-      //   restoreCheckboxOption('transferJump'),
-      //   restoreCheckboxOption('resizeInspector'),
-      //   restoreCheckboxOption('importNotification'),
-      //   restoreCheckboxOption('swapClearedFlagged'),
-      //   restoreCheckboxOption('warnOnQuickBudget'),
-      //
-      //   restoreSelectOption('daysOfBufferingHistoryLookup'),
-      //   restoreSelectOption('budgetRowsHeight'),
-      //   restoreSelectOption('reconciledTextColor'),
-      //   restoreSelectOption('categoryActivityPopupWidth'),
-      //   restoreSelectOption('accountsDisplayDensity'),
-      //   restoreSelectOption('editButtonPosition'),
-      //   restoreSelectOption('budgetProgressBars')
-      // ]).then(function() {
-      //   resolve();
-      // }, function() {
-      //   console.log("Ensure defaults are set failed.");
-      // });
     });
   });
 }

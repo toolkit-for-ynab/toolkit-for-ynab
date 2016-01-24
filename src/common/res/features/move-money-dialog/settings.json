@@ -1,0 +1,13 @@
+{
+         "name": "moveMoneyDialog",
+         "type": "checkbox",
+      "default": false,
+      "section": "budget",
+        "title": "Make the Move Money Dialog Larger",
+  "description": "This makes the move money dialog larger, giving you more space to see what you're doing there.",
+      "actions": {
+                    "true": [
+                      "injectCSS", "main.css"
+                    ]
+                 }
+}
