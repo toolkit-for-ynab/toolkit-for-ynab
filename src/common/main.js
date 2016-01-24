@@ -2,6 +2,7 @@
 // @name Main
 // @include http://*.youneedabudget.com/*
 // @include https://*.youneedabudget.com/*
+// @require res/features/allSettings.js
 // ==/UserScript==
 
 function injectCSS(path) {
@@ -18,7 +19,7 @@ function injectScript(path) {
   script.setAttribute('type', 'text/javascript');
   script.setAttribute('src', kango.io.getResourceUrl(path));
 
-  document.getElementsByTagName('body')[0].appendChild(script);
+  document.getElementsByTagName('head')[0].appendChild(script);
 }
 
 function injectJSString(js) {
@@ -28,38 +29,50 @@ function injectJSString(js) {
   document.getElementsByTagName('body')[0].appendChild(script);
 }
 
-/* Init ynabToolKit object and import options from Kango  */
-injectJSString("window.ynabToolKit = {}; ynabToolKit.options = {" + Array.from(kango.storage.getKeys(), el=> el + " : " + kango.storage.getItem(el) + ", ").reduce((a, b) => a + b, "") + "}")
+function applySettingsToDom() {
+  ynabToolKit.allSettings.forEach(function(setting) {
+    var thisSetting = setting;
 
-/* Load this to setup shared utility functions */
-injectScript('res/features/shared/main.js');
+    getKangoSetting(setting.name).then(function (data) {
+      if (data in thisSetting.actions) {
+        for (var i = 0; i < thisSetting.actions.length; i += 2) {
+          var action = thisSetting.actions[i];
+          var target = thisSetting.actions[i + 1];
 
-/* This script to be built automatically by the python script */
-injectScript('res/features/shared/feedChanges.js');
-
-/* Load this to setup behaviors when the DOM updates and shared functions */
-injectScript('res/features/act-on-change/main.js');
-
-function ensureDefaultsAreSet() {
-  var storedKeys = kango.storage.getKeys();
-
-  if (storedKeys.indexOf('collapseExpandBudgetGroups') < 0) {
-    kango.storage.setItem('collapseExpandBudgetGroups', true);
-  }
-
-  if (storedKeys.indexOf('enableRetroCalculator') < 0) {
-    kango.storage.setItem('enableRetroCalculator', true);
-  }
-
-  if (storedKeys.indexOf('removeZeroCategories') < 0) {
-    kango.storage.setItem('removeZeroCategories', true);
-  }
+          if (action == "injectCSS") {
+            injectCSS(target);
+          } else if (action == "injectScript") {
+            injectScript(target);
+          } else if (action == "injectJSString") {
+            injectJSString(target);
+          } else {
+            throw "Invalid action. Only injectCSS, injectScript and injectJSString are currently supported.";
+          }
+        }
+      }
+    })
+  });
 }
 
-ensureDefaultsAreSet();
+KangoAPI.onReady(function() {
+  /* Init ynabToolKit object and import options from Kango  */
+  injectJSString("window.ynabToolKit = {}; ynabToolKit.options = {" + Array.from(kango.storage.getKeys(), el=> el + " : " + kango.storage.getItem(el) + ", ").reduce((a, b) => a + b, "") + "}")
 
-// Global toolkit css.
-injectCSS('res/features/main.css');
+  /* Load this to setup shared utility functions */
+  injectScript('res/features/shared/main.js');
+
+  /* This script to be built automatically by the python script */
+  injectScript('res/features/shared/feedChanges.js');
+
+  /* Load this to setup behaviors when the DOM updates and shared functions */
+  injectScript('res/features/act-on-change/main.js');
+
+  // Global toolkit css.
+  injectCSS('res/features/main.css');
+
+  ensureDefaultsAreSet().then(applySettingsToDom);
+});
+
 
 if (kango.storage.getItem('collapseExpandBudgetGroups')) {
   injectCSS('res/features/collapse-budget-groups/main.css');
