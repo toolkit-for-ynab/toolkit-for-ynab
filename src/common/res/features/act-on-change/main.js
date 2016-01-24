@@ -27,8 +27,13 @@
           $nodes.each(function() {
             var $node = $(this);
 
-            if ( typeof $node[0].className !== 'undefined' ) {
-            	nodeClasses = new Set($node[0].className.split(' '));
+            try {
+              if ( typeof $node[0].className !== 'undefined' ) {
+                nodeClasses = new Set($node[0].className.split(' '));
+              }
+            }
+            catch (err) {
+              console.log(err);
             }
             ynabToolKit.changedNodes = new Set([...ynabToolKit.changedNodes, ...nodeClasses]);
 
@@ -78,6 +83,11 @@
         // Hidden categories modal
         if (ynabToolKit.changedNodes.has('modal-budget-edit-category')) {
           ynabToolKit.l10n.localize.editCategoryModal();
+        }
+
+        // Inspector goals
+        if (ynabToolKit.changedNodes.has('budget-inspector-goals')) {
+          ynabToolKit.l10n.localize.inspector();
         }
 
         // Changes are detected in the category balances

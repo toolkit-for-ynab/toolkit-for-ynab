@@ -83,6 +83,9 @@
         "CashSpending" : "Cash Spending",
         "CreditSpending" : "Credit Spending",
         "Available" : "Available",
+        "GoalTarget" : "Target Category Balance",
+        "GoalTargetByDate" : "Target Category Balance by Date",
+        "GoalMonthly" : "Monthly Funding Goal",
       },
       "Button" : {
         "Underfunded" : "Underfunded",

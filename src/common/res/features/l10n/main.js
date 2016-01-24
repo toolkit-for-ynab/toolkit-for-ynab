@@ -124,6 +124,15 @@
 
       // TODO Add credit cards inspector handling
 
+      var goals = $('.budget-inspector-goals');
+
+      var goalTargetText = $(goals).find('[data-value=TB]').contents()[4];
+      if (goalTargetText) goalTargetText.textContent = l10n.Budget.Inspector.Title.GoalTarget;
+      var goalTargetByDateText = $(goals).find('[data-value=TBD]').contents()[4];
+      if (goalTargetByDateText) goalTargetByDateText.textContent = l10n.Budget.Inspector.Title.GoalTargetByDate;
+      var goalMonthlyText = $(goals).find('[data-value=MF]').contents()[4];
+      if (goalMonthlyText) goalMonthlyText.textContent = l10n.Budget.Inspector.Title.GoalMonthly;
+
     }; // Keep feature functions contained within this
     ynabToolKit.l10n.localize.inspector();
 

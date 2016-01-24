@@ -83,6 +83,9 @@ ynabToolKit.l10n.Data = {
         "CashSpending" : "Расходы наличными",
         "CreditSpending" : "Расходы с кредитных карт",
         "Available" : "Доступно",
+        "GoalTarget" : "Баланс",
+        "GoalTargetByDate" : "Баланс к дате",
+        "GoalMonthly" : "Ежемесячные расходы",
       },
       "Button" : {
         "Underfunded" :  "Недобюджетировано",
