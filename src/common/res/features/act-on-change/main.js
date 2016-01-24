@@ -76,9 +76,6 @@
           if ( ynabToolKit.options.warnOnQuickBudget ){
             ynabToolKit.warnOnQuickBudget();
           }
-          if ( ynabToolKit.options.checkCreditBalances ){
-              ynabToolKit.checkCreditBalances();
-          }
 
         }
 
