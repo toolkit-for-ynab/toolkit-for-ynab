@@ -112,6 +112,17 @@
           "YoullIncrease" : "and you'll increase your debt by",
           "Spending" : "credit spending since last payment",
           "Available" : "available for payment",
+        },
+        "Goal" : {
+          "YouRe" : "You're",
+          "ShorOfGoal" : "short of your goal for the month",
+          "BugetAnother" : "Budget another",
+          "ToKeepTrack" : "to keep on track",
+          "Budget" : "Budget",
+          "MoreTo" : "more to reach your ",
+          "MonthlyGoal" : "monthly goal",
+          "YoReOnTrack" : "You're on track to reach your ",
+          "GoalBy" : "goal by April of 2016",
         }
       }
     },

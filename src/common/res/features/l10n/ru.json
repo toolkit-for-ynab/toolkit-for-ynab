@@ -112,6 +112,17 @@ ynabToolKit.l10n.Data = {
           "YoullIncrease" : "и вы увеличите свой долг на",
           "Spending" : "расходов в кредит с последней оплаты",
           "Available" : "доступно для оплаты",
+        },
+        "Goal" : {
+          "YouRe" : "You're",
+          "ShorOfGoal" : "short of your goal for the month",
+          "BugetAnother" : "Budget another",
+          "ToKeepTrack" : "to keep on track",
+          "Budget" : "Budget",
+          "MoreTo" : "more to reach your ",
+          "MonthlyGoal" : "monthly goal",
+          "YoReOnTrack" : "You're on track to reach your ",
+          "GoalBy" : "goal by April of 2016",
         }
       }
     },
