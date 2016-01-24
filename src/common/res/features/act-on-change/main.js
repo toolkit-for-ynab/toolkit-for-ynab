@@ -79,9 +79,6 @@
           if ( ynabToolKit.options.checkCreditBalances ){
               ynabToolKit.checkCreditBalances();
           }
-          if ( ynabToolKit.options.highlightNegativesNegative ){
-            ynabToolKit.highlightNegativesNegative();
-          }
 
         }
 
