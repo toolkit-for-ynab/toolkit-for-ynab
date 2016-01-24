@@ -94,7 +94,8 @@ with open('./src/common/res/features/allSettings.js', 'w') as settingsFile:
                         '* Any changes you make manually will be overwritten       *\n'
                         '* the next time you run ./build or build.bat!             *\n'
                         '**********************************************************/\n\n'))
-    settingsFile.write('var toolkitForYnabSettings = ' + json.dumps(allSettings))
+    settingsFile.write('if (typeof window.ynabToolKit === "undefined") { window.ynabToolKit = {}; }')
+    settingsFile.write('window.ynabToolKit.allSettings = ' + json.dumps(allSettings))
 
 
 # Write the init file:
