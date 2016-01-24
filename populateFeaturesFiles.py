@@ -2,9 +2,54 @@
 
 import os
 import json
+import traceback
 
 allSettings = []
 allInitContent = []
+
+def checkIndividualSetting(setting):
+    if not 'name' in setting:
+        raise ValueError('Every setting must have a name property.')
+
+    if not 'type' in setting:
+        raise ValueError('Every setting must have a type property.')
+
+    if setting['type'] != 'checkbox' and setting['type'] != 'select':
+        raise ValueError('Only checkbox and select settings are supported at this time. Pull requests are welcome!')
+
+    if not 'title' in setting:
+        raise ValueError('Every setting must have a title.')
+
+    if not 'description' in setting:
+        raise ValueError('Every setting must have a description.')
+
+    if not 'actions' in setting:
+        raise ValueError('Every setting must declare actions that happen when the setting is activated.')
+
+    if setting['type'] == 'checkbox':
+        if not 'true' in setting['actions'] and not 'false' in setting['actions']:
+            raise ValueError('Checkbox settings must declare an action for "true" or "false" to have any effect.')
+    elif setting['type'] == 'select':
+        if not '1' in setting['actions']:
+            raise ValueError('Select settings must declar an action for "1" to have any effect.')
+
+    # Apply the defaults.
+    if not 'section' in setting:
+        setting['section'] = 'general'
+
+    if not 'default' in setting:
+        setting['default'] = False
+
+def checkSettingStructure(setting):
+    if isinstance(setting, dict):
+        checkIndividualSetting(setting)
+    elif isinstance(setting, list):
+        for individualSetting in setting:
+            checkIndividualSetting(individualSetting)
+    else:
+        raise ValueError('Settings must be a single JSON object or an array of JSON objects. See the setting file in hide-age-of-money for an example setting.')
+
+
 
 for dirName, subdirList, fileList in os.walk('./src/common/res/features/'):
 
@@ -12,6 +57,18 @@ for dirName, subdirList, fileList in os.walk('./src/common/res/features/'):
         with open(os.path.join(dirName, 'settings.json'), 'r') as settingsFile:
             settingsContents = json.loads(settingsFile.read())
 
+            # Validate first
+            try:
+                checkSettingStructure(settingsContents)
+            except ValueError:
+                formatted_lines = traceback.format_exc().splitlines()
+                print "[  ERROR] Settings error: {0}".format(formatted_lines[-1])
+                print "[  ERROR] While processing file: {0}".format(settingsFile.name)
+                print ""
+                print "[  ERROR] EXTENSION WAS NOT BUILT. Please fix the settings errors and try again."
+                exit(1)
+
+            # Ok, we're happy, add it to the optput.
             if (isinstance(settingsContents, dict)):
                 allSettings.append(settingsContents)
             else:
