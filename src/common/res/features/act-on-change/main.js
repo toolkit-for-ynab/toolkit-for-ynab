@@ -61,9 +61,6 @@
         // We found a modal pop-up
         if (ynabToolKit.changedNodes.has('options-shown')) {
 
-          if (ynabToolKit.options.removeZeroCategories) {
-            ynabToolKit.removeZeroCategories();
-          }
           if (ynabToolKit.options.moveMoneyAutocomplete) {
             ynabToolKit.moveMoneyAutocomplete();
           }
