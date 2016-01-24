@@ -1,4 +1,0 @@
-
-toolkitForYnab.registerDomMutationCallback(function(mutator) {
-  
-});
