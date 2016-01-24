@@ -58,15 +58,6 @@
 
         }
 
-        // We found a modal pop-up
-        if (ynabToolKit.changedNodes.has('options-shown')) {
-
-          if (ynabToolKit.options.moveMoneyAutocomplete) {
-            ynabToolKit.moveMoneyAutocomplete();
-          }
-
-        }
-
         // The user has changed their budget row selection
         if (ynabToolKit.changedNodes.has('budget-inspector')) {
 
