@@ -21,6 +21,7 @@ ynabToolKit.l10n.Data = {
     "Title" : {
       "TodaysBalance" : "Today's Balance:",
       "DirectImport" : "Use your bank login to import transactions",
+      "Search" : "Поиск"
     },
     "Placeholder" : {
       "Note" : "Заметка..."
