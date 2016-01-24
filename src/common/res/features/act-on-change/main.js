@@ -1,3 +1,6 @@
+// Building a new feature that uses MutationObserver? You don't need to modify this file
+// Instead of adding conditionals to this file try the example from /shared/example.js
+
 (function poll() {
   if (ynabToolKit.pageReady === true && typeof ynabToolKit.shared.feedChanges !== 'undefined') {
 
