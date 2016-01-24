@@ -79,7 +79,7 @@
         $(inspector).find(".inspector-notes h3")[0].textContent = l10n.Budget.Inspector.Header.Notes;
 
         var editButton = $(inspector).find('.inspector-category-edit')[0];
-        if (editButton) editButton.childNodes[1].textContent = " " + l10n.Budget.Inspector.Button.Edit;
+        if (editButton) editButton.childNodes[1].textContent = " " + l10n.Global.Button.Edit;
 
         var buttons = $(inspector).find('.budget-inspector-button');
         k = 0;
@@ -92,13 +92,15 @@
         buttons[k + 2].childNodes[1].textContent = l10n.Budget.Inspector.Button.AverageBudgeted;
         buttons[k + 3].childNodes[1].textContent = l10n.Budget.Inspector.Button.AverageSpent;
 
-        $('.budget-inspector-goals-create')[0].childNodes[3].textContent = l10n.Budget.Inspector.Button.CreateGoal;
-
         categoryNote = $(inspector).find('.inspector-category-note').contents()[3];
         if (categoryNote.textContent == "Enter a note...") {
           categoryNote.textContent = l10n.Global.Placeholder.Note;
         }
 
+        var createGoalButtonText = $(inspector).find('.budget-inspector-goals-create').contents()[3];
+        if (createGoalButtonText) createGoalButtonText.textContent = l10n.Budget.Inspector.Button.CreateGoal;
+        var editGoalButtonText = $(inspector).find('.edit-goal').contents()[1];
+        if (editGoalButtonText) editGoalButtonText.textContent = l10n.Global.Button.Edit;
 
       }
 

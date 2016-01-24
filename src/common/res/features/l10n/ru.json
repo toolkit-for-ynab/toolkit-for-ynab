@@ -2,7 +2,8 @@ ynabToolKit.l10n.Data = {
   "Global" : {
     "Button" : {
       "Ok": "ОК",
-      "Cancel" : "Отмена"
+      "Cancel" : "Отмена",
+      "Edit" : "Изменить",
     },
     "Month" : {
       "1" : "Янв",
@@ -89,7 +90,6 @@ ynabToolKit.l10n.Data = {
         "SpentLastMonth" :  "Расходы предыдущего месяца",
         "AverageBudgeted" :  "Средний бюджет",
         "AverageSpent" :  "Средние расходы",
-        "Edit" : "Изменить",
         "CreateGoal" : "Задайте Цель",
         "UpcomingTransactions" : "Запланированные транзакции"
       },

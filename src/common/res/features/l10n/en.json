@@ -2,7 +2,8 @@
   "Global" : {
     "Button" : {
       "Ok": "OK",
-      "Cancel" : "Cancel"
+      "Cancel" : "Cancel",
+      "Edit" : "Edit",
     },
     "Month" : {
       "1" : "Jan",
@@ -89,7 +90,6 @@
         "SpentLastMonth" : "Spent Last Month",
         "AverageBudgeted" : "Average Budgeted",
         "AverageSpent" : "Average Spent",
-        "Edit" : "Edit",
         "CreateGoal" : "Create a goal",
         "UpcomingTransactions" : "Upcoming Transactions"
       },
