@@ -46,24 +46,6 @@
           console.log('###')
         }
 
-        // The user has returned back to the budget screen
-        if (ynabToolKit.changedNodes.has('navlink-budget') && ynabToolKit.changedNodes.has('active')) {
-
-          if ( ynabToolKit.options.warnOnQuickBudget ){
-            ynabToolKit.warnOnQuickBudget();
-          }
-
-        }
-
-        // The user has changed their budget row selection
-        if (ynabToolKit.changedNodes.has('budget-inspector')) {
-
-          if ( ynabToolKit.options.warnOnQuickBudget ){
-            ynabToolKit.warnOnQuickBudget();
-          }
-
-        }
-
         // Now we are ready to feed the change digest to the
         // automatically setup feedChanges file/function
         ynabToolKit.shared.feedChanges(ynabToolKit.changedNodes);
