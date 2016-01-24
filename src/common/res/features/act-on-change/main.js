@@ -90,6 +90,11 @@
           ynabToolKit.l10n.localize.inspector();
         }
 
+        // Inspector goals checked
+        if (ynabToolKit.changedNodes.has('is-checked')) {
+          ynabToolKit.l10n.localize.inspector();
+        }
+
         // Changes are detected in the category balances
         if (ynabToolKit.changedNodes.has('budget-table-cell-available-div')) {
           if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {

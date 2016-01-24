@@ -80,13 +80,19 @@ ynabToolKit.l10n.Data = {
       },
       "Title" : {
         "CashLeft" : "Остаток с прошлого месяца",
-        "Budgeted" : "Бюджет в этом месяце",
+        "BudgetedThisMonth" : "Бюджет в этом месяце",
         "CashSpending" : "Расходы наличными",
         "CreditSpending" : "Расходы с кредитных карт",
         "Available" : "Доступно",
         "GoalTarget" : "Баланс",
         "GoalTargetByDate" : "Баланс к дате",
         "GoalMonthly" : "Ежемесячные расходы",
+        "Complete" : "Прогресс",
+        "Budgeted" : "Бюджет",
+        "ToGo" : "Остаток",
+        "TargetBalance" : "Целевой баланс",
+        "TargetBudgetedAmount" : "Целевой бюджет",
+        "TargetMonthYear" : "Месяц и год"
       },
       "Button" : {
         "Underfunded" :  "Недобюджетировано",

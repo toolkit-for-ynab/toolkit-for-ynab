@@ -80,13 +80,19 @@
       },
       "Title" : {
         "CashLeft" : "Cash Left Over From",
-        "Budgeted" : "Budgeted This Month",
+        "BudgetedThisMonth" : "Budgeted This Month",
         "CashSpending" : "Cash Spending",
         "CreditSpending" : "Credit Spending",
         "Available" : "Available",
         "GoalTarget" : "Target Category Balance",
         "GoalTargetByDate" : "Target Category Balance by Date",
         "GoalMonthly" : "Monthly Funding Goal",
+        "Complete" : "Complete",
+        "Budgeted" : "Budgeted",
+        "ToGo" : "To go",
+        "TargetBalance" : "Target Balance",
+        "TargetBudgetedAmount" : "Target Budgeted Amount",
+        "TargetMonthYear" : "Target Month & Year"
       },
       "Button" : {
         "Underfunded" : "Underfunded",

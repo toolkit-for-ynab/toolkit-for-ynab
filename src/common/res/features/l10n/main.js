@@ -21,6 +21,10 @@
       }
     }
 
+    function setContent(el, text) {
+        if (el) el.textContent = text;
+    }
+
     ynabToolKit.l10n.localize.inspector = function () { // Keep feature functions contained within this
       var inspector = $('.budget-inspector');
 
@@ -47,7 +51,7 @@
 
         var titles = $(inspector).find('dt');
         titles[0].textContent = l10n.Budget.Inspector.Title.CashLeft;
-        titles[1].textContent = l10n.Budget.Inspector.Title.Budgeted;
+        titles[1].textContent = l10n.Budget.Inspector.Title.BudgetedThisMonth;
         titles[2].textContent = l10n.Budget.Inspector.Title.CashSpending;
         titles[3].textContent = l10n.Budget.Inspector.Title.CreditSpending;
         if (titles[4]) titles[4].textContent = l10n.Budget.Inspector.Title.Available;
@@ -97,10 +101,8 @@
           categoryNote.textContent = l10n.Global.Placeholder.Note;
         }
 
-        var createGoalButtonText = $(inspector).find('.budget-inspector-goals-create').contents()[3];
-        if (createGoalButtonText) createGoalButtonText.textContent = l10n.Budget.Inspector.Button.CreateGoal;
-        var editGoalButtonText = $(inspector).find('.edit-goal').contents()[1];
-        if (editGoalButtonText) editGoalButtonText.textContent = l10n.Global.Button.Edit;
+        setContent($(inspector).find('.budget-inspector-goals-create').contents()[3], l10n.Budget.Inspector.Button.CreateGoal);
+        setContent($(inspector).find('.edit-goal').contents()[1], l10n.Global.Button.Edit);
 
       }
 
@@ -125,18 +127,25 @@
       // TODO Add credit cards inspector handling
 
       var goals = $('.budget-inspector-goals');
-      var goalTargetText = $(goals).find('[data-value=TB]').contents()[4];
-      if (goalTargetText) goalTargetText.textContent = l10n.Budget.Inspector.Title.GoalTarget;
-      var goalTargetByDateText = $(goals).find('[data-value=TBD]').contents()[4];
-      if (goalTargetByDateText) goalTargetByDateText.textContent = l10n.Budget.Inspector.Title.GoalTargetByDate;
-      var goalMonthlyText = $(goals).find('[data-value=MF]').contents()[4];
-      if (goalMonthlyText) goalMonthlyText.textContent = l10n.Budget.Inspector.Title.GoalMonthly;
-      var buttonDelete = $(goals).find('dd.actions>.link-button').contents()[0];
-      if (buttonDelete) buttonDelete.textContent = l10n.Global.Button.Delete;
-      var buttonCancel = $(goals).find('dd.actions>.link-button').contents()[1];
-      if (buttonCancel) buttonCancel.textContent = l10n.Global.Button.Cancel;
-      var buttonOk = $(goals).find('dd.actions>.button-primary').contents()[1];
-      if (buttonOk) buttonOk.textContent = l10n.Global.Button.Ok;
+      setContent($(goals).find('[data-value=TB]').contents()[4], l10n.Budget.Inspector.Title.GoalTarget);
+      setContent($(goals).find('[data-value=TBD]').contents()[4], l10n.Budget.Inspector.Title.GoalTargetByDate);
+      setContent($(goals).find('[data-value=MF]').contents()[4], l10n.Budget.Inspector.Title.GoalMonthly);
+      setContent($(goals).find('dd.actions>.link-button').contents()[0], l10n.Global.Button.Delete);
+      setContent($(goals).find('dd.actions>.link-button').contents()[1], l10n.Global.Button.Cancel);
+      setContent($(goals).find('dd.actions>.button-primary').contents()[1], l10n.Global.Button.Ok);
+      setContent($(goals).find('.percent-label').contents()[0], l10n.Budget.Inspector.Title.Complete);
+      setContent($(goals).find('.label').contents()[0], l10n.Budget.Inspector.Title.Budgeted);
+      setContent($(goals).find('.label').contents()[1], l10n.Budget.Inspector.Title.ToGo);
+      var goalLabelText = $(goals).find('dt').contents()[2];
+      if (goalLabelText) {
+        if (goalLabelText.textContent == "Target Balance") setContent(goalLabelText, l10n.Budget.Inspector.Title.TargetBalance);
+        if (goalLabelText.textContent == "Target Budgeted Amount") setContent(goalLabelText, l10n.Budget.Inspector.Title.TargetBudgetedAmount);
+      }
+      setContent($(goals).find('dt').contents()[5], l10n.Budget.Inspector.Title.TargetMonthYear);
+      for (var i = 0; i < Object.keys(l10n.Global.Month).length; i++) {
+        setContent($(goals).find('.goal-target-month>option').contents()[i], l10n.Global.Month[i + 1]);
+      }
+
 
     }; // Keep feature functions contained within this
     ynabToolKit.l10n.localize.inspector();
