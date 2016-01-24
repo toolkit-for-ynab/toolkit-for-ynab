@@ -6,7 +6,7 @@
 
     // Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
     // during page interactions and updates to the developer tools console.
-    ynabToolKit.debugNodes = false;
+    ynabToolKit.debugNodes = true;
 
     ynabToolKit.actOnChange = function() {
 
@@ -22,9 +22,6 @@
 
         mutations.forEach(function(mutation) {
           var newNodes = mutation.target;
-          if (ynabToolKit.debugNodes) {
-            console.log(newNodes);
-          }
 
           var $nodes = $(newNodes); // jQuery set
           $nodes.each(function() {
@@ -37,13 +34,16 @@
 
           }); // each node mutation event
 
+          if (ynabToolKit.debugNodes) {
+            // console.log(newNodes);
+            console.log(ynabToolKit.changedNodes);
+          }
+
         }); // each mutation event
 
         if (ynabToolKit.debugNodes) {
           console.log('###');
         }
-
-        console.log(ynabToolKit.changedNodes);
 
         // Calendar modal
         if (ynabToolKit.changedNodes.has('modal-calendar')) {
