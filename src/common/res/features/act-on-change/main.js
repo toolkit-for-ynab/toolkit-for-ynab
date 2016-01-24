@@ -32,7 +32,7 @@
 
             try {
               nodeClasses = new Set($node[0].className.split(' '));
-            } catch(err) { var ynabToolKit.debugNodes.errors = err }
+            } catch(err) {/* ignore */}
 
             ynabToolKit.changedNodes = new Set([...ynabToolKit.changedNodes, ...nodeClasses]);
 
@@ -47,9 +47,6 @@
         // The user has returned back to the budget screen
         if (ynabToolKit.changedNodes.has('navlink-budget') && ynabToolKit.changedNodes.has('active')) {
 
-          if ( ynabToolKit.options.budgetProgressBars ){
-            ynabToolKit.budgetProgressBars();
-          }
           if ( ynabToolKit.options.goalIndicator ){
             ynabToolKit.goalIndicator();
           }
