@@ -79,21 +79,12 @@ ensureDefaultsAreSet().then(applySettingsToDom);
 //   injectScript('res/features/collapse-budget-groups/main.js');
 // }
 //
-// if (kango.storage.getItem('collapseSideMenu')) {
-//   injectCSS('res/features/collapse-side-menu/main.css');
-//   injectScript('res/features/collapse-side-menu/main.js');
-// }
-//
 // if (kango.storage.getItem('colourBlindMode')) {
 //   injectCSS('res/features/colour-blind-mode/main.css');
 // }
 //
 // if (kango.storage.getItem('squareNegativeMode')) {
 //   injectCSS('res/features/square-negative/square.css');
-// }
-//
-// if (kango.storage.getItem('hideAOM')) {
-//   injectCSS('res/features/hide-age-of-money/main.css');
 // }
 //
 // if (kango.storage.getItem('highlightNegativesNegative')) {
