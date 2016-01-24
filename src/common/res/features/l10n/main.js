@@ -52,12 +52,16 @@
         titles[3].textContent = l10n.Budget.Inspector.Title.CreditSpending;
         if (titles[4]) titles[4].textContent = l10n.Budget.Inspector.Title.Available;
 
+        // Inspector credit payment.
         try {
-          $(inspector).find(".budget-inspector-payment h3")[0].textContent = l10n.Budget.Inspector.Header.Payment;
+          var payment = $(inspector).find(".budget-inspector-payment");
+          $(payment).find("h3")[0].textContent = l10n.Budget.Inspector.Header.Payment;
+          // TODO Payment msg l10n.
         }
         catch(err) {
           console.log(err);
         }
+
         $(inspector).find(".inspector-quick-budget h3")[0].textContent = l10n.Budget.Inspector.Header.Quick;
         $(inspector).find(".budget-inspector-goals h3")[0].textContent = l10n.Budget.Inspector.Header.Goals;
         $(inspector).find(".inspector-notes h3")[0].textContent = l10n.Budget.Inspector.Header.Notes;
@@ -135,10 +139,9 @@
       }
 
       if (!ynabToolKit.options.hideAOM) {
-        var daysAge = $('.budget-header-days-age');
-        var daysNumber = $(daysAge).text().split(' ')[0]
         // TODO Add Russian option check.
-        $(daysAge)[0].textContent = daysNumber + " " + ynabToolKit.shared.declension('ru', daysNumber, {nom: 'день', gen: 'дня', plu: 'дней'});
+        var daysNumber = $('.budget-header-days-age').contents()[0];
+        $('.budget-header-days-age').contents()[2].textContent = ynabToolKit.shared.declension('ru', daysNumber, {nom: 'день', gen: 'дня', plu: 'дней'});
         $('.budget-header-days-label')[0].textContent = l10n.Budget.Header.Metric.AoM;
       }
     };
