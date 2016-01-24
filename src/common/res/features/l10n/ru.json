@@ -93,6 +93,17 @@ ynabToolKit.l10n.Data = {
         "CreateGoal" : "Задайте Цель",
         "UpcomingTransactions" : "Запланированные транзакции"
       },
+      "Text" : {
+        "Credit" : {
+          "Paid" : "Выплачено",
+          "On" : "за",
+          "IfYouPay" : "Если вы выплатите",
+          "BalanceWillBe" : "ваш баланс составит",
+          "YoullIncrease" : "и вы увеличите свой долг на",
+          "Spending" : "расходов в кредит с последней оплаты",
+          "Available" : "доступно для оплаты",
+        }
+      }
     },
   },
   "Sidebar" : {

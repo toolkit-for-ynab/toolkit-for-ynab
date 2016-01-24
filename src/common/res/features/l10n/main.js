@@ -56,7 +56,19 @@
         try {
           var payment = $(inspector).find(".budget-inspector-payment");
           $(payment).find("h3")[0].textContent = l10n.Budget.Inspector.Header.Payment;
-          // TODO Payment msg l10n.
+
+          var paidHowMuch = $(payment).find('.paid-msg').contents()[0].textContent.split(' ')[1];
+          $(payment).find('.paid-msg').contents()[0].textContent = l10n.Budget.Inspector.Text.Credit.Paid + " " + paidHowMuch;
+          var paidWhen = $(payment).find('.paid-msg').contents()[2].textContent.split(' ')[2];
+          $(payment).find('.paid-msg').contents()[2].textContent = " " + l10n.Budget.Inspector.Text.Credit.On + " " + paidWhen;
+
+          var recommendation = $(payment).find('.recommendation');
+          recommendation.contents()[1].textContent = l10n.Budget.Inspector.Text.Credit.IfYouPay + " ";
+          recommendation.contents()[3].textContent = ", "+ l10n.Budget.Inspector.Text.Credit.BalanceWillBe + " ";
+          recommendation.contents()[5].textContent = " " + l10n.Budget.Inspector.Text.Credit.YoullIncrease + " ";
+
+          $(payment).find('.progress>em').contents()[1].textContent = " " + l10n.Budget.Inspector.Text.Credit.Spending;
+          $(payment).find('.progress>em').contents()[3].textContent = " " + l10n.Budget.Inspector.Text.Credit.Available;
         }
         catch(err) {
           console.log(err);
@@ -86,6 +98,8 @@
         if (categoryNote.textContent == "Enter a note...") {
           categoryNote.textContent = l10n.Global.Placeholder.Note;
         }
+
+
       }
 
       // Multiple categories selected

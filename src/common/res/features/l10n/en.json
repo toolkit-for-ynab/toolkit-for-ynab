@@ -93,6 +93,17 @@
         "CreateGoal" : "Create a goal",
         "UpcomingTransactions" : "Upcoming Transactions"
       },
+      "Text" : {
+        "Credit" : {
+          "Paid" : "Paid",
+          "On" : "on",
+          "IfYouPay" : "If you pay",
+          "BalanceWillBe" : "your account balance will be",
+          "YoullIncrease" : "and you'll increase your debt by",
+          "Spending" : "credit spending since last payment",
+          "Available" : "available for payment",
+        }
+      }
     },
   },
   "Sidebar" : {
