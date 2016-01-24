@@ -54,13 +54,20 @@
         headers[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Goals;
         headers[2].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Header.Notes;
 
-        var buttons = $(inspector).find('button');
-        buttons[0].childNodes[1].textContent = " " + ynabToolKit.l10n.Data.Budget.Inspector.Button.Edit;
-        buttons[1].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.BudgetedLastMonth;
-        buttons[2].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.SpentLastMonth;
-        buttons[3].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageBudgeted;
-        buttons[4].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageSpent;
-        buttons[5].childNodes[3].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.CreateGoal;
+        $('.inspector-category-edit')[0].childNodes[1].textContent = " " + ynabToolKit.l10n.Data.Budget.Inspector.Button.Edit;
+
+        var buttons = $(inspector).find('.budget-inspector-button');
+        k = 0;
+        if (buttons.length == 5) {
+            buttons[0].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.UpcomingTransactions;
+            k = 1;
+        }
+        buttons[k].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.BudgetedLastMonth;
+        buttons[k + 1].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.SpentLastMonth;
+        buttons[k + 2].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageBudgeted;
+        buttons[k + 3].childNodes[1].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.AverageSpent;
+
+        $('.budget-inspector-goals-create')[0].childNodes[3].textContent = ynabToolKit.l10n.Data.Budget.Inspector.Button.CreateGoal;
 
         categoryNote = $(inspector).find('.inspector-category-note').contents()[3];
         if (categoryNote.textContent == "Enter a note...") {
