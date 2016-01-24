@@ -169,5 +169,11 @@ ynabToolKit.l10n.Data = {
     "Button" : {
       "ShowAllHidden" : "Показать все скрытые"
     }
+  },
+  "EditCategoryModal" : {
+    "Button" : {
+      "Hide" : "Скрыть",
+      "Delete" : "Удалить"
+    }
   }
 }

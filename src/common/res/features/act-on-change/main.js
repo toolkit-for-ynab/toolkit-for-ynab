@@ -75,6 +75,11 @@
           ynabToolKit.l10n.localize.hiddenCategoriesModal();
         }
 
+        // Hidden categories modal
+        if (ynabToolKit.changedNodes.has('modal-budget-edit-category')) {
+          ynabToolKit.l10n.localize.editCategoryModal();
+        }
+
         // Changes are detected in the category balances
         if (ynabToolKit.changedNodes.has('budget-table-cell-available-div')) {
           if ( ynabToolKit.options.checkCreditBalances ||  ynabToolKit.options.highlightNegativesNegative ) {

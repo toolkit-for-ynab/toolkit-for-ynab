@@ -169,5 +169,11 @@
     "Button" : {
       "ShowAllHidden" : "Show all hidden categories"
     }
+  },
+  "EditCategoryModal" : {
+    "Button" : {
+      "Hide" : "Hide",
+      "Delete" : "Delete"
+    }
   }
 }

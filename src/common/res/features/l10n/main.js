@@ -163,9 +163,25 @@
       var modal = $('.modal-budget-hidden-categories');
       $(modal).find('.modal-header').contents()[1].textContent = ynabToolKit.l10n.Data.HiddenCategoriesModal.Title.ClickCategory;
       $(modal).find('.button')[0].textContent = ynabToolKit.l10n.Data.HiddenCategoriesModal.Button.ShowAllHidden;
-      $(modal).find('.modal-budget-hidden-categories-master-unhidden:contains("Credit Card Payments")').contents()[1].textContent =
-        ynabToolKit.l10n.Data.Global.Category.CreditCardPayments + " ";
+      creditCardPaymentsText = $(modal).find('.modal-budget-hidden-categories-master-unhidden:contains("Credit Card Payments")').contents()[1];
+      if (creditCardPaymentsText) creditCardPaymentsText.textContent = ynabToolKit.l10n.Data.Global.Category.CreditCardPayments + " ";
     }
+
+    ynabToolKit.l10n.localize.editCategoryModal = function () {
+      var modal = $('.modal-budget-edit-category');
+      $(modal).find('.button-primary').contents()[0].textContent = ynabToolKit.l10n.Data.Global.Button.Ok;
+      $(modal).find('.button-cancel').contents()[0].textContent = ynabToolKit.l10n.Data.Global.Button.Cancel;
+      var deleteButtonText = $(modal).find('.button-delete').contents()[2];
+      if (deleteButtonText) deleteButtonText.textContent = ynabToolKit.l10n.Data.EditCategoryModal.Button.Delete;
+      $(modal).find('.button-hide').contents()[2].textContent = ynabToolKit.l10n.Data.EditCategoryModal.Button.Hide;
+      var creditCardPaymentsText = $(modal).find('.modal-budget-edit-category-label:contains("Credit Card Payments")')[0];
+      if (creditCardPaymentsText) creditCardPaymentsText.textContent = ynabToolKit.l10n.Data.Global.Category.CreditCardPayments;
+    }
+
+    // Modal template
+    // ynabToolKit.l10n.localize.someModal = function () {
+    //   var modal = $('.modal-class');
+    // }
 
   } else {
     setTimeout(poll, 250);
