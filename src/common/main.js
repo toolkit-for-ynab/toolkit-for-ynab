@@ -14,12 +14,19 @@ function injectCSS(path) {
   document.getElementsByTagName('head')[0].appendChild(link);
 }
 
-function injectScript(path) {
-  var script = document.createElement('script');
-  script.setAttribute('type', 'text/javascript');
-  script.setAttribute('src', kango.io.getResourceUrl(path));
+var previouslyInjectedScripts = [];
 
-  document.getElementsByTagName('head')[0].appendChild(script);
+function injectScript(path) {
+  if (previouslyInjectedScripts.indexOf(path) < 0) {
+
+    previouslyInjectedScripts.push(path);
+
+    var script = document.createElement('script');
+    script.setAttribute('type', 'text/javascript');
+    script.setAttribute('src', kango.io.getResourceUrl(path));
+
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
 }
 
 function injectJSString(js) {
