@@ -4,6 +4,7 @@ ynabToolKit.l10n.Data = {
       "Ok": "ОК",
       "Cancel" : "Отмена",
       "Edit" : "Изменить",
+      "Delete" : "Удалить",
     },
     "Month" : {
       "1" : "Янв",
@@ -129,7 +130,6 @@ ynabToolKit.l10n.Data = {
     "Button" : {
       "Close" : "Close Account",
       "Reopen" : "Re-open",
-      "Delete" : "Delete",
     }
   },
   "BudgetOptionsModal" : {
@@ -188,7 +188,6 @@ ynabToolKit.l10n.Data = {
   "EditCategoryModal" : {
     "Button" : {
       "Hide" : "Скрыть",
-      "Delete" : "Удалить"
     }
   }
 }

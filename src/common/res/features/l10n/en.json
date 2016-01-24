@@ -4,6 +4,7 @@
       "Ok": "OK",
       "Cancel" : "Cancel",
       "Edit" : "Edit",
+      "Delete" : "Delete",
     },
     "Month" : {
       "1" : "Jan",
@@ -129,7 +130,6 @@
     "Button" : {
       "Close" : "Close Account",
       "Reopen" : "Re-open",
-      "Delete" : "Delete",
     }
   },
   "BudgetOptionsModal" : {
@@ -188,7 +188,6 @@
   "EditCategoryModal" : {
     "Button" : {
       "Hide" : "Hide",
-      "Delete" : "Delete"
     }
   }
 }

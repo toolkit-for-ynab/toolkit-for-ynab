@@ -132,6 +132,13 @@
       if (goalTargetByDateText) goalTargetByDateText.textContent = l10n.Budget.Inspector.Title.GoalTargetByDate;
       var goalMonthlyText = $(goals).find('[data-value=MF]').contents()[4];
       if (goalMonthlyText) goalMonthlyText.textContent = l10n.Budget.Inspector.Title.GoalMonthly;
+      var buttonsDeleteCancel = $(goals).find('dd.actions>.link-button').contents();
+      if (buttonsDeleteCancel) {
+        buttonsDeleteCancel[0].textContent = l10n.Global.Button.Delete;
+        buttonsDeleteCancel[1].textContent = l10n.Global.Button.Cancel;
+      }
+      var buttonOk = $(goals).find('dd.actions>.button-primary').contents();
+      if (buttonOk) buttonOk[1].textContent = l10n.Global.Button.Ok;
 
     }; // Keep feature functions contained within this
     ynabToolKit.l10n.localize.inspector();
@@ -213,7 +220,7 @@
       $(modal).find('.button-primary').contents()[0].textContent = l10n.Global.Button.Ok;
       $(modal).find('.button-cancel').contents()[0].textContent = l10n.Global.Button.Cancel;
       var deleteButtonText = $(modal).find('.button-delete').contents()[2];
-      if (deleteButtonText) deleteButtonText.textContent = l10n.EditCategoryModal.Button.Delete;
+      if (deleteButtonText) deleteButtonText.textContent = l10n.Global.Button.Delete;
       $(modal).find('.button-hide').contents()[2].textContent = l10n.EditCategoryModal.Button.Hide;
       var creditCardPaymentsText = $(modal).find('.modal-budget-edit-category-label:contains("Credit Card Payments")')[0];
       if (creditCardPaymentsText) creditCardPaymentsText.textContent = l10n.Global.Category.CreditCardPayments;
