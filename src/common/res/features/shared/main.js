@@ -105,6 +105,30 @@ ynabToolKit.shared = new function() {
         }
     },
 
+    // TODO Maybe add universal function.
+    // Usage: declension(daysNumber, {nom: 'день', gen: 'дня', plu: 'дней'});
+    this.declension = function (locale, num, cases) {
+      if (locale == 'ru') {
+        num = Math.abs(num);
+        var word = '';
+        if (num.toString().indexOf('.') > -1) {
+          word = cases.gen;
+        } else {
+          word = (
+            num % 10 == 1 && num % 100 != 11
+              ? cases.nom
+              : num % 10 >= 2 && num % 10 <= 4 && (num % 100 < 10 || num % 100 >= 20)
+                ? cases.gen
+                : cases.plu
+          );
+        }
+        return word;
+      }
+      else {
+        console.log('Unknown locale')
+      }
+    }
+
     // Pass over each available category balance and provide a total. This can be used to
     // evaluate if a feature script needs to continue based on an update to the budget.
     this.availableBalance = new function() {

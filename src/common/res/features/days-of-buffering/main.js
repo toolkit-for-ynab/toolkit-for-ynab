@@ -15,7 +15,10 @@ function ynabEnhancedDoB() {
         elementForDoB.children[0].title = "Your budget history is less than 15 days. Go on with YNAB a while.";
     }
     else {
-        elementForDoB.children[0].textContent = calculation["DoB"] + " day" + (calculation["DoB"] == 1 ? "" : "s");
+        // TODO Add locale check.
+        var dayText = ynabToolKit.shared.declension('ru', calculation["DoB"], {nom: 'день', gen: 'дня', plu: 'дней'});
+        // " day" + (calculation["DoB"] == 1 ? "" : "s");
+        elementForDoB.children[0].textContent = calculation["DoB"] + " " + dayText;
         elementForDoB.children[0].title = "Total outflow: " + ynab.YNABSharedLib.currencyFormatter.format(calculation["totalOutflow"]) +
             "\nTotal days of budgeting: " + calculation["totalDays"] +
             "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(calculation["averageDailyOutflow"]) +

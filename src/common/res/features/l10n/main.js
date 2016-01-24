@@ -126,6 +126,10 @@
       }
 
       if (!ynabToolKit.options.hideAOM) {
+        var daysAge = $('.budget-header-days-age');
+        var daysNumber = $(daysAge).text().split(' ')[0]
+        // TODO Create Russian option check.
+        $(daysAge)[0].textContent = daysNumber + " " + ynabToolKit.shared.declension('ru', daysNumber, {nom: 'день', gen: 'дня', plu: 'дней'});
         $('.budget-header-days-label')[0].textContent = ynabToolKit.l10n.Data.Budget.Header.Metric.AoM;
       }
     };
