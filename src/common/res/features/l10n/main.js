@@ -125,20 +125,18 @@
       // TODO Add credit cards inspector handling
 
       var goals = $('.budget-inspector-goals');
-
       var goalTargetText = $(goals).find('[data-value=TB]').contents()[4];
       if (goalTargetText) goalTargetText.textContent = l10n.Budget.Inspector.Title.GoalTarget;
       var goalTargetByDateText = $(goals).find('[data-value=TBD]').contents()[4];
       if (goalTargetByDateText) goalTargetByDateText.textContent = l10n.Budget.Inspector.Title.GoalTargetByDate;
       var goalMonthlyText = $(goals).find('[data-value=MF]').contents()[4];
       if (goalMonthlyText) goalMonthlyText.textContent = l10n.Budget.Inspector.Title.GoalMonthly;
-      var buttonsDeleteCancel = $(goals).find('dd.actions>.link-button').contents();
-      if (buttonsDeleteCancel) {
-        buttonsDeleteCancel[0].textContent = l10n.Global.Button.Delete;
-        buttonsDeleteCancel[1].textContent = l10n.Global.Button.Cancel;
-      }
-      var buttonOk = $(goals).find('dd.actions>.button-primary').contents();
-      if (buttonOk) buttonOk[1].textContent = l10n.Global.Button.Ok;
+      var buttonDelete = $(goals).find('dd.actions>.link-button').contents()[0];
+      if (buttonDelete) buttonDelete.textContent = l10n.Global.Button.Delete;
+      var buttonCancel = $(goals).find('dd.actions>.link-button').contents()[1];
+      if (buttonCancel) buttonCancel.textContent = l10n.Global.Button.Cancel;
+      var buttonOk = $(goals).find('dd.actions>.button-primary').contents()[1];
+      if (buttonOk) buttonOk.textContent = l10n.Global.Button.Ok;
 
     }; // Keep feature functions contained within this
     ynabToolKit.l10n.localize.inspector();
