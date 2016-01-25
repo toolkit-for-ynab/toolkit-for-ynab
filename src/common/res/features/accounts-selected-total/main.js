@@ -30,7 +30,7 @@
               accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1)
           }
           transactions = ynabToolKit.shared.getVisibleTransactions(accountId);
-          notSubTransactions = transactions.filter((el) => el.displayItemType != ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType != ynab.constants.TransactionDisplayItemType.SubTransaction);
+          notSubTransactions = transactions.filter(function(el) { return el.displayItemType != ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType != ynab.constants.TransactionDisplayItemType.SubTransaction });
           for (var i = 0; i < notSubTransactions.length; i++) {
               if (notSubTransactions[i].isChecked) {
                   inflows += notSubTransactions[i].inflow;

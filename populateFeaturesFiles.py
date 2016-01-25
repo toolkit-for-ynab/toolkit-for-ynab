@@ -172,7 +172,7 @@ with open('./src/common/res/features/allSettings.js', 'w') as settingsFile:
       });
     }\n\n''')
 
-    settingsFile.write('window.ynabToolKit.settings = ' + json.dumps(allSettings))
+    settingsFile.write('window.ynabToolKit.settings = ' + json.dumps(allSettings) + ';')
 
 
 # Write the init file:
