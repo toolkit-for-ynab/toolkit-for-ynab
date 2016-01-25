@@ -62,18 +62,34 @@ function applySettingsToDom() {
 }
 
 /* Init ynabToolKit object and import options from Kango  */
-injectJSString("window.ynabToolKit = {};");
+var optionsArray = [];
 
-/* Load this to setup shared utility functions */
-injectScript('res/features/shared/main.js');
+function pushOption(setting) {
+    return getKangoSetting(setting.name).then(function (data) {
+      optionsArray.push(setting.name + " : " + data + ", ");
+    });
+}
 
-/* This script to be built automatically by the python script */
-injectScript('res/features/shared/feedChanges.js');
+var optionsPromises = [];
 
-/* Load this to setup behaviors when the DOM updates and shared functions */
-injectScript('res/features/act-on-change/main.js');
+ynabToolKit.settings.forEach(function(setting) {
+  optionsPromises.push(pushOption(setting));
+});
 
-/* Global toolkit css. */
-injectCSS('res/features/main.css');
+Promise.all(optionsPromises).then(function() {
+  injectJSString("window.ynabToolKit = {}; ynabToolKit.options= {" + optionsArray.reduce((a, b) => a + b, "") + "}");
 
-ensureDefaultsAreSet().then(applySettingsToDom);
+  /* Load this to setup shared utility functions */
+  injectScript('res/features/shared/main.js');
+
+  /* This script to be built automatically by the python script */
+  injectScript('res/features/shared/feedChanges.js');
+
+  /* Load this to setup behaviors when the DOM updates and shared functions */
+  injectScript('res/features/act-on-change/main.js');
+
+  /* Global toolkit css. */
+  injectCSS('res/features/main.css');
+
+  ensureDefaultsAreSet().then(applySettingsToDom);
+});
