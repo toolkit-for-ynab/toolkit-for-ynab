@@ -1,40 +1,52 @@
   /**
-   * To help isolate and protect our functions and variables from 
-   * the production code, we want to contain all of our optional features
-   * within the global ynabToolKit object, which is created by /shared/main.js
-   * 
-   * We are working to refactor our existing feature scripts to be contained
-   * within the ynabToolKit object. We are also working on moving away from
-   * depending on setTimeOut to handle changes to the page. When that's done, 
-   * this example document will be updated.
-   * 
-   * In the meanimte, you can use the following example in your own main.js file
-   * and adapt it as needed. Replace 'awesomeFeature' etc with your own names.
-   **/
+  * Use this template to add new js functions to your features
+  *
+  * To help isolate and protect our functions and variables from
+  * the production code, we want to contain all of our optional features
+  * within the global ynabToolKit object, which is created on page load.
+  *
+  * Note: Using this.observe() is optional, but we use a MutationObserver instance
+  * to evaluate changes on the page and feed those changes to each function
+  * that might want to act on a specific change in the DOM.
+  *
+  * If the python build file doesn't yet build it automatically, make sure there
+  * is an entry in /shared/feedChanges.js to ensure the changedNodes are published
+  * to your script:
+  *
+  * try {
+  *       ynabToolKit.awesomeFeature.observe(changedNodes);
+  *     } catch(err) { } // ignore failures
+  */
 
 
-(function poll() { 
+(function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
-  
-    ynabToolKit.awesomeFeature = function ()  { // Keep feature functions contained within this
 
+    ynabToolKit.awesomeFeature = new function ()  {
 
-      awesomeFunction() {
-        // Do awesome things
-      };
+      // Supporting functions,
+      // or variables, etc
 
-      setUpAwesome () {
-        // Maybe some other awesome things
-      };
+      this.invoke = function() {
+        // Code you expect to run each time your feature needs to update or modify YNAB's state
+      },
 
+      this.observe = function(changedNodes) {
 
-      setTimeout(setUpAwesome, 250); // We are working on deprecating the need for this soon
+        if ( changedNodes.has('class-name-of-interest') ) {
+          ynabToolKit.awesomeFeature.invoke();
+          // Call this.invoke() to activate your function if you find any class names
+          // in the set of changed nodes that indicates your function need may need to run.
+        }
 
-    }; // Keep feature functions contained within this
-    ynabToolKit.awesomeFeature(); // Run once and activate setTimeOut()
+      }
+
+    }; // Keep feature functions contained within this object
+
+    ynabToolKit.awesomeFeature.invoke(); // Run your script once on page load
 
   } else {
-    setTimeout(poll, 250);  
+    setTimeout(poll, 250);
   }
 })();

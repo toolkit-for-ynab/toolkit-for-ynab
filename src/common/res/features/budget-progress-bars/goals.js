@@ -1,55 +1,66 @@
-(function poll() { 
+(function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
-  
-    ynabToolKit.budgetProgressBars = function ()  { // Keep feature functions contained within this
-    	var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
 
-	   	function getCalculation(subCategoryName) {
-    		var crazyInternalId = "mcbc/" + ynabToolKit.shared.parseSelectedMonth().yyyymm() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
-			var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
-			return calculation;
-    	}
+    ynabToolKit.budgetProgressBars = new function ()  { // Keep feature functions contained within this
 
-		var subCategories = $("ul.is-sub-category");
-		$(subCategories).each(function () {
-			var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
-			calculation = getCalculation(subCategoryName);
+    var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
 
-			if (calculation.goalExpectedCompletion > 0) { 
-				// Target total goal
-				var hasGoal = true;
-				var status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
-			}
-			else if (calculation.goalTarget > 0) {
-				// Target by date
-				// or Monthly goal
-				var hasGoal = true;
-				var status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
-			}
-			else if (calculation.upcomingTransactions < 0) {
-				// Upcoming transactions "goal"
-				var hasGoal = true;
-				var status = - calculation.balance / calculation.upcomingTransactions;
-			}
+    function getCalculation(subCategoryName) {
+      var crazyInternalId = "mcbc/" + ynabToolKit.shared.parseSelectedMonth().yyyymm() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
+    var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
+    return calculation;
+    }
 
-			if (hasGoal) {
-				$(this).addClass('goal-progress');
-				status = status > 1 ? 1 : status;
-				status = status < 0 ? 0 : status;
-				var percent = Math.round(parseFloat(status)*100);
-				this.style.background = "linear-gradient(to right, #c1e8c0 " + percent + "%, white " + percent+ "%)";
-			}
-			else {
-				this.removeAttribute("style");
-			}
-		})
-     
+    this.invoke = function() {
+      var subCategories = $("ul.is-sub-category");
+      $(subCategories).each(function () {
+      var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
+      calculation = getCalculation(subCategoryName);
+
+      if (calculation.goalExpectedCompletion > 0) {
+        // Target total goal
+        var hasGoal = true;
+        var status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
+      }
+      else if (calculation.goalTarget > 0) {
+        // Target by date
+        // or Monthly goal
+        var hasGoal = true;
+        var status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
+      }
+      else if (calculation.upcomingTransactions < 0) {
+        // Upcoming transactions "goal"
+        var hasGoal = true;
+        var status = - calculation.balance / calculation.upcomingTransactions;
+      }
+
+      if (hasGoal) {
+        $(this).addClass('goal-progress');
+        status = status > 1 ? 1 : status;
+        status = status < 0 ? 0 : status;
+        var percent = Math.round(parseFloat(status)*100);
+        this.style.background = "linear-gradient(to right, #c1e8c0 " + percent + "%, white " + percent+ "%)";
+      }
+      else {
+        this.removeAttribute("style");
+      }
+      });
+    },
+
+    this.observe = function(changedNodes) {
+
+      if (changedNodes.has('navlink-budget') && changedNodes.has('active')) {
+          // The user has returned back to the budget screen
+          ynabToolKit.budgetProgressBars.invoke();
+        }
+      };
+
     }; // Keep feature functions contained within this
-    ynabToolKit.budgetProgressBars(); // Run once and activate setTimeOut()
+    ynabToolKit.budgetProgressBars.invoke(); // Run once and activate setTimeOut()
 
   } else {
-    setTimeout(poll, 250);  
+    setTimeout(poll, 250);
   }
 })();
 
