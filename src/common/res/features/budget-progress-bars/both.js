@@ -52,7 +52,7 @@
         function generateProgressBarStyle(colors, points) {
         points.unshift(0);
         points.push(1);
-        var pointsPercent = Array.from(points, (p) => p*100);
+        var pointsPercent = Array.from(points, function(p) { return p * 100; });
         style = "linear-gradient(to right, ";
         for (var i = 0; i < colors.length; i++) {
           style += colors[i] + " " + pointsPercent[i] + "%, ";
