@@ -24,46 +24,85 @@
         }
       }
 
-      function setContent(selector, contentNum, text) {
-        el = $(selector).contents()[contentNum];
-        if (el) el.textContent = text;
+      // Tool for setting content.
+      contentSetter = new function () {
+        this.selectorPrefix = '',
+        this.resetPrefix = function () {
+          this.selectorPrefix = ''
+        },
+        // Takes contentNum's .contents() of selector and sets it to text.
+        this.set = function (text, contentNum, selector) {
+          el = $(this.selectorPrefix + selector || '').contents()[contentNum];
+          if (el) el.textContent = text;
+        },
+        // Each argument must be an array of 2 or 3 elements that become this.set arguments in order.
+        this.setSeveral = function () {
+          // arguments.forEach(function(entry) {
+          for (i = 0; i < arguments.length; i++) {
+            this.set(arguments[i][0], arguments[i][1], arguments[i][2]);
+          };
+        },
+        this.setArray = function() {
+          selector = arguments[0];
+          // arguments[1].forEach(function(entry, index) {
+          for (i = 0; i < arguments[1].length; i++) {
+            this.set(arguments[1][i], i, selector);
+          };
+        }
       }
 
 
       this.budgetHeader = function ()  {
         var date = getDateInfo();
-        setContent('.budget-header-calendar-date-button', 1, date.currentMonthName + " " + date.selectedMonth.getFullYear());
-        setContent('.budget-header-totals-amount-label', 0, l10n.Budget.Header.Totals.TBB);
+        contentSetter.selectorPrefix = '.budget-header-';
+        var dateYearText = date.currentMonthName + " " + date.selectedMonth.getFullYear()
+        contentSetter.setSeveral(
+          [dateYearText, 1, 'calendar-date-button'],
+          [l10n.Budget.Header.Totals.TBB, 0, 'totals-amount-label']
+        );
 
-        var totalsSelector = '.budget-header-totals-cell-name';
-        setContent(totalsSelector, 0, l10n.Budget.Header.Totals.Funds + " " + date.currentMonthName);
-        setContent(totalsSelector, 1, l10n.Budget.Header.Totals.Overspent + " " + date.previousMonthName);
-        setContent(totalsSelector, 2, l10n.Budget.Header.Totals.Budgeted + " " + date.currentMonthName);
-        setContent(totalsSelector, 3, l10n.Budget.Header.Totals.BIF);
+        contentSetter.selectorPrefix = '.budget-header-totals-cell-name';
+        contentSetter.setSeveral(
+          [l10n.Budget.Header.Totals.Funds + " " + date.currentMonthName, 0],
+          [l10n.Budget.Header.Totals.Overspent + " " + date.previousMonthName, 1],
+          [l10n.Budget.Header.Totals.Budgeted + " " + date.currentMonthName, 2],
+          [l10n.Budget.Header.Totals.BIF, 3]
+        );
 
         var calendarNote = $('.budget-header-calendar-note').contents()[1];
         // TODO If it doesn't exist?
         if (calendarNote.textContent == "Enter a note...") calendarNote.textContent = l10n.Global.Placeholder.Note;
 
+        contentSetter.selectorPrefix = '.budget-header-days-';
         if (!ynabToolKit.options.hideAOM) {
           // TODO Add Russian option check.
-          var daysNumber = $('.budget-header-days-age').contents()[0];
-          setContent('.budget-header-days-age', 2, ynabToolKit.shared.declension('ru', daysNumber, {nom: 'день', gen: 'дня', plu: 'дней'}));
-          setContent('.budget-header-days-label', 0, l10n.Budget.Header.Metric.AoM);
+          var aomDays = $('.budget-header-days-age').contents()[0];
+          var aomDaysText = ynabToolKit.shared.declension('ru', aomDays, {nom: 'день', gen: 'дня', plu: 'дней'});
+          contentSetter.setSeveral(
+            [aomDaysText, 2, 'age'],
+            [l10n.Budget.Header.Metric.AoM, 0, 'label']
+          );
         }
       },
 
 
       this.budgetTable = function ()  {
-        setContent('.budget-table-header .budget-table-cell-name', 0, l10n.Budget.Table.Header.Category);
-        setContent('.budget-table-header .budget-table-cell-budgeted', 0, l10n.Budget.Table.Header.Budgeted);
-        setContent('.budget-table-header .budget-table-cell-activity', 0, l10n.Budget.Table.Header.Activity);
-        setContent('.budget-table-header .budget-table-cell-available', 0, l10n.Budget.Table.Header.Available);
+        contentSetter.selectorPrefix = '.budget-table-header .budget-table-cell-';
+        contentSetter.setSeveral(
+          [l10n.Budget.Table.Header.Category, 0, 'name'],
+          [l10n.Budget.Table.Header.Budgeted, 0, 'budgeted'],
+          [l10n.Budget.Table.Header.Activity, 0, 'activity'],
+          [l10n.Budget.Table.Header.Available, 0, 'available']
+        );
 
-        $('.budget-toolbar-add-category').contents()[4].textContent = " " + l10n.Budget.Table.Button.CategoryGroup;
+        contentSetter.resetPrefix();
+        contentSetter.set(" " + l10n.Budget.Table.Button.CategoryGroup, 4, '.budget-toolbar-add-category');
 
-        $('.is-master-category.is-debt-payment-category .button-truncate')[0].textContent = l10n.Global.Category.CreditCardPayments;
-        $('.is-master-category.budget-table-hidden-row .budget-table-cell-edit-category')[0].textContent = l10n.Budget.Table.Category.HiddenCategories;
+        contentSetter.selectorPrefix = '.is-master-category.';
+        contentSetter.setSeveral(
+          [l10n.Global.Category.CreditCardPayments, 1, 'is-debt-payment-category .button-truncate'],
+          [l10n.Budget.Table.Category.HiddenCategories, 2, 'budget-table-hidden-row .budget-table-cell-edit-category']
+        );
       },
 
 
@@ -72,12 +111,17 @@
 
         // No categories selected
         if ($(inspector).find('div').hasClass('budget-inspector-default-inspector')) {
-          var headers = $(inspector).find("h3");
-          headers[0].textContent = l10n.Budget.Inspector.Header.Budgeted;
-          headers[1].textContent = l10n.Budget.Inspector.Header.Activity;
-          headers[2].textContent = l10n.Budget.Inspector.Header.Available;
-          headers[3].textContent = l10n.Budget.Inspector.Header.Inflows;
-          headers[4].textContent = l10n.Budget.Inspector.Header.Quick;
+          contentSetter.resetPrefix();
+          contentSetter.setArray(
+            '.budget-inspector h3',
+            [
+              l10n.Budget.Inspector.Header.Budgeted,
+              l10n.Budget.Inspector.Header.Activity,
+              l10n.Budget.Inspector.Header.Available,
+              l10n.Budget.Inspector.Header.Inflows,
+              l10n.Budget.Inspector.Header.Quick
+            ]
+          );
 
           var buttons = $(inspector).find("button");
           buttons[0].childNodes[1].textContent = l10n.Budget.Inspector.Button.Underfunded;
@@ -91,12 +135,17 @@
         if ($(inspector).find('div').hasClass('ember-view budget-inspector-category-header')) {
           var date = getDateInfo();
 
-          var titles = $(inspector).find('dt');
-          titles[0].textContent = l10n.Budget.Inspector.Title.CashLeft;
-          titles[1].textContent = l10n.Budget.Inspector.Title.BudgetedThisMonth;
-          titles[2].textContent = l10n.Budget.Inspector.Title.CashSpending;
-          titles[3].textContent = l10n.Budget.Inspector.Title.CreditSpending;
-          if (titles[4]) titles[4].textContent = l10n.Budget.Inspector.Title.Available;
+          contentSetter.resetPrefix();
+          contentSetter.setArray(
+            '.budget-inspector dt',
+            [
+              l10n.Budget.Inspector.Title.CashLeft, '', '',
+              l10n.Budget.Inspector.Title.BudgetedThisMonth,
+              l10n.Budget.Inspector.Title.CashSpending,
+              l10n.Budget.Inspector.Title.CreditSpending,
+              l10n.Budget.Inspector.Title.Available
+            ]
+          );
 
           // Inspector credit payment.
           try {
@@ -169,15 +218,18 @@
         // TODO Add credit cards inspector handling
 
         var goals = $('.budget-inspector-goals');
-        setContent('.budget-inspector-goals [data-value=TB]', 4, l10n.Budget.Inspector.Title.GoalTarget);
-        setContent('.budget-inspector-goals [data-value=TBD]', 4, l10n.Budget.Inspector.Title.GoalTargetByDate);
-        setContent('.budget-inspector-goals [data-value=MF]', 4, l10n.Budget.Inspector.Title.GoalMonthly);
-        setContent('.budget-inspector-goals dd.actions>.link-button', 0, l10n.Global.Button.Delete);
-        setContent('.budget-inspector-goals dd.actions>.link-button', 1, l10n.Global.Button.Cancel);
-        setContent('.budget-inspector-goals dd.actions>.button-primary', 1, l10n.Global.Button.Ok);
-        setContent('.budget-inspector-goals .percent-label', 0, l10n.Budget.Inspector.Title.Complete);
-        setContent('.budget-inspector-goals .label', 0, l10n.Budget.Inspector.Title.Budgeted);
-        setContent('.budget-inspector-goals .label', 1, l10n.Budget.Inspector.Title.ToGo);
+        contentSetter.selectorPrefix = '.budget-inspector-goals ';
+        contentSetter.setSeveral(
+          [l10n.Budget.Inspector.Title.GoalTarget, 4, '[data-value=TB]'],
+          [l10n.Budget.Inspector.Title.GoalTargetByDate, 4, '[data-value=TBD]'],
+          [l10n.Budget.Inspector.Title.GoalMonthly, 4, '[data-value=MF]'],
+          [l10n.Global.Button.Delete, 0, 'dd.actions>.link-button'],
+          [l10n.Global.Button.Cancel, 1, 'dd.actions>.link-button'],
+          [l10n.Global.Button.Ok, 1, 'dd.actions>.button-primary'],
+          [l10n.Budget.Inspector.Title.Complete, 0, '.percent-label'],
+          [l10n.Budget.Inspector.Title.Budgeted, 0, '.label'],
+          [l10n.Budget.Inspector.Title.ToGo, 1, '.label']
+        );
 
         var goalLabelText = $(goals).find('dt').contents()[2];
         if (goalLabelText) {
