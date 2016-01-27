@@ -1,4 +1,6 @@
 @ECHO OFF
+
+python populateFeaturesFiles.py
 python lib/kango-framework-latest/kango.py build .
 
 echo "[   INFO] Moving Safari extension icon into place..."

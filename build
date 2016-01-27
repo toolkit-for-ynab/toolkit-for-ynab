@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+set -e
+
+python populateFeaturesFiles.py
 python lib/kango-framework-latest/kango.py build .
 
 # The safari icon needs to be different than the other browsers. Move it into place.
