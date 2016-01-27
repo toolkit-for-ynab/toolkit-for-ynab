@@ -28,6 +28,7 @@ This is what the extension can do for you:
 - Add a setting to make enter just save the transaction when adding transactions.
 - Show your spending pacing mid-month to ensure you're on track to meet your budget. You can enable and disable this setting per budget column by clicking on the value.
 - Make negative numbers anywhere in the application have square corners so they stand out even more.
+- Export all transactions from the current budget.
 
 All of these are configurable with options in the extension options page.
 
