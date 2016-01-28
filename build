@@ -10,5 +10,6 @@ echo "[   INFO] Moving Safari extension icons into place..."
 pushd output/safari/*.safariextension/icons > /dev/null
   rm -f button.png
   mv button-safari.png button.png
-  mv button-safari@2x.png button@2x.png
+  cp ../../../../src/common/icons/button-safari@2x.png button@2x.png
+  rm button-safari@2x.png
 popd > /dev/null
