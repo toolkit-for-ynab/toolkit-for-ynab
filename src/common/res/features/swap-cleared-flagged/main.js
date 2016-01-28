@@ -1,7 +1,7 @@
-(function poll() { 
+(function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
-  
+
     ynabToolKit.swapClearedFlagged = new function ()  { // Keep feature functions contained within this
 
       this.invoke = function() {
@@ -31,38 +31,54 @@
             swapElements(flags[i], cleared[i]);
           }
         }
-      
+
       },
-      
+
       this.swapYnabGridActions = function() {
-        
-        $('.ember-view.ynab-grid-actions').css({
+
+      	$('.ember-view.ynab-grid-body-row.is-editing')
+        .addClass('detached-attached')
+    	  .find('.ember-view.ynab-grid-actions').css({
           "right" : 54,
           "bottom" : "initial",
           "margin-top" : "2px"
-          })
+        })
+        .addClass('detached-attached');
+
         var ynabGridActions = $('.ember-view.ynab-grid-actions').detach();
-        $('.ynab-grid-cell.ynab-grid-cell-inflow.user-data').eq('0').append(ynabGridActions);
-        
+        var splitTransaction = $('.button.button-primary.ynab-grid-split-add-sub-transaction');
+
+        if ( splitTransaction.length ) {
+          splitTransaction.parent().parent()
+          .find('.ynab-grid-cell.ynab-grid-cell-inflow.user-data')
+          .append(ynabGridActions)
+          .addClass('detached-attached');
+        } else {
+          $('.ember-view.ynab-grid-body-row.is-editing')
+          .find('.ynab-grid-cell.ynab-grid-cell-inflow.user-data')
+          .append(ynabGridActions)
+          .addClass('detached-attached');
+        }
+
       },
-      
+
       this.observe = function(changedNodes) {
 
         if (changedNodes.has('ynab-grid-body')) {
           // We found Account transactions rows
           ynabToolKit.swapClearedFlagged.invoke();
-          
+
           if ( $('.ember-view.ynab-grid-actions') ) {
-            ynabToolKit.swapClearedFlagged.swapYnabGridActions(); 
+            ynabToolKit.swapClearedFlagged.swapYnabGridActions();
           }
 
         }
-      
+
       };
-      
+
     }; // Keep feature functions contained within this
 
   } else {
-    setTimeout(poll, 250);  
+    setTimeout(poll, 250);
   }
 })();

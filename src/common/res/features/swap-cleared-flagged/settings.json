@@ -1,0 +1,13 @@
+{
+         "name": "swapClearedFlagged",
+         "type": "checkbox",
+      "default": false,
+      "section": "accounts",
+        "title": "Swap cleared and flagged columns on Account screen",
+      "actions": {
+                    "true": [
+                      "injectScript", "main.js",
+                      "injectCSS", "main.css"
+                    ]
+                 }
+}

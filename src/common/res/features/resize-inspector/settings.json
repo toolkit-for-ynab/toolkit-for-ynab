@@ -1,0 +1,15 @@
+{
+         "name": "resizeInspector",
+         "type": "checkbox",
+      "default": false,
+      "section": "budget",
+        "title": "Allow Resizing of Inspector",
+  "description": "Add the ability to drag and resize the inspector.",
+      "actions": {
+                    "true": [
+                      "injectScript", "jquery-resizable.min.js",
+                      "injectScript", "resize-inspector.js",
+                      "injectCSS", "resize-inspector.css"
+                    ]
+                 }
+}

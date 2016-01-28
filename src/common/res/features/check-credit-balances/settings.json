@@ -1,0 +1,14 @@
+{
+         "name": "checkCreditBalances",
+         "type": "checkbox",
+      "default": false,
+      "section": "budget",
+        "title": "Check Credit Card Balances",
+  "description": "Highlights credit card category balances with a yellow warning if the balance of the category does not match the account balance.",
+      "actions": {
+                    "true": [
+                      "injectScript", "main.js",
+                      "injectScript", "../inspector-colours/main.js"
+                    ]
+                 }
+}

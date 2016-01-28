@@ -95,8 +95,8 @@
             var masterName = $.trim($(this).prevAll('.is-master-category').first().find('.budget-table-cell-name').text());
             var subcatName = $.trim($(this).find('.budget-table-cell-name').text());
 
-            var transactionCount = allTransactions.filter((el) => el.transferAccountId == null
-              && el.outflow > 0 && el.subCategoryNameWrapped == (masterName+": "+subcatName)).length;
+            var transactionCount = allTransactions.filter(function(el) { return el.transferAccountId == null
+              && el.outflow > 0 && el.subCategoryNameWrapped == (masterName+": "+subcatName)}).length;
 
             if(pace > 1) {
               var temperature = 'cautious';
