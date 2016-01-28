@@ -9,13 +9,13 @@
 
       function getDateInfo() {
         var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
-        var currentMonthName = l10n.Global.Month[selectedMonth.getMonth() + 1];
+        var currentMonthName = l10n.Global.Month[selectedMonth.getMonth()];
         var previousMonthName;
         if (selectedMonth.getMonth() == 0) {
           previousMonthName = l10n.Global.Month[12];
         }
         else {
-          previousMonthName = l10n.Global.Month[selectedMonth.getMonth()];
+          previousMonthName = l10n.Global.Month[selectedMonth.getMonth() - 1];
         }
         return {
           selectedMonth: selectedMonth,
@@ -37,14 +37,12 @@
         },
         // Each argument must be an array of 2 or 3 elements that become this.set arguments in order.
         this.setSeveral = function () {
-          // arguments.forEach(function(entry) {
           for (i = 0; i < arguments.length; i++) {
             this.set(arguments[i][0], arguments[i][1], arguments[i][2]);
           };
         },
         this.setArray = function() {
           selector = arguments[0];
-          // arguments[1].forEach(function(entry, index) {
           for (i = 0; i < arguments[1].length; i++) {
             this.set(arguments[1][i], i, selector);
           };
@@ -62,11 +60,12 @@
         );
 
         contentSetter.selectorPrefix = '.budget-header-totals-cell-name';
-        contentSetter.setSeveral(
-          [l10n.Budget.Header.Totals.Funds + " " + date.currentMonthName, 0],
-          [l10n.Budget.Header.Totals.Overspent + " " + date.previousMonthName, 1],
-          [l10n.Budget.Header.Totals.Budgeted + " " + date.currentMonthName, 2],
-          [l10n.Budget.Header.Totals.BIF, 3]
+        contentSetter.setArray(
+          '',
+          [l10n.Budget.Header.Totals.Funds + " " + date.currentMonthName,
+          l10n.Budget.Header.Totals.Overspent + " " + date.previousMonthName,
+          l10n.Budget.Header.Totals.Budgeted + " " + date.currentMonthName,
+          l10n.Budget.Header.Totals.BIF]
         );
 
         var calendarNote = $('.budget-header-calendar-note').contents()[1];
@@ -192,8 +191,11 @@
             categoryNote.textContent = l10n.Global.Placeholder.Note;
           }
 
-          setContent('.budget-inspector-goals-create', 3, l10n.Budget.Inspector.Button.CreateGoal);
-          setContent('.edit-goal', 1, l10n.Global.Button.Edit);
+          contentSetter.resetPrefix();
+          contentSetter.setSeveral(
+            [l10n.Budget.Inspector.Button.CreateGoal, 3,'.budget-inspector-goals-create'],
+            [l10n.Global.Button.Edit, 1,'.edit-goal']
+          );
 
         }
 
@@ -237,18 +239,21 @@
           if (goalLabelText.textContent == "Target Budgeted Amount") goalLabelText.textContent = l10n.Budget.Inspector.Title.TargetBudgetedAmount;
         }
 
-        setContent('.budget-inspector-goals dt', 5, l10n.Budget.Inspector.Title.TargetMonthYear);
-        for (var i = 0; i < Object.keys(l10n.Global.Month).length; i++) {
-          setContent('.budget-inspector-goals .goal-target-month>option', i, l10n.Global.Month[i + 1]);
-        }
+        contentSetter.resetPrefix();
+        contentSetter.set('.budget-inspector-goals dt', 5, l10n.Budget.Inspector.Title.TargetMonthYear);
+        contentSetter.setArray('.budget-inspector-goals .goal-target-month>option', l10n.Global.Month);
+        // for (var i = 0; i < Object.keys(l10n.Global.Month).length; i++) {
+          // setContent('.budget-inspector-goals .goal-target-month>option', i, l10n.Global.Month[i]);
+        // }
       },
 
 
       this.calendarModal = function () {
+        contentSetter.setArray('.modal-calendar ul.ynab-calendar-months>li>button');
         var calendar = $('.modal-calendar');
         var months = $(calendar).find('ul.ynab-calendar-months>li>button');
         for (var i = 0; i < months.length; i++) {
-          months[i].textContent = l10n.Global.Month[i + 1];
+          months[i].textContent = l10n.Global.Month[i];
         }
       },
 
