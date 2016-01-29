@@ -122,12 +122,14 @@
             ]
           );
 
-          var buttons = $(inspector).find("button");
-          buttons[0].childNodes[1].textContent = l10n.Budget.Inspector.Button.Underfunded;
-          buttons[1].childNodes[1].textContent = l10n.Budget.Inspector.Button.BudgetedLastMonth;
-          buttons[2].childNodes[1].textContent = l10n.Budget.Inspector.Button.SpentLastMonth;
-          buttons[3].childNodes[1].textContent = l10n.Budget.Inspector.Button.AverageBudgeted;
-          buttons[4].childNodes[1].textContent = l10n.Budget.Inspector.Button.AverageSpent;
+          contentSetter.selectorPrefix = '.budget-inspector button';
+          contentSetter.setSeveral(
+            [l10n.Budget.Inspector.Button.Underfunded, 1],
+            [l10n.Budget.Inspector.Button.BudgetedLastMonth, 6],
+            [l10n.Budget.Inspector.Button.SpentLastMonth, 11],
+            [l10n.Budget.Inspector.Button.AverageBudgeted, 16],
+            [l10n.Budget.Inspector.Button.AverageSpent, 21]
+          )
         }
 
         // One category selected
@@ -156,13 +158,18 @@
             var paidWhen = $(payment).find('.paid-msg').contents()[2].textContent.split(' ')[2];
             $(payment).find('.paid-msg').contents()[2].textContent = " " + l10n.Budget.Inspector.Text.Credit.On + " " + paidWhen;
 
-            var recommendation = $(payment).find('.recommendation');
-            recommendation.contents()[1].textContent = l10n.Budget.Inspector.Text.Credit.IfYouPay + " ";
-            recommendation.contents()[3].textContent = ", "+ l10n.Budget.Inspector.Text.Credit.BalanceWillBe + " ";
-            recommendation.contents()[5].textContent = " " + l10n.Budget.Inspector.Text.Credit.YoullIncrease + " ";
+            contentSetter.selectorPrefix = '.budget-inspector-payment .recommendation';
+            contentSetter.setSeveral(
+              [l10n.Budget.Inspector.Text.Credit.IfYouPay + " ", 1],
+              [", "+ l10n.Budget.Inspector.Text.Credit.BalanceWillBe + " ", 3],
+              [" " + l10n.Budget.Inspector.Text.Credit.YoullIncrease + " ", 5]
+            );
 
-            $(payment).find('.progress>em').contents()[1].textContent = " " + l10n.Budget.Inspector.Text.Credit.Spending;
-            $(payment).find('.progress>em').contents()[3].textContent = " " + l10n.Budget.Inspector.Text.Credit.Available;
+            contentSetter.selectorPrefix = '.budget-inspector-payment .progress>em';
+            contentSetter.setSeveral(
+              [" " + l10n.Budget.Inspector.Text.Credit.Spending, 1],
+              [" " + l10n.Budget.Inspector.Text.Credit.Available, 3]
+            );
           }
           catch(err) {
             console.log(err);
