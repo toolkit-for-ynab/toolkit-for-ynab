@@ -59,7 +59,7 @@
       } catch(err) {/* ignore */}
 
       try {
-        ynabToolKit.l10n.observe(changedNodes);
+        ynabToolKit.l10n.localize.observe(changedNodes);
       } catch(err) {/* ignore */}
 
     };
