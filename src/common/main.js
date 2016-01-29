@@ -91,10 +91,5 @@ Promise.all(optionsPromises).then(function() {
   /* Global toolkit css. */
   injectCSS('res/features/main.css');
 
-  // TODO Refactor
-  injectJSString("ynabToolKit.l10n = {localize: {}};")
-  injectScript('res/features/l10n/ru.json');
-  injectScript('res/features/l10n/main.js');
-
   ensureDefaultsAreSet().then(applySettingsToDom);
 });

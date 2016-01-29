@@ -1,0 +1,19 @@
+{
+         "name": "l10n",
+         "type": "select",
+      "default": "0",
+      "section": "general",
+        "title": "Localization of YNAB",
+  "description": "Localization of interface without tooltips.",
+      "options": [
+                { "name": "Default", "value": "0" },
+                { "name": "Русский", "value": "1" }
+             ],
+      "actions": {
+                   "1": [
+                      "injectJSString", "ynabToolKit.l10n = {localize: {}};",
+                      "injectScript", "ru.json",
+                      "injectScript", "main.js"
+                   ]
+                 }
+}
