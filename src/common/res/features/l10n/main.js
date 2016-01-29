@@ -38,13 +38,13 @@
         // Each argument must be an array of 2 or 3 elements that become this.set arguments in order.
         this.setSeveral = function () {
           for (i = 0; i < arguments.length; i++) {
-            this.set(arguments[i][0], arguments[i][1], arguments[i][2]);
+            if (arguments[i].length == 2) this.set(arguments[i][0], arguments[i][1]);
+            if (arguments[i].length == 3) this.set(arguments[i][0], arguments[i][1], arguments[i][2]);
           };
         },
-        this.setArray = function() {
-          selector = arguments[0];
-          for (i = 0; i < arguments[1].length; i++) {
-            this.set(arguments[1][i], i, selector);
+        this.setArray = function(textArray, selector) {
+          for (i = 0; i < textArray.length; i++) {
+            this.set(textArray[i], i, selector);
           };
         }
       }
@@ -61,7 +61,6 @@
 
         contentSetter.selectorPrefix = '.budget-header-totals-cell-name';
         contentSetter.setArray(
-          '',
           [l10n.Budget.Header.Totals.Funds + " " + date.currentMonthName,
           l10n.Budget.Header.Totals.Overspent + " " + date.previousMonthName,
           l10n.Budget.Header.Totals.Budgeted + " " + date.currentMonthName,
@@ -112,14 +111,14 @@
         if ($(inspector).find('div').hasClass('budget-inspector-default-inspector')) {
           contentSetter.resetPrefix();
           contentSetter.setArray(
-            '.budget-inspector h3',
             [
               l10n.Budget.Inspector.Header.Budgeted,
               l10n.Budget.Inspector.Header.Activity,
               l10n.Budget.Inspector.Header.Available,
               l10n.Budget.Inspector.Header.Inflows,
               l10n.Budget.Inspector.Header.Quick
-            ]
+            ],
+            '.budget-inspector h3'
           );
 
           contentSetter.selectorPrefix = '.budget-inspector button';
@@ -138,14 +137,14 @@
 
           contentSetter.resetPrefix();
           contentSetter.setArray(
-            '.budget-inspector dt',
             [
               l10n.Budget.Inspector.Title.CashLeft, '', '',
               l10n.Budget.Inspector.Title.BudgetedThisMonth,
               l10n.Budget.Inspector.Title.CashSpending,
               l10n.Budget.Inspector.Title.CreditSpending,
               l10n.Budget.Inspector.Title.Available
-            ]
+            ],
+            '.budget-inspector dt'
           );
 
           // Inspector credit payment.
@@ -153,15 +152,16 @@
             var payment = $(inspector).find(".budget-inspector-payment");
             $(payment).find("h3")[0].textContent = l10n.Budget.Inspector.Header.Payment;
 
-            var paidHowMuch = $(payment).find('.paid-msg').contents()[0].textContent.split(' ')[1];
-            $(payment).find('.paid-msg').contents()[0].textContent = l10n.Budget.Inspector.Text.Credit.Paid + " " + paidHowMuch;
-            var paidWhen = $(payment).find('.paid-msg').contents()[2].textContent.split(' ')[2];
-            $(payment).find('.paid-msg').contents()[2].textContent = " " + l10n.Budget.Inspector.Text.Credit.On + " " + paidWhen;
+            var paidMsg = $(payment).find('.paid-msg').contents();
+            var paidHowMuch = paidMsg[0].textContent.split(' ')[1];
+            paidMsg[0].textContent = l10n.Budget.Inspector.Text.Credit.Paid + " " + paidHowMuch;
+            var paidWhen = paidMsg[2].textContent.split(' ')[2];
+            paidMsg[2].textContent = " " + l10n.Budget.Inspector.Text.Credit.On + " " + paidWhen;
 
             contentSetter.selectorPrefix = '.budget-inspector-payment .recommendation';
             contentSetter.setSeveral(
               [l10n.Budget.Inspector.Text.Credit.IfYouPay + " ", 1],
-              [", "+ l10n.Budget.Inspector.Text.Credit.BalanceWillBe + " ", 3],
+              [", " + l10n.Budget.Inspector.Text.Credit.BalanceWillBe + " ", 3],
               [" " + l10n.Budget.Inspector.Text.Credit.YoullIncrease + " ", 5]
             );
 
@@ -247,8 +247,11 @@
         }
 
         contentSetter.resetPrefix();
-        contentSetter.set('.budget-inspector-goals dt', 5, l10n.Budget.Inspector.Title.TargetMonthYear);
-        contentSetter.setArray('.budget-inspector-goals .goal-target-month>option', l10n.Global.Month);
+        contentSetter.set(l10n.Budget.Inspector.Title.TargetMonthYear, 5, '.budget-inspector-goals dt');
+        contentSetter.setArray(
+          l10n.Global.Month,
+          '.budget-inspector-goals .goal-target-month>option'
+        );
         // for (var i = 0; i < Object.keys(l10n.Global.Month).length; i++) {
           // setContent('.budget-inspector-goals .goal-target-month>option', i, l10n.Global.Month[i]);
         // }
