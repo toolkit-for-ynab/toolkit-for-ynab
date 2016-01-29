@@ -32,15 +32,15 @@
 
             try {
               nodeClasses = new Set($node[0].className.split(' '));
+              ynabToolKit.changedNodes = new Set([...ynabToolKit.changedNodes, ...nodeClasses]);
             } catch(err) {
               ynabToolKit.debugNodes.errors = err
             }
 
-            ynabToolKit.changedNodes = new Set([...ynabToolKit.changedNodes, ...nodeClasses]);
-
           }); // each node mutation event
 
           if (ynabToolKit.debugNodes) {
+            // Choose what to show while debugging.
             // console.log(newNodes);
             console.log(ynabToolKit.changedNodes);
           }
