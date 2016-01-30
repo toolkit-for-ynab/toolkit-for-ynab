@@ -197,15 +197,15 @@ with open('./src/common/res/features/shared/feedChanges.js', 'w') as feedChanges
     feedChanges.write(('(function poll() {\n'
                        '  if (typeof ynabToolKit.shared !== \'undefined\') {\n\n'
                        '    ynabToolKit.shared.feedChanges = function(changedNodes) {\n\n'
-                       '    // Python script auto builds up this list of features\n'
-                       '    // that will use the mutation observer from actOnChange()\n\n'
-                       '    // If a feature doesn\'t need to use observe(), we\n'
-                       '    // just let it fail silently\n\n'))
+                       '      // Python script auto builds up this list of features\n'
+                       '      // that will use the mutation observer from actOnChange()\n\n'
+                       '      // If a feature doesn\'t need to use observe(), we\n'
+                       '      // just let it fail silently\n\n'))
 
     for feedChangesBlock in allFeedChangesContent:
-        feedChanges.write('    try {\n')
-        feedChanges.write('      ' + feedChangesBlock + '.observe(changedNodes);\n')
-        feedChanges.write('    } catch (err) {/* ignore */}\n\n')
+        feedChanges.write('      try {\n')
+        feedChanges.write('        ' + feedChangesBlock + '.observe(changedNodes);\n')
+        feedChanges.write('      } catch (err) {/* ignore */}\n\n')
 
     feedChanges.write(('    };\n\n'
                        '  } else {\n'
