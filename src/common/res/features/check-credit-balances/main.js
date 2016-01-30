@@ -21,8 +21,7 @@
 
           var clearedBalance = account.clearedBalance;
 
-          var currentMonth = moment($('.budget-header-calendar-date-button')
-            .text().trim(), 'MMM YYYY').format('YYYY-MM');
+          var currentMonth = moment(ynabToolKit.shared.parseSelectedMonth()).format('YYYY-MM');
           var monthlyBudget = budgetView.monthlySubCategoryBudgetCalculationsCollection
             .findItemByEntityId('mcbc/' + currentMonth + '/' + a.entityId);
 
@@ -66,14 +65,14 @@
           if (name && name === inspectorName) {
 
             if ($('.rectify-difference').length)
-              return
+              return;
 
-            var fhDifference = ynabEnhancedFormatCurrency(difference,true);
-            var fDifference = ynabEnhancedFormatCurrency(difference,false);
+            var fhDifference = ynabToolKit.shared.formatCurrency(difference, true);
+            var fDifference = ynabToolKit.shared.formatCurrency(difference, false);
             var button = ' \
             <button class="budget-inspector-button rectify-difference" \
-              onClick="ynabToolKit.updateCreditBalances(name)"> \
-              Rectify Balance Difference: \
+              onClick="ynabToolKit.checkCreditBalances.updateCreditBalances(name)"> \
+              Rectify Available for PIF CC: \
                 <strong class="user-data" title="' + fDifference + '"> \
                   <span class="user-data currency zero"> \
                   ' + fhDifference + ' \
@@ -84,18 +83,20 @@
             $('.inspector-quick-budget .ember-view').append(button);
           }
         }
+      },
 
-        function ynabEnhancedFormatCurrency(e, html) {
-          var n, r, a;
-          e = ynab.formatCurrency(e);
-          n = ynab.YNABSharedLib.currencyFormatter.getCurrency();
-          a = Ember.Handlebars.Utils.escapeExpression(n.currency_symbol);
-          if (html) {
-              a = "<bdi>" + a + "</bdi>";
+      this.updateCreditBalances = function(name) {
+        var rows = $('.is-sub-category.is-debt-payment-category');
+        rows.each(function(i) {
+          var accountName = $(this)
+            .find('.budget-table-cell-name div.button-truncate').prop('title');
+          if (name === accountName) {
+            var categoryBalance = $(this)
+              .find('.budget-table-cell-available-div .user-data.currency');
+            categoryBalance.removeClass('positive negative')
+              .addClass('cautious');
           }
-          n.symbol_first ? (r = "-" === e.charAt(0), e = r ? "-" + a + e.slice(1) : a + e) : e += a;
-          return new Ember.Handlebars.SafeString(e);
-        }
+        });
       },
 
       this.observe = function(changedNodes) {
@@ -113,17 +114,3 @@
     setTimeout(poll, 250);
   }
 })();
-
-ynabToolKit.updateCreditBalances = function(name) {
-  var rows = $('.is-sub-category.is-debt-payment-category');
-  rows.each(function(i) {
-    var accountName = $(this)
-      .find('.budget-table-cell-name div.button-truncate').prop('title');
-    if (name === accountName) {
-      var categoryBalance = $(this)
-        .find('.budget-table-cell-available-div .user-data.currency');
-      categoryBalance.removeClass('positive negative')
-        .addClass('cautious');
-    }
-  });
-};
