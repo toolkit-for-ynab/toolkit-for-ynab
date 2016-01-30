@@ -176,6 +176,10 @@
       "Memo" : "MEMO",
       "Outflow" : "OUTFLOW",
       "Inflow" : "INFLOW"
+    },
+    "Text" : {
+      "Hidden" : "transactions hidden by filters.",
+      "Show" : "Show hidden transactions."
     }
   },
   "Sidebar" : {

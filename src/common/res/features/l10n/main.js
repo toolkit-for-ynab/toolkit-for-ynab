@@ -391,6 +391,18 @@
           [l10n.Accounts.Table.Inflow, 2, 'inflow']
         );
 
+        this.accountsFooter;
+      }
+
+      this.accountsFooter = function () {
+        // Accounts footer
+        contentSetter.selectorPrefix = '.ynab-grid-footer-message span';
+        contentSetter.set(l10n.Accounts.Text.Show, 0, ' button')
+        var hidden = $(contentSetter.selectorPrefix).contents()[1]
+        if (hidden) {
+          var count = hidden.textContent.split(' ')[0];
+          contentSetter.set(count + " " + l10n.Accounts.Text.Hidden, 1);
+        }
       }
 
 
@@ -565,7 +577,8 @@
         }
 
         // The user has returned back to the budget screen
-        if (changedNodes.has('navlink-accounts') && changedNodes.has('active')) {
+        if (changedNodes.has('navlink-accounts') && changedNodes.has('active') ||
+            changedNodes.has('nav-account-row') && changedNodes.has('is-selected')) {
           ynabToolKit.l10n.localize.accounts();
         }
 
@@ -642,6 +655,11 @@
         if (changedNodes.has('ynab-select')) {
           ynabToolKit.l10n.localize.coverOverspendingModal();
           ynabToolKit.l10n.localize.moveMoneyModal();
+        }
+
+        // Selection in modal
+        if (changedNodes.has('ynab-grid-footer')) {
+          ynabToolKit.l10n.localize.accountsFooter();
         }
       }
 
