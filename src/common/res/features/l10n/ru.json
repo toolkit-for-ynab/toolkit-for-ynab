@@ -229,5 +229,20 @@ ynabToolKit.l10n.Data = {
     "Button" : {
       "Hide" : "Скрыть",
     }
+  },
+  "CoverOverspendingModal" : {
+    "Label" : {
+      "CoverOverspending" : "Выберите категорию для покрытия",
+    }
+  },
+  "MoveMoneyModal" : {
+    "Label" : {
+      "CoverOverspending" : "Cover this overspending with",
+      "Move" : "Перенести",
+      "To" : "в"
+    },
+    "Placeholder" : {
+      "EnterAmount" : "введите сумму"
+    }
   }
 }

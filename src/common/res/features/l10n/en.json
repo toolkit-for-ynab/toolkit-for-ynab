@@ -229,5 +229,20 @@
     "Button" : {
       "Hide" : "Hide",
     }
+  },
+  "CoverOverspendingModal" : {
+    "Label" : {
+      "CoverOverspending" : "Cover this overspending with",
+    }
+  },
+  "MoveMoneyModal" : {
+    "Label" : {
+      "CoverOverspending" : "Cover this overspending with",
+      "Move" : "Move",
+      "To" : "To"
+    },
+    "Placeholder" : {
+      "EnterAmount" : "enter an amount"
+    }
   }
 }
