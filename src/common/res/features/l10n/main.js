@@ -51,6 +51,12 @@
             contentNum = (start || 0) + i * (step || 1);
             this.set(textArray[i], contentNum, selector);
           };
+        },
+        this.setButtons = function() {
+          this.setSeveral(
+            [l10n.Global.Button.Ok, 0, '.button-primary'],
+            [l10n.Global.Button.Cancel, 0, '.button-cancel']
+          )
         }
       }
 
@@ -325,42 +331,42 @@
       },
 
       this.addCategoryGroupModal = function () {
-        var modal = $('.modal-add-master-category');
-        $(modal).find('input')[0].setAttribute("placeholder", l10n.Budget.Table.Placeholder.NewCategoryGroup);
-        $(modal).find('.button-primary').contents()[0].textContent = l10n.Global.Button.Ok;
-        $(modal).find('.button-cancel').contents()[0].textContent = l10n.Global.Button.Cancel;
+        contentSetter.selectorPrefix = '.modal-add-master-category ';
+        $(contentSetter.selectorPrefix + 'input')[0].setAttribute("placeholder", l10n.Budget.Table.Placeholder.NewCategoryGroup);
+        contentSetter.setButtons();
       },
 
       this.addCategoryModal = function () {
-        var modal = $('.modal-add-sub-category');
-        $(modal).find('input')[0].setAttribute("placeholder", l10n.Budget.Table.Placeholder.NewCategory);
-        $(modal).find('.button-primary').contents()[0].textContent = l10n.Global.Button.Ok;
-        $(modal).find('.button-cancel').contents()[0].textContent = l10n.Global.Button.Cancel;
+        contentSetter.selectorPrefix = '.modal-add-sub-category ';
+        $(contentSetter.selectorPrefix + 'input')[0].setAttribute("placeholder", l10n.Budget.Table.Placeholder.NewCategory);
+        contentSetter.setButtons();
       },
 
       this.hiddenCategoriesModal = function () {
-        var modal = $('.modal-budget-hidden-categories');
-        $(modal).find('.modal-header').contents()[1].textContent = l10n.HiddenCategoriesModal.Title.ClickCategory;
-        $(modal).find('.button')[0].textContent = l10n.HiddenCategoriesModal.Button.ShowAllHidden;
-        creditCardPaymentsText = $(modal).find('.modal-budget-hidden-categories-master-unhidden:contains("Credit Card Payments")').contents()[1];
-        if (creditCardPaymentsText) creditCardPaymentsText.textContent = l10n.Global.Category.CreditCardPayments + " ";
+        contentSetter.selectorPrefix = '.modal-budget-hidden-categories ';
+        $(contentSetter.selectorPrefix)[0].setAttribute("placeholder", l10n.Budget.Table.Placeholder.NewCategory);
+        contentSetter.setSeveral(
+          [l10n.HiddenCategoriesModal.Title.ClickCategory, 1, '.modal-header'],
+          [l10n.HiddenCategoriesModal.Button.ShowAllHidden, 0, '.button-primary'],
+          [l10n.Global.Category.CreditCardPayments + " ", 1, '.modal-budget-hidden-categories-master-unhidden:contains("Credit Card Payments")']
+        )
       },
 
       this.editCategoryModal = function () {
-        var modal = $('.modal-budget-edit-category');
-        $(modal).find('.button-primary').contents()[0].textContent = l10n.Global.Button.Ok;
-        $(modal).find('.button-cancel').contents()[0].textContent = l10n.Global.Button.Cancel;
-        var deleteButtonText = $(modal).find('.button-delete').contents()[2];
-        if (deleteButtonText) deleteButtonText.textContent = l10n.Global.Button.Delete;
-        $(modal).find('.button-hide').contents()[2].textContent = l10n.EditCategoryModal.Button.Hide;
-        var creditCardPaymentsText = $(modal).find('.modal-budget-edit-category-label:contains("Credit Card Payments")')[0];
-        if (creditCardPaymentsText) creditCardPaymentsText.textContent = l10n.Global.Category.CreditCardPayments;
+        contentSetter.selectorPrefix = '.modal-budget-edit-category ';
+        $(contentSetter.selectorPrefix)[0].setAttribute("placeholder", l10n.Budget.Table.Placeholder.NewCategory);
+        contentSetter.setButtons();
+        contentSetter.setSeveral(
+          [l10n.Global.Button.Delete, 2, '.button-delete'],
+          [l10n.EditCategoryModal.Button.Hide, 2, '.button-hide'],
+          [l10n.Global.Category.CreditCardPayments, 0, '.modal-budget-edit-category-label:contains("Credit Card Payments")']
+        )
       },
 
-      // Modal template
-      // ynabToolKit.l10n.localize.someModal = function () {
-      //   var modal = $('.modal-class');
-      // }
+      this.coverOverspendingModal = function () {
+
+      }
+
 
       this.observe = function(changedNodes) {
 
@@ -403,9 +409,14 @@
           ynabToolKit.l10n.localize.hiddenCategoriesModal();
         }
 
-        // Hidden categories modal
+        // Edit category modal
         if (changedNodes.has('modal-budget-edit-category')) {
           ynabToolKit.l10n.localize.editCategoryModal();
+        }
+
+        // Edit category modal
+        if (changedNodes.has('modal-budget-overspending')) {
+          ynabToolKit.l10n.localize.coverOverspendingModal();
         }
 
       }
