@@ -321,6 +321,20 @@
       },
 
 
+      this.sidebar = function () {
+        $().contents()
+        contentSetter.selectorPrefix = '.sidebar .nav-account-name-button';
+        contentSetter.setArray(
+          [
+            l10n.Sidebar.Title.Budget,
+            l10n.Sidebar.Title.Tracking,
+            l10n.Sidebar.Title.Closed
+          ],
+          '', 1, 2
+        );
+      }
+
+
       this.calendarModal = function () {
         contentSetter.resetPrefix();
         contentSetter.setArray(
@@ -454,6 +468,7 @@
     ynabToolKit.l10n.localize.inspector();
     ynabToolKit.l10n.localize.budgetHeader();
     ynabToolKit.l10n.localize.budgetTable();
+    ynabToolKit.l10n.localize.sidebar();
 
   } else {
     setTimeout(poll, 250);
