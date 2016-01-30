@@ -353,10 +353,23 @@
         if (element) {
           var transactionsCount = $(contentSetter.selectorPrefix + 'button')[0].textContent.split(' ')[0];
           contentSetter.setSeveral(
-            [transactionsCount + " " + l10n.Accounts.Text.Transaction + " ", 0, 'button'],
-            [l10n.Accounts.Text.NeedsApproval, 3]
+            [transactionsCount + " " + l10n.Accounts.Header.Transaction + " ", 0, 'button'],
+            [l10n.Accounts.Header.NeedsApproval, 3]
           );
         }
+
+        // Accounts header
+        contentSetter.resetPrefix();
+        contentSetter.setSeveral(
+          [l10n.Accounts.Header.AllAccounts, 0, '.accounts-header-total-inner-label[title="All Accounts"]']
+        );
+        contentSetter.selectorPrefix = '.accounts-header-balances-';
+        contentSetter.setSeveral(
+          [l10n.Accounts.Header.Cleared, 0, 'cleared .accounts-header-balances-label'],
+          [l10n.Accounts.Header.Uncleared, 0, 'uncleared .accounts-header-balances-label'],
+          [l10n.Accounts.Header.Working, 0, 'working .accounts-header-balances-label']
+        );
+
       }
 
 

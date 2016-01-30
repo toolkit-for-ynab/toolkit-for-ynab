@@ -152,9 +152,14 @@
     },
   },
   "Accounts" : {
-    "Text" : {
+    "Header" : {
       "Transaction" : "transaction",
-      "NeedsApproval" : "needs to be approved."
+      "NeedsApproval" : "needs to be approved.",
+      "AllAccounts" : "All Accounts",
+      "Cleared" : "Cleared Balance",
+      "Uncleared" : "Uncleared Balance",
+      "Working" : "Working Balance",
+      "Selected" : "Selected Transactions Total"
     }
   },
   "Sidebar" : {
@@ -177,14 +182,6 @@
     "Button" : {
       "Close" : "Close Account",
       "Reopen" : "Re-open",
-    }
-  },
-  "BudgetOptionsModal" : {
-    "Button" : {
-      "New" : "Create a new budget",
-      "Open" : "Open a budget",
-      "Setting" : "Budget Settings",
-      "FreshStart" : "Make a fresh start",
     }
   },
   "AddAccountModal" : {
