@@ -150,6 +150,12 @@
       }
     },
   },
+  "Accounts" : {
+    "Text" : {
+      "Transaction" : "transaction",
+      "NeedsApproval" : "needs to be approved."
+    }
+  },
   "Sidebar" : {
     "Button" : {
       "Budget" : "Budget",
@@ -161,10 +167,6 @@
       "Budget" : "BUDGET",
       "Tracking" : "TRACKING",
       "Closed" : "CLOSED",
-    },
-    "Text" : {
-      "Transaction" : "transaction",
-      "NeedsApproval" : "needs to be approved."
     }
   },
   "AccountOptionsModal" : {
@@ -247,6 +249,22 @@
     },
     "Placeholder" : {
       "EnterAmount" : "enter an amount"
+    }
+  },
+  "SelectBudgetModal" : {
+    "Button" : {
+      "CreateBudget" : "Create a new budget",
+      "OpenBudget" : "Open a budget",
+      "BudgetSettings" : "Budget Settings",
+      "FreshStart" : "Make a fresh start"
+    }
+  },
+  "UserPrefsModal" : {
+    "Button" : {
+      "MyAcc" : "My Account",
+      "Guides" : "User Guides",
+      "Help" : "Get Help",
+      "SignOut" : "Sign Out"
     }
   }
 }

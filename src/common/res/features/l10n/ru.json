@@ -250,5 +250,21 @@ ynabToolKit.l10n.Data = {
     "Placeholder" : {
       "EnterAmount" : "введите сумму"
     }
+  },
+  "SelectBudgetModal" : {
+    "Button" : {
+      "CreateBudget" : "Новый бюджет",
+      "OpenBudget" : "Открыть бюджет",
+      "BudgetSettings" : "Настройки бюджета",
+      "FreshStart" : "Свежий старт"
+    }
+  },
+  "UserPrefsModal" : {
+    "Button" : {
+      "MyAcc" : "Мой аккаунт",
+      "Guides" : "Руководство",
+      "Help" : "Помощь",
+      "SignOut" : "Выход"
+    }
   }
 }

@@ -62,6 +62,7 @@
 
 
       this.budgetHeader = function ()  {
+        if (!$('.navlink-budget').hasClass('active')) return ;
         var dateInfo = getDateInfo();
         contentSetter.selectorPrefix = '.budget-header-';
         var dateYearText = dateInfo.currentMonthName + " " + dateInfo.selectedMonth.getFullYear()
@@ -419,6 +420,28 @@
         );
       }
 
+      this.selectBudgetModal = function () {
+        contentSetter.selectorPrefix = '.modal-select-budget button';
+        contentSetter.setArray(
+          [
+            l10n.SelectBudgetModal.Button.CreateBudget,
+            l10n.SelectBudgetModal.Button.OpenBudget,
+            l10n.SelectBudgetModal.Button.BudgetSettings,
+            l10n.SelectBudgetModal.Button.FreshStart
+          ],
+          '', 3, 5
+        );
+      };
+
+      this.userPrefsModal = function () {
+        contentSetter.selectorPrefix = '.modal-user-prefs button';
+        contentSetter.setSeveral(
+          [l10n.UserPrefsModal.Button.MyAcc, 1],
+          [l10n.UserPrefsModal.Button.Guides, 4],
+          [l10n.UserPrefsModal.Button.Help, 8],
+          [l10n.UserPrefsModal.Button.SignOut, 12]
+        );
+      };
 
       this.observe = function(changedNodes) {
 
@@ -474,6 +497,16 @@
         // Move money modal
         if (changedNodes.has('modal-budget-move-money')) {
           ynabToolKit.l10n.localize.moveMoneyModal();
+        }
+
+        // Budget name dropdown
+        if (changedNodes.has('modal-select-budget')) {
+          ynabToolKit.l10n.localize.selectBudgetModal();
+        }
+
+        // User settings dropdown
+        if (changedNodes.has('modal-user-prefs')) {
+          ynabToolKit.l10n.localize.userPrefsModal();
         }
 
         // Selection in modal
