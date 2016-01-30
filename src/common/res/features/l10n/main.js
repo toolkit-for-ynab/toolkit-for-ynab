@@ -361,7 +361,8 @@
         // Accounts header
         contentSetter.resetPrefix();
         contentSetter.setSeveral(
-          [l10n.Accounts.Header.AllAccounts, 0, '.accounts-header-total-inner-label[title="All Accounts"]']
+          [l10n.Accounts.Header.AllAccounts, 0, '.accounts-header-total-inner-label[title="All Accounts"]'],
+          [l10n.Accounts.Header.Reconcile, 2, '.accounts-header-reconcile']
         );
         contentSetter.selectorPrefix = '.accounts-header-balances-';
         contentSetter.setSeveral(
@@ -369,6 +370,7 @@
           [l10n.Accounts.Header.Uncleared, 0, 'uncleared .accounts-header-balances-label'],
           [l10n.Accounts.Header.Working, 0, 'working .accounts-header-balances-label']
         );
+
 
       }
 
@@ -470,7 +472,7 @@
         );
       };
 
-      this.budgeteSettingsModal = function () {
+      this.budgetSettingsModal = function () {
         var header = $('.modal-budget-settings .modal-header').contents()[1];
         if (header.textContent == "Budget Settings") header.textContent = l10n.BudgetSettingsModal.Header.Settings;
         if (header.textContent == "Create a new budget") header.textContent = l10n.BudgetSettingsModal.Header.New;
@@ -492,9 +494,20 @@
 
         var before = $('.modal-budget-settings').contents()[4];
         contentSetter.setSeveral(
-          [l10n.BudgetSettingsModal.Title.Before + " (", 4,' #currencyPlacement button'],
-          [l10n.BudgetSettingsModal.Title.After + " (123 456,78", 13,' #currencyPlacement button'],
-          [l10n.BudgetSettingsModal.Title.Off + " (123 456,78)", 22,' #currencyPlacement button']
+          [l10n.BudgetSettingsModal.Title.Before + " (", 4, ' #currencyPlacement button'],
+          [l10n.BudgetSettingsModal.Title.After + " (123 456,78", 13, ' #currencyPlacement button'],
+          [l10n.BudgetSettingsModal.Title.Off + " (123 456,78)", 22, ' #currencyPlacement button']
+        );
+      };
+
+      this.reconcileAccountModal = function () {
+        contentSetter.selectorPrefix = '.modal-account-reconcile';
+        $(contentSetter.selectorPrefix + '-label')[0].textContent = l10n.ReconcileAccountModal.Label.Balance;
+        contentSetter.setSeveral(
+          // [l10n.ReconcileAccountModal.Label.Balance, 0, '-label'],
+          [l10n.ReconcileAccountModal.Button.Yes, 2, '-yes'],
+          [l10n.ReconcileAccountModal.Button.No, 2, '-no'],
+          [l10n.ReconcileAccountModal.Label.How, 0, ' a']
         );
       };
 
@@ -576,7 +589,12 @@
 
         // New budget and current budget settings modal
         if (changedNodes.has('modal-budget-settings')) {
-          ynabToolKit.l10n.localize.budgeteSettingsModal();
+          ynabToolKit.l10n.localize.budgetSettingsModal();
+        }
+
+        // Reconcile account modal
+        if (changedNodes.has('modal-account-reconcile')) {
+          ynabToolKit.l10n.localize.reconcileAccountModal();
         }
 
         // Selection in modal

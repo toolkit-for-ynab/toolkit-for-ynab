@@ -159,7 +159,8 @@ ynabToolKit.l10n.Data = {
       "Cleared" : "Подтвержденные",
       "Uncleared" : "Неподтвержденные",
       "Working" : "Баланс",
-      "Selected" : "Выбранные"
+      "Selected" : "Выбранные",
+      "Reconcile" : "Сверка аккаунта"
     },
   },
   "Sidebar" : {
@@ -288,6 +289,16 @@ ynabToolKit.l10n.Data = {
     "Button" : {
       "Apply" : "Применить",
       "Create" : "Создать"
+    }
+  },
+  "ReconcileAccountModal" : {
+    "Label" : {
+      "Balance" : "Текущий баланс составляет",
+      "How" : "Как найти текущий баланс?"
+    },
+    "Button" : {
+      "Yes" : "Да",
+      "No" : "Нет"
     }
   }
 }

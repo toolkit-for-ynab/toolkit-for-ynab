@@ -159,7 +159,8 @@
       "Cleared" : "Cleared Balance",
       "Uncleared" : "Uncleared Balance",
       "Working" : "Working Balance",
-      "Selected" : "Selected Transactions Total"
+      "Selected" : "Selected Transactions Total",
+      "Reconcile" : "Reconcile Account"
     }
   },
   "Sidebar" : {
@@ -288,6 +289,16 @@
     "Button" : {
       "Apply" : "Apply Settings",
       "Create" : "Create Budget"
+    }
+  },
+  "ReconcileAccountModal" : {
+    "Label" : {
+      "Balance" : "Is your current account balance",
+      "How" : "How do I find my account balance?"
+    },
+    "Button" : {
+      "Yes" : "Yes",
+      "No" : "No"
     }
   }
 }
