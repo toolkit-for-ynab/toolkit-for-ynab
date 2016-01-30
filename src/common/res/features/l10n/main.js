@@ -371,6 +371,25 @@
           [l10n.Accounts.Header.Working, 0, 'working .accounts-header-balances-label']
         );
 
+        // Accounts toolbar
+        contentSetter.resetPrefix();
+        contentSetter.setSeveral(
+          [l10n.Accounts.Button.AddTransaction, 4, '.add-transaction'],
+          [l10n.Accounts.Button.EditTransaction, 4, '.accounts-toolbar-edit-transaction'],
+          [l10n.Accounts.Button.Filter, 2, '.accounts-toolbar-all-dates']
+        );
+
+        // Accounts table header
+        contentSetter.selectorPrefix = '.ynab-grid-header-cell.ynab-grid-cell-';
+        contentSetter.setSeveral(
+          [l10n.Accounts.Table.Account, 2, 'accountName'],
+          [l10n.Accounts.Table.Date, 2, 'date'],
+          [l10n.Accounts.Table.Payee, 2, 'payeeName'],
+          [l10n.Accounts.Table.Category, 2, 'subCategoryName'],
+          [l10n.Accounts.Table.Memo, 2, 'memo'],
+          [l10n.Accounts.Table.Outflow, 2, 'outflow'],
+          [l10n.Accounts.Table.Inflow, 2, 'inflow']
+        );
 
       }
 
@@ -504,12 +523,29 @@
         contentSetter.selectorPrefix = '.modal-account-reconcile';
         $(contentSetter.selectorPrefix + '-label')[0].textContent = l10n.ReconcileAccountModal.Label.Balance;
         contentSetter.setSeveral(
-          // [l10n.ReconcileAccountModal.Label.Balance, 0, '-label'],
           [l10n.ReconcileAccountModal.Button.Yes, 2, '-yes'],
           [l10n.ReconcileAccountModal.Button.No, 2, '-no'],
           [l10n.ReconcileAccountModal.Label.How, 0, ' a']
         );
       };
+
+      this.accountSettingsModal = function () {
+        contentSetter.selectorPrefix = '.account-modal ';
+        $(contentSetter.selectorPrefix + 'textarea')[0].setAttribute("placeholder", l10n.AccountSettingsModal.Placeholder.Note);
+        contentSetter.setSeveral(
+          [l10n.AccountSettingsModal.Label.Balance, 0, 'dt'],
+          [l10n.AccountSettingsModal.Label.Import, 0, '.dc-toggle'],
+          [l10n.AccountSettingsModal.Label.Info, 0, '.info'],
+          [l10n.Global.Button.Ok, 0, '.button-primary'],
+          [l10n.Global.Button.Cancel, 3, '.button'],
+          [l10n.AccountSettingsModal.Button.Reopen, 3, '.button-reopen']
+        );
+        var redButton = $(contentSetter.selectorPrefix + '.button-red').contents();
+        if (redButton) {
+          if (redButton[3].textContent == "Close Account") redButton[3].textContent = l10n.AccountSettingsModal.Button.Close;
+          if (redButton[3].textContent == "Delete") redButton[3].textContent = l10n.Global.Button.Delete;
+        }
+      }
 
       this.observe = function(changedNodes) {
 
@@ -595,6 +631,11 @@
         // Reconcile account modal
         if (changedNodes.has('modal-account-reconcile')) {
           ynabToolKit.l10n.localize.reconcileAccountModal();
+        }
+
+        // Account settings modal
+        if (changedNodes.has('account-modal')) {
+          ynabToolKit.l10n.localize.accountSettingsModal();
         }
 
         // Selection in modal

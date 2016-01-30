@@ -162,6 +162,21 @@ ynabToolKit.l10n.Data = {
       "Selected" : "Выбранные",
       "Reconcile" : "Сверка аккаунта"
     },
+    "Button" : {
+      "AddTransaction" : "Новая транзакция",
+      "EditTransaction" : "Изменить",
+      "Filter" : "Фильтрация",
+      "ToogleSplits" : "Сплиты"
+    },
+    "Table" : {
+      "Account" : "Аккаунт",
+      "Date" : "Дата",
+      "Payee" : "Плательщик",
+      "Category" : "Категория",
+      "Memo" : "Заметка",
+      "Outflow" : "Трата",
+      "Inflow" : "Поступление"
+    }
   },
   "Sidebar" : {
     "Button" : {
@@ -174,15 +189,6 @@ ynabToolKit.l10n.Data = {
       "Budget" : "БЮДЖЕТНЫЕ",
       "Tracking" : "ВНЕБЮДЖЕТНЫЕ",
       "Closed" : "ЗАКРЫТЫЕ",
-    }
-  },
-  "AccountOptionsModal" : {
-    "Placeholder" : {
-      "About" : "Enter a note (not your account number)..."
-    },
-    "Button" : {
-      "Close" : "Close Account",
-      "Reopen" : "Re-open",
     }
   },
   "AddAccountModal" : {
@@ -299,6 +305,20 @@ ynabToolKit.l10n.Data = {
     "Button" : {
       "Yes" : "Да",
       "No" : "Нет"
+    }
+  },
+  "AccountSettingsModal" : {
+    "Placeholder" : {
+      "Note" : "Введите заметку (только не номер счета)..."
+    },
+    "Label" : {
+      "Balance" : "Текущий баланс:",
+      "Import" : "Импорт транзакций из банка напрямую",
+      "Info" : "Корректировочная транзакция будет создана автоматически, если вы измените баланс."
+    },
+    "Button" : {
+      "Close" : "Закрыть аккаунт",
+      "Reopen" : "Открыть",
     }
   }
 }

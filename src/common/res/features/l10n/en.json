@@ -161,6 +161,21 @@
       "Working" : "Working Balance",
       "Selected" : "Selected Transactions Total",
       "Reconcile" : "Reconcile Account"
+    },
+    "Button" : {
+      "AddTransaction" : "Add a transaction",
+      "EditTransaction" : "Add a transaction",
+      "Filter" : "Filter",
+      "ToogleSplits" : "Toogle Splits"
+    },
+    "Table" : {
+      "Account" : "ACCOUNT",
+      "Date" : "DATE",
+      "Payee" : "PAYEE",
+      "Category" : "CATEGORY",
+      "Memo" : "MEMO",
+      "Outflow" : "OUTFLOW",
+      "Inflow" : "INFLOW"
     }
   },
   "Sidebar" : {
@@ -174,15 +189,6 @@
       "Budget" : "BUDGET",
       "Tracking" : "TRACKING",
       "Closed" : "CLOSED",
-    }
-  },
-  "AccountOptionsModal" : {
-    "Placeholder" : {
-      "About" : "Enter a note (not your account number)..."
-    },
-    "Button" : {
-      "Close" : "Close Account",
-      "Reopen" : "Re-open",
     }
   },
   "AddAccountModal" : {
@@ -299,6 +305,20 @@
     "Button" : {
       "Yes" : "Yes",
       "No" : "No"
+    }
+  },
+  "AccountSettingsModal" : {
+    "Placeholder" : {
+      "Note" : "Enter a note (not your account number)..."
+    },
+    "Label" : {
+      "Balance" : "Today's Balance:",
+      "Import" : "Use your bank login to import transactions",
+      "Info" : "An adjustment transaction will be created automatically if you change this amount."
+    },
+    "Button" : {
+      "Close" : "Close Account",
+      "Reopen" : "Re-open",
     }
   }
 }
