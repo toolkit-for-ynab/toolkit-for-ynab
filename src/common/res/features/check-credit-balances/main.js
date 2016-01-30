@@ -71,7 +71,7 @@
             var fDifference = ynabToolKit.shared.formatCurrency(difference, false);
             var button = ' \
             <button class="budget-inspector-button rectify-difference" \
-              onClick="ynabToolKit.checkCreditBalances.updateCreditBalances(name)"> \
+              onClick="ynabToolKit.checkCreditBalances.updateCreditBalances(\'' + name+'\', ' + difference + ')"> \
               Rectify Available for PIF CC: \
                 <strong class="user-data" title="' + fDifference + '"> \
                   <span class="user-data currency zero"> \
@@ -83,21 +83,7 @@
             $('.inspector-quick-budget .ember-view').append(button);
           }
         }
-      },
-
-      this.updateCreditBalances = function(name) {
-        var rows = $('.is-sub-category.is-debt-payment-category');
-        rows.each(function(i) {
-          var accountName = $(this)
-            .find('.budget-table-cell-name div.button-truncate').prop('title');
-          if (name === accountName) {
-            var categoryBalance = $(this)
-              .find('.budget-table-cell-available-div .user-data.currency');
-            categoryBalance.removeClass('positive negative')
-              .addClass('cautious');
-          }
-        });
-      },
+      };
 
       this.observe = function(changedNodes) {
 
@@ -105,6 +91,34 @@
           // The user has changed their budget row selection
           ynabToolKit.checkCreditBalances.invoke();
         }
+      };
+
+      this.updateCreditBalances = function(name, difference) {
+        var debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
+
+        $(debtPaymentCategories).each(function() {
+          var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
+          if (accountName === name) {
+            var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click().find('input');
+            var oldValue = input.val();
+
+            // If nothing is budgetted, the input will be empty
+            oldValue = oldValue ? oldValue : 0;
+
+            // Get the formatted currency so we can add it to the budget box correctly
+            var fhDifference = ynabToolKit.shared.formatCurrency(difference, true);
+            var results = /(-*).*bdi>(.*)/g.exec(fhDifference);
+            var addition = results[1] + results[2];
+
+            // Strip out commas since they mess things up
+            addition = addition.replace(/,/g, '');
+
+            var newValue = (parseFloat(oldValue) + parseFloat(addition));
+
+            input.val(newValue);
+            $(input).blur();
+          }
+        });
       };
     };
 
