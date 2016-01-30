@@ -50,7 +50,7 @@
 				dropdown.insertBefore(input, list[0]);
 				var label = document.createElement("label");
 				label.setAttribute("for", "autocomplete-move-money");
-				label.innerHTML = (ynabToolKit.l10n.Data.Global.Title.Search + ":") || "Search:";
+				label.innerHTML = (ynabToolKit.l10n && ynabToolKit.l10n.Data.Global.Title.Search + ":") || "Search:";
 				label.id = "autocomplete-label";
 				dropdown.insertBefore(label, input);
 				input.focus();
