@@ -27,7 +27,6 @@
           previousMonthName: previousMonthName
         }
       }
-      var dateInfo = getDateInfo();
 
       // Tool for setting content.
       contentSetter = new function () {
@@ -57,6 +56,7 @@
 
 
       this.budgetHeader = function ()  {
+        var dateInfo = getDateInfo();
         contentSetter.selectorPrefix = '.budget-header-';
         var dateYearText = dateInfo.currentMonthName + " " + dateInfo.selectedMonth.getFullYear()
         contentSetter.setSeveral(
@@ -112,6 +112,32 @@
       this.inspector = function () { // Keep feature functions contained within this
         var inspector = $('.budget-inspector');
 
+        // Quick budgeting buttons.
+        var fifthButton = $('.budget-inspector-button').length == 5;
+        contentSetter.selectorPrefix = '.budget-inspector-button';
+        contentSetter.setArray(
+          [
+            l10n.Budget.Inspector.Button.BudgetedLastMonth,
+            l10n.Budget.Inspector.Button.SpentLastMonth,
+            l10n.Budget.Inspector.Button.AverageBudgeted,
+            l10n.Budget.Inspector.Button.AverageSpent
+          ],
+          '', 1 + fifthButton * 5, 5
+        );
+        // Inspector added button
+        if (fifthButton) {
+          buttonText = $('.budget-inspector-button').contents()[1];
+          if (buttonText.textContent == "Goal Target") {
+            buttonText.textContent = l10n.Budget.Inspector.Button.GoalTarget;
+          }
+          if (buttonText.textContent == "Upcoming Transactions") {
+            buttonText.textContent = l10n.Budget.Inspector.Button.UpcomingTransactions;
+          }
+          if (buttonText.textContent == "Underfunded") {
+            buttonText.textContent = l10n.Budget.Inspector.Button.Underfunded;
+          }
+        }
+
         // No categories selected
         if ($(inspector).find('div').hasClass('budget-inspector-default-inspector')) {
           contentSetter.selectorPrefix = '.budget-inspector ';
@@ -125,17 +151,18 @@
             ],
             'h3'
           );
+        }
 
+        // Multiple categories selected
+        if ($(inspector).find('div').hasClass('budget-inspector-multi-select-inspector')) {
+          contentSetter.selectorPrefix = '.budget-inspector-multi-select-inspector ';
+          contentSetter.set(l10n.Budget.Inspector.Header.CategoriesSelected, 2, 'h2');
           contentSetter.setArray(
-            [
-              l10n.Budget.Inspector.Button.Underfunded,
-              l10n.Budget.Inspector.Button.BudgetedLastMonth,
-              l10n.Budget.Inspector.Button.SpentLastMonth,
-              l10n.Budget.Inspector.Button.AverageBudgeted,
-              l10n.Budget.Inspector.Button.AverageSpent
-            ],
-            'button',
-            1, 5
+            [l10n.Budget.Inspector.Header.Budgeted,
+            l10n.Budget.Inspector.Header.Activity,
+            l10n.Budget.Inspector.Header.Available,
+            l10n.Budget.Inspector.Header.QuickSelected],
+            'h3'
           );
         }
 
@@ -201,8 +228,10 @@
           contentSetter.selectorPrefix = '.inspector-message';
           if (inspectorMessage.length == 7) {
             // Inspector message for underfunded goal.
-            var shortFor = inspectorMessage[1].textContent.split(' ')[1];
-            var budgetAnother = inspectorMessage[3].textContent.split(' ')[10];
+            var s = inspectorMessage[1].textContent.split(' ');
+            var shortFor = s[s.length - 1];
+            var s = inspectorMessage[3].textContent.split(' ');
+            var budgetAnother = s[s.length - 1];
             contentSetter.setSeveral(
               [l10n.Budget.Inspector.Text.Message.YouRe + " " + shortFor, 1],
               [l10n.Budget.Inspector.Text.Message.ShortOfGoal + " " + budgetAnother, 3],
@@ -242,29 +271,6 @@
             [" " + l10n.Budget.Inspector.Text.Credit.Available, 3]
           );
 
-          // Inspector quick budgeting buttons.
-          var fifthButton = $('.budget-inspector-button').length == 5;
-          contentSetter.selectorPrefix = '.budget-inspector-button';
-          contentSetter.setArray(
-            [
-              l10n.Budget.Inspector.Button.BudgetedLastMonth,
-              l10n.Budget.Inspector.Button.SpentLastMonth,
-              l10n.Budget.Inspector.Button.AverageBudgeted,
-              l10n.Budget.Inspector.Button.AverageSpent
-            ],
-            '', 1 + fifthButton * 5, 5
-          );
-          // Inspector added button
-          if (fifthButton) {
-            buttonText = $('.budget-inspector-button').contents()[1];
-            if (buttonText.textContent == "Goal Target") {
-              buttonText.textContent = l10n.Budget.Inspector.Button.GoalTarget;
-            }
-            if (buttonText.textContent == "Upcoming Transactions") {
-              buttonText.textContent = l10n.Budget.Inspector.Button.UpcomingTransactions;
-            }
-          }
-
           // Inspector category note without text.
           categoryNote = $(inspector).find('.inspector-category-note').contents()[3];
           if (categoryNote.textContent == "Enter a note...") {
@@ -303,25 +309,8 @@
 
           // Inspector goal message logic.
           // TODO Add messages handling.
-          $('.goal-message')[0].remove();
-        }
-
-        // Multiple categories selected
-        if ($(inspector).find('div').hasClass('budget-inspector-multi-select-inspector')) {
-          $(inspector).find('h2').contents()[2].textContent = l10n.Budget.Inspector.Header.CategoriesSelected;
-
-          var headers = $(inspector).find('h3');
-          headers[0].textContent = l10n.Budget.Inspector.Header.Budgeted;
-          headers[1].textContent = l10n.Budget.Inspector.Header.Activity;
-          headers[2].textContent = l10n.Budget.Inspector.Header.Available;
-          headers[3].textContent = l10n.Budget.Inspector.Header.QuickSelected;
-
-          var buttons = $(inspector).find("button");
-          buttons[0].childNodes[1].textContent = l10n.Budget.Inspector.Button.Underfunded;
-          buttons[1].childNodes[1].textContent = l10n.Budget.Inspector.Button.BudgetedLastMonth;
-          buttons[2].childNodes[1].textContent = l10n.Budget.Inspector.Button.SpentLastMonth;
-          buttons[3].childNodes[1].textContent = l10n.Budget.Inspector.Button.AverageBudgeted;
-          buttons[4].childNodes[1].textContent = l10n.Budget.Inspector.Button.AverageSpent;
+          var goalMessage = $('.goal-message');
+          if (goalMessage.length > 0)goalMessage[0].remove();
         }
       },
 
