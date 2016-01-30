@@ -6,6 +6,8 @@ ynabToolKit.l10n.Data = {
       "Edit" : "Изменить",
       "Delete" : "Удалить",
       "Continue" : "Продолжить",
+      "Next" : "Далее",
+      "Back" : "Назад",
     },
     "Month" : {
       "0" : "Янв",
@@ -195,43 +197,6 @@ ynabToolKit.l10n.Data = {
       "Closed" : "ЗАКРЫТЫЕ",
     }
   },
-  "AddAccountModal" : {
-    "Title" : {
-      "NewAccount" : "Add a New Account",
-      "AccountName" : "Account Name:",
-      "AccountType" : "Account Type:",
-      "TransactionImport" : "Transaction Import:",
-      "Examples" : "Examples:",
-      "Or" : "or",
-      "Popular" : "Popular Options:",
-      },
-    "Placeholder" : {
-      "NewAccount" : "New Account",
-      "AccountType" : "Select an Account Type...",
-      "Balance" : "What is the balance of this account right now?",
-      "Search" : "search for your bank’s name",
-    },
-    "Button" : {
-      "AddAccount" : "Add Account",
-      "Next" : "Next",
-      "Back" : "Back",
-    },
-    "AccountType" : {
-      "Budget" : "Budget",
-      "Tracking" : "Tracking",
-      "Checking" : "Checking",
-      "Savings" : "Savings",
-      "CreditCard" : "Credit Card",
-      "Cash" : "Cash",
-      "LineOfCredit" : "Line of Credit",
-      "PayPal" : "PayPal",
-      "Merchant" : "Merchant Account",
-      "Investment" : "Investment Account",
-      "Mortgage" : "Mortgage",
-      "OtherAsset" : "Other Asset",
-      "OtherLiability" : "Other Liability",
-    }
-  },
   "HiddenCategoriesModal" : {
     "Title" : {
       "ClickCategory" : "Нажмите для показа"
@@ -323,6 +288,43 @@ ynabToolKit.l10n.Data = {
     "Button" : {
       "Close" : "Закрыть аккаунт",
       "Reopen" : "Открыть",
+    }
+  },
+  "AddAccountModal" : {
+    "Title" : {
+      "NewAccount" : "Создание нового аккаунта",
+      "AccountName" : "Название:",
+      "AccountType" : "Тип:",
+      "Balance" : "Текущий баланс:",
+      "TransactionImport" : "Импорт транзакций",
+      "Examples" : "Примеры: ",
+      "Or" : ", или",
+      "Popular" : "Популярные",
+      "Budget" : "Бюджетные",
+      "Tracking" : "Внебюджетные",
+      "Text" : "Импорт транзакций напрямую из банка"
+    },
+    "Placeholder" : {
+      "NewAccount" : "Новый аккаунт",
+      "Balance" : "Текущий баланс аккаунта",
+      "Search" : "поиск банка по имени",
+    },
+    "Button" : {
+      "AddAccount" : "Создать",
+    },
+    "AccountType" : {
+      "AccountType" : "Выберите тип аккаунта...",
+      "Checking" : "Checking",
+      "Savings" : "Накопления",
+      "CreditCard" : "Кредитная карта",
+      "Cash" : "Наличные",
+      "LineOfCredit" : "Кредит",
+      "PayPal" : "PayPal",
+      "Merchant" : "Коммерческий",
+      "Investment" : "Инвестиционный",
+      "Mortgage" : "Ипотека",
+      "OtherAsset" : "Другой актив",
+      "OtherLiability" : "Другой долговой",
     }
   },
   "AccountFiltersModal" : {

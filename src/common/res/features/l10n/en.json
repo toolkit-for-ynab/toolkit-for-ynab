@@ -6,6 +6,8 @@
       "Edit" : "Edit",
       "Delete" : "Delete",
       "Continue" : "Continue",
+      "Next" : "Next",
+      "Back" : "Back",
     },
     "Month" : {
       "0" : "Jan",
@@ -195,43 +197,6 @@
       "Closed" : "CLOSED",
     }
   },
-  "AddAccountModal" : {
-    "Title" : {
-      "NewAccount" : "Add a New Account",
-      "AccountName" : "Account Name:",
-      "AccountType" : "Account Type:",
-      "TransactionImport" : "Transaction Import:",
-      "Examples" : "Examples:",
-      "Or" : "or",
-      "Popular" : "Popular Options:",
-      },
-    "Placeholder" : {
-      "NewAccount" : "New Account",
-      "AccountType" : "Select an Account Type...",
-      "Balance" : "What is the balance of this account right now?",
-      "Search" : "search for your bank’s name",
-    },
-    "Button" : {
-      "AddAccount" : "Add Account",
-      "Next" : "Next",
-      "Back" : "Back",
-    },
-    "AccountType" : {
-      "Budget" : "Budget",
-      "Tracking" : "Tracking",
-      "Checking" : "Checking",
-      "Savings" : "Savings",
-      "CreditCard" : "Credit Card",
-      "Cash" : "Cash",
-      "LineOfCredit" : "Line of Credit",
-      "PayPal" : "PayPal",
-      "Merchant" : "Merchant Account",
-      "Investment" : "Investment Account",
-      "Mortgage" : "Mortgage",
-      "OtherAsset" : "Other Asset",
-      "OtherLiability" : "Other Liability",
-    }
-  },
   "HiddenCategoriesModal" : {
     "Title" : {
       "ClickCategory" : "Click a category to show it"
@@ -323,6 +288,43 @@
     "Button" : {
       "Close" : "Close Account",
       "Reopen" : "Re-open",
+    }
+  },
+  "AddAccountModal" : {
+    "Title" : {
+      "NewAccount" : "Add a New Account",
+      "AccountName" : "Account Name:",
+      "AccountType" : "Account Type:",
+      "Balance" : "Today's Balance:",
+      "TransactionImport" : "Transaction Import",
+      "Examples" : "Examples",
+      "Or" : ", or",
+      "Popular" : "Popular Options",
+      "Budget" : "Budget",
+      "Tracking" : "Tracking",
+      "Text" : "Use your bank login to import transactions"
+      },
+    "Placeholder" : {
+      "NewAccount" : "New Account",
+      "Balance" : "What is the balance of this account right now?",
+      "Search" : "search for your bank’s name",
+    },
+    "Button" : {
+      "AddAccount" : "Add Account",
+    },
+    "AccountType" : {
+      "AccountType" : "Select an Account Type...",
+      "Checking" : "Checking",
+      "Savings" : "Savings",
+      "CreditCard" : "Credit Card",
+      "Cash" : "Cash",
+      "LineOfCredit" : "Line of Credit",
+      "PayPal" : "PayPal",
+      "Merchant" : "Merchant Account",
+      "Investment" : "Investment Account",
+      "Mortgage" : "Mortgage",
+      "OtherAsset" : "Other Asset",
+      "OtherLiability" : "Other Liability",
     }
   },
   "AccountFiltersModal" : {

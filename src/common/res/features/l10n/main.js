@@ -543,21 +543,62 @@
         );
       };
 
-      this.accountSettingsModal = function () {
+      this.accountModal = function () {
         contentSetter.selectorPrefix = '.account-modal ';
-        $(contentSetter.selectorPrefix + 'textarea')[0].setAttribute("placeholder", l10n.AccountSettingsModal.Placeholder.Note);
-        contentSetter.setSeveral(
-          [l10n.AccountSettingsModal.Label.Balance, 0, 'dt'],
-          [l10n.AccountSettingsModal.Label.Import, 0, '.dc-toggle'],
-          [l10n.AccountSettingsModal.Label.Info, 0, '.info'],
-          [l10n.Global.Button.Ok, 0, '.button-primary'],
-          [l10n.Global.Button.Cancel, 3, '.button'],
-          [l10n.AccountSettingsModal.Button.Reopen, 3, '.button-reopen']
-        );
-        var redButton = $(contentSetter.selectorPrefix + '.button-red').contents();
-        if (redButton) {
-          if (redButton[3].textContent == "Close Account") redButton[3].textContent = l10n.AccountSettingsModal.Button.Close;
-          if (redButton[3].textContent == "Delete") redButton[3].textContent = l10n.Global.Button.Delete;
+        if ($('.account-modal .edit-todays-balance').length == 1) {
+          $(contentSetter.selectorPrefix + 'textarea')[0].setAttribute("placeholder", l10n.AccountSettingsModal.Placeholder.Note);
+          contentSetter.setSeveral(
+            [l10n.AccountSettingsModal.Label.Balance, 0, 'dt'],
+            [l10n.AccountSettingsModal.Label.Import, 0, '.dc-toggle'],
+            [l10n.AccountSettingsModal.Label.Info, 0, '.info'],
+            [l10n.Global.Button.Ok, 0, '.button-primary'],
+            [l10n.Global.Button.Cancel, 3, '.button'],
+            [l10n.AccountSettingsModal.Button.Reopen, 3, '.button-reopen']
+          );
+          var redButton = $(contentSetter.selectorPrefix + '.button-red').contents();
+          if (redButton) {
+            if (redButton[3].textContent == "Close Account") redButton[3].textContent = l10n.AccountSettingsModal.Button.Close;
+            if (redButton[3].textContent == "Delete") redButton[3].textContent = l10n.Global.Button.Delete;
+            if (redButton[3].textContent == "Delete Account") redButton[3].textContent = l10n.Global.Button.Delete;
+          }
+        }
+        else {
+          contentSetter.setSeveral(
+            [l10n.AddAccountModal.Title.NewAccount, 1, '.modal-header']
+          )
+          if ($('.modal-actions button').contents()[0].textContent == "Cancel") {
+            $('.modal-actions button').contents()[0].textContent = l10n.Global.Button.Cancel;
+            $('.modal-actions button').contents()[3].textContent = l10n.Global.Button.Back;
+            $('.account-modal dd').contents()[5].textContent = l10n.AddAccountModal.Title.Examples;
+            $('.account-modal dd').contents()[10].textContent = l10n.AddAccountModal.Title.Or;
+            $('.account-modal input')[0].placeholder = l10n.AddAccountModal.Placeholder.Search;
+            contentSetter.setSeveral(
+              [l10n.AddAccountModal.Title.Popular, 0, 'dt']
+            );
+          }
+          else {
+            $('.modal-actions button').contents()[7].textContent = l10n.Global.Button.Cancel;
+            if ($('.modal-actions button').contents()[2].textContent == "Next") $('.modal-actions button').contents()[2].textContent = l10n.Global.Button.Next;
+            if ($('.modal-actions button').contents()[2].textContent == "Add Account") $('.modal-actions button').contents()[2].textContent = l10n.AddAccountModal.Button.AddAccount;
+
+            contentSetter.setSeveral(
+              [l10n.AddAccountModal.Title.AccountName, 0, 'dt'],
+              [l10n.AddAccountModal.Title.AccountType, 1, 'dt'],
+              [l10n.AddAccountModal.Title.Balance, 2, 'dt'],
+              [l10n.AddAccountModal.Title.TransactionImport, 0, '.header'],
+              [l10n.AddAccountModal.Title.Text, 1, '.label-checkbox']
+            );
+            var accountTypes = Object.keys(l10n.AddAccountModal.AccountType)
+                               .map(function(k){return l10n.AddAccountModal.AccountType[k]});
+            contentSetter.setArray(
+              accountTypes,
+              '.modal-account-settings-account-type option'
+            );
+            $('.modal-account-settings-account-type optgroup')[0].label = l10n.AddAccountModal.Title.Budget;
+            $('.modal-account-settings-account-type optgroup')[1].label = l10n.AddAccountModal.Title.Tracking;
+            $('.account-modal input')[0].placeholder = l10n.AddAccountModal.Placeholder.NewAccount;
+            if ($('.account-modal input')[1]) $('.account-modal input')[1].placeholder = l10n.AddAccountModal.Placeholder.Balance;
+          }
         }
       }
 
@@ -685,9 +726,10 @@
           ynabToolKit.l10n.localize.reconcileAccountModal();
         }
 
-        // Account settings modal
-        if (changedNodes.has('account-modal')) {
-          ynabToolKit.l10n.localize.accountSettingsModal();
+        // Account settings and new account modal
+        if (changedNodes.has('account-modal') || changedNodes.has('modal-content') ||
+            changedNodes.has('right-circle-2') || changedNodes.has('left-circle-2')) {
+          ynabToolKit.l10n.localize.accountModal();
         }
 
         // Selection in modal
