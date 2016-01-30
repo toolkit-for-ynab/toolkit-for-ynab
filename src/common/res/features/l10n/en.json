@@ -161,6 +161,10 @@
       "Budget" : "BUDGET",
       "Tracking" : "TRACKING",
       "Closed" : "CLOSED",
+    },
+    "Text" : {
+      "Transaction" : "transaction",
+      "NeedsApproval" : "needs to be approved."
     }
   },
   "AccountOptionsModal" : {

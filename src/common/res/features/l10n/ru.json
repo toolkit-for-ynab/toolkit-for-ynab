@@ -150,12 +150,18 @@ ynabToolKit.l10n.Data = {
       }
     },
   },
+  "Accounts" : {
+    "Text" : {
+      "Transaction" : "транзакц.",
+      "NeedsApproval" : "для подтверждения."
+    }
+  },
   "Sidebar" : {
     "Button" : {
-      "Budget" : "Budget",
-      "AllAccounts" : "All Accounts",
-      "Collapse" : "Collapse",
-      "AddAccount" : "Add Account",
+      "Budget" : "Бюджет",
+      "AllAccounts" : "Аккаунты",
+      "Collapse" : "Свернуть",
+      "AddAccount" : "Добавить аккаунт",
     },
     "Title" : {
       "Budget" : "БЮДЖЕТНЫЕ",

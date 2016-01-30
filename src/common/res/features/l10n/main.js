@@ -322,7 +322,15 @@
 
 
       this.sidebar = function () {
-        $().contents()
+        // Sidebar navigation buttons
+        contentSetter.resetPrefix()
+        contentSetter.setSeveral(
+          [l10n.Sidebar.Button.AllAccounts, 2, '.navlink-accounts a'],
+          [l10n.Sidebar.Button.Budget, 2, '.navlink-budget a'],
+          [l10n.Sidebar.Button.AddAccount, 4, '.nav-add-account']
+        );
+
+        // Sidebar account types
         contentSetter.selectorPrefix = '.sidebar .nav-account-name-button';
         contentSetter.setArray(
           [
@@ -331,6 +339,19 @@
             l10n.Sidebar.Title.Closed
           ],
           '', 1, 2
+        );
+
+
+      }
+
+
+      this.accounts = function () {
+        // Accounts notification
+        contentSetter.selectorPrefix = '.accounts-notification-info ';
+        var transactionsCount = $(contentSetter.selectorPrefix + 'button')[0].textContent.split(' ')[0];
+        contentSetter.setSeveral(
+          [transactionsCount + " " + l10n.Accounts.Text.Transaction + " ", 0, 'button'],
+          [l10n.Accounts.Text.NeedsApproval, 3]
         );
       }
 
