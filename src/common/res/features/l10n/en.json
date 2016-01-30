@@ -5,6 +5,7 @@
       "Cancel" : "Cancel",
       "Edit" : "Edit",
       "Delete" : "Delete",
+      "Continue" : "Continue",
     },
     "Month" : {
       "0" : "Jan",
@@ -265,6 +266,31 @@
       "Guides" : "User Guides",
       "Help" : "Get Help",
       "SignOut" : "Sign Out"
+    }
+  },
+  "FreshStartModal" : {
+    "Header" : "Make a fresh start",
+    "Text1" : "Starting fresh will let you start budgeting from today without having to set up a brand new budget. Transactions and any data you've entered in your budget will be deleted, but accounts, scheduled transactions, and budget categories will be saved.",
+    "Text2" : "A copy of this budget will be saved in case you're not happy with the changes. Fear not!",
+  },
+  "BudgetSettingsModal" : {
+    "Header" : {
+      "Settings" : "Budget Settings",
+      "New" : "Create a new budget"
+    },
+    "Title" : {
+      "Name" : "Budget Name:",
+      "Currency" : "Currency:",
+      "NumberFormat" : "Number Format:",
+      "CurrencyPlacement" : "Currency Placement:",
+      "DateFormat" : "Date Format:",
+      "Before" : "Before amount",
+      "After" : "After amount",
+      "Off" : "Don't display symbol"
+    },
+    "Button" : {
+      "Apply" : "Apply Settings",
+      "Create" : "Create Budget"
     }
   }
 }

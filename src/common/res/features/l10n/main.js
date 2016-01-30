@@ -349,11 +349,14 @@
       this.accounts = function () {
         // Accounts notification
         contentSetter.selectorPrefix = '.accounts-notification-info ';
-        var transactionsCount = $(contentSetter.selectorPrefix + 'button')[0].textContent.split(' ')[0];
-        contentSetter.setSeveral(
-          [transactionsCount + " " + l10n.Accounts.Text.Transaction + " ", 0, 'button'],
-          [l10n.Accounts.Text.NeedsApproval, 3]
-        );
+        var element = $(contentSetter.selectorPrefix + 'button')[0];
+        if (element) {
+          var transactionsCount = $(contentSetter.selectorPrefix + 'button')[0].textContent.split(' ')[0];
+          contentSetter.setSeveral(
+            [transactionsCount + " " + l10n.Accounts.Text.Transaction + " ", 0, 'button'],
+            [l10n.Accounts.Text.NeedsApproval, 3]
+          );
+        }
       }
 
 
@@ -443,6 +446,45 @@
         );
       };
 
+      this.freshStartModal = function () {
+        contentSetter.selectorPrefix = '.modal-budget-fresh-start ';
+        contentSetter.setSeveral(
+          [l10n.FreshStartModal.Header, 1, '.modal-header'],
+          [l10n.FreshStartModal.Text1, 0, 'p'],
+          [l10n.FreshStartModal.Text2, 0, 'strong'],
+          [l10n.Global.Button.Continue, 3, 'button'],
+          [l10n.Global.Button.Cancel, 11, 'button']
+        );
+      };
+
+      this.budgeteSettingsModal = function () {
+        var header = $('.modal-budget-settings .modal-header').contents()[1];
+        if (header.textContent == "Budget Settings") header.textContent = l10n.BudgetSettingsModal.Header.Settings;
+        if (header.textContent == "Create a new budget") header.textContent = l10n.BudgetSettingsModal.Header.New;
+        contentSetter.selectorPrefix = '.modal-budget-settings';
+        contentSetter.setArray(
+          [
+            l10n.BudgetSettingsModal.Title.Name,
+            l10n.BudgetSettingsModal.Title.Currency,
+            l10n.BudgetSettingsModal.Title.NumberFormat,
+            l10n.BudgetSettingsModal.Title.CurrencyPlacement,
+            l10n.BudgetSettingsModal.Title.DateFormat
+          ],
+          ' dt'
+        );
+        contentSetter.set(l10n.Global.Button.Cancel, 9, ' .button');
+        var okButton = $('.modal-budget-settings .button').contents()[2];
+        if (okButton.textContent == "Apply Settings") okButton.textContent = l10n.BudgetSettingsModal.Button.Apply;
+        if (okButton.textContent == "Create Budget") okButton.textContent = l10n.BudgetSettingsModal.Button.Apply;
+
+        var before = $('.modal-budget-settings').contents()[4];
+        contentSetter.setSeveral(
+          [l10n.BudgetSettingsModal.Title.Before + " (", 4,' #currencyPlacement button'],
+          [l10n.BudgetSettingsModal.Title.After + " (123 456,78", 13,' #currencyPlacement button'],
+          [l10n.BudgetSettingsModal.Title.Off + " (123 456,78)", 22,' #currencyPlacement button']
+        );
+      };
+
       this.observe = function(changedNodes) {
 
         if ( changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals') ) {
@@ -458,6 +500,11 @@
         if (changedNodes.has('navlink-budget') && changedNodes.has('active')) {
           ynabToolKit.l10n.localize.budgetHeader();
           ynabToolKit.l10n.localize.budgetTable();
+        }
+
+        // The user has returned back to the budget screen
+        if (changedNodes.has('navlink-accounts') && changedNodes.has('active')) {
+          ynabToolKit.l10n.localize.accounts();
         }
 
         if (changedNodes.has('budget-header')) {
@@ -509,6 +556,16 @@
           ynabToolKit.l10n.localize.userPrefsModal();
         }
 
+        // Fresh start modal
+        if (changedNodes.has('modal-budget-fresh-start')) {
+          ynabToolKit.l10n.localize.freshStartModal();
+        }
+
+        // New budget and current budget settings modal
+        if (changedNodes.has('modal-budget-settings')) {
+          ynabToolKit.l10n.localize.budgeteSettingsModal();
+        }
+
         // Selection in modal
         if (changedNodes.has('ynab-select')) {
           ynabToolKit.l10n.localize.coverOverspendingModal();
@@ -523,6 +580,7 @@
     ynabToolKit.l10n.localize.budgetHeader();
     ynabToolKit.l10n.localize.budgetTable();
     ynabToolKit.l10n.localize.sidebar();
+    ynabToolKit.l10n.localize.accounts();
 
   } else {
     setTimeout(poll, 250);
