@@ -4,8 +4,12 @@
 
     ynabToolKit.l10n.localize = new function ()  {
 
-      // Shortcut
+      // Shortcuts
       var l10n = ynabToolKit.l10n.Data;
+      var months = Object.keys(l10n.Global.Month)
+                         .map(function(k){return l10n.Global.Month[k]});
+      var monthsFull = Object.keys(l10n.Global.MonthFull)
+                         .map(function(k){return l10n.Global.MonthFull[k]});
 
       function getDateInfo() {
         var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
@@ -43,8 +47,9 @@
           };
         },
         this.setArray = function(textArray, selector, start, step) {
-          for (i = start || 0; i < textArray.length; i += step || 1) {
-            this.set(textArray[i], i, selector);
+          for (i = 0; i < textArray.length; i++) {
+            contentNum = (start || 0) + i * (step || 1);
+            this.set(textArray[i], contentNum, selector);
           };
         }
       }
@@ -249,22 +254,19 @@
         contentSetter.resetPrefix();
         contentSetter.set(l10n.Budget.Inspector.Title.TargetMonthYear, 5, '.budget-inspector-goals dt');
         contentSetter.setArray(
-          l10n.Global.Month,
+          monthsFull,
           '.budget-inspector-goals .goal-target-month>option'
         );
-        // for (var i = 0; i < Object.keys(l10n.Global.Month).length; i++) {
-          // setContent('.budget-inspector-goals .goal-target-month>option', i, l10n.Global.Month[i]);
-        // }
       },
 
 
       this.calendarModal = function () {
-        contentSetter.setArray('.modal-calendar ul.ynab-calendar-months>li>button');
-        var calendar = $('.modal-calendar');
-        var months = $(calendar).find('ul.ynab-calendar-months>li>button');
-        for (var i = 0; i < months.length; i++) {
-          months[i].textContent = l10n.Global.Month[i];
-        }
+        contentSetter.resetPrefix();
+        contentSetter.setArray(
+          months,
+          '.modal-calendar ul.ynab-calendar-months>li>button',
+          2, 5
+        );
       },
 
       this.addCategoryGroupModal = function () {
