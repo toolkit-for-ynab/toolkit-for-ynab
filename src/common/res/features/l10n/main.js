@@ -428,22 +428,24 @@
       },
 
       this.hiddenCategoriesModal = function () {
-        contentSetter.selectorPrefix = '.modal-budget-hidden-categories';
+        contentSetter.selectorPrefix = '.modal-budget-hidden-categories ';
         contentSetter.setSeveral(
-          [l10n.HiddenCategoriesModal.Title.ClickCategory, 1, ' .modal-header'],
-          [l10n.HiddenCategoriesModal.Button.ShowAllHidden, 0, ' .button-primary'],
-          [l10n.Global.Category.CreditCardPayments + " ", 1, '-master-unhidden:contains("Credit Card Payments")']
-        )
+          [l10n.HiddenCategoriesModal.Title.ClickCategory, 1, '.modal-header'],
+          [l10n.HiddenCategoriesModal.Button.ShowAllHidden, 0, '.button-primary']
+        );
+        contentSetter.selectorPrefix = '.modal-budget-hidden-categories-master-unhidden:contains("Credit Card Payments")';
+        contentSetter.set(l10n.Global.Category.CreditCardPayments + " ", 1);
       },
 
       this.editCategoryModal = function () {
-        contentSetter.selectorPrefix = '.modal-budget-edit-category';
+        contentSetter.selectorPrefix = '.modal-budget-edit-category ';
         contentSetter.setButtons();
         contentSetter.setSeveral(
-          [l10n.Global.Button.Delete, 2, ' .button-delete'],
-          [l10n.EditCategoryModal.Button.Hide, 2, ' .button-hide'],
-          [l10n.Global.Category.CreditCardPayments, 0, '-label:contains("Credit Card Payments")']
-        )
+          [l10n.Global.Button.Delete, 2, '.button-delete'],
+          [l10n.EditCategoryModal.Button.Hide, 2, '.button-hide']
+        );
+        contentSetter.selectorPrefix = '.modal-budget-edit-category-label:contains("Credit Card Payments")';
+        contentSetter.set(l10n.Global.Category.CreditCardPayments, 0);
       },
 
       this.coverOverspendingModal = function () {
