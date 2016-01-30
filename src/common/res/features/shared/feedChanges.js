@@ -58,9 +58,10 @@
         ynabToolKit.checkCreditBalances.observe(changedNodes);
       } catch(err) {/* ignore */}
 
-      try {
+      // TODO Uncomment trycatch
+      // try {
         ynabToolKit.l10n.localize.observe(changedNodes);
-      } catch(err) {/* ignore */}
+      // } catch(err) {/* ignore */}
 
     };
 
