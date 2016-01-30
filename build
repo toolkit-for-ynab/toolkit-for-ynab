@@ -1,3 +1,15 @@
 #!/usr/bin/env bash
 
+set -e
+
+python populateFeaturesFiles.py
 python lib/kango-framework-latest/kango.py build .
+
+# The safari icon needs to be different than the other browsers. Move it into place.
+echo "[   INFO] Moving Safari extension icons into place..."
+pushd output/safari/*.safariextension/icons > /dev/null
+  rm -f button.png
+  mv button-safari.png button.png
+  cp ../../../../src/common/icons/button-safari@2x.png button@2x.png
+  rm button-safari@2x.png
+popd > /dev/null

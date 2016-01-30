@@ -1,30 +1,102 @@
 body {
-  min-width: 1100px;
+  min-width: 900px;
 }
 
-.top-navbar .navbar-brand {
-  font-size: 2em;
-  text-transform: none;
+/* Start the whole page hidden, then we'll show it with JS once
+   everything has loaded. The page is async, and we don't want to show
+   it until it's ready. */
+#wrapper {
+  display: none;
+}
+
+.navbar-header {
+  width: 100%;
+}
+
+.top-navbar {
+  height: 120px;
+}
+
+.navbar-default {
+  background-color: white;
+}
+
+#logo {
+  display: block;
+  margin: 10px auto 0;
+  height: 91px;
 }
 
 label {
   font-size: 1.3em;
 }
 
-.bootstrap-switch {
-  float:right;
-}
-
-.container {
-  margin-top: 22px;
-}
-
 #main-menu li {
   font-size: 1.2em;
 }
 
+/* Make all icons green to match the logo */
+i {
+  color: #3CB54A;
+}
+
+.option-row {
+  margin-top: 25px;
+}
+
+.option-description {
+  display: inline-block;
+  width: 70%;
+}
+
+.option-row > label, .option-row > select, .option-row > span {
+  margin-left: 143px;
+}
+
+.option-row > .form-control {
+  width: 70%;
+}
+
+.bootstrap-switch {
+  vertical-align: top;
+  margin: 0 15px;
+}
+
+/* All switches should be green when they're on too */
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
+  background: #3CB54A;
+}
+
 .btn {
   margin: 18px 10px 0 0;
+  background: ##D6D6D6;
+}
+
+.btn:hover {
+  background: #ccc;
+}
+
+.btn:focus {
+  outline: 0 !important;
+}
+
+.btn-primary, .btn-primary:focus {
+  background: #3CB54A;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #66CC72;
+}
+
+.page-header {
+  margin: 10px 0;
+}
+
+.page-header-buttons {
+  position: relative;
+  top: -6em;
+  margin-bottom: -6em;
 }
 
 .active-menu {
@@ -34,7 +106,15 @@ label {
   transition: all 0.3s ease;
 }
 
+.help-block {
+  color: #292929;
+}
+
 #settingsSaved {
-  margin: 15px 0 15px 0;
+  position: fixed;
   text-align: center;
+  z-index: 99;
+  top: 0px;
+  left: 0px;
+  width: 100%;
 }

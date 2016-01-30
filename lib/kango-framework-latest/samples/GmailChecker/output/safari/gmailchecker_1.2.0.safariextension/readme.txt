@@ -1,1 +1,0 @@
-Built using Kango - Cross-browser extension framework. http://kangoextensions.com/

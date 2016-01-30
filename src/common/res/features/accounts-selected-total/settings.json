@@ -1,0 +1,14 @@
+{
+         "name": "accountsSelectedTotal",
+         "type": "checkbox",
+      "default": false,
+      "section": "accounts",
+        "title": "Show the Total of Selected Transactions",
+  "description": "Shows the total of any selected transactions.",
+      "actions": {
+                    "true": [
+                      "injectCSS", "main.css",
+                      "injectScript", "main.js"
+                    ]
+                 }
+}

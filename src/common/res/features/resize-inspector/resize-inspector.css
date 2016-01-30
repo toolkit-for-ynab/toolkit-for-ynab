@@ -1,0 +1,43 @@
+.budget-table {
+  position: static !important;
+  overflow: scroll;
+  height: 100%;
+}
+
+.budget-content {
+  height: 100%;
+  padding-top: 8em;
+  position: static !important;
+  flex: 0 0 auto;
+  width: 67%;
+  overflow: hidden;
+}
+
+.budget-table-header {
+  position: static !important;
+}
+
+.budget-inspector {
+  flex: 1 1 auto;
+  position: static !important;
+  width: auto !important;
+  margin-top: 9.7em;
+  overflow-x: hidden;
+  padding: 1em 1em 1em .5em !important;
+}
+
+.resize-inspector {
+  height: 100%;
+  display: flex !important; 
+}
+
+.inspector-resize-handle {
+  margin-top: 7.8em;
+  min-width: 13px;
+  background: #e5f5f9 no-repeat center center;
+  cursor: col-resize;
+}
+
+.inspector-resize-handle:hover {
+  background-color: #227e99;
+}
