@@ -94,9 +94,10 @@ ynabToolKit.l10n.Data = {
       },
       "Title" : {
         "CashLeft" : "Остаток с прошлого месяца",
-        "BudgetedThisMonth" : "Бюджет в этом месяце",
+        "BudgetedThisMonth" : "Бюджет в текущем месяце",
         "CashSpending" : "Расходы наличными",
         "CreditSpending" : "Расходы с кредитных карт",
+        "Activity" : "Активность в текущем месяце",
         "Available" : "Доступно",
         "GoalTarget" : "Баланс",
         "GoalTargetByDate" : "Баланс к дате",
@@ -115,6 +116,7 @@ ynabToolKit.l10n.Data = {
         "AverageBudgeted" :  "Средний бюджет",
         "AverageSpent" :  "Средние расходы",
         "CreateGoal" : "Задайте Цель",
+        "GoalTarget" : "Цель",
         "UpcomingTransactions" : "Запланированные транзакции"
       },
       "Text" : {
@@ -126,6 +128,8 @@ ynabToolKit.l10n.Data = {
           "YoullIncrease" : "и вы увеличите свой долг на",
           "Spending" : "расходов в кредит с последней оплаты",
           "Available" : "доступно для оплаты",
+          "Nothing" : "Полностью оплачена.",
+          "DebtFree" : "Отсутствие долга — бесценно."
         },
         "Goal" : {
           "YouRe" : "You're",

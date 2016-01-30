@@ -27,6 +27,7 @@
           previousMonthName: previousMonthName
         }
       }
+      var dateInfo = getDateInfo();
 
       // Tool for setting content.
       contentSetter = new function () {
@@ -56,9 +57,8 @@
 
 
       this.budgetHeader = function ()  {
-        var date = getDateInfo();
         contentSetter.selectorPrefix = '.budget-header-';
-        var dateYearText = date.currentMonthName + " " + date.selectedMonth.getFullYear()
+        var dateYearText = dateInfo.currentMonthName + " " + dateInfo.selectedMonth.getFullYear()
         contentSetter.setSeveral(
           [dateYearText, 1, 'calendar-date-button'],
           [l10n.Budget.Header.Totals.TBB, 0, 'totals-amount-label']
@@ -66,9 +66,9 @@
 
         contentSetter.selectorPrefix = '.budget-header-totals-cell-name';
         contentSetter.setArray(
-          [l10n.Budget.Header.Totals.Funds + " " + date.currentMonthName,
-          l10n.Budget.Header.Totals.Overspent + " " + date.previousMonthName,
-          l10n.Budget.Header.Totals.Budgeted + " " + date.currentMonthName,
+          [l10n.Budget.Header.Totals.Funds + " " + dateInfo.currentMonthName,
+          l10n.Budget.Header.Totals.Overspent + " " + dateInfo.previousMonthName,
+          l10n.Budget.Header.Totals.Budgeted + " " + dateInfo.currentMonthName,
           l10n.Budget.Header.Totals.BIF]
         );
 
@@ -114,7 +114,7 @@
 
         // No categories selected
         if ($(inspector).find('div').hasClass('budget-inspector-default-inspector')) {
-          contentSetter.resetPrefix();
+          contentSetter.selectorPrefix = '.budget-inspector ';
           contentSetter.setArray(
             [
               l10n.Budget.Inspector.Header.Budgeted,
@@ -123,92 +123,126 @@
               l10n.Budget.Inspector.Header.Inflows,
               l10n.Budget.Inspector.Header.Quick
             ],
-            '.budget-inspector h3'
+            'h3'
           );
 
-          contentSetter.selectorPrefix = '.budget-inspector button';
-          contentSetter.setSeveral(
-            [l10n.Budget.Inspector.Button.Underfunded, 1],
-            [l10n.Budget.Inspector.Button.BudgetedLastMonth, 6],
-            [l10n.Budget.Inspector.Button.SpentLastMonth, 11],
-            [l10n.Budget.Inspector.Button.AverageBudgeted, 16],
-            [l10n.Budget.Inspector.Button.AverageSpent, 21]
-          )
+          contentSetter.setArray(
+            [
+              l10n.Budget.Inspector.Button.Underfunded,
+              l10n.Budget.Inspector.Button.BudgetedLastMonth,
+              l10n.Budget.Inspector.Button.SpentLastMonth,
+              l10n.Budget.Inspector.Button.AverageBudgeted,
+              l10n.Budget.Inspector.Button.AverageSpent
+            ],
+            'button',
+            1, 5
+          );
         }
 
         // One category selected
-        if ($(inspector).find('div').hasClass('ember-view budget-inspector-category-header')) {
-          var date = getDateInfo();
+        if ($(inspector).find('div').hasClass('budget-inspector-category-header')) {
+          // Inspector stats.
+          contentSetter.selectorPrefix = '.budget-inspector dt';
+          if ($(inspector).find('div').hasClass('budget-inspector-payment')) {
+            // Credit category.
+            contentSetter.setArray(
+              [
+                l10n.Budget.Inspector.Title.CashLeft, '', '',
+                l10n.Budget.Inspector.Title.BudgetedThisMonth,
+                l10n.Budget.Inspector.Title.Activity,
+                l10n.Budget.Inspector.Title.Available
+              ]
+            );
+          }
+          else {
+            // Normal category.
+            contentSetter.setArray(
+              [
+                l10n.Budget.Inspector.Title.CashLeft, '', '',
+                l10n.Budget.Inspector.Title.BudgetedThisMonth,
+                l10n.Budget.Inspector.Title.CashSpending,
+                l10n.Budget.Inspector.Title.CreditSpending,
+                l10n.Budget.Inspector.Title.Available
+              ]
+            );
+          }
 
-          contentSetter.resetPrefix();
-          contentSetter.setArray(
-            [
-              l10n.Budget.Inspector.Title.CashLeft, '', '',
-              l10n.Budget.Inspector.Title.BudgetedThisMonth,
-              l10n.Budget.Inspector.Title.CashSpending,
-              l10n.Budget.Inspector.Title.CreditSpending,
-              l10n.Budget.Inspector.Title.Available
-            ],
-            '.budget-inspector dt'
+          // Inspector headers.
+          contentSetter.selectorPrefix = '.budget-inspector';
+          contentSetter.setSeveral(
+            [l10n.Budget.Inspector.Header.Quick, 0, ' .inspector-quick-budget h3'],
+            [l10n.Budget.Inspector.Header.Goals, 0, ' .budget-inspector-goals h3'],
+            [l10n.Budget.Inspector.Header.Notes, 0, ' .inspector-notes h3'],
+            [l10n.Budget.Inspector.Header.Payment, 0, '-payment h3']
           );
 
-          // Inspector credit payment.
-          try {
-            var payment = $(inspector).find(".budget-inspector-payment");
-            $(payment).find("h3")[0].textContent = l10n.Budget.Inspector.Header.Payment;
+          // Inspector buttons.
+          contentSetter.resetPrefix();
+          contentSetter.setSeveral(
+            [l10n.Budget.Inspector.Button.CreateGoal, 3,'.budget-inspector-goals-create'],
+            [l10n.Global.Button.Edit, 1,'.edit-goal'],
+            [" " + l10n.Global.Button.Edit, 1, '.inspector-category-edit']
+          );
 
-            var paidMsg = $(payment).find('.paid-msg').contents();
+          // Inspector credit payment message.
+          var paidMsg = $('.budget-inspector-payment .paid-msg').contents();
+          if (paidMsg.length > 0) {
             var paidHowMuch = paidMsg[0].textContent.split(' ')[1];
-            paidMsg[0].textContent = l10n.Budget.Inspector.Text.Credit.Paid + " " + paidHowMuch;
             var paidWhen = paidMsg[2].textContent.split(' ')[2];
-            paidMsg[2].textContent = " " + l10n.Budget.Inspector.Text.Credit.On + " " + paidWhen;
-
-            contentSetter.selectorPrefix = '.budget-inspector-payment .recommendation';
+            contentSetter.selectorPrefix = '.budget-inspector-payment .paid-msg';
             contentSetter.setSeveral(
-              [l10n.Budget.Inspector.Text.Credit.IfYouPay + " ", 1],
-              [", " + l10n.Budget.Inspector.Text.Credit.BalanceWillBe + " ", 3],
-              [" " + l10n.Budget.Inspector.Text.Credit.YoullIncrease + " ", 5]
-            );
-
-            contentSetter.selectorPrefix = '.budget-inspector-payment .progress>em';
-            contentSetter.setSeveral(
-              [" " + l10n.Budget.Inspector.Text.Credit.Spending, 1],
-              [" " + l10n.Budget.Inspector.Text.Credit.Available, 3]
+              [l10n.Budget.Inspector.Text.Credit.Paid + " " + paidHowMuch, 0],
+              [" " + l10n.Budget.Inspector.Text.Credit.On + " " + paidWhen, 2]
             );
           }
-          catch(err) {
-            console.log(err);
+
+          // Inspector credit payment recommendation message.
+          contentSetter.selectorPrefix = '.budget-inspector-payment ';
+          contentSetter.setSeveral(
+            // There is debt.
+            [l10n.Budget.Inspector.Text.Credit.IfYouPay + " ", 1, '.recommendation'],
+            [", " + l10n.Budget.Inspector.Text.Credit.BalanceWillBe + " ", 3, '.recommendation'],
+            [" " + l10n.Budget.Inspector.Text.Credit.YoullIncrease + " ", 5, '.recommendation'],
+            // Debt free.
+            [l10n.Budget.Inspector.Text.Credit.Nothing, 0, '.recommended .nothing'],
+            [l10n.Budget.Inspector.Text.Credit.DebtFree, 0, '.recommended .debt-free']
+          );
+
+          // Inspector credit progress.
+          contentSetter.selectorPrefix = '.budget-inspector-payment .progress>em';
+          contentSetter.setSeveral(
+            [" " + l10n.Budget.Inspector.Text.Credit.Spending, 1],
+            [" " + l10n.Budget.Inspector.Text.Credit.Available, 3]
+          );
+
+          // Inspector quick budgeting.
+          var fifthButton = $('.budget-inspector-button').length == 5;
+          contentSetter.selectorPrefix = '.budget-inspector-button';
+          contentSetter.setArray(
+            [
+              l10n.Budget.Inspector.Button.BudgetedLastMonth,
+              l10n.Budget.Inspector.Button.SpentLastMonth,
+              l10n.Budget.Inspector.Button.AverageBudgeted,
+              l10n.Budget.Inspector.Button.AverageSpent
+            ],
+            '', 1 + fifthButton * 5, 5
+          );
+          // Inspector added button
+          if (fifthButton) {
+            buttonText = $('.budget-inspector-button').contents()[1];
+            if (buttonText.textContent == "Goal Target") {
+              buttonText.textContent = l10n.Budget.Inspector.Button.GoalTarget;
+            }
+            if (buttonText.textContent == "Upcoming Transactions") {
+              buttonText.textContent = l10n.Budget.Inspector.Button.UpcomingTransactions;
+            }
           }
 
-          $(inspector).find(".inspector-quick-budget h3")[0].textContent = l10n.Budget.Inspector.Header.Quick;
-          $(inspector).find(".budget-inspector-goals h3")[0].textContent = l10n.Budget.Inspector.Header.Goals;
-          $(inspector).find(".inspector-notes h3")[0].textContent = l10n.Budget.Inspector.Header.Notes;
-
-          var editButton = $(inspector).find('.inspector-category-edit')[0];
-          if (editButton) editButton.childNodes[1].textContent = " " + l10n.Global.Button.Edit;
-
-          var buttons = $(inspector).find('.budget-inspector-button');
-          k = 0;
-          if (buttons.length == 5) {
-              buttons[0].childNodes[1].textContent = l10n.Budget.Inspector.Button.UpcomingTransactions;
-              k = 1;
-          }
-          buttons[k].childNodes[1].textContent = l10n.Budget.Inspector.Button.BudgetedLastMonth;
-          buttons[k + 1].childNodes[1].textContent = l10n.Budget.Inspector.Button.SpentLastMonth;
-          buttons[k + 2].childNodes[1].textContent = l10n.Budget.Inspector.Button.AverageBudgeted;
-          buttons[k + 3].childNodes[1].textContent = l10n.Budget.Inspector.Button.AverageSpent;
-
+          // Inspector category note without text.
           categoryNote = $(inspector).find('.inspector-category-note').contents()[3];
           if (categoryNote.textContent == "Enter a note...") {
             categoryNote.textContent = l10n.Global.Placeholder.Note;
           }
-
-          contentSetter.resetPrefix();
-          contentSetter.setSeveral(
-            [l10n.Budget.Inspector.Button.CreateGoal, 3,'.budget-inspector-goals-create'],
-            [l10n.Global.Button.Edit, 1,'.edit-goal']
-          );
-
         }
 
         // Multiple categories selected

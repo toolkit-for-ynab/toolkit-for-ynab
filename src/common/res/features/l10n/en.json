@@ -97,6 +97,7 @@
         "BudgetedThisMonth" : "Budgeted This Month",
         "CashSpending" : "Cash Spending",
         "CreditSpending" : "Credit Spending",
+        "Activity" : "Activity This Month",
         "Available" : "Available",
         "GoalTarget" : "Target Category Balance",
         "GoalTargetByDate" : "Target Category Balance by Date",
@@ -115,6 +116,7 @@
         "AverageBudgeted" : "Average Budgeted",
         "AverageSpent" : "Average Spent",
         "CreateGoal" : "Create a goal",
+        "GoalTarget" : "Goal Target",
         "UpcomingTransactions" : "Upcoming Transactions"
       },
       "Text" : {
@@ -126,6 +128,8 @@
           "YoullIncrease" : "and you'll increase your debt by",
           "Spending" : "credit spending since last payment",
           "Available" : "available for payment",
+          "Nothing" : "Nothing to pay.",
+          "DebtFree" : "Debt Free is a beautiful thing."
         },
         "Goal" : {
           "YouRe" : "You're",
