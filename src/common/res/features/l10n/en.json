@@ -324,5 +324,20 @@
       "Close" : "Close Account",
       "Reopen" : "Re-open",
     }
+  },
+  "AccountFiltersModal" : {
+    "Title" : "Filter Transactions",
+    "Label" : {
+      "ThisMonth" : "This Month",
+      "Latest3Months" : "Latest 3 Months",
+      "ThisYear" : "This Year",
+      "LastYear" : "Last Year",
+      "AllDates" : "All Dates",
+      "From" : "From",
+      "To" : "To",
+      "Show" : "Show",
+      "Reconciled" : "Reconciled Transactions",
+      "Scheduled" : "Scheduled Transactions"
+    }
   }
 }

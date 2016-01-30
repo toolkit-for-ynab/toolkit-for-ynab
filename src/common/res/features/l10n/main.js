@@ -561,6 +561,43 @@
         }
       }
 
+      this.accountFiltersModal = function () {
+        contentSetter.selectorPrefix = '.modal-account-filters ';
+        contentSetter.setArray(
+          [
+            l10n.AccountFiltersModal.Label.ThisMonth,
+            l10n.AccountFiltersModal.Label.Latest3Months,
+            l10n.AccountFiltersModal.Label.ThisYear,
+            l10n.AccountFiltersModal.Label.LastYear,
+            l10n.AccountFiltersModal.Label.AllDates
+          ],
+          ' li button'
+        );
+        contentSetter.setArray(
+          [
+            l10n.AccountFiltersModal.Label.From,
+            l10n.AccountFiltersModal.Label.To,
+            l10n.AccountFiltersModal.Label.Show
+          ],
+          ' li.label', 0, 2
+        );
+        contentSetter.setArray(
+          monthsFull,
+          '.date-range-from-months option'
+        );
+        contentSetter.setArray(
+          monthsFull,
+          '.date-range-to-months option'
+        );
+        contentSetter.setSeveral(
+          [l10n.AccountFiltersModal.Title, 1, '.modal-header'],
+          [l10n.AccountFiltersModal.Label.Reconciled, 1, '.label-checkbox'],
+          [l10n.AccountFiltersModal.Label.Scheduled, 4, '.label-checkbox'],
+          [l10n.Global.Button.Ok, 0, '.button-primary'],
+          [l10n.Global.Button.Cancel, 3, '.button']
+        );
+      }
+
       this.observe = function(changedNodes) {
 
         if ( changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals') ) {
@@ -659,9 +696,14 @@
           ynabToolKit.l10n.localize.moveMoneyModal();
         }
 
-        // Selection in modal
+        // Account footer changing
         if (changedNodes.has('ynab-grid-footer')) {
           ynabToolKit.l10n.localize.accountsFooter();
+        }
+
+        // Account filters modal
+        if (changedNodes.has('modal-account-filters')) {
+          ynabToolKit.l10n.localize.accountFiltersModal();
         }
       }
 

@@ -324,5 +324,20 @@ ynabToolKit.l10n.Data = {
       "Close" : "Закрыть аккаунт",
       "Reopen" : "Открыть",
     }
+  },
+  "AccountFiltersModal" : {
+    "Title" : "Фильтрация транзакций",
+    "Label" : {
+      "ThisMonth" : "За месяц",
+      "Latest3Months" : "За 3 месяца",
+      "ThisYear" : "За год",
+      "LastYear" : "За прошлый год",
+      "AllDates" : "Все",
+      "From" : "С",
+      "To" : "По",
+      "Show" : "Показывать",
+      "Reconciled" : "Сверенные",
+      "Scheduled" : "Запланированные"
+    }
   }
 }
