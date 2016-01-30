@@ -20,14 +20,19 @@
 
         var clearedBalance = account.clearedBalance;
 
+        var currentMonth = moment($('.budget-header-calendar-date-button')
+          .text().trim(), "MMM YYYY").format("YYYY-MM");
         var monthlyBudget = budgetView.monthlySubCategoryBudgetCalculationsCollection
-          .findItemByEntityId('mcbc/2016-01/' + a.entityId);
+          .findItemByEntityId('mcbc/'+currentMonth+'/' + a.entityId);
 
         var available = monthlyBudget.balance;
 
+        var difference = ((available + clearedBalance) * -1);
+        updateInspectorButton(a.name, difference);
+
         if (available != (clearedBalance * -1)) {
           updateRow(a.name);
-          updateInspector(a.name);
+          updateInspectorStyle(a.name);
         }
       });
 
@@ -45,7 +50,7 @@
         });
       }
 
-      function updateInspector(name) {
+      function updateInspectorStyle(name) {
         var inspectorName = $('.inspector-category-name.user-data').text().trim();
         if (name === inspectorName) {
           var inspectorBalance = $('.inspector-overview-available .user-data .user-data.currency');
@@ -53,8 +58,59 @@
             .addClass('cautious');
         }
       }
+
+      function updateInspectorButton(name, difference) {
+        var inspectorName = $('.inspector-category-name.user-data').text().trim();
+
+        if (name && name === inspectorName) {
+
+          if ($('.rectify-difference').length)
+            return
+
+          var fh_difference = ynabEnhancedFormatCurrency(difference,true);
+          var f_difference = ynabEnhancedFormatCurrency(difference,false);
+          var button = ' \
+          <button class="budget-inspector-button rectify-difference" \
+            onClick="ynabToolKit.updateCreditBalances(name)"> \
+            Rectify Balance Difference: \
+              <strong class="user-data" title="' + f_difference + '"> \
+                <span class="user-data currency zero"> \
+                ' + fh_difference + ' \
+              </span> \
+            </strong> \
+          </button>';
+
+          $('.inspector-quick-budget .ember-view').append(button);
+        }
+      }
+
+      function ynabEnhancedFormatCurrency(e, html) {
+        var n, r, a;
+        e = ynab.formatCurrency(e);
+        n = ynab.YNABSharedLib.currencyFormatter.getCurrency();
+        a = Ember.Handlebars.Utils.escapeExpression(n.currency_symbol);
+        if (html) {
+            a = "<bdi>" + a + "</bdi>";
+        }
+        n.symbol_first ? (r = "-" === e.charAt(0), e = r ? "-" + a + e.slice(1) : a + e) : e += a;
+        return new Ember.Handlebars.SafeString(e);
+      }
     };
   } else {
     setTimeout(poll, 250);
   }
 })();
+
+ynabToolKit.updateCreditBalances = function(name) {
+  var rows = $('.is-sub-category.is-debt-payment-category');
+  rows.each(function(i) {
+    var accountName = $(this)
+      .find('.budget-table-cell-name div.button-truncate').prop('title');
+    if (name === accountName) {
+      var categoryBalance = $(this)
+        .find('.budget-table-cell-available-div .user-data.currency');
+      categoryBalance.removeClass('positive negative')
+        .addClass('cautious');
+    }
+  });
+};
