@@ -32,7 +32,7 @@
         },
         // Takes contentNum's .contents() of selector and sets it to text.
         this.set = function (text, contentNum, selector) {
-          el = $(this.selectorPrefix + selector || '').contents()[contentNum];
+          var el = $(this.selectorPrefix + (selector || '')).contents()[contentNum];
           if (el) el.textContent = text;
         },
         // Each argument must be an array of 2 or 3 elements that become this.set arguments in order.
@@ -42,8 +42,8 @@
             if (arguments[i].length == 3) this.set(arguments[i][0], arguments[i][1], arguments[i][2]);
           };
         },
-        this.setArray = function(textArray, selector) {
-          for (i = 0; i < textArray.length; i++) {
+        this.setArray = function(textArray, selector, start, step) {
+          for (i = start || 0; i < textArray.length; i += step || 1) {
             this.set(textArray[i], i, selector);
           };
         }
