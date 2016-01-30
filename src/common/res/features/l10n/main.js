@@ -185,16 +185,43 @@
           );
 
           // Inspector credit payment message.
-          var paidMsg = $('.budget-inspector-payment .paid-msg').contents();
-          if (paidMsg.length > 0) {
-            var paidHowMuch = paidMsg[0].textContent.split(' ')[1];
-            var paidWhen = paidMsg[2].textContent.split(' ')[2];
+          var paidMessage = $('.budget-inspector-payment .paid-msg').contents();
+          if (paidMessage.length > 0) {
+            var paidHowMuch = paidMessage[0].textContent.split(' ')[1];
+            var paidWhen = paidMessage[2].textContent.split(' ')[2];
             contentSetter.selectorPrefix = '.budget-inspector-payment .paid-msg';
             contentSetter.setSeveral(
               [l10n.Budget.Inspector.Text.Credit.Paid + " " + paidHowMuch, 0],
               [" " + l10n.Budget.Inspector.Text.Credit.On + " " + paidWhen, 2]
             );
           }
+
+          // Inspector message.
+          var inspectorMessage = $('.inspector-message').contents();
+          contentSetter.selectorPrefix = '.inspector-message';
+          if (inspectorMessage.length == 7) {
+            // Inspector message for underfunded goal.
+            var shortFor = inspectorMessage[1].textContent.split(' ')[1];
+            var budgetAnother = inspectorMessage[3].textContent.split(' ')[10];
+            contentSetter.setSeveral(
+              [l10n.Budget.Inspector.Text.Message.YouRe + " " + shortFor, 1],
+              [l10n.Budget.Inspector.Text.Message.ShortOfGoal + " " + budgetAnother, 3],
+              [l10n.Budget.Inspector.Text.Message.ToKeepTrack, 5]
+            );
+          }
+          if (inspectorMessage.length == 5) {
+            // Inspector message for overspent.
+            contentSetter.setSeveral(
+              [l10n.Budget.Inspector.Text.Message.Overspent, 1],
+              [l10n.Budget.Inspector.Text.Message.Cover, 3]
+            );
+          }
+          // Inspector message for underfunded upcoming.
+          contentSetter.selectorPrefix = '.inspector-message.upcoming';
+          contentSetter.setSeveral(
+            [l10n.Budget.Inspector.Text.Message.HaventBudgeted, 1],
+            [l10n.Budget.Inspector.Text.Message.InUpcoming, 3]
+          );
 
           // Inspector credit payment recommendation message.
           contentSetter.selectorPrefix = '.budget-inspector-payment ';
@@ -215,7 +242,7 @@
             [" " + l10n.Budget.Inspector.Text.Credit.Available, 3]
           );
 
-          // Inspector quick budgeting.
+          // Inspector quick budgeting buttons.
           var fifthButton = $('.budget-inspector-button').length == 5;
           contentSetter.selectorPrefix = '.budget-inspector-button';
           contentSetter.setArray(
@@ -243,6 +270,40 @@
           if (categoryNote.textContent == "Enter a note...") {
             categoryNote.textContent = l10n.Global.Placeholder.Note;
           }
+
+          // Inspector edit goal.
+          var goals = $('.budget-inspector-goals');
+          contentSetter.selectorPrefix = '.budget-inspector-goals ';
+          contentSetter.setSeveral(
+            [l10n.Budget.Inspector.Title.GoalTarget, 4, '[data-value=TB]'],
+            [l10n.Budget.Inspector.Title.GoalTargetByDate, 4, '[data-value=TBD]'],
+            [l10n.Budget.Inspector.Title.GoalMonthly, 4, '[data-value=MF]'],
+            [l10n.Global.Button.Delete, 0, 'dd.actions>.link-button'],
+            [l10n.Global.Button.Cancel, 1, 'dd.actions>.link-button'],
+            [l10n.Global.Button.Ok, 1, 'dd.actions>.button-primary'],
+            [l10n.Budget.Inspector.Title.Complete, 0, '.percent-label'],
+            [l10n.Budget.Inspector.Title.Budgeted, 0, '.label'],
+            [l10n.Budget.Inspector.Title.ToGo, 1, '.label']
+          );
+
+          // Inspector edit goal checkbox handling.
+          var goalLabelText = $(goals).find('dt').contents()[2];
+          if (goalLabelText) {
+            if (goalLabelText.textContent == "Target Balance") goalLabelText.textContent = l10n.Budget.Inspector.Title.TargetBalance;
+            if (goalLabelText.textContent == "Target Budgeted Amount") goalLabelText.textContent = l10n.Budget.Inspector.Title.TargetBudgetedAmount;
+          }
+
+          // Inspector edit goal months list.
+          contentSetter.resetPrefix();
+          contentSetter.set(l10n.Budget.Inspector.Title.TargetMonthYear, 5, '.budget-inspector-goals dt');
+          contentSetter.setArray(
+            monthsFull,
+            '.budget-inspector-goals .goal-target-month>option'
+          );
+
+          // Inspector goal message logic.
+          // TODO Add messages handling.
+          $('.goal-message')[0].remove();
         }
 
         // Multiple categories selected
@@ -262,35 +323,6 @@
           buttons[3].childNodes[1].textContent = l10n.Budget.Inspector.Button.AverageBudgeted;
           buttons[4].childNodes[1].textContent = l10n.Budget.Inspector.Button.AverageSpent;
         }
-
-        // TODO Add credit cards inspector handling
-
-        var goals = $('.budget-inspector-goals');
-        contentSetter.selectorPrefix = '.budget-inspector-goals ';
-        contentSetter.setSeveral(
-          [l10n.Budget.Inspector.Title.GoalTarget, 4, '[data-value=TB]'],
-          [l10n.Budget.Inspector.Title.GoalTargetByDate, 4, '[data-value=TBD]'],
-          [l10n.Budget.Inspector.Title.GoalMonthly, 4, '[data-value=MF]'],
-          [l10n.Global.Button.Delete, 0, 'dd.actions>.link-button'],
-          [l10n.Global.Button.Cancel, 1, 'dd.actions>.link-button'],
-          [l10n.Global.Button.Ok, 1, 'dd.actions>.button-primary'],
-          [l10n.Budget.Inspector.Title.Complete, 0, '.percent-label'],
-          [l10n.Budget.Inspector.Title.Budgeted, 0, '.label'],
-          [l10n.Budget.Inspector.Title.ToGo, 1, '.label']
-        );
-
-        var goalLabelText = $(goals).find('dt').contents()[2];
-        if (goalLabelText) {
-          if (goalLabelText.textContent == "Target Balance") goalLabelText.textContent = l10n.Budget.Inspector.Title.TargetBalance;
-          if (goalLabelText.textContent == "Target Budgeted Amount") goalLabelText.textContent = l10n.Budget.Inspector.Title.TargetBudgetedAmount;
-        }
-
-        contentSetter.resetPrefix();
-        contentSetter.set(l10n.Budget.Inspector.Title.TargetMonthYear, 5, '.budget-inspector-goals dt');
-        contentSetter.setArray(
-          monthsFull,
-          '.budget-inspector-goals .goal-target-month>option'
-        );
       },
 
 

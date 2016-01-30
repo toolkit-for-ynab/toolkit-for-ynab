@@ -120,6 +120,15 @@
         "UpcomingTransactions" : "Upcoming Transactions"
       },
       "Text" : {
+        "Message" : {
+          "HaventBudgeted" : "You haven't budgeted enough for the ",
+          "InUpcoming" : " in upcoming bills.",
+          "Overspent" : "You've overspent this category by ",
+          "Cover" : ". Cover the overspending from other categories or you can’t trust your budget balances!",
+          "YouRe" : "You're ",
+          "ShortOfGoal" : " short of your goal for the month. Budget another ",
+          "ToKeepTrack" : " to keep on track."
+        },
         "Credit" : {
           "Paid" : "Paid",
           "On" : "on",
@@ -132,10 +141,6 @@
           "DebtFree" : "Debt Free is a beautiful thing."
         },
         "Goal" : {
-          "YouRe" : "You're",
-          "ShorOfGoal" : "short of your goal for the month",
-          "BugetAnother" : "Budget another",
-          "ToKeepTrack" : "to keep on track",
           "Budget" : "Budget",
           "MoreTo" : "more to reach your ",
           "MonthlyGoal" : "monthly goal",

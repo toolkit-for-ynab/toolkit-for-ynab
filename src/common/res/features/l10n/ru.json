@@ -120,6 +120,15 @@ ynabToolKit.l10n.Data = {
         "UpcomingTransactions" : "Запланированные транзакции"
       },
       "Text" : {
+        "Message" : {
+          "HaventBudgeted" : "Недостаточный бюджет для предстоящих трат: ",
+          "InUpcoming" : "",
+          "Overspent" : "Вы превысили бюджет этой категории на ",
+          "Cover" : " Перераспределите бюджет из других категорий!",
+          "YouRe" : "Вы отстаете от цели на ",
+          "ShortOfGoal" : " Забюджетируйте еще",
+          "ToKeepTrack" : ""
+        },
         "Credit" : {
           "Paid" : "Выплачено",
           "On" : "за",
@@ -132,10 +141,6 @@ ynabToolKit.l10n.Data = {
           "DebtFree" : "Отсутствие долга — бесценно."
         },
         "Goal" : {
-          "YouRe" : "You're",
-          "ShorOfGoal" : "short of your goal for the month",
-          "BugetAnother" : "Budget another",
-          "ToKeepTrack" : "to keep on track",
           "Budget" : "Budget",
           "MoreTo" : "more to reach your ",
           "MonthlyGoal" : "monthly goal",
