@@ -1,0 +1,14 @@
+{
+         "name": "reports",
+         "type": "checkbox",
+      "default": false,
+      "section": "general",
+        "title": "Enable Reports",
+  "description": "Adds a button to the side bar to access reports. At this stage only the Net Worth report is implemented.",
+      "actions": {
+                    "true": [
+                      "injectScript", "Chart.min.js",
+                      "injectScript", "main.js"
+                    ]
+                 }
+}
