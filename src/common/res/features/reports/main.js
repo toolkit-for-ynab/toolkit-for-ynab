@@ -7,12 +7,14 @@
           // Set the canvas dimensions to the parent element dimensions.
           var container = $('div.scroll-wrap').closest('.ember-view');
 
-          $('#reportCanvas').attr('width', container.innerWidth())
+          $('#reportCanvas')
+            .attr('width', container.innerWidth())
             .attr('height', container.innerHeight());
         }
 
         function setUpReportsButton() {
-          var reportsBtn = '<li> \
+          var reportsBtn =
+          '<li> \
             <li class="ember-view navlink-reports"> \
               <a href="#"> \
                 <span class="ember-view flaticon stroke document-4"></span>Reports \
@@ -29,11 +31,13 @@
         function showReports() {
           // Update the nav
           $('.navlink-budget, .navlink-accounts').removeClass('active');
+          $('.nav-account-row').removeClass('is-selected');
           $('.navlink-reports').addClass('active');
 
           // Get width and height of parent element to set up the canvas
           // Clear out the content and put ours in there instead.
-          $('div.scroll-wrap').empty().append('<canvas id="reportCanvas" width="100" height="100"></canvas>');
+          $('div.scroll-wrap').hide()
+          $('div.scroll-wrap').closest('.ember-view').append('<canvas id="reportCanvas" width="100" height="100"></canvas>');
 
           updateCanvasSize();
 
@@ -184,7 +188,12 @@
 
             if ($('.navlink-budget').hasClass('active') || $('.navlink-accounts').hasClass('active')) {
               // The user has left the reports page.
+              // We're no longer the active page.
               $('.navlink-reports').removeClass('active');
+
+              // And we should restore the elements we replaced earlier.
+              $('#reportCanvas').remove();
+              $('div.scroll-wrap').show();
             }
           }
         };
