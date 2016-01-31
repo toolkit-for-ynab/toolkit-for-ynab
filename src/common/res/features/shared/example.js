@@ -8,14 +8,6 @@
   * Note: Using this.observe() is optional, but we use a MutationObserver instance
   * to evaluate changes on the page and feed those changes to each function
   * that might want to act on a specific change in the DOM.
-  *
-  * If the python build file doesn't yet build it automatically, make sure there
-  * is an entry in /shared/feedChanges.js to ensure the changedNodes are published
-  * to your script:
-  *
-  * try {
-  *       ynabToolKit.awesomeFeature.observe(changedNodes);
-  *     } catch(err) { } // ignore failures
   */
 
 

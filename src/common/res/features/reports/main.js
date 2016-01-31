@@ -180,10 +180,16 @@
         };
 
         this.observe = function(changedNodes) {
-          console.log(changedNodes);
+          if (changedNodes.has('navlink-budget') || changedNodes.has('navlink-accounts')) {
+
+            if ($('.navlink-budget').hasClass('active') || $('.navlink-accounts').hasClass('active')) {
+              // The user has left the reports page.
+              $('.navlink-reports').removeClass('active');
+            }
+          }
         };
       }
-      
+
       ynabToolKit.reports.invoke();
   } else {
     setTimeout(poll, 250);
