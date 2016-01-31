@@ -1,0 +1,15 @@
+.ember-view.ynab-grid-actions.detached-attached {
+    position: inherit;
+}
+
+.ember-view.ynab-grid-actions.detached-attached {
+    background: transparent;
+}
+
+.ember-view.ynab-grid-actions.detached-attached .button.button-cancel {
+    background: white;
+}
+
+.ember-view.ynab-grid-actions.detached-attached .button:hover {
+    background: #4d8f9f;
+}

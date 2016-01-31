@@ -1,0 +1,15 @@
+{
+         "name": "toggleSplits",
+         "type": "checkbox",
+       "hidden": "true",
+      "default": false,
+      "section": "accounts",
+        "title": "Add a Toggle Splits Button",
+  "description": "Clicking the toggle splits button shows or hides the sub-transactions within a split.",
+      "actions": {
+                    "true": [
+                      "injectCSS", "main.css",
+                      "injectScript", "main.js"
+                    ]
+                 }
+}
