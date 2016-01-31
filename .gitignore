@@ -3,3 +3,4 @@ output/*
 certificates/*
 *.pyc
 /.project
+src/common/res/features/shared/feedChanges.js
