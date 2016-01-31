@@ -73,8 +73,7 @@
 
       this.observe = function(changedNodes) {
 
-      if (changedNodes.has('navlink-budget') && changedNodes.has('active')) {
-          // The user has returned back to the budget screen
+        if ( (changedNodes.has('navlink-budget') && changedNodes.has('active') ) || changedNodes.has('budget-inspector') ) {
           ynabToolKit.budgetProgressBars.invoke();
         }
       };
