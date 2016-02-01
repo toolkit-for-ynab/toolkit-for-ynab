@@ -1,18 +1,18 @@
-(function poll() { 
+(function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.actOnChangeInit === true ) {
-  
+
     ynabToolKit.exportTransactions = new function()  { // Keep feature functions contained within this
 
       // ######################
       // # LIBRARY / UTILITIES
       // ######################
-      
+
       // # Export data as CSV from javascript
       // Based on http://halistechnology.com/2015/05/28/use-javascript-to-export-your-data-as-csv/
 
       // Convert array of similar objects (shared keys) into a CSV body
-      function convertArrayOfObjectsToCSV(args) {  
+      function convertArrayOfObjectsToCSV(args) {
         var result, ctr, keys, columnDelimiter, lineDelimiter, data;
 
         data = args.data || null;
@@ -22,7 +22,7 @@
 
         columnDelimiter = args.columnDelimiter || ',';
         lineDelimiter = args.lineDelimiter || '\n';
-        
+
         function quoteField(val) {
           val = val || '';
           try {
@@ -30,7 +30,7 @@
           } catch (ex) {}
           return '"' + val + '"';
         }
-        
+
         function prepRow(values) {
           var quoted = values.map(quoteField);
           return quoted.join(columnDelimiter) + lineDelimiter;
@@ -53,10 +53,10 @@
         var mimetype = args.mimetype || 'text/plain';
         var filename = args.filename || 'export.txt';
         var link, data;
-        
+
         contents = 'data:' + mimetype + 'charset=utf-8,' + contents;
         data = encodeURI(contents);
-        
+
         link = document.createElement('a');
         link.setAttribute('href', data);
         link.setAttribute('download', filename);
@@ -77,7 +77,7 @@
       // Build an array of "cleaned" transactions -- containing just the information to export
       // Pass in the entityManager -- theoretically allows swapping out a different interface
       function getTransactionArray(entityManager) {
-        
+
         // get payee
         var getPayeeName = function (id) {
           var payee = entityManager.getPayeeById(id);
@@ -115,24 +115,24 @@
         // "clean" a transaction into the information to export
         function cleanTransaction(yTrans) {
           var trans = {};
-          
+
           //trans.id = yTrans.entityId;
           trans.flag = yTrans.flag || '';
           trans.account = getAccountName(yTrans.accountId);
           trans.date = yTrans.date.format('YYYY-MM-DD');
           trans.payee = getPayeeName(yTrans.payeeId);
-          
+
           // Category might be null if not yet matched
           var cat = getCategory(yTrans.subCategoryId);
           trans.masterCategory = cat ? cat.master: '';
           trans.category = cat ? cat.category : '';
-          
+
           trans.memo = yTrans.memo || '';
           trans.amount = yTrans.amount / 1000;
           trans.cleared = yTrans.cleared || '';
-          
+
           // Check number is still implemented, though hidden from the UI
-          //trans.checkNumber = yTrans.checkNumber || ''; 
+          //trans.checkNumber = yTrans.checkNumber || '';
           return trans;
         }
 
@@ -150,33 +150,37 @@
 
 
 
+
+
       // ####################
-      // # FEATURE CODE 
+      // # FEATURE CODE
       // ####################
+
+      // Set up export button
+      var EXPORT_BUTTON_MARKUP = '<button id="toggleSplits" class="ember-view button"><i class="ember-view flaticon stroke download-document"></i> Export </button>';
+      this.button = $(EXPORT_BUTTON_MARKUP).on('click', downloadTransactions);
+
 
       this.invoke = function() {
-
-        // Build the UI button
-        var exportButton = '<button id="toggleSplits" class="ember-view button"><i class="ember-view flaticon stroke download-document"></i> Export </button>';
-        this.button = $(exportButton).on('click', downloadTransactions);
-        
-        // Determine whether to show the button on this screen
-        this.observe();
-      };
-      
-
-      this.observe = function() {
-        // Only show export button on the 'All Accounts' screen      
+        // Determine whether to show or hide the export button
+        // Only show button on the 'All Accounts' screen
         if (location.href.endsWith('/accounts')) {
           this.button.insertAfter(".accounts-toolbar .accounts-toolbar-edit-transaction");
         } else {
           this.button.detach();
         }
-          
       };
+
+      this.observe = function(changedNodes) {
+        // ALWAYS 'invoke' the function so we can test whether to show/hide the button
+        this.invoke();
+      };
+
+      // invoke for the first time in case we're already on a valid page
+      this.invoke();
     };
 
   } else {
     setTimeout(poll, 250);
-  }   
+  }
 })();
