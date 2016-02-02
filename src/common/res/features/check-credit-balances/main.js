@@ -32,7 +32,7 @@
           .findItemsByMasterCategoryId(categoryEntityId);
 
         return debtAccounts;
-      }
+      };
 
       this.processDebtAccounts = function(debtAccounts) {
         debtAccounts.forEach(function(a) {
@@ -41,7 +41,7 @@
             .sidebarViewModel.accountCalculationsCollection
             .findItemByAccountId(a.accountId);
 
-          var clearedBalance = account.clearedBalance;
+          var balance = account.clearedBalance + account.unclearedBalance;
 
           var currentMonth = moment(ynabToolKit.shared.parseSelectedMonth()).format('YYYY-MM');
           var monthlyBudget = ynabToolKit.checkCreditBalances.budgetView
@@ -53,15 +53,15 @@
           // If cleared balance is positive, bring available to 0, otherwise
           // offset by the correct amount
           var difference = 0;
-          if (clearedBalance > 0) {
-            difference = (available * -1)
+          if (balance > 0) {
+            difference = (available * -1);
           } else {
-            difference = ((available + clearedBalance) * -1)
+            difference = ((available + balance) * -1);
           }
 
           ynabToolKit.checkCreditBalances.updateInspectorButton(a.name, difference);
 
-          if (available != (clearedBalance * -1)) {
+          if (available != (balance * -1)) {
             ynabToolKit.checkCreditBalances.updateRow(a.name);
             ynabToolKit.checkCreditBalances.updateInspectorStyle(a.name);
           }
