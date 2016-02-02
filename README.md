@@ -16,7 +16,7 @@ This is what the extension can do for you:
 - Hide the Age of Money calculation.
 - Collapse left navigation bar for more screen room
 - Change the height of the budget rows so you can fit more on the budget screen.
-- Make credit card categories in the budget go yellow if their balance doesn't match the account balance for the card.
+- Paid in Full (PIF) credit card assistance makes credit card categories in the budget go yellow if their balance doesn't match the account balance for the card and adds a button to fix the problem in the inspector.
 - Make all available amounts go red if they're negative on the budget screen.
 - Make the Move money dialog larger to make more of it fit on the screen at once.
 - Remove categories that have a balance at or below 0 from the cover overspending dialog, as they won't help you anyway!
