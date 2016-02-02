@@ -36,7 +36,12 @@ Roadmap
 
 Features under consideration and the general status of the project and roadmap is on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel free to vote and comment. To suggest new features, please visit the YNAB Forum thread here and comment. Forum user @stephywephy is managing the features there and will make sure it ends up in Trello.
 
+Contributions
+-------------
+
 Contributions are greatly welcomed. If you want to contribute, it's best if you can let us know so we don't double up on effort. You can see what is being worked on and by whom on the roadmap. If you can't find what you want to build on the roadmap, feel free to put a note up on the github issues board to let the team know you're working on something new. When your code is ready, submit a pull request. You can also contact @blarg on the forums.
+
+For documentation on how to build a feature, [see the documentation](https://github.com/blargity/toolkit-for-ynab/blob/master/src/common/res/features/HOW_TO_BUILD_FEATURES.md).
 
 Building the Code
 -----------------
@@ -48,7 +53,7 @@ This extension uses Kango Extensions to provide cross browser support. To build:
 1. Install Python 2.7 (or newer, but I haven't tested that) in your path so it's accessible with just plain ```python``` if you don't have it already.
 1. Run ```./build``` from within the folder you cloned above.
 1. You'll see platform specific output in the ```output``` folder.
-1. Load it into Chrome as an unpacked extension, or load it into Firefox via the .xpi file.
+1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file, or load it into Safari using the extension builder.
 
 **Windows**
 
@@ -56,13 +61,16 @@ This extension uses Kango Extensions to provide cross browser support. To build:
 1. Install Python 2.7 (or newer, but I haven't tested that) in your path so it's accessible with just plain ```python``` if you don't have it already.
 1. Run ```build.bat``` from within the folder you cloned above.
 1. You'll see platform specific output in the ```output``` folder.
-1. Load it into Chrome as an unpacked extension, or load it into Firefox via the .xpi file.
+1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file, or load it into Safari using the extension builder.
 
-Browser Support
+Installing
 ---------------
 The ToolKit is available for Chrome, Firefox, and Safari. The lead platform is Chrome, but we are actively working on making it equal across all three browsers.
-If you don't want to build the extension from the source yourself, you can get it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl) as well as the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/).
-There is currently no version of the extension available at the Safari Extensions Gallery, but it's in the process of being reviewed and should be available soon.
+If you don't want to build the extension from the source yourself, you can get it for:
+
+- Chrome on the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl)
+- Firefox on the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/)
+- Safari [direct from us](http://toolkitforynab.com/safari-updates/toolkitforynab_latest.safariextz)
 
 Development Methodology
 -----------------------
@@ -70,8 +78,8 @@ Development Methodology
 **This is janky! Why aren't you using Coffeescript / Typescript / Sass / Less / Compass / etc? Plain JS and CSS, WTF?**
 The primary concern for this extension from a development perspective is making it **easy** to work on. Every single one of those technologies above are awesome. I use a lot of them all the time at work. They do make your life easier, but unfortunately they add massively to the learning curve for contributing to the extension. Everyone knows JS and CSS. I want to make sure that working on the extension remains an accessible thing to do.
 
-**Why are you polling the DOM? WTF?**
-We'd love a better way if you know of one. See discussion here: [Trello Card: Find a better way to observe DOM changes and inject content, either by hooking Ember internals or by building a concise non-polling trigger set for them.](https://trello.com/c/mEPvAQUE)
+**How do I build a Feature?**
+[Here's some documentation.](https://github.com/blargity/toolkit-for-ynab/blob/master/src/common/res/features/HOW_TO_BUILD_FEATURES.md) If you are still struggling to get up to speed let us know (email's fine!) and we'll make sure we help out.
 
 Legal Stuff
 -----------
