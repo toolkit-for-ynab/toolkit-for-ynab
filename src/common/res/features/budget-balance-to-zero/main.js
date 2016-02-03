@@ -68,7 +68,7 @@
           .formatCurrency(amount, false);
         var button = ' \
         <button class="budget-inspector-button balance-to-zero" \
-          onClick="ynabToolKit.checkCreditBalances.updateCreditBalances(\'' +
+          onClick="ynabToolKit.budgetBalaceToZero.updateBudgetedBalance(\'' +
           name + '\', ' + amount + ')"> \
           Balance to 0.00: \
             <strong class="user-data" title="' + fAmount + '"> \
@@ -79,6 +79,34 @@
         </button>';
 
         $('.inspector-quick-budget .ember-view').append(button);
+      };
+
+      this.updateBudgetedBalance = function(name, difference) {
+        var categories = $('.is-sub-category.is-checked');
+
+        $(categories).each(function() {
+          var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
+          if (accountName === name) {
+            var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click().find('input');
+            var oldValue = input.val();
+
+            // If nothing is budgetted, the input will be empty
+            oldValue = oldValue ? oldValue : 0;
+
+            // Get the formatted currency so we can add it to the budget box correctly
+            var fhDifference = ynabToolKit.shared.formatCurrency(difference, true);
+            var results = /(-*).*bdi>(.*)/g.exec(fhDifference);
+            var addition = results[1] + results[2];
+
+            // Strip out commas since they mess things up
+            addition = addition.replace(/,/g, '');
+
+            var newValue = (parseFloat(oldValue) + parseFloat(addition));
+
+            input.val(newValue);
+            $(input).blur();
+          }
+        });
       };
 
       this.getInspectorName = function() {
@@ -92,7 +120,7 @@
           .monthlySubCategoryBudgetCalculationsCollection
           .findItemByEntityId('mcbc/' + currentMonth + '/' + f.entityId);
 
-        return (monthlyBudget.cashOutflows * -1);
+        return (monthlyBudget.balance * -1);
       };
 
     }();
