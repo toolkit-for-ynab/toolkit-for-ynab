@@ -4,6 +4,12 @@
  */
 .page-content {
     padding: $spacing-unit 0;
+    background-image: url("/images/mainBG.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 80vh;
+    width: 100vw;
 }
 
 .page-heading {
