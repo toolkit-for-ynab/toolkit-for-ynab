@@ -15,8 +15,7 @@
 
         categories.forEach(function(f) {
           if (f.name === categoryName) {
-            ynabToolKit.budgetBalaceToZero
-              .updateInspectorButton(categoryName, 0);
+            ynabToolKit.budgetBalaceToZero.updateInspectorButton(f);
           }
         });
       };
@@ -55,23 +54,26 @@
         return categories;
       };
 
-      this.updateInspectorButton = function(name, difference) {
-        if ($('.rectify-difference').length) {
+      this.updateInspectorButton = function(f) {
+        if ($('.balance-to-zero').length) {
           return;
         }
 
-        var fhDifference = ynabToolKit.shared
-          .formatCurrency(difference, true);
-        var fDifference = ynabToolKit.shared
-          .formatCurrency(difference, false);
+        var name = f.name;
+        var amount = ynabToolKit.budgetBalaceToZero.getBudgetAmount(f);
+
+        var fhAmount = ynabToolKit.shared
+          .formatCurrency(amount, true);
+        var fAmount = ynabToolKit.shared
+          .formatCurrency(amount, false);
         var button = ' \
-        <button class="budget-inspector-button rectify-difference" \
+        <button class="budget-inspector-button balance-to-zero" \
           onClick="ynabToolKit.checkCreditBalances.updateCreditBalances(\'' +
-          name + '\', ' + difference + ')"> \
+          name + '\', ' + amount + ')"> \
           Balance to 0.00: \
-            <strong class="user-data" title="' + fDifference + '"> \
+            <strong class="user-data" title="' + fAmount + '"> \
               <span class="user-data currency zero"> \
-              ' + fhDifference + ' \
+              ' + fhAmount + ' \
             </span> \
           </strong> \
         </button>';
@@ -81,6 +83,16 @@
 
       this.getInspectorName = function() {
         return $('.inspector-category-name.user-data').text().trim();
+      };
+
+      this.getBudgetAmount = function(f) {
+        var currentMonth = moment(ynabToolKit.shared.parseSelectedMonth())
+          .format('YYYY-MM');
+        var monthlyBudget = ynabToolKit.checkCreditBalances.budgetView
+          .monthlySubCategoryBudgetCalculationsCollection
+          .findItemByEntityId('mcbc/' + currentMonth + '/' + f.entityId);
+
+        return (monthlyBudget.cashOutflows * -1);
       };
 
     }();
