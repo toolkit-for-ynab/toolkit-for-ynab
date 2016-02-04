@@ -4,36 +4,36 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
 
-    ynabToolKit.budgetBalaceToZero = new function() {  // jshint ignore:line
+    ynabToolKit.budgetBalanceToZero = new function() {  // jshint ignore:line
 
       this.budgetView = ynab.YNABSharedLib
         .getBudgetViewModel_AllBudgetMonthsViewModel()._result; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 
       this.invoke = function() {
-        var categories = ynabToolKit.budgetBalaceToZero.getCategories();
-        var categoryName = ynabToolKit.budgetBalaceToZero.getInspectorName();
+        var categories = ynabToolKit.budgetBalanceToZero.getCategories();
+        var categoryName = ynabToolKit.budgetBalanceToZero.getInspectorName();
 
         categories.forEach(function(f) {
           if (f.name === categoryName) {
-            ynabToolKit.budgetBalaceToZero.updateInspectorButton(f);
+            ynabToolKit.budgetBalanceToZero.updateInspectorButton(f);
           }
         });
       };
 
       this.observe = function(changedNodes) {
         if (changedNodes.has('budget-inspector')) {
-          ynabToolKit.budgetBalaceToZero.invoke();
+          ynabToolKit.budgetBalanceToZero.invoke();
         }
       };
 
       this.getCategories = function() {
-        if (ynabToolKit.budgetBalaceToZero === 'undefined') {
+        if (ynabToolKit.budgetBalanceToZero === 'undefined') {
           return [];
         }
 
         var categories = [];
         var masterCategories = [];
-        var masterCats = ynabToolKit.budgetBalaceToZero.budgetView
+        var masterCats = ynabToolKit.budgetBalanceToZero.budgetView
           .categoriesViewModel.masterCategoriesCollection._internalDataArray;
 
         masterCats.forEach(function(c) {
@@ -44,7 +44,7 @@
         });
 
         masterCategories.forEach(function(c) {
-          var accounts = ynabToolKit.checkCreditBalances.budgetView
+          var accounts = ynabToolKit.budgetBalanceToZero.budgetView
             .categoriesViewModel.subCategoriesCollection
             .findItemsByMasterCategoryId(c);
 
@@ -60,7 +60,7 @@
         }
 
         var name = f.name;
-        var amount = ynabToolKit.budgetBalaceToZero.getBudgetAmount(f);
+        var amount = ynabToolKit.budgetBalanceToZero.getBudgetAmount(f);
 
         var fhAmount = ynabToolKit.shared
           .formatCurrency(amount, true);
@@ -68,7 +68,7 @@
           .formatCurrency(amount, false);
         var button = ' \
         <button class="budget-inspector-button balance-to-zero" \
-          onClick="ynabToolKit.budgetBalaceToZero.updateBudgetedBalance(\'' +
+          onClick="ynabToolKit.budgetBalanceToZero.updateBudgetedBalance(\'' +
           name + '\', ' + amount + ')"> \
           Balance to 0.00: \
             <strong class="user-data" title="' + fAmount + '"> \
@@ -116,7 +116,7 @@
       this.getBudgetAmount = function(f) {
         var currentMonth = moment(ynabToolKit.shared.parseSelectedMonth())
           .format('YYYY-MM');
-        var monthlyBudget = ynabToolKit.checkCreditBalances.budgetView
+        var monthlyBudget = ynabToolKit.budgetBalanceToZero.budgetView
           .monthlySubCategoryBudgetCalculationsCollection
           .findItemByEntityId('mcbc/' + currentMonth + '/' + f.entityId);
 
