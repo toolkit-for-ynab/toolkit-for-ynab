@@ -27,7 +27,7 @@ Settings appear sorted by type first (checkboxes then selects), then alphabetica
 
 To ask for a setting to show up, include a ```settings.json``` file in your feature directory. Here's a simple example ```settings.json``` file:
 
-```
+```json
 {
          "name": "hideAOM",
          "type": "checkbox",
@@ -59,7 +59,7 @@ Here's a full explanation of all the fields:
 
 Here's an example for a select setting. The only difference is the ```options``` key, which tells the settings system what options to show in the drop down, and then the actions and default use these values instead of "true" or "false":
 
-```
+```json
 {
          "name": "daysOfBufferingHistoryLookup",
          "type": "select",
@@ -88,7 +88,7 @@ Multiple Settings
 -----------------
 It's also possible to have your single feature expose multiple settings, just put them in an array like so:
 
-```
+```json
 [{
          "name": "daysOfBuffering",
          "type": "checkbox",
@@ -146,7 +146,8 @@ Ok, so you can't do what you want with CSS. You need to add a button, or do some
 We've built a pattern that will help you get started. The example file is here: https://github.com/blargity/toolkit-for-ynab/blob/master/src/common/res/features/shared/example.js
 
 This is what it looks like:
-```
+
+```javascript
 (function poll() {
 // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
 if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
@@ -185,11 +186,18 @@ Let's break it down and talk about the sections.
 - ```poll()``` function: This waits until we're ready and then loads your feature in.
 - ```ynabToolKit.awesomeFeature()```: This is your container object for your feature. The build system looks for this line in your file to include your feature into the observe stuff we'll talk about below.
 - ```this.invoke()```: Think of this like a constructor, or an initialiser. Do what you want to do here to get it set up.
-- ```this.observe(changedNodes)```: You can (optionally) define this function to watch the DOM for changes. ```changedNodes``` is a set of strings that describe the nodes which have just changed. Since this gets called every single time anything on the page changes at all, please ensure you guard your logic with an ```if``` statement which makes sure something you care about changed, or the browser will likely struggle with the amount of work it has to do on every change.
+- ```this.observe(changedNodes)```: You can (optionally) define this function to watch the DOM for changes. ```changedNodes``` is a set of all the class names for all the nodes which have just changed. Since this gets called every single time anything on the page changes at all, please ensure you guard your logic with an ```if``` statement which makes sure something you care about changed, or the browser will likely struggle with the amount of work it has to do on every change.
+
 
 Mutation Observer Tips
 ----------------------
 If you want to see what's changing, you can use the console to set ```ynabToolKit.debugNodes = true``` in the console, and further changes will get logged.
+
+Here are some examples to help you get started (these work as of January 2016 -- since YNAB controls the app markup, though, they are subject to change without warning):
+    - ```changedNodes.has('navlinks-budget')``` implies that YNAB has just loaded or left the budget page.
+    - ```changedNodes.has('navlinks-accounts')``` implies that YNAB has just loaded or left the "All Accounts" page.
+    - ```changedNodes.has('budgets-header')``` notes a change to the budget page header, and may indicate that the user has changed which month's budget they are viewing.
+
 
 Shared Library
 --------------
