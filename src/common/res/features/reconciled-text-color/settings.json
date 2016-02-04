@@ -13,9 +13,21 @@
                     { "name": "Dark gray with green background", "value": "4", "style": "color: #8e9fb0; background-color: #e7faeb" }
                  ],
       "actions": {
-                    "1": [ "injectCSS", "green.css" ],
-                    "2": [ "injectCSS", "lightgray.css" ],
-                    "3": [ "injectCSS", "darkgray.css" ],
-                    "4": [ "injectCSS", "chance.css" ]
+                    "1": [
+                      "injectCSS", "green.css",
+                      "injectScript", "main.js"
+                    ],
+                    "2": [
+                      "injectCSS", "lightgray.css",
+                      "injectScript", "main.js"
+                    ],
+                    "3": [
+                      "injectScript", "main.js",
+                      "injectCSS", "darkgray.css"
+                    ],
+                    "4": [
+                      "injectCSS", "chance.css",
+                      "injectScript", "main.js"
+                    ]
                  }
 }
