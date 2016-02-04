@@ -26,6 +26,20 @@
       background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
+      height: 50vh;
+      color: #fff;
+      padding-top: 20vh;
+      .textBox {
+        height: 50%;
+        width: 50%;
+        float: right;
+        h1 {
+          text-transform: uppercase;
+          font-size: 3em;
+        }
+        p {
+        }
+      }
     }
 }
 
