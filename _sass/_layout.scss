@@ -9,8 +9,7 @@
       background-color: #fff;
       width: 70%;
       height: 100vh;
-      margin-left: 15%;
-      margin-top: 15vh;
+      margin: 15%;
       display: flex;
       flex-direction: row;
       .firstContent {
@@ -65,13 +64,29 @@
     .thirdContent {
       width: 70%;
       margin-left: 15%;
-      div {
-        float: left;
-        height: 100px;
-        width: 100px;
-        margin-left: 10%;
-        margin-bottom: 10%;
-        border: 1px dotted black;
+      display: flex;
+      flex-direction: column;
+      .rowOne {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        div {
+          flex: 1;
+          background-image: url("/images/pie.svg");
+          background-size: contain;
+          background-repeat: no-repeat;
+        }
+      }
+      .rowTwo {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        div {
+          flex: 1;
+          background-image: url("/images/pie.svg");
+          background-size: contain;
+          background-repeat: no-repeat;
+        }
       }
     }
     .imageTwo {
