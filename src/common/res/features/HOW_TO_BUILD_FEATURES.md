@@ -194,9 +194,10 @@ Mutation Observer Tips
 If you want to see what's changing, you can use the console to set ```ynabToolKit.debugNodes = true``` in the console, and further changes will get logged.
 
 Here are some examples to help you get started (these work as of January 2016 -- since YNAB controls the app markup, though, they are subject to change without warning):
-    - ```changedNodes.has('navlinks-budget')``` implies that YNAB has just loaded or left the budget page.
-    - ```changedNodes.has('navlinks-accounts')``` implies that YNAB has just loaded or left the "All Accounts" page.
-    - ```changedNodes.has('budgets-header')``` notes a change to the budget page header, and may indicate that the user has changed which month's budget they are viewing.
+
+- ```changedNodes.has('navlinks-budget')``` implies that YNAB has just loaded or left the budget page.
+- ```changedNodes.has('navlinks-accounts')``` implies that YNAB has just loaded or left the "All Accounts" page.
+- ```changedNodes.has('budgets-header')``` notes a change to the budget page header, and may indicate that the user has changed which month's budget they are viewing.
 
 
 Shared Library
