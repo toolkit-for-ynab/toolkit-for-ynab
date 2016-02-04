@@ -39,14 +39,15 @@
               ynabToolKit.debugNodes.errors = err
             }
 
-            ynabToolKit.changedNodes = new Set([...ynabToolKit.changedNodes, ...nodeClasses]);
+            ynabToolKit.changedNodes.add($node[0].className.replace(/^ember-view /,''));
 
           }); // each node mutation event
 
         }); // each mutation event
 
         if (ynabToolKit.debugNodes) {
-          console.log('###')
+          console.log(ynabToolKit.changedNodes);
+          console.log('###');
         }
 
         // Now we are ready to feed the change digest to the
