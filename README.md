@@ -14,6 +14,7 @@ This is what the extension can do for you:
 - Colour Blind Mode - Changes colours of some of the numbers to make the interface easier on people with certain visual disabilities.
 - Make the calculator work like YNAB4. When you press + or - (etc) the calculator moves to the end of the line so your number isn't lost.
 - Printing Improvements: Now when you print your budget it looks good!
+- Add a budget category to zero button in the inspector.
 - Hide the Age of Money calculation.
 - Collapse left navigation bar for more screen room
 - Change the height of the budget rows so you can fit more on the budget screen.
