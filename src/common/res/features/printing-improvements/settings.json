@@ -1,0 +1,13 @@
+{
+         "name": "printingImprovements",
+         "type": "checkbox",
+      "default": false,
+      "section": "general",
+        "title": "Printing Improvements",
+  "description": "Changes print styles in the budget section so that the budget can be easily printed.",
+      "actions": {
+                    "true": [
+                      "injectCSS", "main.css"
+                    ]
+                 }
+}
