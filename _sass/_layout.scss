@@ -5,13 +5,35 @@
 .page-content {
     // padding: $spacing-unit 0;
     width: 100vw;
-    div {
-      height: 70vh;
-      width: 100vw;
-      margin-top: 10vh;
-    }
     .content {
       background-color: #fff;
+      width: 70%;
+      height: 100vh;
+      margin-left: 15%;
+      margin-top: 15vh;
+      display: flex;
+      flex-direction: row;
+      .firstContent {
+        flex: 1;
+        h1 {
+          font-size: 3em;
+          padding: 10% 10% 10%;
+        }
+        p {
+          padding: 0 10%;
+        }
+        a {
+          padding: 0 10%;
+        }
+      }
+      .imageBox {
+        flex: 1;
+        background-image: url("/images/techImg.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 50%;
+      }
     }
     .imageOne {
       background-image: url("/images/mainBG.png");
@@ -20,6 +42,37 @@
       background-repeat: no-repeat;
       background-attachment: fixed;
       height: 40vh;
+      .secondContent {
+        width: 40%;
+        float: right;
+        h1 {
+          font-size: 3em;
+          margin-top: 30px;
+          text-transform: uppercase;
+        }
+        ul {
+          line-height: 3em;
+          list-style: none;
+          li::before {
+            content: "> ";
+            color: #44DBBD;
+            padding-right: 10px;
+            margin-left: -25px;
+          }
+        }
+      }
+    }
+    .thirdContent {
+      width: 70%;
+      margin-left: 15%;
+      div {
+        float: left;
+        height: 100px;
+        width: 100px;
+        margin-left: 10%;
+        margin-bottom: 10%;
+        border: 1px dotted black;
+      }
     }
     .imageTwo {
       background-color: #353535;
@@ -27,10 +80,11 @@
       background-size: contain;
       background-repeat: no-repeat;
       background-attachment: fixed;
+      margin-bottom: 15vh;
       height: 40vh;
       color: #fff;
       padding-top: 20vh;
-      .textBox {
+      .fourthContent {
         height: 50%;
         width: 30%;
         margin-left: 35%;
