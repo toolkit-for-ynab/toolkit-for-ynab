@@ -60,7 +60,7 @@
 
       // TODO Uncomment trycatch
       // try {
-        ynabToolKit.l10n.localize.observe(changedNodes);
+        ynabToolKit.l10n.observe(changedNodes);
       // } catch(err) {/* ignore */}
 
     };

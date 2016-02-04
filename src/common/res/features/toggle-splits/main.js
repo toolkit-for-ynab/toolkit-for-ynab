@@ -9,7 +9,7 @@
       this.invoke = function() {
 
         if ( !$('#toggleSplits').length ) {
-          var buttonText = ynabToolKit.l10n && ynabToolKit.l10n.Data.Accounts.Button.ToogleSplits || 'Toggle Splits';
+          var buttonText = (ynabToolKit.l10nData && ynabToolKit.l10nData.Accounts.Button.ToogleSplits) || 'Toggle Splits';
            var toggleButton = "<button id=\"toggleSplits\" class=\"ember-view button\"><i class=\"ember-view flaticon stroke right\"></i><i class=\"ember-view flaticon stroke down\"></i> " + buttonText + " </button>"
            $(toggleButton).insertAfter(".accounts-toolbar .undo-redo-container");
 

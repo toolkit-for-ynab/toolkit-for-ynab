@@ -2,10 +2,10 @@
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
 
-    ynabToolKit.l10n.localize = new function ()  {
+    ynabToolKit.l10n = new function ()  {
 
       // Shortcuts
-      var l10n = ynabToolKit.l10n.Data;
+      var l10n = ynabToolKit.l10nData;
       var months = Object.keys(l10n.Global.Month)
                          .map(function(k){return l10n.Global.Month[k]});
       var monthsFull = Object.keys(l10n.Global.MonthFull)
@@ -642,121 +642,121 @@
       this.observe = function(changedNodes) {
 
         if ( changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals') ) {
-          ynabToolKit.l10n.localize.inspector();
+          ynabToolKit.l10n.inspector();
         }
 
         // Calendar modal
         if ( changedNodes.has('modal-calendar') ) {
-          ynabToolKit.l10n.localize.calendarModal();
+          ynabToolKit.l10n.calendarModal();
         }
 
         // The user has returned back to the budget screen
         if (changedNodes.has('navlink-budget') && changedNodes.has('active')) {
-          ynabToolKit.l10n.localize.budgetHeader();
-          ynabToolKit.l10n.localize.budgetTable();
+          ynabToolKit.l10n.budgetHeader();
+          ynabToolKit.l10n.budgetTable();
         }
 
         // The user has returned back to the budget screen
         if (changedNodes.has('navlink-accounts') && changedNodes.has('active') ||
             changedNodes.has('nav-account-row') && changedNodes.has('is-selected')) {
-          ynabToolKit.l10n.localize.accounts();
+          ynabToolKit.l10n.accounts();
         }
 
         if (changedNodes.has('budget-header')) {
-          ynabToolKit.l10n.localize.budgetHeader();
+          ynabToolKit.l10n.budgetHeader();
         }
 
         // Budget table
         if (changedNodes.has('budget-table')) {
-          ynabToolKit.l10n.localize.budgetTable();
+          ynabToolKit.l10n.budgetTable();
         }
 
         // Add master category modal
         if (changedNodes.has('modal-add-master-category')) {
-          ynabToolKit.l10n.localize.addCategoryGroupModal();
+          ynabToolKit.l10n.addCategoryGroupModal();
         }
 
         // Add sub category modal
         if (changedNodes.has('modal-add-sub-category')) {
-          ynabToolKit.l10n.localize.addCategoryModal();
+          ynabToolKit.l10n.addCategoryModal();
         }
 
         // Hidden categories modal
         if (changedNodes.has('modal-budget-hidden-categories')) {
-          ynabToolKit.l10n.localize.hiddenCategoriesModal();
+          ynabToolKit.l10n.hiddenCategoriesModal();
         }
 
         // Edit category modal
         if (changedNodes.has('modal-budget-edit-category')) {
-          ynabToolKit.l10n.localize.editCategoryModal();
+          ynabToolKit.l10n.editCategoryModal();
         }
 
         // Cover overspending modal
         if (changedNodes.has('modal-budget-overspending')) {
-          ynabToolKit.l10n.localize.coverOverspendingModal();
+          ynabToolKit.l10n.coverOverspendingModal();
         }
 
         // Move money modal
         if (changedNodes.has('modal-budget-move-money')) {
-          ynabToolKit.l10n.localize.moveMoneyModal();
+          ynabToolKit.l10n.moveMoneyModal();
         }
 
         // Budget name dropdown
         if (changedNodes.has('modal-select-budget')) {
-          ynabToolKit.l10n.localize.selectBudgetModal();
+          ynabToolKit.l10n.selectBudgetModal();
         }
 
         // User settings dropdown
         if (changedNodes.has('modal-user-prefs')) {
-          ynabToolKit.l10n.localize.userPrefsModal();
+          ynabToolKit.l10n.userPrefsModal();
         }
 
         // Fresh start modal
         if (changedNodes.has('modal-budget-fresh-start')) {
-          ynabToolKit.l10n.localize.freshStartModal();
+          ynabToolKit.l10n.freshStartModal();
         }
 
         // New budget and current budget settings modal
         if (changedNodes.has('modal-budget-settings')) {
-          ynabToolKit.l10n.localize.budgetSettingsModal();
+          ynabToolKit.l10n.budgetSettingsModal();
         }
 
         // Reconcile account modal
         if (changedNodes.has('modal-account-reconcile')) {
-          ynabToolKit.l10n.localize.reconcileAccountModal();
+          ynabToolKit.l10n.reconcileAccountModal();
         }
 
         // Account settings and new account modal
         if (changedNodes.has('account-modal') || changedNodes.has('modal-content') ||
             changedNodes.has('right-circle-2') || changedNodes.has('left-circle-2')) {
-          ynabToolKit.l10n.localize.accountModal();
+          ynabToolKit.l10n.accountModal();
         }
 
         // Selection in modal
         if (changedNodes.has('ynab-select')) {
-          ynabToolKit.l10n.localize.coverOverspendingModal();
-          ynabToolKit.l10n.localize.moveMoneyModal();
+          ynabToolKit.l10n.coverOverspendingModal();
+          ynabToolKit.l10n.moveMoneyModal();
         }
 
         // Account footer changing
         if (changedNodes.has('ynab-grid-footer')) {
-          ynabToolKit.l10n.localize.accountsFooter();
+          ynabToolKit.l10n.accountsFooter();
         }
 
         // Account filters modal
         if (changedNodes.has('modal-account-filters')) {
-          ynabToolKit.l10n.localize.accountFiltersModal();
+          ynabToolKit.l10n.accountFiltersModal();
         }
       }
 
     }; // Keep feature functions contained within this object
 
     // Run your script once on page load
-    ynabToolKit.l10n.localize.inspector();
-    ynabToolKit.l10n.localize.budgetHeader();
-    ynabToolKit.l10n.localize.budgetTable();
-    ynabToolKit.l10n.localize.sidebar();
-    ynabToolKit.l10n.localize.accounts();
+    ynabToolKit.l10n.inspector();
+    ynabToolKit.l10n.budgetHeader();
+    ynabToolKit.l10n.budgetTable();
+    ynabToolKit.l10n.sidebar();
+    ynabToolKit.l10n.accounts();
 
   } else {
     setTimeout(poll, 250);

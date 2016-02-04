@@ -10,7 +10,7 @@
           totals.id = "accounts-selected-total";
           var label = document.createElement("div");
           label.className = "accounts-header-balances-label";
-          label.textContent = ynabToolKit.l10n && ynabToolKit.l10n.Data.Accounts.Header.Selected || "Selected Transactions Total";
+          label.textContent = (ynabToolKit.l10nData && ynabToolKit.l10nData.Accounts.Header.Selected) || "Selected Transactions Total";
           totals.appendChild(label);
           parent.appendChild(totals);
           var dataSetParent = document.getElementsByClassName('ynab-grid-body')[0].getElementsByClassName('ynab-grid-body-row');

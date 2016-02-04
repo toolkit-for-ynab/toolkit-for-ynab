@@ -6,7 +6,7 @@ function ynabEnhancedDoB() {
     var elementForDoB = elementForAoM.cloneNode(true);
 
     elementForDoB.className = elementForDoB.className + " days-of-buffering";
-    elementForDoB.children[1].textContent = ynabToolKit.l10n && ynabToolKit.l10n.Data.Budget.Header.Metric.DoB || "Days of Buffering";
+    elementForDoB.children[1].textContent = (ynabToolKit.l10nData && ynabToolKit.l10nData.Budget.Header.Metric.DoB) || "Days of Buffering";
     elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
 
     var calculation = ynabEnhancedDoBCalculate();
