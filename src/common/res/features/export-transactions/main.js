@@ -141,9 +141,30 @@
         return cleanedTransArray;
       }
 
+
+      // Sort an Array of Objects by key
+      function sortByKey(transactions, key, order) {
+
+        // Simple comparator
+        function compare(a, b) {
+          if (a[key] < b[key]) return -1;
+          if (a[key] > b[key]) return 1;
+          return 0;
+        }
+
+        transactions = transactions.copy();
+        transactions.sort(compare);
+        if (order === 'DESC') {
+          transactions.reverse
+        }
+        return transactions;
+      }
+
+
       function downloadTransactions() {
         var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
         var transactions = getTransactionArray(entityManager);
+        transactions = sortByKey(transactions, 'date', 'DESC');
         var csv = convertArrayOfObjectsToCSV({data: transactions});
         downloadCSV({contents: csv});
       }
@@ -171,13 +192,17 @@
         }
       };
 
+
       this.observe = function(changedNodes) {
-        // ALWAYS 'invoke' the function so we can test whether to show/hide the button
-        this.invoke();
+        // Changes to `.navlink-accounts` means we are newly on or off the All Accounts page
+        if (changedNodes.has('navlink-accounts')) {
+          this.invoke();
+        }
       };
 
-      // invoke for the first time in case we're already on a valid page
+      // invoke for the first time in case we're already on a matching page
       this.invoke();
+
     };
 
   } else {
