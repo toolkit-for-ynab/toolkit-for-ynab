@@ -16,23 +16,22 @@
     .imageOne {
       background-image: url("/images/mainBG.png");
       background-size: cover;
-      background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
+      height: 40vh;
     }
     .imageTwo {
       background-image: url("/images/mainBG2.png");
       background-size: cover;
-      background-position: center;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      height: 50vh;
+      height: 40vh;
       color: #fff;
       padding-top: 20vh;
       .textBox {
         height: 50%;
-        width: 50%;
-        margin: auto;
+        width: 33%;
+        margin-left: 33%;
         h1 {
           text-transform: uppercase;
           font-size: 3em;
