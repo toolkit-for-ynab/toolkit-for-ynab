@@ -186,7 +186,7 @@ Let's break it down and talk about the sections.
 - ```poll()``` function: This waits until we're ready and then loads your feature in.
 - ```ynabToolKit.awesomeFeature()```: This is your container object for your feature. The build system looks for this line in your file to include your feature into the observe stuff we'll talk about below.
 - ```this.invoke()```: Think of this like a constructor, or an initialiser. Do what you want to do here to get it set up.
-- ```this.observe(changedNodes)```: You can (optionally) define this function to watch the DOM for changes. ```changedNodes``` is a set of all the class names for all the nodes which have just changed. Since this gets called every single time anything on the page changes at all, please ensure you guard your logic with an ```if``` statement which makes sure something you care about changed, or the browser will likely struggle with the amount of work it has to do on every change.
+- ```this.observe(changedNodes)```: You can (optionally) define this function to watch the DOM for changes. ```changedNodes``` is a set of all the class names for all the nodes which have just changed. Since this gets called every single time anything on the page changes at all, please ensure you guard your logic with an ```if``` statement which makes sure something you care about changed, or the browser will likely struggle with the amount of work it has to do on every change. If you change the DOM every time you receive this function, you'll crash the browser, because you'll cause an infinite recursion. (DOM changes -> ```observe(changedNodes)``` -> DOM changes -> ```observe(changedNodes)``` etc.)
 
 
 Mutation Observer Tips
