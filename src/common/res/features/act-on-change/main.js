@@ -40,14 +40,13 @@
           }); // each node mutation event
 
           if (ynabToolKit.debugNodes) {
-            // Choose what to show while debugging.
             // console.log(newNodes);
-            console.log(ynabToolKit.changedNodes);
           }
 
         }); // each mutation event
 
         if (ynabToolKit.debugNodes) {
+          console.log(ynabToolKit.changedNodes);
           console.log('###');
         }
 
