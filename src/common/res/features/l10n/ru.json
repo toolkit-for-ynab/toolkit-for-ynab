@@ -1,10 +1,13 @@
-ynabToolKit.l10n.Data = {
+ynabToolKit.l10nData = {
   "Global" : {
     "Button" : {
       "Ok": "ОК",
       "Cancel" : "Отмена",
       "Edit" : "Изменить",
       "Delete" : "Удалить",
+      "Continue" : "Продолжить",
+      "Next" : "Далее",
+      "Back" : "Назад",
     },
     "Month" : {
       "0" : "Янв",
@@ -19,6 +22,20 @@ ynabToolKit.l10n.Data = {
       "9" : "Окт",
       "10" : "Ноя",
       "11" : "Дек",
+    },
+    "MonthFull" : {
+      "0" : "Январь",
+      "1" : "Февраль",
+      "2" : "Март",
+      "3" : "Апрель",
+      "4" : "Май",
+      "5" : "Июнь",
+      "6" : "Июль",
+      "7" : "Август",
+      "8" : "Сентябрь",
+      "9" : "Октябрь",
+      "10" : "Ноябрь",
+      "11" : "Декабрь",
     },
     "Title" : {
       "TodaysBalance" : "Today's Balance:",
@@ -80,9 +97,10 @@ ynabToolKit.l10n.Data = {
       },
       "Title" : {
         "CashLeft" : "Остаток с прошлого месяца",
-        "BudgetedThisMonth" : "Бюджет в этом месяце",
+        "BudgetedThisMonth" : "Бюджет в текущем месяце",
         "CashSpending" : "Расходы наличными",
         "CreditSpending" : "Расходы с кредитных карт",
+        "Activity" : "Активность в текущем месяце",
         "Available" : "Доступно",
         "GoalTarget" : "Баланс",
         "GoalTargetByDate" : "Баланс к дате",
@@ -101,9 +119,19 @@ ynabToolKit.l10n.Data = {
         "AverageBudgeted" :  "Средний бюджет",
         "AverageSpent" :  "Средние расходы",
         "CreateGoal" : "Задайте Цель",
+        "GoalTarget" : "Цель",
         "UpcomingTransactions" : "Запланированные транзакции"
       },
       "Text" : {
+        "Message" : {
+          "HaventBudgeted" : "Недостаточный бюджет для предстоящих трат: ",
+          "InUpcoming" : "",
+          "Overspent" : "Вы превысили бюджет этой категории на ",
+          "Cover" : " Перераспределите бюджет из других категорий!",
+          "YouRe" : "Вы отстаете от цели на ",
+          "ShortOfGoal" : " Забюджетируйте еще",
+          "ToKeepTrack" : ""
+        },
         "Credit" : {
           "Paid" : "Выплачено",
           "On" : "за",
@@ -112,12 +140,10 @@ ynabToolKit.l10n.Data = {
           "YoullIncrease" : "и вы увеличите свой долг на",
           "Spending" : "расходов в кредит с последней оплаты",
           "Available" : "доступно для оплаты",
+          "Nothing" : "Полностью оплачена.",
+          "DebtFree" : "Отсутствие долга — бесценно."
         },
         "Goal" : {
-          "YouRe" : "You're",
-          "ShorOfGoal" : "short of your goal for the month",
-          "BugetAnother" : "Budget another",
-          "ToKeepTrack" : "to keep on track",
           "Budget" : "Budget",
           "MoreTo" : "more to reach your ",
           "MonthlyGoal" : "monthly goal",
@@ -127,71 +153,48 @@ ynabToolKit.l10n.Data = {
       }
     },
   },
+  "Accounts" : {
+    "Header" : {
+      "Transaction" : "транзакц.",
+      "NeedsApproval" : " для подтверждения.",
+      "AllAccounts" : "Все аккаунты",
+      "Cleared" : "Подтвержденные",
+      "Uncleared" : "Неподтвержденные",
+      "Working" : "Баланс",
+      "Selected" : "Выбранные",
+      "Reconcile" : "Сверка аккаунта"
+    },
+    "Button" : {
+      "AddTransaction" : "Новая транзакция",
+      "EditTransaction" : "Изменить",
+      "Filter" : "Фильтрация",
+      "ToogleSplits" : "Сплиты"
+    },
+    "Table" : {
+      "Account" : "Аккаунт",
+      "Date" : "Дата",
+      "Payee" : "Плательщик",
+      "Category" : "Категория",
+      "Memo" : "Заметка",
+      "Outflow" : "Трата",
+      "Inflow" : "Поступление"
+    },
+    "Text" : {
+      "Hidden" : "транзакц. скрыто фильтрами.",
+      "Show" : "Показать скрытые транзакции."
+    }
+  },
   "Sidebar" : {
     "Button" : {
-      "Budget" : "Budget",
-      "AllAccounts" : "All Accounts",
-      "Collapse" : "Collapse",
-      "AddAccount" : "Add Account",
+      "Budget" : "Бюджет",
+      "AllAccounts" : "Аккаунты",
+      "Collapse" : "Свернуть",
+      "AddAccount" : "Добавить аккаунт",
     },
     "Title" : {
-      "Budget" : "BUDGET",
-      "Tracking" : "TRACKING",
-      "Closed  " : "CLOSED",
-    }
-  },
-  "AccountOptionsModal" : {
-    "Placeholder" : {
-      "About" : "Enter a note (not your account number)..."
-    },
-    "Button" : {
-      "Close" : "Close Account",
-      "Reopen" : "Re-open",
-    }
-  },
-  "BudgetOptionsModal" : {
-    "Button" : {
-      "New" : "Create a new budget",
-      "Open" : "Open a budget",
-      "Setting" : "Budget Settings",
-      "FreshStart" : "Make a fresh start",
-    }
-  },
-  "AddAccountModal" : {
-    "Title" : {
-      "NewAccount" : "Add a New Account",
-      "AccountName" : "Account Name:",
-      "AccountType" : "Account Type:",
-      "TransactionImport" : "Transaction Import:",
-      "Examples" : "Examples:",
-      "Or" : "or",
-      "Popular" : "Popular Options:",
-      },
-    "Placeholder" : {
-      "NewAccount" : "New Account",
-      "AccountType" : "Select an Account Type...",
-      "Balance" : "What is the balance of this account right now?",
-      "Search" : "search for your bank’s name",
-    },
-    "Button" : {
-      "AddAccount" : "Add Account",
-      "Next" : "Next",
-      "Back" : "Back",
-    },
-    "AccountType" : {
-      "Budget" : "Budget",
-      "Tracking" : "Tracking",
-      "Checking" : "Checking",
-      "Savings" : "Savings",
-      "CreditCard" : "Credit Card",
-      "Cash" : "Cash",
-      "LineOfCredit" : "Line of Credit",
-      "PayPal" : "PayPal",
-      "Merchant" : "Merchant Account",
-      "Investment" : "Investment Account",
-      "Mortgage" : "Mortgage",
-      "OtherAsset" : "Other Asset",
-      "OtherLiability" : "Other Liability",
+      "Budget" : "БЮДЖЕТНЫЕ",
+      "Tracking" : "ВНЕБЮДЖЕТНЫЕ",
+      "Closed" : "ЗАКРЫТЫЕ",
     }
   },
   "HiddenCategoriesModal" : {
@@ -205,6 +208,138 @@ ynabToolKit.l10n.Data = {
   "EditCategoryModal" : {
     "Button" : {
       "Hide" : "Скрыть",
+    }
+  },
+  "CoverOverspendingModal" : {
+    "Label" : {
+      "CoverOverspending" : "Выберите категорию для покрытия",
+    }
+  },
+  "MoveMoneyModal" : {
+    "Label" : {
+      "CoverOverspending" : "Cover this overspending with",
+      "Move" : "Перенести",
+      "To" : "в"
+    },
+    "Placeholder" : {
+      "EnterAmount" : "введите сумму"
+    }
+  },
+  "SelectBudgetModal" : {
+    "Button" : {
+      "CreateBudget" : "Новый бюджет",
+      "OpenBudget" : "Открыть бюджет",
+      "BudgetSettings" : "Настройки бюджета",
+      "FreshStart" : "Свежий старт"
+    }
+  },
+  "UserPrefsModal" : {
+    "Button" : {
+      "MyAcc" : "Мой аккаунт",
+      "Guides" : "Руководство",
+      "Help" : "Помощь",
+      "SignOut" : "Выход"
+    }
+  },
+  "FreshStartModal" : {
+    "Header" : "Свежий старт",
+    "Text1" : "Будет удалена история транзакций. Не изменятся аккаунты, запланированные транзакции и категории.",
+    "Text2" : "Копия бюджета будет сохранена, на случай, если что-то пойдет не так."
+  },
+  "BudgetSettingsModal" : {
+    "Header" : {
+      "Settings" : "Настройки бюджета",
+      "New" : "Создание нового бюджета"
+    },
+    "Title" : {
+      "Name" : "Название:",
+      "Currency" : "Валюта:",
+      "NumberFormat" : "Формат чисел:",
+      "CurrencyPlacement" : "Знак валюты:",
+      "DateFormat" : "Формат даты:",
+      "Before" : "Перед значением",
+      "After" : "После значения",
+      "Off" : "Не отображать"
+    },
+    "Button" : {
+      "Apply" : "Применить",
+      "Create" : "Создать"
+    }
+  },
+  "ReconcileAccountModal" : {
+    "Label" : {
+      "Balance" : "Текущий баланс составляет",
+      "How" : "Как найти текущий баланс?"
+    },
+    "Button" : {
+      "Yes" : "Да",
+      "No" : "Нет"
+    }
+  },
+  "AccountSettingsModal" : {
+    "Placeholder" : {
+      "Note" : "Введите заметку (только не номер счета)..."
+    },
+    "Label" : {
+      "Balance" : "Текущий баланс:",
+      "Import" : "Импорт транзакций из банка напрямую",
+      "Info" : "Корректировочная транзакция будет создана автоматически, если вы измените баланс."
+    },
+    "Button" : {
+      "Close" : "Закрыть аккаунт",
+      "Reopen" : "Открыть",
+    }
+  },
+  "AddAccountModal" : {
+    "Title" : {
+      "NewAccount" : "Создание нового аккаунта",
+      "AccountName" : "Название:",
+      "AccountType" : "Тип:",
+      "Balance" : "Текущий баланс:",
+      "TransactionImport" : "Импорт транзакций",
+      "Examples" : "Примеры: ",
+      "Or" : ", или",
+      "Popular" : "Популярные",
+      "Budget" : "Бюджетные",
+      "Tracking" : "Внебюджетные",
+      "Text" : "Импорт транзакций напрямую из банка"
+    },
+    "Placeholder" : {
+      "NewAccount" : "Новый аккаунт",
+      "Balance" : "Текущий баланс аккаунта",
+      "Search" : "поиск банка по имени",
+    },
+    "Button" : {
+      "AddAccount" : "Создать",
+    },
+    "AccountType" : {
+      "AccountType" : "Выберите тип аккаунта...",
+      "Checking" : "Checking",
+      "Savings" : "Накопления",
+      "CreditCard" : "Кредитная карта",
+      "Cash" : "Наличные",
+      "LineOfCredit" : "Кредит",
+      "PayPal" : "PayPal",
+      "Merchant" : "Коммерческий",
+      "Investment" : "Инвестиционный",
+      "Mortgage" : "Ипотека",
+      "OtherAsset" : "Другой актив",
+      "OtherLiability" : "Другой долговой",
+    }
+  },
+  "AccountFiltersModal" : {
+    "Title" : "Фильтрация транзакций",
+    "Label" : {
+      "ThisMonth" : "За месяц",
+      "Latest3Months" : "За 3 месяца",
+      "ThisYear" : "За год",
+      "LastYear" : "За прошлый год",
+      "AllDates" : "Все",
+      "From" : "С",
+      "To" : "По",
+      "Show" : "Показывать",
+      "Reconciled" : "Сверенные",
+      "Scheduled" : "Запланированные"
     }
   }
 }

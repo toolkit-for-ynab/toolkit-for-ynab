@@ -35,10 +35,11 @@
           return;
         }
 
+        var buttonText = (ynabToolKit.l10nData && ynabToolKit.l10nData.Sidebar.Button.Collapse) || 'Collapse';
         var collapseBtn = '<li> \
           <li class="ember-view navlink-collapse"> \
             <a href="#"> \
-              <span class="ember-view flaticon stroke left-circle-4"></span>Collapse \
+              <span class="ember-view flaticon stroke left-circle-4"></span>' + buttonText + ' \
             </a> \
           </li> \
         </li>';

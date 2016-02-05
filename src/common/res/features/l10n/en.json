@@ -1,10 +1,13 @@
-{
+ynabToolKit.l10nData = {
   "Global" : {
     "Button" : {
       "Ok": "OK",
       "Cancel" : "Cancel",
       "Edit" : "Edit",
       "Delete" : "Delete",
+      "Continue" : "Continue",
+      "Next" : "Next",
+      "Back" : "Back",
     },
     "Month" : {
       "0" : "Jan",
@@ -19,6 +22,20 @@
       "9" : "Oct",
       "10" : "Nov",
       "11" : "Dec",
+    },
+    "MonthFull" : {
+      "0" : "January",
+      "1" : "February",
+      "2" : "March",
+      "3" : "April",
+      "4" : "May",
+      "5" : "June",
+      "6" : "July",
+      "7" : "August",
+      "8" : "September",
+      "9" : "October",
+      "10" : "November",
+      "11" : "December",
     },
     "Title" : {
       "TodaysBalance" : "Today's Balance:",
@@ -83,6 +100,7 @@
         "BudgetedThisMonth" : "Budgeted This Month",
         "CashSpending" : "Cash Spending",
         "CreditSpending" : "Credit Spending",
+        "Activity" : "Activity This Month",
         "Available" : "Available",
         "GoalTarget" : "Target Category Balance",
         "GoalTargetByDate" : "Target Category Balance by Date",
@@ -101,9 +119,19 @@
         "AverageBudgeted" : "Average Budgeted",
         "AverageSpent" : "Average Spent",
         "CreateGoal" : "Create a goal",
+        "GoalTarget" : "Goal Target",
         "UpcomingTransactions" : "Upcoming Transactions"
       },
       "Text" : {
+        "Message" : {
+          "HaventBudgeted" : "You haven't budgeted enough for the ",
+          "InUpcoming" : " in upcoming bills.",
+          "Overspent" : "You've overspent this category by ",
+          "Cover" : ". Cover the overspending from other categories or you can’t trust your budget balances!",
+          "YouRe" : "You're ",
+          "ShortOfGoal" : " short of your goal for the month. Budget another ",
+          "ToKeepTrack" : " to keep on track."
+        },
         "Credit" : {
           "Paid" : "Paid",
           "On" : "on",
@@ -112,12 +140,10 @@
           "YoullIncrease" : "and you'll increase your debt by",
           "Spending" : "credit spending since last payment",
           "Available" : "available for payment",
+          "Nothing" : "Nothing to pay.",
+          "DebtFree" : "Debt Free is a beautiful thing."
         },
         "Goal" : {
-          "YouRe" : "You're",
-          "ShorOfGoal" : "short of your goal for the month",
-          "BugetAnother" : "Budget another",
-          "ToKeepTrack" : "to keep on track",
           "Budget" : "Budget",
           "MoreTo" : "more to reach your ",
           "MonthlyGoal" : "monthly goal",
@@ -126,6 +152,37 @@
         }
       }
     },
+  },
+  "Accounts" : {
+    "Header" : {
+      "Transaction" : "transaction",
+      "NeedsApproval" : "needs to be approved.",
+      "AllAccounts" : "All Accounts",
+      "Cleared" : "Cleared Balance",
+      "Uncleared" : "Uncleared Balance",
+      "Working" : "Working Balance",
+      "Selected" : "Selected Transactions Total",
+      "Reconcile" : "Reconcile Account"
+    },
+    "Button" : {
+      "AddTransaction" : "Add a transaction",
+      "EditTransaction" : "Add a transaction",
+      "Filter" : "Filter",
+      "ToogleSplits" : "Toogle Splits"
+    },
+    "Table" : {
+      "Account" : "ACCOUNT",
+      "Date" : "DATE",
+      "Payee" : "PAYEE",
+      "Category" : "CATEGORY",
+      "Memo" : "MEMO",
+      "Outflow" : "OUTFLOW",
+      "Inflow" : "INFLOW"
+    },
+    "Text" : {
+      "Hidden" : "transactions hidden by filters.",
+      "Show" : "Show hidden transactions."
+    }
   },
   "Sidebar" : {
     "Button" : {
@@ -137,61 +194,7 @@
     "Title" : {
       "Budget" : "BUDGET",
       "Tracking" : "TRACKING",
-      "Closed  " : "CLOSED",
-    }
-  },
-  "AccountOptionsModal" : {
-    "Placeholder" : {
-      "About" : "Enter a note (not your account number)..."
-    },
-    "Button" : {
-      "Close" : "Close Account",
-      "Reopen" : "Re-open",
-    }
-  },
-  "BudgetOptionsModal" : {
-    "Button" : {
-      "New" : "Create a new budget",
-      "Open" : "Open a budget",
-      "Setting" : "Budget Settings",
-      "FreshStart" : "Make a fresh start",
-    }
-  },
-  "AddAccountModal" : {
-    "Title" : {
-      "NewAccount" : "Add a New Account",
-      "AccountName" : "Account Name:",
-      "AccountType" : "Account Type:",
-      "TransactionImport" : "Transaction Import:",
-      "Examples" : "Examples:",
-      "Or" : "or",
-      "Popular" : "Popular Options:",
-      },
-    "Placeholder" : {
-      "NewAccount" : "New Account",
-      "AccountType" : "Select an Account Type...",
-      "Balance" : "What is the balance of this account right now?",
-      "Search" : "search for your bank’s name",
-    },
-    "Button" : {
-      "AddAccount" : "Add Account",
-      "Next" : "Next",
-      "Back" : "Back",
-    },
-    "AccountType" : {
-      "Budget" : "Budget",
-      "Tracking" : "Tracking",
-      "Checking" : "Checking",
-      "Savings" : "Savings",
-      "CreditCard" : "Credit Card",
-      "Cash" : "Cash",
-      "LineOfCredit" : "Line of Credit",
-      "PayPal" : "PayPal",
-      "Merchant" : "Merchant Account",
-      "Investment" : "Investment Account",
-      "Mortgage" : "Mortgage",
-      "OtherAsset" : "Other Asset",
-      "OtherLiability" : "Other Liability",
+      "Closed" : "CLOSED",
     }
   },
   "HiddenCategoriesModal" : {
@@ -205,6 +208,138 @@
   "EditCategoryModal" : {
     "Button" : {
       "Hide" : "Hide",
+    }
+  },
+  "CoverOverspendingModal" : {
+    "Label" : {
+      "CoverOverspending" : "Cover this overspending with",
+    }
+  },
+  "MoveMoneyModal" : {
+    "Label" : {
+      "CoverOverspending" : "Cover this overspending with",
+      "Move" : "Move",
+      "To" : "To"
+    },
+    "Placeholder" : {
+      "EnterAmount" : "enter an amount"
+    }
+  },
+  "SelectBudgetModal" : {
+    "Button" : {
+      "CreateBudget" : "Create a new budget",
+      "OpenBudget" : "Open a budget",
+      "BudgetSettings" : "Budget Settings",
+      "FreshStart" : "Make a fresh start"
+    }
+  },
+  "UserPrefsModal" : {
+    "Button" : {
+      "MyAcc" : "My Account",
+      "Guides" : "User Guides",
+      "Help" : "Get Help",
+      "SignOut" : "Sign Out"
+    }
+  },
+  "FreshStartModal" : {
+    "Header" : "Make a fresh start",
+    "Text1" : "Starting fresh will let you start budgeting from today without having to set up a brand new budget. Transactions and any data you've entered in your budget will be deleted, but accounts, scheduled transactions, and budget categories will be saved.",
+    "Text2" : "A copy of this budget will be saved in case you're not happy with the changes. Fear not!",
+  },
+  "BudgetSettingsModal" : {
+    "Header" : {
+      "Settings" : "Budget Settings",
+      "New" : "Create a new budget"
+    },
+    "Title" : {
+      "Name" : "Budget Name:",
+      "Currency" : "Currency:",
+      "NumberFormat" : "Number Format:",
+      "CurrencyPlacement" : "Currency Placement:",
+      "DateFormat" : "Date Format:",
+      "Before" : "Before amount",
+      "After" : "After amount",
+      "Off" : "Don't display symbol"
+    },
+    "Button" : {
+      "Apply" : "Apply Settings",
+      "Create" : "Create Budget"
+    }
+  },
+  "ReconcileAccountModal" : {
+    "Label" : {
+      "Balance" : "Is your current account balance",
+      "How" : "How do I find my account balance?"
+    },
+    "Button" : {
+      "Yes" : "Yes",
+      "No" : "No"
+    }
+  },
+  "AccountSettingsModal" : {
+    "Placeholder" : {
+      "Note" : "Enter a note (not your account number)..."
+    },
+    "Label" : {
+      "Balance" : "Today's Balance:",
+      "Import" : "Use your bank login to import transactions",
+      "Info" : "An adjustment transaction will be created automatically if you change this amount."
+    },
+    "Button" : {
+      "Close" : "Close Account",
+      "Reopen" : "Re-open",
+    }
+  },
+  "AddAccountModal" : {
+    "Title" : {
+      "NewAccount" : "Add a New Account",
+      "AccountName" : "Account Name:",
+      "AccountType" : "Account Type:",
+      "Balance" : "Today's Balance:",
+      "TransactionImport" : "Transaction Import",
+      "Examples" : "Examples",
+      "Or" : ", or",
+      "Popular" : "Popular Options",
+      "Budget" : "Budget",
+      "Tracking" : "Tracking",
+      "Text" : "Use your bank login to import transactions"
+      },
+    "Placeholder" : {
+      "NewAccount" : "New Account",
+      "Balance" : "What is the balance of this account right now?",
+      "Search" : "search for your bank’s name",
+    },
+    "Button" : {
+      "AddAccount" : "Add Account",
+    },
+    "AccountType" : {
+      "AccountType" : "Select an Account Type...",
+      "Checking" : "Checking",
+      "Savings" : "Savings",
+      "CreditCard" : "Credit Card",
+      "Cash" : "Cash",
+      "LineOfCredit" : "Line of Credit",
+      "PayPal" : "PayPal",
+      "Merchant" : "Merchant Account",
+      "Investment" : "Investment Account",
+      "Mortgage" : "Mortgage",
+      "OtherAsset" : "Other Asset",
+      "OtherLiability" : "Other Liability",
+    }
+  },
+  "AccountFiltersModal" : {
+    "Title" : "Filter Transactions",
+    "Label" : {
+      "ThisMonth" : "This Month",
+      "Latest3Months" : "Latest 3 Months",
+      "ThisYear" : "This Year",
+      "LastYear" : "Last Year",
+      "AllDates" : "All Dates",
+      "From" : "From",
+      "To" : "To",
+      "Show" : "Show",
+      "Reconciled" : "Reconciled Transactions",
+      "Scheduled" : "Scheduled Transactions"
     }
   }
 }
