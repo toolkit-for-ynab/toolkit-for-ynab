@@ -1,17 +1,22 @@
 #!/usr/bin/env python
-
+"""Assemble features from separate directories and prepare files for use in the browser."""
 import os
 import json
 import traceback
-import urllib
 import re
+try:
+    from urllib.request import pathname2url
+except ImportError:
+    from urllib import pathname2url
 
 allSettings = []
 allFeedChangesContent = set()
 previousNames = set()
 
+
 def checkIndividualSetting(setting, dirName):
-    if not 'name' in setting:
+    """Validate feature settings in a given dirName."""
+    if 'name' not in setting:
         raise ValueError('Every setting must have a name property.')
 
     if setting['name'] in previousNames:
@@ -19,16 +24,16 @@ def checkIndividualSetting(setting, dirName):
 
     previousNames.add(setting['name'])
 
-    if not 'type' in setting:
+    if 'type' not in setting:
         raise ValueError('Every setting must have a type property.')
 
     if setting['type'] != 'checkbox' and setting['type'] != 'select':
         raise ValueError('Only checkbox and select settings are supported at this time. Pull requests are welcome!')
 
-    if not 'title' in setting:
+    if 'title' not in setting:
         raise ValueError('Every setting must have a title.')
 
-    if not 'actions' in setting:
+    if 'actions' not in setting:
         raise ValueError('Every setting must declare actions that happen when the setting is activated.')
 
     for action in setting['actions']:
@@ -39,20 +44,20 @@ def checkIndividualSetting(setting, dirName):
             raise ValueError('Actions must have an even number of elements, for example ["injectCSS", "main.css"].')
 
     if setting['type'] == 'checkbox':
-        if not 'true' in setting['actions'] and not 'false' in setting['actions']:
+        if 'true' not in setting['actions'] and 'false' not in setting['actions']:
             raise ValueError('Checkbox settings must declare an action for "true" or "false" to have any effect.')
     elif setting['type'] == 'select':
-        if not '1' in setting['actions']:
-            raise ValueError('Select settings must declar an action for "1" to have any effect.')
+        if '1' not in setting['actions']:
+            raise ValueError('Select settings must declare an action for "1" to have any effect.')
 
     # Apply the defaults.
-    if not 'section' in setting:
+    if 'section' not in setting:
         setting['section'] = 'general'
 
-    if not 'default' in setting:
+    if 'default' not in setting:
         setting['default'] = False
 
-    if not 'description' in setting:
+    if 'description' not in setting:
         setting['description'] = ''
 
     # Give a relative path to the files in the actions section that the settings system can understand
@@ -66,7 +71,7 @@ def checkIndividualSetting(setting, dirName):
                 fullPath = os.path.join(dirName, setting['actions'][action][i + 1])
 
                 # Convert to / if we're on Windows
-                fullPath = urllib.pathname2url(fullPath)
+                fullPath = pathname2url(fullPath)
 
                 fullPath = fullPath.replace("./src/common/", "")
 
@@ -74,14 +79,17 @@ def checkIndividualSetting(setting, dirName):
 
             i += 2
 
+
 def checkSettingStructure(setting, dirName):
+    """Validate the structure of a given setting or group of settings."""
     if isinstance(setting, dict):
         checkIndividualSetting(setting, dirName)
     elif isinstance(setting, list):
         for individualSetting in setting:
             checkIndividualSetting(individualSetting, dirName)
     else:
-        raise ValueError('Settings must be a single JSON object or an array of JSON objects. See the setting file in hide-age-of-money for an example setting.')
+        raise ValueError('Settings must be a single JSON object or an array of JSON objects. '
+                         'See the setting file in hide-age-of-money for an example setting.')
 
 for dirName, subdirList, fileList in os.walk('./src/common/res/features/'):
 
@@ -94,21 +102,21 @@ for dirName, subdirList, fileList in os.walk('./src/common/res/features/'):
                 checkSettingStructure(settingsContents, dirName)
             except ValueError:
                 formatted_lines = traceback.format_exc().splitlines()
-                print "[  ERROR] Settings error: {0}".format(formatted_lines[-1])
-                print "[  ERROR] While processing file: {0}".format(settingsFile.name)
-                print "--------------------------------------------------------------------------------"
-                print "[  ERROR] EXTENSION WAS NOT BUILT. Please fix the settings errors and try again."
-                print "--------------------------------------------------------------------------------"
-                print ""
+                print("[  ERROR] Settings error: {0}".format(formatted_lines[-1]))
+                print("[  ERROR] While processing file: {0}".format(settingsFile.name))
+                print("--------------------------------------------------------------------------------")
+                print("[  ERROR] EXTENSION WAS NOT BUILT. Please fix the settings errors and try again.")
+                print("--------------------------------------------------------------------------------")
+                print("")
                 exit(1)
 
             # Ok, we're happy, add it to the output.
             if isinstance(settingsContents, dict):
-                if not 'hidden' in settingsContents or not settingsContents['hidden']:
+                if 'hidden' not in settingsContents or not settingsContents['hidden']:
                     allSettings.append(settingsContents)
             else:
                 for setting in settingsContents:
-                    if not 'hidden' in settingsContents or not settingsContents['hidden']:
+                    if 'hidden' not in settingsContents or not settingsContents['hidden']:
                         allSettings.append(setting)
 
 # Write the settings file with some helper functions
