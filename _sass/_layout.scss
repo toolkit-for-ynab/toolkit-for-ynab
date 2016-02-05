@@ -60,10 +60,9 @@
       }
     }
     .thirdContent {
-      width: 70%;
-      margin-left: 15%;
       display: flex;
       flex-direction: column;
+      margin: 0 auto;
       div {
         display: flex;
         flex: 1;
@@ -71,9 +70,12 @@
       }
       .rowOne, .rowTwo, .rowThree, .rowFour {
         flex: 1;
+        border: 1px dotted red;
         h1, div {
           flex: 1;
           text-align: left;
+          border: 1px dotted black;
+          margin-bottom: 0;
         }
       }
       .rowOne {
