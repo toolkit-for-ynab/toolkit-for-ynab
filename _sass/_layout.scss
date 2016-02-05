@@ -64,23 +64,27 @@
       margin-left: 15%;
       display: flex;
       flex-direction: column;
-      .rowOne {
+      div {
         display: flex;
         flex: 1;
         flex-direction: row;
-        div {
+      }
+      .rowOne, .rowTwo, .rowThree, .rowFour {
+        flex: 1;
+        h1, div {
           flex: 1;
+          text-align: left;
+        }
+      }
+      .rowOne {
+        div {
           background-image: url("/images/pie.svg");
           background-size: contain;
           background-repeat: no-repeat;
         }
       }
-      .rowTwo {
-        display: flex;
-        flex: 1;
-        flex-direction: row;
+      .rowThree {
         div {
-          flex: 1;
           background-image: url("/images/pie.svg");
           background-size: contain;
           background-repeat: no-repeat;
@@ -94,7 +98,6 @@
       background-size: contain;
       background-repeat: no-repeat;
       background-attachment: fixed;
-      margin-bottom: 15vh;
       color: #fff;
       padding-top: 20vh;
       padding-bottom: 20vh;
