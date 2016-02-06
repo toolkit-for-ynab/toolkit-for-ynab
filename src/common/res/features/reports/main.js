@@ -12,13 +12,24 @@
 
         function updateCanvasSize() {
           // Set the canvas dimensions to the parent element dimensions.
-          var container = $('div.scroll-wrap').closest('.ember-view');
-          var reportsPanel = $('#reports-panel');
+          var width = $('div.scroll-wrap').closest('.ember-view').innerWidth() - 10;
+          var height = $(window).height() - $('#reports-panel').height() - 20;
 
+          // If we just set the width and height of the canvas, not max-height,
+          // the chart resizes off the bottom of the screen because it calculates
+          // based on an aspect ratio and the width. It will respect the max-height
+          // CSS value though, so whatever, just set both.
           $('#reportCanvas')
-            .attr('width', container.innerWidth())
-            .attr('height', container.innerHeight() - reportsPanel.innerHeight() - 20);
+            .attr('width', width)
+            .attr('height', height)
+            .css({'max-height' : height });
+
+          if (ynabToolKit.reports.netWorthReportChart) {
+            ynabToolKit.reports.netWorthReportChart.resize();
+          }
         }
+
+        $(window).resize(updateCanvasSize);
 
         function setUpReportsButton() {
           var reportsBtn =
@@ -148,6 +159,9 @@
           // Clear out the content and put ours in there instead.
           $('div.scroll-wrap').closest('.ember-view').prepend(
             '<div id="reports-panel"> \
+              <div id="reports-header"> \
+                <h2><span class="ember-view flaticon stroke document-4"></span> Net Worth Report</h2> \
+              </div> \
               <div id="reports-filter"> \
                 <h3>Filters</h3> \
                 <span class="reports-filter-name">Timeframe</span> \
@@ -177,9 +191,7 @@
           );
 
           // The budget header is absolute positioned
-          $('.budget-header').hide();
-
-          updateCanvasSize();
+          $('.budget-header, .scroll-wrap').hide();
 
           calculateNetWorthReport();
 
@@ -246,14 +258,17 @@
             }]
           };
 
+          updateCanvasSize();
+
           var ctx = document.getElementById("reportCanvas").getContext("2d");
 
           ynabToolKit.reports.netWorthReportChart = new Chart(ctx, {
             type: 'bar',
             data: chartData,
             options: {
-              responsive: true,
+              responsive: false,
               responsiveAnimationDuration: 2500,
+              maintainAspectRatio: false,
               legend: {
                 display: false
               },
@@ -321,8 +336,8 @@
               // Get rid of our UI
               $('#reports-panel, #reports-inspector, #reportCanvas').remove();
 
-              // And restore the budget header we hid earlier
-              $('.budget-header').show();
+              // And restore the YNAB stuff we hid earlier
+              $('.budget-header, .scroll-wrap').show();
             }
           }
         };

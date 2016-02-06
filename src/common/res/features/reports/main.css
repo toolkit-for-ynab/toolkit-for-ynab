@@ -1,10 +1,29 @@
 /* Filter Panel */
 
+#reports-header {
+  color: white;
+  background-color: #003540;
+  font-family: 'Lato',Arial,'Helvetica Neue',Helvetica,sans-serif;
+  width: 100%;
+  padding: 2px 0;
+}
+
+#reports-header h2 {
+  margin-left: 25px;
+  font-weight: 300;
+}
+
+#reports-header h2 span {
+  color: #fed168;
+}
+
 #reports-filter {
-  display: block;
+  display: flex;
+  justify-content: flex-start;
   height: 140px;
   background-color: #F4F4F4;
-  margin: 0 10px;
+  margin: 10px 10px 0 10px;
+  border: 1px solid #CCCCCC;
 
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
@@ -13,20 +32,20 @@
 
 #reports-filter h3 {
   display: block;
-  margin: 10px 15px 5px 20px;
-  padding: 16px 0 0 0;
+  margin-left: 19px;
+  align-self: flex-start;
 }
 
 #reports-filter span {
-  display: inline-block;
-  margin: 15px 0 0 20px;
+  align-self: center;
 }
 
 /* Date Filter */
 
 #reports-date-filter {
-  width: 75%;
-  margin: -15px auto 40px;
+  flex: 1;
+  align-self: center;
+  margin: 0 39px 0 29px;
 }
 
 .noUi-connect {
