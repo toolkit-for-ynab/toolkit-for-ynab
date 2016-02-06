@@ -342,5 +342,18 @@ ynabToolKit.l10nData = {
       "Reconciled" : "Сверенные",
       "Scheduled" : "Запланированные"
     }
+  },
+  "EditTransactionModal" : {
+    "Button" : {
+      "MarkAsCleared" : "Отметить для сведения",
+      "MarkAsUncleared" : "Убрать отметку",
+      "Approve" : "Подтвердить",
+      "Reject" : "Отказать",
+      "CategorizeAs" : "Категория",
+      "MoveToAccount" : "Поменять аккаунт",
+      "Delete" : "Удалить",
+      "Inflow" : "Доход",
+      "ToBeBudgeted" : "Для бюджетирования"
+    }
   }
 }

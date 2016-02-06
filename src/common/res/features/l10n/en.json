@@ -342,5 +342,18 @@ ynabToolKit.l10nData = {
       "Reconciled" : "Reconciled Transactions",
       "Scheduled" : "Scheduled Transactions"
     }
+  },
+  "EditTransactionModal" : {
+    "Button" : {
+      "MarkAsCleared" : "Mark as Cleared",
+      "MarkAsUncleared" : "Mark as Uncleared",
+      "Approve" : "Approve",
+      "Reject" : "Reject",
+      "CategorizeAs" : "Categorize As",
+      "MoveToAccount" : "Move to account",
+      "Delete" : "Delete",
+      "Inflow" : "Inflow",
+      "ToBeBudgeted" : "To be Budgeted"
+    }
   }
 }

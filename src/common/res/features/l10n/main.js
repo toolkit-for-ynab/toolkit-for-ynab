@@ -639,6 +639,26 @@
         );
       }
 
+      this.editTransactionModal = function () {
+        contentSetter.selectorPrefix = '.modal-account-edit-transaction-list>div>ul>li>';
+        contentSetter.setArray(
+          [
+            l10n.EditTransactionModal.Button.MarkAsCleared,
+            l10n.EditTransactionModal.Button.MarkAsUncleared,
+            l10n.EditTransactionModal.Button.Approve,
+            l10n.EditTransactionModal.Button.Reject,
+            l10n.EditTransactionModal.Button.CategorizeAs,
+            l10n.EditTransactionModal.Button.MoveToAccount
+          ],
+          'button', 2, 5
+        );
+        contentSetter.setSeveral(
+          [l10n.EditTransactionModal.Button.Delete, 33, 'button'],
+          [l10n.EditTransactionModal.Button.Inflow, 1, 'ul>li>button'],
+          [l10n.EditTransactionModal.Button.ToBeBudgeted, 0, 'ul>li>ul>li span']
+        );
+      }
+
       this.observe = function(changedNodes) {
 
         if ( changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals') ) {
@@ -730,6 +750,11 @@
         if (changedNodes.has('account-modal') || changedNodes.has('modal-content') ||
             changedNodes.has('right-circle-2') || changedNodes.has('left-circle-2')) {
           ynabToolKit.l10n.accountModal();
+        }
+
+        // Edit transaction dropdown
+        if (changedNodes.has('modal-account-edit-transaction-list')) {
+          ynabToolKit.l10n.editTransactionModal();
         }
 
         // Selection in modal
