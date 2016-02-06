@@ -5,3 +5,5 @@ output/*
 certificates/*
 *.pyc
 /.project
+src/common/res/features/allSettings.js
+src/common/res/features/shared/feedChanges.js
