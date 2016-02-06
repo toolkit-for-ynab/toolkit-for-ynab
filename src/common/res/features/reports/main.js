@@ -88,7 +88,10 @@
 
             // If it's time to push the next month's data into the arrays let's
             // go for it.
-            if (formattedDate != lastLabel || transactions.indexOf(transaction) == transactions.length - 1) {
+            if (formattedDate != lastLabel ||
+              // If we're on the last transaction and haven't yet pushed one, we've got a single month budget
+              (transactions.indexOf(transaction) == transactions.length - 1 &&
+               ynabToolKit.reports.netWorth.labels.length == 0)) {
               ynabToolKit.reports.netWorth.labels.push(formattedDate);
 
               var totalAssets = 0, totalLiabilities = 0;
