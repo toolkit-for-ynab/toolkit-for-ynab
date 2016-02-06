@@ -44,7 +44,7 @@
           var ctx = document.getElementById("reportCanvas").getContext("2d");
 
           var accounts = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result;
-          var transactions = accounts.transactionDisplayItemsCollection._internalDataArray;
+          var transactions = accounts.transactionDisplayItemsCollection._internalDataArray.copy();
 
           var lastLabel = null,
             labels = [],
@@ -184,9 +184,13 @@
         };
 
         this.observe = function(changedNodes) {
-          if (changedNodes.has('navlink-budget') || changedNodes.has('navlink-accounts')) {
+          if (changedNodes.has('navlink-budget') ||
+              changedNodes.has('navlink-accounts') ||
+              changedNodes.has('nav-account-row')) {
 
-            if ($('.navlink-budget').hasClass('active') || $('.navlink-accounts').hasClass('active')) {
+            if ($('.navlink-budget').hasClass('active') ||
+                $('.navlink-accounts').hasClass('active') ||
+                $('.nav-account-row').hasClass('is-selected')) {
               // The user has left the reports page.
               // We're no longer the active page.
               $('.navlink-reports').removeClass('active');
