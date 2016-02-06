@@ -570,7 +570,7 @@
             $('.modal-actions button').contents()[0].textContent = l10n.Global.Button.Cancel;
             $('.modal-actions button').contents()[3].textContent = l10n.Global.Button.Back;
             $('.account-modal dd').contents()[5].textContent = l10n.AddAccountModal.Title.Examples;
-            $('.account-modal dd').contents()[10].textContent = l10n.AddAccountModal.Title.Or;
+            $('.account-modal dd').contents()[10].textContent = l10n.AddAccountModal.Title.Or + " ";
             $('.account-modal input')[0].placeholder = l10n.AddAccountModal.Placeholder.Search;
             contentSetter.setSeveral(
               [l10n.AddAccountModal.Title.Popular, 0, 'dt']
@@ -657,6 +657,16 @@
           [l10n.EditTransactionModal.Button.Inflow, 1, 'ul>li>button'],
           [l10n.EditTransactionModal.Button.ToBeBudgeted, 0, 'ul>li>ul>li span']
         );
+      }
+
+      this.accountRow = function () {
+        $('.ynab-grid-cell-payeeName[title="Starting Balance"]').contents().each(function() {
+          if (this.textContent == 'Starting Balance') this.textContent = l10n.Accounts.Table.StartingBalance;
+        });
+        $('.ynab-grid-cell-subCategoryName[title="Inflow: To be Budgeted"]').contents().each(function() {
+          if (this.textContent == 'Inflow: To be Budgeted') this.textContent = l10n.Accounts.Table.InflowTBB;
+        });
+
       }
 
       this.observe = function(changedNodes) {
@@ -771,6 +781,11 @@
         // Account filters modal
         if (changedNodes.has('modal-account-filters')) {
           ynabToolKit.l10n.accountFiltersModal();
+        }
+
+        // Account row
+        if (changedNodes.has('ynab-grid-body-row')) {
+          ynabToolKit.l10n.accountRow();
         }
       }
 

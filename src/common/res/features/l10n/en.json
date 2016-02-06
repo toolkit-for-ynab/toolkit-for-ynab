@@ -178,7 +178,9 @@ ynabToolKit.l10nData = {
       "Category" : "CATEGORY",
       "Memo" : "MEMO",
       "Outflow" : "OUTFLOW",
-      "Inflow" : "INFLOW"
+      "Inflow" : "INFLOW",
+      "StartingBalance" : "Starting Balance",
+      "InflowTBB" : "Inflow: To be Budgeted"
     },
     "Text" : {
       "Hidden" : "transactions hidden by filters.",

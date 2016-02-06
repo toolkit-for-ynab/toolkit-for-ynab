@@ -121,7 +121,7 @@ ynabToolKit.l10nData = {
         "CreateGoal" : "Задайте Цель",
         "GoalTarget" : "Цель",
         "UpcomingTransactions" : "Запланированные транзакции",
-        "BalanceToZero" : "Доступно в ноль:"
+        "BalanceToZero" : "Доступно в ноль"
       },
       "Text" : {
         "Message" : {
@@ -178,7 +178,9 @@ ynabToolKit.l10nData = {
       "Category" : "Категория",
       "Memo" : "Заметка",
       "Outflow" : "Трата",
-      "Inflow" : "Поступление"
+      "Inflow" : "Поступление",
+      "StartingBalance" : "Стартовый баланс",
+      "InflowTBB" : "Доход: Для бюджетирования"
     },
     "Text" : {
       "Hidden" : "транзакц. скрыто фильтрами.",
@@ -298,7 +300,7 @@ ynabToolKit.l10nData = {
       "AccountType" : "Тип:",
       "Balance" : "Текущий баланс:",
       "TransactionImport" : "Импорт транзакций",
-      "Examples" : "Примеры: ",
+      "Examples" : "Примеры",
       "Or" : ", или",
       "Popular" : "Популярные",
       "Budget" : "Бюджетные",
