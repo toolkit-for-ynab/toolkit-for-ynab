@@ -338,6 +338,9 @@
               $('.navlink-reports').removeClass('active');
 
               // Get rid of our UI
+              ynabToolKit.reports.netWorthReportChart.destroy();
+              ynabToolKit.reports.netWorthReportChart = null;
+              
               $('#reports-panel, #reports-inspector, #reportCanvas').remove();
 
               // And restore the YNAB stuff we hid earlier
