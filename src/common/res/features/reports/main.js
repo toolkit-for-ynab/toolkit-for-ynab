@@ -281,6 +281,10 @@
                   if (points.length > 0) {
                     var index = points[0]._index;
 
+                    // Need to calculate the adjusted index for the date filter if it's applied.
+                    var values = document.getElementById('reports-date-filter').noUiSlider.get();
+                    index += ynabToolKit.reports.netWorth.labels.indexOf(values[0]);
+
                     var liabilities = ynabToolKit.reports.netWorth.liabilities[index];
                     var assets = ynabToolKit.reports.netWorth.assets[index];
                     var netWorth = ynabToolKit.reports.netWorth.netWorths[index];
