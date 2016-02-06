@@ -16,7 +16,7 @@
         var currentMonthName = l10n.Global.Month[selectedMonth.getMonth()];
         var previousMonthName;
         if (selectedMonth.getMonth() == 0) {
-          previousMonthName = l10n.Global.Month[12];
+          previousMonthName = l10n.Global.Month[11];
         }
         else {
           previousMonthName = l10n.Global.Month[selectedMonth.getMonth() - 1];
