@@ -120,7 +120,8 @@ ynabToolKit.l10nData = {
         "AverageSpent" :  "Средние расходы",
         "CreateGoal" : "Задайте Цель",
         "GoalTarget" : "Цель",
-        "UpcomingTransactions" : "Запланированные транзакции"
+        "UpcomingTransactions" : "Запланированные транзакции",
+        "BalanceToZero" : "Доступно в ноль:"
       },
       "Text" : {
         "Message" : {

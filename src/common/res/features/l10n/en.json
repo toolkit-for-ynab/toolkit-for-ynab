@@ -120,7 +120,8 @@ ynabToolKit.l10nData = {
         "AverageSpent" : "Average Spent",
         "CreateGoal" : "Create a goal",
         "GoalTarget" : "Goal Target",
-        "UpcomingTransactions" : "Upcoming Transactions"
+        "UpcomingTransactions" : "Upcoming Transactions",
+        "BalanceToZero" : "Balance to 0.00:"
       },
       "Text" : {
         "Message" : {
