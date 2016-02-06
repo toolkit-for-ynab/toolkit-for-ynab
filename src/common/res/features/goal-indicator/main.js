@@ -27,7 +27,7 @@
 
           if (calculation.goalExpectedCompletion > 0) {
             // Target total goal
-            addIndicator(this, "T", "Taget balance");
+            addIndicator(this, "T", "Target balance");
           }
           else if (calculation.goalTarget > 0) {
             // Taget by date
