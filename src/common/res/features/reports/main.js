@@ -33,6 +33,19 @@
           $(".nav-main").append(reportsBtn);
 
           $(".navlink-reports").on("click", showReports);
+
+          $('.navlink-budget, .navlink-accounts, .nav-account-row').on("click", function() {
+            // They're trying to navigate away.
+            // Restore the highlight on whatever they're trying to click on.
+            // For example, if they were on the Budget tab, then clicked on Reports, clicking on
+            // Budget again wouldn't do anything as YNAB thinks they're already there. This switches
+            // the correct classes back on and triggers our .observe below.
+            if ($(this).hasClass('navlink-budget') || $(this).hasClass('navlink-accounts')) {
+              $(this).addClass('active');
+            } else if ($(this).hasClass('nav-account-row')) {
+              $(this).addClass('is-selected');
+            }
+          });
         }
 
         function calculateNetWorthReport() {
@@ -132,10 +145,8 @@
           $('.nav-account-row').removeClass('is-selected');
           $('.navlink-reports').addClass('active');
 
-          // Get width and height of parent element to set up the canvas
           // Clear out the content and put ours in there instead.
-          $('div.scroll-wrap').hide()
-          $('div.scroll-wrap').closest('.ember-view').append(
+          $('div.scroll-wrap').closest('.ember-view').prepend(
             '<div id="reports-panel"> \
               <div id="reports-filter"> \
                 <h3>Filters</h3> \
@@ -165,6 +176,9 @@
             <canvas id="reportCanvas" width="100" height="100"></canvas>'
           );
 
+          // The budget header is absolute positioned
+          $('.budget-header').hide();
+
           updateCanvasSize();
 
           calculateNetWorthReport();
@@ -180,7 +194,6 @@
           if (savedStart) {
             start = savedStart.split(',');
           }
-          debugger;
 
           // Set up the date filter.
           noUiSlider.create(dateFilter, {
@@ -305,9 +318,11 @@
               // We're no longer the active page.
               $('.navlink-reports').removeClass('active');
 
-              // And we should restore the elements we replaced earlier.
-              $('#reportCanvas').remove();
-              $('div.scroll-wrap').show();
+              // Get rid of our UI
+              $('#reports-panel, #reports-inspector, #reportCanvas').remove();
+
+              // And restore the budget header we hid earlier
+              $('.budget-header').show();
             }
           }
         };

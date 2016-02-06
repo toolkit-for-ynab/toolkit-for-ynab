@@ -1,7 +1,7 @@
 {
          "name": "reports",
          "type": "checkbox",
-      "default": false,
+      "default": true,
       "section": "general",
         "title": "Reports",
   "description": "Adds a button to the side bar to access reports. At this stage only the Net Worth report is implemented.",
