@@ -683,7 +683,19 @@
         $('.ynab-grid-cell-subCategoryName[title="Inflow: To be Budgeted"]').contents().each(function() {
           if (this.textContent == 'Inflow: To be Budgeted') this.textContent = l10n.Accounts.Table.InflowTBB;
         });
+      }
 
+      this.accountRowEditing = function () {
+        $('.ynab-grid-cell-payeeName input')[0].placeholder = l10n.Accounts.Placeholder.Payee;
+        $('.ynab-grid-cell-subCategoryName input')[0].placeholder = l10n.Accounts.Placeholder.Category;
+        $('.ynab-grid-cell-outflow input')[0].placeholder = l10n.Accounts.Placeholder.Outflow;
+        $('.ynab-grid-cell-inflow input')[0].placeholder = l10n.Accounts.Placeholder.Inflow;
+        contentSetter.selectorPrefix = '.ynab-grid-body-row.is-editing button';
+        contentSetter.setSeveral(
+          [l10n.Accounts.Button.SaveAndAdd, 4],
+          [l10n.Accounts.Button.Save, 10],
+          [l10n.Global.Button.Cancel, 15]
+        );
       }
 
       this.observe = function(changedNodes) {
@@ -776,7 +788,7 @@
         // Account settings and new account modal
         if (changedNodes.has('account-modal') || changedNodes.has('modal-content') ||
             changedNodes.has('right-circle-2') || changedNodes.has('left-circle-2') ||
-            changedNodes.has('institution-list') || hangedNodes.has('checkmark-2')) {
+            changedNodes.has('institution-list') || changedNodes.has('checkmark-2')) {
           ynabToolKit.l10n.accountModal();
         }
 
@@ -804,6 +816,11 @@
         // Account row
         if (changedNodes.has('ynab-grid-body-row')) {
           ynabToolKit.l10n.accountRow();
+        }
+
+        // Account row editing
+        if (changedNodes.has('ynab-grid-hide-notification')) {
+          ynabToolKit.l10n.accountRowEditing();
         }
       }
 

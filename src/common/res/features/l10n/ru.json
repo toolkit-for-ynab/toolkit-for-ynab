@@ -169,7 +169,9 @@ ynabToolKit.l10nData = {
       "AddTransaction" : "Новая транзакция",
       "EditTransaction" : "Изменить",
       "Filter" : "Фильтрация",
-      "ToogleSplits" : "Сплиты"
+      "ToogleSplits" : "Сплиты",
+      "Save" : "Сохранить",
+      "SaveAndAdd" : "Сохранить и добавить"
     },
     "Table" : {
       "Account" : "Аккаунт",
@@ -185,6 +187,12 @@ ynabToolKit.l10nData = {
     "Text" : {
       "Hidden" : "транзакц. скрыто фильтрами.",
       "Show" : "Показать скрытые транзакции."
+    },
+    "Placeholder" : {
+      "Payee" : "плательщик",
+      "Category" : "категория",
+      "Outflow" : "трата",
+      "Inflow" : "поступление"
     }
   },
   "Sidebar" : {

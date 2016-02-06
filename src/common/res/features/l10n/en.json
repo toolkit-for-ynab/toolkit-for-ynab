@@ -169,7 +169,9 @@ ynabToolKit.l10nData = {
       "AddTransaction" : "Add a transaction",
       "EditTransaction" : "Edit",
       "Filter" : "Filter",
-      "ToogleSplits" : "Toogle Splits"
+      "ToogleSplits" : "Toogle Splits",
+      "Save" : "Save",
+      "SaveAndAdd" : "Save and add another"
     },
     "Table" : {
       "Account" : "ACCOUNT",
@@ -185,6 +187,12 @@ ynabToolKit.l10nData = {
     "Text" : {
       "Hidden" : "transactions hidden by filters.",
       "Show" : "Show hidden transactions."
+    },
+    "Placeholder" : {
+      "Payee" : "payee",
+      "Category" : "category",
+      "Outflow" : "outflow",
+      "Inflow" : "inflow"
     }
   },
   "Sidebar" : {
