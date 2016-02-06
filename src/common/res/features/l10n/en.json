@@ -167,7 +167,7 @@ ynabToolKit.l10nData = {
     },
     "Button" : {
       "AddTransaction" : "Add a transaction",
-      "EditTransaction" : "Add a transaction",
+      "EditTransaction" : "Edit",
       "Filter" : "Filter",
       "ToogleSplits" : "Toogle Splits"
     },
