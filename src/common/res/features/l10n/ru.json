@@ -303,6 +303,7 @@ ynabToolKit.l10nData = {
       "Examples" : "Примеры",
       "Or" : ", или",
       "Popular" : "Популярные",
+      "Founded" : "Вот, что мы нашли",
       "Budget" : "Бюджетные",
       "Tracking" : "Внебюджетные",
       "Text" : "Импорт транзакций напрямую из банка"
@@ -314,6 +315,7 @@ ynabToolKit.l10nData = {
     },
     "Button" : {
       "AddAccount" : "Создать",
+      "Continue" : "Продолжить без соединения с банком"
     },
     "AccountType" : {
       "AccountType" : "Выберите тип аккаунта...",
@@ -328,6 +330,9 @@ ynabToolKit.l10nData = {
       "Mortgage" : "Ипотека",
       "OtherAsset" : "Другой актив",
       "OtherLiability" : "Другой долговой",
+    },
+    "Text" : {
+      "CouldntFind" : "Мы не смогли найти банк с таким названием."
     }
   },
   "AccountFiltersModal" : {

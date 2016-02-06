@@ -303,6 +303,7 @@ ynabToolKit.l10nData = {
       "Examples" : "Examples",
       "Or" : ", or",
       "Popular" : "Popular Options",
+      "Founded" : "Here's who we found",
       "Budget" : "Budget",
       "Tracking" : "Tracking",
       "Text" : "Use your bank login to import transactions"
@@ -314,6 +315,7 @@ ynabToolKit.l10nData = {
     },
     "Button" : {
       "AddAccount" : "Add Account",
+      "Continue" : "Continue with a manual account"
     },
     "AccountType" : {
       "AccountType" : "Select an Account Type...",
@@ -328,6 +330,9 @@ ynabToolKit.l10nData = {
       "Mortgage" : "Mortgage",
       "OtherAsset" : "Other Asset",
       "OtherLiability" : "Other Liability",
+    },
+    "Text" : {
+      "CouldntFind" : "We couldn't find a bank named \"...\" that's available for direct connect. No worries. YNAB works like a champ with accounts that don't directly connect to banks."
     }
   },
   "AccountFiltersModal" : {

@@ -546,6 +546,7 @@
       this.accountModal = function () {
         contentSetter.selectorPrefix = '.account-modal ';
         if ($('.account-modal .edit-todays-balance').length == 1) {
+          // Account settings
           $(contentSetter.selectorPrefix + 'textarea')[0].setAttribute("placeholder", l10n.AccountSettingsModal.Placeholder.Note);
           contentSetter.setSeveral(
             [l10n.AccountSettingsModal.Label.Balance, 0, 'dt'],
@@ -563,20 +564,19 @@
           }
         }
         else {
+          // Add new account
+          // There is problem if user can't find his bank in the DI list and presses the button.
+          // Changed nodes have no classes.
           contentSetter.setSeveral(
             [l10n.AddAccountModal.Title.NewAccount, 1, '.modal-header']
           )
-          if ($('.modal-actions button').contents()[0].textContent == "Cancel") {
-            $('.modal-actions button').contents()[0].textContent = l10n.Global.Button.Cancel;
-            $('.modal-actions button').contents()[3].textContent = l10n.Global.Button.Back;
-            $('.account-modal dd').contents()[5].textContent = l10n.AddAccountModal.Title.Examples;
-            $('.account-modal dd').contents()[10].textContent = l10n.AddAccountModal.Title.Or + " ";
-            $('.account-modal input')[0].placeholder = l10n.AddAccountModal.Placeholder.Search;
-            contentSetter.setSeveral(
-              [l10n.AddAccountModal.Title.Popular, 0, 'dt']
-            );
+          if ($('.account-modal .todays-balance').length > 0) {
+            var balanceInput = $('.account-modal .todays-balance input')[1];
+            balanceInput.placeholder = l10n.AddAccountModal.Placeholder.Balance;
+            contentSetter.set(l10n.AddAccountModal.Title.Balance, 0, '.todays-balance dt');
           }
-          else {
+          if ($('.modal-account-settings-account-type').length > 0) {//$('.modal-actions modal-account-settings-name').contents()[0].textContent == "Cancel") {
+            // Add new account 1st page
             $('.modal-actions button').contents()[7].textContent = l10n.Global.Button.Cancel;
             if ($('.modal-actions button').contents()[2].textContent == "Next") $('.modal-actions button').contents()[2].textContent = l10n.Global.Button.Next;
             if ($('.modal-actions button').contents()[2].textContent == "Add Account") $('.modal-actions button').contents()[2].textContent = l10n.AddAccountModal.Button.AddAccount;
@@ -584,7 +584,6 @@
             contentSetter.setSeveral(
               [l10n.AddAccountModal.Title.AccountName, 0, 'dt'],
               [l10n.AddAccountModal.Title.AccountType, 1, 'dt'],
-              [l10n.AddAccountModal.Title.Balance, 2, 'dt'],
               [l10n.AddAccountModal.Title.TransactionImport, 0, '.header'],
               [l10n.AddAccountModal.Title.Text, 1, '.label-checkbox']
             );
@@ -597,7 +596,25 @@
             $('.modal-account-settings-account-type optgroup')[0].label = l10n.AddAccountModal.Title.Budget;
             $('.modal-account-settings-account-type optgroup')[1].label = l10n.AddAccountModal.Title.Tracking;
             $('.account-modal input')[0].placeholder = l10n.AddAccountModal.Placeholder.NewAccount;
-            if ($('.account-modal input')[1]) $('.account-modal input')[1].placeholder = l10n.AddAccountModal.Placeholder.Balance;
+          }
+          else if ($('.institution-list').length > 0) {
+            // Add new account 2nd page
+            $('.account-modal input')[0].placeholder = l10n.AddAccountModal.Placeholder.Search;
+            contentSetter.setSeveral(
+              [l10n.Global.Button.Cancel, 0, '.modal-actions button'],
+              [l10n.Global.Button.Back, 3, '.modal-actions button'],
+              [l10n.AddAccountModal.Title.Examples, 5, 'dd'],
+              [l10n.AddAccountModal.Title.Or + " ", 10, 'dd']
+            );
+            var banksListTitle = $('.account-modal dt').contents()[0];
+            if (banksListTitle.textContent == "Popular Options") banksListTitle.textContent = l10n.AddAccountModal.Title.Popular;
+            if (banksListTitle.textContent == "Here's who we found") banksListTitle.textContent = l10n.AddAccountModal.Title.Founded;
+            if ($('.institution-list p').length > 0) {
+              contentSetter.setSeveral(
+                [l10n.AddAccountModal.Text.CouldntFind, 0, '.institution-list p'],
+                [l10n.AddAccountModal.Button.Continue, 0, '.institution-list button']
+              )
+            }
           }
         }
       }
@@ -758,7 +775,8 @@
 
         // Account settings and new account modal
         if (changedNodes.has('account-modal') || changedNodes.has('modal-content') ||
-            changedNodes.has('right-circle-2') || changedNodes.has('left-circle-2')) {
+            changedNodes.has('right-circle-2') || changedNodes.has('left-circle-2') ||
+            changedNodes.has('institution-list') || hangedNodes.has('checkmark-2')) {
           ynabToolKit.l10n.accountModal();
         }
 
