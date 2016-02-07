@@ -38,8 +38,6 @@ ynabToolKit.l10nData = {
       "11" : "Декабрь",
     },
     "Title" : {
-      "TodaysBalance" : "Today's Balance:",
-      "DirectImport" : "Use your bank login to import transactions",
       "Search" : "Поиск"
     },
     "Placeholder" : {
@@ -171,7 +169,7 @@ ynabToolKit.l10nData = {
       "Filter" : "Фильтрация",
       "ToogleSplits" : "Сплиты",
       "Save" : "Сохранить",
-      "SaveAndAdd" : "Сохранить и добавить"
+      "SaveAndAdd" : "Сохранить и продолжить"
     },
     "Table" : {
       "Account" : "Аккаунт",
@@ -182,7 +180,8 @@ ynabToolKit.l10nData = {
       "Outflow" : "Трата",
       "Inflow" : "Поступление",
       "StartingBalance" : "Стартовый баланс",
-      "InflowTBB" : "Доход: Для бюджетирования"
+      "InflowTBB" : "Доход: Для бюджетирования",
+      "NeedsCategory" : "Задайте категорию"
     },
     "Text" : {
       "Hidden" : "транзакц. скрыто фильтрами.",
@@ -192,7 +191,8 @@ ynabToolKit.l10nData = {
       "Payee" : "плательщик",
       "Category" : "категория",
       "Outflow" : "трата",
-      "Inflow" : "поступление"
+      "Inflow" : "поступление",
+      "Disabled" : "отключено для внебюджетного"
     }
   },
   "Sidebar" : {
@@ -228,7 +228,7 @@ ynabToolKit.l10nData = {
   },
   "MoveMoneyModal" : {
     "Label" : {
-      "CoverOverspending" : "Cover this overspending with",
+      "CoverOverspending" : "Выберите категорию для покрытия",
       "Move" : "Перенести",
       "To" : "в"
     },
@@ -369,6 +369,55 @@ ynabToolKit.l10nData = {
       "Delete" : "Удалить",
       "Inflow" : "Доход",
       "ToBeBudgeted" : "Для бюджетирования"
+    }
+  },
+  "AddTransaction" : {
+    "FlagsModal" : {
+      "Red" : "Красный",
+      "Orange" : "Оранжевый",
+      "Yellow" : "Желтый",
+      "Green" : "Зеленый",
+      "Blue" : "Синий",
+      "Purple" : "Фиолетовый"
+    },
+    "ModalTitle" : {
+      "Accounts" : "Аккаунты",
+      "Payees" : "Плательщики",
+      "Categories" : "Категории"
+    },
+    "Button" : {
+      "AddSplit" : "Добавить сплит",
+      "Split" : "Сплит (несколько категорий)"
+    },
+    "Title" : {
+      "Transfer" : "Перевести с/на аккаунт",
+      "Memorized" : "Сохраненные",
+      "Repeat" : "Повторяющаяся",
+      "Remaining" :"Осталось распределить"
+    },
+    "Days" : {
+      "Su" : "Вс",
+      "Mo" : "Пн",
+      "Tu" : "Вт",
+      "We" : "Ср",
+      "Th" : "Чт",
+      "Fr" : "Пт",
+      "Sa" : "Сб"
+    },
+    "Repeat" : {
+      "Never" : "Не повторять",
+      "Daily" : "Раз в день",
+      "Weekly" : "Раз в неделю",
+      "OtherWeek" : "Раз в две недели",
+      "TwiceMonth" : "Дважды в месяц",
+      "4weeks" : "Раз в 4 недели",
+      "Monthly" : "Раз в месяц",
+      "OtherMonth" : "Раз в два месяца",
+      "3months" : "Раз в 3 месяца",
+      "4months" : "Раз в 4 месяца",
+      "TwiceAYear" : "Дважды в год",
+      "Yearly" : "Раз в год",
+      "OtherYear" : "Раз в два года"
     }
   }
 }

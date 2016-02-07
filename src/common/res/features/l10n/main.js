@@ -571,7 +571,7 @@
             [l10n.AddAccountModal.Title.NewAccount, 1, '.modal-header']
           )
           if ($('.account-modal .todays-balance').length > 0) {
-            var balanceInput = $('.account-modal .todays-balance input')[1];
+            var balanceInput = $('.account-modal .todays-balance input')[0];
             balanceInput.placeholder = l10n.AddAccountModal.Placeholder.Balance;
             contentSetter.set(l10n.AddAccountModal.Title.Balance, 0, '.todays-balance dt');
           }
@@ -615,6 +615,14 @@
                 [l10n.AddAccountModal.Button.Continue, 0, '.institution-list button']
               )
             }
+          }
+          else if ($('.modal-actions button').length == 3) {
+            // Manual entering balance after DI not found bank
+            contentSetter.setSeveral(
+              [l10n.AddAccountModal.Button.AddAccount, 2, '.modal-actions button'],
+              [l10n.Global.Button.Cancel, 7, '.modal-actions button'],
+              [l10n.Global.Button.Back, 10, '.modal-actions button']
+            )
           }
         }
       }
@@ -683,19 +691,36 @@
         $('.ynab-grid-cell-subCategoryName[title="Inflow: To be Budgeted"]').contents().each(function() {
           if (this.textContent == 'Inflow: To be Budgeted') this.textContent = l10n.Accounts.Table.InflowTBB;
         });
+        $('.ynab-grid-cell-subCategoryName[title="Split (Multiple Categories)..."]').contents().each(function() {
+          if (this.textContent == 'Split (Multiple Categories)...') this.textContent = l10n.AddTransaction.Button.Split;
+        });
+        $('.needs-category').contents().each(function() {
+          if (this.textContent == 'This needs a category') this.textContent = l10n.Accounts.Table.NeedsCategory;
+        });
       }
 
       this.accountRowEditing = function () {
-        $('.ynab-grid-cell-payeeName input')[0].placeholder = l10n.Accounts.Placeholder.Payee;
-        $('.ynab-grid-cell-subCategoryName input')[0].placeholder = l10n.Accounts.Placeholder.Category;
-        $('.ynab-grid-cell-outflow input')[0].placeholder = l10n.Accounts.Placeholder.Outflow;
-        $('.ynab-grid-cell-inflow input')[0].placeholder = l10n.Accounts.Placeholder.Inflow;
-        contentSetter.selectorPrefix = '.ynab-grid-body-row.is-editing button';
-        contentSetter.setSeveral(
-          [l10n.Accounts.Button.SaveAndAdd, 4],
-          [l10n.Accounts.Button.Save, 10],
-          [l10n.Global.Button.Cancel, 15]
-        );
+        if($('.ynab-grid-body-row.is-editing').length > 0) {
+          $('.ynab-grid-cell-payeeName input').each(function () {this.placeholder = l10n.Accounts.Placeholder.Payee});
+          $('.ynab-grid-cell-subCategoryName input').each( function () {
+            var categoryInput = this;
+            categoryInput.placeholder = l10n.Accounts.Placeholder.Category;
+            if (categoryInput.disabled) categoryInput.placeholder = l10n.Accounts.Placeholder.Disabled;
+          });
+          $('.ynab-grid-cell-outflow input').each(function () {this.placeholder = l10n.Accounts.Placeholder.Outflow});
+          $('.ynab-grid-cell-inflow input').each(function () {this.placeholder = l10n.Accounts.Placeholder.Inflow});
+          contentSetter.selectorPrefix = '.ynab-grid-actions button';
+          contentSetter.setSeveral(
+            [l10n.Accounts.Button.SaveAndAdd, 1],
+            [l10n.Accounts.Button.Save, 7],
+            [l10n.Global.Button.Cancel, 12]
+          );
+          contentSetter.selectorPrefix = '.ynab-grid-body-split ';
+          contentSetter.setSeveral(
+            [l10n.AddTransaction.Title.Remaining, 1, '.ynab-grid-cell-subCategoryName'],
+            [l10n.AddTransaction.Button.AddSplit, 3, 'button']
+          );
+        }
       }
 
       this.observe = function(changedNodes) {
@@ -705,7 +730,8 @@
         }
 
         // Calendar modal
-        if ( changedNodes.has('modal-calendar') ) {
+        if ( changedNodes.has('modal-calendar') ||
+             changedNodes.has('ynab-calendar-months') ) {
           ynabToolKit.l10n.calendarModal();
         }
 
@@ -814,14 +840,61 @@
         }
 
         // Account row
-        if (changedNodes.has('ynab-grid-body-row')) {
+        if (changedNodes.has('ynab-grid-body')) {
           ynabToolKit.l10n.accountRow();
         }
 
         // Account row editing
-        if (changedNodes.has('ynab-grid-hide-notification')) {
+        if (changedNodes.has('ynab-grid-hide-notification') ||
+            changedNodes.has('closing')) {
           ynabToolKit.l10n.accountRowEditing();
         }
+
+        if (changedNodes.has('modal-account-flags')) {
+          contentSetter.selectorPrefix = '.modal-account-flags';
+          var colors = Object.keys(l10n.AddTransaction.FlagsModal)
+                             .map(function(k){return l10n.AddTransaction.FlagsModal[k]});
+          contentSetter.setArray(colors, ' .label');
+          contentSetter.setArray(colors, ' .label-bg');
+        }
+
+        if (changedNodes.has('modal-account-accounts')) {
+          contentSetter.selectorPrefix = '.modal-account-accounts .modal-header';
+          contentSetter.set(l10n.AddTransaction.ModalTitle.Accounts, 1);
+        }
+        if (changedNodes.has('modal-account-categories')) {
+          contentSetter.selectorPrefix = '.modal-account-categories ';
+          $('.modal-account-categories .button-primary').contents()[2]
+          contentSetter.setSeveral(
+            [l10n.AddTransaction.ModalTitle.Categories, 1, '.modal-header'],
+            [l10n.EditTransactionModal.Button.Inflow, 0, '.modal-account-categories-section-item'],
+            [l10n.EditTransactionModal.Button.ToBeBudgeted, 1, '.modal-account-categories-category-name'],
+            [l10n.AddTransaction.Button.Split, 3, '.button-primary']
+          );
+        }
+        if (changedNodes.has('modal-account-payees')) {
+          contentSetter.selectorPrefix = '.modal-account-payees .modal-header';
+          contentSetter.set(l10n.AddTransaction.ModalTitle.Payees, 1);
+          contentSetter.selectorPrefix = '.modal-account-payees .is-section-item';
+          contentSetter.setArray(
+            [
+              l10n.AddTransaction.Title.Transfer,
+              l10n.AddTransaction.Title.Memorized
+            ],
+            '', 1, 3
+          );
+        }
+        if (changedNodes.has('modal-account-calendar')) {
+          contentSetter.selectorPrefix = '.modal-account-calendar';
+          var days = Object.keys(l10n.AddTransaction.Days)
+                           .map(function(k){return l10n.AddTransaction.Days[k]});
+          contentSetter.setArray(days, ' .accounts-calendar-weekdays li');
+          var options = Object.keys(l10n.AddTransaction.Repeat)
+                           .map(function(k){return l10n.AddTransaction.Repeat[k]});
+          contentSetter.setArray(options, ' option');
+          contentSetter.set(l10n.AddTransaction.Title.Repeat, 0, ' label');
+        }
+
       }
 
     }; // Keep feature functions contained within this object

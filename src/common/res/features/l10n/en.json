@@ -38,8 +38,6 @@ ynabToolKit.l10nData = {
       "11" : "December",
     },
     "Title" : {
-      "TodaysBalance" : "Today's Balance:",
-      "DirectImport" : "Use your bank login to import transactions",
       "Search" : "Search"
     },
     "Placeholder" : {
@@ -182,7 +180,8 @@ ynabToolKit.l10nData = {
       "Outflow" : "OUTFLOW",
       "Inflow" : "INFLOW",
       "StartingBalance" : "Starting Balance",
-      "InflowTBB" : "Inflow: To be Budgeted"
+      "InflowTBB" : "Inflow: To be Budgeted",
+      "NeedsCategory" : "This needs a category"
     },
     "Text" : {
       "Hidden" : "transactions hidden by filters.",
@@ -192,7 +191,8 @@ ynabToolKit.l10nData = {
       "Payee" : "payee",
       "Category" : "category",
       "Outflow" : "outflow",
-      "Inflow" : "inflow"
+      "Inflow" : "inflow",
+      "Disabled" : "disabled for tracking accounts"
     }
   },
   "Sidebar" : {
@@ -369,6 +369,55 @@ ynabToolKit.l10nData = {
       "Delete" : "Delete",
       "Inflow" : "Inflow",
       "ToBeBudgeted" : "To be Budgeted"
+    }
+  },
+  "AddTransaction" : {
+    "FlagsModal" : {
+      "Red" : "Red",
+      "Orange" : "Orange",
+      "Yellow" : "Yellow",
+      "Green" : "Green",
+      "Blue" : "Blue",
+      "Purple" : "Purple"
+    },
+    "ModalTitle" : {
+      "Accounts" : "Accounts",
+      "Payees" : "Payees",
+      "Categories" : "Budget Categories"
+    },
+    "Button" : {
+      "AddSplit" : "Add another split",
+      "Split" : "Split (Multiple Categories)"
+    },
+    "Title" : {
+      "Transfer" : "Transfer to/from account",
+      "Memorized" : "Memorized",
+      "Repeat" : "Repeat",
+      "Remaining" :"Amount remaining to assign"
+    },
+    "Days" : {
+      "Su" : "Su",
+      "Mo" : "Mo",
+      "Tu" : "Tu",
+      "We" : "We",
+      "Th" : "Th",
+      "Fr" : "Fr",
+      "Sa" : "Sa"
+    },
+    "Repeat" : {
+      "Never" : "Never",
+      "Daily" : "Daily",
+      "Weekly" : "Weekly",
+      "OtherWeek" : "Every other week",
+      "TwiceMonth" : "Twice a month",
+      "4weeks" : "Every 4 weeks",
+      "Monthly" : "Monthly",
+      "OtherMonth" : "Every other month",
+      "3months" : "Every 3 months",
+      "4months" : "Every 4 months",
+      "TwiceAYear" : "Twice a year",
+      "Yearly" : "Yearly",
+      "OtherYear" : "Every other year"
     }
   }
 }
