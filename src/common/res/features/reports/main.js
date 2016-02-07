@@ -61,7 +61,7 @@
 
         function calculateNetWorthReport() {
           var accounts = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result;
-          var transactions = accounts.transactionDisplayItemsCollection._internalDataArray.filter(function(transaction) {
+          var transactions = accounts.visibleTransactionDisplayItems.filter(function(transaction) {
             return transaction.displayItemType == "transaction";
           });
 
