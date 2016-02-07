@@ -7,7 +7,7 @@ ynabToolKit.l10nData = {
       "Delete" : "Delete",
       "Continue" : "Continue",
       "Next" : "Next",
-      "Back" : "Back",
+      "Back" : "Back"
     },
     "Month" : {
       "0" : "Jan",
@@ -21,7 +21,7 @@ ynabToolKit.l10nData = {
       "8" : "Sep",
       "9" : "Oct",
       "10" : "Nov",
-      "11" : "Dec",
+      "11" : "Dec"
     },
     "MonthFull" : {
       "0" : "January",
@@ -35,7 +35,7 @@ ynabToolKit.l10nData = {
       "8" : "September",
       "9" : "October",
       "10" : "November",
-      "11" : "December",
+      "11" : "December"
     },
     "Title" : {
       "Search" : "Search"
@@ -54,27 +54,27 @@ ynabToolKit.l10nData = {
         "Funds" : "Funds for",
         "Overspent" : "Overspent in",
         "Budgeted" : "Budgeted in",
-        "BIF" : "Budgeted in Future",
+        "BIF" : "Budgeted in Future"
       },
       "Metric" : {
         "AoM" : "Age of Money",
-        "DoB" : "Days of Buffering",
+        "DoB" : "Days of Buffering"
       }
     },
     "Table" : {
       "Button" : {
-        "CategoryGroup" : "Category Group",
+        "CategoryGroup" : "Category Group"
       },
       "Placeholder" : {
         "NewCategoryGroup" : "New Category Group",
-        "NewCategory" : "New Category",
+        "NewCategory" : "New Category"
       },
       "Header" : {
         "Category" : "CATEGORY",
         "Budgeted" : "BUDGETED",
         "Activity" : "ACTIVITY",
         "Available" : "AVAILABLE",
-        "Pacing" : "PACING",
+        "Pacing" : "PACING"
       },
       "Category" : {
         "HiddenCategories" : "Hidden Categories"
@@ -147,10 +147,10 @@ ynabToolKit.l10nData = {
           "MoreTo" : "more to reach your ",
           "MonthlyGoal" : "monthly goal",
           "YoReOnTrack" : "You're on track to reach your ",
-          "GoalBy" : "goal by April of 2016",
+          "GoalBy" : "goal by April of 2016"
         }
       }
-    },
+    }
   },
   "Accounts" : {
     "Header" : {
@@ -200,12 +200,12 @@ ynabToolKit.l10nData = {
       "Budget" : "Budget",
       "AllAccounts" : "All Accounts",
       "Collapse" : "Collapse",
-      "AddAccount" : "Add Account",
+      "AddAccount" : "Add Account"
     },
     "Title" : {
       "Budget" : "BUDGET",
       "Tracking" : "TRACKING",
-      "Closed" : "CLOSED",
+      "Closed" : "CLOSED"
     }
   },
   "HiddenCategoriesModal" : {
@@ -218,12 +218,12 @@ ynabToolKit.l10nData = {
   },
   "EditCategoryModal" : {
     "Button" : {
-      "Hide" : "Hide",
+      "Hide" : "Hide"
     }
   },
   "CoverOverspendingModal" : {
     "Label" : {
-      "CoverOverspending" : "Cover this overspending with",
+      "CoverOverspending" : "Cover this overspending with"
     }
   },
   "MoveMoneyModal" : {
@@ -255,7 +255,7 @@ ynabToolKit.l10nData = {
   "FreshStartModal" : {
     "Header" : "Make a fresh start",
     "Text1" : "Starting fresh will let you start budgeting from today without having to set up a brand new budget. Transactions and any data you've entered in your budget will be deleted, but accounts, scheduled transactions, and budget categories will be saved.",
-    "Text2" : "A copy of this budget will be saved in case you're not happy with the changes. Fear not!",
+    "Text2" : "A copy of this budget will be saved in case you're not happy with the changes. Fear not!"
   },
   "BudgetSettingsModal" : {
     "Header" : {
@@ -298,7 +298,7 @@ ynabToolKit.l10nData = {
     },
     "Button" : {
       "Close" : "Close Account",
-      "Reopen" : "Re-open",
+      "Reopen" : "Re-open"
     }
   },
   "AddAccountModal" : {
@@ -319,7 +319,7 @@ ynabToolKit.l10nData = {
     "Placeholder" : {
       "NewAccount" : "New Account",
       "Balance" : "What is the balance of this account right now?",
-      "Search" : "search for your bank’s name",
+      "Search" : "search for your bank’s name"
     },
     "Button" : {
       "AddAccount" : "Add Account",
@@ -337,7 +337,7 @@ ynabToolKit.l10nData = {
       "Investment" : "Investment Account",
       "Mortgage" : "Mortgage",
       "OtherAsset" : "Other Asset",
-      "OtherLiability" : "Other Liability",
+      "OtherLiability" : "Other Liability"
     },
     "Text" : {
       "CouldntFind" : "We couldn't find a bank named \"...\" that's available for direct connect. No worries. YNAB works like a champ with accounts that don't directly connect to banks."
