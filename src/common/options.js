@@ -176,6 +176,14 @@ function loadPanel(panel, animated) {
   }
 }
 
+function applyDarkMode(activate) {
+  if (activate) {
+    $('body').addClass('inverted');
+  } else {
+    $('body').removeClass('inverted');
+  }
+}
+
 KangoAPI.onReady(function() {
   // Set the logo.
   kango.invokeAsync('kango.io.getResourceUrl', 'assets/logos/toolkitforynab-logo-200.png', function(data) {
@@ -190,6 +198,18 @@ KangoAPI.onReady(function() {
     loadPanel('general', false);
 
     $('#wrapper').fadeIn();
+  });
+
+  getKangoSetting("options.dark-mode").then(function(data) {
+    applyDarkMode(data);
+
+    $('#darkMode').bootstrapSwitch('state', data);
+  })
+
+  $('#darkMode').on('switchChange.bootstrapSwitch', function(event, state) {
+    setKangoSetting("options.dark-mode", state).then(function() {
+      applyDarkMode(state);
+    });
   });
 
   $('#generalMenuItem').click(function(e) { loadPanel('general'); e.preventDefault(); });
