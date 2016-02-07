@@ -850,6 +850,7 @@
           ynabToolKit.l10n.accountRowEditing();
         }
 
+        // New transaction fields modals
         if (changedNodes.has('modal-account-flags')) {
           contentSetter.selectorPrefix = '.modal-account-flags';
           var colors = Object.keys(l10n.AddTransaction.FlagsModal)
@@ -857,7 +858,6 @@
           contentSetter.setArray(colors, ' .label');
           contentSetter.setArray(colors, ' .label-bg');
         }
-
         if (changedNodes.has('modal-account-accounts')) {
           contentSetter.selectorPrefix = '.modal-account-accounts .modal-header';
           contentSetter.set(l10n.AddTransaction.ModalTitle.Accounts, 1);
