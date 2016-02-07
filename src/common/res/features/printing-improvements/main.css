@@ -20,7 +20,7 @@
 	}
 	body div.content, 
 	body section.budget-content {
-		position: relative;
+		position: relative !important;
 		width: 100%;
 		top: auto;
 		right: auto;
@@ -29,17 +29,19 @@
 		min-width: 0;
 		overflow-x: hidden !important;
 		font-size: 1em;
+		padding-top: 0;
 	}
 	body ul.budget-table-header {
-		position: relative;
+		position: relative !important;
 		border-bottom: 0;
 		min-width: 0;
 		font-weight: bold;
 	}
 	body div.budget-table {
-		position: relative;
+		position: relative !important;
 		top: 0;
 		min-width: 0;
+		height: auto;
 	}
 	
 	body .budget-table-header .budget-table-cell-checkbox, 
@@ -131,4 +133,56 @@
 		color: #000000;
 	}
 	
+}
+
+
+/* ======== Account Printing Improvements ======== */
+@media print {
+
+	/* header layout adjustments */
+	.accounts-toolbar, 
+	.accounts-header .accounts-header-total-inner .arrow,
+	.accounts-header-reconcile {
+		display: none;
+	}
+	.accounts-header {
+		height: auto;
+		background: transparent;		
+	}
+	.accounts-header .accounts-header-total-inner {
+		padding-left: 0;
+		padding-right: 60px;
+		background: transparent;
+	}
+	.accounts-header .accounts-header-total-inner .accounts-header-total-inner-label,
+	.accounts-header .accounts-header-balances-label {
+		color: #000;
+		line-height: 1.5em;
+	    font-weight: 400;
+	}
+	
+	/* transactions adjustments */
+	.ynab-grid {
+		position: relative !important;
+		height: auto !important;
+		font-size: 11pt !important;
+	}
+	.ynab-grid-container {
+		height: auto !important;
+	}
+	.ynab-grid-header,
+	.ynab-grid-cell-checkbox {
+		display: none;
+	}
+	
+	.ynab-grid-body-row {
+		height: 26px;
+	}
+	.ynab-grid-cell {
+	    padding: .2em 0;
+	}
+	.ynab-grid-body-row.is-scheduled {
+		display: none;
+	}
+
 }
