@@ -3,6 +3,14 @@
 
     ynabToolKit.collapseSideMenu = new function() {
 
+      this.collapseBtn = '<li> \
+        <li class="ember-view navlink-collapse"> \
+          <a href="#"> \
+            <span class="ember-view flaticon stroke left-circle-4"></span>Collapse \
+          </a> \
+        </li> \
+      </li>';
+
       this.invoke = function() {
         ynabToolKit.collapseSideMenu.setupBtns();
       };
@@ -25,6 +33,19 @@
           ynabToolKit.collapseSideMenu.setCollapsedSizes();
           ynabToolKit.collapseSideMenu.setActiveButton();
         }
+
+        if (changedNodes.has('nav-main')) {
+          var numNavLinks = $('.nav-main').children().length;
+          var collapseIndex = $('.nav-main').children()
+            .index($('.navlink-collapse'));
+
+          if (numNavLinks > (collapseIndex + 1)) {
+            $('.navlink-collapse').remove();
+
+            ynabToolKit.collapseSideMenu.setUpCollapseBtn();
+          }
+
+        }
       };
 
       // Add buttons and handlers to screen
@@ -34,14 +55,6 @@
         if ($('.navlink-collapse').is(':visible') || $('.navbar-expand').is(':visible')) {
           return;
         }
-
-        var collapseBtn = '<li> \
-          <li class="ember-view navlink-collapse"> \
-            <a href="#"> \
-              <span class="ember-view flaticon stroke left-circle-4"></span>Collapse \
-            </a> \
-          </li> \
-        </li>';
 
         var budgetAction = $('.nav-main').find('.mail-1').closest('a').data('ember-action');
         var accountAction = $('.nav-main').find('.government-1').closest('a').data('ember-action');
@@ -72,14 +85,18 @@
           $('.sidebar').prepend(expandBtns);
         }
 
-        $('.nav-main').append(collapseBtn);
-        $('.collapsed-buttons').hide();
+        ynabToolKit.collapseSideMenu.setUpCollapseBtn();
 
-        $('.navlink-collapse').on('click',
-          ynabToolKit.collapseSideMenu.collapseMenu);
+        $('.collapsed-buttons').hide();
         $('.navbar-expand').on('click', function() {
           ynabToolKit.collapseSideMenu.expandMenu(originalSizes);
         });
+      };
+
+      this.setUpCollapseBtn = function() {
+        $('.nav-main').append(ynabToolKit.collapseSideMenu.collapseBtn);
+        $('.navlink-collapse').on('click',
+          ynabToolKit.collapseSideMenu.collapseMenu);
       };
 
       // Handle clicking expand button. Puts things back to original sizes
