@@ -86,6 +86,13 @@
         .trigger {
             clear: both;
             display: none;
+            @include media-query($on-palm) {
+              float: left;
+              width: 40%;
+              height: 100vh;
+              text-align: left;
+
+            }
         }
 
         &:hover .trigger {
