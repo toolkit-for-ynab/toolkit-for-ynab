@@ -18,7 +18,6 @@
       }
       @include media-query($on-laptop) {
         flex-direction: column;
-        // margin: 0;
       }
       .firstContent {
         flex: 1;
@@ -44,6 +43,10 @@
         background-repeat: no-repeat;
         @include media-query($on-palm) {
           height: 200px;
+          margin-top: 50px;
+        }
+        @include media-query($on-laptop) {
+          height: 500px;
           margin-top: 50px;
         }
       }
