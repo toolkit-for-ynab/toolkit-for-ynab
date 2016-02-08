@@ -63,9 +63,10 @@
       .secondContent {
         width: 40%;
         float: right;
-        margin: 100px 20px 100px 0;
+        margin: 100px 40px 100px 0;
         @include media-query($on-palm) {
           width: 100%;
+          margin: 0;
         }
         h1 {
           font-size: 3em;
