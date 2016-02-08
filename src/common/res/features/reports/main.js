@@ -10,7 +10,7 @@
           netWorths: []
         };
 
-        function updateCanvasSize() {
+        this.updateCanvasSize = function() {
           // Set the canvas dimensions to the parent element dimensions.
           var width = $('div.scroll-wrap').closest('.ember-view').innerWidth() - 10;
           var height = $(window).height() - $('#reports-panel').height() - 20;
@@ -29,9 +29,9 @@
           }
         }
 
-        $(window).resize(updateCanvasSize);
+        $(window).resize(this.updateCanvasSize);
 
-        function setUpReportsButton() {
+        this.setUpReportsButton = function() {
           var reportsBtn =
           '<li> \
             <li class="ember-view navlink-reports"> \
@@ -43,7 +43,7 @@
 
           $(".nav-main").append(reportsBtn);
 
-          $(".navlink-reports").on("click", showReports);
+          $(".navlink-reports").on("click", ynabToolKit.reports.showReports);
 
           $('.navlink-budget, .navlink-accounts, .nav-account-row').on("click", function() {
             // They're trying to navigate away.
@@ -59,7 +59,7 @@
           });
         }
 
-        function calculateNetWorthReport() {
+        this.calculateNetWorthReport = function() {
           var accounts = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result;
           var transactions = accounts.visibleTransactionDisplayItems.filter(function(transaction) {
             return transaction.displayItemType == "transaction";
@@ -154,7 +154,7 @@
           }
         }
 
-        function updateReportWithDateFilter() {
+        this.updateReportWithDateFilter = function() {
           var labels = ynabToolKit.reports.netWorth.labels;
           var liabilities = ynabToolKit.reports.netWorth.liabilities;
           var assets = ynabToolKit.reports.netWorth.assets;
@@ -187,7 +187,7 @@
         }
 
         // Remove the content and put our report there instead.
-        function showReports() {
+        this.showReports = function() {
           // Update the nav
           $('.navlink-budget, .navlink-accounts').removeClass('active');
           $('.nav-account-row').removeClass('is-selected');
@@ -230,7 +230,7 @@
           // The budget header is absolute positioned
           $('.budget-header, .scroll-wrap').hide();
 
-          calculateNetWorthReport();
+          ynabToolKit.reports.calculateNetWorthReport();
 
           var dateFilter = document.getElementById("reports-date-filter");
           var labels = ynabToolKit.reports.netWorth.labels;
@@ -268,7 +268,7 @@
               }
             });
 
-            dateFilter.noUiSlider.on('slide', updateReportWithDateFilter);
+            dateFilter.noUiSlider.on('slide', ynabToolKit.reports.updateReportWithDateFilter);
           }
 
           // If there's only one month's worth of data, then the net worth
@@ -309,7 +309,7 @@
             }]
           };
 
-          updateCanvasSize();
+          ynabToolKit.reports.updateCanvasSize();
 
           var ctx = document.getElementById("reportCanvas").getContext("2d");
 
@@ -371,14 +371,22 @@
             }
           });
 
-          updateReportWithDateFilter();
+          ynabToolKit.reports.updateReportWithDateFilter();
         }
 
         this.invoke = function() {
-          setUpReportsButton();
+          ynabToolKit.reports.setUpReportsButton();
         };
 
         this.observe = function(changedNodes) {
+          // Did they switch budgets?
+          if (changedNodes.has('user-logged-in')) {
+            if ($('.nav-main').length) {
+              ynabToolKit.reports.invoke();
+            }
+          }
+
+          // Did they switch away from our tab?
           if (changedNodes.has('navlink-budget') ||
               changedNodes.has('navlink-accounts') ||
               changedNodes.has('nav-account-row')) {
