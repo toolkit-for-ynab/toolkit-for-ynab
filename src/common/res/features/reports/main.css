@@ -1,0 +1,133 @@
+/* Filter Panel */
+
+#reports-header {
+  color: white;
+  background-color: #003540;
+  font-family: 'Lato',Arial,'Helvetica Neue',Helvetica,sans-serif;
+  width: 100%;
+  padding: 2px 0;
+}
+
+#reports-header h2 {
+  margin-left: 25px;
+  font-weight: 300;
+}
+
+#reports-header h2 span {
+  color: #fed168;
+}
+
+#reports-filter {
+  display: flex;
+  justify-content: flex-start;
+  height: 140px;
+  background-color: #F4F4F4;
+  margin: 10px 10px 0 10px;
+  border: 1px solid #CCCCCC;
+
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}
+
+#reports-filter h3 {
+  display: block;
+  margin-left: 19px;
+  align-self: flex-start;
+}
+
+#reports-filter span {
+  align-self: center;
+}
+
+/* Date Filter */
+
+#reports-date-filter {
+  flex: 1;
+  align-self: center;
+  margin: 0 39px 0 29px;
+}
+
+.noUi-connect {
+	background: #8ED0DF;
+}
+
+.noUi-tooltip {
+	left: -25%;
+}
+
+.noUi-horizontal .noUi-handle-lower .noUi-tooltip {
+	top: -52px;
+}
+.noUi-horizontal .noUi-handle-upper .noUi-tooltip {
+	bottom: -52px;
+}
+
+/* Reports Inspector */
+
+#reports-inspector {
+  display: -webkit-flex;
+  -webkit-flex-direction: row;
+  -webkit-justify-content: flex-end;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.reports-legend-square {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 2px 5px 0 0;
+  width: 17px;
+  height: 17px;
+}
+
+.reports-legend-square.assets {
+  background-color: rgba(142, 208, 223, 1);
+}
+
+.reports-legend-square.debts {
+  background-color: rgba(234, 106, 81, 1);
+}
+
+.reports-legend-line {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+  width: 13px;
+  height: 2px;
+}
+
+.reports-legend-line.net-worth {
+  border: 2px solid rgba(102, 147, 176, 1);
+  background-color: rgba(244,248,226,0.3);
+}
+
+.reports-inspector-detail {
+  width: 12%;
+  min-width: 100px;
+  margin: 10px;
+}
+
+.reports-inspector-detail .reports-inspector-heading {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: .9em;
+}
+
+.reports-inspector-value {
+  display: block;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* Dividers */
+.reports-inspector-divider {
+  display: inline-block;
+  width: 1px;
+  height: 50px;
+  margin: 10px 10px 0 0;
+  background-color: #F4F4F4;
+}

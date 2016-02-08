@@ -61,6 +61,7 @@
         subtree : true,
         childList : true,
         characterData : true,
+        attributes: true,
         attributeFilter : [ 'class' ]
       });
 

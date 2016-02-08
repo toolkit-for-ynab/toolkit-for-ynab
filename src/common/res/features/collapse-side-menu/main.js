@@ -3,6 +3,14 @@
 
     ynabToolKit.collapseSideMenu = new function() {
 
+      this.collapseBtn = '<li> \
+        <li class="ember-view navlink-collapse"> \
+          <a href="#"> \
+            <span class="ember-view flaticon stroke left-circle-4"></span>Collapse \
+          </a> \
+        </li> \
+      </li>';
+
       this.invoke = function() {
         ynabToolKit.collapseSideMenu.setupBtns();
       };
@@ -25,37 +33,31 @@
           ynabToolKit.collapseSideMenu.setCollapsedSizes();
           ynabToolKit.collapseSideMenu.setActiveButton();
         }
+
+        if (changedNodes.has('nav-main')) {
+          var numNavLinks = $('.nav-main').children().length;
+          var collapseIndex = $('.nav-main').children()
+            .index($('.navlink-collapse'));
+
+          if (numNavLinks > (collapseIndex + 1)) {
+            $('.navlink-collapse').remove();
+
+            ynabToolKit.collapseSideMenu.setUpCollapseBtn();
+          }
+
+        }
       };
 
       // Add buttons and handlers to screen
       this.setupBtns = function() {
 
         // Don't proceed if buttons already exist
-        if ($('.navlink-collapse').is(':visible') || $('.navbar-expand').is(':visible')) {
+        if ($('.navlink-collapse').is(':visible') ||
+            $('.navbar-expand').is(':visible')) {
           return;
         }
 
-        var collapseBtn = '<li> \
-          <li class="ember-view navlink-collapse"> \
-            <a href="#"> \
-              <span class="ember-view flaticon stroke left-circle-4"></span>Collapse \
-            </a> \
-          </li> \
-        </li>';
-
-        var budgetAction = $('.nav-main').find('.mail-1').closest('a').data('ember-action');
-        var accountAction = $('.nav-main').find('.government-1').closest('a').data('ember-action');
-
-        var expandBtns = '\
-        <div class=collapsed-buttons> \
-          <a href="#" class="collapsed-budget-link" data-ember-action="'+budgetAction+'"> \
-          <button class="button button-prefs flaticon stroke mail-1 collapsed-budget"></button> \
-          </a> \
-          <a href="#" class="collapsed-account-link" data-ember-action="'+accountAction+'"> \
-            <button class="button button-prefs flaticon stroke government-1 collapsed-account"></button> \
-          </a> \
-          <button class="button button-prefs flaticon stroke right-circle-4 navbar-expand"></button> \
-        <div>';
+        var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup;
 
         var originalSizes = {
           sidebarWidth:   $('.sidebar').width(),
@@ -72,14 +74,66 @@
           $('.sidebar').prepend(expandBtns);
         }
 
-        $('.nav-main').append(collapseBtn);
-        $('.collapsed-buttons').hide();
+        ynabToolKit.collapseSideMenu.setUpCollapseBtn();
 
-        $('.navlink-collapse').on('click',
-          ynabToolKit.collapseSideMenu.collapseMenu);
+        $('.collapsed-buttons').hide();
         $('.navbar-expand').on('click', function() {
           ynabToolKit.collapseSideMenu.expandMenu(originalSizes);
         });
+      };
+
+      this.setUpCollapseBtn = function() {
+        $('.nav-main').append(ynabToolKit.collapseSideMenu.collapseBtn);
+        $('.navlink-collapse').on('click',
+          ynabToolKit.collapseSideMenu.collapseMenu);
+      };
+
+      this.getUnCollapseBtnGroup = function() {
+        var navChildren = $('.nav-main').children();
+        var navChildrenLength = navChildren.length;
+
+        var collapsedBtnContainer =
+          $('<div>', {
+            'class': 'collapsed-buttons'
+          });
+
+        for (var i = 0; i < navChildrenLength; i++) {
+          var child = navChildren[i];
+          var emberAction = $(child).find('a').data('ember-action');
+
+          // Create YNAB Buttons
+          if (emberAction) {
+            var link = $('<a>');
+            link.attr('href','#');
+            link.attr('data-ember-action',emberAction);
+
+            var btnClasses = $(child).find('span')[0].className;
+            var button = $('<button>');
+            button.addClass(btnClasses);
+            button.addClass('button button-prefs');
+            link.html(button);
+
+            // Set proper class so the active styling can be applued
+            if (btnClasses.indexOf('mail-1') > -1) {
+              button.addClass('collapsed-budget');
+            } else if (btnClasses.indexOf('government-1') > -1) {
+              button.addClass('collapsed-account');
+            }
+
+            collapsedBtnContainer.append(link);
+          }
+        }
+
+        // Add uncollapse button
+        var collapseBtn = $('<button>');
+        collapseBtn.addClass('button button-prefs flaticon stroke \
+          right-circle-4 navbar-expand');
+
+        collapsedBtnContainer.append(collapseBtn);
+        $('.navlink-collapse').on('click',
+          ynabToolKit.collapseSideMenu.collapseMenu);
+
+        return collapsedBtnContainer;
       };
 
       // Handle clicking expand button. Puts things back to original sizes
