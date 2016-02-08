@@ -17,35 +17,38 @@
         var subCategories = $("ul.is-sub-category");
         $(subCategories).each(function () {
         var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
-        calculation = getCalculation(subCategoryName);
 
-        if (calculation.goalExpectedCompletion > 0) {
-          // Target total goal
-          var hasGoal = true;
-          var status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
-        }
-        else if (calculation.goalTarget > 0) {
-          // Taget by date
-          // or Montly goal
-          var hasGoal = true;
-          var status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
-        }
-        else if (calculation.upcomingTransactions < 0) {
-          // Upcoming transactions "goal"
-          var hasGoal = true;
-          var status = - calculation.balance / calculation.upcomingTransactions;
-        }
+		  if ( "Uncategorized Transactions" != subCategoryName ) {
+			  calculation = getCalculation(subCategoryName);
 
-        var budgetedCell = $(this).find("li.budget-table-cell-budgeted")[0];
-        if (hasGoal) {
-          status = status > 1 ? 1 : status;
-          status = status < 0 ? 0 : status;
-          var percent = Math.round(parseFloat(status)*100);
-          budgetedCell.style.background = "linear-gradient(to right, rgba(22, 163, 54, 0.3) " + percent + "%, white " + percent+ "%)";
-        }
-        else {
-          budgetedCell.removeAttribute("style");
-        }
+			  if (calculation.goalExpectedCompletion > 0) {
+				 // Target total goal
+				 var hasGoal = true;
+				 var status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
+			  }
+			  else if (calculation.goalTarget > 0) {
+				 // Taget by date
+				 // or Montly goal
+				 var hasGoal = true;
+				 var status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
+			  }
+			  else if (calculation.upcomingTransactions < 0) {
+				 // Upcoming transactions "goal"
+				 var hasGoal = true;
+				 var status = - calculation.balance / calculation.upcomingTransactions;
+			  }
+
+			  var budgetedCell = $(this).find("li.budget-table-cell-budgeted")[0];
+			  if (hasGoal) {
+				 status = status > 1 ? 1 : status;
+				 status = status < 0 ? 0 : status;
+				 var percent = Math.round(parseFloat(status)*100);
+				 budgetedCell.style.background = "linear-gradient(to right, rgba(22, 163, 54, 0.3) " + percent + "%, white " + percent+ "%)";
+			  }
+			  else {
+				 budgetedCell.removeAttribute("style");
+			  }
+		  }
         })
 
         // Takes N colors and N-1 sorted points from (0, 1) to make color1|color2|color3 bg style.
@@ -70,30 +73,33 @@
         $(subCategories).each(function () {
         $(this).addClass('goal-progress-both');
         var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
-        var nameCell = $(this).find("li.budget-table-cell-name")[0];
-        var calculation = getCalculation(subCategoryName);
 
-        var budgeted = calculation.balance - calculation.budgetedCashOutflows - calculation.budgetedCreditOutflows;
-        var available = calculation.balance;
+		  if ( "Uncategorized Transactions" != subCategoryName ) {
+			  var nameCell = $(this).find("li.budget-table-cell-name")[0];
+			  var calculation = getCalculation(subCategoryName);
 
-        if (budgeted > 0) {
-          var pacing = (budgeted - available) / budgeted;
-          if (monthProgress > pacing) {
-            nameCell.style.background = generateProgressBarStyle(
-              ["#c0e2e9", "white", "#CFD5D8", "white"],
-              [pacing, monthProgress - s, monthProgress]);
-          }
-          else {
-            nameCell.style.background = generateProgressBarStyle(
-              ["#c0e2e9", "#CFD5D8", "#c0e2e9", "white"],
-              [monthProgress - s, monthProgress, pacing]);
-          }
-        }
-        else {
-          nameCell.style.background = generateProgressBarStyle(
-              ["white", "#CFD5D8", "white"],
-              [monthProgress - s, monthProgress]);
-        }
+			  var budgeted = calculation.balance - calculation.budgetedCashOutflows - calculation.budgetedCreditOutflows;
+			  var available = calculation.balance;
+
+			  if (budgeted > 0) {
+				 var pacing = (budgeted - available) / budgeted;
+				 if (monthProgress > pacing) {
+					nameCell.style.background = generateProgressBarStyle(
+					  ["#c0e2e9", "white", "#CFD5D8", "white"],
+					  [pacing, monthProgress - s, monthProgress]);
+				 }
+				 else {
+					nameCell.style.background = generateProgressBarStyle(
+					  ["#c0e2e9", "#CFD5D8", "#c0e2e9", "white"],
+					  [monthProgress - s, monthProgress, pacing]);
+				 }
+			  }
+			  else {
+				 nameCell.style.background = generateProgressBarStyle(
+					  ["white", "#CFD5D8", "white"],
+					  [monthProgress - s, monthProgress]);
+			  }
+		  }
         });
 
         var masterCategories = $("ul.is-master-category");
