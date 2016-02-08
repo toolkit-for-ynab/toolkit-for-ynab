@@ -22,7 +22,7 @@
         flex-direction: column;
       }
       .firstContent {
-        flex: 2;
+        flex: 1;
         @include media-query($on-palm) {
           margin-top: 100px;
         }
@@ -63,6 +63,7 @@
       .secondContent {
         width: 40%;
         float: right;
+        margin: 100px 20px 100px 0;
         @include media-query($on-palm) {
           width: 100%;
         }
@@ -93,7 +94,7 @@
         flex: 2;
         text-align: center;
         img {
-          width: 75%;
+          width: 50%;
         }
         @include media-query($on-laptop) {
           img {
