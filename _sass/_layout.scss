@@ -12,13 +12,13 @@
       margin: 15%;
       display: flex;
       flex-direction: row;
-      @media only screen and (max-width: 600px) {
+      @include media-query($on-palm) {
         flex-direction: column;
         margin: 0;
       }
       .firstContent {
         flex: 1;
-        @media only screen and (max-width: 600px) {
+        @include media-query($on-palm) {
           margin-top: 100px;
         }
         h1 {
@@ -38,7 +38,7 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-        @media only screen and (max-width: 600px) {
+        @include media-query($on-palm) {
           height: 200px;
           margin-top: 50px;
         }
@@ -53,7 +53,7 @@
       .secondContent {
         width: 40%;
         float: right;
-        @media only screen and (max-width: 600px) {
+        @include media-query($on-palm) {
           width: 100%;
         }
         h1 {
@@ -89,7 +89,7 @@
       color: #fff;
       padding-top: 20vh;
       padding-bottom: 20vh;
-      @media only screen and (max-width: 600px) {
+      @include media-query($on-palm) {
         padding-top: 0;
         padding-bottom: 0;
         background-size: cover;
@@ -100,7 +100,7 @@
       }
       .fourthContent {
         flex: 3;
-        @media only screen and (max-width: 600px) {
+        @include media-query($on-palm) {
           flex: 25;
         }
         h1 {
