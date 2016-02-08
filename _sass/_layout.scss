@@ -102,6 +102,10 @@
         background-size: cover;
         background-position: left;
       }
+      @include media-query($on-laptop) {
+        flex-direction: column;
+        background-size: cover;
+      }
       div {
         flex: 2;
       }
@@ -109,6 +113,9 @@
         flex: 3;
         @include media-query($on-palm) {
           flex: 25;
+        }
+        @include media-query($on-laptop) {
+          text-align: center;
         }
         h1 {
           text-transform: uppercase;
