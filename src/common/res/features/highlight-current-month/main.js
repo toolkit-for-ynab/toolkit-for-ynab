@@ -9,11 +9,14 @@
       	// find current month and year
       	var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
       	var d = new Date();
-      	var month = monthNames[d.getMonth()];
-      	var year = d.getFullYear();
+      	var currentDate = monthNames[d.getMonth()] + ' 01 ' + d.getFullYear();
+      	
+      	// get month and year from YNAB
+      	var ynabDate = String(ynabToolKit.shared.parseSelectedMonth());
+      	ynabDate = ynabDate.substring(4, 15); // trim day of week
       	
       	// check if header bar is current month, if so, change background color
-		if ( $('button.budget-header-calendar-date-button').text().trim() == month + ' ' + year) {
+		if ( ynabDate == currentDate) {
 			$('.budget-header .budget-header-item').css('background-color', '#00596f');
 		}
 		else {
