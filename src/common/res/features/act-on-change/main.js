@@ -31,7 +31,7 @@
 
           var $nodes = $(newNodes); // jQuery set
           $nodes.each(function() {
-            var nodeClass = this.className;
+            var nodeClass = $(this).attr('class');
             if (nodeClass) ynabToolKit.changedNodes.add(nodeClass.replace(/^ember-view /,''));
           }); // each node mutation event
 
