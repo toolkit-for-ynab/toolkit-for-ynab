@@ -16,7 +16,7 @@
         var currentMonthName = l10n.Global.Month[selectedMonth.getMonth()];
         var previousMonthName;
         if (selectedMonth.getMonth() == 0) {
-          previousMonthName = l10n.Global.Month[12];
+          previousMonthName = l10n.Global.Month[11];
         }
         else {
           previousMonthName = l10n.Global.Month[selectedMonth.getMonth() - 1];
@@ -546,6 +546,7 @@
       this.accountModal = function () {
         contentSetter.selectorPrefix = '.account-modal ';
         if ($('.account-modal .edit-todays-balance').length == 1) {
+          // Account settings
           $(contentSetter.selectorPrefix + 'textarea')[0].setAttribute("placeholder", l10n.AccountSettingsModal.Placeholder.Note);
           contentSetter.setSeveral(
             [l10n.AccountSettingsModal.Label.Balance, 0, 'dt'],
@@ -563,20 +564,19 @@
           }
         }
         else {
+          // Add new account
+          // There is problem if user can't find his bank in the DI list and presses the button.
+          // Changed nodes have no classes.
           contentSetter.setSeveral(
             [l10n.AddAccountModal.Title.NewAccount, 1, '.modal-header']
           )
-          if ($('.modal-actions button').contents()[0].textContent == "Cancel") {
-            $('.modal-actions button').contents()[0].textContent = l10n.Global.Button.Cancel;
-            $('.modal-actions button').contents()[3].textContent = l10n.Global.Button.Back;
-            $('.account-modal dd').contents()[5].textContent = l10n.AddAccountModal.Title.Examples;
-            $('.account-modal dd').contents()[10].textContent = l10n.AddAccountModal.Title.Or;
-            $('.account-modal input')[0].placeholder = l10n.AddAccountModal.Placeholder.Search;
-            contentSetter.setSeveral(
-              [l10n.AddAccountModal.Title.Popular, 0, 'dt']
-            );
+          if ($('.account-modal .todays-balance').length > 0) {
+            var balanceInput = $('.account-modal .todays-balance input')[0];
+            balanceInput.placeholder = l10n.AddAccountModal.Placeholder.Balance;
+            contentSetter.set(l10n.AddAccountModal.Title.Balance, 0, '.todays-balance dt');
           }
-          else {
+          if ($('.modal-account-settings-account-type').length > 0) {//$('.modal-actions modal-account-settings-name').contents()[0].textContent == "Cancel") {
+            // Add new account 1st page
             $('.modal-actions button').contents()[7].textContent = l10n.Global.Button.Cancel;
             if ($('.modal-actions button').contents()[2].textContent == "Next") $('.modal-actions button').contents()[2].textContent = l10n.Global.Button.Next;
             if ($('.modal-actions button').contents()[2].textContent == "Add Account") $('.modal-actions button').contents()[2].textContent = l10n.AddAccountModal.Button.AddAccount;
@@ -584,7 +584,6 @@
             contentSetter.setSeveral(
               [l10n.AddAccountModal.Title.AccountName, 0, 'dt'],
               [l10n.AddAccountModal.Title.AccountType, 1, 'dt'],
-              [l10n.AddAccountModal.Title.Balance, 2, 'dt'],
               [l10n.AddAccountModal.Title.TransactionImport, 0, '.header'],
               [l10n.AddAccountModal.Title.Text, 1, '.label-checkbox']
             );
@@ -597,7 +596,33 @@
             $('.modal-account-settings-account-type optgroup')[0].label = l10n.AddAccountModal.Title.Budget;
             $('.modal-account-settings-account-type optgroup')[1].label = l10n.AddAccountModal.Title.Tracking;
             $('.account-modal input')[0].placeholder = l10n.AddAccountModal.Placeholder.NewAccount;
-            if ($('.account-modal input')[1]) $('.account-modal input')[1].placeholder = l10n.AddAccountModal.Placeholder.Balance;
+          }
+          else if ($('.institution-list').length > 0) {
+            // Add new account 2nd page
+            $('.account-modal input')[0].placeholder = l10n.AddAccountModal.Placeholder.Search;
+            contentSetter.setSeveral(
+              [l10n.Global.Button.Cancel, 0, '.modal-actions button'],
+              [l10n.Global.Button.Back, 3, '.modal-actions button'],
+              [l10n.AddAccountModal.Title.Examples, 5, 'dd'],
+              [l10n.AddAccountModal.Title.Or + " ", 10, 'dd']
+            );
+            var banksListTitle = $('.account-modal dt').contents()[0];
+            if (banksListTitle.textContent == "Popular Options") banksListTitle.textContent = l10n.AddAccountModal.Title.Popular;
+            if (banksListTitle.textContent == "Here's who we found") banksListTitle.textContent = l10n.AddAccountModal.Title.Founded;
+            if ($('.institution-list p').length > 0) {
+              contentSetter.setSeveral(
+                [l10n.AddAccountModal.Text.CouldntFind, 0, '.institution-list p'],
+                [l10n.AddAccountModal.Button.Continue, 0, '.institution-list button']
+              )
+            }
+          }
+          else if ($('.modal-actions button').length == 3) {
+            // Manual entering balance after DI not found bank
+            contentSetter.setSeveral(
+              [l10n.AddAccountModal.Button.AddAccount, 2, '.modal-actions button'],
+              [l10n.Global.Button.Cancel, 7, '.modal-actions button'],
+              [l10n.Global.Button.Back, 10, '.modal-actions button']
+            )
           }
         }
       }
@@ -639,6 +664,65 @@
         );
       }
 
+      this.editTransactionModal = function () {
+        contentSetter.selectorPrefix = '.modal-account-edit-transaction-list>div>ul>li>';
+        contentSetter.setArray(
+          [
+            l10n.EditTransactionModal.Button.MarkAsCleared,
+            l10n.EditTransactionModal.Button.MarkAsUncleared,
+            l10n.EditTransactionModal.Button.Approve,
+            l10n.EditTransactionModal.Button.Reject,
+            l10n.EditTransactionModal.Button.CategorizeAs,
+            l10n.EditTransactionModal.Button.MoveToAccount
+          ],
+          'button', 2, 5
+        );
+        contentSetter.setSeveral(
+          [l10n.EditTransactionModal.Button.Delete, 33, 'button'],
+          [l10n.EditTransactionModal.Button.Inflow, 1, 'ul>li>button'],
+          [l10n.EditTransactionModal.Button.ToBeBudgeted, 0, 'ul>li>ul>li span']
+        );
+      }
+
+      this.accountRow = function () {
+        $('.ynab-grid-cell-payeeName[title="Starting Balance"]').contents().each(function() {
+          if (this.textContent == 'Starting Balance') this.textContent = l10n.Accounts.Table.StartingBalance;
+        });
+        $('.ynab-grid-cell-subCategoryName[title="Inflow: To be Budgeted"]').contents().each(function() {
+          if (this.textContent == 'Inflow: To be Budgeted') this.textContent = l10n.Accounts.Table.InflowTBB;
+        });
+        $('.ynab-grid-cell-subCategoryName[title="Split (Multiple Categories)..."]').contents().each(function() {
+          if (this.textContent == 'Split (Multiple Categories)...') this.textContent = l10n.AddTransaction.Button.Split;
+        });
+        $('.needs-category').contents().each(function() {
+          if (this.textContent == 'This needs a category') this.textContent = l10n.Accounts.Table.NeedsCategory;
+        });
+      }
+
+      this.accountRowEditing = function () {
+        if($('.ynab-grid-body-row.is-editing').length > 0) {
+          $('.ynab-grid-cell-payeeName input').each(function () {this.placeholder = l10n.Accounts.Placeholder.Payee});
+          $('.ynab-grid-cell-subCategoryName input').each( function () {
+            var categoryInput = this;
+            categoryInput.placeholder = l10n.Accounts.Placeholder.Category;
+            if (categoryInput.disabled) categoryInput.placeholder = l10n.Accounts.Placeholder.Disabled;
+          });
+          $('.ynab-grid-cell-outflow input').each(function () {this.placeholder = l10n.Accounts.Placeholder.Outflow});
+          $('.ynab-grid-cell-inflow input').each(function () {this.placeholder = l10n.Accounts.Placeholder.Inflow});
+          contentSetter.selectorPrefix = '.ynab-grid-actions button';
+          contentSetter.setSeveral(
+            [l10n.Accounts.Button.SaveAndAdd, 1],
+            [l10n.Accounts.Button.Save, 7],
+            [l10n.Global.Button.Cancel, 12]
+          );
+          contentSetter.selectorPrefix = '.ynab-grid-body-split ';
+          contentSetter.setSeveral(
+            [l10n.AddTransaction.Title.Remaining, 1, '.ynab-grid-cell-subCategoryName'],
+            [l10n.AddTransaction.Button.AddSplit, 3, 'button']
+          );
+        }
+      }
+
       this.observe = function(changedNodes) {
 
         if ( changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals') ) {
@@ -646,7 +730,8 @@
         }
 
         // Calendar modal
-        if ( changedNodes.has('modal-calendar') ) {
+        if ( changedNodes.has('modal-calendar') ||
+             changedNodes.has('ynab-calendar-months') ) {
           ynabToolKit.l10n.calendarModal();
         }
 
@@ -728,8 +813,14 @@
 
         // Account settings and new account modal
         if (changedNodes.has('account-modal') || changedNodes.has('modal-content') ||
-            changedNodes.has('right-circle-2') || changedNodes.has('left-circle-2')) {
+            changedNodes.has('right-circle-2') || changedNodes.has('left-circle-2') ||
+            changedNodes.has('institution-list') || changedNodes.has('checkmark-2')) {
           ynabToolKit.l10n.accountModal();
+        }
+
+        // Edit transaction dropdown
+        if (changedNodes.has('modal-account-edit-transaction-list')) {
+          ynabToolKit.l10n.editTransactionModal();
         }
 
         // Selection in modal
@@ -747,6 +838,63 @@
         if (changedNodes.has('modal-account-filters')) {
           ynabToolKit.l10n.accountFiltersModal();
         }
+
+        // Account row
+        if (changedNodes.has('ynab-grid-body')) {
+          ynabToolKit.l10n.accountRow();
+        }
+
+        // Account row editing
+        if (changedNodes.has('ynab-grid-hide-notification') ||
+            changedNodes.has('closing')) {
+          ynabToolKit.l10n.accountRowEditing();
+        }
+
+        // New transaction fields modals
+        if (changedNodes.has('modal-account-flags')) {
+          contentSetter.selectorPrefix = '.modal-account-flags';
+          var colors = Object.keys(l10n.AddTransaction.FlagsModal)
+                             .map(function(k){return l10n.AddTransaction.FlagsModal[k]});
+          contentSetter.setArray(colors, ' .label');
+          contentSetter.setArray(colors, ' .label-bg');
+        }
+        if (changedNodes.has('modal-account-accounts')) {
+          contentSetter.selectorPrefix = '.modal-account-accounts .modal-header';
+          contentSetter.set(l10n.AddTransaction.ModalTitle.Accounts, 1);
+        }
+        if (changedNodes.has('modal-account-categories')) {
+          contentSetter.selectorPrefix = '.modal-account-categories ';
+          $('.modal-account-categories .button-primary').contents()[2]
+          contentSetter.setSeveral(
+            [l10n.AddTransaction.ModalTitle.Categories, 1, '.modal-header'],
+            [l10n.EditTransactionModal.Button.Inflow, 0, '.modal-account-categories-section-item'],
+            [l10n.EditTransactionModal.Button.ToBeBudgeted, 1, '.modal-account-categories-category-name'],
+            [l10n.AddTransaction.Button.Split, 3, '.button-primary']
+          );
+        }
+        if (changedNodes.has('modal-account-payees')) {
+          contentSetter.selectorPrefix = '.modal-account-payees .modal-header';
+          contentSetter.set(l10n.AddTransaction.ModalTitle.Payees, 1);
+          contentSetter.selectorPrefix = '.modal-account-payees .is-section-item';
+          contentSetter.setArray(
+            [
+              l10n.AddTransaction.Title.Transfer,
+              l10n.AddTransaction.Title.Memorized
+            ],
+            '', 1, 3
+          );
+        }
+        if (changedNodes.has('modal-account-calendar')) {
+          contentSetter.selectorPrefix = '.modal-account-calendar';
+          var days = Object.keys(l10n.AddTransaction.Days)
+                           .map(function(k){return l10n.AddTransaction.Days[k]});
+          contentSetter.setArray(days, ' .accounts-calendar-weekdays li');
+          var options = Object.keys(l10n.AddTransaction.Repeat)
+                           .map(function(k){return l10n.AddTransaction.Repeat[k]});
+          contentSetter.setArray(options, ' option');
+          contentSetter.set(l10n.AddTransaction.Title.Repeat, 0, ' label');
+        }
+
       }
 
     }; // Keep feature functions contained within this object

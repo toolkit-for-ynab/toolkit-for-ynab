@@ -46,8 +46,7 @@
         }); // each mutation event
 
         if (ynabToolKit.debugNodes) {
-          console.log(ynabToolKit.changedNodes);
-          console.log('###');
+          console.log('###')
         }
 
         // Now we are ready to feed the change digest to the

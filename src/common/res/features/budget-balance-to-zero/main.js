@@ -69,9 +69,9 @@
         var button = ' \
         <button class="budget-inspector-button balance-to-zero" \
           onClick="ynabToolKit.budgetBalanceToZero.updateBudgetedBalance(\'' +
-          name + '\', ' + amount + ')"> \
-          Balance to 0.00: \
-            <strong class="user-data" title="' + fAmount + '"> \
+          name + '\', ' + amount + ')">' +
+          (ynabToolKit.l10nData && ynabToolKit.l10nData.Budget.Inspector.Button.BalanceToZero) || 'Balance to 0.00:' +
+            '<strong class="user-data" title="' + fAmount + '"> \
               <span class="user-data currency zero"> \
               ' + fhAmount + ' \
             </span> \
