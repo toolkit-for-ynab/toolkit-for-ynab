@@ -16,6 +16,10 @@
         flex-direction: column;
         margin: 0;
       }
+      @include media-query($on-laptop) {
+        flex-direction: column;
+        // margin: 0;
+      }
       .firstContent {
         flex: 1;
         @include media-query($on-palm) {
