@@ -114,6 +114,13 @@
           return accountNameMap[id];
         };
 
+        // Map "internal" codes to more user-friendly labels
+        var categoryNamesMap = {
+          'Internal Master Category': '*** YNAB Internal Categories',
+          'Split (Multiple Categories)...': 'Split (Multiple Categories)',
+          "Split SubCategory": 'Split (Multiple Categories)',
+          'Immediate Income SubCategory': '*** Inflow: To Be Budgeted'
+        };
 
         // get category -- returns {category, mastercategory} -- with internal cache
         // and check for a "user-friendly" name remapping
@@ -124,8 +131,8 @@
             var sub = entityManager.getSubCategoryById(id);
             var master = entityManager.getMasterCategoryById(sub.masterCategoryId);
             categoryMap[id] = {
-              category: sub.name,
-              master: master.name
+              category: categoryNamesMap[sub.name] || sub.name,
+              master: categoryNamesMap[master.name] || master.name
             };
           }
           return categoryMap[id];
