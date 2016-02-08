@@ -22,7 +22,7 @@
         flex-direction: column;
       }
       .firstContent {
-        flex: 1;
+        flex: 2;
         @include media-query($on-palm) {
           margin-top: 100px;
         }
@@ -92,6 +92,14 @@
         flex-direction: row;
         flex: 2;
         text-align: center;
+        img {
+          width: 75%;
+        }
+        @include media-query($on-laptop) {
+          img {
+            width: 100%;
+          }
+        }
         @include media-query($on-palm) {
           flex-direction: column;
           padding: 15%;
@@ -110,7 +118,8 @@
         }
         .features {
           margin: 0 auto;
-          height: 30px;
+          height: 40px;
+          padding: 0 2%;
           background-color: #36b64b;
           color: #fff;
           border-style: none;
@@ -138,11 +147,8 @@
         flex-direction: column;
         background-size: cover;
       }
-      div {
-        flex: 2;
-      }
       .fourthContent {
-        flex: 3;
+        margin: 0 auto;
         @include media-query($on-laptop) {
           margin-left: 20%;
         }
