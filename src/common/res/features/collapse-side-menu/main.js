@@ -57,22 +57,6 @@
           return;
         }
 
-        var budgetAction = $('.nav-main').find('.mail-1')
-          .closest('a').data('ember-action');
-        var accountAction = $('.nav-main').find('.government-1')
-          .closest('a').data('ember-action');
-
-        var expandBtns = '\
-        <div class=collapsed-buttons> \
-          <a href="#" class="collapsed-budget-link" data-ember-action="'+budgetAction+'"> \
-          <button class="button button-prefs flaticon stroke mail-1 collapsed-budget"></button> \
-          </a> \
-          <a href="#" class="collapsed-account-link" data-ember-action="'+accountAction+'"> \
-            <button class="button button-prefs flaticon stroke government-1 collapsed-account"></button> \
-          </a> \
-          <button class="button button-prefs flaticon stroke right-circle-4 navbar-expand"></button> \
-        <div>';
-
         var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup;
 
         var originalSizes = {
@@ -146,6 +130,8 @@
           right-circle-4 navbar-expand');
 
         collapsedBtnContainer.append(collapseBtn);
+        $('.navlink-collapse').on('click',
+          ynabToolKit.collapseSideMenu.collapseMenu);
 
         return collapsedBtnContainer;
       };
