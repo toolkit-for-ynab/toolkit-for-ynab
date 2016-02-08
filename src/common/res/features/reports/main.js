@@ -32,6 +32,11 @@
         $(window).resize(this.updateCanvasSize);
 
         this.setUpReportsButton = function() {
+          if ($('li.navlink-reports').length > 0) {
+            // The button already exists. Bail.
+            return;
+          }
+
           var reportsBtn =
           '<li> \
             <li class="ember-view navlink-reports"> \
