@@ -1,5 +1,15 @@
 body {
   min-width: 900px;
+
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
+}
+
+.inverted {
+  -webkit-filter: invert(1) hue-rotate(180deg);
+  filter: invert(1) hue-rotate(180deg);
 }
 
 /* Start the whole page hidden, then we'll show it with JS once
@@ -33,6 +43,21 @@ label {
 
 #main-menu li {
   font-size: 1.2em;
+}
+
+div.options {
+  display: flex;
+  position: fixed;
+  bottom: 15px;
+  left: 0;
+  width: 260px;
+  font-size: 1.2em;
+  padding-top: 15px;
+  border-top: 1px solid #F4F4F4;
+}
+
+div.options span {
+  align-self: center;
 }
 
 /* Make all icons green to match the logo */

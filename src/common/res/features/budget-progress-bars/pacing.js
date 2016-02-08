@@ -38,29 +38,32 @@
         $(this).addClass('goal-progress');
 
         var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
-        var calculation = getCalculation(subCategoryName);
 
-        var budgeted = calculation.balance - calculation.budgetedCashOutflows - calculation.budgetedCreditOutflows;
-        var available = calculation.balance;
+		  if ( "Uncategorized Transactions" != subCategoryName ) {
+			  var calculation = getCalculation(subCategoryName);
 
-        if (budgeted > 0) {
-          var pacing = (budgeted - available) / budgeted;
-          if (monthProgress > pacing) {
-            this.style.background = generateProgressBarStyle(
-              ["#c0e2e9", "white", "#CFD5D8", "white"],
-              [pacing, monthProgress - s, monthProgress]);
-          }
-          else {
-            this.style.background = generateProgressBarStyle(
-              ["#c0e2e9", "#CFD5D8", "#c0e2e9", "white"],
-              [monthProgress - s, monthProgress, pacing]);
-          }
-        }
-        else {
-          this.style.background = generateProgressBarStyle(
-              ["white", "#CFD5D8", "white"],
-              [monthProgress - s, monthProgress]);
-        }
+			  var budgeted = calculation.balance - calculation.budgetedCashOutflows - calculation.budgetedCreditOutflows;
+			  var available = calculation.balance;
+
+			  if (budgeted > 0) {
+				 var pacing = (budgeted - available) / budgeted;
+				 if (monthProgress > pacing) {
+					this.style.background = generateProgressBarStyle(
+					  ["#c0e2e9", "white", "#CFD5D8", "white"],
+					  [pacing, monthProgress - s, monthProgress]);
+				 }
+				 else {
+					this.style.background = generateProgressBarStyle(
+					  ["#c0e2e9", "#CFD5D8", "#c0e2e9", "white"],
+					  [monthProgress - s, monthProgress, pacing]);
+				 }
+			  }
+			  else {
+				 this.style.background = generateProgressBarStyle(
+					  ["white", "#CFD5D8", "white"],
+					  [monthProgress - s, monthProgress]);
+			  }
+		  }
         })
 
         var masterCategories = $("ul.is-master-category");

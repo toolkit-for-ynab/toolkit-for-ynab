@@ -11,6 +11,7 @@ ourselves!
 This is what the extension can do for you:
 
 - Days of Buffering Calculation - Forecasts how long it'll take to burn through all your available money using averages. We know there's no such thing as an average month, but some people prefer this calculation over the Age of Money calculation.
+- Export all transactions from the current budget in CSV format.
 - Colour Blind Mode - Changes colours of some of the numbers to make the interface easier on people with certain visual disabilities.
 - Make the calculator work like YNAB4. When you press + or - (etc) the calculator moves to the end of the line so your number isn't lost.
 - Printing Improvements: Now when you print your budget it looks good!
@@ -30,7 +31,7 @@ This is what the extension can do for you:
 - Add a setting to make enter just save the transaction when adding transactions.
 - Show your spending pacing mid-month to ensure you're on track to meet your budget. You can enable and disable this setting per budget column by clicking on the value.
 - Make negative numbers anywhere in the application have square corners so they stand out even more.
-- Export all transactions from the current budget.
+- Larger Clickable Area for Icons: Makes the uncleared, cleared and reconciled icons easier to select.
 
 All of these are configurable with options in the extension options page.
 

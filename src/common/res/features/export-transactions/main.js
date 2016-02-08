@@ -8,12 +8,14 @@
       // # LIBRARY / UTILITIES
       // ######################
 
-      // # Export data as CSV from javascript
+      // Export data as CSV from javascript
+      // ==================================
+
       // Based on http://halistechnology.com/2015/05/28/use-javascript-to-export-your-data-as-csv/
 
       // Convert array of similar objects (shared keys) into a CSV body
       function convertArrayOfObjectsToCSV(args) {
-        var result, ctr, keys, columnDelimiter, lineDelimiter, data;
+        var result, ctr, keys, titles, columnDelimiter, lineDelimiter, data;
 
         data = args.data || null;
         if (data == null || !data.length) {
@@ -36,8 +38,9 @@
           return quoted.join(columnDelimiter) + lineDelimiter;
         }
 
-        keys = Object.keys(data[0])
-        result = prepRow(keys);
+        keys = Object.keys(data[0]);
+        titles = args.titles || keys;
+        result = prepRow(titles);
 
         data.forEach(function(item) {
           var values = keys.map(function(key) { return item[key]; });
@@ -73,7 +76,22 @@
       }
 
 
+
+      // String Manipulation
+      // ===================
+
+      // convert "camelCaseStrings" to "Camel Case Strings"
+      function camelCaseToTitle(input) {
+        var output = input.replace(/([A-Z])/g, " $1");
+        output = output[0].toUpperCase() + output.slice(1);
+        return output;
+      }
+
+
+
       // # Export Transactions from YNAB
+      // ===============================
+
       // Build an array of "cleaned" transactions -- containing just the information to export
       // Pass in the entityManager -- theoretically allows swapping out a different interface
       function getTransactionArray(entityManager) {
@@ -96,8 +114,16 @@
           return accountNameMap[id];
         };
 
+        // Map "internal" codes to more user-friendly labels
+        var categoryNamesMap = {
+          'Internal Master Category': '*** YNAB Internal Categories',
+          'Split (Multiple Categories)...': 'Split (Multiple Categories)',
+          "Split SubCategory": 'Split (Multiple Categories)',
+          'Immediate Income SubCategory': '*** Inflow: To Be Budgeted'
+        };
 
         // get category -- returns {category, mastercategory} -- with internal cache
+        // and check for a "user-friendly" name remapping
         var categoryMap = {};
         var getCategory = function (id) {
           if (!id) { return; }
@@ -105,12 +131,13 @@
             var sub = entityManager.getSubCategoryById(id);
             var master = entityManager.getMasterCategoryById(sub.masterCategoryId);
             categoryMap[id] = {
-              category: sub.name,
-              master: master.name
+              category: categoryNamesMap[sub.name] || sub.name,
+              master: categoryNamesMap[master.name] || master.name
             };
           }
           return categoryMap[id];
         }
+
 
         // "clean" a transaction into the information to export
         function cleanTransaction(yTrans) {
@@ -122,9 +149,9 @@
           trans.date = yTrans.date.format('YYYY-MM-DD');
           trans.payee = getPayeeName(yTrans.payeeId);
 
-          // Category might be null if not yet matched
+          // Category might be null if not yet matched -- in that case, use ''
           var cat = getCategory(yTrans.subCategoryId);
-          trans.masterCategory = cat ? cat.master: '';
+          trans.masterCategory = cat ? cat.master : '';
           trans.category = cat ? cat.category : '';
 
           trans.memo = yTrans.memo || '';
@@ -165,7 +192,16 @@
         var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
         var transactions = getTransactionArray(entityManager);
         transactions = sortByKey(transactions, 'date', 'DESC');
-        var csv = convertArrayOfObjectsToCSV({data: transactions});
+
+        var titles = Object.keys(transactions[0]).map(function (key) {
+          return camelCaseToTitle(key);
+        });
+
+        var csv = convertArrayOfObjectsToCSV({
+          data: transactions,
+          titles: titles
+        });
+
         downloadCSV({contents: csv});
       }
 
