@@ -93,6 +93,7 @@
         text-align: center;
         @include media-query($on-palm) {
           flex-direction: column;
+          padding: 15%;
         }
         div {
           flex: 1;
@@ -103,6 +104,9 @@
         margin-top: 20px;
         flex: 1;
         text-align: center;
+        @include media-query($on-palm) {
+          margin-bottom: 20px;
+        }
         .features {
           margin: 0 auto;
           height: 30px;
