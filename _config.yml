@@ -10,9 +10,6 @@ url: "http://toolkitforynab.com" # the base hostname & protocol for your site
 twitter_username: kevinbrowntech
 github_username:  blargity
 
-# Build settings
-markdown: kramdown
-
 # GitHub Pages Redirects
 gems:
   - jekyll-redirect-from

@@ -3,6 +3,13 @@
 ---
 @charset "utf-8";
 
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 
 
 // Our variables
@@ -45,5 +52,8 @@ $on-laptop:        800px;
 @import
         "base",
         "layout",
+        "footer",
+        "header",
+        "home",
         "syntax-highlighting"
 ;
