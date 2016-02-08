@@ -31,16 +31,8 @@
 
           var $nodes = $(newNodes); // jQuery set
           $nodes.each(function() {
-            var $node = $(this);
-
-            try {
-              nodeClasses = new Set($node[0].className.split(' '));
-            } catch(err) {
-              ynabToolKit.debugNodes.errors = err
-            }
-
-            ynabToolKit.changedNodes.add($node[0].className.replace(/^ember-view /,''));
-
+            var nodeClass = this.className;
+            if (nodeClass) ynabToolKit.changedNodes.add(nodeClass.replace(/^ember-view /,''));
           }); // each node mutation event
 
         }); // each mutation event
