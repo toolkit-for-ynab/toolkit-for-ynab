@@ -59,7 +59,7 @@
         position: absolute;
         top: 9px;
         right: 30px;
-        background-color: $background-color;
+        background-color: inherit;
         // border: 1px solid $grey-color-light;
         border-radius: 5px;
         text-align: right;
@@ -87,11 +87,11 @@
             clear: both;
             display: none;
             @include media-query($on-palm) {
-              float: left;
+              float: right;
               width: 40%;
               height: 100vh;
               text-align: left;
-
+              background-color: #fff;
             }
         }
 
