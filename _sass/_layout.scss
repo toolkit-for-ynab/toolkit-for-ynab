@@ -12,8 +12,15 @@
       margin: 15%;
       display: flex;
       flex-direction: row;
+      @media only screen and (max-width: 600px) {
+        flex-direction: column;
+        margin: 0;
+      }
       .firstContent {
         flex: 1;
+        @media only screen and (max-width: 600px) {
+          margin-top: 100px;
+        }
         h1 {
           font-size: 3em;
           padding: 10% 10% 10%;
@@ -31,6 +38,10 @@
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        @media only screen and (max-width: 600px) {
+          height: 200px;
+          margin-top: 50px;
+        }
       }
     }
     .imageOne {
@@ -42,6 +53,9 @@
       .secondContent {
         width: 40%;
         float: right;
+        @media only screen and (max-width: 600px) {
+          width: 100%;
+        }
         h1 {
           font-size: 3em;
           margin-top: 30px;
@@ -63,35 +77,7 @@
       display: flex;
       flex-direction: column;
       margin: 0 auto;
-      div {
-        display: flex;
-        flex: 1;
-        flex-direction: row;
-      }
-      .rowOne, .rowTwo, .rowThree, .rowFour {
-        flex: 1;
-        border: 1px dotted red;
-        h1, div {
-          flex: 1;
-          text-align: left;
-          border: 1px dotted black;
-          margin-bottom: 0;
-        }
-      }
-      .rowOne {
-        div {
-          background-image: url("/images/pie.svg");
-          background-size: contain;
-          background-repeat: no-repeat;
-        }
-      }
-      .rowThree {
-        div {
-          background-image: url("/images/pie.svg");
-          background-size: contain;
-          background-repeat: no-repeat;
-        }
-      }
+
     }
     .imageTwo {
       display: flex;
@@ -103,11 +89,20 @@
       color: #fff;
       padding-top: 20vh;
       padding-bottom: 20vh;
+      @media only screen and (max-width: 600px) {
+        padding-top: 0;
+        padding-bottom: 0;
+        background-size: cover;
+        background-position: left;
+      }
       div {
         flex: 2;
       }
       .fourthContent {
         flex: 3;
+        @media only screen and (max-width: 600px) {
+          flex: 25;
+        }
         h1 {
           text-transform: uppercase;
           font-size: 3em;
