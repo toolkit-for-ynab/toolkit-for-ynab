@@ -385,33 +385,29 @@
 
         this.observe = function(changedNodes) {
           // Did they switch budgets?
-          if (changedNodes.has('user-logged-in')) {
+          if (changedNodes.has('pure-g layout user-logged-in')) {
             if ($('.nav-main').length) {
               ynabToolKit.reports.invoke();
             }
           }
 
           // Did they switch away from our tab?
-          if (changedNodes.has('navlink-budget') ||
-              changedNodes.has('navlink-accounts') ||
-              changedNodes.has('nav-account-row')) {
+          if (changedNodes.has('navlink-budget active') ||
+              changedNodes.has('navlink-accounts active') ||
+              changedNodes.has('nav-account-row is-selected')) {
 
-            if ($('.navlink-budget').hasClass('active') ||
-                $('.navlink-accounts').hasClass('active') ||
-                $('.nav-account-row').hasClass('is-selected')) {
-              // The user has left the reports page.
-              // We're no longer the active page.
-              $('.navlink-reports').removeClass('active');
+            // The user has left the reports page.
+            // We're no longer the active page.
+            $('.navlink-reports').removeClass('active');
 
-              // Get rid of our UI
-              ynabToolKit.reports.netWorthReportChart.destroy();
-              ynabToolKit.reports.netWorthReportChart = null;
+            // Get rid of our UI
+            ynabToolKit.reports.netWorthReportChart.destroy();
+            ynabToolKit.reports.netWorthReportChart = null;
 
-              $('#reports-panel, #reports-inspector, #reportCanvas').remove();
+            $('#reports-panel, #reports-inspector, #reportCanvas').remove();
 
-              // And restore the YNAB stuff we hid earlier
-              $('.budget-header, .scroll-wrap').show();
-            }
+            // And restore the YNAB stuff we hid earlier
+            $('.budget-header, .scroll-wrap').show();
           }
         };
       }
