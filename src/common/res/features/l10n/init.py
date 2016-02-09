@@ -39,7 +39,7 @@ def unpack():
             with open(os.path.join(DEST_DIR, name), 'r+') as f:
                 content = f.read()
                 f.seek(0, 0)
-                f.write('ynabToolKit.emberL10nData = ' + content)
+                f.write('ynabToolKit.l10nData = ' + content)
     for root, dirs, files in os.walk(DEST_DIR):
         for name in dirs:
             os.rmdir(os.path.join(root, name))
