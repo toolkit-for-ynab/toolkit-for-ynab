@@ -3,7 +3,7 @@
 
     ynabToolKit.collapseSideMenu = new function() {
 
-      var buttonText = (ynabToolKit.l10nData && ynabToolKit.l10nData.Sidebar.Button.Collapse) || 'Collapse';
+      var buttonText = (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.collapse"]) || 'Collapse';
       this.collapseBtn = '<li> \
         <li class="ember-view navlink-collapse"> \
           <a href="#"> \

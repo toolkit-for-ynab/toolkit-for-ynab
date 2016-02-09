@@ -17,7 +17,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 
   }; // Keep feature functions contained within this object
 
-  Ember.I18n.translations = ynabToolKit.emberL10nData;
+  Ember.I18n.translations = ynabToolKit.l10nData;
 
   ynabToolKit.l10n.invoke(); // Run your script once on page load
 
