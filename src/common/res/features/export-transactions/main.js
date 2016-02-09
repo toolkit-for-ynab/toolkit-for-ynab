@@ -164,6 +164,12 @@
         }
 
         var ynabTransArray = entityManager.getAllTransactions();
+
+        // exclude soft-deleted ("tombstone") transactions
+        ynabTransArray = ynabTransArray.filter(function (yTrans) {
+          return !yTrans.get('isTombstone');
+        });
+
         var cleanedTransArray = ynabTransArray.map(cleanTransaction);
         return cleanedTransArray;
       }
