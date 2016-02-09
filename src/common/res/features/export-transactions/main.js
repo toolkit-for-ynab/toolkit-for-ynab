@@ -237,7 +237,8 @@
 
       this.observe = function(changedNodes) {
         // Changes to `.navlink-accounts` means we are newly on or off the All Accounts page
-        if (changedNodes.has('navlink-accounts')) {
+        if (changedNodes.has('navlink-accounts') ||
+            changedNodes.has('navlink-accounts active')) {
           this.invoke();
         }
       };
