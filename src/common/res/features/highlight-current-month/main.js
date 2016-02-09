@@ -26,7 +26,7 @@
       
       this.observe = function(changedNodes) {
   
-          if (changedNodes.has('budget-header')) {
+          if (changedNodes.has('budget-header-totals-cell-value user-data')) {
             ynabToolKit.currentMonthIndicator.invoke();
           }
         };
