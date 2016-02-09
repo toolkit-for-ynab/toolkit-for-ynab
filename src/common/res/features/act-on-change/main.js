@@ -25,10 +25,7 @@
 
         mutations.forEach(function(mutation) {
           var newNodes = mutation.target;
-          if (ynabToolKit.debugNodes) {
-            console.log(newNodes);
-          }
-
+          
           var $nodes = $(newNodes); // jQuery set
           $nodes.each(function() {
             var nodeClass = $(this).attr('class');
