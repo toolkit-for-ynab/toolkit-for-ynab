@@ -53,7 +53,7 @@
 
     this.observe = function(changedNodes) {
 
-        if ( (changedNodes.has('navlink-budget') && changedNodes.has('active') ) || changedNodes.has('budget-inspector') ) {
+        if ( changedNodes.has('navlink-budget active') || changedNodes.has('budget-inspector') ) {
           ynabToolKit.budgetProgressBars.invoke();
         }
       };

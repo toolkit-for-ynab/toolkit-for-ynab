@@ -164,6 +164,12 @@
         }
 
         var ynabTransArray = entityManager.getAllTransactions();
+
+        // exclude soft-deleted ("tombstone") transactions
+        ynabTransArray = ynabTransArray.filter(function (yTrans) {
+          return !yTrans.get('isTombstone');
+        });
+
         var cleanedTransArray = ynabTransArray.map(cleanTransaction);
         return cleanedTransArray;
       }
@@ -231,7 +237,8 @@
 
       this.observe = function(changedNodes) {
         // Changes to `.navlink-accounts` means we are newly on or off the All Accounts page
-        if (changedNodes.has('navlink-accounts')) {
+        if (changedNodes.has('navlink-accounts') ||
+            changedNodes.has('navlink-accounts active')) {
           this.invoke();
         }
       };

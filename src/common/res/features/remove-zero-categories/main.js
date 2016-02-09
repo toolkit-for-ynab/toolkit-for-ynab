@@ -18,7 +18,7 @@
 
       this.observe = function(changedNodes) {
 
-      if (changedNodes.has('options-shown')) {
+      if (changedNodes.has('ynab-select user-data options-shown')) {
           // We found a modal pop-up
           ynabToolKit.removeZeroCategories.invoke();
         }
@@ -31,9 +31,3 @@
     setTimeout(poll, 250);
   }
 })();
-
-
-
-
-
-
