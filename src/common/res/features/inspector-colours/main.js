@@ -20,12 +20,13 @@
 
       this.observe = function(changedNodes) {
 
-        if (changedNodes.has('budget-table-cell-available-div')) {
+        if (changedNodes.has('budget-table-cell-available-div user-data')) {
           // Changes are detected in the category balances
           ynabToolKit.updateInspectorColours.invoke();
         } else
 
-        if (ynabToolKit.changedNodes.has('is-sub-category') && ynabToolKit.changedNodes.has('is-checked')) {
+        if (ynabToolKit.changedNodes.has('budget-table-row is-sub-category') &&
+            ynabToolKit.changedNodes.has('is-checked flaticon stroke ynab-checkbox-button')) {
           // User has selected a specific sub-category
           ynabToolKit.updateInspectorColours.invoke();
         }
