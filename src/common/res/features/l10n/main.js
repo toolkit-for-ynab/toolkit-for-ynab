@@ -8,16 +8,14 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
     // or variables, etc
 
     this.invoke = function() {
-
+      Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
     },
 
     this.observe = function(changedNodes) {
-
+      ynabToolKit.l10n.invoke();
     }
 
   }; // Keep feature functions contained within this object
-
-  Ember.I18n.translations = ynabToolKit.l10nData;
 
   ynabToolKit.l10n.invoke(); // Run your script once on page load
 
