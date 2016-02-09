@@ -5,3 +5,5 @@ certificates/*
 /.project
 save-commands.json
 src/common/res/features/shared/feedChanges.js
+src/common/res/features/l10n/locales/*
+src/common/res/features/l10n/settings.json

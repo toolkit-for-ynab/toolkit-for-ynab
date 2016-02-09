@@ -1,5 +1,6 @@
 @ECHO OFF
 
+python src/common/res/features/l10n/init.py
 python populateFeaturesFiles.py
 python lib/kango-framework-latest/kango.py build .
 
