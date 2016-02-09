@@ -9,7 +9,7 @@
 
     // Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
     // during page interactions and updates to the developer tools console.
-    ynabToolKit.debugNodes = false;
+    ynabToolKit.debugNodes = true;
 
     ynabToolKit.actOnChange = function() {
 
@@ -26,27 +26,20 @@
         mutations.forEach(function(mutation) {
           var newNodes = mutation.target;
           if (ynabToolKit.debugNodes) {
-            console.log(newNodes);
+            // console.log(newNodes);
           }
 
           var $nodes = $(newNodes); // jQuery set
           $nodes.each(function() {
-            var $node = $(this);
-
-            try {
-              nodeClasses = new Set($node[0].className.split(' '));
-            } catch(err) {
-              ynabToolKit.debugNodes.errors = err
-            }
-
-            ynabToolKit.changedNodes.add($node[0].className.replace(/^ember-view /,''));
-
+            var nodeClass = $(this).attr('class');
+            if (nodeClass) ynabToolKit.changedNodes.add(nodeClass.replace(/^ember-view /,''));
           }); // each node mutation event
 
         }); // each mutation event
 
         if (ynabToolKit.debugNodes) {
-          console.log('###')
+          console.log(ynabToolKit.changedNodes);
+          console.log('###');
         }
 
         // Now we are ready to feed the change digest to the
