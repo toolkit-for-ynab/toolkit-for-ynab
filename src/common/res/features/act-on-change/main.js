@@ -44,8 +44,9 @@
 
         // Now we are ready to feed the change digest to the
         // automatically setup feedChanges file/function
-        ynabToolKit.shared.feedChanges(ynabToolKit.changedNodes);
-
+        if (ynabToolKit.changedNodes.size > 0) {
+          ynabToolKit.shared.feedChanges(ynabToolKit.changedNodes);
+        }
       });
 
       // This finally says 'Watch for changes' and only needs to be called the one time
