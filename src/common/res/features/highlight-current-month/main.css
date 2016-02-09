@@ -1,0 +1,7 @@
+.budget-header .budget-header-item {
+	padding: .7em .6em .6em;
+	-moz-transition: background-color .6s linear;
+	-webkit-transition: background-color .6s linear;
+	-o-transition: background-color .6s linear;
+	transition: background-color .6s linear;
+}

@@ -21,7 +21,7 @@
 
         this.observe = function(changedNodes) {
 
-          if (changedNodes.has('layout')) {
+          if (changedNodes.has('pure-g layout user-logged-in')) {
               // The user has switched screens
               ynabToolKit.resizeInspector.invoke();
           }
