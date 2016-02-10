@@ -193,6 +193,12 @@
 
         // Remove the content and put our report there instead.
         this.showReports = function() {
+
+          // Don't add another report if it already exists
+          if ($('#reports-panel').length) {
+            return;
+          }
+
           // Update the nav
           $('.navlink-budget, .navlink-accounts').removeClass('active');
           $('.nav-account-row').removeClass('is-selected');
