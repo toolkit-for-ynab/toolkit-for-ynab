@@ -1,12 +1,16 @@
+// jscs:disable disallowMultipleLineStrings
+/*jshint multistr: true */
+
 (function poll() {
   if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
 
-    ynabToolKit.collapseSideMenu = new function() {
+    ynabToolKit.collapseSideMenu = function() {
 
       this.collapseBtn = '<li> \
         <li class="ember-view navlink-collapse"> \
           <a href="#"> \
-            <span class="ember-view flaticon stroke left-circle-4"></span>Collapse \
+            <span class="ember-view flaticon stroke left-circle-4"> \
+            </span>Collapse \
           </a> \
         </li> \
       </li>';
@@ -151,7 +155,7 @@
           // Need to remove width after animation completion
           $('.budget-content').removeAttr('style');
         });
-        $('.budget-inspector').animate({ width: originalSizes.inspectorWidth });
+        $('.budget-inspector').animate({width: originalSizes.inspectorWidth});
       };
 
       // Handle clicking the collapse button
@@ -164,15 +168,15 @@
 
       // Set collapsed sizes
       this.setCollapsedSizes = function() {
-        $('.sidebar').animate({ width: '40px' });
-        $('.content').animate({ left: '40px' }, 400, 'swing', function() {
+        $('.sidebar').animate({width: '40px'});
+        $('.content').animate({left: '40px'}, 400, 'swing', function() {
           // Need to remove width after animation completion
           $('.ynab-grid-header').removeAttr('style');
         });
 
-        $('.budget-header').animate({ left: '40px' });
-        $('.budget-content').animate({ width: '73%' });
-        $('.budget-inspector').animate({ width: '27%' });
+        $('.budget-header').animate({left: '40px'});
+        $('.budget-content').animate({width: '73%'});
+        $('.budget-inspector').animate({width: '27%'});
       };
 
       // Add the active style to correct button
@@ -180,7 +184,7 @@
         ynabToolKit.collapseSideMenu.deactivateCollapsedActive();
         if ($('.accounts-toolbar').length) {
           $('.collapsed-account').addClass('collapsed-active');
-        };
+        }
 
         if ($('.budget-toolbar').length) {
           $('.collapsed-budget').addClass('collapsed-active');
