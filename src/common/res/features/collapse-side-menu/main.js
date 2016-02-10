@@ -1,10 +1,10 @@
 // jscs:disable disallowMultipleLineStrings
-/*jshint multistr: true */
+// jshint multistr: true
 
 (function poll() {
   if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
 
-    ynabToolKit.collapseSideMenu = function() {
+    ynabToolKit.collapseSideMenu = new function() { // jshint ignore:line
 
       this.collapseBtn = '<li> \
         <li class="ember-view navlink-collapse"> \
@@ -104,18 +104,26 @@
 
         for (var i = 0; i < navChildrenLength; i++) {
           var child = navChildren[i];
+
+          // If this is the collapse button, skip
+          if (child.className.indexOf('navlink-collapse') > -1) continue;
+
           var emberAction = $(child).find('a').data('ember-action');
+          var span = $(child).find('span')[0];
+
+          // Don't process if not actually a button
+          if (!span) continue;
+
+          var btnClasses = span.className;
+          var button = $('<button>');
+          button.addClass(btnClasses);
+          button.addClass('button button-prefs');
 
           // Create YNAB Buttons
           if (emberAction) {
             var link = $('<a>');
             link.attr('href','#');
             link.attr('data-ember-action',emberAction);
-
-            var btnClasses = $(child).find('span')[0].className;
-            var button = $('<button>');
-            button.addClass(btnClasses);
-            button.addClass('button button-prefs');
             link.html(button);
 
             // Set proper class so the active styling can be applued
@@ -126,6 +134,18 @@
             }
 
             collapsedBtnContainer.append(link);
+          } else { // Create custom buttons
+            var classes = /.*(navlink-\w*)/g.exec(child.className);
+            if (classes.length > 0) {
+              button.addClass(classes[1]);
+
+              var ev = $._data(child, 'events');
+              if (ev && ev.click) {
+                $('body').on('click', '.' + classes[1], ev.click[0].handler);
+              }
+            }
+
+            collapsedBtnContainer.append(button);
           }
         }
 
@@ -196,7 +216,7 @@
         $('.collapsed-account').removeClass('collapsed-active');
         $('.collapsed-budget').removeClass('collapsed-active');
       };
-    };
+    }();
 
     ynabToolKit.collapseSideMenu.invoke();
 
