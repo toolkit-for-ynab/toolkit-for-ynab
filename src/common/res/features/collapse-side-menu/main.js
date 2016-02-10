@@ -22,13 +22,13 @@
           }
         }
 
-        if (changedNodes.has('budget-header-flexbox') &&
+        if (changedNodes.has('navlink-budget active') &&
             $('.collapsed-buttons').is(':visible')) {
           ynabToolKit.collapseSideMenu.setCollapsedSizes();
           ynabToolKit.collapseSideMenu.setActiveButton();
         }
 
-        if (changedNodes.has('accounts-header-balances') &&
+        if (changedNodes.has('navlink-accounts active') &&
             $('.collapsed-buttons').is(':visible')) {
           ynabToolKit.collapseSideMenu.setCollapsedSizes();
           ynabToolKit.collapseSideMenu.setActiveButton();
