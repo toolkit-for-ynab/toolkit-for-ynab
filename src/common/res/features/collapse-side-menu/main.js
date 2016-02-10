@@ -11,6 +11,14 @@
         </li> \
       </li>';
 
+      this.originalSizes = {
+        sidebarWidth:   $('.sidebar').width(),
+        contentLeft:    $('.content').css('left'),
+        headerLeft:     $('.budget-header, .accounts-header').css('left'),
+        contentWidth:   $('.budget-content').css('width'),
+        inspectorWidth: $('.budget-inspector').css('width'),
+      };
+
       this.invoke = function() {
         ynabToolKit.collapseSideMenu.setupBtns();
       };
@@ -43,6 +51,7 @@
             $('.navlink-collapse').remove();
 
             ynabToolKit.collapseSideMenu.setUpCollapseBtn();
+            ynabToolKit.collapseSideMenu.setUpCollapsedButtons();
           }
 
         }
@@ -57,15 +66,18 @@
           return;
         }
 
-        var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup;
+        ynabToolKit.collapseSideMenu.setUpCollapseBtn();
+        ynabToolKit.collapseSideMenu.setUpCollapsedButtons();
+      };
 
-        var originalSizes = {
-          sidebarWidth:   $('.sidebar').width(),
-          contentLeft:    $('.content').css('left'),
-          headerLeft:     $('.budget-header, .accounts-header').css('left'),
-          contentWidth:   $('.budget-content').css('width'),
-          inspectorWidth: $('.budget-inspector').css('width'),
-        };
+      this.setUpCollapseBtn = function() {
+        $('.nav-main').append(ynabToolKit.collapseSideMenu.collapseBtn);
+        $('.navlink-collapse').on('click',
+          ynabToolKit.collapseSideMenu.collapseMenu);
+      };
+
+      this.setUpCollapsedButtons = function() {
+        var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup;
 
         if (!$('.collapsed-buttons').length) {
           $('.sidebar').prepend(expandBtns);
@@ -74,18 +86,7 @@
           $('.sidebar').prepend(expandBtns);
         }
 
-        ynabToolKit.collapseSideMenu.setUpCollapseBtn();
-
         $('.collapsed-buttons').hide();
-        $('.navbar-expand').on('click', function() {
-          ynabToolKit.collapseSideMenu.expandMenu(originalSizes);
-        });
-      };
-
-      this.setUpCollapseBtn = function() {
-        $('.nav-main').append(ynabToolKit.collapseSideMenu.collapseBtn);
-        $('.navlink-collapse').on('click',
-          ynabToolKit.collapseSideMenu.collapseMenu);
       };
 
       this.getUnCollapseBtnGroup = function() {
@@ -130,8 +131,10 @@
           right-circle-4 navbar-expand');
 
         collapsedBtnContainer.append(collapseBtn);
-        $('.navlink-collapse').on('click',
-          ynabToolKit.collapseSideMenu.collapseMenu);
+        $('body').on('click', '.navbar-expand', function() {
+          ynabToolKit.collapseSideMenu
+          .expandMenu(ynabToolKit.collapseSideMenu.originalSizes);
+        });
 
         return collapsedBtnContainer;
       };
@@ -140,10 +143,11 @@
       this.expandMenu = function(originalSizes) {
         $('.collapsed-buttons').hide();
         $('.sidebar > .ember-view').fadeIn();
-        $('.sidebar').animate({ width: originalSizes.sidebarWidth });
-        $('.content').animate({ left: originalSizes.contentLeft });
-        $('.budget-header').animate({ left: originalSizes.headerLeft });
-        $('.budget-content').animate({ width: originalSizes.contentWidth }, 400, 'swing', function() {
+        $('.sidebar').animate({width: originalSizes.sidebarWidth});
+        $('.content').animate({left: originalSizes.contentLeft});
+        $('.budget-header').animate({left: originalSizes.headerLeft});
+        $('.budget-content').animate({width: originalSizes.contentWidth},
+          400, 'swing', function() {
           // Need to remove width after animation completion
           $('.budget-content').removeAttr('style');
         });
