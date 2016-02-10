@@ -202,11 +202,13 @@
       // Add the active style to correct button
       this.setActiveButton = function() {
         ynabToolKit.collapseSideMenu.deactivateCollapsedActive();
-        if ($('.accounts-toolbar').length) {
+        if ($('.accounts-toolbar').length &&
+            $('.accounts-toolbar').is(':visible')) {
           $('.collapsed-account').addClass('collapsed-active');
         }
 
-        if ($('.budget-toolbar').length) {
+        if ($('.budget-toolbar').length &&
+            $('.budget-toolbar').is(':visible')) {
           $('.collapsed-budget').addClass('collapsed-active');
         }
       };
