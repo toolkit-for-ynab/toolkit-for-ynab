@@ -7,3 +7,8 @@
 	background-color: #194853;
 	color: #32dcff;
 }
+
+.collapsed-buttons > .navlink-reports.active {
+	background-color: #194853;
+	color: #fed168;
+}

@@ -34,13 +34,9 @@
           }
         }
 
-        if (changedNodes.has('budget-header-flexbox') &&
-            $('.collapsed-buttons').is(':visible')) {
-          ynabToolKit.collapseSideMenu.setCollapsedSizes();
-          ynabToolKit.collapseSideMenu.setActiveButton();
-        }
-
-        if (changedNodes.has('accounts-header-balances') &&
+        if ((changedNodes.has('budget-header-flexbox')    ||
+             changedNodes.has('accounts-header-balances') ||
+             changedNodes.has('reports-inspector-value')) &&
             $('.collapsed-buttons').is(':visible')) {
           ynabToolKit.collapseSideMenu.setCollapsedSizes();
           ynabToolKit.collapseSideMenu.setActiveButton();
@@ -106,13 +102,17 @@
           var child = navChildren[i];
 
           // If this is the collapse button, skip
-          if (child.className.indexOf('navlink-collapse') > -1) continue;
+          if (child.className.indexOf('navlink-collapse') > -1) {
+            continue;
+          }
 
           var emberAction = $(child).find('a').data('ember-action');
           var span = $(child).find('span')[0];
 
           // Don't process if not actually a button
-          if (!span) continue;
+          if (!span) {
+            continue;
+          }
 
           var btnClasses = span.className;
           var button = $('<button>');
