@@ -49,19 +49,6 @@
           $(".nav-main").append(reportsBtn);
 
           $(".navlink-reports").on("click", ynabToolKit.reports.showReports);
-
-          $('.navlink-budget, .navlink-accounts, .nav-account-row').on("click", function() {
-            // They're trying to navigate away.
-            // Restore the highlight on whatever they're trying to click on.
-            // For example, if they were on the Budget tab, then clicked on Reports, clicking on
-            // Budget again wouldn't do anything as YNAB thinks they're already there. This switches
-            // the correct classes back on and triggers our .observe below.
-            if ($(this).hasClass('navlink-budget') || $(this).hasClass('navlink-accounts')) {
-              $(this).addClass('active');
-            } else if ($(this).hasClass('nav-account-row')) {
-              $(this).addClass('is-selected');
-            }
-          });
         }
 
         this.calculateNetWorthReport = function() {
@@ -203,6 +190,19 @@
           $('.navlink-budget, .navlink-accounts').removeClass('active');
           $('.nav-account-row').removeClass('is-selected');
           $('.navlink-reports').addClass('active');
+
+          $('.navlink-budget, .navlink-accounts, .nav-account-row').on("click", function() {
+            // They're trying to navigate away.
+            // Restore the highlight on whatever they're trying to click on.
+            // For example, if they were on the Budget tab, then clicked on Reports, clicking on
+            // Budget again wouldn't do anything as YNAB thinks they're already there. This switches
+            // the correct classes back on and triggers our .observe below.
+            if ($(this).hasClass('navlink-budget') || $(this).hasClass('navlink-accounts')) {
+              $(this).addClass('active');
+            } else if ($(this).hasClass('nav-account-row')) {
+              $(this).addClass('is-selected');
+            }
+          });
 
           // Clear out the content and put ours in there instead.
           $('div.scroll-wrap').closest('.ember-view').prepend(

@@ -121,12 +121,16 @@
 
           // Create YNAB Buttons
           if (emberAction) {
+            var listItem = $(child).find('li')[0];
+            var linkClasses = listItem.className;
+
             var link = $('<a>');
             link.attr('href','#');
+            link.addClass(linkClasses);
             link.attr('data-ember-action',emberAction);
             link.html(button);
 
-            // Set proper class so the active styling can be applued
+            // Set proper class so the active styling can be applied
             if (btnClasses.indexOf('mail-1') > -1) {
               button.addClass('collapsed-budget');
             } else if (btnClasses.indexOf('government-1') > -1) {
