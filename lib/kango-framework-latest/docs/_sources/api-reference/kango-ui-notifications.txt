@@ -34,7 +34,7 @@ Methods
 
 .. _kango-ui-notifications-show:
 
-show
+open
 ----
 
 .. js:function:: kango.ui.notifications.show(title, text, icon, onClick)
