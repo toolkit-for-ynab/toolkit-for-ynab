@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+python src/common/res/features/l10n/init.py $1
