@@ -1,0 +1,306 @@
+{
+    "name": "l10n", 
+    "title": "Localization of YNAB", 
+    "default": "0", 
+    "section": "general", 
+    "type": "select", 
+    "options": [
+        {
+            "name": "Default", 
+            "value": "0"
+        }, 
+        {
+            "name": "Afrikaans", 
+            "value": "1"
+        }, 
+        {
+            "name": "Arabic", 
+            "value": "2"
+        }, 
+        {
+            "name": "Catalan", 
+            "value": "3"
+        }, 
+        {
+            "name": "Chinese Simplified", 
+            "value": "4"
+        }, 
+        {
+            "name": "Chinese Traditional", 
+            "value": "5"
+        }, 
+        {
+            "name": "Czech", 
+            "value": "6"
+        }, 
+        {
+            "name": "Danish", 
+            "value": "7"
+        }, 
+        {
+            "name": "Dutch", 
+            "value": "8"
+        }, 
+        {
+            "name": "Finnish", 
+            "value": "9"
+        }, 
+        {
+            "name": "French", 
+            "value": "10"
+        }, 
+        {
+            "name": "German", 
+            "value": "11"
+        }, 
+        {
+            "name": "Greek", 
+            "value": "12"
+        }, 
+        {
+            "name": "Hebrew", 
+            "value": "13"
+        }, 
+        {
+            "name": "Hungarian", 
+            "value": "14"
+        }, 
+        {
+            "name": "Italian", 
+            "value": "15"
+        }, 
+        {
+            "name": "Japanese", 
+            "value": "16"
+        }, 
+        {
+            "name": "Korean", 
+            "value": "17"
+        }, 
+        {
+            "name": "Norwegian", 
+            "value": "18"
+        }, 
+        {
+            "name": "Polish", 
+            "value": "19"
+        }, 
+        {
+            "name": "Portuguese, Brazilian", 
+            "value": "20"
+        }, 
+        {
+            "name": "Portuguese", 
+            "value": "21"
+        }, 
+        {
+            "name": "Romanian", 
+            "value": "22"
+        }, 
+        {
+            "name": "Russian", 
+            "value": "23"
+        }, 
+        {
+            "name": "Serbian (Cyrillic)", 
+            "value": "24"
+        }, 
+        {
+            "name": "Spanish", 
+            "value": "25"
+        }, 
+        {
+            "name": "Swedish", 
+            "value": "26"
+        }, 
+        {
+            "name": "Turkish", 
+            "value": "27"
+        }, 
+        {
+            "name": "Ukrainian", 
+            "value": "28"
+        }, 
+        {
+            "name": "Vietnamese", 
+            "value": "29"
+        }
+    ], 
+    "actions": {
+        "24": [
+            "injectScript", 
+            "locales/Serbian (Cyrillic).json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "25": [
+            "injectScript", 
+            "locales/Spanish.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "26": [
+            "injectScript", 
+            "locales/Swedish.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "27": [
+            "injectScript", 
+            "locales/Turkish.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "20": [
+            "injectScript", 
+            "locales/Portuguese, Brazilian.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "21": [
+            "injectScript", 
+            "locales/Portuguese.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "22": [
+            "injectScript", 
+            "locales/Romanian.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "23": [
+            "injectScript", 
+            "locales/Russian.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "28": [
+            "injectScript", 
+            "locales/Ukrainian.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "29": [
+            "injectScript", 
+            "locales/Vietnamese.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "1": [
+            "injectScript", 
+            "locales/Afrikaans.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "3": [
+            "injectScript", 
+            "locales/Catalan.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "2": [
+            "injectScript", 
+            "locales/Arabic.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "5": [
+            "injectScript", 
+            "locales/Chinese Traditional.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "4": [
+            "injectScript", 
+            "locales/Chinese Simplified.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "7": [
+            "injectScript", 
+            "locales/Danish.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "6": [
+            "injectScript", 
+            "locales/Czech.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "9": [
+            "injectScript", 
+            "locales/Finnish.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "8": [
+            "injectScript", 
+            "locales/Dutch.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "11": [
+            "injectScript", 
+            "locales/German.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "10": [
+            "injectScript", 
+            "locales/French.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "13": [
+            "injectScript", 
+            "locales/Hebrew.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "12": [
+            "injectScript", 
+            "locales/Greek.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "15": [
+            "injectScript", 
+            "locales/Italian.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "14": [
+            "injectScript", 
+            "locales/Hungarian.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "17": [
+            "injectScript", 
+            "locales/Korean.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "16": [
+            "injectScript", 
+            "locales/Japanese.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "19": [
+            "injectScript", 
+            "locales/Polish.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "18": [
+            "injectScript", 
+            "locales/Norwegian.json", 
+            "injectScript", 
+            "main.js"
+        ]
+    }, 
+    "description": "Localization of interface."
+}

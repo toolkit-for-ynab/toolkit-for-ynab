@@ -82,14 +82,14 @@ Promise.all(optionsPromises).then(function() {
   /* Load this to setup shared utility functions */
   injectScript('res/features/shared/main.js');
 
+  /* Global toolkit css. */
+  injectCSS('res/features/shared/main.css');
+
   /* This script to be built automatically by the python script */
-  injectScript('res/features/shared/feedChanges.js');
+  injectScript('res/features/act-on-change/feedChanges.js');
 
   /* Load this to setup behaviors when the DOM updates and shared functions */
   injectScript('res/features/act-on-change/main.js');
-
-  /* Global toolkit css. */
-  injectCSS('res/features/main.css');
 
   ensureDefaultsAreSet().then(applySettingsToDom);
 });

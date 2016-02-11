@@ -5,9 +5,11 @@ import shutil
 import os
 import zipfile
 import json
+import sys
 
 ID = 'toolkit-for-ynab'
-KEY = '0670e2d9a5d34c0f3603f690a181d0a0'
+KEY = sys.argv[1:][0]
+print KEY
 API_PREFIX = 'https://api.crowdin.com/api/project/%s/' % ID
 KEY_SUFFIX = '?key=%s' % KEY
 FILENAME = 'all.zip'
