@@ -85,15 +85,6 @@
 				setTimeout(autoCompleteRemoved, 250);
 			}
 
-			function autoCompleteFocus() {
-				var selectLabel = document
-						.getElementsByClassName("ynab-select")[0];
-				selectLabel.className += " autocomplete-focus";
-				selectLabel.onfocus = function(event) {
-					event.target.click();
-				}
-			}
-
 			function autoCompleteHandleKeyPress(oldVal, newVal) {
 				var components = document
 						.getElementsByClassName('ynab-select-options');
@@ -147,24 +138,16 @@
 					var selectLabel = document
 							.getElementsByClassName("ynab-select-label")[0];
 					if (selectLabel != undefined) {
-						selectLabel.className = "ynab-select-label";
+						$(selectLabel).removeClass('autocomplete-override');
 					}
+					originalentries = null;
 				} else {
 					setTimeout(autoCompleteRemoved, 250);
 				}
 			}
 
-			function autoCompleteSelectOption(target) {
-				target.click();
-			}
-
 			this.invoke = function() {
 				var dialog = document.getElementsByClassName('ynab-select-options');
-				var label = document.getElementsByClassName('ynab-select-label');
-				var focus = document.getElementsByClassName('autocomplete-focus');
-				if (label.length > 0 && focus.length == 0) {
-					autoCompleteFocus();
-				}
 				if (dialog.length > 0) {
 					autoCompleteApply();
 				}
