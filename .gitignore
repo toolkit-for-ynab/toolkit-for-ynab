@@ -4,4 +4,4 @@ certificates/*
 *.pyc
 /.project
 save-commands.json
-src/common/res/features/shared/feedChanges.js
+src/common/res/features/act-on-change/feedChanges.js
