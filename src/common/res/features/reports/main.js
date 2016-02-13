@@ -41,7 +41,8 @@
           '<li> \
             <li class="ember-view navlink-reports"> \
               <a href="#"> \
-                <span class="ember-view flaticon stroke document-4"></span>Reports \
+                <span class="ember-view flaticon stroke document-4"></span>' +
+                (ynabToolKit.l10nData && ynabToolKit.l10nData["sidebar.reports"]) || 'Reports' + '\
               </a> \
             </li> \
           </li>';
