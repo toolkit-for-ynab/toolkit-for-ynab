@@ -66,124 +66,132 @@
             "value": "14"
         }, 
         {
-            "name": "Italian", 
+            "name": "Icelandic", 
             "value": "15"
         }, 
         {
-            "name": "Japanese", 
+            "name": "Italian", 
             "value": "16"
         }, 
         {
-            "name": "Korean", 
+            "name": "Japanese", 
             "value": "17"
         }, 
         {
-            "name": "Norwegian", 
+            "name": "Korean", 
             "value": "18"
         }, 
         {
-            "name": "Polish", 
+            "name": "Norwegian", 
             "value": "19"
         }, 
         {
-            "name": "Portuguese, Brazilian", 
+            "name": "Polish", 
             "value": "20"
         }, 
         {
-            "name": "Portuguese", 
+            "name": "Portuguese, Brazilian", 
             "value": "21"
         }, 
         {
-            "name": "Romanian", 
+            "name": "Portuguese", 
             "value": "22"
         }, 
         {
-            "name": "Russian", 
+            "name": "Romanian", 
             "value": "23"
         }, 
         {
-            "name": "Serbian (Cyrillic)", 
+            "name": "Russian", 
             "value": "24"
         }, 
         {
-            "name": "Spanish", 
+            "name": "Serbian (Cyrillic)", 
             "value": "25"
         }, 
         {
-            "name": "Swedish", 
+            "name": "Slovenian", 
             "value": "26"
         }, 
         {
-            "name": "Turkish", 
+            "name": "Spanish", 
             "value": "27"
         }, 
         {
-            "name": "Ukrainian", 
+            "name": "Swedish", 
             "value": "28"
         }, 
         {
-            "name": "Vietnamese", 
+            "name": "Turkish", 
             "value": "29"
+        }, 
+        {
+            "name": "Ukrainian", 
+            "value": "30"
+        }, 
+        {
+            "name": "Vietnamese", 
+            "value": "31"
         }
     ], 
     "actions": {
         "24": [
             "injectScript", 
-            "locales/Serbian (Cyrillic).json", 
+            "locales/Russian.json", 
             "injectScript", 
             "main.js"
         ], 
         "25": [
             "injectScript", 
-            "locales/Spanish.json", 
+            "locales/Serbian (Cyrillic).json", 
             "injectScript", 
             "main.js"
         ], 
         "26": [
             "injectScript", 
-            "locales/Swedish.json", 
+            "locales/Slovenian.json", 
             "injectScript", 
             "main.js"
         ], 
         "27": [
             "injectScript", 
-            "locales/Turkish.json", 
+            "locales/Spanish.json", 
             "injectScript", 
             "main.js"
         ], 
         "20": [
             "injectScript", 
-            "locales/Portuguese, Brazilian.json", 
+            "locales/Polish.json", 
             "injectScript", 
             "main.js"
         ], 
         "21": [
             "injectScript", 
-            "locales/Portuguese.json", 
+            "locales/Portuguese, Brazilian.json", 
             "injectScript", 
             "main.js"
         ], 
         "22": [
             "injectScript", 
-            "locales/Romanian.json", 
+            "locales/Portuguese.json", 
             "injectScript", 
             "main.js"
         ], 
         "23": [
             "injectScript", 
-            "locales/Russian.json", 
+            "locales/Romanian.json", 
             "injectScript", 
             "main.js"
         ], 
         "28": [
             "injectScript", 
-            "locales/Ukrainian.json", 
+            "locales/Swedish.json", 
             "injectScript", 
             "main.js"
         ], 
         "29": [
             "injectScript", 
-            "locales/Vietnamese.json", 
+            "locales/Turkish.json", 
             "injectScript", 
             "main.js"
         ], 
@@ -267,7 +275,7 @@
         ], 
         "15": [
             "injectScript", 
-            "locales/Italian.json", 
+            "locales/Icelandic.json", 
             "injectScript", 
             "main.js"
         ], 
@@ -279,25 +287,37 @@
         ], 
         "17": [
             "injectScript", 
-            "locales/Korean.json", 
+            "locales/Japanese.json", 
             "injectScript", 
             "main.js"
         ], 
         "16": [
             "injectScript", 
-            "locales/Japanese.json", 
+            "locales/Italian.json", 
             "injectScript", 
             "main.js"
         ], 
         "19": [
             "injectScript", 
-            "locales/Polish.json", 
+            "locales/Norwegian.json", 
             "injectScript", 
             "main.js"
         ], 
         "18": [
             "injectScript", 
-            "locales/Norwegian.json", 
+            "locales/Korean.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "31": [
+            "injectScript", 
+            "locales/Vietnamese.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "30": [
+            "injectScript", 
+            "locales/Ukrainian.json", 
             "injectScript", 
             "main.js"
         ]
