@@ -19,6 +19,15 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 
   ynabToolKit.l10n.invoke(); // Run your script once on page load
 
+  // Rerender sidebar and content views on page load.
+  rerenderClasses = [ '.content', '.nav'];
+  for (var i = 0; i < rerenderClasses.length; i++) {
+    Ember.View.views[$(rerenderClasses[i])[0].id].rerender();
+  };
+
+  // When rerendering sidebar accounts lists are closing, open them.
+  $('.nav-account-block').click();
+
 } else {
   setTimeout(poll, 250);
 }
