@@ -133,7 +133,7 @@
               });
 
               // Ensure we've pushed the last month in.
-              if (formattedDate != lastLabel) {
+              if (formattedDate != lastLabel || ynabToolKit.reports.netWorth.labels.length == 0) {
                 ynabToolKit.reports.netWorth.labels.push(formattedDate);
 
                 var totalAssets = 0, totalLiabilities = 0;
@@ -345,8 +345,8 @@
                 pointBackgroundColor: netWorthDotColor,
                 pointBorderWidth: 5,
                 pointHoverRadius: 5,
-                pointHoverBackgroundColor: "rgba(255,255,255,0)",
-                pointHoverBorderColor: "rgba(255,255,255,0)",
+                pointHoverBackgroundColor: netWorthDotColor,
+                pointHoverBorderColor: netWorthDotColor,
                 pointHoverBorderWidth: 5,
                 data: ynabToolKit.reports.netWorth.netWorths
               }]
