@@ -33,6 +33,7 @@ This is what the extension can do for you:
 - Show your spending pacing mid-month to ensure you're on track to meet your budget. You can enable and disable this setting per budget column by clicking on the value.
 - Make negative numbers anywhere in the application have square corners so they stand out even more.
 - Larger Clickable Area for Icons: Makes the uncleared, cleared and reconciled icons easier to select.
+- Current month indicator to make it easier to see which month is the current month.
 
 All of these are configurable with options in the extension options page.
 
