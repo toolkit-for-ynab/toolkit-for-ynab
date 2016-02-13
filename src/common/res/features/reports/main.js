@@ -314,6 +314,17 @@
               dateFilter.noUiSlider.on('slide', ynabToolKit.reports.updateReportWithDateFilter);
             }
 
+            // Is the report fully positive? If so we should start the chart at 0.
+            // If not, let the chart do its thing so that people can see their negative
+            // net worths. liabilities and Assets are always positive, so this only
+            // matters with the net worth data points.
+            var startAtZero = true;
+            ynabToolKit.reports.netWorth.netWorths.forEach(function(netWorth) {
+              if (netWorth < 0) {
+                startAtZero = false;
+              }
+            });
+
             // If there's only one month's worth of data, then the net worth
             // figure won't be visible, as there's only a dot. Let's set the
             // dot colour in that case.
@@ -406,6 +417,7 @@
                   }],
                   yAxes: [{
                     ticks: {
+                      beginAtZero: startAtZero,
                       // This formats the currency on the Y axis (to the left of the chart)
                       callback: function(value) { return ynabToolKit.shared.formatCurrency(value); }
                     }
