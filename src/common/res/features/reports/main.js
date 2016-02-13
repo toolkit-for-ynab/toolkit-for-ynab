@@ -87,12 +87,14 @@
               ynabToolKit.reports.netWorth.netWorths.length = 0;
 
               var lastLabel = null,
-                  balanceByAccount = {};
+                  balanceByAccount = {},
+                  date = null,
+                  formattedDate = null;
 
               // Bucket the transactions into month buckets, tallying as we go.
               transactions.forEach(function(transaction) {
-                var date = transaction.get('date')._internalUTCMoment._d;
-                var formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
+                date = transaction.get('date')._internalUTCMoment._d;
+                formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
 
                 if (lastLabel == null) lastLabel = formattedDate;
 
@@ -129,6 +131,30 @@
                 // Tally ho.
                 balanceByAccount[transaction.getAccountName()] += transaction.getAmount();
               });
+
+              // Ensure we've pushed the last month in.
+              if (formattedDate != lastLabel) {
+                ynabToolKit.reports.netWorth.labels.push(formattedDate);
+
+                var totalAssets = 0, totalLiabilities = 0;
+
+                for (var key in balanceByAccount) {
+                  if (balanceByAccount.hasOwnProperty(key)) {
+
+                    if (balanceByAccount[key] > 0) {
+                      totalAssets += (balanceByAccount[key] || 0);
+                    } else {
+                      totalLiabilities += (-balanceByAccount[key] || 0);
+                    }
+                  }
+                }
+
+                ynabToolKit.reports.netWorth.assets.push(totalAssets);
+                ynabToolKit.reports.netWorth.liabilities.push(totalLiabilities);
+                ynabToolKit.reports.netWorth.netWorths.push(totalAssets - totalLiabilities);
+
+                lastLabel = formattedDate;
+              }
 
               if (transactions.length > 0) {
                 // Fill in any gaps in the months in case they're missing data.
