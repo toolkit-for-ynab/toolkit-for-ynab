@@ -1,15 +1,29 @@
+// jscs:disable disallowMultipleLineStrings
+// jshint multistr: true
+
 (function poll() {
   if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
 
-    ynabToolKit.collapseSideMenu = new function() {
+    ynabToolKit.collapseSideMenu = new function() { // jshint ignore:line
 
       this.collapseBtn = '<li> \
         <li class="ember-view navlink-collapse"> \
           <a href="#"> \
-            <span class="ember-view flaticon stroke left-circle-4"></span>Collapse \
+            <span class="ember-view flaticon stroke left-circle-4"> \
+            </span>Collapse \
           </a> \
         </li> \
       </li>';
+
+      this.originalButtons = {};
+
+      this.originalSizes = {
+        sidebarWidth:   $('.sidebar').width(),
+        contentLeft:    $('.content').css('left'),
+        headerLeft:     $('.budget-header, .accounts-header').css('left'),
+        contentWidth:   $('.budget-content').css('width'),
+        inspectorWidth: $('.budget-inspector').css('width'),
+      };
 
       this.invoke = function() {
         ynabToolKit.collapseSideMenu.setupBtns();
@@ -22,17 +36,14 @@
           }
         }
 
-        if (changedNodes.has('navlink-budget active') &&
-            $('.collapsed-buttons').is(':visible')) {
-          ynabToolKit.collapseSideMenu.setCollapsedSizes();
-          ynabToolKit.collapseSideMenu.setActiveButton();
-        }
+        changedNodes.forEach(function (changedNode) {
+          if ($('.collapsed-buttons').is(':visible') &&
+              changedNode.startsWith('navlink-') && changedNode.endsWith(' active')) {
 
-        if (changedNodes.has('navlink-accounts active') &&
-            $('.collapsed-buttons').is(':visible')) {
-          ynabToolKit.collapseSideMenu.setCollapsedSizes();
-          ynabToolKit.collapseSideMenu.setActiveButton();
-        }
+            ynabToolKit.collapseSideMenu.setCollapsedSizes();
+            ynabToolKit.collapseSideMenu.setActiveButton();
+          }
+        });
 
         if (changedNodes.has('nav-main')) {
           var numNavLinks = $('.nav-main').children().length;
@@ -43,6 +54,7 @@
             $('.navlink-collapse').remove();
 
             ynabToolKit.collapseSideMenu.setUpCollapseBtn();
+            ynabToolKit.collapseSideMenu.setUpCollapsedButtons();
           }
 
         }
@@ -57,15 +69,18 @@
           return;
         }
 
-        var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup;
+        ynabToolKit.collapseSideMenu.setUpCollapseBtn();
+        ynabToolKit.collapseSideMenu.setUpCollapsedButtons();
+      };
 
-        var originalSizes = {
-          sidebarWidth:   $('.sidebar').width(),
-          contentLeft:    $('.content').css('left'),
-          headerLeft:     $('.budget-header, .accounts-header').css('left'),
-          contentWidth:   $('.budget-content').css('width'),
-          inspectorWidth: $('.budget-inspector').css('width'),
-        };
+      this.setUpCollapseBtn = function() {
+        $('.nav-main').append(ynabToolKit.collapseSideMenu.collapseBtn);
+        $('.navlink-collapse').on('click',
+          ynabToolKit.collapseSideMenu.collapseMenu);
+      };
+
+      this.setUpCollapsedButtons = function() {
+        var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup();
 
         if (!$('.collapsed-buttons').length) {
           $('.sidebar').prepend(expandBtns);
@@ -74,18 +89,7 @@
           $('.sidebar').prepend(expandBtns);
         }
 
-        ynabToolKit.collapseSideMenu.setUpCollapseBtn();
-
         $('.collapsed-buttons').hide();
-        $('.navbar-expand').on('click', function() {
-          ynabToolKit.collapseSideMenu.expandMenu(originalSizes);
-        });
-      };
-
-      this.setUpCollapseBtn = function() {
-        $('.nav-main').append(ynabToolKit.collapseSideMenu.collapseBtn);
-        $('.navlink-collapse').on('click',
-          ynabToolKit.collapseSideMenu.collapseMenu);
       };
 
       this.getUnCollapseBtnGroup = function() {
@@ -99,29 +103,48 @@
 
         for (var i = 0; i < navChildrenLength; i++) {
           var child = navChildren[i];
-          var emberAction = $(child).find('a').data('ember-action');
 
-          // Create YNAB Buttons
-          if (emberAction) {
-            var link = $('<a>');
-            link.attr('href','#');
-            link.attr('data-ember-action',emberAction);
-
-            var btnClasses = $(child).find('span')[0].className;
-            var button = $('<button>');
-            button.addClass(btnClasses);
-            button.addClass('button button-prefs');
-            link.html(button);
-
-            // Set proper class so the active styling can be applued
-            if (btnClasses.indexOf('mail-1') > -1) {
-              button.addClass('collapsed-budget');
-            } else if (btnClasses.indexOf('government-1') > -1) {
-              button.addClass('collapsed-account');
-            }
-
-            collapsedBtnContainer.append(link);
+          // If this is the collapse button, skip
+          if (child.className.indexOf('navlink-collapse') > -1) {
+            continue;
           }
+
+          var span = $(child).find('span')[0];
+
+          // Don't process if not actually a button
+          if (!span) {
+            continue;
+          }
+
+          var btnClasses = span.className;
+          var button = $('<button>');
+          button.addClass(btnClasses);
+          button.addClass('button button-prefs');
+
+          var listItem = $(child).find('li')[0] || child;
+          var linkClasses = listItem.className.replace(' active', '');
+
+          var link = $('<a>');
+          link.attr('href','#');
+          link.addClass(linkClasses);
+          link.html(button);
+          link.click(function() {
+            ynabToolKit.collapseSideMenu.originalButtons[this.className.replace(' active', '')].click();
+          });
+
+          ynabToolKit.collapseSideMenu.originalButtons[linkClasses.replace(' active', '')] = $(child).find('a');
+
+          // Set proper class so the active styling can be applied
+          if (btnClasses.indexOf('mail-1') > -1) {
+            button.addClass('collapsed-budget');
+          } else if (btnClasses.indexOf('government-1') > -1) {
+            button.addClass('collapsed-account');
+          } else {
+            // Fallback if we don't know what the button is.
+            button.addClass('collapsed');
+          }
+
+          collapsedBtnContainer.append(link);
         }
 
         // Add uncollapse button
@@ -130,8 +153,10 @@
           right-circle-4 navbar-expand');
 
         collapsedBtnContainer.append(collapseBtn);
-        $('.navlink-collapse').on('click',
-          ynabToolKit.collapseSideMenu.collapseMenu);
+
+        $('body').on('click', '.navbar-expand', function() {
+          ynabToolKit.collapseSideMenu.expandMenu(ynabToolKit.collapseSideMenu.originalSizes);
+        });
 
         return collapsedBtnContainer;
       };
@@ -140,14 +165,14 @@
       this.expandMenu = function(originalSizes) {
         $('.collapsed-buttons').hide();
         $('.sidebar > .ember-view').fadeIn();
-        $('.sidebar').animate({ width: originalSizes.sidebarWidth });
-        $('.content').animate({ left: originalSizes.contentLeft });
-        $('.budget-header').animate({ left: originalSizes.headerLeft });
-        $('.budget-content').animate({ width: originalSizes.contentWidth }, 400, 'swing', function() {
+        $('.sidebar').animate({width: originalSizes.sidebarWidth});
+        $('.content').animate({left: originalSizes.contentLeft});
+        $('.budget-header').animate({left: originalSizes.headerLeft});
+        $('.budget-content').animate({width: originalSizes.contentWidth}, 400, 'swing', function() {
           // Need to remove width after animation completion
           $('.budget-content').removeAttr('style');
         });
-        $('.budget-inspector').animate({ width: originalSizes.inspectorWidth });
+        $('.budget-inspector').animate({width: originalSizes.inspectorWidth});
       };
 
       // Handle clicking the collapse button
@@ -160,35 +185,48 @@
 
       // Set collapsed sizes
       this.setCollapsedSizes = function() {
-        $('.sidebar').animate({ width: '40px' });
-        $('.content').animate({ left: '40px' }, 400, 'swing', function() {
+        $('.sidebar').animate({width: '40px'});
+        $('.content').animate({left: '40px'}, 400, 'swing', function() {
           // Need to remove width after animation completion
           $('.ynab-grid-header').removeAttr('style');
         });
 
-        $('.budget-header').animate({ left: '40px' });
-        $('.budget-content').animate({ width: '73%' });
-        $('.budget-inspector').animate({ width: '27%' });
+        $('.budget-header').animate({left: '40px'});
+        $('.budget-content').animate({width: '73%'});
+        $('.budget-inspector').animate({width: '27%'});
       };
 
       // Add the active style to correct button
       this.setActiveButton = function() {
         ynabToolKit.collapseSideMenu.deactivateCollapsedActive();
-        if ($('.accounts-toolbar').length) {
-          $('.collapsed-account').addClass('collapsed-active');
-        };
 
-        if ($('.budget-toolbar').length) {
-          $('.collapsed-budget').addClass('collapsed-active');
+        var originalButtons = ynabToolKit.collapseSideMenu.originalButtons;
+
+        for (var classList in originalButtons) {
+          if (originalButtons.hasOwnProperty(classList)) {
+            var originalButton = $(originalButtons[classList]).closest('.ember-view');
+
+            if (originalButton.hasClass('active')) {
+
+              // Set the active button in the collapsed panel.
+              var collapsedSelector = '.collapsed-buttons .' +
+                      $(originalButton).attr('class')
+                        .replace(' active', '')
+                        .replace(' ', '.') +
+                          ' button';
+
+              $(collapsedSelector).addClass('collapsed-active');
+            }
+          }
         }
       };
 
       // Deactivate collapsed buttons
       this.deactivateCollapsedActive = function() {
-        $('.collapsed-account').removeClass('collapsed-active');
-        $('.collapsed-budget').removeClass('collapsed-active');
+        $('.collapsed-buttons a button').removeClass('collapsed-active');
+        $('.collapsed-buttons a').removeClass('active');
       };
-    };
+    }();
 
     ynabToolKit.collapseSideMenu.invoke();
 
