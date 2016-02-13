@@ -10,6 +10,7 @@ ourselves!
 
 This is what the extension can do for you:
 
+- Net Worth Report - Shows you how much your net worth is over time. Includes transactions in tracking accounts.
 - Days of Buffering Calculation - Forecasts how long it'll take to burn through all your available money using averages. We know there's no such thing as an average month, but some people prefer this calculation over the Age of Money calculation.
 - Export all transactions from the current budget in CSV format.
 - Colour Blind Mode - Changes colours of some of the numbers to make the interface easier on people with certain visual disabilities.
