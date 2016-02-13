@@ -50,114 +50,133 @@
           $(".nav-main").append(reportsBtn);
 
           $(".navlink-reports").on("click", ynabToolKit.reports.showReports);
-
-          $('.navlink-budget, .navlink-accounts, .nav-account-row').on("click", function() {
-            // They're trying to navigate away.
-            // Restore the highlight on whatever they're trying to click on.
-            // For example, if they were on the Budget tab, then clicked on Reports, clicking on
-            // Budget again wouldn't do anything as YNAB thinks they're already there. This switches
-            // the correct classes back on and triggers our .observe below.
-            if ($(this).hasClass('navlink-budget') || $(this).hasClass('navlink-accounts')) {
-              $(this).addClass('active');
-            } else if ($(this).hasClass('nav-account-row')) {
-              $(this).addClass('is-selected');
-            }
-          });
         }
 
         this.calculateNetWorthReport = function() {
-          var accounts = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result;
-          var transactions = accounts.visibleTransactionDisplayItems.filter(function(transaction) {
-            return transaction.displayItemType == "transaction";
-          });
 
-          // Sort the transactions by date. They usually are already, but let's not depend on that:
-          transactions.sort(function (a, b) {
-            return a.date._internalUTCMoment._d - b.date._internalUTCMoment._d;
-          });
+          return new Promise(function(resolve, reject) {
 
-          // Clear out the arrays so we know we've got fresh data.
-          ynabToolKit.reports.netWorth.labels.length = 0;
-          ynabToolKit.reports.netWorth.assets.length = 0;
-          ynabToolKit.reports.netWorth.liabilities.length = 0;
-          ynabToolKit.reports.netWorth.netWorths.length = 0;
+            ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then(function (transactionsViewModel) {
+              var transactionDisplayItems = transactionsViewModel.get('visibleTransactionDisplayItems')
 
-          var lastLabel = null,
-              balanceByAccount = {};
+              var transactions = transactionDisplayItems.filter(function(transaction) {
+                return transaction.get('displayItemType') == "transaction";
+              });
 
-          // Bucket the transactions into month buckets, tallying as we go.
-          transactions.forEach(function(transaction) {
-            var date = transaction.date._internalUTCMoment._d;
-            var formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
+              // Sort the transactions by date. They usually are already, but let's not depend on that:
+              transactions.sort(function (a, b) {
+                return a.get('date')._internalUTCMoment._d - b.get('date')._internalUTCMoment._d;
+              });
 
-            if (lastLabel == null) lastLabel = formattedDate;
+              // Clear out the arrays so we know we've got fresh data.
+              ynabToolKit.reports.netWorth.labels.length = 0;
+              ynabToolKit.reports.netWorth.assets.length = 0;
+              ynabToolKit.reports.netWorth.liabilities.length = 0;
+              ynabToolKit.reports.netWorth.netWorths.length = 0;
 
-            // If it's time to push the next month's data into the arrays let's
-            // go for it.
-            if (formattedDate != lastLabel ||
-              // If we're on the last transaction and haven't yet pushed one, we've got a single month budget
-              (transactions.indexOf(transaction) == transactions.length - 1 &&
-               ynabToolKit.reports.netWorth.labels.length == 0)) {
-              ynabToolKit.reports.netWorth.labels.push(formattedDate);
+              var lastLabel = null,
+                  balanceByAccount = {},
+                  date = null,
+                  formattedDate = null;
 
-              var totalAssets = 0, totalLiabilities = 0;
+              // Bucket the transactions into month buckets, tallying as we go.
+              transactions.forEach(function(transaction) {
+                date = transaction.get('date')._internalUTCMoment._d;
+                formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
 
-              for (var key in balanceByAccount) {
-                if (balanceByAccount.hasOwnProperty(key)) {
+                if (lastLabel == null) lastLabel = formattedDate;
 
-                  if (balanceByAccount[key] > 0) {
-                    totalAssets += (balanceByAccount[key] || 0);
-                  } else {
-                    totalLiabilities += (-balanceByAccount[key] || 0);
+                // If it's time to push the next month's data into the arrays let's
+                // go for it.
+                if (formattedDate != lastLabel) {
+                  ynabToolKit.reports.netWorth.labels.push(formattedDate);
+
+                  var totalAssets = 0, totalLiabilities = 0;
+
+                  for (var key in balanceByAccount) {
+                    if (balanceByAccount.hasOwnProperty(key)) {
+
+                      if (balanceByAccount[key] > 0) {
+                        totalAssets += (balanceByAccount[key] || 0);
+                      } else {
+                        totalLiabilities += (-balanceByAccount[key] || 0);
+                      }
+                    }
                   }
+
+                  ynabToolKit.reports.netWorth.assets.push(totalAssets);
+                  ynabToolKit.reports.netWorth.liabilities.push(totalLiabilities);
+                  ynabToolKit.reports.netWorth.netWorths.push(totalAssets - totalLiabilities);
+
+                  lastLabel = formattedDate;
+                }
+
+                // If we need a holder in balanceByAccount let's get one.
+                if (!balanceByAccount.hasOwnProperty(transaction.getAccountName())) {
+                  balanceByAccount[transaction.getAccountName()] = 0;
+                }
+
+                // Tally ho.
+                balanceByAccount[transaction.getAccountName()] += transaction.getAmount();
+              });
+
+              // Ensure we've pushed the last month in.
+              if (formattedDate != lastLabel || ynabToolKit.reports.netWorth.labels.length == 0) {
+                ynabToolKit.reports.netWorth.labels.push(formattedDate);
+
+                var totalAssets = 0, totalLiabilities = 0;
+
+                for (var key in balanceByAccount) {
+                  if (balanceByAccount.hasOwnProperty(key)) {
+
+                    if (balanceByAccount[key] > 0) {
+                      totalAssets += (balanceByAccount[key] || 0);
+                    } else {
+                      totalLiabilities += (-balanceByAccount[key] || 0);
+                    }
+                  }
+                }
+
+                ynabToolKit.reports.netWorth.assets.push(totalAssets);
+                ynabToolKit.reports.netWorth.liabilities.push(totalLiabilities);
+                ynabToolKit.reports.netWorth.netWorths.push(totalAssets - totalLiabilities);
+
+                lastLabel = formattedDate;
+              }
+
+              if (transactions.length > 0) {
+                // Fill in any gaps in the months in case they're missing data.
+                var currentDate = transactions[0].get('date')._internalUTCMoment._d;
+                var maxDate = transactions[transactions.length - 1].get('date')._internalUTCMoment._d;
+                var currentIndex = 0;
+
+                // Ensure we're on the 1st to avoid edge cases like the 31st.
+                currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
+
+                var labels = ynabToolKit.reports.netWorth.labels;
+                var assets = ynabToolKit.reports.netWorth.assets;
+                var liabilities = ynabToolKit.reports.netWorth.liabilities;
+                var netWorths = ynabToolKit.reports.netWorth.netWorths;
+
+                while (currentDate < maxDate) {
+                  var formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(currentDate, 'MMM YYYY');
+
+                  if (labels.indexOf(formattedDate) < 0) {
+
+                    labels.splice(currentIndex, 0, formattedDate);
+                    assets.splice(currentIndex, 0, assets[currentIndex - 1]);
+                    liabilities.splice(currentIndex, 0, liabilities[currentIndex - 1]);
+                    netWorths.splice(currentIndex, 0, netWorths[currentIndex - 1]);
+                  }
+
+                  currentIndex++;
+                  currentDate.setMonth(currentDate.getMonth() + 1);
                 }
               }
 
-              ynabToolKit.reports.netWorth.assets.push(totalAssets);
-              ynabToolKit.reports.netWorth.liabilities.push(totalLiabilities);
-              ynabToolKit.reports.netWorth.netWorths.push(totalAssets - totalLiabilities);
-
-              lastLabel = formattedDate;
-            }
-
-            // If we need a holder in balanceByAccount let's get one.
-            if (!balanceByAccount.hasOwnProperty(transaction.getAccountName())) {
-              balanceByAccount[transaction.getAccountName()] = 0;
-            }
-
-            // Tally ho.
-            balanceByAccount[transaction.getAccountName()] += transaction.getAmount();
+              resolve();
+            });
           });
-
-          if (transactions.length > 0) {
-            // Fill in any gaps in the months in case they're missing data.
-            var currentDate = transactions[0].date._internalUTCMoment._d;
-            var maxDate = transactions[transactions.length - 1].date._internalUTCMoment._d;
-            var currentIndex = 0;
-
-            // Ensure we're on the 1st to avoid edge cases like the 31st.
-            currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
-
-            var labels = ynabToolKit.reports.netWorth.labels;
-            var assets = ynabToolKit.reports.netWorth.assets;
-            var liabilities = ynabToolKit.reports.netWorth.liabilities;
-            var netWorths = ynabToolKit.reports.netWorth.netWorths;
-
-            while (currentDate < maxDate) {
-              var formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(currentDate, 'MMM YYYY');
-
-              if (labels.indexOf(formattedDate) < 0) {
-
-                labels.splice(currentIndex, 0, formattedDate);
-                assets.splice(currentIndex, 0, assets[currentIndex - 1]);
-                liabilities.splice(currentIndex, 0, liabilities[currentIndex - 1]);
-                netWorths.splice(currentIndex, 0, netWorths[currentIndex - 1]);
-              }
-
-              currentIndex++;
-              currentDate.setMonth(currentDate.getMonth() + 1);
-            }
-          }
         }
 
         this.updateReportWithDateFilter = function() {
@@ -205,6 +224,19 @@
           $('.nav-account-row').removeClass('is-selected');
           $('.navlink-reports').addClass('active');
 
+          $('.navlink-budget, .navlink-accounts, .nav-account-row').on("click", function() {
+            // They're trying to navigate away.
+            // Restore the highlight on whatever they're trying to click on.
+            // For example, if they were on the Budget tab, then clicked on Reports, clicking on
+            // Budget again wouldn't do anything as YNAB thinks they're already there. This switches
+            // the correct classes back on and triggers our .observe below.
+            if ($(this).hasClass('navlink-budget') || $(this).hasClass('navlink-accounts')) {
+              $(this).addClass('active');
+            } else if ($(this).hasClass('nav-account-row')) {
+              $(this).addClass('is-selected');
+            }
+          });
+
           // Clear out the content and put ours in there instead.
           $('div.scroll-wrap').closest('.ember-view').prepend(
             '<div id="reports-panel"> \
@@ -242,148 +274,161 @@
           // The budget header is absolute positioned
           $('.budget-header, .scroll-wrap').hide();
 
-          ynabToolKit.reports.calculateNetWorthReport();
+          ynabToolKit.reports.calculateNetWorthReport().then(function() {
 
-          var dateFilter = document.getElementById("reports-date-filter");
-          var labels = ynabToolKit.reports.netWorth.labels;
+            var dateFilter = document.getElementById("reports-date-filter");
+            var labels = ynabToolKit.reports.netWorth.labels;
 
-          var start = [labels[0], labels[labels.length - 1]];
+            var start = [labels[0], labels[labels.length - 1]];
 
-          if (start[0] == [start[1]]) {
-            // We only have one month. We can't show the filter.
-            $('#reports-filter').hide();
-          } else {
-            // Restore the date filter values in case they've gone to another tab and come back.
-            var savedStart = sessionStorage.getItem("reportsDateFilter");
+            if (start[0] == [start[1]]) {
+              // We only have one month. We can't show the filter.
+              $('#reports-filter').hide();
+            } else {
+              // Restore the date filter values in case they've gone to another tab and come back.
+              var savedStart = sessionStorage.getItem("reportsDateFilter");
 
-            if (savedStart) {
-              start = savedStart.split(',');
+              if (savedStart) {
+                start = savedStart.split(',');
+              }
+
+              // Set up the date filter.
+              noUiSlider.create(dateFilter, {
+                connect: true,
+              	start: start,
+              	range: {
+              		'min': 0,
+              		'max': labels.length - 1
+              	},
+                step: 1,
+                tooltips: true,
+                format: {
+                  to: function(index) {
+                    return ynabToolKit.reports.netWorth.labels[index];
+                  },
+                  from: function(value) {
+                    return ynabToolKit.reports.netWorth.labels.indexOf(value);
+                  }
+                }
+              });
+
+              dateFilter.noUiSlider.on('slide', ynabToolKit.reports.updateReportWithDateFilter);
             }
 
-            // Set up the date filter.
-            noUiSlider.create(dateFilter, {
-              connect: true,
-            	start: start,
-            	range: {
-            		'min': 0,
-            		'max': labels.length - 1
-            	},
-              step: 1,
-              tooltips: true,
-              format: {
-                to: function(index) {
-                  return ynabToolKit.reports.netWorth.labels[index];
+            // Is the report fully positive? If so we should start the chart at 0.
+            // If not, let the chart do its thing so that people can see their negative
+            // net worths. liabilities and Assets are always positive, so this only
+            // matters with the net worth data points.
+            var startAtZero = true;
+            ynabToolKit.reports.netWorth.netWorths.forEach(function(netWorth) {
+              if (netWorth < 0) {
+                startAtZero = false;
+              }
+            });
+
+            // If there's only one month's worth of data, then the net worth
+            // figure won't be visible, as there's only a dot. Let's set the
+            // dot colour in that case.
+            var netWorthDotColor = "rgba(255,255,255,0)";
+
+            if (labels.length == 1) {
+              netWorthDotColor = "rgba(102,147,176,1)";
+            }
+
+            var chartData = {
+              labels: labels,
+              datasets: [
+              {
+                label: 'Debts',
+                backgroundColor: "rgba(234,106,81,1)",
+                data: ynabToolKit.reports.netWorth.liabilities
+              }, {
+                label: 'Assets',
+                backgroundColor: "rgba(142,208,223,1)",
+                data: ynabToolKit.reports.netWorth.assets
+              }, {
+                type: 'line',
+                label: 'Net Worth',
+                fill: true,
+                tension: 0,
+                borderColor: "rgba(102,147,176,1)",
+                backgroundColor: "rgba(244,248,226,0.3)",
+                pointBorderColor: netWorthDotColor,
+                pointBackgroundColor: netWorthDotColor,
+                pointBorderWidth: 5,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: netWorthDotColor,
+                pointHoverBorderColor: netWorthDotColor,
+                pointHoverBorderWidth: 5,
+                data: ynabToolKit.reports.netWorth.netWorths
+              }]
+            };
+
+            ynabToolKit.reports.updateCanvasSize();
+
+            var ctx = document.getElementById("reportCanvas").getContext("2d");
+
+            ynabToolKit.reports.netWorthReportChart = new Chart(ctx, {
+              type: 'bar',
+              data: chartData,
+              options: {
+                responsive: false,
+                responsiveAnimationDuration: 2500,
+                maintainAspectRatio: false,
+                legend: {
+                  display: false
                 },
-                from: function(value) {
-                  return ynabToolKit.reports.netWorth.labels.indexOf(value);
+                hover: {
+                  onHover: function(points) {
+                    // This is an array with 3 values in it if they're moused over an
+                    // actual value. The point along the X axis is always the same
+                    // for all 3 values for us, so just grab the first one then populate
+                    // the inspector.
+                    if (points.length > 0) {
+                      var index = points[0]._index;
+
+                      // Need to calculate the adjusted index for the date filter if it's applied.
+                      if ($('#reports-filter').is(':visible')) {
+                        var values = document.getElementById('reports-date-filter').noUiSlider.get();
+                        index += ynabToolKit.reports.netWorth.labels.indexOf(values[0]);
+                      }
+
+                      var liabilities = ynabToolKit.reports.netWorth.liabilities[index];
+                      var assets = ynabToolKit.reports.netWorth.assets[index];
+                      var netWorth = ynabToolKit.reports.netWorth.netWorths[index];
+
+                      $('#reports-inspector-debts').text(ynabToolKit.shared.formatCurrency(liabilities));
+                      $('#reports-inspector-assets').text(ynabToolKit.shared.formatCurrency(assets));
+                      $('#reports-inspector-net-worth').text(ynabToolKit.shared.formatCurrency(netWorth));
+                    }
+                  }
+                },
+                tooltips: {
+                  enabled: false
+                },
+                scales: {
+                  xAxes: [{
+                    gridLines: {
+                      display: false
+                    },
+                    labels: {
+                      show: true,
+                      fontFamily: "'Lato',Arial,'Helvetica Neue',Helvetica,sans-serif"
+                    },
+                  }],
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: startAtZero,
+                      // This formats the currency on the Y axis (to the left of the chart)
+                      callback: function(value) { return ynabToolKit.shared.formatCurrency(value); }
+                    }
+                  }]
                 }
               }
             });
 
-            dateFilter.noUiSlider.on('slide', ynabToolKit.reports.updateReportWithDateFilter);
-          }
-
-          // If there's only one month's worth of data, then the net worth
-          // figure won't be visible, as there's only a dot. Let's set the
-          // dot colour in that case.
-          var netWorthDotColor = "rgba(255,255,255,0)";
-
-          if (labels.length == 1) {
-            netWorthDotColor = "rgba(102,147,176,1)";
-          }
-
-          var chartData = {
-            labels: labels,
-            datasets: [
-            {
-              label: 'Debts',
-              backgroundColor: "rgba(234,106,81,1)",
-              data: ynabToolKit.reports.netWorth.liabilities
-            }, {
-              label: 'Assets',
-              backgroundColor: "rgba(142,208,223,1)",
-              data: ynabToolKit.reports.netWorth.assets
-            }, {
-              type: 'line',
-              label: 'Net Worth',
-              fill: true,
-              tension: 0,
-              borderColor: "rgba(102,147,176,1)",
-              backgroundColor: "rgba(244,248,226,0.3)",
-              pointBorderColor: netWorthDotColor,
-              pointBackgroundColor: netWorthDotColor,
-              pointBorderWidth: 5,
-              pointHoverRadius: 5,
-              pointHoverBackgroundColor: "rgba(255,255,255,0)",
-              pointHoverBorderColor: "rgba(255,255,255,0)",
-              pointHoverBorderWidth: 5,
-              data: ynabToolKit.reports.netWorth.netWorths
-            }]
-          };
-
-          ynabToolKit.reports.updateCanvasSize();
-
-          var ctx = document.getElementById("reportCanvas").getContext("2d");
-
-          ynabToolKit.reports.netWorthReportChart = new Chart(ctx, {
-            type: 'bar',
-            data: chartData,
-            options: {
-              responsive: false,
-              responsiveAnimationDuration: 2500,
-              maintainAspectRatio: false,
-              legend: {
-                display: false
-              },
-              hover: {
-                onHover: function(points) {
-                  // This is an array with 3 values in it if they're moused over an
-                  // actual value. The point along the X axis is always the same
-                  // for all 3 values for us, so just grab the first one then populate
-                  // the inspector.
-                  if (points.length > 0) {
-                    var index = points[0]._index;
-
-                    // Need to calculate the adjusted index for the date filter if it's applied.
-                    if ($('#reports-filter').is(':visible')) {
-                      var values = document.getElementById('reports-date-filter').noUiSlider.get();
-                      index += ynabToolKit.reports.netWorth.labels.indexOf(values[0]);
-                    }
-
-                    var liabilities = ynabToolKit.reports.netWorth.liabilities[index];
-                    var assets = ynabToolKit.reports.netWorth.assets[index];
-                    var netWorth = ynabToolKit.reports.netWorth.netWorths[index];
-
-                    $('#reports-inspector-debts').text(ynabToolKit.shared.formatCurrency(liabilities));
-                    $('#reports-inspector-assets').text(ynabToolKit.shared.formatCurrency(assets));
-                    $('#reports-inspector-net-worth').text(ynabToolKit.shared.formatCurrency(netWorth));
-                  }
-                }
-              },
-              tooltips: {
-                enabled: false
-              },
-              scales: {
-                xAxes: [{
-                  gridLines: {
-                    display: false
-                  },
-                  labels: {
-                    show: true,
-                    fontFamily: "'Lato',Arial,'Helvetica Neue',Helvetica,sans-serif"
-                  },
-                }],
-                yAxes: [{
-                  ticks: {
-                    // This formats the currency on the Y axis (to the left of the chart)
-                    callback: function(value) { return ynabToolKit.shared.formatCurrency(value); }
-                  }
-                }]
-              }
-            }
+            ynabToolKit.reports.updateReportWithDateFilter();
           });
-
-          ynabToolKit.reports.updateReportWithDateFilter();
         }
 
         this.invoke = function() {

@@ -1,5 +1,17 @@
+function applyDarkMode(activate) {
+  if (activate) {
+    $('body').addClass('inverted');
+  } else {
+    $('body').removeClass('inverted');
+  }
+}
+
 KangoAPI.onReady(function() {
 
+  kango.invokeAsync('kango.storage.getItem', 'options.dark-mode', function(data) {
+    applyDarkMode(data);
+  });
+  
   $('#openSettings').click(function() {
 
     // Chrome requires the "tabs" permission to open the options page.
@@ -11,7 +23,7 @@ KangoAPI.onReady(function() {
     } else {
       kango.ui.optionsPage.open();
     }
-    
+
     KangoAPI.closeWindow();
   });
 

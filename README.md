@@ -10,6 +10,7 @@ ourselves!
 
 This is what the extension can do for you:
 
+- Net Worth Report - Shows you how much your net worth is over time. Includes transactions in tracking accounts.
 - Days of Buffering Calculation - Forecasts how long it'll take to burn through all your available money using averages. We know there's no such thing as an average month, but some people prefer this calculation over the Age of Money calculation.
 - Export all transactions from the current budget in CSV format.
 - Colour Blind Mode - Changes colours of some of the numbers to make the interface easier on people with certain visual disabilities.
@@ -32,8 +33,18 @@ This is what the extension can do for you:
 - Show your spending pacing mid-month to ensure you're on track to meet your budget. You can enable and disable this setting per budget column by clicking on the value.
 - Make negative numbers anywhere in the application have square corners so they stand out even more.
 - Larger Clickable Area for Icons: Makes the uncleared, cleared and reconciled icons easier to select.
+- Current month indicator to make it easier to see which month is the current month.
 
 All of these are configurable with options in the extension options page.
+
+Installing
+---------------
+The ToolKit is available for Chrome, Firefox, and Safari. The lead platform is Chrome, but we are actively working on making it equal across all three browsers.
+If you don't want to build the extension from the source yourself, you can get it for:
+
+- Chrome on the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl)
+- Firefox on the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/)
+- Safari [on the Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.kangoextensions.ynabenhanced-7M68YQDBSE)
 
 Roadmap
 -------
@@ -66,15 +77,6 @@ This extension uses Kango Extensions to provide cross browser support. To build:
 1. Run ```build.bat``` from within the folder you cloned above.
 1. You'll see platform specific output in the ```output``` folder.
 1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file, or load it into Safari using the extension builder.
-
-Installing
----------------
-The ToolKit is available for Chrome, Firefox, and Safari. The lead platform is Chrome, but we are actively working on making it equal across all three browsers.
-If you don't want to build the extension from the source yourself, you can get it for:
-
-- Chrome on the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl)
-- Firefox on the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/)
-- Safari [direct from us](http://toolkitforynab.com/safari-updates/toolkitforynab_latest.safariextz)
 
 Development Methodology
 -----------------------
