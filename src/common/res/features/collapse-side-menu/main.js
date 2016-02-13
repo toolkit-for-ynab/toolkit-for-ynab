@@ -15,6 +15,8 @@
         </li> \
       </li>';
 
+      this.originalButtons = {};
+
       this.originalSizes = {
         sidebarWidth:   $('.sidebar').width(),
         contentLeft:    $('.content').css('left'),
@@ -34,15 +36,14 @@
           }
         }
 
-        if (changedNodes.has('navlink-budget active') && $('.collapsed-buttons').is(':visible')) {
-          ynabToolKit.collapseSideMenu.setCollapsedSizes();
-          ynabToolKit.collapseSideMenu.setActiveButton();
-        }
+        changedNodes.forEach(function (changedNode) {
+          if ($('.collapsed-buttons').is(':visible') &&
+              changedNode.startsWith('navlink-') && changedNode.endsWith(' active')) {
 
-        if (changedNodes.has('navlink-accounts active') && $('.collapsed-buttons').is(':visible')) {
-          ynabToolKit.collapseSideMenu.setCollapsedSizes();
-          ynabToolKit.collapseSideMenu.setActiveButton();
-        }
+            ynabToolKit.collapseSideMenu.setCollapsedSizes();
+            ynabToolKit.collapseSideMenu.setActiveButton();
+          }
+        });
 
         if (changedNodes.has('nav-main')) {
           var numNavLinks = $('.nav-main').children().length;
@@ -79,7 +80,7 @@
       };
 
       this.setUpCollapsedButtons = function() {
-        var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup;
+        var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup();
 
         if (!$('.collapsed-buttons').length) {
           $('.sidebar').prepend(expandBtns);
@@ -108,7 +109,6 @@
             continue;
           }
 
-          var emberAction = $(child).find('a').data('ember-action');
           var span = $(child).find('span')[0];
 
           // Don't process if not actually a button
@@ -121,38 +121,30 @@
           button.addClass(btnClasses);
           button.addClass('button button-prefs');
 
-          // Create YNAB Buttons
-          if (emberAction) {
-            var listItem = $(child).find('li')[0];
-            var linkClasses = listItem.className;
+          var listItem = $(child).find('li')[0] || child;
+          var linkClasses = listItem.className.replace(' active', '');
 
-            var link = $('<a>');
-            link.attr('href','#');
-            link.addClass(linkClasses);
-            link.attr('data-ember-action',emberAction);
-            link.html(button);
+          var link = $('<a>');
+          link.attr('href','#');
+          link.addClass(linkClasses);
+          link.html(button);
+          link.click(function() {
+            ynabToolKit.collapseSideMenu.originalButtons[this.className.replace(' active', '')].click();
+          });
 
-            // Set proper class so the active styling can be applied
-            if (btnClasses.indexOf('mail-1') > -1) {
-              button.addClass('collapsed-budget');
-            } else if (btnClasses.indexOf('government-1') > -1) {
-              button.addClass('collapsed-account');
-            }
+          ynabToolKit.collapseSideMenu.originalButtons[linkClasses.replace(' active', '')] = $(child).find('a');
 
-            collapsedBtnContainer.append(link);
-          } else { // Create custom buttons
-            var classes = /.*(navlink-\w*)/g.exec(child.className);
-            if (classes.length > 0) {
-              button.addClass(classes[1]);
-
-              var ev = $._data(child, 'events');
-              if (ev && ev.click) {
-                $('body').on('click', '.' + classes[1], ev.click[0].handler);
-              }
-            }
-
-            collapsedBtnContainer.append(button);
+          // Set proper class so the active styling can be applied
+          if (btnClasses.indexOf('mail-1') > -1) {
+            button.addClass('collapsed-budget');
+          } else if (btnClasses.indexOf('government-1') > -1) {
+            button.addClass('collapsed-account');
+          } else {
+            // Fallback if we don't know what the button is.
+            button.addClass('collapsed');
           }
+
+          collapsedBtnContainer.append(link);
         }
 
         // Add uncollapse button
@@ -161,9 +153,9 @@
           right-circle-4 navbar-expand');
 
         collapsedBtnContainer.append(collapseBtn);
+
         $('body').on('click', '.navbar-expand', function() {
-          ynabToolKit.collapseSideMenu
-          .expandMenu(ynabToolKit.collapseSideMenu.originalSizes);
+          ynabToolKit.collapseSideMenu.expandMenu(ynabToolKit.collapseSideMenu.originalSizes);
         });
 
         return collapsedBtnContainer;
@@ -176,8 +168,7 @@
         $('.sidebar').animate({width: originalSizes.sidebarWidth});
         $('.content').animate({left: originalSizes.contentLeft});
         $('.budget-header').animate({left: originalSizes.headerLeft});
-        $('.budget-content').animate({width: originalSizes.contentWidth},
-          400, 'swing', function() {
+        $('.budget-content').animate({width: originalSizes.contentWidth}, 400, 'swing', function() {
           // Need to remove width after animation completion
           $('.budget-content').removeAttr('style');
         });
@@ -208,21 +199,32 @@
       // Add the active style to correct button
       this.setActiveButton = function() {
         ynabToolKit.collapseSideMenu.deactivateCollapsedActive();
-        if ($('.accounts-toolbar').length &&
-            $('.accounts-toolbar').is(':visible')) {
-          $('.collapsed-account').addClass('collapsed-active');
-        }
 
-        if ($('.budget-toolbar').length &&
-            $('.budget-toolbar').is(':visible')) {
-          $('.collapsed-budget').addClass('collapsed-active');
+        var originalButtons = ynabToolKit.collapseSideMenu.originalButtons;
+
+        for (var classList in originalButtons) {
+          if (originalButtons.hasOwnProperty(classList)) {
+            var originalButton = $(originalButtons[classList]).closest('.ember-view');
+
+            if (originalButton.hasClass('active')) {
+
+              // Set the active button in the collapsed panel.
+              var collapsedSelector = '.collapsed-buttons .' +
+                      $(originalButton).attr('class')
+                        .replace(' active', '')
+                        .replace(' ', '.') +
+                          ' button';
+
+              $(collapsedSelector).addClass('collapsed-active');
+            }
+          }
         }
       };
 
       // Deactivate collapsed buttons
       this.deactivateCollapsedActive = function() {
-        $('.collapsed-account').removeClass('collapsed-active');
-        $('.collapsed-budget').removeClass('collapsed-active');
+        $('.collapsed-buttons a button').removeClass('collapsed-active');
+        $('.collapsed-buttons a').removeClass('active');
       };
     }();
 
