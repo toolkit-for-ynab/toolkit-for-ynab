@@ -58,7 +58,11 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
       }
     }
 
-    this.budgetHeader = function ()  {
+    this.invoke = function() {
+      Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
+    },
+
+    this.budgetHeader = function() {
       if (!$('.navlink-budget').hasClass('active')) return ;
       var dateInfo = getDateInfo();
       contentSetter.selectorPrefix = '.budget-header-';
@@ -71,34 +75,34 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
         l10n["budget.overspentIn"].replace("{{previousMonth}}", dateInfo.previousMonthName),
         l10n["budget.fundedIn"].replace("{{currentMonth}}", dateInfo.currentMonthName)]
       );
-    },
-
-    this.hiddenCategoriesModal = function () {
-      contentSetter.selectorPrefix = '.modal-budget-hidden-categories-master-unhidden:contains("Credit Card Payments")';
-      contentSetter.set(l10n["toolkit.creditCardPayments"], 1);
-    },
-
-    this.invoke = function() {
-      Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
-    },
+    }
 
     this.observe = function(changedNodes) {
       ynabToolKit.l10n.invoke();
 
       // User has returned back to the budget screen
-      if (changedNodes.has('budget-header-flexbox')) {
+      // User switch budget month
+      if (changedNodes.has('budget-header-flexbox') || changedNodes.has('budget-table')) {
         ynabToolKit.l10n.budgetHeader();
       }
 
-      // User switch budget month
-      if (changedNodes.has('budget-table')) {
-        ynabToolKit.l10n.budgetHeader();
+      if ( changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals') ) {
+        // Inspector edit goal months list.
+        contentSetter.resetPrefix();
+        contentSetter.set(monthsFull, '.budget-inspector-goals .goal-target-month>option');
       }
 
       // Hidden categories modal
-      if (changedNodes.has('modal-overlay pure-u modal-popup modal-budget-hidden-categories active')) {
-        ynabToolKit.l10n.hiddenCategoriesModal();
+      if (changedNodes.has('modal-overlay pure-u modal-budget-hidden-categories active')) {
+        contentSetter.selectorPrefix = '.modal-budget-hidden-categories-master-unhidden:contains("Credit Card Payments")';
+        contentSetter.set(l10n["toolkit.creditCardPayments"], 1);
       }
+
+      // User prefs modal
+      if (changedNodes.has('modal-overlay pure-u modal-popup modal-user-prefs active')) {
+        contentSetter.selectorPrefix = '.modal-user-prefs button';
+        contentSetter.set(l10n["toolkit.myAccount"], 1);
+      };
     }
 
   }; // Keep feature functions contained within this object
