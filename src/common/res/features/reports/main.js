@@ -112,7 +112,7 @@
                 // If it's time to push the next month's data into the arrays let's
                 // go for it.
                 if (formattedDate != lastLabel) {
-                  ynabToolKit.reports.netWorth.labels.push(formattedDate);
+                  ynabToolKit.reports.netWorth.labels.push(lastLabel);
 
                   var totalAssets = 0, totalLiabilities = 0;
 
@@ -144,7 +144,7 @@
               });
 
               // Ensure we've pushed the last month in.
-              if (formattedDate != lastLabel || ynabToolKit.reports.netWorth.labels.length == 0) {
+              if (formattedDate != ynabToolKit.reports.netWorth.labels[ynabToolKit.reports.netWorth.labels.length -1]) {
                 ynabToolKit.reports.netWorth.labels.push(formattedDate);
 
                 var totalAssets = 0, totalLiabilities = 0;
@@ -163,8 +163,6 @@
                 ynabToolKit.reports.netWorth.assets.push(totalAssets);
                 ynabToolKit.reports.netWorth.liabilities.push(totalLiabilities);
                 ynabToolKit.reports.netWorth.netWorths.push(totalAssets - totalLiabilities);
-
-                lastLabel = formattedDate;
               }
 
               if (transactions.length > 0) {
