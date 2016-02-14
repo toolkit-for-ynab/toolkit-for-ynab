@@ -13,6 +13,8 @@
        <string>0.3.7</string>
        <key>CFBundleShortVersionString</key>
        <string>0.3.7</string>
+       <key>Update From Gallery</key>
+       <true/>
        <key>URL</key>
        <string>http://toolkitforynab.com/safari-updates/toolkitforynab_latest.safariextz</string>
      </dict>
