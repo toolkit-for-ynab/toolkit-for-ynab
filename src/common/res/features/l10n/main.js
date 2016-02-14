@@ -4,8 +4,67 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 
   ynabToolKit.l10n = new function ()  {
 
-    // Supporting functions,
-    // or variables, etc
+    // Shortcuts
+    var l10n = ynabToolKit.l10nData;
+    var monthShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map(function(month) {
+      return ynabToolKit.l10nData["months." + month]
+    });
+    var monthsFull = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"].map(function(month) {
+      return ynabToolKit.l10nData["months." + month]
+    });
+
+    function getDateInfo() {
+      var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
+      var currentMonthName = monthShort[selectedMonth.getMonth()];
+      var previousMonthName;
+      if (selectedMonth.getMonth() == 0) {
+        previousMonthName = monthShort[11];
+      }
+      else {
+        previousMonthName = monthShort[selectedMonth.getMonth() - 1];
+      }
+      return {
+        selectedMonth: selectedMonth,
+        currentMonthName: currentMonthName,
+        previousMonthName: previousMonthName
+      }
+    }
+
+    // Tool for setting content.
+    contentSetter = new function () {
+      this.selectorPrefix = '',
+      this.resetPrefix = function () {
+        this.selectorPrefix = ''
+      },
+      // Takes contentNum's .contents() of selector and sets it to text.
+      this.set = function (text, contentNum, selector) {
+        var el = $(this.selectorPrefix + (selector || '')).contents()[contentNum];
+        if (el) el.textContent = text;
+      },
+      // Each argument must be an array of 2 or 3 elements that become this.set arguments in order.
+      this.setSeveral = function () {
+        for (i = 0; i < arguments.length; i++) {
+          if (arguments[i].length == 2) this.set(arguments[i][0], arguments[i][1]);
+          if (arguments[i].length == 3) this.set(arguments[i][0], arguments[i][1], arguments[i][2]);
+        };
+      },
+      this.setArray = function(textArray, selector, start, step) {
+        for (i = 0; i < textArray.length; i++) {
+          contentNum = (start || 0) + i * (step || 1);
+          this.set(textArray[i], contentNum, selector);
+        };
+      }
+    }
+
+    this.budgetHeader = function ()  {
+      if (!$('.navlink-budget').hasClass('active')) return ;
+      var dateInfo = getDateInfo();
+      contentSetter.selectorPrefix = '.budget-header-';
+      var dateYearText = dateInfo.currentMonthName + " " + dateInfo.selectedMonth.getFullYear()
+      contentSetter.set(dateYearText, 1, 'calendar-date-button');
+    },
 
     this.invoke = function() {
       Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
@@ -13,11 +72,22 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 
     this.observe = function(changedNodes) {
       ynabToolKit.l10n.invoke();
+
+      // User has returned back to the budget screen
+      if (changedNodes.has('budget-header-flexbox')) {
+        ynabToolKit.l10n.budgetHeader();
+      }
+
+      // User switch budget month
+      if (changedNodes.has('budget-table')) {
+        ynabToolKit.l10n.budgetHeader();
+      }
     }
 
   }; // Keep feature functions contained within this object
 
   ynabToolKit.l10n.invoke(); // Run your script once on page load
+  ynabToolKit.l10n.budgetHeader();
 
   // Rerender sidebar and content views on page load.
   rerenderClasses = [ '.content', '.nav'];
