@@ -1,5 +1,4 @@
-Toolkit for YNAB
-=============
+![Toolkit for YNAB](http://i.imgur.com/SJhwBpU.png "Toolkit for YNAB")
 
 Toolkit for YNAB is a general purpose YNAB enhancing chrome extension. Have it your way!
 
