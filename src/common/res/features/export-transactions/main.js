@@ -88,7 +88,7 @@
         transactions = transactions.copy();
         transactions.sort(compare);
         if (order === 'DESC') {
-          transactions.reverse
+          transactions.reverse();
         }
         return transactions;
       }
