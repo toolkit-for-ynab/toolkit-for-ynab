@@ -174,8 +174,6 @@
           trans.amount = yTrans.amount === null ? '' : yTrans.amount / 1000;
           trans.cleared = yTrans.cleared || '';
 
-          trans.split = yTrans.split || '';
-
           // Check number is still implemented, though hidden from the UI
           //trans.checkNumber = yTrans.checkNumber || '';
           return trans;
