@@ -89,7 +89,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
       if ( changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals') ) {
         // Inspector edit goal months list.
         contentSetter.resetPrefix();
-        contentSetter.set(monthsFull, '.budget-inspector-goals .goal-target-month>option');
+        contentSetter.setArray(monthsFull, '.budget-inspector-goals .goal-target-month>option');
       }
 
       // Hidden categories modal
