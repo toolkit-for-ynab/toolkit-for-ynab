@@ -8,11 +8,11 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
     var l10n = ynabToolKit.l10nData;
     var monthShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map(function(month) {
-      return ynabToolKit.l10nData["months." + month]
+      return l10n["months." + month]
     });
     var monthsFull = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"].map(function(month) {
-      return ynabToolKit.l10nData["months." + month]
+      return l10n["months." + month]
     });
 
     function getDateInfo() {
@@ -64,6 +64,13 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
       contentSetter.selectorPrefix = '.budget-header-';
       var dateYearText = dateInfo.currentMonthName + " " + dateInfo.selectedMonth.getFullYear()
       contentSetter.set(dateYearText, 1, 'calendar-date-button');
+
+      contentSetter.selectorPrefix = '.budget-header-totals-cell-name';
+      contentSetter.setArray(
+        [l10n["budget.fundsFor"].replace("{{currentMonth}}", dateInfo.currentMonthName),
+        l10n["budget.overspentIn"].replace("{{previousMonth}}", dateInfo.previousMonthName),
+        l10n["budget.fundedIn"].replace("{{currentMonth}}", dateInfo.currentMonthName)]
+      );
     },
 
     this.invoke = function() {
