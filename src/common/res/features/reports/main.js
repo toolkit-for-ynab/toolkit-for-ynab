@@ -83,6 +83,9 @@
               transactions.forEach(function(transaction) {
                 date = transaction.get('date')._internalUTCMoment._d;
                 formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
+                var year = formattedDate.split(' ')[1];
+                var month  = ynabToolKit.l10nData["months." + formattedDate.split(' ')[0]];
+                formattedDate = month + " " + year;
 
                 if (lastLabel == null) lastLabel = formattedDate;
 
@@ -160,6 +163,9 @@
 
                 while (currentDate < maxDate) {
                   var formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(currentDate, 'MMM YYYY');
+                  var year = formattedDate.split(' ')[1];
+                  var month  = ynabToolKit.l10nData["months." + formattedDate.split(' ')[0]];
+                  formattedDate = month + " " + year;
 
                   if (labels.indexOf(formattedDate) < 0) {
 
@@ -241,29 +247,35 @@
           $('div.scroll-wrap').closest('.ember-view').prepend(
             '<div id="reports-panel"> \
               <div id="reports-header"> \
-                <h2><span class="ember-view flaticon stroke document-4"></span> Net Worth Report</h2> \
+                <h2><span class="ember-view flaticon stroke document-4"></span>' +
+                ((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.netWorthReport"]) || 'Net Worth Report') + '</h2> \
               </div> \
               <div id="reports-filter"> \
-                <h3>Filters</h3> \
-                <span class="reports-filter-name">Timeframe</span> \
+                <h3>' +
+                ((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.filters"]) || 'Filters') + '</h3> \
+                <span class="reports-filter-name">' +
+                ((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.timeframe"]) || 'Timeframe') + '</span> \
                 <div id="reports-date-filter"></div> \
               </div> \
               <div id="reports-inspector"> \
                 <div class="reports-inspector-detail"> \
                   <div class="reports-legend-square debts"></div> \
-                  <span class="reports-inspector-heading">Debts</span> \
+                  <span class="reports-inspector-heading">' +
+                  ((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.debts"]) || 'Debts') + '</span> \
                   <span id="reports-inspector-debts" class="reports-inspector-value"></span> \
                 </div> \
                 <div class="reports-inspector-divider"></div> \
                 <div class="reports-inspector-detail"> \
                   <div class="reports-legend-square assets"></div> \
-                  <span class="reports-inspector-heading">Assets</span> \
+                  <span class="reports-inspector-heading">' +
+                  ((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.assets"]) || 'Assets') + '</span> \
                   <span id="reports-inspector-assets" class="reports-inspector-value"></span> \
                 </div> \
                 <div class="reports-inspector-divider"></div> \
                 <div class="reports-inspector-detail"> \
                   <div class="reports-legend-line net-worth"></div> \
-                  <span class="reports-inspector-heading">Net Worth</span> \
+                  <span class="reports-inspector-heading">' +
+                  ((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.netWorth"]) || 'Net Worth') + '</span> \
                   <span id="reports-inspector-net-worth" class="reports-inspector-value"></span> \
                 </div> \
               </div> \
@@ -339,16 +351,16 @@
               labels: labels,
               datasets: [
               {
-                label: 'Debts',
+                label: (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.debts"]) || 'Debts',
                 backgroundColor: "rgba(234,106,81,1)",
                 data: ynabToolKit.reports.netWorth.liabilities
               }, {
-                label: 'Assets',
+                label: (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.assets"]) || 'Assets',
                 backgroundColor: "rgba(142,208,223,1)",
                 data: ynabToolKit.reports.netWorth.assets
               }, {
                 type: 'line',
-                label: 'Net Worth',
+                label: (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.netWorth"]) || 'Net Worth',
                 fill: true,
                 tension: 0,
                 borderColor: "rgba(102,147,176,1)",
