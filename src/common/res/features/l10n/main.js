@@ -103,6 +103,44 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
         contentSetter.selectorPrefix = '.modal-user-prefs button';
         contentSetter.set(l10n["toolkit.myAccount"], 1);
       };
+
+      // New transaction fields modals
+      if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-flags active')) {
+        contentSetter.selectorPrefix = '.modal-account-flags';
+        var colors = ["red", "orange", "yellow", "green", "blue", "purple"].map(function(color) {
+          return l10n["toolkit." + color]
+        });
+        contentSetter.setArray(colors, ' .label');
+        contentSetter.setArray(colors, ' .label-bg');
+      }
+      if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-dropdown modal-account-categories active')) {
+        contentSetter.selectorPrefix = '.modal-account-categories ';
+        contentSetter.setSeveral(
+          [l10n["toolkit.inflow"], 0, '.modal-account-categories-section-item'],
+          [l10n["budget.leftToBudget"], 1, '.modal-account-categories-category-name']
+        );
+      }
+      if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-dropdown modal-account-payees active')) {
+        contentSetter.selectorPrefix = '.modal-account-payees .is-section-item';
+        contentSetter.setArray(
+          [l10n["toolkit.transfer"],
+           l10n["toolkit.memorized"]],
+          '', 1, 3
+        );
+      }
+      if (changedNodes.has('modal-overlay pure-u modal-account-calendar active') ||
+          changedNodes.has('accounts-calendar')) {
+        contentSetter.selectorPrefix = '.modal-account-calendar';
+        var days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(function(day) {
+          return l10n["toolkit.dayOfWeek" + day]
+        });
+        contentSetter.setArray(days, ' .accounts-calendar-weekdays li');
+        contentSetter.selectorPrefix = '.modal-account-calendar .accounts-calendar-selected-date';
+        var dateText = $(contentSetter.selectorPrefix).contents()[1].textContent;
+        var year = dateText.split(' ')[1];
+        var month  = l10n["months." + dateText.split(' ')[0]];
+        contentSetter.set(month + " " + year, 1);
+      }
     }
 
   }; // Keep feature functions contained within this object
