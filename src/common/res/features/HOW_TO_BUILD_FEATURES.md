@@ -207,3 +207,16 @@ There are some common features which have been pulled into a shared library. We 
 These functions / features can be found here: https://github.com/blargity/toolkit-for-ynab/blob/master/src/common/res/features/shared/main.js
 
 Make as much use of these as possible. These are pre-tested and ready to go!
+
+
+Features l10n
+-------------
+L10n is done via [Crowdin service](https://crowdin.com/project/toolkit-for-ynab). To add strings for l10n you should be a manager there or ask one to do it.  Adding is done in 4 steps:
+
+- Go to [project settings](https://crowdin.com/project/toolkit-for-ynab/settings#files) and download sourse ```en.json``` file.
+- Add your strings in english to it like so ```"toolkit.hiThere": "Hi there!",``` and upload back.
+- Localize your strings or just leave for future l10n. Anyway you should update Toolkit l10n strings with command ```./get_l10ns CROWDIN_KEY``` from project root.
+- Use l10n string in your feature .js files like so
+```javascript
+(ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.hiThere"]) || 'DEFAULT'
+```
