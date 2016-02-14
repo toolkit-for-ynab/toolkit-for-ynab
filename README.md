@@ -1,4 +1,6 @@
-![Toolkit for YNAB](http://i.imgur.com/SJhwBpU.png "Toolkit for YNAB")
+<p align="center">
+  <img src="http://i.imgur.com/SJhwBpU.png" alt="Toolkit for YNAB">
+</p>
 
 Toolkit for YNAB is a general purpose YNAB enhancing chrome extension. Have it your way!
 
