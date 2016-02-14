@@ -75,7 +75,23 @@
         downloadFile(args);
       }
 
+      // Sort an Array of Objects by key
+      function sortByKey(transactions, key, order) {
 
+        // Simple comparator
+        function compare(a, b) {
+          if (a[key] < b[key]) return -1;
+          if (a[key] > b[key]) return 1;
+          return 0;
+        }
+
+        transactions = transactions.copy();
+        transactions.sort(compare);
+        if (order === 'DESC') {
+          transactions.reverse();
+        }
+        return transactions;
+      }
 
       // String Manipulation
       // ===================
@@ -155,7 +171,7 @@
           trans.category = cat ? cat.category : '';
 
           trans.memo = yTrans.memo || '';
-          trans.amount = yTrans.amount / 1000;
+          trans.amount = yTrans.amount === null ? '' : yTrans.amount / 1000;
           trans.cleared = yTrans.cleared || '';
 
           // Check number is still implemented, though hidden from the UI
@@ -170,34 +186,39 @@
           return !yTrans.get('isTombstone');
         });
 
-        var cleanedTransArray = ynabTransArray.map(cleanTransaction);
+        // sort the transactions before inserting subtransactions, since
+        // Array.prototype.sort is not stable
+        ynabTransArray = sortByKey(ynabTransArray, 'date', 'DESC');
+
+        // insert subtransactions (associated with split transactions)
+        var completeYnabTransArray = [];
+        ynabTransArray.forEach(function (yTrans) {
+          var subs = entityManager.getSubTransactionsByTransactionId(yTrans.entityId);
+          if (subs.length > 0) {
+            // hide the amount on split transactions to avoid counting twice
+            var noAmountYTrans = {};
+            Object.assign(noAmountYTrans, yTrans, {amount: null});
+            completeYnabTransArray.push(noAmountYTrans);
+
+            // copy all the common transaction fields to each of the subtransactions
+            subs.forEach(function(ySubTrans) {
+              var augmentedYSubTrans = {};
+              Object.assign(augmentedYSubTrans, yTrans, ySubTrans);
+              completeYnabTransArray.push(augmentedYSubTrans);
+            });
+          } else {
+            completeYnabTransArray.push(yTrans);
+          }
+        });
+
+        var cleanedTransArray = completeYnabTransArray.map(cleanTransaction);
         return cleanedTransArray;
-      }
-
-
-      // Sort an Array of Objects by key
-      function sortByKey(transactions, key, order) {
-
-        // Simple comparator
-        function compare(a, b) {
-          if (a[key] < b[key]) return -1;
-          if (a[key] > b[key]) return 1;
-          return 0;
-        }
-
-        transactions = transactions.copy();
-        transactions.sort(compare);
-        if (order === 'DESC') {
-          transactions.reverse
-        }
-        return transactions;
       }
 
 
       function downloadTransactions() {
         var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
         var transactions = getTransactionArray(entityManager);
-        transactions = sortByKey(transactions, 'date', 'DESC');
 
         var titles = Object.keys(transactions[0]).map(function (key) {
           return camelCaseToTitle(key);
