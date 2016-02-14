@@ -141,6 +141,32 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
         var month  = l10n["months." + dateText.split(' ')[0]];
         contentSetter.set(month + " " + year, 1);
       }
+
+      // Accounts filters months options
+      if (changedNodes.has('modal-overlay pure-u modal-generic modal-account-filters active')) {
+        contentSetter.selectorPrefix = '.modal-account-filters ';
+        contentSetter.setArray(
+          monthsFull,
+          '.date-range-from-months option'
+        );
+        contentSetter.setArray(
+          monthsFull,
+          '.date-range-to-months option'
+        );
+      }
+
+      // Account row
+      if (changedNodes.has('ynab-grid-body')) {
+        $('.ynab-grid-cell-payeeName[title="Starting Balance"]').contents().each(function() {
+          if (this.textContent == 'Starting Balance') this.textContent = l10n["toolkit.startingBalance"];
+        });
+        $('.ynab-grid-cell-subCategoryName[title="Inflow: To be Budgeted"]').contents().each(function() {
+          if (this.textContent == 'Inflow: To be Budgeted') this.textContent = l10n["toolkit.inflowTBB"];
+        });
+        $('.ynab-grid-cell-subCategoryName[title="Split (Multiple Categories)..."]').contents().each(function() {
+          if (this.textContent == 'Split (Multiple Categories)...') this.textContent = l10n["toolkit.splitMultipleCategories"];
+        });
+      }
     }
 
   }; // Keep feature functions contained within this object
