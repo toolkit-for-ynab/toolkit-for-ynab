@@ -51,6 +51,30 @@
           $(".navlink-reports").on("click", ynabToolKit.reports.showReports);
         }
 
+        this.debugTransactions = function() {
+          ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then(function (transactionsViewModel) {
+            var transactionDisplayItems = transactionsViewModel.get('visibleTransactionDisplayItems')
+
+            var transactions = transactionDisplayItems.filter(function(transaction) {
+              return transaction.get('displayItemType') == "transaction";
+            });
+
+            // Sort the transactions by date. They usually are already, but let's not depend on that:
+            transactions.sort(function (a, b) {
+              return a.get('date')._internalUTCMoment._d - b.get('date')._internalUTCMoment._d;
+            });
+
+            console.log(JSON.stringify(transactions.map(function(transaction) {
+              return {
+                date: transaction.get('date')._internalUTCMoment._d,
+                formattedDate: ynab.YNABSharedLib.dateFormatter.formatDate(transaction.get('date')._internalUTCMoment._d, 'MMM YYYY'),
+                account: transaction.getAccountName(),
+                amount: transaction.getAmount()
+              };
+            })));
+          });
+        }
+
         this.calculateNetWorthReport = function() {
 
           return new Promise(function(resolve, reject) {
