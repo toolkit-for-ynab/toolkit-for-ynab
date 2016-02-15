@@ -33,6 +33,7 @@ ynabToolKit.l10nData = {
   "toolkit.timeframe":"Ajanjakso",
   "toolkit.debts":"Velat",
   "toolkit.assets":"Varat",
+  "toolkit.incomeFrom":"Income from",
   "app.done":"Valmis",
   "app.continue":"Jatka",
   "app.ok":"OK",
