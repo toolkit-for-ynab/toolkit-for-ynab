@@ -209,15 +209,16 @@ These functions / features can be found here: https://github.com/blargity/toolki
 Make as much use of these as possible. These are pre-tested and ready to go!
 
 
-Features l10n
--------------
-L10n is done via [Crowdin service](https://crowdin.com/project/toolkit-for-ynab). To add strings for l10n you should be a manager and there or ask one to do it. You should also have crowdin API key to use automatization. Adding is done in 4 steps:
+Features l10n (or how to make your feature available in other languages)
+------------------------------------------------------------------------
+L10n is done via the [Crowdin service](http://translate.toolkitforynab.com). To add strings for l10n you should be a manager there or ask one of us (@egens, or @blargity) to do it. You should also have CrowdIn API key to use the automation script that pulls down all the translations. Adding new text is done in 4 steps:
 
-- Go to [project settings](https://crowdin.com/project/toolkit-for-ynab/settings#files) and download sourse ```en.json``` file.
-- Add your strings in english to it like so ```"toolkit.hiThere": "Hi there!",``` and upload back.
-- Localize your strings or just leave for future l10n. Anyway you should update Toolkit l10n strings with command ```./get_l10ns CROWDIN_KEY``` from project root. This will rebuild l10ns, download them, make some edits to downloaded files while moving them around and generate appropriate ```settings.json``` for l10n feature.
-- Use l10n string in your feature .js files like so
+- Go to [project settings](https://crowdin.com/project/toolkit-for-ynab/settings#files) and download the source ```en.json``` file.
+- Add your strings in English to it with an identifier for each string, like so: ```"toolkit.hiThere": "Hi there!",``` and upload back into CrowdIn.
+- Localize your strings if you know how to translate them into other languages, or just leave for the community to translate.
+- You'll then need to update Toolkit l10n strings with command ```./get_l10ns CROWDIN_KEY``` from the project root. This will rebuild l10ns, download them, make some edits to downloaded files while moving them around and generate an appropriate ```settings.json``` file for l10n feature.
+- Get translated strings in your feature .js files like so
 ```javascript
 (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.hiThere"]) || 'DEFAULT'
 ```
-q
+- If there's no translation for a string in the user's chosen language they'll see 'DEFAULT' based on the code above.
