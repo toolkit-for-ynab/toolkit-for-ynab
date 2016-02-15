@@ -64,7 +64,8 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
         }
 
         $('.budget-header-totals-cell-value.income-from-last-month span').html((total < 0 ? '-' : '+') + ynabToolKit.shared.formatCurrency(total, true));
-        $('.budget-header-totals-cell-name.income-from-last-month')[0].textContent = 'Income from ' + previousMonthName;
+        $('.budget-header-totals-cell-name.income-from-last-month')[0].textContent =
+          (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.incomeFrom"]) || 'Income from' + ' ' + previousMonthName;
       }
     },
 
