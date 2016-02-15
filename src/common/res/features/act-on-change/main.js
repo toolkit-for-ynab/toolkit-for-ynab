@@ -9,7 +9,7 @@
 
     // Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
     // during page interactions and updates to the developer tools console.
-    ynabToolKit.debugNodes = false;
+    ynabToolKit.debugNodes = true;
 
     ynabToolKit.actOnChange = function() {
 

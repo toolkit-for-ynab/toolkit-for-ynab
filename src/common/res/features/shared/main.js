@@ -105,6 +105,30 @@ ynabToolKit.shared = new function() {
         }
     },
 
+    // TODO Maybe add universal function.
+    // Usage: declension(daysNumber, {nom: 'день', gen: 'дня', plu: 'дней'});
+    this.declension = function (locale, num, cases) {
+      if (locale == 'ru') {
+        num = Math.abs(num);
+        var word = '';
+        if (num.toString().indexOf('.') > -1) {
+          word = cases.gen;
+        } else {
+          word = (
+            num % 10 == 1 && num % 100 != 11
+              ? cases.nom
+              : num % 10 >= 2 && num % 10 <= 4 && (num % 100 < 10 || num % 100 >= 20)
+                ? cases.gen
+                : cases.plu
+          );
+        }
+        return word;
+      }
+      else {
+        console.log('Unknown locale')
+      }
+    }
+
     // Pass over each available category balance and provide a total. This can be used to
     // evaluate if a feature script needs to continue based on an update to the budget.
     this.availableBalance = new function() {
@@ -115,13 +139,13 @@ ynabToolKit.shared = new function() {
 
         this.snapshot = function() {
             var totalAvailable = 0;
-            
+
             // Find and collect the available balances of each category in the budget
             var availableBalances = $('.budget-table-cell-available').find('span.user-data.currency').map(function() {
                 availableBalance = $(this).html();
-                return Number(availableBalance.replace(/[^\d.-]/g, '')); 
+                return Number(availableBalance.replace(/[^\d.-]/g, ''));
             });
-            
+
             // Add each balance together to get the total available sum
             $.each(availableBalances,function(){totalAvailable+=parseFloat(this) || 0;});
             return totalAvailable;
@@ -136,7 +160,7 @@ ynabToolKit.shared = new function() {
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
     if (typeof Em !== 'undefined' && typeof Ember !== 'undefined'
-          && typeof $ !== 'undefined' && $('.ember-view.layout').length 
+          && typeof $ !== 'undefined' && $('.ember-view.layout').length
           && typeof ynabToolKit !== 'undefined') {
 
       ynabToolKit.pageReady = true;

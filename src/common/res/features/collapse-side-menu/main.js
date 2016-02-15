@@ -6,11 +6,12 @@
 
     ynabToolKit.collapseSideMenu = new function() { // jshint ignore:line
 
+      var buttonText = (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.collapse"]) || 'Collapse';
       this.collapseBtn = '<li> \
         <li class="ember-view navlink-collapse"> \
           <a href="#"> \
             <span class="ember-view flaticon stroke left-circle-4"> \
-            </span>Collapse \
+            </span>' + buttonText + ' \
           </a> \
         </li> \
       </li>';

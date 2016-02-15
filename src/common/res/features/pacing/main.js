@@ -81,7 +81,8 @@
 
           $('.budget-table-cell-pacing').remove()
 
-          $(".budget-table-header .budget-table-cell-available").after($('<li class="budget-table-cell-pacing">PACING</li>'));
+          $(".budget-table-header .budget-table-cell-available").after('<li class="budget-table-cell-pacing">' +
+            (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.pacing"]) || 'PACING' + '</li>');
 
           var deemphasizedCategories = getDeemphasizedCategories();
           $('.budget-table-row').each(function(){

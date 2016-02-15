@@ -6,7 +6,7 @@ function ynabEnhancedDoB() {
     var elementForDoB = elementForAoM.cloneNode(true);
 
     elementForDoB.className = elementForDoB.className + " days-of-buffering";
-    elementForDoB.children[1].textContent = "Days of Buffering";
+    elementForDoB.children[1].textContent = (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.DoB"]) || "Days of Buffering";
     elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
 
     var calculation = ynabEnhancedDoBCalculate();
@@ -15,17 +15,23 @@ function ynabEnhancedDoB() {
         elementForDoB.children[0].title = "Your budget history is less than 15 days. Go on with YNAB a while.";
     }
     else {
-        elementForDoB.children[0].textContent = calculation["DoB"] + " day" + (calculation["DoB"] == 1 ? "" : "s");
-        elementForDoB.children[0].title = "Total outflow: " + ynab.YNABSharedLib.currencyFormatter.format(calculation["totalOutflow"]) + 
-            "\nTotal days of budgeting: " + calculation["totalDays"] + 
-            "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(calculation["averageDailyOutflow"]) + 
-            "\nAverage daily transactions: " + calculation["averageDailyTransactions"].toFixed(1);        
+        var dayText = ynabToolKit.l10nData["budget.ageOfMoneyDays.one"];
+        if (calculation["DoB"] > 1) dayText = ynabToolKit.l10nData["budget.ageOfMoneyDays.other"];
+        // Russian declension dummy.
+        // if (ynabToolKit.options.l10n == 1){
+        //   dayText = ynabToolKit.shared.declension('ru', calculation["DoB"], {nom: 'день', gen: 'дня', plu: 'дней'});
+        // }
+        elementForDoB.children[0].textContent = calculation["DoB"] + " " + dayText;
+        elementForDoB.children[0].title = "Total outflow: " + ynab.YNABSharedLib.currencyFormatter.format(calculation["totalOutflow"]) +
+            "\nTotal days of budgeting: " + calculation["totalDays"] +
+            "\nAverage daily outflow: ~" + ynab.YNABSharedLib.currencyFormatter.format(calculation["averageDailyOutflow"]) +
+            "\nAverage daily transactions: " + calculation["averageDailyTransactions"].toFixed(1);
     }
 
     YNABheader.appendChild(elementForDoB);
 }
 
-function onlyUnique(value, index, self) { 
+function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
@@ -36,7 +42,7 @@ function ynabEnhancedCheckTransactionTypes(transactions) {
     var allTypesHandeled = uniqueTransactionTypes.every(function(el) { return uniqueTransactionTypes.includes(el) });
     if (!allTypesHandeled) {
         throw "Found unhandeled transaction type. " + uniqueTransactionTypes;
-    }  
+    }
 }
 
 function ynabEnhancedDoBCalculate() {
