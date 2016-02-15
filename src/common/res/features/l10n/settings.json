@@ -62,136 +62,144 @@
             "value": "13"
         }, 
         {
-            "name": "Hungarian", 
+            "name": "Hindi", 
             "value": "14"
         }, 
         {
-            "name": "Icelandic", 
+            "name": "Hungarian", 
             "value": "15"
         }, 
         {
-            "name": "Italian", 
+            "name": "Icelandic", 
             "value": "16"
         }, 
         {
-            "name": "Japanese", 
+            "name": "Italian", 
             "value": "17"
         }, 
         {
-            "name": "Korean", 
+            "name": "Japanese", 
             "value": "18"
         }, 
         {
-            "name": "Norwegian", 
+            "name": "Korean", 
             "value": "19"
         }, 
         {
-            "name": "Polish", 
+            "name": "Norwegian", 
             "value": "20"
         }, 
         {
-            "name": "Portuguese, Brazilian", 
+            "name": "Polish", 
             "value": "21"
         }, 
         {
-            "name": "Portuguese", 
+            "name": "Portuguese, Brazilian", 
             "value": "22"
         }, 
         {
-            "name": "Romanian", 
+            "name": "Portuguese", 
             "value": "23"
         }, 
         {
-            "name": "Russian", 
+            "name": "Romanian", 
             "value": "24"
         }, 
         {
-            "name": "Serbian (Cyrillic)", 
+            "name": "Russian", 
             "value": "25"
         }, 
         {
-            "name": "Slovenian", 
+            "name": "Serbian (Cyrillic)", 
             "value": "26"
         }, 
         {
-            "name": "Spanish", 
+            "name": "Slovenian", 
             "value": "27"
         }, 
         {
-            "name": "Swedish", 
+            "name": "Spanish", 
             "value": "28"
         }, 
         {
-            "name": "Turkish", 
+            "name": "Swedish", 
             "value": "29"
         }, 
         {
-            "name": "Ukrainian", 
+            "name": "Tamil", 
             "value": "30"
         }, 
         {
-            "name": "Vietnamese", 
+            "name": "Turkish", 
             "value": "31"
+        }, 
+        {
+            "name": "Ukrainian", 
+            "value": "32"
+        }, 
+        {
+            "name": "Vietnamese", 
+            "value": "33"
         }
     ], 
     "actions": {
         "24": [
             "injectScript", 
-            "locales/Russian.json", 
+            "locales/Romanian.json", 
             "injectScript", 
             "main.js"
         ], 
         "25": [
             "injectScript", 
-            "locales/Serbian (Cyrillic).json", 
+            "locales/Russian.json", 
             "injectScript", 
             "main.js"
         ], 
         "26": [
             "injectScript", 
-            "locales/Slovenian.json", 
+            "locales/Serbian (Cyrillic).json", 
             "injectScript", 
             "main.js"
         ], 
         "27": [
             "injectScript", 
-            "locales/Spanish.json", 
+            "locales/Slovenian.json", 
             "injectScript", 
             "main.js"
         ], 
         "20": [
             "injectScript", 
-            "locales/Polish.json", 
+            "locales/Norwegian.json", 
             "injectScript", 
             "main.js"
         ], 
         "21": [
             "injectScript", 
-            "locales/Portuguese, Brazilian.json", 
+            "locales/Polish.json", 
             "injectScript", 
             "main.js"
         ], 
         "22": [
             "injectScript", 
-            "locales/Portuguese.json", 
+            "locales/Portuguese, Brazilian.json", 
             "injectScript", 
             "main.js"
         ], 
         "23": [
             "injectScript", 
-            "locales/Romanian.json", 
+            "locales/Portuguese.json", 
             "injectScript", 
             "main.js"
         ], 
         "28": [
             "injectScript", 
-            "locales/Swedish.json", 
+            "locales/Spanish.json", 
             "injectScript", 
             "main.js"
         ], 
         "29": [
             "injectScript", 
-            "locales/Turkish.json", 
+            "locales/Swedish.json", 
             "injectScript", 
             "main.js"
         ], 
@@ -275,47 +283,59 @@
         ], 
         "15": [
             "injectScript", 
-            "locales/Icelandic.json", 
+            "locales/Hungarian.json", 
             "injectScript", 
             "main.js"
         ], 
         "14": [
             "injectScript", 
-            "locales/Hungarian.json", 
+            "locales/Hindi.json", 
             "injectScript", 
             "main.js"
         ], 
         "17": [
             "injectScript", 
-            "locales/Japanese.json", 
+            "locales/Italian.json", 
             "injectScript", 
             "main.js"
         ], 
         "16": [
             "injectScript", 
-            "locales/Italian.json", 
+            "locales/Icelandic.json", 
             "injectScript", 
             "main.js"
         ], 
         "19": [
             "injectScript", 
-            "locales/Norwegian.json", 
+            "locales/Korean.json", 
             "injectScript", 
             "main.js"
         ], 
         "18": [
             "injectScript", 
-            "locales/Korean.json", 
+            "locales/Japanese.json", 
             "injectScript", 
             "main.js"
         ], 
         "31": [
             "injectScript", 
-            "locales/Vietnamese.json", 
+            "locales/Turkish.json", 
             "injectScript", 
             "main.js"
         ], 
         "30": [
+            "injectScript", 
+            "locales/Tamil.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "33": [
+            "injectScript", 
+            "locales/Vietnamese.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "32": [
             "injectScript", 
             "locales/Ukrainian.json", 
             "injectScript", 
