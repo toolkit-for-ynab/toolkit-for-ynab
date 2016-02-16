@@ -115,19 +115,26 @@ ynabToolKit.shared = new function() {
 
         this.snapshot = function() {
             var totalAvailable = 0;
-            
+
             // Find and collect the available balances of each category in the budget
             var availableBalances = $('.budget-table-cell-available').find('span.user-data.currency').map(function() {
                 availableBalance = $(this).html();
-                return Number(availableBalance.replace(/[^\d.-]/g, '')); 
+                return Number(availableBalance.replace(/[^\d.-]/g, ''));
             });
-            
+
             // Add each balance together to get the total available sum
             $.each(availableBalances,function(){totalAvailable+=parseFloat(this) || 0;});
             return totalAvailable;
         }
 
     }
+
+    // Add formatting method to dates to get YYYY-MM.
+    this.yyyymm =  function(date) {
+        var yyyy = date.getFullYear().toString();
+        var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
+        return yyyy + '-' + (mm[1]?mm:"0"+mm[0]); // padding
+    };
 
 }; // end ynabToolKit object
 
@@ -136,7 +143,7 @@ ynabToolKit.shared = new function() {
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
     if (typeof Em !== 'undefined' && typeof Ember !== 'undefined'
-          && typeof $ !== 'undefined' && $('.ember-view.layout').length 
+          && typeof $ !== 'undefined' && $('.ember-view.layout').length
           && typeof ynabToolKit !== 'undefined') {
 
       ynabToolKit.pageReady = true;
@@ -145,11 +152,3 @@ ynabToolKit.shared = new function() {
        setTimeout(poll, 250);
     }
  })();
-
-
-// Add formatting method to Date to get YYYY-MM.
-Date.prototype.yyyymm = function() {
-    var yyyy = this.getFullYear().toString();
-    var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
-    return yyyy + '-' + (mm[1]?mm:"0"+mm[0]); // padding
-};
