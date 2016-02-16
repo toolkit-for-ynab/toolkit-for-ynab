@@ -33,6 +33,7 @@ ynabToolKit.l10nData = {
   "toolkit.timeframe":"Periode",
   "toolkit.debts":"Schulden",
   "toolkit.assets":"Assets",
+  "toolkit.incomeFrom":"Income from",
   "app.done":"Klaar",
   "app.continue":"Verder",
   "app.ok":"OK",
