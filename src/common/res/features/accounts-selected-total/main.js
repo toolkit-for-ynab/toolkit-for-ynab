@@ -63,16 +63,16 @@
 
           parent.find('.user-data').remove();
 
-          var totalFormatted = ynabToolKit.shared.formatCurrency(total);
-
-          var userData = $('<span>', { class: 'user-data', title: totalFormatted });
-          var userCurrency = $('<span>', { class: 'user-data currency', text: totalFormatted });
+          var userData = $('<span>', { class: 'user-data', title: ynabToolKit.shared.formatCurrency(total) });
+          var userCurrency = $('<span>', { class: 'user-data currency' });
 
           if (total >= 0) {
               userCurrency.addClass('positive');
           } else {
               userCurrency.addClass('negative');
           }
+
+          ynabToolKit.shared.appendFormattedCurrencyHtml(userCurrency, total);
 
           userData.append(userCurrency);
           parent.append(userData);

@@ -79,20 +79,45 @@ ynabToolKit.shared = new function() {
 
     // This function formats a number to a currency.
     // number is the number you want to format, and html dictates if the <bdi> tag should be added or not.
-    this.formatCurrency = function (number, html) {
+    this.formatCurrency = function (number) {
         var formatted, currency, negative, currencySymbol;
         formatted = ynab.formatCurrency(number);
         currency = ynab.YNABSharedLib.currencyFormatter.getCurrency();
         if (!currency.display_symbol) {
             return new Ember.Handlebars.SafeString(formatted);
         }
+
         currencySymbol = Ember.Handlebars.Utils.escapeExpression(currency.currency_symbol);
-        if (html) {
-            currencySymbol = "<bdi>" + currencySymbol + "</bdi>";
-        }
+
         currency.symbol_first ? (negative = "-" === formatted.charAt(0), formatted = negative ? "-" + currencySymbol + formatted.slice(1) : currencySymbol + formatted) : formatted += currencySymbol;
         return new Ember.Handlebars.SafeString(formatted);
     },
+
+    this.appendFormattedCurrencyHtml = function (jQueryElement, number) {
+
+      var formatted = ynab.formatCurrency(number);
+      var currency = ynab.YNABSharedLib.currencyFormatter.getCurrency();
+
+      if (!currency.display_symbol) {
+          jQueryElement.text(formatted);
+          return;
+      }
+
+      if (currency.symbol_first) {
+        if ('-' === formatted.charAt(0)) {
+          jQueryElement.append('-');
+          formatted = formatted.slice(1);
+        }
+
+        jQueryElement.append($('<bdi>', { text: currency.currency_symbol }))
+                     .append(formatted);
+
+      } else {
+
+        jQueryElement.append(formatted)
+                     .append($('<bdi>', { text: currency.currency_symbol }));
+      }
+    }
 
     this.parseSelectedMonth = function () {
         // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
