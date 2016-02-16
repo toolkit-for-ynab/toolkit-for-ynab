@@ -25,7 +25,7 @@
 
         mutations.forEach(function(mutation) {
           var newNodes = mutation.target;
-          
+
           var $nodes = $(newNodes); // jQuery set
           $nodes.each(function() {
             var nodeClass = $(this).attr('class');

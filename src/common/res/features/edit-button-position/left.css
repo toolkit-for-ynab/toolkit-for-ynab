@@ -1,23 +1,23 @@
 .nav-account-row .nav-account-name {
-	display: flex;
-	margin-left: -20px;
+  display: flex;
+  margin-left: -20px;
 }
 
 .nav-account-row .nav-account-name button {
-	order: 1;
+  order: 1;
 }
 
 .nav-account-row .nav-account-name i {
-	order: 0;
-	display: inline-block;
-	visibility: hidden;
-	margin-right: 0.2em;
+  order: 0;
+  display: inline-block;
+  visibility: hidden;
+  margin-right: 0.2em;
 }
 
 .nav-account-row .nav-account-name:hover i {
-	visibility: visible;
+  visibility: visible;
 }
 
 .nav-account-row .nav-account-name:hover button {
-	max-width: 100%;
+  max-width: 100%;
 }

@@ -17,37 +17,37 @@
       $(subCategories).each(function () {
       var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
 
-		if ( "Uncategorized Transactions" != subCategoryName ) {
-			calculation = getCalculation(subCategoryName);
+    if ( "Uncategorized Transactions" != subCategoryName ) {
+      calculation = getCalculation(subCategoryName);
 
-			if (calculation.goalExpectedCompletion > 0) {
-			  // Target total goal
-			  var hasGoal = true;
-			  var status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
-			}
-			else if (calculation.goalTarget > 0) {
-			  // Target by date
-			  // or Monthly goal
-			  var hasGoal = true;
-			  var status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
-			}
-			else if (calculation.upcomingTransactions < 0) {
-			  // Upcoming transactions "goal"
-			  var hasGoal = true;
-			  var status = - calculation.balance / calculation.upcomingTransactions;
-			}
+      if (calculation.goalExpectedCompletion > 0) {
+        // Target total goal
+        var hasGoal = true;
+        var status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
+      }
+      else if (calculation.goalTarget > 0) {
+        // Target by date
+        // or Monthly goal
+        var hasGoal = true;
+        var status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
+      }
+      else if (calculation.upcomingTransactions < 0) {
+        // Upcoming transactions "goal"
+        var hasGoal = true;
+        var status = - calculation.balance / calculation.upcomingTransactions;
+      }
 
-			if (hasGoal) {
-			  $(this).addClass('goal-progress');
-			  status = status > 1 ? 1 : status;
-			  status = status < 0 ? 0 : status;
-			  var percent = Math.round(parseFloat(status)*100);
-			  this.style.background = "linear-gradient(to right, #c1e8c0 " + percent + "%, white " + percent+ "%)";
-			}
-			else {
-			  this.removeAttribute("style");
-			}
-		}
+      if (hasGoal) {
+        $(this).addClass('goal-progress');
+        status = status > 1 ? 1 : status;
+        status = status < 0 ? 0 : status;
+        var percent = Math.round(parseFloat(status)*100);
+        this.style.background = "linear-gradient(to right, #c1e8c0 " + percent + "%, white " + percent+ "%)";
+      }
+      else {
+        this.removeAttribute("style");
+      }
+    }
       });
     },
 

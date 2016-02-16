@@ -1,6 +1,6 @@
 .budget-header-days.days-of-buffering {
-	display: block !important;
-	border-left: 1px solid #0e414c !important;
+  display: block !important;
+  border-left: 1px solid #0e414c !important;
 }
 
 .days-of-buffering .budget-header-days-age {

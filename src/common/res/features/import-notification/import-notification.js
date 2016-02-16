@@ -9,7 +9,7 @@
           if(transactions.length >= 1) {
             $(row).find('.nav-account-notification').append('<a class="notification import-notification">'+transactions.length+'</a>');
           }
-        });  
+        });
       };
 
       // Hook transaction imports so that we can run our stuff when things change
@@ -18,7 +18,7 @@
       ynabToolKit.importNotification(); // Run itself once
    } else {
      setTimeout(poll, 250);
-   }    
+   }
 })();
 
 
