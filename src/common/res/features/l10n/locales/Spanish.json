@@ -552,7 +552,7 @@ ynabToolKit.l10nData = {
   "accounts.alldates":"Todas las fechas",
   "accounts.reconciledTransactions":"Reconciled Transactions",
   "accounts.scheduledTransactions":"Scheduled Transactions",
-  "accounts.search":"Search {{accountName}}",
+  "accounts.search":"Buscar {{accountName}}",
   "accounts.c":"R",
   "accounts.repeat":"Repetir",
   "accounts.hiddenTxnsMsg.one":"1 transacción ocultada por los filtros.",
