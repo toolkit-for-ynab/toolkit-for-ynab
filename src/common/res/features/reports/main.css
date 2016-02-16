@@ -49,18 +49,18 @@
 }
 
 .noUi-connect {
-	background: #8ED0DF;
+  background: #8ED0DF;
 }
 
 .noUi-tooltip {
-	left: -25%;
+  left: -25%;
 }
 
 .noUi-horizontal .noUi-handle-lower .noUi-tooltip {
-	top: -52px;
+  top: -52px;
 }
 .noUi-horizontal .noUi-handle-upper .noUi-tooltip {
-	bottom: -52px;
+  bottom: -52px;
 }
 
 /* Reports Inspector */

@@ -45,7 +45,7 @@
       this.observe = function(changedNodes) {
 
           if (changedNodes.has('ynab-grid-body')) {
-        	// We found Account transactions rows
+          // We found Account transactions rows
             ynabToolKit.toggleSplits.invoke();
           }
 

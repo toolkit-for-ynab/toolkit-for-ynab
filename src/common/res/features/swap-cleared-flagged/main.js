@@ -36,9 +36,9 @@
 
       this.swapYnabGridActions = function() {
 
-      	$('.ember-view.ynab-grid-body-row.is-editing')
+        $('.ember-view.ynab-grid-body-row.is-editing')
         .addClass('detached-attached')
-    	  .find('.ember-view.ynab-grid-actions').css({
+        .find('.ember-view.ynab-grid-actions').css({
           "right" : 54,
           "bottom" : "initial",
           "margin-top" : "2px"

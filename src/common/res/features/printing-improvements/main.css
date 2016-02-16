@@ -1,188 +1,188 @@
 /* ======== Budget Printing Improvements ======== */
 @media print {
 
-	/* hide unneeded areas */
-	body div.sidebar,
-	body header.budget-header,
-	body aside.budget-inspector {
-		display: none;
-	}
-	
-	
-	/* primarily layout adjustments */
-	@page { margin: 1cm; }
-	
-	html, body {
-		overflow: auto;
-		overflow-x: hidden !important;
-		height: auto;
-		width: 100%;
-	}
-	body div.content, 
-	body section.budget-content {
-		position: relative !important;
-		width: 100%;
-		top: auto;
-		right: auto;
-		bottom: auto;
-		left: auto;
-		min-width: 0;
-		overflow-x: hidden !important;
-		font-size: 1em;
-		padding-top: 0;
-	}
-	body ul.budget-table-header {
-		position: relative !important;
-		border-bottom: 0;
-		min-width: 0;
-		font-weight: bold;
-	}
-	body div.budget-table {
-		position: relative !important;
-		top: 0;
-		min-width: 0;
-		height: auto;
-	}
-	
-	body .budget-table-header .budget-table-cell-checkbox, 
-	body .budget-table-row .budget-table-cell-checkbox,
-	body .budget-table-header .budget-table-cell-status, 
-	body .budget-table-row .budget-table-cell-status {
-		display: none;
-	}
+  /* hide unneeded areas */
+  body div.sidebar,
+  body header.budget-header,
+  body aside.budget-inspector {
+    display: none;
+  }
 
-	body .budget-table-header .budget-table-cell-name, 
-	body .budget-table-row .budget-table-cell-name
-	{
-		width: 42% !important;
-	}
-	.budget-table-header .budget-table-cell-budgeted, 
-	.budget-table-row .budget-table-cell-budgeted, 
-	.budget-table-header .budget-table-cell-activity, 
-	.budget-table-row .budget-table-cell-activity, 
-	.budget-table-header .budget-table-cell-available, 
-	.budget-table-row .budget-table-cell-available,
-	.budget-table-header .budget-table-cell-pacing {
-		width: 12% !important;
-		font-size: 8pt !important;
-	}
-	
-	body .budget-table-row.is-master-category {
-	   border-top: 2px solid #ccc;
-	   background: transparent;
-	   margin-top: 20px;
-		height: 2.1em;
-	}
-	body .budget-table-row.is-master-category .budget-table-cell-name .budget-table-cell-name-row-label-item {
-	    padding-top: .3em;
-	}
-	body .budget-table-row.is-master-category:first-child {
-		margin-top: 0;
-	}
-	
-	body .budget-table-row.is-sub-category {
-		height: 1.8em;
-	}
-	body .budget-table-header .budget-table-cell-budgeted,
-	body .budget-table-header .budget-table-cell-activity,
-	body .budget-table-header .budget-table-cell-available,
-	body .budget-table-header .budget-table-cell-pacing {
-		padding-right: 0 !important;
-	}
-	body .budget-table-row .budget-table-cell-budgeted .goal-indicator {
-		top: 5px;
-	}
-	
-	
-	/* primarily font styling */
-	body .budget-table-row.is-master-category .budget-table-cell-name {
-		font-weight: bold;
-	}
-	body .budget-table-row.is-master-category .budget-table-cell-name button {
-		font-weight: bold;
-		position: relative;
-		top: 4px;
-	}
-	body .button, body .button-red, body .button-disabled {
-		font-size: 9pt !important;
-	}
-	body .budget-table-row.is-master-category .positive, 
-	body .budget-table-row.is-master-category .negative, 
-	body .budget-table-row.is-master-category .cautious, 
-	body .budget-table-row.is-master-category .zero {
-		font-weight: bold;
-		color: #000;
-	}
-	body .budget-table-row.is-sub-category > .budget-table-cell-available .positive, 
-	body .budget-table-row.is-sub-category > .budget-table-cell-available .negative, 
-	body .budget-table-row.is-sub-category > .budget-table-cell-available .cautious, 
-	body .budget-table-row.is-sub-category > .budget-table-cell-available .zero {
-		background-color: transparent;		
-		padding: 0 !important;	
-	}
-	body .budget-table-row.is-sub-category > .budget-table-cell-available .positive {
-		color: #16a336;
-	}
-	body .budget-table-row.is-sub-category > .budget-table-cell-available .cautious {
-		color: #e59100;	
-	}
-	body .budget-table-row.is-sub-category > .budget-table-cell-available .negative {
-		color: #d33c2d;
-	}
-	body .budget-table-row.is-sub-category > .budget-table-cell-available .zero {
-		color: #000000;
-	}
-	
+
+  /* primarily layout adjustments */
+  @page { margin: 1cm; }
+
+  html, body {
+    overflow: auto;
+    overflow-x: hidden !important;
+    height: auto;
+    width: 100%;
+  }
+  body div.content,
+  body section.budget-content {
+    position: relative !important;
+    width: 100%;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    min-width: 0;
+    overflow-x: hidden !important;
+    font-size: 1em;
+    padding-top: 0;
+  }
+  body ul.budget-table-header {
+    position: relative !important;
+    border-bottom: 0;
+    min-width: 0;
+    font-weight: bold;
+  }
+  body div.budget-table {
+    position: relative !important;
+    top: 0;
+    min-width: 0;
+    height: auto;
+  }
+
+  body .budget-table-header .budget-table-cell-checkbox,
+  body .budget-table-row .budget-table-cell-checkbox,
+  body .budget-table-header .budget-table-cell-status,
+  body .budget-table-row .budget-table-cell-status {
+    display: none;
+  }
+
+  body .budget-table-header .budget-table-cell-name,
+  body .budget-table-row .budget-table-cell-name
+  {
+    width: 42% !important;
+  }
+  .budget-table-header .budget-table-cell-budgeted,
+  .budget-table-row .budget-table-cell-budgeted,
+  .budget-table-header .budget-table-cell-activity,
+  .budget-table-row .budget-table-cell-activity,
+  .budget-table-header .budget-table-cell-available,
+  .budget-table-row .budget-table-cell-available,
+  .budget-table-header .budget-table-cell-pacing {
+    width: 12% !important;
+    font-size: 8pt !important;
+  }
+
+  body .budget-table-row.is-master-category {
+     border-top: 2px solid #ccc;
+     background: transparent;
+     margin-top: 20px;
+    height: 2.1em;
+  }
+  body .budget-table-row.is-master-category .budget-table-cell-name .budget-table-cell-name-row-label-item {
+      padding-top: .3em;
+  }
+  body .budget-table-row.is-master-category:first-child {
+    margin-top: 0;
+  }
+
+  body .budget-table-row.is-sub-category {
+    height: 1.8em;
+  }
+  body .budget-table-header .budget-table-cell-budgeted,
+  body .budget-table-header .budget-table-cell-activity,
+  body .budget-table-header .budget-table-cell-available,
+  body .budget-table-header .budget-table-cell-pacing {
+    padding-right: 0 !important;
+  }
+  body .budget-table-row .budget-table-cell-budgeted .goal-indicator {
+    top: 5px;
+  }
+
+
+  /* primarily font styling */
+  body .budget-table-row.is-master-category .budget-table-cell-name {
+    font-weight: bold;
+  }
+  body .budget-table-row.is-master-category .budget-table-cell-name button {
+    font-weight: bold;
+    position: relative;
+    top: 4px;
+  }
+  body .button, body .button-red, body .button-disabled {
+    font-size: 9pt !important;
+  }
+  body .budget-table-row.is-master-category .positive,
+  body .budget-table-row.is-master-category .negative,
+  body .budget-table-row.is-master-category .cautious,
+  body .budget-table-row.is-master-category .zero {
+    font-weight: bold;
+    color: #000;
+  }
+  body .budget-table-row.is-sub-category > .budget-table-cell-available .positive,
+  body .budget-table-row.is-sub-category > .budget-table-cell-available .negative,
+  body .budget-table-row.is-sub-category > .budget-table-cell-available .cautious,
+  body .budget-table-row.is-sub-category > .budget-table-cell-available .zero {
+    background-color: transparent;
+    padding: 0 !important;
+  }
+  body .budget-table-row.is-sub-category > .budget-table-cell-available .positive {
+    color: #16a336;
+  }
+  body .budget-table-row.is-sub-category > .budget-table-cell-available .cautious {
+    color: #e59100;
+  }
+  body .budget-table-row.is-sub-category > .budget-table-cell-available .negative {
+    color: #d33c2d;
+  }
+  body .budget-table-row.is-sub-category > .budget-table-cell-available .zero {
+    color: #000000;
+  }
+
 }
 
 
 /* ======== Account Printing Improvements ======== */
 @media print {
 
-	/* header layout adjustments */
-	.accounts-toolbar, 
-	.accounts-header .accounts-header-total-inner .arrow,
-	.accounts-header-reconcile {
-		display: none;
-	}
-	.accounts-header {
-		height: auto;
-		background: transparent;		
-	}
-	.accounts-header .accounts-header-total-inner {
-		padding-left: 0;
-		padding-right: 60px;
-		background: transparent;
-	}
-	.accounts-header .accounts-header-total-inner .accounts-header-total-inner-label,
-	.accounts-header .accounts-header-balances-label {
-		color: #000;
-		line-height: 1.5em;
-	    font-weight: 400;
-	}
-	
-	/* transactions adjustments */
-	.ynab-grid {
-		position: relative !important;
-		height: auto !important;
-		font-size: 11pt !important;
-	}
-	.ynab-grid-container {
-		height: auto !important;
-	}
-	.ynab-grid-header,
-	.ynab-grid-cell-checkbox {
-		display: none;
-	}
-	
-	.ynab-grid-body-row {
-		height: 26px;
-	}
-	.ynab-grid-cell {
-	    padding: .2em 0;
-	}
-	.ynab-grid-body-row.is-scheduled {
-		display: none;
-	}
+  /* header layout adjustments */
+  .accounts-toolbar,
+  .accounts-header .accounts-header-total-inner .arrow,
+  .accounts-header-reconcile {
+    display: none;
+  }
+  .accounts-header {
+    height: auto;
+    background: transparent;
+  }
+  .accounts-header .accounts-header-total-inner {
+    padding-left: 0;
+    padding-right: 60px;
+    background: transparent;
+  }
+  .accounts-header .accounts-header-total-inner .accounts-header-total-inner-label,
+  .accounts-header .accounts-header-balances-label {
+    color: #000;
+    line-height: 1.5em;
+      font-weight: 400;
+  }
+
+  /* transactions adjustments */
+  .ynab-grid {
+    position: relative !important;
+    height: auto !important;
+    font-size: 11pt !important;
+  }
+  .ynab-grid-container {
+    height: auto !important;
+  }
+  .ynab-grid-header,
+  .ynab-grid-cell-checkbox {
+    display: none;
+  }
+
+  .ynab-grid-body-row {
+    height: 26px;
+  }
+  .ynab-grid-cell {
+      padding: .2em 0;
+  }
+  .ynab-grid-body-row.is-scheduled {
+    display: none;
+  }
 
 }

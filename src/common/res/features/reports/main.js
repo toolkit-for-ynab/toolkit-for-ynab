@@ -329,11 +329,11 @@
               // Set up the date filter.
               noUiSlider.create(dateFilter, {
                 connect: true,
-              	start: start,
-              	range: {
-              		'min': 0,
-              		'max': labels.length - 1
-              	},
+                start: start,
+                range: {
+                  'min': 0,
+                  'max': labels.length - 1
+                },
                 step: 1,
                 tooltips: true,
                 format: {

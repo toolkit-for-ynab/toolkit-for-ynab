@@ -1,12 +1,12 @@
 .collapsed-active {
-	background-color: #194853;
-	color: #fed168;
+  background-color: #194853;
+  color: #fed168;
 }
 
 .collapsed-budget.collapsed-active {
-	color: #ceec00;
+  color: #ceec00;
 }
 
 .collapsed-account.collapsed-active {
-	color: #32dcff;
+  color: #32dcff;
 }
