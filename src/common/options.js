@@ -109,7 +109,9 @@ function restoreOptions() {
 function buildOptionsPage() {
 
   // Order by section, then type, then name.
-  ynabToolKit.settings.sort(function(a, b) {
+  var settings = ynabToolKit.settings.slice();
+
+  settings.sort(function(a, b) {
     if (a.section != b.section) {
       return a.section.localeCompare(b.section);
     }
@@ -121,7 +123,7 @@ function buildOptionsPage() {
     return a.title.localeCompare(b.title);
   })
 
-  ynabToolKit.settings.forEach(function(setting) {
+  settings.forEach(function(setting) {
     if (setting.type == 'checkbox') {
 
       var template =
