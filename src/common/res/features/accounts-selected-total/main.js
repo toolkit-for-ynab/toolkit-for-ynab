@@ -48,36 +48,34 @@
       }
 
       function enhancedSelectedTotalsUpdate(total) {
-          var parent = document.getElementById('accounts-selected-total');
-          if (parent == null) {
+          var parent = $('#accounts-selected-total');
+
+          if (parent.length == 0) {
               return false;
           }
-          if ((' ' + parent.className + ' ').indexOf(' hidden ') == -1 && total === false) {
-              parent.className += " hidden";
-              return true;
-          } else if (total === false) {
+
+          if (total === false) {
+              parent.addClass('hidden');
               return true;
           }
-          parent.className = "accounts-header-balances-selected";
-          var spans = parent.getElementsByClassName("user-data");
-          for (var i = 0; i < spans.length; i++) {
-              spans[i].remove();
-          }
-          var totalFormatted = ynabToolKit.shared.formatCurrency(total, true);
-          var totalFormattedNoHtml = ynabToolKit.shared.formatCurrency(total, false);
-          var userData = document.createElement("span");
-          userData.className = "user-data";
-          userData.title = totalFormattedNoHtml;
-          var userCurrency = document.createElement("span");
-          userCurrency.className = "user-data currency";
+
+          parent.attr('class', 'accounts-header-balances-selected');
+
+          parent.find('.user-data').remove();
+
+          var totalFormatted = ynabToolKit.shared.formatCurrency(total);
+
+          var userData = $('<span>', { class: 'user-data', title: totalFormatted });
+          var userCurrency = $('<span>', { class: 'user-data currency', text: totalFormatted });
+
           if (total >= 0) {
-              userCurrency.className += " positive";
+              userCurrency.addClass('positive');
           } else {
-              userCurrency.className += " negative";
+              userCurrency.addClass('negative');
           }
-          userCurrency.innerHTML = totalFormatted;
-          userData.appendChild(userCurrency);
-          parent.appendChild(userData);
+
+          userData.append(userCurrency);
+          parent.append(userData);
       }
 
       function enhancedSelectedTotalsInit() {
