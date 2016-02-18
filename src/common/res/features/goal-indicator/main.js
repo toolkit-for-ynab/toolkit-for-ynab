@@ -8,8 +8,8 @@
       function addIndicator (element, indicator, tooltip) {
         var budgetedCell = $(element).find(".budget-table-cell-budgeted");
         if (budgetedCell.has(".goal-indicator").length == 0) {
-          budgetedCell.prepend('<div class="goal-indicator" title="' +
-          tooltip + '">' + indicator + '</div>')
+          budgetedCell.prepend($('<div>', { class: 'goal-indicator', title: tooltip })
+            .append(indicator));
         }
       }
 
