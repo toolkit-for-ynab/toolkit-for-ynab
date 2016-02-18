@@ -33,7 +33,7 @@ ynabToolKit.l10nData = {
   "toolkit.timeframe":"Időkeret",
   "toolkit.debts":"Tartozások",
   "toolkit.assets":"Vagyon",
-  "toolkit.incomeFrom":"Income from",
+  "toolkit.incomeFrom":"Jövedelem:",
   "app.done":"Kész",
   "app.continue":"Folytatás",
   "app.ok":"Ok",

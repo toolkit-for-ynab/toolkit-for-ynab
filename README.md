@@ -16,7 +16,7 @@ This is what the extension can do for you:
 - Export all transactions from the current budget in CSV format.
 - Colour Blind Mode - Changes colours of some of the numbers to make the interface easier on people with certain visual disabilities.
 - Make the calculator work like YNAB4. When you press + or - (etc) the calculator moves to the end of the line so your number isn't lost.
-- Printing Improvements: Now when you print your budget it looks good!
+- Printing Improvements: Now when you print your budget or account it looks good!
 - Add a budget category to zero button in the inspector.
 - Hide the Age of Money calculation.
 - Collapse left navigation bar for more screen room
@@ -50,7 +50,7 @@ If you don't want to build the extension from the source yourself, you can get i
 Roadmap
 -------
 
-Features under consideration and the general status of the project and roadmap is on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel free to vote and comment. To suggest new features, please visit the YNAB Forum thread here and comment. Forum user @stephywephy is managing the features there and will make sure it ends up in Trello.
+Features under consideration and the general status of the project and roadmap is on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel free to vote and comment. To suggest new features, please [visit the YNAB Forum thread here](http://forum.youneedabudget.com/discussion/47568) and comment. Forum user @bluebird8203 is managing the features there and will make sure it ends up in Trello.
 
 Contributions
 -------------
