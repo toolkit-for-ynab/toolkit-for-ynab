@@ -1,0 +1,11 @@
+.ynab-grid-cell-outflow .currency::before {
+	content: "(";
+}
+
+.ynab-grid-cell-outflow .currency::after {
+	content: ")";
+}
+
+.ynab-grid-cell-outflow .currency {
+	color: #c00;
+}
