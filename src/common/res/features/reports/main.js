@@ -1,3 +1,5 @@
+/* jshint multistr: true */
+
 (function poll() {
     if (typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true) {
 
@@ -27,7 +29,7 @@
           if (ynabToolKit.reports.netWorthReportChart) {
             ynabToolKit.reports.netWorthReportChart.resize();
           }
-        }
+        };
 
         $(window).resize(this.updateCanvasSize);
 
@@ -42,7 +44,7 @@
             <li class="ember-view navlink-reports"> \
               <a href="#"> \
                 <span class="ember-view flaticon stroke document-4"></span>' +
-                (ynabToolKit.l10nData && ynabToolKit.l10nData["sidebar.reports"]) || 'Reports' + '\
+                ((ynabToolKit.l10nData && ynabToolKit.l10nData["sidebar.reports"]) || 'Reports') + '\
               </a> \
             </li> \
           </li>';
@@ -50,11 +52,11 @@
           $(".nav-main").append(reportsBtn);
 
           $(".navlink-reports").on("click", ynabToolKit.reports.showReports);
-        }
+        };
 
         this.debugTransactions = function() {
           ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then(function (transactionsViewModel) {
-            var transactionDisplayItems = transactionsViewModel.get('visibleTransactionDisplayItems')
+            var transactionDisplayItems = transactionsViewModel.get('visibleTransactionDisplayItems');
 
             var transactions = transactionDisplayItems.filter(function(transaction) {
               return transaction.get('displayItemType') == "transaction";
@@ -74,14 +76,14 @@
               };
             })));
           });
-        }
+        };
 
         this.calculateNetWorthReport = function() {
 
           return new Promise(function(resolve, reject) {
 
             ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then(function (transactionsViewModel) {
-              var transactionDisplayItems = transactionsViewModel.get('visibleTransactionDisplayItems')
+              var transactionDisplayItems = transactionsViewModel.get('visibleTransactionDisplayItems');
 
               var transactions = transactionDisplayItems.filter(function(transaction) {
                 return transaction.get('displayItemType') == "transaction";
@@ -108,10 +110,11 @@
                 date = transaction.get('date')._internalUTCMoment._d;
                 formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
                 var year = formattedDate.split(' ')[1];
-                var month  = ynabToolKit.l10nData["months." + formattedDate.split(' ')[0]];
+                var month = formattedDate.split(' ')[0];
+                month = (ynabToolKit.l10nData && ynabToolKit.l10nData["months." + month]) || month;
                 formattedDate = month + " " + year;
 
-                if (lastLabel == null) lastLabel = formattedDate;
+                if (lastLabel === null) lastLabel = formattedDate;
 
                 // If it's time to push the next month's data into the arrays let's
                 // go for it.
@@ -184,9 +187,10 @@
                 var netWorths = ynabToolKit.reports.netWorth.netWorths;
 
                 while (currentDate < maxDate) {
-                  var formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(currentDate, 'MMM YYYY');
+                  formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(currentDate, 'MMM YYYY');
                   var year = formattedDate.split(' ')[1];
-                  var month  = ynabToolKit.l10nData["months." + formattedDate.split(' ')[0]];
+                  var month = formattedDate.split(' ')[0];
+                  month = (ynabToolKit.l10nData && ynabToolKit.l10nData["months." + month]) || month;
                   formattedDate = month + " " + year;
 
                   if (labels.indexOf(formattedDate) < 0) {
@@ -205,7 +209,7 @@
               resolve();
             });
           });
-        }
+        };
 
         this.updateReportWithDateFilter = function() {
           var labels = ynabToolKit.reports.netWorth.labels;
@@ -237,7 +241,7 @@
           $('#reports-inspector-debts').text(ynabToolKit.shared.formatCurrency(liabilities[endIndex]));
           $('#reports-inspector-assets').text(ynabToolKit.shared.formatCurrency(assets[endIndex]));
           $('#reports-inspector-net-worth').text(ynabToolKit.shared.formatCurrency(netWorths[endIndex]));
-        }
+        };
 
         // Remove the content and put our report there instead.
         this.showReports = function() {
@@ -463,7 +467,7 @@
 
             ynabToolKit.reports.updateReportWithDateFilter();
           });
-        }
+        };
 
         this.invoke = function() {
           ynabToolKit.reports.setUpReportsButton();
