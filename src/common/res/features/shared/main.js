@@ -117,6 +117,8 @@ ynabToolKit.shared = new function() {
         jQueryElement.append(formatted)
                      .append($('<bdi>', { text: currency.currency_symbol }));
       }
+
+      return jQueryElement;
     }
 
     this.parseSelectedMonth = function () {
