@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 """Prepare and download l10ns."""
-import urllib2
+import urllib, urllib2
 import shutil
 import os
 import zipfile
 import json
 import sys
+import math
 
 ID = 'toolkit-for-ynab'
 KEY = sys.argv[1:][0]
@@ -30,24 +31,34 @@ def donwload_l10ns():
         f.write(l10ns_file.read())
     return True
 
-def unpack():
+def get_l10ns_stats():
+    url = API_PREFIX + "status" + KEY_SUFFIX + "&json=true"
+    response = urllib2.urlopen(url)
+    j = response.read()
+    lang_completed = {}
+    for i in json.loads(j):
+        lang_completed[i['name']] = int(math.ceil(int(i["words_translated"])/float(i["words"])*100))
+    return lang_completed
+
+def unpack(lang_completed):
     """Unpack l10ns, move to one folder, add js initializer."""
     os.path.isdir(DEST_DIR) and shutil.rmtree(DEST_DIR)
     zipfile.ZipFile(FILENAME).extractall(DEST_DIR)
     for root, dirs, files in os.walk(DEST_DIR):
         for name in files:
-            shutil.move(os.path.join(root, name), DEST_DIR)
-            # Prepend all JSONs with Ember declaration.
-            with open(os.path.join(DEST_DIR, name), 'r+') as f:
-                content = f.read()
-                f.seek(0, 0)
-                f.write('ynabToolKit.l10nData = ' + content)
+            if lang_completed[name.split('.')[0]] != 0:
+                shutil.move(os.path.join(root, name), DEST_DIR)
+                # Prepend all JSONs with Ember declaration.
+                with open(os.path.join(DEST_DIR, name), 'r+') as f:
+                    content = f.read()
+                    f.seek(0, 0)
+                    f.write('ynabToolKit.l10nData = ' + content)
     for root, dirs, files in os.walk(DEST_DIR):
         for name in dirs:
-            os.rmdir(os.path.join(root, name))
+            shutil.rmtree(os.path.join(root, name))
     os.remove(FILENAME)
 
-def create_settings():
+def create_settings(lang_completed):
     """Generate settings.json file."""
     settings = {
          "name": "l10n",
@@ -62,15 +73,17 @@ def create_settings():
       "actions": {}}
     for root, dirs, files in os.walk(DEST_DIR):
         for i, name in enumerate(files):
-            value = str(i + 1)
-            settings['options'].append({ "name": name.split('.')[0], "value": value })
-            settings['actions'][value] = ["injectScript", "locales/" + name,
-                                          "injectScript", "main.js"]
+            if lang_completed[name.split('.')[0]] != 0:
+                value = str(i + 1)
+                percent = ' (%s%%)' % str(int(lang_completed[name.split('.')[0]]))
+                settings['options'].append({ "name": name.split('.')[0] + percent, "value": value })
+                settings['actions'][value] = ["injectScript", "locales/" + name,
+                                              "injectScript", "main.js"]
     with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'settings.json'), 'w') as f:
         json.dump(settings, f, indent=4)
 
-
+lang_completed = get_l10ns_stats()
 export_l10ns()
 donwload_l10ns()
-unpack()
-create_settings()
+unpack(lang_completed)
+create_settings(lang_completed)
