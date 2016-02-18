@@ -43,7 +43,10 @@
 		min-width: 0;
 		height: auto;
 	}
-	
+	body .budget-table-row {
+		page-break-inside: avoid;
+	}
+		
 	body .budget-table-header .budget-table-cell-checkbox, 
 	body .budget-table-row .budget-table-cell-checkbox,
 	body .budget-table-header .budget-table-cell-status, 
@@ -68,9 +71,9 @@
 	}
 	
 	body .budget-table-row.is-master-category {
-	   border-top: 2px solid #ccc;
-	   background: transparent;
-	   margin-top: 20px;
+		border-top: 2px solid #ccc;
+		background: transparent;
+		margin-top: 20px;
 		height: 2.1em;
 	}
 	body .budget-table-row.is-master-category .budget-table-cell-name .budget-table-cell-name-row-label-item {
@@ -175,8 +178,11 @@
 		display: none;
 	}
 	
-	.ynab-grid-body-row {
-		height: 26px;
+	.ynab-grid-body-row,
+	.ynab-grid-body-row-top,
+	.ynab-grid-body-row-bottom {
+		height: 26px !important;
+		page-break-inside: avoid;
 	}
 	.ynab-grid-cell {
 	    padding: .2em 0;
