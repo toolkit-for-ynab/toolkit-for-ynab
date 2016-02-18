@@ -1,18 +1,13 @@
 .notification {
-  border-radius: .3em !important; /* Without this the colors do not work */
+  margin-left: 0.2em;	
 }
 
 .import-notification {
-  background-color: blue;
-}
-
-.nav-account-name {
-  padding-left: .7em;
+  background-color: #227e99;
 }
 
 .nav-account-notification {
-  white-space: nowrap;
-  padding-left: .2em;
-  -webkit-flex: 0 0 35px;
-  flex: 0 0 35px;
+  padding-left: 0em;
+  -webkit-flex: 0 0 38px;
+  flex: 0 0 38px;
 }
