@@ -4,7 +4,7 @@ How to Build Features
 **Main things to note:**
 
 1. Use plain HTML, JS and CSS
-1. We have a build system in ```/build``` and ```/build.bat``` that generates some files which help keep features contained to their own directories. If you follow the conventions below you'll find this makes life easy.
+1. We have a build system in ```build``` and ```build.bat``` that generates some files which help keep features contained to their own directories. If you follow the conventions below you'll find this makes life easy.
 1. There is a single [Mutation Observer](https://developer.mozilla.org/en/docs/Web/API/MutationObserver) that is available for you to hook into in order to watch for DOM changes and do what you want to do. We'll talk about how you hook into this below.
 1. Every feature must be configurable by users. It can have a default to on if it's very useful for a wide swath of users, but there must always be the ability to turn it off. There are no mandatory features.
 1. The settings and the things they do to get your feature to work when they're turned on are configured in your feature directory.
