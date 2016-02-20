@@ -219,6 +219,6 @@ L10n is done via the [Crowdin service](http://translate.toolkitforynab.com). To 
 - You'll then need to update Toolkit l10n strings with command ```./get_l10ns CROWDIN_KEY``` from the project root. This will rebuild l10ns, download them, make some edits to downloaded files while moving them around and generate an appropriate ```settings.json``` file for l10n feature.
 - Get translated strings in your feature .js files like so
 ```javascript
-(ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.hiThere"]) || 'DEFAULT'
+((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.hiThere"]) || 'DEFAULT')
 ```
 - If there's no translation for a string in the user's chosen language they'll see 'DEFAULT' based on the code above.
