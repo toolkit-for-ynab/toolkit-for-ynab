@@ -107,6 +107,18 @@
 
               // Bucket the transactions into month buckets, tallying as we go.
               transactions.forEach(function(transaction) {
+
+                // Used when we're debugging transactions -----------
+                // date = new Date(transaction.date);
+                // formattedDate = transaction.formattedDate;
+                // transaction.getAccountName = function() {
+                //   return this.account;
+                // };
+                // transaction.getAmount = function () {
+                //   return this.amount;
+                // };
+                // --------------------------------------------------
+
                 date = transaction.get('date')._internalUTCMoment._d;
                 formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
                 var year = formattedDate.split(' ')[1];
@@ -174,9 +186,15 @@
 
               if (transactions.length > 0) {
                 // Fill in any gaps in the months in case they're missing data.
+                var currentIndex = 0;
+
                 var currentDate = transactions[0].get('date')._internalUTCMoment._d;
                 var maxDate = transactions[transactions.length - 1].get('date')._internalUTCMoment._d;
-                var currentIndex = 0;
+
+                // For debugging ----------------------------------------------------
+                // var currentDate = new Date(transactions[0].date);
+                // var maxDate = new Date(transactions[transactions.length - 1].date);
+                // ------------------------------------------------------------------
 
                 // Ensure we're on the 1st to avoid edge cases like the 31st.
                 currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
@@ -195,10 +213,10 @@
 
                   if (labels.indexOf(formattedDate) < 0) {
 
-                    labels.splice(currentIndex, 0, formattedDate);
-                    assets.splice(currentIndex, 0, assets[currentIndex - 1]);
-                    liabilities.splice(currentIndex, 0, liabilities[currentIndex - 1]);
-                    netWorths.splice(currentIndex, 0, netWorths[currentIndex - 1]);
+                    labels.splice(currentIndex + 1, 0, formattedDate);
+                    assets.splice(currentIndex + 1, 0, assets[currentIndex]);
+                    liabilities.splice(currentIndex + 1, 0, liabilities[currentIndex]);
+                    netWorths.splice(currentIndex + 1, 0, netWorths[currentIndex]);
                   }
 
                   currentIndex++;
