@@ -37,7 +37,7 @@ KangoAPI.onReady(function() {
       safari.application.activeBrowserWindow.openTab().url = $(this).attr('href');
 
       // Close the popover.
-      safari.self.hide();
+      KangoAPI.closeWindow();
     }
   });
 
