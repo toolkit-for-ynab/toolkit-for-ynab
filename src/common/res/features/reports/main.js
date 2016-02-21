@@ -86,7 +86,8 @@
               var transactionDisplayItems = transactionsViewModel.get('visibleTransactionDisplayItems');
 
               var transactions = transactionDisplayItems.filter(function(transaction) {
-                return transaction.get('displayItemType') == "transaction";
+                return transaction.get('displayItemType') == 'transaction' &&
+                       transaction.get('isTombstone') == false;
               });
 
               // Sort the transactions by date. They usually are already, but let's not depend on that:
