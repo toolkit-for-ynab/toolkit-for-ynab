@@ -2,13 +2,15 @@
 
   if (typeof ynabToolKit !== "undefined" && ynabToolKit.actOnChangeInit === true) {
 
-    ynabToolKit.warnOnQuickBudget = new function() {
+    ynabToolKit.warnOnQuickBudget = (function(){
 
-      this.invoke = function() {
-        var buttons = document.getElementsByClassName('budget-inspector-button');
-        for (var i = 0; i < buttons.length; i++) {
-          button = buttons[i];
-          button.onclick = function(event) {
+      // Supporting functions,
+      // or variables, etc
+
+      return {
+        invoke: function() {
+          var buttons = document.getElementsByClassName('budget-inspector-button');
+          var button_fn = function(event) {
             var e = event || window.event;
             var parent = $(button).parent().parent().parent();
             if ($(parent).hasClass('budget-inspector-default')) { // No row selected
@@ -36,24 +38,29 @@
                 }
               }
             }
+          };
+          for (var i = 0; i < buttons.length; i++) {
+            button = buttons[i];
+            button.onclick = button_fn;
           }
-        }
-      },
+        },
 
-      this.observe = function(changedNodes) {
+        observe: function(changedNodes) {
 
-      if (changedNodes.has('navlink-budget active')) {
-          // The user has returned back to the budget screen
-          ynabToolKit.warnOnQuickBudget.invoke();
-        } else
+          if (changedNodes.has('navlink-budget active')) {
+              // The user has returned back to the budget screen
+              ynabToolKit.warnOnQuickBudget.invoke();
+          } else
 
-        // The user has changed their budget row selection
-        if (changedNodes.has('budget-inspector')) {
-          ynabToolKit.warnOnQuickBudget.invoke();
+          // The user has changed their budget row selection
+          if (changedNodes.has('budget-inspector')) {
+            ynabToolKit.warnOnQuickBudget.invoke();
+          }
+
         }
       };
+    })(); // Keep feature functions contained within this object
 
-    }; // Keep feature functions contained within this
     ynabToolKit.warnOnQuickBudget.invoke();
 
   } else {

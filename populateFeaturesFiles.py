@@ -177,7 +177,7 @@ with open('./src/common/res/features/allSettings.js', 'w') as settingsFile:
     settingsFile.write('window.ynabToolKit.settings = ' + json.dumps(allSettings) + ';')
 
 # Write the feedChanges file
-pattern = re.compile(r"^[\s]*(ynabToolKit\..+?)[\s]*=[\s]*(new\s+)*function.*$", re.MULTILINE)
+pattern = re.compile(r"^[\s]*(ynabToolKit\..+?)[\s]*=[\s]*\([\s]*function[\s]*\([\s]*\)[\s]*\{.*$", re.MULTILINE)
 
 for dirName, subdirList, fileList in os.walk('./src/common/res/features/'):
     if dirName.endswith('shared'):
