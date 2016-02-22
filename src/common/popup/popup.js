@@ -27,6 +27,20 @@ KangoAPI.onReady(function() {
     KangoAPI.closeWindow();
   });
 
+  $('#reportBug').click(function () {
+
+    // For some reason Safari doesn't like links in popovers.
+    // The other browsers will work with just the link so we don't need to
+    // do anything with them in the click handler.
+    if (kango.browser.getName() == 'safari') {
+      // Open the link.
+      safari.application.activeBrowserWindow.openTab().url = $(this).attr('href');
+
+      // Close the popover.
+      KangoAPI.closeWindow();
+    }
+  });
+
   $('#versionNumber').text(kango.getExtensionInfo().version);
 
   $('#logo').attr('src', kango.io.getResourceUrl('assets/logos/toolkitforynab-logo-200.png'));

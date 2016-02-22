@@ -9,7 +9,7 @@
 
     // Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
     // during page interactions and updates to the developer tools console.
-    ynabToolKit.debugNodes = true;
+    //ynabToolKit.debugNodes = true;
 
     ynabToolKit.actOnChange = function() {
 
@@ -25,7 +25,7 @@
 
         mutations.forEach(function(mutation) {
           var newNodes = mutation.target;
-          
+
           var $nodes = $(newNodes); // jQuery set
           $nodes.each(function() {
             var nodeClass = $(this).attr('class');

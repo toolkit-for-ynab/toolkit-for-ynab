@@ -8,9 +8,18 @@ import json
 import sys
 import math
 
+if len(sys.argv) != 2:
+    print ''
+    print 'ERROR:'
+    print ''
+    print 'Please supply a crowd in API key, obtained on this page:'
+    print 'http://translate.toolkitforynab.com/project/toolkit-for-ynab/settings#integration\n'
+    print 'Example: ./get_l10ns <api key>'
+    print ''
+    exit(1)
+
 ID = 'toolkit-for-ynab'
 KEY = sys.argv[1:][0]
-print KEY
 API_PREFIX = 'https://api.crowdin.com/api/project/%s/' % ID
 KEY_SUFFIX = '?key=%s' % KEY
 FILENAME = 'all.zip'
