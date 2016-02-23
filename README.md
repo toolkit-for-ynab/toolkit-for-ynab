@@ -36,6 +36,7 @@ This is what the extension can do for you:
 - Larger Clickable Area for Icons: Makes the uncleared, cleared and reconciled icons easier to select.
 - Current month indicator to make it easier to see which month is the current month.
 - Right click on a transaction when in the Accounts view to display the Edit menu.
+- Add buttons within the Account view to easily show and hide reconciled and upcoming transactions with one click.
 
 All of these are configurable with options in the extension options page.
 

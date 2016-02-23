@@ -1,0 +1,14 @@
+{
+         "name": "toggleTransactionFilters",
+         "type": "checkbox",
+      "default": false,
+      "section": "accounts",
+        "title": "Toggle Reconciled and Scheduled Transaction Buttons",
+  "description": "Show and hide reconciled and scheduled transactions with one click.",
+      "actions": {
+                    "true": [
+                      "injectCSS", "main.css",
+                      "injectScript", "main.js"
+                    ]
+                 }
+}

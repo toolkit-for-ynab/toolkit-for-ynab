@@ -1,0 +1,26 @@
+.accounts-toolbar-right .label {
+	display: block;
+	height: 2.2em;
+	padding: .55em .6em;
+	float: right;
+	
+	font-size: 1em;
+	line-height: normal;
+	font-weight: normal;
+	font-style: italic;
+	color: #003540;
+}
+.button-toggle-visible {
+	font-weight: bold;
+	text-decoration: underline;
+	padding: .5em .6em;
+}
+.button-toggle-hidden {
+	font-weight: normal;
+	text-decoration: none;
+	color: rgba(0,155,194,0.5);
+	padding: .5em .6em;
+}
+#toggleScheduled {
+	margin-right: 30px;
+}
