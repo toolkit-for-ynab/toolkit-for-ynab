@@ -174,7 +174,10 @@ with open('./src/common/res/features/allSettings.js', 'w') as settingsFile:
       });
     }\n\n''')
 
-    settingsFile.write('window.ynabToolKit.settings = ' + json.dumps(allSettings) + ';')
+    settingsFile.write('window.ynabToolKit.settings = ' + json.dumps(allSettings) + ';\n\n')
+    settingsFile.write('// We don\'t update these from anywhere else, so go ahead and freeze / seal the object so nothing can be injected.\n')
+    settingsFile.write('Object.freeze(window.ynabToolKit.settings);\n')
+    settingsFile.write('Object.seal(window.ynabToolKit.settings);\n')
 
 # Write the feedChanges file
 pattern = re.compile(r"^[\s]*(ynabToolKit\..+?)[\s]*=[\s]*(new\s+)*function.*$", re.MULTILINE)

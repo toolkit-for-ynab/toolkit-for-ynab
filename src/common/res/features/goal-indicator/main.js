@@ -8,13 +8,13 @@
       function addIndicator (element, indicator, tooltip) {
         var budgetedCell = $(element).find(".budget-table-cell-budgeted");
         if (budgetedCell.has(".goal-indicator").length == 0) {
-          budgetedCell.prepend('<div class="goal-indicator" title="' +
-          tooltip + '">' + indicator + '</div>')
+          budgetedCell.prepend($('<div>', { class: 'goal-indicator', title: tooltip })
+            .append(indicator));
         }
       }
 
       function getCalculation(subCategoryName) {
-        var crazyInternalId = "mcbc/" + ynabToolKit.shared.parseSelectedMonth().yyyymm() + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
+        var crazyInternalId = "mcbc/" + ynabToolKit.shared.yyyymm(ynabToolKit.shared.parseSelectedMonth()) + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
       var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
       return calculation;
       }

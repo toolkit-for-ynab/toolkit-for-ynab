@@ -109,7 +109,9 @@ function restoreOptions() {
 function buildOptionsPage() {
 
   // Order by section, then type, then name.
-  ynabToolKit.settings.sort(function(a, b) {
+  var settings = ynabToolKit.settings.slice();
+
+  settings.sort(function(a, b) {
     if (a.section != b.section) {
       return a.section.localeCompare(b.section);
     }
@@ -121,36 +123,27 @@ function buildOptionsPage() {
     return a.title.localeCompare(b.title);
   })
 
-  ynabToolKit.settings.forEach(function(setting) {
+  settings.forEach(function(setting) {
+
     if (setting.type == 'checkbox') {
 
-      var template =
-      '<div class="row option-row">' +
-        '<input type="checkbox" id="' + setting.name + '" name="' + setting.name + '" aria-describedby="' + setting.name + 'HelpBlock">' +
-        '<div class="option-description">' +
-          '<label for="' + setting.name + '">' + setting.title + '</label>' +
-          '<span id="' + setting.name + 'HelpBlock" class="help-block">' + setting.description + '</span>' +
-        '</div>' +
-      '</div>';
-
-      $('#' + setting.section + 'SettingsPage').append(template);
+      $('#' + setting.section + 'SettingsPage')
+        .append($('<div>', { class: 'row option-row' })
+          .append($('<input>', { type: 'checkbox', id: setting.name, name: setting.name, 'aria-describedby': setting.name + 'HelpBlock' }))
+          .append($('<div>', { class: 'option-description' })
+            .append($('<label>', { for: setting.name, text: setting.title }))
+            .append($('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', text: setting.description }))))
 
     } else if (setting.type == 'select') {
 
-      var template =
-      '<div class="row option-row">' +
-        '<label for="' + setting.name + '">' + setting.title + '</label>' +
-        '<select name="' + setting.name + '" id="' + setting.name + '" class="form-control" aria-describedby="' + setting.name + 'HelpBlock">';
-
-      setting.options.forEach(function(option) {
-        template += '<option value="' + option.value + '" style="' + (option.style || '') + '">' + option.name + '</option>';
-      });
-
-      template += '</select>' +
-        '<span id="' + setting.name + 'HelpBlock" class="help-block">' + setting.description + '</span>' +
-      '</div>';
-
-      $('#' + setting.section + 'SettingsPage').append(template);
+      $('#' + setting.section + 'SettingsPage')
+        .append($('<div>', { class: 'row option-row' })
+          .append($('<label>', { for: setting.name, text: setting.title}))
+          .append($('<select>', { name: setting.name, id: setting.name, class: 'form-control', 'aria-describedby': setting.name + 'HelpBlock' })
+            .append(setting.options.map(function(option) {
+              return $('<option>', { value: option.value, style: (option.style || ''), text: option.name });
+            })))
+          .append($('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', text: setting.description })));
     }
   });
 }
