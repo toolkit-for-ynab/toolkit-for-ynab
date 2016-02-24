@@ -1,6 +1,7 @@
 {
          "name": "exportTransactions",
          "type": "checkbox",
+         "hidden": "true",
       "default": false,
       "section": "accounts",
         "title": "Show Export Transactions in the All Accounts view",
