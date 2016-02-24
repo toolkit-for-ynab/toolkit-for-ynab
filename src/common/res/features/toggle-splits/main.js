@@ -10,8 +10,14 @@
 
         if ( !$('#toggleSplits').length ) {
           var buttonText = (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.toggleSplits"]) || 'Toggle Splits';
-           var toggleButton = "<button id=\"toggleSplits\" class=\"ember-view button\"><i class=\"ember-view flaticon stroke right\"></i><i class=\"ember-view flaticon stroke down\"></i> " + buttonText + " </button>"
-           $(toggleButton).insertAfter(".accounts-toolbar .undo-redo-container");
+
+          $('<button>', { id: 'toggleSplits', class: 'ember-view button' }).append(
+            $('<i>', { class: 'ember-view flaticon stroke right' })
+          ).append(
+            $('<i>', { class: 'ember-view flaticon stroke down' })
+          ).append(
+            ' ' + buttonText
+          ).insertAfter(".accounts-toolbar .undo-redo-container");
 
           $(".accounts-toolbar-left").find("#toggleSplits").click(function() {
             if ( ynabToolKit.toggleSplits.setting === 'hide' ) {
