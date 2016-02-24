@@ -7,13 +7,11 @@
     ynabToolKit.collapseSideMenu = new function() { // jshint ignore:line
 
       this.collapseBtn =
-      $('<li>').append(
-        $('<li>', { class: 'ember-view navlink-collapse' }).append(
-          $('<a>', { href: '#' }).append(
-            $('<span>', { class: 'ember-view flaticon stroke left-circle-4' })
-          ).append(
-            (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.collapse"]) || 'Collapse'
-          )
+      $('<li>', { class: 'ember-view navlink-collapse' }).append(
+        $('<a>', { href: '#' }).append(
+          $('<span>', { class: 'ember-view flaticon stroke left-circle-4' })
+        ).append(
+          (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.collapse"]) || 'Collapse'
         )
       );
 
