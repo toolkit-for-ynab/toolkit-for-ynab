@@ -15,8 +15,11 @@
         "name": "Roboto",
         "value": "2"
     },{
-        "name": "Droid Sans",
+        "name": "Roboto Condensed",
         "value": "3"
+    },{
+        "name": "Droid Sans",
+        "value": "4"
     }],
     "actions": {
         "1": [
@@ -26,6 +29,9 @@
             "injectCSS", "roboto.css"
         ],
         "3": [
+            "injectCSS", "roboto-condensed.css"
+        ],
+        "4": [
             "injectCSS", "droidsans.css"
         ]
     }
