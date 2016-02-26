@@ -2,7 +2,7 @@
 @import url('./shared.css');
 
 .ember-view {
-    font-family: 'Droid Sans', sans-serif !important;
+    font-family: 'Droid Sans', sans-serif;
 }
 
 .nav-account-block .nav-account-name-button {
@@ -15,6 +15,16 @@
 
 .budget-inspector-button {
     font-family: 'Droid Sans', sans-serif;
+}
+
+.budget-inspector-goals .link-button {
+    font-family: 'Droid Sans', sans-serif;
+}
+
+.inspector-category-edit {
+    font-family: 'Droid Sans', sans-serif;
+    top: 3px;
+    font-size: 1em;
 }
 
 .nav-account-block .nav-account-name-button {
@@ -34,6 +44,10 @@
 }
 
 .modal-generic .modal-header {
+    font-family: 'Droid Sans', sans-serif;
+}
+
+.modal-popup .modal-content {
     font-family: 'Droid Sans', sans-serif;
 }
 
@@ -67,5 +81,5 @@
 }
 
 #reports-header {
-    font-family: 'Droid Sans', sans-serif;
+    font-family: 'Droid Sans', sans-serif !important;
 }

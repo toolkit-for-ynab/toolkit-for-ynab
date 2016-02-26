@@ -1,8 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,400italic);
+@import url(https://fonts.googleapis.com/css?family=Roboto Condensed+Condensed:400,700,400italic);
 @import url('./shared.css');
 
 .ember-view {
-    font-family: 'Roboto Condensed' !important;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 .nav-account-block .nav-account-name-button {
@@ -15,6 +15,16 @@
 
 .budget-inspector-button {
     font-family: 'Roboto Condensed', sans-serif;
+}
+
+.budget-inspector-goals .link-button {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.inspector-category-edit {
+    font-family: 'Roboto Condensed', sans-serif;
+    top: 3px;
+    font-size: 1em;
 }
 
 .nav-account-block .nav-account-name-button {
@@ -34,6 +44,10 @@
 }
 
 .modal-generic .modal-header {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.modal-popup .modal-content {
     font-family: 'Roboto Condensed', sans-serif;
 }
 
@@ -67,5 +81,5 @@
 }
 
 #reports-header {
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif !important;
 }
