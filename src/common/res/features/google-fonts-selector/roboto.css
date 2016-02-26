@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700,400italic);
+@import url('./shared.css');
 
 .ember-view {
     font-family: 'Roboto', sans-serif;
@@ -13,6 +14,17 @@
 }
 
 .budget-inspector-button {
+    font-family: 'Roboto', sans-serif;
+}
+
+.budget-inspector-goals .link-button {
+    font-family: 'Roboto', sans-serif;
+}
+
+.inspector-category-edit {
+    font-family: 'Roboto', sans-serif;
+    top: 3px;
+    font-size: 1em;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -33,6 +45,10 @@
 }
 
 .modal-generic .modal-header {
+    font-family: 'Roboto', sans-serif;
+}
+
+.modal-popup .modal-content {
     font-family: 'Roboto', sans-serif;
 }
 

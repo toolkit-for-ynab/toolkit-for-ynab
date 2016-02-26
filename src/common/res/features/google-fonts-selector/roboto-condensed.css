@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,400italic);
+@import url('./shared.css');
 
 .ember-view {
     font-family: 'Roboto Condensed' !important;
