@@ -1,0 +1,32 @@
+{
+    "name": "googleFontsSelector",
+    "type": "select",
+    "default": "0",
+    "section": "general",
+    "title": "Interface Font",
+    "description": "Select a font from the Google Fonts library.",
+    "options": [{
+        "name": "Default",
+        "value": "0"
+    }, {
+        "name": "Open Sans",
+        "value": "1"
+    }, {
+        "name": "Roboto",
+        "value": "2"
+    },{
+        "name": "Droid Sans",
+        "value": "3"
+    }],
+    "actions": {
+        "1": [
+            "injectCSS", "opensans.css"
+        ],
+        "2": [
+            "injectCSS", "roboto.css"
+        ],
+        "3": [
+            "injectCSS", "droidsans.css"
+        ]
+    }
+}

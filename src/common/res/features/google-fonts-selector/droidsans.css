@@ -1,0 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Droid+Sans:400,700);
+
+.ember-view {
+    font-family: 'Droid Sans', sans-serif !important;
+}
