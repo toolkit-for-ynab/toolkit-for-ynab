@@ -11,6 +11,7 @@ ourselves!
 
 This is what the extension can do for you:
 
+- Localisation - Allows you to use YNAB in an ever-growing list of foreign languages.
 - Net Worth Report - Shows you how much your net worth is over time. Includes transactions in tracking accounts.
 - Days of Buffering Calculation - Forecasts how long it'll take to burn through all your available money using averages. We know there's no such thing as an average month, but some people prefer this calculation over the Age of Money calculation.
 - Export all transactions from the current budget in CSV format.
@@ -35,6 +36,7 @@ This is what the extension can do for you:
 - Make negative numbers anywhere in the application have square corners so they stand out even more.
 - Larger Clickable Area for Icons: Makes the uncleared, cleared and reconciled icons easier to select.
 - Current month indicator to make it easier to see which month is the current month.
+- Right click on a transaction when in the Accounts view to display the Edit menu.
 
 All of these are configurable with options in the extension options page.
 

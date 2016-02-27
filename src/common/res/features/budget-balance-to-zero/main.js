@@ -3,12 +3,13 @@
 
 (function poll() {
   if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
+
     ynabToolKit.budgetBalanceToZero = (function(){
       return {
         budgetView: ynab.YNABSharedLib
           .getBudgetViewModel_AllBudgetMonthsViewModel()._result, // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 
-        invoke: function() {
+          invoke: function() {
           var categories = ynabToolKit.budgetBalanceToZero.getCategories();
           var categoryName = ynabToolKit.budgetBalanceToZero.getInspectorName();
 
@@ -60,22 +61,18 @@
 
           var name = f.name;
           var amount = ynabToolKit.budgetBalanceToZero.getBudgetAmount(f);
+          var fAmount = ynabToolKit.shared.formatCurrency(amount);
+          var formattedZero = ynabToolKit.shared.formatCurrency(0);
 
-          var fhAmount = ynabToolKit.shared
-            .formatCurrency(amount, true);
-          var fAmount = ynabToolKit.shared
-            .formatCurrency(amount, false);
-          var button = ' \
-          <button class="budget-inspector-button balance-to-zero" \
-            onClick="ynabToolKit.budgetBalanceToZero.updateBudgetedBalance(\'' +
-            name + '\', ' + amount + ')">' +
-            ((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.balanceToZero"]) || 'Balance to 0.00:') +
-              '<strong class="user-data" title="' + fAmount + '"> \
-                <span class="user-data currency zero"> \
-                ' + fhAmount + ' \
-              </span> \
-            </strong> \
-          </button>';
+          var button = $('<button>', { class: 'budget-inspector-button balance-to-zero' })
+            .data('name', f.name)
+            .data('amount', amount)
+            .click(function() {
+              ynabToolKit.budgetBalanceToZero.updateBudgetedBalance($(this).data('name'), $(this).data('amount'));
+            })
+            .append(((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.balanceToZero"]) || 'Balance to 0.00:'))
+            .append($('<strong>', { class: 'user-data', title: fAmount })
+              .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), amount)));
 
           $('.inspector-quick-budget .ember-view').append(button);
         },
@@ -92,17 +89,10 @@
               // If nothing is budgetted, the input will be empty
               oldValue = oldValue ? oldValue : 0;
 
-              // Get the formatted currency so we can add it to the budget box correctly
-              var fhDifference = ynabToolKit.shared.formatCurrency(difference, true);
-              var results = /(-*).*bdi>(.*)/g.exec(fhDifference);
-              var addition = results[1] + results[2];
+              // YNAB stores currency values * 1000. What's our actual difference?
+              var newValue = (parseFloat(oldValue) + difference / 1000);
 
-              // Strip out commas since they mess things up
-              addition = addition.replace(/,/g, '');
-
-              var newValue = (parseFloat(oldValue) + parseFloat(addition));
-
-              input.val(newValue);
+              $(input).val(newValue);
               $(input).blur();
             }
           });
@@ -120,7 +110,7 @@
             .findItemByEntityId('mcbc/' + currentMonth + '/' + f.entityId);
 
           return (monthlyBudget.balance * -1);
-        },
+        }
       };
     })(); // Keep feature functions contained within this object
   } else {
