@@ -48,7 +48,9 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
       observe: function(changedNodes) {
         // User has returned back to the budget screen
         // User switch budget month
-        if (changedNodes.has('budget-header-flexbox') || changedNodes.has('budget-table')) {
+        if (changedNodes.has('budget-header-flexbox') ||
+            changedNodes.has('budget-table') ||
+            changedNodes.has('pure-g layout user-logged-in')) {
           ynabToolKit.incomeFromLastMonth.invoke();
         }
       }
