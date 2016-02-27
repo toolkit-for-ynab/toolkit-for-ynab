@@ -2,7 +2,7 @@
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.actOnChangeInit === true ) {
 
-    ynabToolKit.exportTransactions = new function()  { // Keep feature functions contained within this
+    ynabToolKit.exportTransactions = (function(){
 
       // ######################
       // # LIBRARY / UTILITIES
@@ -18,7 +18,7 @@
         var result, ctr, keys, titles, columnDelimiter, lineDelimiter, data;
 
         data = args.data || null;
-        if (data == null || !data.length) {
+        if (data === null || !data.length) {
           return null;
         }
 
@@ -152,7 +152,7 @@
             };
           }
           return categoryMap[id];
-        }
+        };
 
 
         // "clean" a transaction into the information to export
@@ -232,42 +232,36 @@
         downloadCSV({contents: csv});
       }
 
-
-
-
-
       // ####################
       // # FEATURE CODE
       // ####################
 
       // Set up export button
       var EXPORT_BUTTON_MARKUP = '<button id="toggleSplits" class="ember-view button"><i class="ember-view flaticon stroke download-document"></i> Export </button>';
-      this.button = $(EXPORT_BUTTON_MARKUP).on('click', downloadTransactions);
 
+      return {
+        button: $(EXPORT_BUTTON_MARKUP).on('click', downloadTransactions),
+        invoke: function() {
+          // Determine whether to show or hide the export button
+          // Only show button on the 'All Accounts' screen
+          if (location.href.endsWith('/accounts')) {
+            ynabToolKit.exportTransactions.button.insertAfter(".accounts-toolbar .accounts-toolbar-edit-transaction");
+          } else {
+            ynabToolKit.exportTransactions.button.detach();
+          }
+        },
 
-      this.invoke = function() {
-        // Determine whether to show or hide the export button
-        // Only show button on the 'All Accounts' screen
-        if (location.href.endsWith('/accounts')) {
-          this.button.insertAfter(".accounts-toolbar .accounts-toolbar-edit-transaction");
-        } else {
-          this.button.detach();
+        observe: function(changedNodes) {
+          // Changes to `.navlink-accounts` means we are newly on or off the All Accounts page
+          if (changedNodes.has('navlink-accounts') ||
+              changedNodes.has('navlink-accounts active')) {
+            ynabToolKit.exportTransactions.invoke();
+          }
         }
       };
+    })(); // Keep feature functions contained within this object
 
-
-      this.observe = function(changedNodes) {
-        // Changes to `.navlink-accounts` means we are newly on or off the All Accounts page
-        if (changedNodes.has('navlink-accounts') ||
-            changedNodes.has('navlink-accounts active')) {
-          this.invoke();
-        }
-      };
-
-      // invoke for the first time in case we're already on a matching page
-      this.invoke();
-
-    };
+    ynabToolKit.exportTransactions.invoke();
 
   } else {
     setTimeout(poll, 250);
