@@ -9,24 +9,23 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 
     // Shortcuts
     var l10n = ynabToolKit.l10nData;
-    var monthShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map(function(month) {
+
+    ynabToolKit.shared.monthsShort = ynabToolKit.shared.monthsShort.map(function(month) {
       return l10n["months." + month];
     });
-    var monthsFull = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"].map(function(month) {
+    ynabToolKit.shared.monthsFull = ynabToolKit.shared.monthsFull.map(function(month) {
       return l10n["months." + month];
     });
 
     function getDateInfo() {
       var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
-      var currentMonthName = monthShort[selectedMonth.getMonth()];
+      var currentMonthName = ynabToolKit.shared.monthsShort[selectedMonth.getMonth()];
       var previousMonthName;
       if (selectedMonth.getMonth() === 0) {
-        previousMonthName = monthShort[11];
+        previousMonthName = ynabToolKit.shared.monthsShort[11];
       }
       else {
-        previousMonthName = monthShort[selectedMonth.getMonth() - 1];
+        previousMonthName = ynabToolKit.shared.monthsShort[selectedMonth.getMonth() - 1];
       }
       return {
         selectedMonth: selectedMonth,
@@ -40,28 +39,28 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
       return {
         selectorPrefix: '',
         resetPrefix: function () {
-          selectorPrefix = '';
+          contentSetter.selectorPrefix = '';
         },
         // Takes contentNum's .contents() of selector and sets it to text.
         set: function (text, contentNum, selector) {
-          var el = $(selectorPrefix + (selector || '')).contents()[contentNum];
+          var el = $(contentSetter.selectorPrefix + (selector || '')).contents()[contentNum];
           if (el) el.textContent = text;
         },
         // Each argument must be an array of 2 or 3 elements that become set arguments in order.
         setSeveral: function () {
           for (i = 0; i < arguments.length; i++) {
-            if (arguments[i].length == 2) set(arguments[i][0], arguments[i][1]);
-            if (arguments[i].length == 3) set(arguments[i][0], arguments[i][1], arguments[i][2]);
+            if (arguments[i].length == 2) contentSetter.set(arguments[i][0], arguments[i][1]);
+            if (arguments[i].length == 3) contentSetter.set(arguments[i][0], arguments[i][1], arguments[i][2]);
           }
         },
         setArray: function(textArray, selector, start, step) {
           for (i = 0; i < textArray.length; i++) {
             contentNum = (start || 0) + i * (step || 1);
-            set(textArray[i], contentNum, selector);
+            contentSetter.set(textArray[i], contentNum, selector);
           }
         }
       };
-    });
+    })();
 
     return {
       invoke: function() {
@@ -95,7 +94,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
         if ( changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals') ) {
           // Inspector edit goal months list.
           contentSetter.resetPrefix();
-          contentSetter.setArray(monthsFull, '.budget-inspector-goals .goal-target-month>option');
+          contentSetter.setArray(ynabToolKit.shared.monthsFull, '.budget-inspector-goals .goal-target-month>option');
         }
 
         // Hidden categories modal
@@ -152,11 +151,11 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
         if (changedNodes.has('modal-overlay pure-u modal-generic modal-account-filters active')) {
           contentSetter.selectorPrefix = '.modal-account-filters ';
           contentSetter.setArray(
-            monthsFull,
+            ynabToolKit.shared.monthsFull,
             '.date-range-from-months option'
           );
           contentSetter.setArray(
-            monthsFull,
+            ynabToolKit.shared.monthsFull,
             '.date-range-to-months option'
           );
         }
@@ -205,7 +204,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 //       var l10n = ynabToolKit.l10nData;
 //       var months = Object.keys(l10n.Global.Month)
 //                          .map(function(k){return l10n.Global.Month[k]});
-//       var monthsFull = Object.keys(l10n.Global.MonthFull)
+//       var ynabToolKit.shared.monthsFull = Object.keys(l10n.Global.MonthFull)
 //                          .map(function(k){return l10n.Global.MonthFull[k]});
 //
 //       function getDateInfo() {
@@ -507,7 +506,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 //           contentSetter.resetPrefix();
 //           contentSetter.set(l10n.Budget.Inspector.Title.TargetMonthYear, 5, '.budget-inspector-goals dt');
 //           contentSetter.setArray(
-//             monthsFull,
+//             ynabToolKit.shared.monthsFull,
 //             '.budget-inspector-goals .goal-target-month>option'
 //           );
 //
@@ -845,11 +844,11 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 //           ' li.label', 0, 2
 //         );
 //         contentSetter.setArray(
-//           monthsFull,
+//           ynabToolKit.shared.monthsFull,
 //           '.date-range-from-months option'
 //         );
 //         contentSetter.setArray(
-//           monthsFull,
+//           ynabToolKit.shared.monthsFull,
 //           '.date-range-to-months option'
 //         );
 //         contentSetter.setSeveral(
