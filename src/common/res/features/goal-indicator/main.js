@@ -2,14 +2,17 @@
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
 
-    ynabToolKit.goalIndicator = new function ()  { // Keep feature functions contained within this
+    ynabToolKit.goalIndicator = (function(){
+
+      // Supporting functions,
+      // or variables, etc
       var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
 
       function addIndicator (element, indicator, tooltip) {
         var budgetedCell = $(element).find(".budget-table-cell-budgeted");
-        if (budgetedCell.has(".goal-indicator").length == 0) {
+        if (budgetedCell.has(".goal-indicator").length === 0) {
           budgetedCell.prepend('<div class="goal-indicator" title="' +
-          tooltip + '">' + indicator + '</div>')
+          tooltip + '">' + indicator + '</div>');
         }
       }
 
@@ -19,39 +22,40 @@
       return calculation;
       }
 
-      this.invoke = function() {
-        var subCategories = $("ul.is-sub-category");
-        $(subCategories).each(function () {
-          var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
+      return {
+        invoke: function() {
+          var subCategories = $("ul.is-sub-category");
+          $(subCategories).each(function () {
+            var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
 
-			 if ( "Uncategorized Transactions" != subCategoryName ) {
-				 calculation = getCalculation(subCategoryName);
+            if ( "Uncategorized Transactions" != subCategoryName ) {
+              calculation = getCalculation(subCategoryName);
 
-				 if (calculation.goalExpectedCompletion > 0) {
-					// Target total goal
-					addIndicator(this, "T", "Target balance");
-				 }
-				 else if (calculation.goalTarget > 0) {
-					// Taget by date
-					// or Montly goal
-					addIndicator(this, "M", "Monthly budgeting or Target by date that is sort of monthly");
-				 }
-				 else if (calculation.upcomingTransactions < 0) {
-					// Upcoming transactions "goal"
-					addIndicator(this, "U", "Upcoming transactions");
-				 }
-			 }
-        });
-      },
+              if (calculation.goalExpectedCompletion > 0) {
+               // Target total goal
+               addIndicator(this, "T", "Target balance");
+              }
+              else if (calculation.goalTarget > 0) {
+               // Taget by date
+               // or Montly goal
+               addIndicator(this, "M", "Monthly budgeting or Target by date that is sort of monthly");
+              }
+              else if (calculation.upcomingTransactions < 0) {
+               // Upcoming transactions "goal"
+               addIndicator(this, "U", "Upcoming transactions");
+              }
+            }
+          });
+        },
 
-      this.observe = function(changedNodes) {
-
-        if ( changedNodes.has('navlink-budget active') || changedNodes.has('budget-inspector') ) {
-          ynabToolKit.goalIndicator.invoke();
+        observe: function(changedNodes) {
+          if ( changedNodes.has('navlink-budget active') || changedNodes.has('budget-inspector') ) {
+            ynabToolKit.goalIndicator.invoke();
+          }
         }
       };
+    })(); // Keep feature functions contained within this object
 
-    }; // Keep feature functions contained within this
     ynabToolKit.goalIndicator.invoke(); // Run once and activate setTimeOut()
 
   } else {
