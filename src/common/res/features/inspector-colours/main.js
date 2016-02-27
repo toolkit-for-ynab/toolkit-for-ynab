@@ -11,7 +11,7 @@
           if ( !$('.budget-inspector-multiple').length ) {
 
             var selectedSubCat = $('.budget-table-row.is-sub-category.is-checked')
-            .find('.budget-table-cell-available-div span.currency')[0]
+            .find('.budget-table-cell-available-div span.currency')[0];
             var inspectorAvailableText = $('.inspector-overview-available').find('dt');
             var inspectorAvailableFunds = $('.inspector-overview-available').find('span');
             if (!$(selectedSubCat).hasClass('positive')) {
@@ -36,7 +36,7 @@
         }
       };
     })(); // Keep feature functions contained within this object
-    
+
     ynabToolKit.updateInspectorColours.invoke();
 
   } else {

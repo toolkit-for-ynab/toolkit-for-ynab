@@ -2,7 +2,7 @@
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
 
-    ynabToolKit.awesomeFeature = (function(){
+    ynabToolKit.reconciledTextColor = (function(){
 
       // Supporting functions,
       // or variables, etc
