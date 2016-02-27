@@ -35,12 +35,12 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
             </div>'
             );
             $('.budget-header-totals-details-names').prepend(
-            '<div class="budget-header-totals-cell-name income-from-last-month"></div>'
+            '<div class="income-from-last-month" style="padding-left: .3em; text-align:left"></div>'
             );
           }
 
           $('.budget-header-totals-cell-value.income-from-last-month span').html((total < 0 ? '-' : '+') + ynabToolKit.shared.formatCurrency(total, true));
-          $('.budget-header-totals-cell-name.income-from-last-month')[0].textContent =
+          $('.budget-header-totals-details-names>.income-from-last-month')[0].textContent =
             ((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.incomeFrom"]) || 'Income from') + ' ' + previousMonthName;
         }
       },
