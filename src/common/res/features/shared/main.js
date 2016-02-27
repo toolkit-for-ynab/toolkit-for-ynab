@@ -183,7 +183,12 @@ ynabToolKit.shared = (function(){
         var yyyy = date.getFullYear().toString();
         var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
         return yyyy + '-' + (mm[1]?mm:"0"+mm[0]); // padding
-    }
+    },
+
+    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    monthsFull: ["January", "February", "March", "April", "May", "June",
+         "July", "August", "September", "October", "November", "December"]
   };
 })(); // Keep feature functions contained within this object
 
