@@ -25,7 +25,8 @@
         observe: function(changedNodes) {
           if (
           	changedNodes.has('budget-header-totals-cell-value user-data') ||
-          	changedNodes.has('budget-content resizable')) {
+          	changedNodes.has('budget-content resizable') ||
+            changedNodes.has('pure-g layout user-logged-in')) {
             ynabToolKit.currentMonthIndicator.invoke();
           }
         }
@@ -33,7 +34,7 @@
     })(); // Keep feature functions contained within this object
 
     ynabToolKit.currentMonthIndicator.invoke(); // Run once and activate setTimeOut()
-    
+
   } else {
     setTimeout(poll, 250);
   }

@@ -186,7 +186,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
   }
 
   // When rerendering sidebar accounts lists are closing, open them.
-  $('.nav-account-block').click();
+  // $('.nav-account-block').click();
 
 } else {
   setTimeout(poll, 250);
