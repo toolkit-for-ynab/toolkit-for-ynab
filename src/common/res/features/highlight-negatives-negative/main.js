@@ -1,10 +1,6 @@
 (function poll() {
   if ( typeof ynabToolKit !== "undefined" && ynabToolKit.pageReady === true ) {
     ynabToolKit.highlightNegativesNegative = (function(){
-
-      // Supporting functions,
-      // or variables, etc
-
       return {
         invoke: function() {
           var availableBalances = $('.budget-table-cell-available-div.user-data');
