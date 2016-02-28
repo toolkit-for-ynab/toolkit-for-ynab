@@ -123,12 +123,12 @@
                   // };
                   // --------------------------------------------------
 
-                  date = transaction.get('date')._internalUTCMoment._d;
+                  date = ynabToolKit.shared.toLocalDate(transaction.get('date'));
                   formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
                   var year = formattedDate.split(' ')[1];
                   var month = formattedDate.split(' ')[0];
                   month = (ynabToolKit.l10nData && ynabToolKit.l10nData["months." + month]) || month;
-                  formattedDate = month + " " + year;
+                  formattedDate = month + ' ' + year;
 
                   if (lastLabel === null) lastLabel = formattedDate;
 
@@ -192,8 +192,8 @@
                   // Fill in any gaps in the months in case they're missing data.
                   var currentIndex = 0;
 
-                  var currentDate = transactions[0].get('date')._internalUTCMoment._d;
-                  var maxDate = transactions[transactions.length - 1].get('date')._internalUTCMoment._d;
+                  var currentDate = ynabToolKit.shared.toLocalDate(transactions[0].get('date'));
+                  var maxDate = ynabToolKit.shared.toLocalDate(transactions[transactions.length - 1].get('date'));
 
                   // For debugging ----------------------------------------------------
                   // var currentDate = new Date(transactions[0].date);
