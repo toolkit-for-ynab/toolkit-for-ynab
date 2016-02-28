@@ -14,15 +14,15 @@
       "actions": {
                     "1": [
                       "injectCSS", "main.css",
-                      "injectScript", "goals.js"
+                      "injectScript", "main.js"
                     ],
                     "2": [
                       "injectCSS", "main.css",
-                      "injectScript", "pacing.js"
+                      "injectScript", "main.js"
                     ],
                     "3": [
                       "injectCSS", "main.css",
-                      "injectScript", "both.js"
+                      "injectScript", "main.js"
                     ]
                  }
 }

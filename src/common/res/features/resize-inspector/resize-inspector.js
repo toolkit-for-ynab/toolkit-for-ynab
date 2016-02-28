@@ -1,11 +1,14 @@
 (function poll() {
-   if ( typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
+  if ( typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
+    ynabToolKit.resizeInspector = (function(){
 
-      ynabToolKit.resizeInspector = new function ()  {
+      // Supporting functions,
+      // or variables, etc
 
-        this.invoke = function() {
+      return {
+        invoke: function() {
           if( $('.ember-view.content .budget-inspector').length > 0 ) {
-            if($('.resize-inspector').length == 0) {
+            if($('.resize-inspector').length === 0) {
               $('.ember-view.content .scroll-wrap').addClass('resize-inspector');
               $('aside').before('<div class="inspector-resize-handle">&nbsp;</div>');
               $('.inspector-resize-handle').css('background-image','url('+window.resizeInspectorAsset+')');
@@ -19,17 +22,16 @@
           }
         },
 
-        this.observe = function(changedNodes) {
-
+        observe: function(changedNodes) {
           if (changedNodes.has('pure-g layout user-logged-in')) {
               // The user has switched screens
               ynabToolKit.resizeInspector.invoke();
           }
         }
-
       };
+    })(); // Keep feature functions contained within this object
 
-      ynabToolKit.resizeInspector.invoke(); // Run itself once
+    ynabToolKit.resizeInspector.invoke(); // Run itself once
    } else {
      setTimeout(poll, 250);
    }

@@ -26,8 +26,8 @@ function injectInitializer() {
 
         // Make sure we allow the event to bubble up so we don't mess with anything
         // that YNAB is doing.
-      })
-    })(jQuery)
+      });
+    })(jQuery);
   } else {
     setTimeout(injectInitializer, 250);
   }
