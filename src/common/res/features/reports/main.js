@@ -349,7 +349,11 @@
                 var savedStart = sessionStorage.getItem("reportsDateFilter");
 
                 if (savedStart) {
-                  start = savedStart.split(',');
+                  savedStart = savedStart.split(',');
+
+                  if (savedStart.length === 2 && savedStart[0].length > 0 && savedStart[1].length > 0) {
+                    start = savedStart;
+                  }
                 }
 
                 // Set up the date filter.
@@ -364,7 +368,7 @@
                   tooltips: true,
                   format: {
                     to: function(index) {
-                      return ynabToolKit.reports.netWorth.labels[index];
+                      return ynabToolKit.reports.netWorth.labels[Math.round(index)];
                     },
                     from: function(value) {
                       return ynabToolKit.reports.netWorth.labels.indexOf(value);
