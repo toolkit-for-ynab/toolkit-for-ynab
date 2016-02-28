@@ -6,15 +6,14 @@
 
     ynabToolKit.collapseSideMenu = new function() { // jshint ignore:line
 
-      var buttonText = (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.collapse"]) || 'Collapse';
-      this.collapseBtn = '<li> \
-        <li class="ember-view navlink-collapse"> \
-          <a href="#"> \
-            <span class="ember-view flaticon stroke left-circle-4"> \
-            </span>' + buttonText + ' \
-          </a> \
-        </li> \
-      </li>';
+      this.collapseBtn =
+      $('<li>', { class: 'ember-view navlink-collapse' }).append(
+        $('<a>', { href: '#' }).append(
+          $('<span>', { class: 'ember-view flaticon stroke left-circle-4' })
+        ).append(
+          (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.collapse"]) || 'Collapse'
+        )
+      );
 
       this.originalButtons = {};
 
@@ -166,6 +165,7 @@
       this.expandMenu = function(originalSizes) {
         $('.collapsed-buttons').hide();
         $('.sidebar > .ember-view').fadeIn();
+        $('.navlink-collapse').show();
         $('.sidebar').animate({width: originalSizes.sidebarWidth});
         $('.content').animate({left: originalSizes.contentLeft});
         $('.budget-header').animate({left: originalSizes.headerLeft});
@@ -179,6 +179,7 @@
       // Handle clicking the collapse button
       this.collapseMenu = function() {
         ynabToolKit.collapseSideMenu.setActiveButton();
+        $('.navlink-collapse').hide();
         $('.sidebar > .ember-view').hide();
         $('.collapsed-buttons').fadeIn();
         ynabToolKit.collapseSideMenu.setCollapsedSizes();

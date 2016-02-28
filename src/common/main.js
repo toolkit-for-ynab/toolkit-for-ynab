@@ -62,11 +62,11 @@ function applySettingsToDom() {
 }
 
 /* Init ynabToolKit object and import options from Kango  */
-var optionsArray = [];
+var options = {};
 
 function pushOption(setting) {
     return getKangoSetting(setting.name).then(function (data) {
-      optionsArray.push(setting.name + " : " + data + ", ");
+      options[setting.name] = data;
     });
 }
 
@@ -77,7 +77,7 @@ ynabToolKit.settings.forEach(function(setting) {
 });
 
 Promise.all(optionsPromises).then(function() {
-  injectJSString("window.ynabToolKit = {}; ynabToolKit.options= {" + optionsArray.reduce(function(a, b) { return a + b }, "") + "}");
+  injectJSString("window.ynabToolKit = {}; ynabToolKit.options = " + JSON.stringify(options) + "; Object.freeze(ynabToolKit.options); Object.seal(ynabToolKit.options);");
 
   /* Load this to setup shared utility functions */
   injectScript('res/features/shared/main.js');

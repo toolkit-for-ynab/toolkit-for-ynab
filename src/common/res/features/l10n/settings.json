@@ -10,7 +10,7 @@
             "value": "0"
         }, 
         {
-            "name": "Arabic (5%)", 
+            "name": "Arabic (7%)", 
             "value": "1"
         }, 
         {
@@ -34,7 +34,7 @@
             "value": "6"
         }, 
         {
-            "name": "German (39%)", 
+            "name": "German (40%)", 
             "value": "7"
         }, 
         {
@@ -54,7 +54,7 @@
             "value": "11"
         }, 
         {
-            "name": "Polish (56%)", 
+            "name": "Polish (65%)", 
             "value": "12"
         }, 
         {
@@ -74,11 +74,11 @@
             "value": "16"
         }, 
         {
-            "name": "Spanish (38%)", 
+            "name": "Spanish (100%)", 
             "value": "17"
         }, 
         {
-            "name": "Swedish (18%)", 
+            "name": "Swedish (71%)", 
             "value": "18"
         }
     ], 

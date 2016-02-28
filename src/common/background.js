@@ -31,7 +31,7 @@ YNABEnhanced.prototype = {
             console.log("I'm asking too frequently - I need to back off.");
           }
         });
-      }, 600000);
+      }, 3600000);
     }
   }
 };

@@ -69,15 +69,16 @@
       };
 
       this.updateRow = function(name) {
+
         var rows = $('.is-sub-category.is-debt-payment-category');
+
         rows.each(function(i) {
-          var accountName = $(this)
-            .find('.budget-table-cell-name div.button-truncate').prop('title');
+          var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
+
           if (name === accountName) {
-            var categoryBalance = $(this)
-              .find('.budget-table-cell-available-div .user-data.currency');
-            categoryBalance.removeClass('positive negative')
-              .addClass('cautious');
+
+            var categoryBalance = $(this).find('.budget-table-cell-available-div .user-data.currency');
+            categoryBalance.removeClass('positive negative').addClass('cautious');
           }
         });
       };
@@ -99,18 +100,17 @@
           if ($('.rectify-difference').length)
             return;
 
-          var fhDifference = ynabToolKit.shared.formatCurrency(difference, true);
-          var fDifference = ynabToolKit.shared.formatCurrency(difference, false);
-          var button = ' \
-          <button class="budget-inspector-button rectify-difference" \
-            onClick="ynabToolKit.checkCreditBalances.updateCreditBalances(\'' + name+'\', ' + difference + ')"> \
-            Rectify Available for PIF CC: \
-              <strong class="user-data" title="' + fDifference + '"> \
-                <span class="user-data currency zero"> \
-                ' + fhDifference + ' \
-              </span> \
-            </strong> \
-          </button>';
+          var fDifference = ynabToolKit.shared.formatCurrency(difference);
+
+          var button = $('<button>', { class: 'budget-inspector-button rectify-difference '})
+            .data('name', name)
+            .data('difference', difference)
+            .click(function() {
+              ynabToolKit.checkCreditBalances.updateCreditBalances($(this).data('name'), $(this).data('difference'))
+            })
+            .append('Rectify Available for PIF CC: ')
+            .append($('<strong>', { class: 'user-data', title: fDifference })
+              .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), difference)))
 
           $('.inspector-quick-budget .ember-view').append(button);
         }
@@ -125,18 +125,12 @@
             var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click().find('input');
             var oldValue = input.val();
 
-            // If nothing is budgetted, the input will be empty
+            // If nothing is budgeted, the input will be empty
             oldValue = oldValue ? oldValue : 0;
 
-            // Get the formatted currency so we can add it to the budget box correctly
-            var fhDifference = ynabToolKit.shared.formatCurrency(difference, true);
-            var results = /(-*).*bdi>(.*)/g.exec(fhDifference);
-            var addition = results[1] + results[2];
-
-            // Strip out commas since they mess things up
-            addition = addition.replace(/,/g, '');
-
-            var newValue = (parseFloat(oldValue) + parseFloat(addition));
+            // YNAB stores values *1000 for decimal places, so just
+            // divide by 1000 to get the actual amount.
+            var newValue = (parseFloat(oldValue) + difference / 1000);
 
             input.val(newValue);
             $(input).blur();
