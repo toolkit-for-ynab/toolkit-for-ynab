@@ -67,13 +67,13 @@
 
               // Sort the transactions by date. They usually are already, but let's not depend on that:
               transactions.sort(function (a, b) {
-                return a.get('date')._internalUTCMoment._d - b.get('date')._internalUTCMoment._d;
+                return a.get('date').toNativeDate() - b.get('date').toNativeDate();
               });
 
               console.log(JSON.stringify(transactions.map(function(transaction) {
                 return {
-                  date: transaction.get('date')._internalUTCMoment._d,
-                  formattedDate: ynab.YNABSharedLib.dateFormatter.formatDate(transaction.get('date')._internalUTCMoment._d, 'MMM YYYY'),
+                  date: ynabToolKit.shared.toLocalDate(transaction.get('date')),
+                  formattedDate: ynab.YNABSharedLib.dateFormatter.formatDate(ynabToolKit.shared.toLocalDate(transaction.get('date')), 'MMM YYYY'),
                   account: transaction.getAccountName(),
                   amount: transaction.getAmount()
                 };
@@ -95,7 +95,7 @@
 
                 // Sort the transactions by date. They usually are already, but let's not depend on that:
                 transactions.sort(function (a, b) {
-                  return a.get('date')._internalUTCMoment._d - b.get('date')._internalUTCMoment._d;
+                  return a.get('date').toNativeDate() - b.get('date').toNativeDate();
                 });
 
                 // Clear out the arrays so we know we've got fresh data.
