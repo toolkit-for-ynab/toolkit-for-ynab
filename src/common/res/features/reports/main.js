@@ -39,17 +39,17 @@
             return;
           }
 
-          var reportsBtn =
-          '<li> \
-            <li class="ember-view navlink-reports"> \
-              <a href="#"> \
-                <span class="ember-view flaticon stroke document-4"></span>' +
-                ((ynabToolKit.l10nData && ynabToolKit.l10nData["sidebar.reports"]) || 'Reports') + '\
-              </a> \
-            </li> \
-          </li>';
-
-          $(".nav-main").append(reportsBtn);
+          $('.nav-main').append(
+            $('<li>').append(
+              $('<li>', { class: 'ember-view navlink-reports' }).append(
+                $('<a>', { href: '#' }).append(
+                  $('<span>', { class: 'ember-view flaticon stroke document-4'})
+                ).append(
+                  (ynabToolKit.l10nData && ynabToolKit.l10nData['sidebar.reports']) || 'Reports'
+                )
+              )
+            )
+          );
 
           $(".navlink-reports").on("click", ynabToolKit.reports.showReports);
         };
