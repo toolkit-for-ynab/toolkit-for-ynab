@@ -24,7 +24,37 @@
 			/*
 				Need to improve by checking Ember for filter settings, 
 				rather than checking for classes of transactions rows that change
+				
+				ynab.utilities
+				
+				this.budgetView = ynab.YNABSharedLib
+				  .getBudgetViewModel_AllBudgetMonthsViewModel()._result; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+				  
+				var grid = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('view:ynab-grid/index');
+				var rowHeight = 30 + (10 * ynabToolKit.options.accountRowsHeight);
+				grid.set('recordHeight', rowHeight);  
+				
+				
+				
+				
+				
+				Controller: App.AccountsController
+				Name: modals.account.filters
+				Template: modals.account.filters
+				
+				renderedName: modals.account.filters
+				stored in: App/Modals/account/filtersView "reconciled" and "scheduled" booleans
+				
+				access using get, set using set
+				
+				controller.set('reconciled', !this.get('reconciled'));
 			*/
+			
+			var grid = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('model:accounts');
+			var setting_reconciled = grid.get('reconciled');  
+			
+			console.log(grid);
+//			console.log(setting_reconciled);
 		
 			// check transaction visibility
 			if ( $('.is-reconciled-row').length ) { var reconciled_visibility = 'visible'; } else { var reconciled_visibility = 'hidden'; }
