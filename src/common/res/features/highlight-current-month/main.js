@@ -15,18 +15,17 @@
 
           // check if header bar is current month, if so, change background color
           if ( ynabDate == currentDate) {
-            $('.budget-header .budget-header-item').css('background-color', '#00596f');
+            $('.budget-header .budget-header-calendar').addClass('toolkit-highlight-current-month');
           }
           else {
-            $('.budget-header .budget-header-item').css('background-color', '#003540');
+            $('.budget-header .budget-header-calendar').removeClass('toolkit-highlight-current-month');
           }
         },
 
         observe: function(changedNodes) {
-          if (
-          	changedNodes.has('budget-header-totals-cell-value user-data') ||
-          	changedNodes.has('budget-content resizable') ||
-            changedNodes.has('pure-g layout user-logged-in')) {
+          if (changedNodes.has('budget-header-totals-cell-value user-data') ||
+          	  changedNodes.has('budget-content resizable') ||
+              changedNodes.has('pure-g layout user-logged-in')) {
             ynabToolKit.currentMonthIndicator.invoke();
           }
         }
