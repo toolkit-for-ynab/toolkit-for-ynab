@@ -15,26 +15,27 @@
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
 
-    ynabToolKit.awesomeFeature = new function ()  {
+    ynabToolKit.awesomeFeature = (function(){
 
       // Supporting functions,
       // or variables, etc
 
-      this.invoke = function() {
-        // Code you expect to run each time your feature needs to update or modify YNAB's state
-      },
+      return {
+        invoke: function() {
+          // Code you expect to run each time your feature needs to update or modify YNAB's state
+        },
 
-      this.observe = function(changedNodes) {
+        observe: function(changedNodes) {
 
-        if ( changedNodes.has('class-name-of-interest') ) {
-          ynabToolKit.awesomeFeature.invoke();
-          // Call this.invoke() to activate your function if you find any class names
-          // in the set of changed nodes that indicates your function need may need to run.
+          if ( changedNodes.has('class-name-of-interest') ) {
+            ynabToolKit.awesomeFeature.invoke();
+            // Call this.invoke() to activate your function if you find any class names
+            // in the set of changed nodes that indicates your function need may need to run.
+          }
+
         }
-
-      }
-
-    }; // Keep feature functions contained within this object
+      };
+    })(); // Keep feature functions contained within this object
 
     ynabToolKit.awesomeFeature.invoke(); // Run your script once on page load
 
