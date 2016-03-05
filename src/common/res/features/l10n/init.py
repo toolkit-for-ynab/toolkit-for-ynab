@@ -81,11 +81,13 @@ def create_settings(lang_completed):
              ],
       "actions": {}}
     for root, dirs, files in os.walk(DEST_DIR):
-        for i, name in enumerate(files):
+        for name in files:
             if lang_completed[name.split('.')[0]] != 0:
-                value = str(i + 1)
+                value = name.split('.')[0].lower()
                 percent = ' (%s%%)' % str(int(lang_completed[name.split('.')[0]]))
-                settings['options'].append({ "name": name.split('.')[0] + percent, "value": value })
+                settings['options'].append({
+                    "name": name.split('.')[0] + percent,
+                    "value": value })
                 settings['actions'][value] = ["injectScript", "locales/" + name,
                                               "injectScript", "main.js"]
     with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'settings.json'), 'w') as f:
