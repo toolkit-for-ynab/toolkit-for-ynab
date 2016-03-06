@@ -107,15 +107,15 @@
             if ($(this).hasClass('is-sub-category')){
               var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
               switch (ynabToolKit.options.budgetProgressBars) {
-                case 1:
+                case 'goals':
                   $(this).addClass('goal-progress');
                   addGoalProgress(subCategoryName, this);
                   break;
-                case 2:
+                case 'pacing':
                   $(this).addClass('goal-progress');
                   addPacingProgress(subCategoryName, this);
                   break;
-                case 3:
+                case 'both':
                   $(this).addClass('goal-progress-both');
                   budgetedCell = $(this).find("li.budget-table-cell-budgeted")[0];
                   nameCell = $(this).find("li.budget-table-cell-name")[0];
@@ -127,12 +127,12 @@
 
             if ($(this).hasClass('is-master-category')){
               switch (ynabToolKit.options.budgetProgressBars) {
-                case 2:
+                case 'pacing':
                   this.style.background = generateProgressBarStyle(
                     ["#E5F5F9", "#CFD5D8", "#E5F5F9"],
                     [monthProgress - s, monthProgress]);
                   break;
-                case 3:
+                case 'both':
                   nameCell = $(this).find("li.budget-table-cell-name")[0];
                   nameCell.style.background = generateProgressBarStyle(
                     ["#E5F5F9", "#CFD5D8", "#E5F5F9"],
