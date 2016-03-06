@@ -47,8 +47,10 @@ def checkIndividualSetting(setting, dirName):
         if 'true' not in setting['actions'] and 'false' not in setting['actions']:
             raise ValueError('Checkbox settings must declare an action for "true" or "false" to have any effect.')
     elif setting['type'] == 'select':
-        if '1' not in setting['actions']:
-            raise ValueError('Select settings must declare an action for "1" to have any effect.')
+        # if '1' not in setting['actions']:
+        #     raise ValueError('Select settings must declare an action for "1" to have any effect.')
+        if len(setting['actions']) < 2:
+            raise ValueError('Select settings must have more than one option.')
 
     # Apply the defaults.
     if 'section' not in setting:
