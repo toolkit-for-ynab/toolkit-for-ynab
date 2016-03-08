@@ -9,7 +9,7 @@
         budgetView: ynab.YNABSharedLib
           .getBudgetViewModel_AllBudgetMonthsViewModel()._result, // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 
-          invoke: function() {
+        invoke: function() {
           var categories = ynabToolKit.budgetBalanceToZero.getCategories();
           var categoryName = ynabToolKit.budgetBalanceToZero.getInspectorName();
 
@@ -90,7 +90,7 @@
               oldValue = oldValue ? oldValue : 0;
 
               // YNAB stores currency values * 1000. What's our actual difference?
-              var newValue = (parseFloat(oldValue) + difference / 1000);
+              var newValue = (ynab.unformat(oldValue) + difference / 1000);
 
               $(input).val(newValue);
               $(input).blur();
