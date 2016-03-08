@@ -130,7 +130,7 @@
 
               // YNAB stores values *1000 for decimal places, so just
               // divide by 1000 to get the actual amount.
-              var newValue = (parseFloat(oldValue) + difference / 1000);
+              var newValue = (ynab.unformat(oldValue) + difference / 1000);
 
               input.val(newValue);
               $(input).blur();
