@@ -648,7 +648,7 @@ ynabToolKit.l10nData = {
   "tooltip.accounts.uncleared":"Schadenfroh kennzeichnen Sie diese Transaktion als bestätigt.",
   "tooltip.accounts.workingBalance":"Bestätigter Saldo plus unbestätigte Transaktionen dieses Kontos.",
   "tooltip.accounts.clearedColumn":"Eine Transaktion als 'Bestätigt' zu markieren, bedeutet, dass die Bank den Umsatz gebucht hat.",
-  "tooltip.accounts.closeAccount":"If you want to delete this account, first delete all of the transactions in it. Be cautious, as this will potentially change your budget values.",
+  "tooltip.accounts.closeAccount":"Wenn Sie diesen Account löschen wollen, löschen Sie erst alle zugeordneten Transaktionen. Seien Sie vorsichtig, dies könnte vielleicht Ihre Budgetwerte verändern.",
   "tooltip.undo":"Die letzte Änderung, welche du (in YNAB, nicht im Leben) vorgenommen hast, rückgängig machen.",
   "tooltip.redo":"Wiederholen Sie das, was Sie gerade ungeschehen gemachte haben. Üben Sie Entschlossenheit."
 }
