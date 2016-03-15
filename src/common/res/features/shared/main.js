@@ -162,6 +162,13 @@ ynabToolKit.shared = (function(){
 
       result.setMinutes(result.getMinutes() + offset);
 
+      // Sometimes we don't end up exactly where we need to be because of floating point
+      // accuracy issues. If we're in PM, we should round up to the next day.
+      if (result.getHours() > 0) {
+        // Bumps us to the first hour of the next day.
+        result.setHours(24, 0, 0, 0);
+      }
+
       return result;
     },
 
