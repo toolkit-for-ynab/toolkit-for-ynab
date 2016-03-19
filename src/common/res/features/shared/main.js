@@ -1,5 +1,40 @@
 ynabToolKit.shared = (function(){
+	var subCategories = []; // defined here for scope reasons but populated and returned in getCategories()
   return {
+		//
+		// Get all master and sub categories and combine them into one array. This is needed because it's 
+		// possible to  have the same sub-category name in multiple master categories. YNAB only provides a 
+		// method for obtaining a sub category by name but the name needs to be qualified by the master 
+		// category name. This routine creates a new attribute "toolkitName" on each element that is the 
+		// combination of the master and sub category names.
+		//
+		// TODO: Figure out how to "watch" categories for changes (additions/deletions/updates) in which case 
+		//       the array needs to be rebuilt. Currently this must be done in "feature" code but should be 
+		//       done here.
+		//
+		getCategories: function() {
+			var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
+			var mCats = entityManager.getAllNonTombstonedMasterCategories();
+
+			subCategories.length = 0;
+
+			for ( i = 0; i < mCats.length; i++ ) {
+				var mCat = mCats[i];
+				// Ignore certain categories!
+				if ( mCat.isHidden !== true && mCat.name !== "Internal Master Category" ) {
+					tCats = entityManager.getSubCategoriesByMasterCategoryId(mCat.getEntityId());
+					for (j = 0; j < tCats.length; j++ ) {
+						var subCategory = tCats[j];
+						// Ignore certain categories!
+						if ( subCategory.isHidden !== true && !subCategory.isTombstone && subCategory.name !== "Uncategorized Transactions" ) {
+							subCategory.toolkitName = mCat.name + '_' + subCategory.name; // Add toolkit specific attribute
+							subCategories.push( subCategory );
+						}
+					}
+				}
+			}
+			return subCategories;
+		},
     // This function returns all visible transactions matching accountId.
     // If accountId === 'null' then all transactions for all accounts are returned with the visibility
     // settings for All accounts applied.
@@ -186,7 +221,7 @@ ynabToolKit.shared = (function(){
         }
       };
     })(),
-
+		
     // Add formatting method to dates to get YYYY-MM.
     yyyymm:  function(date) {
         var yyyy = date.getFullYear().toString();
@@ -205,6 +240,7 @@ ynabToolKit.shared = (function(){
 // This poll() function will only need to run until we find that the DOM is ready
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
+
     if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' &&
           typeof $ !== 'undefined' && $('.ember-view.layout').length &&
           typeof ynabToolKit !== 'undefined') {
