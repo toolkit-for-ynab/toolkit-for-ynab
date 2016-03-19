@@ -1,0 +1,39 @@
+.ynab-grid-header-cell {
+    height: 1.2em !important;
+	padding-top: 0.1em !important;
+}
+
+.ynab-grid-cell {
+	height: 1.2em !important;
+	top: 0 !important;
+	padding-top: 0.1em !important;
+	font-size: .90em !important;
+}
+
+/*.ynab-grid-body-row-top.ynab-grid-cell {*/
+.toolkit-ynab-grid-cell {
+	height: 0px !important;
+}
+
+.ynab-grid-body-row {
+	height: 1.4em !important;
+	top: 0 !important;
+	padding-top: 0.1em !important;
+}
+
+.ynab-grid-cell-checkbox
+.ynab-grid-cell-notification
+.ynab-grid-cell-flag
+.ynab-grid-cell-accountName
+.ynab-grid-cell-date
+.ynab-grid-cell-payeeName
+.ynab-grid-cell-subCategoryName
+.ynab-grid-cell-memo
+.ynab-grid-cell-outflow
+.ynab-grid-cell-inflow
+.ynab-grid-cell-cleared
+{
+	height: 1.4em !important;
+	top: 0 !important;
+	padding-top: 0.1em !important;
+}
