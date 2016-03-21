@@ -1,12 +1,15 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
+		var loadCategories = true;
 
     ynabToolKit.budgetProgressBars = (function(){
 
       // Supporting functions,
       // or variables, etc
       var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
+			var subCats = [];
+			var internalIdBase;
 
       // Takes N colors and N-1 sorted points from (0, 1) to make color1|color2|color3 bg style.
       function generateProgressBarStyle(colors, points) {
@@ -23,9 +26,17 @@
       }
 
       function getCalculation(subCategoryName) {
-        var crazyInternalId = "mcbc/" + ynabToolKit.shared.yyyymm(ynabToolKit.shared.parseSelectedMonth()) + "/" + entityManager.getSubCategoryByName(subCategoryName).getEntityId();
-        var calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
+				var subCat = subCats.find(getSubCategoryByName);
+				var calculation;
+				if ( subCat ) { 
+					var crazyInternalId = internalIdBase + subCat.entityId;
+					calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
+				}
         return calculation;
+
+				function getSubCategoryByName(ele) {
+					return ele.toolkitName == subCategoryName;
+				};
       }
 
       function addGoalProgress(subCategoryName, target) {
@@ -34,7 +45,7 @@
 
           var status = 0;
           var hasGoal = false;
-          if (calculation.goalExpectedCompletion > 0) {
+          if (calculation.goalExpectedCompletion > 0 || calculation.goalOverallLeft) {
             // Target total goal
             hasGoal = true;
             status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
@@ -95,6 +106,7 @@
           }
         }
       }
+
       function addPacingProgressToMaster(subCategoryName, target) {
 
       }
@@ -102,10 +114,36 @@
       return {
         invoke: function() {
           var categories = $(".budget-table ul");
+					var masterCategoryName = "";
+
+					if ( subCats == null || subCats.length === 0 || loadCategories )
+					{
+						subCats = ynabToolKit.shared.getCategories();
+						loadCategories = false;
+					}
+					
+					selMonth = ynabToolKit.shared.parseSelectedMonth();
+					if ( selMonth !== null ) // will be null on YNAB load when the user is not on the budget screen
+					{
+						internalIdBase = "mcbc/" + ynabToolKit.shared.yyyymm(selMonth) + "/";
+					}
+
           $(categories).each(function () {
             var nameCell, budgetedCell;
+						if ($(this).hasClass('is-master-category')){
+							masterCategoryName = $(this).find("div.budget-table-cell-name-row-label-item>div>div[title]");
+							masterCategoryName = (masterCategoryName != 'undefined') ? $(masterCategoryName).attr( "title" ) : "";
+						}
+
             if ($(this).hasClass('is-sub-category')){
               var subCategoryName = $(this).find("li.budget-table-cell-name>div>div")[0].title;
+
+							if ( "Uncategorized Transactions" === subCategoryName ) {
+								return;	// iterate the .each() function
+							} else {
+								subCategoryName = masterCategoryName + '_' + subCategoryName;
+							}
+
               switch (ynabToolKit.options.budgetProgressBars) {
                 case 'goals':
                   $(this).addClass('goal-progress');
@@ -146,13 +184,23 @@
         observe: function(changedNodes) {
           if ( changedNodes.has('navlink-budget active') || changedNodes.has('budget-inspector') ) {
             ynabToolKit.budgetProgressBars.invoke();
+          } else if ( changedNodes.has("modal-overlay pure-u modal-popup modal-budget-edit-category active") || 
+											changedNodes.has("modal-overlay pure-u modal-popup modal-add-master-category active")  ||
+											changedNodes.has("modal-overlay pure-u modal-popup modal-add-sub-category active") ) {
+						//
+						// Seems there should be a more "Embery" way to know when the categories have been 
+						// updated, added, or deleted but this'll have to do for now. Note that the flag is
+						// set to true here so that next time invoke() is called the categories array will 
+						// be rebuilt. Rebuilding at this point won't work becuase the user hasn't completed
+						// the update activity at this point.
+						//
+            loadCategories = true; 
           }
         }
       };
     })(); // Keep feature functions contained within this object
-
-    ynabToolKit.budgetProgressBars.invoke(); // Run once and activate setTimeOut()
-
+  
+		ynabToolKit.budgetProgressBars.invoke(); // Run once and activate setTimeOut()
   } else {
     setTimeout(poll, 250);
   }
