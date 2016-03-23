@@ -64,6 +64,15 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 
     return {
       invoke: function() {
+        ynabToolKit.l10nEmberData = Ember.I18n.translations;
+        var toolkitStrings = new Set(Object.keys(ynabToolKit.l10nData));
+        var emberStrings = new Set(Object.keys(ynabToolKit.l10nEmberData));
+        emberStrings.forEach(function(s) {
+          if (!(toolkitStrings.has(s))) {
+            console.log(s);
+            console.log(ynabToolKit.l10nEmberData[s]);
+          }
+        });
         Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
       },
 
