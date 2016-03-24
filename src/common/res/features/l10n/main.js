@@ -9,6 +9,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 
     // Shortcuts
     var l10n = ynabToolKit.l10nData;
+    ynabToolKit.l10nMissingStrings = {};
 
     ynabToolKit.shared.monthsShort = ynabToolKit.shared.monthsShort.map(function(month) {
       return l10n["months." + month];
@@ -69,8 +70,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
         var emberStrings = new Set(Object.keys(ynabToolKit.l10nEmberData));
         emberStrings.forEach(function(s) {
           if (!(toolkitStrings.has(s))) {
-            console.log(s);
-            console.log(ynabToolKit.l10nEmberData[s]);
+            ynabToolKit.l10nMissingStrings[s] = ynabToolKit.l10nEmberData[s];
           }
         });
         Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
