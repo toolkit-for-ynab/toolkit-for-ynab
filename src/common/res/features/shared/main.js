@@ -1,9 +1,44 @@
-ynabToolKit.shared = new function() {
+ynabToolKit.shared = (function(){
+	var subCategories = []; // defined here for scope reasons but populated and returned in getCategories()
+  return {
+		//
+		// Get all master and sub categories and combine them into one array. This is needed because it's 
+		// possible to  have the same sub-category name in multiple master categories. YNAB only provides a 
+		// method for obtaining a sub category by name but the name needs to be qualified by the master 
+		// category name. This routine creates a new attribute "toolkitName" on each element that is the 
+		// combination of the master and sub category names.
+		//
+		// TODO: Figure out how to "watch" categories for changes (additions/deletions/updates) in which case 
+		//       the array needs to be rebuilt. Currently this must be done in "feature" code but should be 
+		//       done here.
+		//
+		getCategories: function() {
+			var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
+			var mCats = entityManager.getAllNonTombstonedMasterCategories();
 
+			subCategories.length = 0;
+
+			for ( i = 0; i < mCats.length; i++ ) {
+				var mCat = mCats[i];
+				// Ignore certain categories!
+				if ( mCat.isHidden !== true && mCat.name !== "Internal Master Category" ) {
+					tCats = entityManager.getSubCategoriesByMasterCategoryId(mCat.getEntityId());
+					for (j = 0; j < tCats.length; j++ ) {
+						var subCategory = tCats[j];
+						// Ignore certain categories!
+						if ( subCategory.isHidden !== true && !subCategory.isTombstone && subCategory.name !== "Uncategorized Transactions" ) {
+							subCategory.toolkitName = mCat.name + '_' + subCategory.name; // Add toolkit specific attribute
+							subCategories.push( subCategory );
+						}
+					}
+				}
+			}
+			return subCategories;
+		},
     // This function returns all visible transactions matching accountId.
     // If accountId === 'null' then all transactions for all accounts are returned with the visibility
     // settings for All accounts applied.
-    this.getVisibleTransactions = function (accountId)  {
+    getVisibleTransactions: function (accountId)  {
         var transactions, endDate, endDateUTC, sortBySortableIndex, accountStartMonth, accountStartYear, subTransactionsAdded, scheduledTransactions, addSubTransactionToVisibleTransactions, transactionPosition, accountShowReconciled, accountSettings, subTransaction, singleOccurranceTransactions, accountShowScheduled, startDateUTC, sortedSubTransactions, subTransactions, accountEndMonth, accountEndYear, visibleTransactions, accountShowWithNotifications, b, f;
         if (accountId === 'null') {
             transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
@@ -59,7 +94,7 @@ ynabToolKit.shared = new function() {
         sortBySortableIndex = function(e) {
             return e.sortBy("sortableIndex");
         };
-        for (scheduledTransaction in scheduledTransactions) {
+        for (var scheduledTransaction in scheduledTransactions) {
             transactionPosition = visibleTransactions.indexOf(scheduledTransactions[scheduledTransaction]);
             if (transactionPosition !== false) {
                 if (subTransactions[scheduledTransaction]) {
@@ -79,7 +114,7 @@ ynabToolKit.shared = new function() {
 
     // This function formats a number to a currency.
     // number is the number you want to format, and html dictates if the <bdi> tag should be added or not.
-    this.formatCurrency = function (number) {
+    formatCurrency: function (number) {
         var formatted, currency, negative, currencySymbol;
         formatted = ynab.formatCurrency(number);
         currency = ynab.YNABSharedLib.currencyFormatter.getCurrency();
@@ -93,7 +128,7 @@ ynabToolKit.shared = new function() {
         return new Ember.Handlebars.SafeString(formatted);
     },
 
-    this.appendFormattedCurrencyHtml = function (jQueryElement, number) {
+    appendFormattedCurrencyHtml: function (jQueryElement, number) {
 
       var formatted = ynab.formatCurrency(number);
       var currency = ynab.YNABSharedLib.currencyFormatter.getCurrency();
@@ -119,9 +154,25 @@ ynabToolKit.shared = new function() {
       }
 
       return jQueryElement;
-    }
+    },
 
-    this.parseSelectedMonth = function () {
+    toLocalDate: function(date) {
+      var result = date.toNativeDate();
+      var offset = new Date().getTimezoneOffset();
+
+      result.setMinutes(result.getMinutes() + offset);
+
+      // Sometimes we don't end up exactly where we need to be because of floating point
+      // accuracy issues. If we're in PM, we should round up to the next day.
+      if (result.getHours() > 0) {
+        // Bumps us to the first hour of the next day.
+        result.setHours(24, 0, 0, 0);
+      }
+
+      return result;
+    },
+
+    parseSelectedMonth: function () {
         // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
         if($('.ember-view .budget-header').length) {
             var headerView = Ember.View.views[$('.ember-view .budget-header').attr("id")];
@@ -134,7 +185,7 @@ ynabToolKit.shared = new function() {
 
     // TODO Maybe add universal function.
     // Usage: declension(daysNumber, {nom: 'день', gen: 'дня', plu: 'дней'});
-    this.declension = function (locale, num, cases) {
+    declension: function (locale, num, cases) {
       if (locale == 'ru') {
         num = Math.abs(num);
         var word = '';
@@ -152,19 +203,17 @@ ynabToolKit.shared = new function() {
         return word;
       }
       else {
-        console.log('Unknown locale')
+        console.log('Unknown locale');
       }
-    }
+    },
 
     // Pass over each available category balance and provide a total. This can be used to
     // evaluate if a feature script needs to continue based on an update to the budget.
-    this.availableBalance = new function() {
-
-        this.presentTotal = 0,
-
-        this.cachedTotal = 'init',
-
-        this.snapshot = function() {
+    availableBalance: (function() {
+      return {
+        presentTotal: 0,
+        cachedTotal: 'init',
+        snapshot: function() {
             var totalAvailable = 0;
 
             // Find and collect the available balances of each category in the budget
@@ -177,25 +226,31 @@ ynabToolKit.shared = new function() {
             $.each(availableBalances,function(){totalAvailable+=parseFloat(this) || 0;});
             return totalAvailable;
         }
-
-    }
-
+      };
+    })(),
+		
     // Add formatting method to dates to get YYYY-MM.
-    this.yyyymm =  function(date) {
+    yyyymm:  function(date) {
         var yyyy = date.getFullYear().toString();
         var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
         return yyyy + '-' + (mm[1]?mm:"0"+mm[0]); // padding
-    };
+    },
 
-}; // end ynabToolKit object
+    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    monthsFull: ["January", "February", "March", "April", "May", "June",
+         "July", "August", "September", "October", "November", "December"]
+  };
+})(); // Keep feature functions contained within this object
 
 
 // This poll() function will only need to run until we find that the DOM is ready
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
-    if (typeof Em !== 'undefined' && typeof Ember !== 'undefined'
-          && typeof $ !== 'undefined' && $('.ember-view.layout').length
-          && typeof ynabToolKit !== 'undefined') {
+
+    if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' &&
+          typeof $ !== 'undefined' && $('.ember-view.layout').length &&
+          typeof ynabToolKit !== 'undefined') {
 
       ynabToolKit.pageReady = true;
 

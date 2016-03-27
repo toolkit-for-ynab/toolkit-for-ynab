@@ -1,3 +1,4 @@
+// TODO: Consider refactoring with example.js logic.
 (function poll() {
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
 

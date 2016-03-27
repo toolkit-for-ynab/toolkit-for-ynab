@@ -7,22 +7,22 @@
   "description": "Add progress bars to category rows.",
       "options": [
                     { "name": "Default", "value": "0" },
-                    { "name": "Goals progress", "value": "1" },
-                    { "name": "Pacing progress", "value": "2" },
-                    { "name": "Pacing on name column and goals on budgeted column", "value": "3" }
+                    { "name": "Goals progress", "value": "goals" },
+                    { "name": "Pacing progress", "value": "pacing" },
+                    { "name": "Pacing on name column and goals on budgeted column", "value": "both" }
                  ],
       "actions": {
-                    "1": [
+                    "goals": [
                       "injectCSS", "main.css",
-                      "injectScript", "goals.js"
+                      "injectScript", "main.js"
                     ],
-                    "2": [
+                    "pacing": [
                       "injectCSS", "main.css",
-                      "injectScript", "pacing.js"
+                      "injectScript", "main.js"
                     ],
-                    "3": [
+                    "both": [
                       "injectCSS", "main.css",
-                      "injectScript", "both.js"
+                      "injectScript", "main.js"
                     ]
                  }
 }

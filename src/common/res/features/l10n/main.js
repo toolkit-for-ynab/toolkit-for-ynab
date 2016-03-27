@@ -2,174 +2,179 @@
 // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
 if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && typeof Ember !== "undefined" ) {
 
-  ynabToolKit.l10n = new function ()  {
+  ynabToolKit.l10n = (function(){
+
+    // Supporting functions,
+    // or variables, etc
 
     // Shortcuts
     var l10n = ynabToolKit.l10nData;
-    var monthShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map(function(month) {
-      return l10n["months." + month]
+
+    ynabToolKit.shared.monthsShort = ynabToolKit.shared.monthsShort.map(function(month) {
+      return l10n["months." + month];
     });
-    var monthsFull = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"].map(function(month) {
-      return l10n["months." + month]
+    ynabToolKit.shared.monthsFull = ynabToolKit.shared.monthsFull.map(function(month) {
+      return l10n["months." + month];
     });
 
     function getDateInfo() {
       var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
-      var currentMonthName = monthShort[selectedMonth.getMonth()];
+      var currentMonthName = ynabToolKit.shared.monthsShort[selectedMonth.getMonth()];
       var previousMonthName;
-      if (selectedMonth.getMonth() == 0) {
-        previousMonthName = monthShort[11];
+      if (selectedMonth.getMonth() === 0) {
+        previousMonthName = ynabToolKit.shared.monthsShort[11];
       }
       else {
-        previousMonthName = monthShort[selectedMonth.getMonth() - 1];
+        previousMonthName = ynabToolKit.shared.monthsShort[selectedMonth.getMonth() - 1];
       }
       return {
         selectedMonth: selectedMonth,
         currentMonthName: currentMonthName,
         previousMonthName: previousMonthName
-      }
+      };
     }
 
     // Tool for setting content.
-    contentSetter = new function () {
-      this.selectorPrefix = '',
-      this.resetPrefix = function () {
-        this.selectorPrefix = ''
-      },
-      // Takes contentNum's .contents() of selector and sets it to text.
-      this.set = function (text, contentNum, selector) {
-        var el = $(this.selectorPrefix + (selector || '')).contents()[contentNum];
-        if (el) el.textContent = text;
-      },
-      // Each argument must be an array of 2 or 3 elements that become this.set arguments in order.
-      this.setSeveral = function () {
-        for (i = 0; i < arguments.length; i++) {
-          if (arguments[i].length == 2) this.set(arguments[i][0], arguments[i][1]);
-          if (arguments[i].length == 3) this.set(arguments[i][0], arguments[i][1], arguments[i][2]);
-        };
-      },
-      this.setArray = function(textArray, selector, start, step) {
-        for (i = 0; i < textArray.length; i++) {
-          contentNum = (start || 0) + i * (step || 1);
-          this.set(textArray[i], contentNum, selector);
-        };
-      }
-    }
-
-    this.invoke = function() {
-      Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
-    },
-
-    this.budgetHeader = function() {
-      if (!$('.navlink-budget').hasClass('active')) return ;
-      var dateInfo = getDateInfo();
-      contentSetter.selectorPrefix = '.budget-header-';
-      var dateYearText = dateInfo.currentMonthName + " " + dateInfo.selectedMonth.getFullYear()
-      contentSetter.set(dateYearText, 1, 'calendar-date-button');
-
-      contentSetter.selectorPrefix = '.budget-header-totals-cell-name';
-      contentSetter.setArray(
-        [l10n["budget.fundsFor"].replace("{{currentMonth}}", dateInfo.currentMonthName),
-        l10n["budget.overspentIn"].replace("{{previousMonth}}", dateInfo.previousMonthName),
-        l10n["budget.fundedIn"].replace("{{currentMonth}}", dateInfo.currentMonthName)]
-      );
-    }
-
-    this.observe = function(changedNodes) {
-      ynabToolKit.l10n.invoke();
-
-      // User has returned back to the budget screen
-      // User switch budget month
-      if (changedNodes.has('budget-header-flexbox') || changedNodes.has('budget-table')) {
-        ynabToolKit.l10n.budgetHeader();
-      }
-
-      if ( changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals') ) {
-        // Inspector edit goal months list.
-        contentSetter.resetPrefix();
-        contentSetter.setArray(monthsFull, '.budget-inspector-goals .goal-target-month>option');
-      }
-
-      // Hidden categories modal
-      if (changedNodes.has('modal-overlay pure-u modal-budget-hidden-categories active')) {
-        contentSetter.selectorPrefix = '.modal-budget-hidden-categories-master-unhidden:contains("Credit Card Payments")';
-        contentSetter.set(l10n["toolkit.creditCardPayments"], 1);
-      }
-
-      // User prefs modal
-      if (changedNodes.has('modal-overlay pure-u modal-popup modal-user-prefs active')) {
-        contentSetter.selectorPrefix = '.modal-user-prefs button';
-        contentSetter.set(l10n["toolkit.myAccount"], 1);
+    contentSetter = (function () {
+      return {
+        selectorPrefix: '',
+        resetPrefix: function () {
+          contentSetter.selectorPrefix = '';
+        },
+        // Takes contentNum's .contents() of selector and sets it to text.
+        set: function (text, contentNum, selector) {
+          var el = $(contentSetter.selectorPrefix + (selector || '')).contents()[contentNum];
+          if (el) el.textContent = text;
+        },
+        // Each argument must be an array of 2 or 3 elements that become set arguments in order.
+        setSeveral: function () {
+          for (i = 0; i < arguments.length; i++) {
+            if (arguments[i].length == 2) contentSetter.set(arguments[i][0], arguments[i][1]);
+            if (arguments[i].length == 3) contentSetter.set(arguments[i][0], arguments[i][1], arguments[i][2]);
+          }
+        },
+        setArray: function(textArray, selector, start, step) {
+          for (i = 0; i < textArray.length; i++) {
+            contentNum = (start || 0) + i * (step || 1);
+            contentSetter.set(textArray[i], contentNum, selector);
+          }
+        }
       };
+    })();
 
-      // New transaction fields modals
-      if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-flags active')) {
-        contentSetter.selectorPrefix = '.modal-account-flags';
-        var colors = ["red", "orange", "yellow", "green", "blue", "purple"].map(function(color) {
-          return l10n["toolkit." + color]
-        });
-        contentSetter.setArray(colors, ' .label');
-        contentSetter.setArray(colors, ' .label-bg');
-      }
-      if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-dropdown modal-account-categories active')) {
-        contentSetter.selectorPrefix = '.modal-account-categories ';
-        contentSetter.setSeveral(
-          [l10n["toolkit.inflow"], 0, '.modal-account-categories-section-item'],
-          [l10n["budget.leftToBudget"], 1, '.modal-account-categories-category-name']
-        );
-      }
-      if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-dropdown modal-account-payees active')) {
-        contentSetter.selectorPrefix = '.modal-account-payees .is-section-item';
+    return {
+      invoke: function() {
+        Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
+      },
+
+      budgetHeader: function() {
+        if (!$('.navlink-budget').hasClass('active')) return ;
+        var dateInfo = getDateInfo();
+        contentSetter.selectorPrefix = '.budget-header-';
+        var dateYearText = dateInfo.currentMonthName + " " + dateInfo.selectedMonth.getFullYear();
+        contentSetter.set(dateYearText, 1, 'calendar-date-button');
+
+        contentSetter.selectorPrefix = '.budget-header-totals-cell-name';
         contentSetter.setArray(
-          [l10n["toolkit.transfer"],
-           l10n["toolkit.memorized"]],
-          '', 1, 3
+          [l10n["budget.fundsFor"].replace("{{currentMonth}}", dateInfo.currentMonthName),
+          l10n["budget.overspentIn"].replace("{{previousMonth}}", dateInfo.previousMonthName),
+          l10n["budget.fundedIn"].replace("{{currentMonth}}", dateInfo.currentMonthName)]
         );
-      }
-      if (changedNodes.has('modal-overlay pure-u modal-account-calendar active') ||
-          changedNodes.has('accounts-calendar')) {
-        contentSetter.selectorPrefix = '.modal-account-calendar';
-        var days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(function(day) {
-          return l10n["toolkit.dayOfWeek" + day]
-        });
-        contentSetter.setArray(days, ' .accounts-calendar-weekdays li');
-        contentSetter.selectorPrefix = '.modal-account-calendar .accounts-calendar-selected-date';
-        var dateText = $(contentSetter.selectorPrefix).contents()[1].textContent;
-        var year = dateText.split(' ')[1];
-        var month  = l10n["months." + dateText.split(' ')[0]];
-        contentSetter.set(month + " " + year, 1);
-      }
+      },
 
-      // Accounts filters months options
-      if (changedNodes.has('modal-overlay pure-u modal-generic modal-account-filters active')) {
-        contentSetter.selectorPrefix = '.modal-account-filters ';
-        contentSetter.setArray(
-          monthsFull,
-          '.date-range-from-months option'
-        );
-        contentSetter.setArray(
-          monthsFull,
-          '.date-range-to-months option'
-        );
-      }
+      observe: function(changedNodes) {
+        ynabToolKit.l10n.invoke();
 
-      // Account row
-      if (changedNodes.has('ynab-grid-body')) {
-        $('.ynab-grid-cell-payeeName[title="Starting Balance"]').contents().each(function() {
-          if (this.textContent == 'Starting Balance') this.textContent = l10n["toolkit.startingBalance"];
-        });
-        $('.ynab-grid-cell-subCategoryName[title="Inflow: To be Budgeted"]').contents().each(function() {
-          if (this.textContent == 'Inflow: To be Budgeted') this.textContent = l10n["toolkit.inflowTBB"];
-        });
-        $('.ynab-grid-cell-subCategoryName[title="Split (Multiple Categories)..."]').contents().each(function() {
-          if (this.textContent == 'Split (Multiple Categories)...') this.textContent = l10n["toolkit.splitMultipleCategories"];
-        });
-      }
-    }
+        // User has returned back to the budget screen
+        // User switch budget month
+        if (changedNodes.has('budget-header-flexbox') || changedNodes.has('budget-table')) {
+          ynabToolKit.l10n.budgetHeader();
+        }
 
-  }; // Keep feature functions contained within this object
+        if ( changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals') ) {
+          // Inspector edit goal months list.
+          contentSetter.resetPrefix();
+          contentSetter.setArray(ynabToolKit.shared.monthsFull, '.budget-inspector-goals .goal-target-month>option');
+        }
+
+        // Hidden categories modal
+        if (changedNodes.has('modal-overlay pure-u modal-budget-hidden-categories active')) {
+          contentSetter.selectorPrefix = '.modal-budget-hidden-categories-master-unhidden:contains("Credit Card Payments")';
+          contentSetter.set(l10n["toolkit.creditCardPayments"], 1);
+        }
+
+        // User prefs modal
+        if (changedNodes.has('modal-overlay pure-u modal-popup modal-user-prefs active')) {
+          contentSetter.selectorPrefix = '.modal-user-prefs button';
+          contentSetter.set(l10n["toolkit.myAccount"], 1);
+        }
+
+        // New transaction fields modals
+        if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-flags active')) {
+          contentSetter.selectorPrefix = '.modal-account-flags';
+          var colors = ["red", "orange", "yellow", "green", "blue", "purple"].map(function(color) {
+            return l10n["toolkit." + color];
+          });
+          contentSetter.setArray(colors, ' .label');
+          contentSetter.setArray(colors, ' .label-bg');
+        }
+        if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-dropdown modal-account-categories active')) {
+          contentSetter.selectorPrefix = '.modal-account-categories ';
+          contentSetter.setSeveral(
+            [l10n["toolkit.inflow"], 0, '.modal-account-categories-section-item'],
+            [l10n["budget.leftToBudget"], 1, '.modal-account-categories-category-name']
+          );
+        }
+        if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-dropdown modal-account-payees active')) {
+          contentSetter.selectorPrefix = '.modal-account-payees .is-section-item';
+          contentSetter.setArray(
+            [l10n["toolkit.transfer"],
+             l10n["toolkit.memorized"]],
+            '', 1, 3
+          );
+        }
+        if (changedNodes.has('modal-overlay pure-u modal-account-calendar active') ||
+            changedNodes.has('accounts-calendar')) {
+          contentSetter.selectorPrefix = '.modal-account-calendar';
+          var days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(function(day) {
+            return l10n["toolkit.dayOfWeek" + day];
+          });
+          contentSetter.setArray(days, ' .accounts-calendar-weekdays li');
+          contentSetter.selectorPrefix = '.modal-account-calendar .accounts-calendar-selected-date';
+          var dateText = $(contentSetter.selectorPrefix).contents()[1].textContent;
+          var year = dateText.split(' ')[1];
+          var month  = l10n["months." + dateText.split(' ')[0]];
+          contentSetter.set(month + " " + year, 1);
+        }
+
+        // Accounts filters months options
+        if (changedNodes.has('modal-overlay pure-u modal-generic modal-account-filters active')) {
+          contentSetter.selectorPrefix = '.modal-account-filters ';
+          contentSetter.setArray(
+            ynabToolKit.shared.monthsFull,
+            '.date-range-from-months option'
+          );
+          contentSetter.setArray(
+            ynabToolKit.shared.monthsFull,
+            '.date-range-to-months option'
+          );
+        }
+
+        // Account row
+        if (changedNodes.has('ynab-grid-body')) {
+          $('.ynab-grid-cell-payeeName[title="Starting Balance"]').contents().each(function() {
+            if (this.textContent == 'Starting Balance') this.textContent = l10n["toolkit.startingBalance"];
+          });
+          $('.ynab-grid-cell-subCategoryName[title="Inflow: To be Budgeted"]').contents().each(function() {
+            if (this.textContent == 'Inflow: To be Budgeted') this.textContent = l10n["toolkit.inflowTBB"];
+          });
+          $('.ynab-grid-cell-subCategoryName[title="Split (Multiple Categories)..."]').contents().each(function() {
+            if (this.textContent == 'Split (Multiple Categories)...') this.textContent = l10n["toolkit.splitMultipleCategories"];
+          });
+        }
+      }
+    };
+  })(); // Keep feature functions contained within this object
 
   ynabToolKit.l10n.invoke(); // Run your script once on page load
   ynabToolKit.l10n.budgetHeader();
@@ -178,10 +183,10 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
   rerenderClasses = [ '.content', '.nav'];
   for (var i = 0; i < rerenderClasses.length; i++) {
     Ember.View.views[$(rerenderClasses[i])[0].id].rerender();
-  };
+  }
 
   // When rerendering sidebar accounts lists are closing, open them.
-  $('.nav-account-block').click();
+  // $('.nav-account-block').click();
 
 } else {
   setTimeout(poll, 250);
@@ -199,7 +204,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 //       var l10n = ynabToolKit.l10nData;
 //       var months = Object.keys(l10n.Global.Month)
 //                          .map(function(k){return l10n.Global.Month[k]});
-//       var monthsFull = Object.keys(l10n.Global.MonthFull)
+//       var ynabToolKit.shared.monthsFull = Object.keys(l10n.Global.MonthFull)
 //                          .map(function(k){return l10n.Global.MonthFull[k]});
 //
 //       function getDateInfo() {
@@ -501,7 +506,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 //           contentSetter.resetPrefix();
 //           contentSetter.set(l10n.Budget.Inspector.Title.TargetMonthYear, 5, '.budget-inspector-goals dt');
 //           contentSetter.setArray(
-//             monthsFull,
+//             ynabToolKit.shared.monthsFull,
 //             '.budget-inspector-goals .goal-target-month>option'
 //           );
 //
@@ -839,11 +844,11 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
 //           ' li.label', 0, 2
 //         );
 //         contentSetter.setArray(
-//           monthsFull,
+//           ynabToolKit.shared.monthsFull,
 //           '.date-range-from-months option'
 //         );
 //         contentSetter.setArray(
-//           monthsFull,
+//           ynabToolKit.shared.monthsFull,
 //           '.date-range-to-months option'
 //         );
 //         contentSetter.setSeveral(
