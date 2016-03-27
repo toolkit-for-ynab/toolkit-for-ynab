@@ -1,4 +1,16 @@
-.accounts-toolbar-right .label {
+/* layout */
+#toolkit-toggleReconciled {
+	margin-right: 20px;
+}
+#toolkit-toggleReconciled.button-icononly {
+	margin-right: 1px;
+}
+#toolkit-toggleScheduled .flaticon {
+    margin-right: 1px;
+}
+
+/* label */
+.accounts-toolbar-right .toolkit-label {
 	display: block;
 	height: 2.2em;
 	padding: .55em .6em;
@@ -10,17 +22,27 @@
 	font-style: italic;
 	color: #003540;
 }
-.button-toggle-visible {
+
+/* visible: mid blue */
+.accounts-toolbar .toolkit-button-toggle-visible,
+.accounts-toolbar .toolkit-button-toggle-visible:hover {
 	font-weight: bold;
-	text-decoration: underline;
-	padding: .5em .6em;
+	color: #009cc2 !important;
 }
-.button-toggle-hidden {
-	font-weight: normal;
-	text-decoration: none;
-	color: rgba(0,155,194,0.5);
-	padding: .5em .6em;
+.accounts-toolbar .toolkit-button-toggle-visible .flaticon,
+.accounts-toolbar .toolkit-button-toggle-visible:hover .flaticon {
+	color: #009cc2 !important;
 }
-#toggleScheduled {
-	margin-right: 30px;
+
+/* hidden: gray */
+.accounts-toolbar .toolkit-button-toggle-hidden {
+	font-weight: bold;
+	color: #c3cbce;
+}
+.toolkit-button-toggle-hidden .flaticon {
+	color: #c3cbce;
+}
+.accounts-toolbar .toolkit-button-toggle-hidden:hover,
+.accounts-toolbar .toolkit-button-toggle-hidden:hover .flaticon {
+	color: #c3cbce !important;
 }

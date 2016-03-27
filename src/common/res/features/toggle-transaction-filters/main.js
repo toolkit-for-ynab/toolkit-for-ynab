@@ -2,105 +2,112 @@
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.actOnChangeInit === true ) {
 
-    ynabToolKit.toggleTransactionFilters = new function()  { // Keep feature functions contained within this
+    ynabToolKit.toggleTransactionFilters = (function()  { 
 
 	  function toggleReconciled()
 	  {
+		var container = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('controller:accounts');
+		var setting_reconciled = !container.filters.get('reconciled');
+		container.filters.set('reconciled', setting_reconciled);  
 		
+		if (setting_reconciled) {
+			$('#toolkit-toggleReconciled').removeClass('toolkit-button-toggle-hidden').addClass('toolkit-button-toggle-visible');
+		}
+		else {
+			$('#toolkit-toggleReconciled').addClass('toolkit-button-toggle-hidden').removeClass('toolkit-button-toggle-visible');
+		}
 	  }
 	  
 	  function toggleScheduled()
 	  {
-	  
+		var container = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('controller:accounts');  
+		var setting_scheduled = !container.filters.get('scheduled');
+		container.filters.set('scheduled', setting_scheduled);  
+		
+		if (setting_scheduled) {
+			$('#toolkit-toggleScheduled').removeClass('toolkit-button-toggle-hidden').addClass('toolkit-button-toggle-visible');
+		}
+		else {
+			$('#toolkit-toggleScheduled').addClass('toolkit-button-toggle-hidden').removeClass('toolkit-button-toggle-visible');
+		}
 	  }
 	  
+	  function updateToggleButtons(setting_reconciled, setting_scheduled) 
+	  {
+	  	// set button classes
+  		if (setting_reconciled) {
+  			$('#toolkit-toggleReconciled').removeClass('toolkit-button-toggle-hidden').addClass('toolkit-button-toggle-visible');
+  		}
+  		else {
+  			$('#toolkit-toggleReconciled').addClass('toolkit-button-toggle-hidden').removeClass('toolkit-button-toggle-visible');
+  		}
+  		if (setting_scheduled) {
+  			$('#toolkit-toggleScheduled').removeClass('toolkit-button-toggle-hidden').addClass('toolkit-button-toggle-visible');
+  		}
+  		else {
+  			$('#toolkit-toggleScheduled').addClass('toolkit-button-toggle-hidden').removeClass('toolkit-button-toggle-visible');
+  		}
+	  }
 	  
+	  function initToggleButtons()
+	  {
+  		// get internal filters
+  		var container = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('controller:accounts');
+  		var setting_reconciled = container.filters.get('reconciled');  
+  		var setting_scheduled = container.filters.get('scheduled');  
+  		
+  		// insert or edit buttons
+  		if (! $("#toolkit-toggleReconciled").length ) 
+  		{
+  			// create buttons if they don't already exist
+  			if (ynabToolKit.options.toggleTransactionFilters == "2") {
+  				// show both text and icons
+  				$(".accounts-toolbar .accounts-toolbar-right").append('<button id="toolkit-toggleReconciled" class="button" title="Toggle Reconciled Transactions"><i class="flaticon solid lock-1 is-reconciled"></i> Reconciled</button>');
+	  			$(".accounts-toolbar .accounts-toolbar-right").append('<button id="toolkit-toggleScheduled" class="button" title="Toggle Scheduled Transactions"><i class="flaticon solid clock-1 is-reconciled"></i> Scheduled</button>');		
+	  		}
+	  		else {
+	  			// show only icons
+	  			$(".accounts-toolbar .accounts-toolbar-right").append('<button id="toolkit-toggleReconciled" class="button button-icononly" title="Toggle Reconciled Transactions"><i class="flaticon solid lock-1 is-reconciled"></i></button>');
+	  			$(".accounts-toolbar .accounts-toolbar-right").append('<button id="toolkit-toggleScheduled" class="button button-icononly" title="Toggle Scheduled Transactions"><i class="flaticon solid clock-1 is-reconciled"></i></button>');		
+	  		}
+  			updateToggleButtons(setting_reconciled, setting_scheduled);
+  		}
+  		else 
+  		{
+  			// if buttons exist, double check visibility classes
+  			updateToggleButtons(setting_reconciled, setting_scheduled);
+  		}
+	  }
 
 
-      this.invoke = function() 
-      {	
-		if (/accounts/.test(window.location.href)) 
-		{
-			/*
-				Need to improve by checking Ember for filter settings, 
-				rather than checking for classes of transactions rows that change
-				
-				ynab.utilities
-				
-				this.budgetView = ynab.YNABSharedLib
-				  .getBudgetViewModel_AllBudgetMonthsViewModel()._result; // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
-				  
-				var grid = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('view:ynab-grid/index');
-				var rowHeight = 30 + (10 * ynabToolKit.options.accountRowsHeight);
-				grid.set('recordHeight', rowHeight);  
-				
-				
-				
-				
-				
-				Controller: App.AccountsController
-				Name: modals.account.filters
-				Template: modals.account.filters
-				
-				renderedName: modals.account.filters
-				stored in: App/Modals/account/filtersView "reconciled" and "scheduled" booleans
-				
-				access using get, set using set
-				
-				controller.set('reconciled', !this.get('reconciled'));
-			*/
-			
-			var grid = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('model:accounts');
-			var setting_reconciled = grid.get('reconciled');  
-			
-			console.log(grid);
-//			console.log(setting_reconciled);
-		
-			// check transaction visibility
-			if ( $('.is-reconciled-row').length ) { var reconciled_visibility = 'visible'; } else { var reconciled_visibility = 'hidden'; }
-			if ( $('.is-scheduled').length ) { var scheduled_visibility = 'visible'; } else { var scheduled_visibility = 'hidden'; }	
-			
-			// create button markup
-			var button_reconciled_markup = '<button id="toggleReconciled" class="ember-view button button-toggle-'+reconciled_visibility.toLowerCase()+'">Reconciled</button>';
-			var button_scheduled_markup = '<button id="toggleScheduled" class="ember-view button button-toggle-'+scheduled_visibility.toLowerCase()+'">Scheduled</button>';
-			
-			// insert or edit buttons
-			if (! $("#toggleReconciled").length ) 
+	  return {
+	      invoke: function() {	
+	      
+	      	// invoke on load
+			if (/accounts/.test(window.location.href)) 
 			{
-				$(".accounts-toolbar .accounts-toolbar-right").append(button_scheduled_markup);		
-				$(".accounts-toolbar .accounts-toolbar-right").append(button_reconciled_markup);
-				$(".accounts-toolbar .accounts-toolbar-right").append('<span class="label">Show:</span>');	
-			}
-			else 
-			{
-				if (reconciled_visibility == 'visible') {
-					$('#toggleReconciled').removeClass('button-toggle-hidden').addClass('button-toggle-visible');
-				}
-				else {
-					$('#toggleReconciled').addClass('button-toggle-hidden').removeClass('button-toggle-visible');
-				}
-				if (scheduled_visibility == 'visible') {
-					$('#toggleScheduled').removeClass('button-toggle-hidden').addClass('button-toggle-visible');
-				}
-				else {
-					$('#toggleScheduled').addClass('button-toggle-hidden').removeClass('button-toggle-visible');
-				}
+				// create buttons
+				initToggleButtons();
 			}
 			
-			
-			$('button#toggleReconciled').on('click', toggleReconciled);
-			$('button#toggleScheduled').on('click', toggleScheduled);	  
-		}
-      },
-      
-      this.observe = function(changedNodes) {
-		  if ( changedNodes.has('ynab-grid-body') ) {
-		    ynabToolKit.toggleTransactionFilters.invoke();
+			// add functionality on click
+			$('body').on('click', 'button#toolkit-toggleReconciled', toggleReconciled);
+			$('body').on('click', 'button#toolkit-toggleScheduled', toggleScheduled);	   
+	      },
+	      
+	      observe: function(changedNodes) {
+				
+	      	  // activate button styles if filters potentially change
+	      	  // activate if switch to individual account, or all accounts views
+			  if (
+			  	changedNodes.has('modal-overlay pure-u modal-generic modal-account-filters active closing') ||
+			  	changedNodes.has('ynab-grid-body')) {
+			    initToggleButtons();
+			  }
 		  }
-	  };
-			
-    };
-    
+	  };		
+    })(); // Keep feature functions contained within this
+
 	ynabToolKit.toggleTransactionFilters.invoke();
   } else {
     setTimeout(poll, 250);
