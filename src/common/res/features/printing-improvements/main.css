@@ -3,19 +3,59 @@
 
 	/* hide unneeded areas */
 	body div.sidebar,
-	body header.budget-header,
-	body aside.budget-inspector {
+	body aside.budget-inspector,
+	body .inspector-resize-handle,
+	body .budget-table-row .budget-table-cell-budgeted .goal-indicator {
 		display: none;
+	}
+	
+	
+	/* hide header, yet ensure that month is still visible */
+	body .budget-header-item,
+	body .budget-header-days.days-of-buffering,
+	body .budget-header-item button,
+	body .budget-header-calendar .budget-header-calendar-note,
+	body .budget-header-calendar .budget-header-calendar-date-button i,
+	body .budget-toolbar {
+		display: none;
+	}
+	body .budget-header-days.days-of-buffering {
+		display: none !important;
+	}
+	body .budget-header, 
+	body .accounts-header {
+		left: 0;
+		position: relative;
+	}
+	body .budget-header .budget-header-item,
+	body .toolkit-highlight-current-month {
+		background: transparent !important;
+		padding-left: .8em;
+	}
+	body .budget-header-calendar,
+	body .budget-header-calendar .budget-header-calendar-date-button {
+		display: block;
+		color: #000;
+		text-align: left;
 	}
 	
 	
 	/* primarily layout adjustments */
 	@page { margin: 1cm; }
 	
+	* {
+		flex: none !important;
+	}
+	body .pure-u {
+		display: block;
+	}
+	body .resize-inspector {
+		display: block !important;
+	}
 	html, body {
-		overflow: auto;
-		overflow-x: hidden !important;
 		height: auto;
+		overflow-y: visible !important;
+		overflow-x: hidden !important;
 		width: 100%;
 	}
 	body div.content, 
@@ -30,6 +70,7 @@
 		overflow-x: hidden !important;
 		font-size: 1em;
 		padding-top: 0;
+		flex: none;
 	}
 	body ul.budget-table-header {
 		position: relative !important;
@@ -92,19 +133,19 @@
 	body .budget-table-header .budget-table-cell-pacing {
 		padding-right: 0 !important;
 	}
-	body .budget-table-row .budget-table-cell-budgeted .goal-indicator {
-		top: 5px;
-	}
 	
 	
 	/* primarily font styling */
 	body .budget-table-row.is-master-category .budget-table-cell-name {
 		font-weight: bold;
 	}
+	.budget-table-cell-name-static-width {
+		width: 18px;
+	}
 	body .budget-table-row.is-master-category .budget-table-cell-name button {
 		font-weight: bold;
 		position: relative;
-		top: 4px;
+		top: 2px !important;
 	}
 	body .button, body .button-red, body .button-disabled {
 		font-size: 9pt !important;
@@ -115,13 +156,16 @@
 	body .budget-table-row.is-master-category .zero {
 		font-weight: bold;
 		color: #000;
+		padding-right: 2px;
+		font-size: 9pt !important;
 	}
 	body .budget-table-row.is-sub-category > .budget-table-cell-available .positive, 
 	body .budget-table-row.is-sub-category > .budget-table-cell-available .negative, 
 	body .budget-table-row.is-sub-category > .budget-table-cell-available .cautious, 
 	body .budget-table-row.is-sub-category > .budget-table-cell-available .zero {
 		background-color: transparent;		
-		padding: 0 !important;	
+		padding: 0 2px 0 0 !important;	
+		font-size: 9pt !important;
 	}
 	body .budget-table-row.is-sub-category > .budget-table-cell-available .positive {
 		color: #16a336;

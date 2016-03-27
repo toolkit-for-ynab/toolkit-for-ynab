@@ -1,0 +1,75 @@
+.ynab-grid-header-cellx {
+    height: 1.2em !important;
+	padding: 0.1em !important;
+}
+
+.ynab-grid-cell {
+	height: 1.2em !important;
+	top: 0 !important;
+	padding-top: 0 !important;
+	font-size: .80em !important;
+}
+
+.toolkit-ynab-grid-cell {
+	height: 0px !important;
+}
+
+.ynab-grid-body-row {
+	height: 1.4em !important;
+	top: 0 !important;
+	padding-top: 0 !important;
+}
+
+.ynab-grid-body-row.ynab-grid-body-sub .ynab-grid-cell.ynab-grid-cell-payeeNamex {
+	padding-top: 0.2em !important;
+	padding-left: 1.4em !important;
+}
+
+.ynab-grid-body-row.ynab-grid-body-row .ynab-grid-cell.ynab-grid-cell-checkbox,
+.ynab-grid-body-row.ynab-grid-body-row .ynab-grid-cell.ynab-grid-cell-flag {
+	padding-left: .5em !important;
+}
+
+.ynab-grid-body-row.ynab-grid-body-row .ynab-grid-cell.ynab-grid-cell-notification {
+	padding-left: .4em !important;
+}
+
+.ynab-grid-body-row.ynab-grid-body-row .ynab-grid-cell.ynab-grid-cell-memo.user-data {
+	padding-left: .4em !important;
+}
+
+.ynab-grid-body-row.ynab-grid-body-row .ynab-grid-cell.ynab-grid-cell-date.user-data {
+	padding-left: .6em !important;
+}
+
+.ynab-grid-body-row.ynab-grid-body-row .ynab-grid-cell.ynab-grid-cell-subCategoryName.user-data,
+.ynab-grid-body-row.ynab-grid-body-row .ynab-grid-cell.ynab-grid-cell-payeeName.user-data {
+	padding-left: 1.6em !important;
+}
+
+.ynab-grid-body-row.ynab-grid-body-row .ynab-grid-cell.ynab-grid-cell-outflow.user-data,
+.ynab-grid-body-row.ynab-grid-body-row .ynab-grid-cell.ynab-grid-cell-inflow.user-data {
+	padding-left: 1.6em !important;
+}
+
+.ynab-grid-body-row.ynab-grid-body-sub .ynab-grid-cell.ynab-grid-cell-payeeName.user-data {
+	padding-top: 0.2em !important;
+	padding-left: 1.6em !important;
+}
+
+.ynab-grid-cell-checkbox
+.ynab-grid-cell-notification
+.ynab-grid-cell-flag
+.ynab-grid-cell-accountName
+.ynab-grid-cell-date
+.ynab-grid-cell-payeeName
+.ynab-grid-cell-subCategoryName
+.ynab-grid-cell-memo
+.ynab-grid-cell-outflow
+.ynab-grid-cell-inflow
+.ynab-grid-cell-cleared
+{
+	height: 1.4em !important;
+	top: 0 !important;
+	padding-top: 0.1em !important;
+}
