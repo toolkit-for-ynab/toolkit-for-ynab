@@ -4,7 +4,7 @@
     "default": "0",
     "section": "general",
     "title": "Interface Font",
-    "description": "Select a font from the Google Fonts library. <strong>Warning:<strong> may adjust font sizes for certain fonts.",
+    "description": "Select a font from the Google Fonts library.",
     "options": [{
         "name": "Default",
         "value": "0"

@@ -125,8 +125,6 @@ function buildOptionsPage() {
 
   settings.forEach(function(setting) {
 
-    var description = $.parseHTML(setting.description) ? $.parseHTML(setting.description) : setting.description;
-
     if (setting.type == 'checkbox') {
 
       $('#' + setting.section + 'SettingsPage')
@@ -134,7 +132,7 @@ function buildOptionsPage() {
           .append($('<input>', { type: 'checkbox', id: setting.name, name: setting.name, 'aria-describedby': setting.name + 'HelpBlock' }))
           .append($('<div>', { class: 'option-description' })
             .append($('<label>', { for: setting.name, text: setting.title }))
-            .append($('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', html: description }))))
+            .append($('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', text: setting.description }))))
 
     } else if (setting.type == 'select') {
 
@@ -145,7 +143,7 @@ function buildOptionsPage() {
             .append(setting.options.map(function(option) {
               return $('<option>', { value: option.value, style: (option.style || ''), text: option.name });
             })))
-          .append($('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', html: description })));
+          .append($('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', text: setting.description })));
     }
   });
 }
