@@ -219,3 +219,4 @@ L10n is done via the [Crowdin service](http://translate.toolkitforynab.com). To 
 ((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.hiThere"]) || 'DEFAULT')
 ```
 - If there's no translation for a string in the user's chosen language they'll see 'DEFAULT' based on the code above.
+- New l10n strings added by YNAB core team can be found in ```ynabToolKit.l10nMissingStrings``` variable in the browser console with YNAB app started and l10n feature enabled. Removed strings aren't counted.
