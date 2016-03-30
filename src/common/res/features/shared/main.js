@@ -12,7 +12,7 @@ ynabToolKit.shared = (function(){
 		//       the array needs to be rebuilt. Currently this must be done in "feature" code but should be 
 		//       done here.
 		//
-		getCategories: function() {
+		getMergedCategories: function() {
 			var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
 			var mCats = entityManager.getAllNonTombstonedMasterCategories();
 
