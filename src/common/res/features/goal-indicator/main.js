@@ -83,7 +83,7 @@
 							{
 								case 'TB' :
 								case 'TBD' :
-									addIndicator(this, 'T', 'Target balance'');
+									addIndicator(this, 'T', 'Target balance');
 
 									break;
 								case 'MF' :
