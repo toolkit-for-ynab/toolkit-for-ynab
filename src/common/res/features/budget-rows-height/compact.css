@@ -31,6 +31,6 @@
         top: 0 !important;
     }
 
-    .currency-input span {
+    .budget-table-cell-budgeted .currency-input span {
         height: 1.8em;
     }

@@ -37,6 +37,8 @@ This is what the extension can do for you:
 - Larger Clickable Area for Icons: Makes the uncleared, cleared and reconciled icons easier to select.
 - Current month indicator to make it easier to see which month is the current month.
 - Right click on a transaction when in the Accounts view to display the Edit menu.
+- Add a split transaction keyboard shortcut, so typing "split" into the category input will automatically create a split transaction.
+- Add buttons within the Account view to easily show and hide upcoming and reconciled transactions with one click.
 
 All of these are configurable with options in the extension options page.
 
@@ -47,7 +49,7 @@ If you don't want to build the extension from the source yourself, you can get i
 
 - Chrome on the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl)
 - Firefox on the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/)
-- Safari [on the Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.kangoextensions.ynabenhanced-7M68YQDBSE) NOTE: Safari is currently stuck on version 0.3.6 because of [this issue](https://forums.developer.apple.com/thread/37551). We'll submit updates for Safari back to Apple as soon as we're able to.
+- Safari [on the Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.kangoextensions.ynabenhanced-7M68YQDBSE) NOTE: Safari is currently stuck on version 0.3.6 because Apple is still reviewing the update. You can install the latest [from us directly](http://toolkitforynab.com/safari-updates/toolkitforynab_latest.safariextz) but please keep in mind that it won't auto-update.
 
 Roadmap
 -------

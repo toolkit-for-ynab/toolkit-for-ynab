@@ -1,7 +1,8 @@
 .budget-table {
   position: static !important;
   overflow: scroll;
-  height: 100%;
+  height: calc(100% - 24.5px); /* The header is now 24.5px high, which pushes the bottom row below
+                                  the bottom of the resizable parent unless we pull it back out. */
 }
 
 .budget-content {

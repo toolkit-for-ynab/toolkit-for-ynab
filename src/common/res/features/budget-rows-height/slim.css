@@ -37,12 +37,12 @@
         top: 0 !important;
     }
 
-    .currency-input span {
+    .budget-table-cell-budgeted .currency-input span {
         height: 1.45em;
         padding: 0.05em;
         border-width: 1px !important;
     }
 
-    .currency-input input {
+    .budget-table-cell-budgeted .currency-input input {
         height: 1.45em !important;
     }

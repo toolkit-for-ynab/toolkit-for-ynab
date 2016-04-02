@@ -1,7 +1,7 @@
 {
          "name": "toggleSplits",
          "type": "checkbox",
-       "hidden": "true",
+       "hidden": true,
       "default": false,
       "section": "accounts",
         "title": "Add a Toggle Splits Button",
