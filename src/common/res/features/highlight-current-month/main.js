@@ -1,20 +1,22 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
+    
     ynabToolKit.currentMonthIndicator = (function(){
+      
+      // Determine whether the selected month is the current month
+      function inCurrentMonth() {
+        var today = new Date();
+        var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
+        return selectedMonth.getMonth() == today.getMonth() && selectedMonth.getYear() == today.getYear();
+      }
+      
       return {
+      
         invoke: function() {
-          // find current month and year
-          var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-          var d = new Date();
-          var currentDate = monthNames[d.getMonth()] + ' 01 ' + d.getFullYear();
-
-          // get month and year from YNAB
-          var ynabDate = String(ynabToolKit.shared.parseSelectedMonth());
-          ynabDate = ynabDate.substring(4, 15); // trim day of week
-
+        
           // check if header bar is current month, if so, change background color
-          if ( ynabDate == currentDate) {
+          if ( inCurrentMonth()) {
             $('.budget-header .budget-header-calendar').addClass('toolkit-highlight-current-month');
           }
           else {
@@ -29,6 +31,7 @@
             ynabToolKit.currentMonthIndicator.invoke();
           }
         }
+        
       };
     })(); // Keep feature functions contained within this object
 
