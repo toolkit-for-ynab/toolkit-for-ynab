@@ -4,6 +4,10 @@
 
 .goal-indicator {
 	position: absolute;
+	top: 0;
+	left: 0;
+	padding-top: .25em;
 	color: gray;
 	font-size: 80%;
+	line-height: 2.55em;
 }
