@@ -10,7 +10,7 @@
       	  $.each($('.budget-table-cell-available-div.user-data .cautious, .budget-inspector .cautious'), function(key, val) {
       		
       		var num = $(this).text();
-      		if (parseInt(num.replace('$', '')) < 0 )
+      		if (ynab.unformat(num) < 0)
       		{
       			$(this).removeClass('cautious').addClass('negative');
       		}
