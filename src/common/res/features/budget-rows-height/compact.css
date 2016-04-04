@@ -34,3 +34,7 @@
     .budget-table-cell-budgeted .currency-input span {
         height: 1.8em;
     }
+
+.goal-indicator {
+	line-height: 1.8em !important;
+}
