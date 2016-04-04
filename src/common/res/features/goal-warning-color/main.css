@@ -1,0 +1,17 @@
+body .budget-table-row.is-sub-category > .budget-table-cell-available .toolkit-goalwarning,
+body .inspector-overview-available span.toolkit-goalwarning {
+	background-color: #009cc2;
+}
+body .inspector-overview-available dt.toolkit-goalwarning {
+	color: #009cc2;
+}
+body .budget-table-row.is-sub-category > .budget-table-cell-available .toolkit-goalwarning:hover {
+	background-color: #1f8ca7;
+}
+
+.goal-warning .inner-circle {
+	stroke: #43aecb;	
+}
+.goal-warning .outer-circle {
+	fill: #1f8ca7;
+}

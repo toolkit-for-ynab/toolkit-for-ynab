@@ -1,0 +1,10 @@
+/* Custom class so that scripts that this feature doesn't interfere with the goal warning color feature */
+body .budget-table-row.is-sub-category > .budget-table-cell-available .toolkit-cautious {
+	background-color: #e59100;
+}
+body .inspector-overview-available dt.toolkit-cautious {
+	color: #e59100;
+}
+body .inspector-overview-available span.toolkit-cautious {
+	background-color: #e59100;
+}
