@@ -47,6 +47,24 @@ function restoreSelectOption(elementId) {
       getKangoSetting(elementId).then(function(data) {
         data = data || 0;
 
+        // Is the value in the select list?
+        var found = false;
+
+        for (var i = 0; i < select.length; i++) {
+          if (select.options[i].value === data) {
+            found = true;
+            break;
+          }
+        }
+
+        if (!found && data === true) {
+          // There is a specific upgrade path where a boolean setting
+          // gets changed to a select setting, and users who had it set
+          // at 'true' should now be set to '1' so the feature is still
+          // enabled.
+          data = '1';
+        }
+
         select.value = data;
 
         resolve();
