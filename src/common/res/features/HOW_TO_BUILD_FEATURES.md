@@ -222,12 +222,12 @@ L10n is done via the [Crowdin service](http://translate.toolkitforynab.com). To 
 - New l10n strings added by YNAB core team can be found in ```ynabToolKit.l10nMissingStrings``` variable in the browser console with YNAB app started and l10n feature enabled. Removed strings aren't counted.
 
 How to Test
------------
+===========
 
 So you've built that awesome feature and want to see how it works in browsers? Here's the way we test:
 
 Chrome
-======
+------
 
 Chrome is the easiest platform to test on as it seems the best set up for inspecting what's going on and is the easiest to refresh when you make changes.
 
@@ -240,7 +240,7 @@ Chrome is the easiest platform to test on as it seems the best set up for inspec
 You'll see the toolkit loaded in to Chrome and it'll work as normal. Whenever you make a change to the files in `src` you'll need to run `./build` or `build.bat` again, then click Reload on the extension. If you find it easier, [this extension](https://chrome.google.com/webstore/detail/extensions-reloader/fimgfedafeadlieiabdeeaodndnlbhid) will reload all unpacked extensions when clicked.
 
 Firefox
-=======
+-------
 
 1. Run `./build` (Linux / Mac) or `build.bat` (Windows)
 2. Go to the URL about:addons
@@ -250,7 +250,7 @@ Firefox
 You'll see the toolkit loaded in to Firefox and it'll work as normal. Whenever you make a change to the files in `src` you'll need to run `./build` or `build.bat` again, then remove and reinstall the extension from file.
 
 Safari
-======
+------
 
 1. Run `./build`
 2. Go Safari -> Preferences
