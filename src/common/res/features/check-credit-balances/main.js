@@ -76,9 +76,7 @@
             var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
 
             if (name === accountName) {
-
-              var categoryBalance = $(this).find('.budget-table-cell-available-div .user-data.currency');
-              categoryBalance.removeClass('positive negative').addClass('cautious');
+              $(this).find('.budget-table-cell-available-div .user-data.currency').addClass('toolkit-cautious');
             }
           });
         },
@@ -86,9 +84,7 @@
         updateInspectorStyle: function(name) {
           var inspectorName = $('.inspector-category-name.user-data').text().trim();
           if (name === inspectorName) {
-            var inspectorBalance = $('.inspector-overview-available .user-data .user-data.currency');
-            inspectorBalance.removeClass('positive negative')
-              .addClass('cautious');
+            $('.inspector-overview-available .user-data .user-data.currency, .inspector-overview-available dt').addClass('toolkit-cautious');
           }
         },
 
