@@ -4,9 +4,6 @@
 
     ynabToolKit.swapClearedFlagged = (function(){
 
-      // Supporting functions,
-      // or variables, etc
-
       return {
         invoke: function() {
           function swapElements(elm1, elm2) {
@@ -38,28 +35,21 @@
         },
 
         swapYnabGridActions: function() {
-          $('.ember-view.ynab-grid-body-row.is-editing')
-          .addClass('detached-attached')
-      	  .find('.ember-view.ynab-grid-actions').css({
-            "right" : 54,
-            "bottom" : "initial",
-            "margin-top" : "2px"
+          $('.ember-view.ynab-grid-body-row.is-editing .ember-view.ynab-grid-actions').css({
+            "right" : 36,
+            "bottom" : -35
           })
-          .addClass('detached-attached');
 
           var ynabGridActions = $('.ember-view.ynab-grid-actions').detach();
           var splitTransaction = $('.button.button-primary.ynab-grid-split-add-sub-transaction');
 
           if ( splitTransaction.length ) {
             splitTransaction.parent().parent()
-            .find('.ynab-grid-cell.ynab-grid-cell-inflow.user-data')
+            .find('.ynab-grid-cell.ynab-grid-cell-flag')
             .append(ynabGridActions)
-            .addClass('detached-attached');
           } else {
-            $('.ember-view.ynab-grid-body-row.is-editing')
-            .find('.ynab-grid-cell.ynab-grid-cell-inflow.user-data')
+            $('.ember-view.ynab-grid-body-row.is-editing .ynab-grid-cell.ynab-grid-cell-flag')
             .append(ynabGridActions)
-            .addClass('detached-attached');
           }
         },
 
