@@ -32,7 +32,7 @@ This is what the extension can do for you:
 - Show a total of the selected transactions in the account view.
 - Make the Move money dialog larger to make more of it fit on the screen at once.
 - Add a setting to make enter just save the transaction when adding transactions.
-- Show your spending pacing mid-month to ensure you're on track to meet your budget. You can enable and disable this setting per budget column by clicking on the value.
+- Show your spending pacing mid-month to ensure you're on track to meet your budget. Now available in two styles: either display the full amount, or display a simple colored indicator. You can enable and disable this setting per budget column by clicking on the value.
 - Make negative numbers anywhere in the application have square corners so they stand out even more.
 - Larger Clickable Area for Icons: Makes the uncleared, cleared and reconciled icons easier to select.
 - Current month indicator to make it easier to see which month is the current month.
