@@ -7,8 +7,8 @@
   "description": "Ensure all negative balances are highlighted red instead of yellow, even with credit card spending.",
       "actions": {
                     "true": [
-                      "injectScript", "main.js",
-                      "injectScript", "../inspector-colours/main.js"
+                      "injectCSS", "main.css",
+                      "injectScript", "../budget-category-info/main.js"
                     ]
                  }
 }
