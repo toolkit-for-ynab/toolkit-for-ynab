@@ -9,7 +9,7 @@
 
     // Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
     // during page interactions and updates to the developer tools console.
-    ynabToolKit.debugNodes = true;
+    //ynabToolKit.debugNodes = true;
 
     ynabToolKit.actOnChange = function() {
 
@@ -36,7 +36,7 @@
 
         if (ynabToolKit.debugNodes) {
           console.log(ynabToolKit.changedNodes);
-          //console.log('###');
+          console.log('###');
         }
 
         // Now we are ready to feed the change digest to the
