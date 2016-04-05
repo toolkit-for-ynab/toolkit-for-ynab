@@ -8,7 +8,7 @@
       "actions": {
                     "true": [
                       "injectCSS", "main.css",
-                      "injectScript", "main.js"
+                      "injectScript", "../budget-category-info/main.js"
                     ]
                  }
 }
