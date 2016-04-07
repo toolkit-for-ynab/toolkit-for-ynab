@@ -1,13 +1,3 @@
-.notification {
-  margin-left: 0.2em;	
-}
-
 .import-notification {
   background-color: #227e99;
-}
-
-.nav-account-notification {
-  padding-left: 0em;
-  -webkit-flex: 0 0 38px;
-  flex: 0 0 38px;
 }
