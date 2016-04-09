@@ -55,29 +55,37 @@
         },
 
         updateInspectorButton: function(f) {
-          if ($('.balance-to-zero').length) {
-            return;
-          }
-
           var name = f.name;
           var amount = ynabToolKit.budgetBalanceToZero.getBudgetAmount(f);
           var fAmount = ynabToolKit.shared.formatCurrency(amount);
-          var formattedZero = ynabToolKit.shared.formatCurrency(0);
+          
+          if (($('.toolkit-balance-to-zero').length) || (amount == '-0')) {
+            return;
+          }
+          
+          /* check for positive amounts */
+          var positive = '';
+          if (ynab.unformat(amount) > 0) { positive = '+'; }
 
-          var button = $('<button>', { class: 'budget-inspector-button balance-to-zero' })
+          var button = $('<a>', { class: 'budget-inspector-button toolkit-balance-to-zero' })
+          	.css({ 'text-align': 'center', 'line-height': '30px', 'display': 'block', 'cursor': 'pointer' })
             .data('name', f.name)
             .data('amount', amount)
             .click(function() {
               ynabToolKit.budgetBalanceToZero.updateBudgetedBalance($(this).data('name'), $(this).data('amount'));
             })
             .append(((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.balanceToZero"]) || 'Balance to 0.00:'))
+            .append(' ' + positive)
             .append($('<strong>', { class: 'user-data', title: fAmount })
-              .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), amount)));
+            .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), amount)));
 
           $('.inspector-quick-budget .ember-view').append(button);
         },
 
         updateBudgetedBalance: function(name, difference) {
+          if ((ynabToolKit.options.warnOnQuickBudget != 0) && (!confirm('Are you sure you want to do this?')))
+            return;
+            
           var categories = $('.is-sub-category.is-checked');
 
           $(categories).each(function() {
@@ -93,7 +101,12 @@
               var newValue = (ynab.unformat(oldValue) + difference / 1000);
 
               $(input).val(newValue);
-              $(input).blur();
+              
+              if (ynabToolKit.options.warnOnQuickBudget == 0) {
+              	// only seems to work if the confirmation doesn't pop up?
+              	// haven't figured out a way to properly blur otherwise
+                input.blur();
+              }
             }
           });
         },
