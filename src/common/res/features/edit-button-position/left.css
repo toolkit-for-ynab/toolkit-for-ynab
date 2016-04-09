@@ -2,7 +2,6 @@
 	padding-top: 2px;
 	padding-right: 4px;
 	float:left;
-	display: block;
 	transition: opacity .25s ease-in-out;
 }
 
