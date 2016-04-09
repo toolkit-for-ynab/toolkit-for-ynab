@@ -4,7 +4,3 @@
 	float:left;
 	transition: opacity .25s ease-in-out;
 }
-
-.nav-account-name .nav-account-name-val {
-    max-width: 83%;
-}
