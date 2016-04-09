@@ -17,7 +17,9 @@
 
         observe: function(changedNodes) {
 
-          if (changedNodes.has('budget-inspector')) {
+          if (
+          	changedNodes.has('budget-inspector') ||
+          	changedNodes.has('budget-table-cell-available-div user-data')) {
             // The user has changed their budget row selection
             ynabToolKit.checkCreditBalances.invoke();
           }
@@ -49,21 +51,25 @@
               .findItemByEntityId('mcbc/' + currentMonth + '/' + a.entityId);
 
             var available = monthlyBudget.balance;
-
-            // If cleared balance is positive, bring available to 0, otherwise
-            // offset by the correct amount
-            var difference = 0;
-            if (balance > 0) {
-              difference = (available * -1);
-            } else {
-              difference = ((available + balance) * -1);
-            }
-
-            ynabToolKit.checkCreditBalances.updateInspectorButton(a.name, difference);
-
-            if (available != (balance * -1)) {
-              ynabToolKit.checkCreditBalances.updateRow(a.name);
-              ynabToolKit.checkCreditBalances.updateInspectorStyle(a.name);
+            
+            // ensure that available is >= zero, otherwise don't update
+			if (available >= 0)
+			{
+	            // If cleared balance is positive, bring available to 0, otherwise
+	            // offset by the correct amount
+	            var difference = 0;
+	            if (balance > 0) {
+	              difference = (available * -1);
+	            } else {
+	              difference = ((available + balance) * -1);
+	            }
+	
+	            ynabToolKit.checkCreditBalances.updateInspectorButton(a.name, difference);
+	
+	            if (available != (balance * -1)) {
+	              ynabToolKit.checkCreditBalances.updateRow(a.name);
+	              ynabToolKit.checkCreditBalances.updateInspectorStyle(a.name);
+	            }
             }
           });
         },
@@ -76,9 +82,7 @@
             var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
 
             if (name === accountName) {
-
-              var categoryBalance = $(this).find('.budget-table-cell-available-div .user-data.currency');
-              categoryBalance.removeClass('positive negative').addClass('cautious');
+              $(this).find('.budget-table-cell-available-div .user-data.currency').removeClass('zero').addClass('cautious');
             }
           });
         },
@@ -86,9 +90,7 @@
         updateInspectorStyle: function(name) {
           var inspectorName = $('.inspector-category-name.user-data').text().trim();
           if (name === inspectorName) {
-            var inspectorBalance = $('.inspector-overview-available .user-data .user-data.currency');
-            inspectorBalance.removeClass('positive negative')
-              .addClass('cautious');
+            $('.inspector-overview-available .user-data .user-data.currency, .inspector-overview-available dt').removeClass('zero').addClass('cautious');
           }
         },
 
