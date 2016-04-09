@@ -4,60 +4,30 @@
 
     ynabToolKit.warnOnQuickBudget = (function(){
 
-      // Supporting functions,
-      // or variables, etc
-
       return {
+      
         invoke: function() {
-          var buttons = document.getElementsByClassName('budget-inspector-button');
-          var button_fn = function(event) {
-            var e = event || window.event;
-            var parent = $(button).parent().parent().parent();
-            if ($(parent).hasClass('budget-inspector-default')) { // No row selected
-              var budgetRows = $('.budget-table-cell-budgeted');
-              var accepted = false;
-              budgetRows.each(function(index, el) {
-                if ($(el).find('span.user-data').length > 0) {
-                  if (!$($(el).find('span.user-data')[0]).hasClass('zero')) { // Something was budgeted
-                  if (!confirm('Are you sure you want to replace previously budgeted values?')) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                  } else {
-                    return false;
-                  }
-                }
-              }
-              });
-            } else if ($(parent).hasClass('budget-inspector')) { // Row selected
-              if (!$($(parent).find('.budget-inspector-category-overview').find('span.user-data')[1]).hasClass('zero')) { // Something was budgeted
-                if (!confirm('Are you sure you want to replace previously budgeted value?')) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  return false;
-                }
-              }
-            }
-          };
-          for (var i = 0; i < buttons.length; i++) {
-            button = buttons[i];
-            button.onclick = button_fn;
-          }
+          
+          // target only buttons so other elements with same class can be added without forcing confirmation, 
+          // which can break the quick budget functionality for quick budget items added by the Toolkit
+          $('button.budget-inspector-button').click(function(e) {
+
+          	if (!confirm('Are you sure you want to do this?'))
+			{
+	          	e.preventDefault();
+          		e.stopPropagation();
+          		return false;
+          	}
+          });
         },
 
         observe: function(changedNodes) {
 
-          if (changedNodes.has('navlink-budget active')) {
-              // The user has returned back to the budget screen
+          if (changedNodes.has('navlink-budget active') || changedNodes.has('budget-inspector')) {
               ynabToolKit.warnOnQuickBudget.invoke();
-          } else
-
-          // The user has changed their budget row selection
-          if (changedNodes.has('budget-inspector')) {
-            ynabToolKit.warnOnQuickBudget.invoke();
           }
-
         }
+        
       };
     })(); // Keep feature functions contained within this object
 
