@@ -78,7 +78,7 @@
             if (name === accountName) {
 
               var categoryBalance = $(this).find('.budget-table-cell-available-div .user-data.currency');
-              categoryBalance.removeClass('positive negative').addClass('cautious');
+              categoryBalance.removeClass('positive negative zero').addClass('cautious');
             }
           });
         },
@@ -87,8 +87,7 @@
           var inspectorName = $('.inspector-category-name.user-data').text().trim();
           if (name === inspectorName) {
             var inspectorBalance = $('.inspector-overview-available .user-data .user-data.currency');
-            inspectorBalance.removeClass('positive negative')
-              .addClass('cautious');
+            inspectorBalance.removeClass('positive negative zero').addClass('cautious');
           }
         },
 
@@ -97,26 +96,33 @@
 
           if (name && name === inspectorName) {
 
-            if ($('.rectify-difference').length)
+            if ($('.toolkit-toolkit-rectify-difference').length || difference == '-0')
               return;
 
             var fDifference = ynabToolKit.shared.formatCurrency(difference);
-
-            var button = $('<button>', { class: 'budget-inspector-button rectify-difference '})
+			var positive = '';
+			if (ynab.unformat(difference) >= 0) { positive = '+'; }			
+			
+            var button = $('<a>', { class: 'budget-inspector-button toolkit-rectify-difference '})
+              .css({ 'text-align': 'center', 'line-height': '30px', 'display': 'block', 'cursor': 'pointer' })
               .data('name', name)
               .data('difference', difference)
               .click(function() {
                 ynabToolKit.checkCreditBalances.updateCreditBalances($(this).data('name'), $(this).data('difference'));
               })
-              .append('Rectify Available for PIF CC: ')
+              .append(((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.checkCreditBalances"]) || 'Rectify Available for PIF CC:'))
+              .append(' ' + positive)
               .append($('<strong>', { class: 'user-data', title: fDifference })
-                .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), difference)));
+              .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), difference)));
 
             $('.inspector-quick-budget .ember-view').append(button);
           }
         },
 
         updateCreditBalances: function(name, difference) {
+          if ((ynabToolKit.options.warnOnQuickBudget != 0) && (!confirm('Are you sure you want to do this?')))
+            return;
+        
           var debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
 
           $(debtPaymentCategories).each(function() {
@@ -133,7 +139,12 @@
               var newValue = (ynab.unformat(oldValue) + difference / 1000);
 
               input.val(newValue);
-              $(input).blur();
+              
+              if (ynabToolKit.options.warnOnQuickBudget == 0) {
+              	// only seems to work if the confirmation doesn't pop up?
+              	// haven't figured out a way to properly blur otherwise
+	            input.blur();
+	          }
             }
           });
         }
