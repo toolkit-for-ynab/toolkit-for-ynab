@@ -1,28 +1,6 @@
-.nav-account-row .nav-account-name {
-	display: flex;
-	margin-left: -20px;
-}
-
-.nav-account-row .nav-account-name .nav-account-name-val {
-	order: 1;
-}
-
 .nav-account-row .nav-account-name i {
-	order: 0;
-	display: inline-block;
-	opacity: 0;
-	width: 0;
-	margin-right: 0.2em;
-	line-height: 1.8em;
-	-webkit-transition: all .3s ease-in;
-	transition: all .3s ease-in;
-}
-
-.nav-account-row .nav-account-name:hover i {
-	opacity: .5;
-	width: 18px;
-}
-
-.nav-account-row .nav-account-name:hover .nav-account-name-val {
-	max-width: 100%;
+	padding-top: 2px;
+	padding-right: 4px;
+	float:left;
+	transition: opacity .25s ease-in-out;
 }

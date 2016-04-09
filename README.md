@@ -39,6 +39,7 @@ This is what the extension can do for you:
 - Right click on a transaction when in the Accounts view to display the Edit menu.
 - Add a split transaction keyboard shortcut, so typing "split" into the category input will automatically create a split transaction.
 - Add buttons within the Account view to easily show and hide upcoming and reconciled transactions with one click.
+- Change the default orange label for underfunded goals to blue
 
 All of these are configurable with options in the extension options page.
 

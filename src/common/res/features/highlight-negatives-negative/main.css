@@ -1,0 +1,15 @@
+/* row */
+.budget-table-row.toolkit-row-availablenegative .budget-table-cell-available .cautious {
+	background: #d33c2d;
+}
+.budget-table-row.toolkit-row-availablenegative .budget-table-cell-available .cautious:hover {
+	background: #b43326;
+}
+
+/* inspector */
+.budget-inspector-category-overview .toolkit-row-availablenegative dt.cautious {
+	color: #d33c2d;
+}
+.budget-inspector-category-overview .toolkit-row-availablenegative dd .cautious {
+	background: #d33c2d;
+}
