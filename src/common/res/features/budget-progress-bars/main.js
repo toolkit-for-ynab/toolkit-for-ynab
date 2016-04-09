@@ -62,24 +62,15 @@
 
 					switch (calculation.goalType) {
 						case 'TB' :
-							hasGoal = true;
-
-							if ( calculation.balance >= calculation.targetBalance ) {
-								status = 100;
-							} else {
-								status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
-							}
-
-							break;
 						case 'TBD' :
 							hasGoal = true;
-							
+
 							if ( calculation.balance >= calculation.targetBalance ) {
 								status = 100;
 							} else {
 								status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
 							}
-							
+
 							break;
 						case 'MF' :
 							hasGoal = true;
@@ -94,7 +85,7 @@
 						default:
 							if (calculation.upcomingTransactions < 0) {
 								hasGoal = true;
-								status = - calculation.balance / calculation.upcomingTransactions;
+								status = 0 - calculation.balance / calculation.upcomingTransactions;
 							}
 					}
 
@@ -221,7 +212,15 @@
         },
 
         observe: function(changedNodes) {
-          if ( changedNodes.has('navlink-budget active') || changedNodes.has('budget-inspector') ) {
+					/**
+					 * Check for this node seperately from the other checks to ensure the flag to load categories gets
+					 * set just in case there is another changed node that drives invoke().
+					 */
+          if ( changedNodes.has('onboarding-steps') ) {
+            loadCategories = true;
+					}
+					// Set {"budget-table-row is-sub-category goal-progress", "nav-main", "budget-header-item budget-header-calendar toolkit-highlight-current-month", "budget-header-flexbox"}
+          if ( changedNodes.has('budget-table-row') || changedNodes.has('navlink-budget active') || changedNodes.has('budget-inspector') ) {
             ynabToolKit.budgetProgressBars.invoke();
           } else if ( changedNodes.has('modal-overlay pure-u modal-popup modal-budget-edit-category active') || 
 											changedNodes.has('modal-overlay pure-u modal-popup modal-add-master-category active')  ||
