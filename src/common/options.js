@@ -39,6 +39,16 @@ function restoreCheckboxOption(elementId) {
   });
 }
 
+function valueIsInSelect(select, value) {
+  for (var i = 0; i < select.length; i++) {
+    if (select.options[i].value === value) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function restoreSelectOption(elementId) {
   return new Promise(function(resolve, reject) {
     var select = document.getElementById(elementId);
@@ -48,16 +58,9 @@ function restoreSelectOption(elementId) {
         data = data || 0;
 
         // Is the value in the select list?
-        var found = false;
-
-        for (var i = 0; i < select.length; i++) {
-          if (select.options[i].value === data) {
-            found = true;
-            break;
-          }
-        }
-
-        if (!found && data === true) {
+        if (data === true &&
+            !valueIsInSelect(select, data) &&
+            valueIsInSelect(select, '1')) {
           // There is a specific upgrade path where a boolean setting
           // gets changed to a select setting, and users who had it set
           // at 'true' should now be set to '1' so the feature is still
@@ -65,7 +68,14 @@ function restoreSelectOption(elementId) {
           data = '1';
         }
 
-        select.value = data;
+        // If we're down here the value should be a legitimate one, but if not
+        // let's just pick the default.
+        if (valueIsInSelect(select, data)) {
+          select.value = data;
+        }
+        else {
+          select.value = select.options[0].value
+        }
 
         resolve();
       });
