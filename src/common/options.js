@@ -41,7 +41,7 @@ function restoreCheckboxOption(elementId) {
 
 function valueIsInSelect(select, value) {
   for (var i = 0; i < select.length; i++) {
-    if (select.options[i].value === data) {
+    if (select.options[i].value === value) {
       return true;
     }
   }
