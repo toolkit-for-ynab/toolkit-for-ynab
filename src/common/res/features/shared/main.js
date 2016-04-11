@@ -12,7 +12,7 @@ ynabToolKit.shared = (function(){
 		//       the array needs to be rebuilt. Currently this must be done in "feature" code but should be 
 		//       done here.
 		//
-		getCategories: function() {
+		getMergedCategories: function() {
 			var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
 			var mCats = entityManager.getAllNonTombstonedMasterCategories();
 
@@ -228,6 +228,19 @@ ynabToolKit.shared = (function(){
         }
       };
     })(),
+
+		/**
+		 * Short function for obtaining an Ember view. 
+		 * 
+		 * Variable number of parms is supported. First is the container name, second is the
+		 * view index number. Defaults to 0.
+		 */
+		containerLookup: function(name, index) {
+			  containerName = name;
+			  viewIndex = (typeof index !== 'undefined') ? index : 0;
+			
+			  return Ember.View.views[Ember.keys(Ember.View.views)[viewIndex]].container.lookup(containerName);
+		},
 		
     // Add formatting method to dates to get YYYY-MM.
     yyyymm:  function(date) {

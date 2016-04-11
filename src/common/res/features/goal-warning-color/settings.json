@@ -1,10 +1,10 @@
 {
-         "name": "highlightNegativesNegative",
+         "name": "goalIndicatorWarningColor",
          "type": "checkbox",
       "default": false,
       "section": "budget",
-        "title": "Highlight all Negative Category Balances Red",
-  "description": "Ensure all negative balances are highlighted red instead of yellow, even with credit card spending.",
+        "title": "Goal Indicator Warning Color",
+  "description": "Change the orange goal underfunded warning to blue, to better differentiate it from credit card overspending.",
       "actions": {
                     "true": [
                       "injectCSS", "main.css",

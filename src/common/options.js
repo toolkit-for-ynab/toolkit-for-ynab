@@ -39,6 +39,16 @@ function restoreCheckboxOption(elementId) {
   });
 }
 
+function valueIsInSelect(select, value) {
+  for (var i = 0; i < select.length; i++) {
+    if (select.options[i].value === value) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function restoreSelectOption(elementId) {
   return new Promise(function(resolve, reject) {
     var select = document.getElementById(elementId);
@@ -47,7 +57,25 @@ function restoreSelectOption(elementId) {
       getKangoSetting(elementId).then(function(data) {
         data = data || 0;
 
-        select.value = data;
+        // Is the value in the select list?
+        if (data === true &&
+            !valueIsInSelect(select, data) &&
+            valueIsInSelect(select, '1')) {
+          // There is a specific upgrade path where a boolean setting
+          // gets changed to a select setting, and users who had it set
+          // at 'true' should now be set to '1' so the feature is still
+          // enabled.
+          data = '1';
+        }
+
+        // If we're down here the value should be a legitimate one, but if not
+        // let's just pick the default.
+        if (valueIsInSelect(select, data)) {
+          select.value = data;
+        }
+        else {
+          select.value = select.options[0].value
+        }
 
         resolve();
       });

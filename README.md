@@ -32,11 +32,14 @@ This is what the extension can do for you:
 - Show a total of the selected transactions in the account view.
 - Make the Move money dialog larger to make more of it fit on the screen at once.
 - Add a setting to make enter just save the transaction when adding transactions.
-- Show your spending pacing mid-month to ensure you're on track to meet your budget. You can enable and disable this setting per budget column by clicking on the value.
+- Show your spending pacing mid-month to ensure you're on track to meet your budget. Now available in two styles: either display the full amount, or display a simple colored indicator. You can enable and disable this setting per budget column by clicking on the value.
 - Make negative numbers anywhere in the application have square corners so they stand out even more.
 - Larger Clickable Area for Icons: Makes the uncleared, cleared and reconciled icons easier to select.
 - Current month indicator to make it easier to see which month is the current month.
 - Right click on a transaction when in the Accounts view to display the Edit menu.
+- Add a split transaction keyboard shortcut, so typing "split" into the category input will automatically create a split transaction.
+- Add buttons within the Account view to easily show and hide upcoming and reconciled transactions with one click.
+- Change the default orange label for underfunded goals to blue
 
 All of these are configurable with options in the extension options page.
 
@@ -47,7 +50,7 @@ If you don't want to build the extension from the source yourself, you can get i
 
 - Chrome on the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl)
 - Firefox on the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/)
-- Safari [on the Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.kangoextensions.ynabenhanced-7M68YQDBSE) NOTE: Safari is currently stuck on version 0.3.6 because of [this issue](https://forums.developer.apple.com/thread/37551). We'll submit updates for Safari back to Apple as soon as we're able to.
+- Safari [on the Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.kangoextensions.ynabenhanced-7M68YQDBSE) NOTE: Safari is currently stuck on version 0.3.6 because Apple is still reviewing the update. You can install the latest [from us directly](http://toolkitforynab.com/safari-updates/toolkitforynab_latest.safariextz) but please keep in mind that it won't auto-update.
 
 Roadmap
 -------

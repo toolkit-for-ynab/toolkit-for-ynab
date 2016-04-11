@@ -220,3 +220,54 @@ L10n is done via the [Crowdin service](http://translate.toolkitforynab.com). To 
 ```
 - If there's no translation for a string in the user's chosen language they'll see 'DEFAULT' based on the code above.
 - New l10n strings added by YNAB core team can be found in ```ynabToolKit.l10nMissingStrings``` variable in the browser console with YNAB app started and l10n feature enabled. Removed strings aren't counted.
+
+How to Test
+===========
+
+So you've built that awesome feature and want to see how it works in browsers? Here's the way we test:
+
+Chrome
+------
+
+Chrome is the easiest platform to test on as it seems the best set up for inspecting what's going on and is the easiest to refresh when you make changes.
+
+1. Run `./build` (Linux / Mac) or `build.bat` (Windows)
+2. Go to the URL chrome://extensions
+3. In the top right corner tick the tickbox titled "Developer Mode"
+4. You'll see some buttons appear. Click `Load Unpacked Extension...`
+5. Select the folder (relative to the root of the repository) `output/chrome`
+
+You'll see the toolkit loaded in to Chrome and it'll work as normal. Whenever you make a change to the files in `src` you'll need to run `./build` or `build.bat` again, then click Reload on the extension. If you find it easier, [this extension](https://chrome.google.com/webstore/detail/extensions-reloader/fimgfedafeadlieiabdeeaodndnlbhid) will reload all unpacked extensions when clicked.
+
+Firefox
+-------
+
+1. Run `./build` (Linux / Mac) or `build.bat` (Windows)
+2. Go to the URL about:addons
+3. Click the gear button, then select `Install Add-on From File`
+4. Select the file (relative to the root of the repository) `output/toolkitforynab_[version].xpi`
+
+You'll see the toolkit loaded in to Firefox and it'll work as normal. Whenever you make a change to the files in `src` you'll need to run `./build` or `build.bat` again, then remove and reinstall the extension from file.
+
+Safari
+------
+
+1. Run `./build`
+2. Go Safari -> Preferences
+3. Click the Advanced tab, then tick the box at the bottom of the page titled `Show Develop menu in menu bar`
+4. Close the preferences dialog, then select Develop -> Show Extension Builder
+5. Click the + in the bottom left corner of the Extension Builder, then select `Add Extension...`
+6. Select the folder (relative to the root of the repository) `output/safari/toolkitforynab_version.safariextension`
+7. The extension is now loaded into the Extension Builder, but its default settings don't fully work. Scroll down in the settings until you see the settings for `Popover 1`
+8. In the File drop down for `Popover 1`, select `popup/popup.html`
+9. Enter a width of `330` and a height of `260` for the popover. (If these magic numbers get out of date, they're located in [this source file](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/src/common/background.js).)
+10. Scroll down until you see the setting for `Setting Item 1`
+11. Click the X icon to remove `Setting Item 1`
+12. You can now click `Install` in the top right of the extension builder.
+
+You'll see the toolkit loaded in to Safari and it'll work as normal. Whenever you make a change to the files in `src` you'll need to run `./build` or `build.bat` again, then click `Install`. The extension builder seems to regularly lose the extension and you need to redo these settings.
+
+My Code Isn't in the Test Version
+=================================
+
+The first debugging step is to remove and reinstall the extension to make sure you've actually got the latest files in there. If you still can't find your files, remember that browsers often put content scripts in a different area of their development tools. If you're stuck, ask for help with a new GitHub Issue.

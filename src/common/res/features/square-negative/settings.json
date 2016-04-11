@@ -7,7 +7,8 @@
   "description": "Changes the round borders on all negative numbers to square. Helps them become more of an eyesore so you want to get rid of them!",
       "actions": {
                     "true": [
-                      "injectCSS", "square.css"
+                      "injectCSS", "square.css",
+                      "injectScript", "../budget-category-info/main.js"                      
                     ]
                  }
 }

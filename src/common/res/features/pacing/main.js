@@ -109,6 +109,9 @@
                 temperature = 'positive';
               }
 
+			  var showIndicator = ynabToolKit.options.pacing;
+			  if (showIndicator == 2) { showIndicator = true; } else { showIndicator = false; }
+			  
               var deemphasized = (masterName == 'Credit Card Payments') || $.inArray(masterName+': '+subcatName, deemphasizedCategories) >= 0;
               var display = Math.round((budgeted*timeSpent()-activity)*1000);
               var tooltip;
@@ -119,7 +122,7 @@
                 tooltip = 'In '+transactionCount+' transaction'+(transactionCount != 1 ? 's' : '')+' you have spent '+ynabToolKit.shared.formatCurrency(-display, false)+
                   ' more than your available budget for this category '+Math.round(timeSpent()*100)+'% of the way through the month.&#13;&#13;'+(deemphasized ? 'Click to unhide.' : 'Click to hide.');
               }
-              $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="'+tooltip+'" class="budget-table-cell-pacing-display '+temperature+' '+(deemphasized ? 'deemphasized' : '')+'" data-name="'+masterName+": "+subcatName+'">'+ynabToolKit.shared.formatCurrency(display, true)+'</span></li>');
+              $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="'+tooltip+'" class="budget-table-cell-pacing-display '+temperature+' '+(deemphasized ? 'deemphasized' : '')+(showIndicator ? ' indicator' : '')+'" data-name="'+masterName+": "+subcatName+'">'+ynabToolKit.shared.formatCurrency(display, true)+'</span></li>');
 
             });
 

@@ -4,11 +4,12 @@
       "default": false,
       "section": "budget",
         "title": "Add Goals Indication",
-  "description": "Add goal indicators for subcategories with goals. Types: (M)onthly goal or target by date that is sort of monthly, (T)arget without date, (U)pcoming transactions that is sort of goal.",
+  "description": "Add goal indicators for subcategories with goals. Types: (M)onthly goal or target by date, (T)arget without date, and (U)pcoming transactions.",
       "actions": {
                     "true": [
                       "injectCSS", "main.css",
-                      "injectScript", "main.js"
+                      "injectScript", "main.js",
+                      "injectScript", "../budget-category-info/main.js"
                     ]
                  }
 }
