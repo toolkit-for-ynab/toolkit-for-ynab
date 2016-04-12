@@ -58,7 +58,10 @@
               .monthlySubCategoryBudgetCalculationsCollection
               .findItemByEntityId('mcbc/' + currentMonth + '/' + a.entityId);
 
-            var available = monthlyBudget.balance;
+			var available = 0;
+			if (monthlyBudget) {
+	            available = monthlyBudget.balance;
+	        }
 
             // ensure that available is >= zero, otherwise don't update
 			if (available >= 0)
@@ -169,7 +172,6 @@
       };
     })(); // Keep feature functions contained within this object
 
-	console.log('running');
     ynabToolKit.checkCreditBalances.invoke(); // Run itself once
 
   } else {
