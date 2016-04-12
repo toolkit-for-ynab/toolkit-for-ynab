@@ -20,6 +20,12 @@
   cursor: pointer;
 }
 
+.budget-table-cell-pacing-display.positive {
+	background-color: #16a336 !important;
+}
+.budget-table-cell-pacing-display.positive:hover {
+	background-color: #138b2e !important;
+}
 .budget-table-cell-pacing-display.cautious {
 	background-color: #e59100 !important;
 }
