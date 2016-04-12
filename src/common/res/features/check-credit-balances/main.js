@@ -7,7 +7,8 @@
           .getBudgetViewModel_AllBudgetMonthsViewModel()._result,
 
         invoke: function() {
-          if (ynabToolKit.checkCreditBalances.inCurrentMonth())
+          
+          if (ynabToolKit.checkCreditBalances.inMonth())
           {
           	var debtAccounts = ynabToolKit.checkCreditBalances.getDebtAccounts();
           	ynabToolKit.checkCreditBalances.processDebtAccounts(debtAccounts);
@@ -16,15 +17,20 @@
 
         observe: function(changedNodes) {
 
-          if (changedNodes.has('budget-inspector')) {
+          if (
+          	changedNodes.has('navlink-budget active') || 
+          	changedNodes.has('budget-table-cell-available-div user-data') ||
+          	changedNodes.has('budget-inspector')) {
             ynabToolKit.checkCreditBalances.invoke();
           }
         },
 
-		inCurrentMonth: function() {
+		inMonth: function() {
 		  var today = new Date();
 		  var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
-		  return selectedMonth.getMonth() == today.getMonth() && selectedMonth.getYear() == today.getYear();
+		  
+		  // check for current month or future month
+		  return selectedMonth.getMonth() >= today.getMonth() && selectedMonth.getYear() >= today.getYear();
 		},
 
         getDebtAccounts: function() {
@@ -98,7 +104,7 @@
             var inspectorBalance = $('.inspector-overview-available .user-data .user-data.currency');
             inspectorBalance.removeClass('positive zero');
             if (! inspectorBalance.hasClass('negative')) {
-              $('.inspector-overview-available .user-data .user-data.currency').addClass('cautious');
+              $('.inspector-overview-available .user-data .user-data.currency, .inspector-overview-available dt').addClass('cautious');
             }
           }
         },
@@ -163,6 +169,7 @@
       };
     })(); // Keep feature functions contained within this object
 
+	console.log('running');
     ynabToolKit.checkCreditBalances.invoke(); // Run itself once
 
   } else {
