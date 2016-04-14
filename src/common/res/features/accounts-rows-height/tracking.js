@@ -21,7 +21,8 @@
 				  }.observes('view:ynab-grid-container:recordsBufferAdjust')
 				});
 				*/
-				var grid = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('view:ynab-grid/index');
+				//var grid = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('view:ynab-grid/index');
+				var grid = ynabToolKit.shared.containerLookup('view:ynab-grid/index', 1);
 				console.log( "grid.recordHeight: " + grid.get('recordHeight') );
 				console.log( "ynab-grid-body-row count: " + $('.ynab-grid-body-row').length );
 				console.log( "tracking:end of invoke()" );
