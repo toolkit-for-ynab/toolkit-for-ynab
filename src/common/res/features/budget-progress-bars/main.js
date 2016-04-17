@@ -84,18 +84,18 @@
 							break;
 						default:
 							if (calculation.upcomingTransactions < 0) {
-								hasGoal = true;
-								status = 0 - calculation.balance / calculation.upcomingTransactions;
+								//hasGoal = true;
+								//status = 0 - calculation.balance / calculation.upcomingTransactions;
 							}
 					}
 
-					if (hasGoal ) {
+					if ( hasGoal ) {
 						status = status > 1 ? 1 : status;
 						status = status < 0 ? 0 : status;
 						var percent = Math.round(parseFloat(status)*100);
 						target.style.background = 'linear-gradient(to right, rgba(22, 163, 54, 0.3) ' + percent + '%, white ' + percent+ '%)';
 					}	else {
-						target.removeAttribute('style');
+						target.style.removeProperty('linear-gradient'); // only remove the style property we added!
 					}
 				}
 			}
