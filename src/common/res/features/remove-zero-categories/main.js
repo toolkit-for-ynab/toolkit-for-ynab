@@ -10,18 +10,30 @@
 
       return {
         invoke: function() {
-          var coverOverbudgetingCategories = $( ".modal-budget-overspending .options-shown .ynab-select-options" ).children('li:not(:first-child)');
+          var coverOverbudgetingCategories = $( ".modal-budget-overspending .dropdown-list > li" );
           coverOverbudgetingCategories.each(function(i) {
-            var t = $(this).text(); // Category balance text.
-            var categoryBalance = parseInt(t.substr(t.indexOf(":"), t.length).replace(/[^\d-]/g, ''));
-            if ($(this).hasClass('is-selectable') && categoryBalance <= 0) {
+            var t = $(this).find('.category-available').text(); // Category balance text.
+            var categoryBalance = parseInt(t.replace(/[^\d-]/g, ''));
+            if (categoryBalance <= 0) {
               $(this).remove();
             }
           });
+          coverOverbudgetingCategories = $( ".modal-budget-overspending .dropdown-list > li" );
+          // Remove empty sections.
+          for (var i = 0; i < coverOverbudgetingCategories.length - 1; i++) {
+            if ($(coverOverbudgetingCategories[i]).hasClass('section-item') &&
+              $(coverOverbudgetingCategories[i+1]).hasClass('section-item')) {
+              $(coverOverbudgetingCategories[i]).remove();
+            }
+          }
+          // Remove last section empty.
+          if (coverOverbudgetingCategories.last().hasClass('section-item')) {
+            coverOverbudgetingCategories.last().remove();
+          }
         },
 
         observe: function(changedNodes) {
-          if (changedNodes.has('ynab-select user-data options-shown')) {
+          if (changedNodes.has('dropdown-container categories-dropdown-container')) {
             // We found a modal pop-up
             ynabToolKit.removeZeroCategories.invoke();
           }
