@@ -8,6 +8,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
     return {
       invoke: function() {
         if (ynabToolKit.options.incomeFromLastMonth > 0) {
+          // Do nothing if no header found.
           if ($('.budget-header-totals-details-values').length === 0) return;
           var selectedMonth = ynabToolKit.shared.parseSelectedMonth().getMonth();
           var previousMonth = selectedMonth - ynabToolKit.options.incomeFromLastMonth;
@@ -25,7 +26,9 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true && ty
             el.transferAccountId === null &&
             el.amount > 0 &&
             el.date.getYear() === previousYear &&
-            el.date.getMonth() === previousMonth; });
+            el.date.getMonth() === previousMonth &&
+            el.getAccount().onBudget &&
+            (el.getSubCategory() && el.getSubCategory().isIncomeCategory()); });
           var total = Array.from(income, function (i) { return i.amount; }).reduce(function (a, b) { return a + b; }, 0);
 
           if ($('.income-from-last-month').length === 0) {
