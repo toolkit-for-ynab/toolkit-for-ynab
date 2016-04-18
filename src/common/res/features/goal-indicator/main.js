@@ -9,8 +9,18 @@
 	  }
 	  
       function addIndicator (element, indicator, tooltip) {
-        var budgetedCell = $(element).find('.budget-table-cell-budgeted');
-        budgetedCell.prepend($('<div>', { class: 'toolkit-goalindicator', title: tooltip }).append(indicator));
+    
+    	$(element).each(function(index) {
+    	
+    		// set alternate position if necessary, to show both goal and upcoming indicators
+    		var alt = '';
+    		if ($(this).hasClass('toolkit-row-goal') && (indicator == 'U')) {
+    			alt = 'alt';
+    		}
+    		
+    		var budgetedCell = $(this).find('.budget-table-cell-budgeted');
+    		budgetedCell.prepend($('<div>', { class: 'toolkit-goalindicator ' + alt, title: tooltip }).append(indicator));
+    	});
       }
 
       return {
