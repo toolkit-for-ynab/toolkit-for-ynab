@@ -2,6 +2,8 @@
 
 set -e
 
+jscs -c src/common/res/features/.jscsrc src/common/res/features || exit
+
 python populateFeaturesFiles.py
 python lib/kango-framework-latest/kango.py build .
 
