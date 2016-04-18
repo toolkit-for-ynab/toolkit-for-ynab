@@ -8,8 +8,8 @@
       "actions": {
                     "true": [
                       "injectScript", "jquery-resizable.min.js",
-                      "injectScript", "resize-inspector.js",
-                      "injectCSS", "resize-inspector.css"
+                      "injectScript", "main.js",
+                      "injectCSS", "main.css"
                     ]
                  }
 }
