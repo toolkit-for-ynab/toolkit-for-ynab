@@ -16,7 +16,8 @@
 .budget-table-cell-pacing-display {
   border-radius: 1em;
   padding: .125em .5em .175em .5em !important;
-  color: white;
+  color: #fff !important;
+  font-weight: normal !important;
   cursor: pointer;
 }
 
@@ -33,7 +34,8 @@
 	background-color: #c37b00 !important;
 }
 
-.budget-table-cell-pacing-display.deemphasized {
+.budget-table-cell-pacing-display.deemphasized,
+.budget-table-cell-pacing-display.deemphasized:hover {
   color: #cfd5d7 !important;
   background-color: transparent !important;
 }
