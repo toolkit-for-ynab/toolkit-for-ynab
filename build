@@ -4,8 +4,8 @@ set -e
 
 jscs -c src/common/res/features/.jscsrc src/common/res/features || exit
 
-python populateFeaturesFiles.py
-python lib/kango-framework-latest/kango.py build .
+python2 populateFeaturesFiles.py
+python2 lib/kango-framework-latest/kango.py build .
 
 # The safari icon needs to be different than the other browsers. Move it into place.
 echo "[   INFO] Moving Safari extension icons into place..."
