@@ -1,0 +1,12 @@
+.toolkit-privacyMode .currency {
+  filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="3" /></filter></svg>#filter');
+  -webkit-filter: blur(10px);
+  filter: blur(10px);
+}
+
+.toolkit-privacyMode *:hover > .currency,
+.toolkit-privacyMode *:hover > * > .currency,
+.toolkit-privacyMode .currency:hover {
+  -webkit-filter: initial;
+  filter: initial;
+}
