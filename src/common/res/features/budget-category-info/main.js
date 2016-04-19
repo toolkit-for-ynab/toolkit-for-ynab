@@ -48,13 +48,14 @@
       	// clear all old classes
       	$(row)
       		.removeClass('toolkit-row-budgetedpositive toolkit-row-budgetednegative toolkit-row-budgetedzero')
-      		.removeClass(' toolkit-row-availablepositive toolkit-row-availablenegative toolkit-row-availablezero')
-      		.removeClass(' toolkit-row-goalupcoming toolkit-row-goalTB toolkit-row-goalMF toolkit-row-goalTBD');
+      		.removeClass('toolkit-row-availablepositive toolkit-row-availablenegative toolkit-row-availablezero')
+      		.removeClass('toolkit-row-goal toolkit-row-upcoming toolkit-row-goalTB toolkit-row-goalMF toolkit-row-goalTBD');
   		if (inspectorTitle == name) {
   			$('dl.inspector-overview-available')
   				.removeClass('toolkit-row-budgetedpositive toolkit-row-budgetednegative toolkit-row-budgetedzero')
   				.removeClass('toolkit-row-availablepositive toolkit-row-availablenegative toolkit-row-availablezero')
-  				.removeClass('toolkit-row-goal upcoming toolkit-row-goalTB toolkit-row-goalMF toolkit-row-goalTBD');
+  				.removeClass('toolkit-row-goal toolkit-row-upcoming toolkit-row-goalTB toolkit-row-goalMF toolkit-row-goalTBD')
+  				.removeClass('toolkit-row-debt-category');
   		}
       
         // add all new classes
@@ -62,6 +63,9 @@
         	$(row).addClass('toolkit-row-' + classes[i]);
         	if (inspectorTitle == name) {
 	        	$('dl.inspector-overview-available').addClass('toolkit-row-' + classes[i]);
+	        	if ($(row).hasClass('is-debt-payment-category')) {
+	        		$('dl.inspector-overview-available').addClass('toolkit-row-debt-category');
+	        	}
 	        }
         }
       }
@@ -136,10 +140,9 @@
 						classes.push('goal');
 						classes.push('goal' + calculation.goalType);
 					}
-					else {
-						if (calculation.upcomingTransactions < 0) {
-							classes.push('upcoming');
-						}
+					
+					if (calculation.upcomingTransactions < 0) {
+						classes.push('upcoming');
 					}
 					
 					// set classes

@@ -95,7 +95,7 @@
               var categoryBalance = $(this).find('.budget-table-cell-available-div .user-data.currency');
               categoryBalance.removeClass('positive zero');
               if (! categoryBalance.hasClass('negative')) {
-              	$(this).find('.budget-table-cell-available-div .user-data.currency').addClass('cautious');
+              	$(this).find('.budget-table-cell-available-div .user-data.currency').addClass('cautious toolkit-pif-cautious');
               }
             }
           });
@@ -107,7 +107,7 @@
             var inspectorBalance = $('.inspector-overview-available .user-data .user-data.currency');
             inspectorBalance.removeClass('positive zero');
             if (! inspectorBalance.hasClass('negative')) {
-              $('.inspector-overview-available .user-data .user-data.currency, .inspector-overview-available dt').addClass('cautious');
+              $('.inspector-overview-available .user-data .user-data.currency, .inspector-overview-available dt').addClass('cautious toolkit-pif-cautious');
             }
           }
         },
