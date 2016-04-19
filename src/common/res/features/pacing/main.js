@@ -155,8 +155,12 @@
       };
     })(); // Keep feature functions contained within this object
 
-    ynabToolKit.insertPacingColumns.invoke();
-
+	var href = window.location.href;
+	href = href.replace('youneedabudget.com', '');
+	if (/budget/.test(href)) {
+      ynabToolKit.insertPacingColumns.invoke();
+	}
+	
   } else {
     setTimeout(poll, 250);
   }
