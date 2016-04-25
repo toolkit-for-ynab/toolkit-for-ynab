@@ -93,6 +93,8 @@ def checkSettingStructure(setting, dirName):
         raise ValueError('Settings must be a single JSON object or an array of JSON objects. '
                          'See the setting file in hide-age-of-money for an example setting.')
 
+print('[   INFO] Building settings and feed changes files...')
+
 for dirName, subdirList, fileList in os.walk('./source/common/res/features/'):
 
     if ('settings.json' in fileList):
@@ -225,5 +227,3 @@ with open('./source/common/res/features/act-on-change/feedChanges.js', 'w') as f
                        '    setTimeout(poll, 100);\n'
                        '  }\n'
                        '})();\n'))
-
-print('[   INFO] All inits and settings written correctly')
