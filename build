@@ -2,10 +2,33 @@
 
 set -e
 
-jscs -c src/common/res/features/.jscsrc src/common/res/features || exit
+# Run JSCS to check code style
+if [ -f node_modules/jscs/bin/jscs  ];
+then
+   ./node_modules/jscs/bin/jscs -c src/common/res/features/.jscsrc src/common/res/features || exit
+else
+  hash jscs 2>/dev/null || { echo >&2 "I require 'jscs' to check code style before I can build but it's not installed. Please run 'npm install' in this directory to install it."; exit 1; }
 
-python2 populateFeaturesFiles.py
-python2 lib/kango-framework-latest/kango.py build .
+  jscs -c src/common/res/features/.jscsrc src/common/res/features || exit
+fi
+
+# Some people run python 2 and python 3 simultaneously. They'll have a 'python2' executable.
+# Others don't, and their python 2 is just called 'python'
+if hash python2 2>/dev/null; then
+  # Populate feature files like feed changes by reading thorugh the code and hooking up
+  # all the calls we need.
+  python2 populateFeaturesFiles.py
+
+  # Run the actual build
+  python2 lib/kango-framework-latest/kango.py build .
+else
+  # Populate feature files like feed changes by reading thorugh the code and hooking up
+  # all the calls we need.
+  python populateFeaturesFiles.py
+
+  # Run the actual build
+  python lib/kango-framework-latest/kango.py build .
+fi
 
 # The safari icon needs to be different than the other browsers. Move it into place.
 echo "[   INFO] Moving Safari extension icons into place..."

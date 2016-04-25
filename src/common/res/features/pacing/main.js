@@ -98,8 +98,9 @@
 
               var transactionCount = allTransactions.filter(function (el) {
                 return el.transferAccountId === null &&
-                el.outflow > 0 &&
-              el.subCategoryNameWrapped == (masterName + ': ' + subcatName);}).length;
+                  el.outflow > 0 &&
+                  el.subCategoryNameWrapped == (masterName + ': ' + subcatName);
+              }).length;
 
               var temperature;
               if (pace > 1) {
@@ -109,7 +110,11 @@
               }
 
               var showIndicator = ynabToolKit.options.pacing;
-              if (showIndicator == 2) { showIndicator = true; } else { showIndicator = false; }
+              if (showIndicator == 2) {
+                showIndicator = true;
+              } else {
+                showIndicator = false;
+              }
 
               var deemphasized = (masterName == 'Credit Card Payments') || $.inArray(masterName + ': ' + subcatName, deemphasizedCategories) >= 0;
               var display = Math.round((budgeted * timeSpent() - activity) * 1000);
@@ -156,12 +161,12 @@
       };
     })(); // Keep feature functions contained within this object
 
-	var href = window.location.href;
-	href = href.replace('youneedabudget.com', '');
-	if (/budget/.test(href)) {
+    var href = window.location.href;
+    href = href.replace('youneedabudget.com', '');
+    if (/budget/.test(href)) {
       ynabToolKit.insertPacingColumns.invoke();
-	}
-	
+    }
+
   } else {
     setTimeout(poll, 250);
   }

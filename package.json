@@ -1,0 +1,23 @@
+{
+  "name": "toolkit-for-ynab",
+  "version": "0.4.6",
+  "description": "A general purpose YNAB enhancing browser extension for Chrome, Firefox and Safari. Have it your way!",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jscs": "^3.0.3"
+  },
+  "scripts": {
+    "build": "./build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toolkit-for-ynab/toolkit-for-ynab.git"
+  },
+  "author": "Open Source Community",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues"
+  },
+  "homepage": "https://github.com/toolkit-for-ynab/toolkit-for-ynab#readme"
+}

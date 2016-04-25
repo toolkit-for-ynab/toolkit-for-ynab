@@ -1,6 +1,6 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
 
     ynabToolKit.goalIndicator = (function () {
 
@@ -10,21 +10,24 @@
 
       function addIndicator(element, indicator, tooltip) {
 
-        $(element).each(function(index) {
+        $(element).each(function (index) {
 
-      		// set alternate position if necessary, to show both goal and upcoming indicators
-      		var alt = '';
-      		if ($(this).hasClass('toolkit-row-goal') && (indicator == 'U')) {
-      			alt = 'alt';
-      		}
+          // set alternate position if necessary, to show both goal and upcoming indicators
+          var alt = '';
+          if ($(this).hasClass('toolkit-row-goal') && (indicator == 'U')) {
+            alt = 'alt';
+          }
 
-      		var budgetedCell = $(this).find('.budget-table-cell-budgeted');
-      		budgetedCell.prepend($('<div>', { class: 'toolkit-goalindicator ' + alt, title: tooltip }).append(indicator));
-      	});
+          var budgetedCell = $(this).find('.budget-table-cell-budgeted');
+          budgetedCell.prepend($('<div>', {
+            class: 'toolkit-goalindicator ' + alt,
+            title: tooltip,
+          }).append(indicator));
+        });
       }
 
       return {
-        invoke: function() {
+        invoke: function () {
           clearIndicators();
           addIndicator('.toolkit-row-goalTB', 'T', 'Target balance goal');
           addIndicator('.toolkit-row-goalTBD', 'T', 'Target balance goal');
@@ -34,7 +37,7 @@
       };
     })(); // Keep feature functions contained within this object
 
-  // feature called and invoked based on the budget-category-info shared feature
+    // feature called and invoked based on the budget-category-info shared feature
 
   } else {
     setTimeout(poll, 250);

@@ -5,7 +5,7 @@
 
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
 
     var loadCategories = true;
     var selMonth;
@@ -26,9 +26,9 @@
           calculation.goalType = subCat.getGoalType();
           calculation.goalCreationMonth = (subCat.goalCreationMonth) ? subCat.goalCreationMonth.toString().substr(0, 7) : '';
           /**
-          * If the month the goal was created in is greater than the selected month, null the goal type to prevent further
-          * processing.
-          */
+           * If the month the goal was created in is greater than the selected month, null the goal type to prevent further
+           * processing.
+           */
           if (calculation.goalCreationMonth && calculation.goalCreationMonth > selMonth) {
             calculation.goalType = null;
           }
@@ -37,12 +37,11 @@
         return calculation;
 
         function getSubCategoryByName(ele) {
-      return ele.toolkitName == subCategoryName;
-    };
+          return ele.toolkitName == subCategoryName;
+        };
       }
 
-      function setClasses(row, name, classes)
-      {
+      function setClasses(row, name, classes) {
         // inspector title
         var inspectorTitle = $.trim($('h1.inspector-category-name').text());
 
@@ -68,94 +67,93 @@
       }
 
       return {
-        invoke: function() {
+        invoke: function () {
 
-    			var categories = $('.budget-table ul');
-    			var masterCategoryName = '';
+          var categories = $('.budget-table ul');
+          var masterCategoryName = '';
 
-    			if (subCats == null || subCats.length === 0 || loadCategories)
-    			{
-    				subCats = ynabToolKit.shared.getMergedCategories();
-    				loadCategories = false;
-    			}
+          if (subCats == null || subCats.length === 0 || loadCategories) {
+            subCats = ynabToolKit.shared.getMergedCategories();
+            loadCategories = false;
+          }
 
-    			selMonth = ynabToolKit.shared.parseSelectedMonth();
-    			// will be null on YNAB load when the user is not on the budget screen
-    			if (selMonth !== null)
-    			{
-    				selMonth = ynabToolKit.shared.yyyymm(selMonth);
-    				internalIdBase = 'mcbc/' + selMonth + '/';
-    			}
+          selMonth = ynabToolKit.shared.parseSelectedMonth();
 
-    			// loop through categories
-    			$(categories).each(function () {
-    				if ($(this).hasClass('is-master-category')) {
-    					masterCategoryName = $(this).find('div.budget-table-cell-name-row-label-item>div>div[title]');
-    					masterCategoryName = (masterCategoryName != 'undefined') ? $(masterCategoryName).attr('title') : '';
-    				}
+          // will be null on YNAB load when the user is not on the budget screen
+          if (selMonth !== null) {
+            selMonth = ynabToolKit.shared.yyyymm(selMonth);
+            internalIdBase = 'mcbc/' + selMonth + '/';
+          }
 
-    				if ($(this).hasClass('is-sub-category')) {
-    					var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title;
-    					var classes = [];
+          // loop through categories
+          $(categories).each(function () {
+            if ($(this).hasClass('is-master-category')) {
+              masterCategoryName = $(this).find('div.budget-table-cell-name-row-label-item>div>div[title]');
+              masterCategoryName = (masterCategoryName != 'undefined') ? $(masterCategoryName).attr('title') : '';
+            }
 
-    					// skip uncategorized
-    					if ('Uncategorized Transactions' === subCategoryName) {
-    						return;
-    					}
+            if ($(this).hasClass('is-sub-category')) {
+              var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title;
+              var classes = [];
 
-    					// add budgeted
-    					var budgeted = $(this).find('.budget-table-cell-budgeted .currency').text();
-    					if (ynab.unformat(budgeted) < 0) {
-    						classes.push('budgetednegative');
-    					} else if (ynab.unformat(budgeted) > 0) {
-    						classes.push('budgetedpositive');
-    					}	else {
-    						classes.push('budgetedzero');
-    					}
+              // skip uncategorized
+              if (subCategoryName === 'Uncategorized Transactions') {
+                return;
+              }
 
-    					// add available balance
-    					var available = $(this).find('.budget-table-cell-available .currency').text();
-    					if (ynab.unformat(available) < 0) {
-    						classes.push('availablenegative');
-    					} else if (ynab.unformat(available) > 0) {
-    						classes.push('availablepositive');
-    					} else {
-    						classes.push('availablezero');
-    					}
+              // add budgeted
+              var budgeted = $(this).find('.budget-table-cell-budgeted .currency').text();
+              if (ynab.unformat(budgeted) < 0) {
+                classes.push('budgetednegative');
+              } else if (ynab.unformat(budgeted) > 0) {
+                classes.push('budgetedpositive');
+              } else {
+                classes.push('budgetedzero');
+              }
 
-    					// add goals and upcoming
-    					calculation = getCalculation(masterCategoryName + '_' + subCategoryName);
-    					if (calculation.goalType == 'TB' ||
-                  calculation.goalType == 'MF' ||
-    						  calculation.goalType == 'TBD') {
-    						classes.push('goal');
-    						classes.push('goal' + calculation.goalType);
-    					}
+              // add available balance
+              var available = $(this).find('.budget-table-cell-available .currency').text();
+              if (ynab.unformat(available) < 0) {
+                classes.push('availablenegative');
+              } else if (ynab.unformat(available) > 0) {
+                classes.push('availablepositive');
+              } else {
+                classes.push('availablezero');
+              }
 
-    					if (calculation.upcomingTransactions < 0) {
-    						classes.push('upcoming');
-    					}
+              // add goals and upcoming
+              calculation = getCalculation(masterCategoryName + '_' + subCategoryName);
+              if (calculation.goalType == 'TB' ||
+                calculation.goalType == 'MF' ||
+                calculation.goalType == 'TBD') {
+                classes.push('goal');
+                classes.push('goal' + calculation.goalType);
+              }
 
-    					// set classes
-    					setClasses(this, subCategoryName, classes);
-    				}
-    			});
+              if (calculation.upcomingTransactions < 0) {
+                classes.push('upcoming');
+              }
 
-    			// call external features if appropriate
-    			if (ynabToolKit.options.goalIndicator != 0) {
-    				ynabToolKit.goalIndicator.invoke();
-    			}
+              // set classes
+              setClasses(this, subCategoryName, classes);
+            }
+          });
+
+          // call external features if appropriate
+          if (ynabToolKit.options.goalIndicator != 0) {
+            ynabToolKit.goalIndicator.invoke();
+          }
         },
 
         observe: function (changedNodes) {
           if (changedNodes.has('navlink-budget active') ||
-              changedNodes.has('budget-inspector') ||
-              changedNodes.has('budget-table-cell-available-div user-data') ||
-              changedNodes.has('budget-inspector-goals')) {
+            changedNodes.has('budget-inspector') ||
+            changedNodes.has('budget-table-cell-available-div user-data') ||
+            changedNodes.has('budget-inspector-goals')) {
             ynabToolKit.budgetCategoryInfo.invoke();
           } else if (
             changedNodes.has('modal-overlay pure-u modal-popup modal-budget-edit-category active') ||
-            changedNodes.has('modal-overlay pure-u modal-popup modal-add-master-category active')  ||
+            changedNodes.has('modal-overlay pure-u modal-popup modal-add-master-category active') ||
             changedNodes.has('modal-overlay pure-u modal-popup modal-add-sub-category active')) {
             /**
              * Seems there should be a more 'Embery' way to know when the categories have been

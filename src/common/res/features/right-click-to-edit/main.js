@@ -1,19 +1,17 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
 
     ynabToolKit.rightClickToEdit = (function () {
 
       // Supporting functions,
       // or variables, etc
-      function displayContextMenu(element, e)
-      {
+      function displayContextMenu(element, e) {
         // clear all toggled checkboxes
         $('.ynab-checkbox-button.is-checked').click();
 
         // toggle checkbox
-        if ($(element).hasClass('ynab-grid-body-sub'))
-        {
+        if ($(element).hasClass('ynab-grid-body-sub')) {
           // select parent transaction to toggle
           $(element).prevAll('.ynab-grid-body-parent:first').find('.ynab-checkbox-button').click();
         } else {
@@ -37,25 +35,22 @@
 
         // move context menu
         var offset = $(element).offset();
-        if (below)
-        {
+        if (below) {
           // position below
           $('.modal-account-edit-transaction-list .modal')
-          .addClass('modal-below')
+            .addClass('modal-below')
             .css('left', e.pageX - 115)
             .css('top', offset.top + 41);
-        }        else
-      {
-        // position above
-        $('.modal-account-edit-transaction-list .modal')
-          .addClass('modal-above')
-          .css('left', e.pageX - 115)
-          .css('top', offset.top - height - 8);
-      }
+        } else {
+          // position above
+          $('.modal-account-edit-transaction-list .modal')
+            .addClass('modal-above')
+            .css('left', e.pageX - 115)
+            .css('top', offset.top - height - 8);
+        }
       }
 
-      function hideContextMenu()
-      {
+      function hideContextMenu() {
         // ignore right clicks
         return false;
       }
@@ -63,7 +58,8 @@
       return {
         invoke: function () {
           $('.ynab-grid').on('contextmenu', '.ynab-grid-body-row', function (e) {
-            displayContextMenu(this, e); return false;
+            displayContextMenu(this, e);
+            return false;
           });
 
           $('body').on('contextmenu', '.modal-account-edit-transaction-list', hideContextMenu);
