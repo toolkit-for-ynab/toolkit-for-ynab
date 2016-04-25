@@ -2,39 +2,47 @@
 
 set -e
 
-# Run JSCS to check code style
-if [ -f node_modules/jscs/bin/jscs  ];
-then
-   ./node_modules/jscs/bin/jscs -c src/common/res/features/.jscsrc src/common/res/features || exit
-else
-  hash jscs 2>/dev/null || { echo >&2 "I require 'jscs' to check code style before I can build but it's not installed. Please run 'npm install' in this directory to install it."; exit 1; }
+# Check our code style with jscs.
+npm run jscs || exit
 
-  jscs -c src/common/res/features/.jscsrc src/common/res/features || exit
-fi
+# Populate feature files like feed changes by reading thorugh the code and hooking up
+# all the calls we need, as well as processing settings files
+python populateFeaturesFiles.py
 
-# Some people run python 2 and python 3 simultaneously. They'll have a 'python2' executable.
-# Others don't, and their python 2 is just called 'python'
-if hash python2 2>/dev/null; then
-  # Populate feature files like feed changes by reading thorugh the code and hooking up
-  # all the calls we need.
-  python2 populateFeaturesFiles.py
+# Copy everything except src/ into a .transpiled directory.
+# We'll transpile src/ with the output where it should be later, which then
+# simplifies our Kango build.
+shopt -s extglob
+rm -rf .transpiled
+mkdir .transpiled
+cp -a . !(src|.transpiled) .transpiled/
 
-  # Run the actual build
-  python2 lib/kango-framework-latest/kango.py build .
-else
-  # Populate feature files like feed changes by reading thorugh the code and hooking up
-  # all the calls we need.
-  python populateFeaturesFiles.py
+# Transpile the src/ directory, putting the files in .transpiled/src/
+npm run babel || exit
 
-  # Run the actual build
-  python lib/kango-framework-latest/kango.py build .
-fi
+pushd .transpiled > /dev/null
 
-# The safari icon needs to be different than the other browsers. Move it into place.
-echo "[   INFO] Moving Safari extension icons into place..."
-pushd output/safari/*.safariextension/icons > /dev/null
-  rm -f button.png
-  mv button-safari.png button.png
-  cp ../../../../src/common/icons/button-safari@2x.png button@2x.png
-  rm button-safari@2x.png
+  # Kango requires python 2.7. Some people run python 2 and python 3 simultaneously.
+  # They'll have a 'python2' executable.
+  # Others don't, and their python 2 is just called 'python'
+  if hash python2 2>/dev/null; then
+    python2 lib/kango-framework-latest/kango.py build .
+  else
+    python lib/kango-framework-latest/kango.py build .
+  fi
+
+  # The safari icon needs to be different than the other browsers. Move it into place.
+  echo "[   INFO] Moving Safari extension icons into place..."
+  pushd output/safari/*.safariextension/icons > /dev/null
+    rm -f button.png
+    mv button-safari.png button.png
+    cp ../../../../src/common/icons/button-safari@2x.png button@2x.png
+    rm button-safari@2x.png
+  popd > /dev/null
+
 popd > /dev/null
+
+# Clean up.
+rm -rf output
+mv .transpiled/output .
+rm -rf .transpiled

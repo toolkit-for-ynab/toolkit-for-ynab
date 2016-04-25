@@ -2,6 +2,7 @@
 node_modules/*
 output/*
 certificates/*
+.transpiled/*
 *.pyc
 /.project
 save-commands.json

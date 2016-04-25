@@ -48,11 +48,9 @@ function applySettingsToDom() {
           '1' in setting.actions &&
           !('true' in setting.actions)) {
 
-            debugger;
-
         data = '1';
       }
-      
+
       if (data in setting.actions) {
         var selectedActions = setting.actions[data.toString()];
         for (var i = 0; i < selectedActions.length; i += 2) {
