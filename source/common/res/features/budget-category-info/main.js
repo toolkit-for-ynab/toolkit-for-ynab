@@ -122,7 +122,7 @@
               }
 
               // add goals and upcoming
-              calculation = getCalculation(masterCategoryName + '_' + subCategoryName);
+              var calculation = getCalculation(masterCategoryName + '_' + subCategoryName);
               if (calculation.goalType == 'TB' ||
                 calculation.goalType == 'MF' ||
                 calculation.goalType == 'TBD') {

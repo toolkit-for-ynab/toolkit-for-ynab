@@ -34,13 +34,13 @@
 
         // Filter outflow transactions by Date for history lookup option.
         if (ynabToolKit.options.daysOfBufferingHistoryLookup > 0) {
-          dateNow = Date.now();
+          var dateNow = Date.now();
           outflowTransactions = outflowTransactions.filter(function (el) {
               return (dateNow - el.getDate().getUTCTime()) / 3600 / 24 / 1000 / (365 / 12) < ynabToolKit.options.daysOfBufferingHistoryLookup; });
         }
 
         // Get outflow transactions period
-        outflowTransactionsDates = Array.from(outflowTransactions, function (el) { return el.getDate().getUTCTime(); });
+        var outflowTransactionsDates = Array.from(outflowTransactions, function (el) { return el.getDate().getUTCTime(); });
 
         var firstTransactionDate = Math.min.apply(null, outflowTransactionsDates);
         var lastTransactionDate = Math.max.apply(null, outflowTransactionsDates);

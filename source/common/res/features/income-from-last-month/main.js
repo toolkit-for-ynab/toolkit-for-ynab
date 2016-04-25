@@ -18,7 +18,7 @@
               previousYear -= 1;
             }
 
-            previousMonthName = ynabToolKit.shared.monthsShort[previousMonth];
+            var previousMonthName = ynabToolKit.shared.monthsShort[previousMonth];
 
             var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
             var transactions = entityManager.getAllTransactions();

@@ -17,7 +17,7 @@
         points.push(1);
         var pointsPercent = Array.from(points, function (p) { return p * 100; });
 
-        style = 'linear-gradient(to right, ';
+        var style = 'linear-gradient(to right, ';
         for (var i = 0; i < colors.length; i++) {
           style += colors[i] + ' ' + pointsPercent[i] + '%, ';
           style += colors[i] + ' ' + pointsPercent[i + 1] + '%';
@@ -57,7 +57,7 @@
 
       function addGoalProgress(subCategoryName, target) {
         if (subCategoryName != 'Uncategorized Transactions') {
-          calculation = getCalculation(subCategoryName);
+          var calculation = getCalculation(subCategoryName);
 
           var status = 0;
           var tstatus = 0;
