@@ -9,7 +9,7 @@
   },
   "scripts": {
     "jscs": "jscs -c source/common/res/features/.jscsrc source/common/res/features",
-    "babel": "babel source --compact false --quiet --out-dir src"
+    "babel": "babel source --compact false --quiet --ignore *.min.js --out-dir src"
   },
   "babel": {
     "presets": ["es2015"]
