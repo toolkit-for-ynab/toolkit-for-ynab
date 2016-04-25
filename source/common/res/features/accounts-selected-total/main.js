@@ -34,7 +34,7 @@
         }
 
         transactions = ynabToolKit.shared.getVisibleTransactions(accountId);
-        notSubTransactions = transactions.filter(function (el) { return el.displayItemType != ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType != ynab.constants.TransactionDisplayItemType.SubTransaction; });
+        var notSubTransactions = transactions.filter(function (el) { return el.displayItemType != ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType != ynab.constants.TransactionDisplayItemType.SubTransaction; });
 
         for (var i = 0; i < notSubTransactions.length; i++) {
           if (notSubTransactions[i].isChecked) {
@@ -87,7 +87,7 @@
 
       function enhancedSelectedTotalsInit() {
         var parentDiv = document.getElementsByClassName('accounts-header-balances');
-        n = parentDiv.length;
+        var n = parentDiv.length;
         if (n > 0) {
           enhancedSelectedTotalsApply();
         } else {

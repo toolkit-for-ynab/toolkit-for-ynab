@@ -105,7 +105,7 @@
               class: 'collapsed-buttons',
             });
 
-          clickFunction = function () {
+          var clickFunction = function () {
             ynabToolKit.collapseSideMenu.originalButtons[this.className.replace(' active', '')].click();
           };
 

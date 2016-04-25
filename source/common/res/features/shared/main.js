@@ -20,13 +20,13 @@ ynabToolKit.shared = (function () {
 
       subCategories.length = 0;
 
-      for (i = 0; i < mCats.length; i++) {
+      for (var i = 0; i < mCats.length; i++) {
         var mCat = mCats[i];
 
         // Ignore certain categories!
         if (mCat.isHidden !== true && mCat.name !== 'Internal Master Category') {
-          tCats = entityManager.getSubCategoriesByMasterCategoryId(mCat.getEntityId());
-          for (j = 0; j < tCats.length; j++) {
+          var tCats = entityManager.getSubCategoriesByMasterCategoryId(mCat.getEntityId());
+          for (var j = 0; j < tCats.length; j++) {
             var subCategory = tCats[j];
 
             // Ignore certain categories!

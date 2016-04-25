@@ -37,7 +37,7 @@
       }
 
       // Tool for setting content.
-      contentSetter = (function () {
+      var contentSetter = (function () {
         return {
           selectorPrefix: '',
           resetPrefix: function () {
@@ -60,7 +60,7 @@
 
           setArray: function (textArray, selector, start, step) {
             for (i = 0; i < textArray.length; i++) {
-              contentNum = (start || 0) + i * (step || 1);
+              var contentNum = (start || 0) + i * (step || 1);
               contentSetter.set(textArray[i], contentNum, selector);
             }
           },
@@ -206,7 +206,7 @@
     ynabToolKit.l10n.budgetHeader();
 
     // Rerender sidebar and content views on page load.
-    rerenderClasses = ['.content', '.nav'];
+    var rerenderClasses = ['.content', '.nav'];
     for (var i = 0; i < rerenderClasses.length; i++) {
       Ember.View.views[$(rerenderClasses[i])[0].id].rerender();
     }
