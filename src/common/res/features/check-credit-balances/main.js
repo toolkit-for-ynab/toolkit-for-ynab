@@ -172,7 +172,11 @@
       };
     })(); // Keep feature functions contained within this object
 
-    ynabToolKit.checkCreditBalances.invoke(); // Run itself once
+	var href = window.location.href;
+	href = href.replace('youneedabudget.com', '');
+	if (/budget/.test(href)) {
+      ynabToolKit.checkCreditBalances.invoke();
+    }
 
   } else {
     setTimeout(poll, 250);
