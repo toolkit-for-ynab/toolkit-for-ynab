@@ -8,12 +8,10 @@
     "jscs": "^3.0.3"
   },
   "scripts": {
-    "jscs": "jscs -c src/common/res/features/.jscsrc src/common/res/features",
-    "babel": "babel src --out-dir .transpiled/src"
+    "jscs": "jscs -c source/common/res/features/.jscsrc source/common/res/features",
+    "babel": "babel source --out-dir src"
   },
   "babel": {
-    "presets": [
-      "es2015"
-    ]
+    "presets": ["es2015"]
   }
 }

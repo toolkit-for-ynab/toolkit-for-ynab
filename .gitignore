@@ -2,8 +2,8 @@
 node_modules/*
 output/*
 certificates/*
-.transpiled/*
+src/*
 *.pyc
 /.project
 save-commands.json
-src/common/res/features/act-on-change/feedChanges.js
+source/common/res/features/act-on-change/feedChanges.js
