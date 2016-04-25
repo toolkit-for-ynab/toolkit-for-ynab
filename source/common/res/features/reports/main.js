@@ -5,10 +5,6 @@
 
     ynabToolKit.reports = (function () {
 
-      // Supporting functions,
-      // or variables, etc
-      $(window).resize(this.updateCanvasSize);
-
       return {
           netWorth: {
             labels: [],
@@ -55,6 +51,15 @@
             );
 
             $('.navlink-reports').on('click', ynabToolKit.reports.showReports);
+          },
+
+          bindToResizeEvent: function () {
+            // We also want to make sure we bind to the window resize event.
+            // We only want to do this once though.
+            if (ynabToolKit.reports.boundToResizeEvent !== true) {
+              $(window).resize(this.updateCanvasSize);
+              ynabToolKit.reports.boundToResizeEvent = true;
+            }
           },
 
           debugTransactions: function () {
@@ -506,6 +511,7 @@
 
           invoke: function () {
             ynabToolKit.reports.setUpReportsButton();
+            ynabToolKit.reports.bindToResizeEvent();
           },
 
           observe: function (changedNodes) {
