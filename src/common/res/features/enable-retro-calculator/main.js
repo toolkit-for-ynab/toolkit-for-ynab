@@ -1,12 +1,12 @@
 function injectInitializer() {
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined') {
 
-    (function($){
+    (function ($) {
       var selector = 'li.budget-table-cell-budgeted div.currency-input, ' +
                      'div.ynab-grid-cell-outflow div.currency-input, ' +
                      'div.ynab-grid-cell-inflow div.currency-input';
 
-      $(document).on('keypress', selector, function(e) {
+      $(document).on('keypress', selector, function (e) {
         e = e || window.event;
         var charCode = e.which || e.keyCode;
         var charTyped = String.fromCharCode(charCode);

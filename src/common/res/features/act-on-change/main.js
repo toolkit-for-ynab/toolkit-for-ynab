@@ -11,11 +11,11 @@
     // during page interactions and updates to the developer tools console.
     //ynabToolKit.debugNodes = true;
 
-    ynabToolKit.actOnChange = function() {
+    ynabToolKit.actOnChange = function () {
 
       MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
-      var observer = new MutationObserver(function(mutations, observer) {
+      var observer = new MutationObserver(function (mutations, observer) {
 
         if (ynabToolKit.debugNodes) {
           console.log('MODIFIED NODES');
@@ -23,13 +23,13 @@
 
         ynabToolKit.changedNodes = new Set();
 
-        mutations.forEach(function(mutation) {
+        mutations.forEach(function (mutation) {
           var newNodes = mutation.target;
 
           var $nodes = $(newNodes); // jQuery set
-          $nodes.each(function() {
+          $nodes.each(function () {
             var nodeClass = $(this).attr('class');
-            if (nodeClass) ynabToolKit.changedNodes.add(nodeClass.replace(/^ember-view /,''));
+            if (nodeClass) ynabToolKit.changedNodes.add(nodeClass.replace(/^ember-view /, ''));
           }); // each node mutation event
 
         }); // each mutation event
@@ -48,15 +48,16 @@
 
       // This finally says 'Watch for changes' and only needs to be called the one time
       observer.observe($('.ember-view.layout')[0], {
-        subtree : true,
-        childList : true,
-        characterData : true,
+        subtree: true,
+        childList: true,
+        characterData: true,
         attributes: true,
-        attributeFilter : [ 'class' ]
+        attributeFilter: ['class'],
       });
 
       ynabToolKit.actOnChangeInit = true;
     };
+
     ynabToolKit.actOnChange(); // Run itself once
 
   } else {

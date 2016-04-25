@@ -7,8 +7,8 @@
   "description": "Display a notification in the sidebar when there are transactions to be imported.",
       "actions": {
                     "true": [
-                      "injectCSS", "import-notification.css",
-                      "injectScript", "import-notification.js"
+                      "injectCSS", "main.css",
+                      "injectScript", "main.js"
                     ]
                  }
 }
