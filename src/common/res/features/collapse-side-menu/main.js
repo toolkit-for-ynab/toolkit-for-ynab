@@ -4,7 +4,7 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
 
-    ynabToolKit.collapseSideMenu = (function(){
+    ynabToolKit.collapseSideMenu = (function () {
 
       // Supporting functions,
       // or variables, etc
@@ -15,7 +15,7 @@
           $('<a>', { href: '#' }).append(
             $('<span>', { class: 'ember-view flaticon stroke left-circle-4' })
           ).append(
-            (ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.collapse"]) || 'Collapse'
+            (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.collapse']) || 'Collapse'
           )
         ),
 
@@ -29,11 +29,11 @@
           inspectorWidth: $('.budget-inspector').css('width'),
         },
 
-        invoke: function() {
+        invoke: function () {
           ynabToolKit.collapseSideMenu.setupBtns();
         },
 
-        observe: function(changedNodes) {
+        observe: function (changedNodes) {
           if (changedNodes.has('pure-g layout user-logged-in')) {
             if ($('.nav-main').length) {
               ynabToolKit.collapseSideMenu.setupBtns();
@@ -65,7 +65,7 @@
         },
 
         // Add buttons and handlers to screen
-        setupBtns: function() {
+        setupBtns: function () {
 
           // Don't proceed if buttons already exist
           if ($('.navlink-collapse').is(':visible') ||
@@ -77,13 +77,13 @@
           ynabToolKit.collapseSideMenu.setUpCollapsedButtons();
         },
 
-        setUpCollapseBtn: function() {
+        setUpCollapseBtn: function () {
           $('.nav-main').append(ynabToolKit.collapseSideMenu.collapseBtn);
           $('.navlink-collapse').on('click',
             ynabToolKit.collapseSideMenu.collapseMenu);
         },
 
-        setUpCollapsedButtons: function() {
+        setUpCollapsedButtons: function () {
           var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup();
 
           if (!$('.collapsed-buttons').length) {
@@ -96,18 +96,19 @@
           $('.collapsed-buttons').hide();
         },
 
-        getUnCollapseBtnGroup: function() {
+        getUnCollapseBtnGroup: function () {
           var navChildren = $('.nav-main').children();
           var navChildrenLength = navChildren.length;
 
           var collapsedBtnContainer =
             $('<div>', {
-              'class': 'collapsed-buttons'
+              class: 'collapsed-buttons',
             });
 
-          clickFunction = function() {
+          clickFunction = function () {
             ynabToolKit.collapseSideMenu.originalButtons[this.className.replace(' active', '')].click();
           };
+
           for (var i = 0; i < navChildrenLength; i++) {
             var child = navChildren[i];
 
@@ -132,7 +133,7 @@
             var linkClasses = listItem.className.replace(' active', '');
 
             var link = $('<a>');
-            link.attr('href','#');
+            link.attr('href', '#');
             link.addClass(linkClasses);
             link.html(button);
             link.click(clickFunction);
@@ -159,7 +160,7 @@
 
           collapsedBtnContainer.append(collapseBtn);
 
-          $('body').on('click', '.navbar-expand', function() {
+          $('body').on('click', '.navbar-expand', function () {
             ynabToolKit.collapseSideMenu.expandMenu(ynabToolKit.collapseSideMenu.originalSizes);
           });
 
@@ -167,22 +168,23 @@
         },
 
         // Handle clicking expand button. Puts things back to original sizes
-        expandMenu: function(originalSizes) {
+        expandMenu: function (originalSizes) {
           $('.collapsed-buttons').hide();
           $('.sidebar > .ember-view').fadeIn();
           $('.navlink-collapse').show();
-          $('.sidebar').animate({width: originalSizes.sidebarWidth});
-          $('.content').animate({left: originalSizes.contentLeft});
-          $('.budget-header').animate({left: originalSizes.headerLeft});
-          $('.budget-content').animate({width: originalSizes.contentWidth}, 400, 'swing', function() {
+          $('.sidebar').animate({ width: originalSizes.sidebarWidth });
+          $('.content').animate({ left: originalSizes.contentLeft });
+          $('.budget-header').animate({ left: originalSizes.headerLeft });
+          $('.budget-content').animate({ width: originalSizes.contentWidth }, 400, 'swing', function () {
             // Need to remove width after animation completion
             $('.budget-content').removeAttr('style');
           });
-          $('.budget-inspector').animate({width: originalSizes.inspectorWidth});
+
+          $('.budget-inspector').animate({ width: originalSizes.inspectorWidth });
         },
 
         // Handle clicking the collapse button
-        collapseMenu: function() {
+        collapseMenu: function () {
           ynabToolKit.collapseSideMenu.setActiveButton();
           $('.navlink-collapse').hide();
           $('.sidebar > .ember-view').hide();
@@ -191,20 +193,20 @@
         },
 
         // Set collapsed sizes
-        setCollapsedSizes: function() {
-          $('.sidebar').animate({width: '40px'});
-          $('.content').animate({left: '40px'}, 400, 'swing', function() {
+        setCollapsedSizes: function () {
+          $('.sidebar').animate({ width: '40px' });
+          $('.content').animate({ left: '40px' }, 400, 'swing', function () {
             // Need to remove width after animation completion
             $('.ynab-grid-header').removeAttr('style');
           });
 
-          $('.budget-header').animate({left: '40px'});
-          $('.budget-content').animate({width: '73%'});
-          $('.budget-inspector').animate({width: '27%'});
+          $('.budget-header').animate({ left: '40px' });
+          $('.budget-content').animate({ width: '73%' });
+          $('.budget-inspector').animate({ width: '27%' });
         },
 
         // Add the active style to correct button
-        setActiveButton: function() {
+        setActiveButton: function () {
           ynabToolKit.collapseSideMenu.deactivateCollapsedActive();
 
           var originalButtons = ynabToolKit.collapseSideMenu.originalButtons;
@@ -229,10 +231,10 @@
         },
 
         // Deactivate collapsed buttons
-        deactivateCollapsedActive: function() {
+        deactivateCollapsedActive: function () {
           $('.collapsed-buttons a button').removeClass('collapsed-active');
           $('.collapsed-buttons a').removeClass('active');
-        }
+        },
       };
     })(); // Keep feature functions contained within this object
 

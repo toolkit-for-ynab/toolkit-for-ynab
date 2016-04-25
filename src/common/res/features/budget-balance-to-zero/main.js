@@ -4,29 +4,29 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
 
-    ynabToolKit.budgetBalanceToZero = (function(){
+    ynabToolKit.budgetBalanceToZero = (function () {
       return {
         budgetView: ynab.YNABSharedLib
           .getBudgetViewModel_AllBudgetMonthsViewModel()._result, // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 
-        invoke: function() {
+        invoke: function () {
           var categories = ynabToolKit.budgetBalanceToZero.getCategories();
           var categoryName = ynabToolKit.budgetBalanceToZero.getInspectorName();
 
-          categories.forEach(function(f) {
+          categories.forEach(function (f) {
             if (f.name === categoryName) {
               ynabToolKit.budgetBalanceToZero.updateInspectorButton(f);
             }
           });
         },
 
-        observe: function(changedNodes) {
+        observe: function (changedNodes) {
           if (changedNodes.has('budget-inspector')) {
             ynabToolKit.budgetBalanceToZero.invoke();
           }
         },
 
-        getCategories: function() {
+        getCategories: function () {
           if (ynabToolKit.budgetBalanceToZero === 'undefined') {
             return [];
           }
@@ -36,14 +36,14 @@
           var masterCats = ynabToolKit.budgetBalanceToZero.budgetView
             .categoriesViewModel.masterCategoriesCollection._internalDataArray;
 
-          masterCats.forEach(function(c) {
+          masterCats.forEach(function (c) {
             // Filter out "special" categories
             if (c.internalName === null) {
               masterCategories.push(c.entityId);
             }
           });
 
-          masterCategories.forEach(function(c) {
+          masterCategories.forEach(function (c) {
             var accounts = ynabToolKit.budgetBalanceToZero.budgetView
               .categoriesViewModel.subCategoriesCollection
               .findItemsByMasterCategoryId(c);
@@ -54,27 +54,27 @@
           return categories;
         },
 
-        updateInspectorButton: function(f) {
+        updateInspectorButton: function (f) {
           var name = f.name;
           var amount = ynabToolKit.budgetBalanceToZero.getBudgetAmount(f);
           var fAmount = ynabToolKit.shared.formatCurrency(amount);
-          
+
           if (($('.toolkit-balance-to-zero').length) || (amount == '-0')) {
             return;
           }
-          
+
           /* check for positive amounts */
           var positive = '';
           if (ynab.unformat(amount) > 0) { positive = '+'; }
 
           var button = $('<a>', { class: 'budget-inspector-button toolkit-balance-to-zero' })
-          	.css({ 'text-align': 'center', 'line-height': '30px', 'display': 'block', 'cursor': 'pointer' })
+            .css({ 'text-align': 'center', 'line-height': '30px', display: 'block', cursor: 'pointer' })
             .data('name', f.name)
             .data('amount', amount)
-            .click(function() {
+            .click(function () {
               ynabToolKit.budgetBalanceToZero.updateBudgetedBalance($(this).data('name'), $(this).data('amount'));
             })
-            .append(((ynabToolKit.l10nData && ynabToolKit.l10nData["toolkit.balanceToZero"]) || 'Balance to 0.00:'))
+            .append(((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.balanceToZero']) || 'Balance to 0.00:'))
             .append(' ' + positive)
             .append($('<strong>', { class: 'user-data', title: fAmount })
             .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), amount)));
@@ -82,13 +82,13 @@
           $('.inspector-quick-budget .ember-view').append(button);
         },
 
-        updateBudgetedBalance: function(name, difference) {
+        updateBudgetedBalance: function (name, difference) {
           if ((ynabToolKit.options.warnOnQuickBudget != 0) && (!confirm('Are you sure you want to do this?')))
             return;
-            
+
           var categories = $('.is-sub-category.is-checked');
 
-          $(categories).each(function() {
+          $(categories).each(function () {
             var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
             if (accountName === name) {
               var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click().find('input');
@@ -101,21 +101,21 @@
               var newValue = (ynab.unformat(oldValue) + difference / 1000);
 
               $(input).val(newValue);
-              
+
               if (ynabToolKit.options.warnOnQuickBudget == 0) {
-              	// only seems to work if the confirmation doesn't pop up?
-              	// haven't figured out a way to properly blur otherwise
+                // only seems to work if the confirmation doesn't pop up?
+                // haven't figured out a way to properly blur otherwise
                 input.blur();
               }
             }
           });
         },
 
-        getInspectorName: function() {
+        getInspectorName: function () {
           return $('.inspector-category-name.user-data').text().trim();
         },
 
-        getBudgetAmount: function(f) {
+        getBudgetAmount: function (f) {
           var currentMonth = moment(ynabToolKit.shared.parseSelectedMonth())
             .format('YYYY-MM');
           var monthlyBudget = ynabToolKit.budgetBalanceToZero.budgetView
@@ -123,7 +123,7 @@
             .findItemByEntityId('mcbc/' + currentMonth + '/' + f.entityId);
 
           return (monthlyBudget.balance * -1);
-        }
+        },
       };
     })(); // Keep feature functions contained within this object
   } else {
