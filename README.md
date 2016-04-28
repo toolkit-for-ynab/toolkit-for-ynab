@@ -104,6 +104,9 @@ We have a large number of contributors who each bring their own style to the cod
 **How do I build a feature?**
 [Here's some documentation.](https://github.com/blargity/toolkit-for-ynab/blob/master/src/common/res/features/HOW_TO_BUILD_FEATURES.md) If you are still struggling to get up to speed let us know (email's fine!) and we'll make sure we help out.
 
+**Important note about line feeds!!!**
+You must ensure that your code editor is configued to use Unix style line feeds (LFs) or the build will fail. This will primarily affect contributors using Windows as the LFs are different on that platform.
+
 Legal Stuff
 -----------
 
