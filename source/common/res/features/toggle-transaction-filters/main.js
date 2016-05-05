@@ -5,9 +5,13 @@
     ynabToolKit.toggleTransactionFilters = (function () {
 
       function toggleReconciled() {
-        var container = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('controller:accounts');
+        var container = ynabToolKit.shared.containerLookup('controller:accounts');
         var settingReconciled = !container.filters.get('reconciled');
         container.filters.set('reconciled', settingReconciled);
+
+        // TODO: this works only until the filter dialog is used. Need to figure out why but at
+        //       least this will preserve the settings when switching between the budget and an account.
+        container.filters.applyFilters();
 
         if (settingReconciled) {
           $('#toolkit-toggleReconciled').removeClass('toolkit-button-toggle-hidden').addClass('toolkit-button-toggle-visible');
@@ -17,9 +21,10 @@
       }
 
       function toggleScheduled() {
-        var container = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('controller:accounts');
+        var container = ynabToolKit.shared.containerLookup('controller:accounts');
         var settingScheduled = !container.filters.get('scheduled');
         container.filters.set('scheduled', settingScheduled);
+        container.filters.applyFilters(); // TODO: see comments above
 
         if (settingScheduled) {
           $('#toolkit-toggleScheduled').removeClass('toolkit-button-toggle-hidden').addClass('toolkit-button-toggle-visible');
@@ -45,7 +50,7 @@
 
       function initToggleButtons() {
         // get internal filters
-        var container = Ember.View.views[Ember.keys(Ember.View.views)[0]].container.lookup('controller:accounts');
+        var container = ynabToolKit.shared.containerLookup('controller:accounts');
         var settingReconciled = container.filters.get('reconciled');
         var settingScheduled = container.filters.get('scheduled');
 
@@ -71,7 +76,6 @@
 
       return {
         invoke: function () {
-
           // invoke on load
           if (/accounts/.test(window.location.href)) {
             // create buttons
@@ -84,7 +88,6 @@
         },
 
         observe: function (changedNodes) {
-
           // activate button styles if filters potentially change
           // activate if switch to individual account, or all accounts views
           if (
