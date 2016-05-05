@@ -1,22 +1,30 @@
 @ECHO OFF
 
-echo "[   INFO] Checking code style with JSCS..."
-npm run jscs --silent || exit
+echo [   INFO] Checking code style with JSCS...
+call npm run jscs --silent || goto :errexit
 
-# Populate feature files like feed changes by reading through the code and hooking up
-# all the calls we need, as well as processing settings files
+rem Populate feature files like feed changes by reading through the code and hooking up
+rem all the calls we need, as well as processing settings files
 python populateFeaturesFiles.py
 
-# Transpile the source/ directory, putting the files in src/ which is where Kango expects to see them.
-echo "[   INFO] Transpiling code with Babel on ES2015 preset..."
-rd /s /q src
-npm run babel --silent || exit
+rem Transpile the source/ directory, putting the files in src/ which is where Kango expects to see them.
+echo [   INFO] Transpiling code with Babel on ES2015 preset...
+rem rd /s /q src
+call npm run babel --silent || goto :errexit
 
-# Copy any non JS files across that babel didn't bring with it. Ignore existing files we just transpiled.
-robocopy source src /E /XC /XN /XO
+rem Copy any non JS files across that babel didn't bring with it. Ignore existing files we just transpiled.
+echo [   INFO] Copying non JS files...
+robocopy source src /E /XC /XN /XO /NFL /NDL /NJH /NJS
 
-# Run the Kango build.
+rem Run the Kango build.
 python lib\kango-framework-latest\kango.py build .
 
-# Clean up.
+rem Clean up.
 rd /s /q src
+
+goto :exit
+
+:errexit
+echo Build errors encountered
+
+:exit

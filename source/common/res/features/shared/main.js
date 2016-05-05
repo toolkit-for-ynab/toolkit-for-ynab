@@ -254,8 +254,8 @@ ynabToolKit.shared = (function () {
      * view index number. Defaults to 0.
      */
     containerLookup: function (name, index) {
-      containerName = name;
-      viewIndex = (typeof index !== 'undefined') ? index : 0;
+      var containerName = name;
+      var viewIndex = (typeof index !== 'undefined') ? index : 0;
 
       return Ember.View.views[Ember.keys(Ember.View.views)[viewIndex]].container.lookup(containerName);
     },
