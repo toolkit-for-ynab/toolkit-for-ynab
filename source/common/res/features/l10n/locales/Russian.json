@@ -63,7 +63,7 @@ ynabToolKit.l10nData = {
   "app.memo":"Памятка",
   "app.amount":"Сумма",
   "app.next":"Далее",
-  "app.complete":"Завершить",
+  "app.complete":"Прогресс",
   "app.why":"Почему",
   "app.for":"{{field}} для {{institution}}",
   "app.recategorize":"Изм. категорию",
