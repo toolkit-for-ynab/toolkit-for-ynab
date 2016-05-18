@@ -131,7 +131,7 @@ It's also possible to have your single feature expose multiple settings, just pu
 
 How does this Magic Work?
 -------------------------
-There's a [python script](https://github.com/blargity/toolkit-for-ynab/blob/master/populateFeaturesFiles.py) that's invoked as part of the build process. It scans for these files and pulls them all into a single Javascript file, which is included in the extension. This saves us lots of time avoiding merge conflicts and makes building these features much easier as there's less code to write by hand.
+There's a [python script](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/populateFeaturesFiles.py) that's invoked as part of the build process. It scans for these files and pulls them all into a single Javascript file, which is included in the extension. This saves us lots of time avoiding merge conflicts and makes building these features much easier as there's less code to write by hand.
 
 What If I Can't Get My Setting to Work?
 ---------------------------------------
@@ -145,7 +145,7 @@ Ok, so you can't do what you want with CSS. You need to add a button, or do some
 - YNAB is in charge of the DOM, not us. So we need to watch what they do and inject our stuff, rather than wiping out their UI and replacing it with our own.
 - YNAB is built with EmberJS. The [Ember Inspector browser extension](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi) will help you navigate their stuff much more effectively than just using normal Inspect Element.
 
-We've built a pattern that will help you get started. The example file is here: https://github.com/blargity/toolkit-for-ynab/blob/master/src/common/res/features/shared/example.js
+We've built a pattern that will help you get started. The example file is here: https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/res/features/shared/example.js
 
 This is what it looks like:
 
@@ -201,7 +201,7 @@ Shared Library
 --------------
 There are some common features which have been pulled into a shared library. We will all need to format currency to match the YNAB settings for currency that the user has chosen for example.
 
-These functions / features can be found here: https://github.com/blargity/toolkit-for-ynab/blob/master/src/common/res/features/shared/main.js
+These functions / features can be found here: https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/res/features/shared/main.js
 
 Make as much use of these as possible. These are pre-tested and ready to go!
 
@@ -237,7 +237,7 @@ Chrome is the easiest platform to test on as it seems the best set up for inspec
 4. You'll see some buttons appear. Click `Load Unpacked Extension...`
 5. Select the folder (relative to the root of the repository) `output/chrome`
 
-You'll see the toolkit loaded in to Chrome and it'll work as normal. Whenever you make a change to the files in `src` you'll need to run `./build` or `build.bat` again, then click Reload on the extension. If you find it easier, [this extension](https://chrome.google.com/webstore/detail/extensions-reloader/fimgfedafeadlieiabdeeaodndnlbhid) will reload all unpacked extensions when clicked.
+You'll see the toolkit loaded in to Chrome and it'll work as normal. Whenever you make a change to the files in `source` you'll need to run `./build` or `build.bat` again, then click Reload on the extension. If you find it easier, [this extension](https://chrome.google.com/webstore/detail/extensions-reloader/fimgfedafeadlieiabdeeaodndnlbhid) will reload all unpacked extensions when clicked.
 
 Firefox
 -------
@@ -247,7 +247,7 @@ Firefox
 3. Click the gear button, then select `Install Add-on From File`
 4. Select the file (relative to the root of the repository) `output/toolkitforynab_[version].xpi`
 
-You'll see the toolkit loaded in to Firefox and it'll work as normal. Whenever you make a change to the files in `src` you'll need to run `./build` or `build.bat` again, then remove and reinstall the extension from file.
+You'll see the toolkit loaded in to Firefox and it'll work as normal. Whenever you make a change to the files in `source` you'll need to run `./build` or `build.bat` again, then remove and reinstall the extension from file.
 
 Safari
 ------
@@ -260,12 +260,12 @@ Safari
 6. Select the folder (relative to the root of the repository) `output/safari/toolkitforynab_version.safariextension`
 7. The extension is now loaded into the Extension Builder, but its default settings don't fully work. Scroll down in the settings until you see the settings for `Popover 1`
 8. In the File drop down for `Popover 1`, select `popup/popup.html`
-9. Enter a width of `330` and a height of `260` for the popover. (If these magic numbers get out of date, they're located in [this source file](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/src/common/background.js).)
+9. Enter a width of `330` and a height of `260` for the popover. (If these magic numbers get out of date, they're located in [this source file](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/background.js).)
 10. Scroll down until you see the setting for `Setting Item 1`
 11. Click the X icon to remove `Setting Item 1`
 12. You can now click `Install` in the top right of the extension builder.
 
-You'll see the toolkit loaded in to Safari and it'll work as normal. Whenever you make a change to the files in `src` you'll need to run `./build` or `build.bat` again, then click `Install`. The extension builder seems to regularly lose the extension and you need to redo these settings.
+You'll see the toolkit loaded in to Safari and it'll work as normal. Whenever you make a change to the files in `source` you'll need to run `./build` or `build.bat` again, then click `Install`. The extension builder seems to regularly lose the extension and you need to redo these settings.
 
 My Code Isn't in the Test Version
 =================================

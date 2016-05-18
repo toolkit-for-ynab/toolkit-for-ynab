@@ -62,7 +62,7 @@ Contributions
 
 Contributions are greatly welcomed. If you want to contribute, it's best if you can let us know so we don't double up on effort. You can see what is being worked on and by whom on the roadmap. If you can't find what you want to build on the roadmap, feel free to put a note up on the github issues board to let the team know you're working on something new. When your code is ready, submit a pull request. You can also contact @blarg on [the YNAB forums](http://forum.youneedabudget.com).
 
-For documentation on how to build a feature, [see the documentation](https://github.com/blargity/toolkit-for-ynab/blob/master/src/common/res/features/HOW_TO_BUILD_FEATURES.md).
+For documentation on how to build a feature, [see the documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/res/features/HOW_TO_BUILD_FEATURES.md).
 
 Building the Code
 -----------------
@@ -102,7 +102,7 @@ We've decided that it's better to use the latest and greatest than to wait for b
 We have a large number of contributors who each bring their own style to the code base. It was getting a bit hard to navigate all the features, as they each had their own way of indenting, etc etc. We held a team vote to unify our styles, and decided to follow the AirBNB style guide. It's a pretty good way to go, so give it a shot before you get too upset about having to change your style.
 
 **How do I build a feature?**
-[Here's some documentation.](https://github.com/blargity/toolkit-for-ynab/blob/master/src/common/res/features/HOW_TO_BUILD_FEATURES.md) If you are still struggling to get up to speed let us know (email's fine!) and we'll make sure we help out.
+[Here's some documentation.](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/res/features/HOW_TO_BUILD_FEATURES.md) If you are still struggling to get up to speed let us know (email's fine!) and we'll make sure we help out.
 
 **Important note about line feeds!!!**
 You must ensure that your code editor is configued to use Unix style line feeds (LFs) or the build will fail. This will primarily affect contributors using Windows as the LFs are different on that platform.
