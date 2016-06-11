@@ -7,10 +7,7 @@
       function toggleReconciled() {
         var container = ynabToolKit.shared.containerLookup('controller:accounts');
         var settingReconciled = !container.filters.get('reconciled');
-        container.filters.set('reconciled', settingReconciled);
-
-        // TODO: this works only until the filter dialog is used. Need to figure out why but at
-        //       least this will preserve the settings when switching between the budget and an account.
+        container.filters.get('propertiesToSet').setProperties({ reconciled: settingReconciled });
         container.filters.applyFilters();
 
         if (settingReconciled) {
@@ -23,8 +20,8 @@
       function toggleScheduled() {
         var container = ynabToolKit.shared.containerLookup('controller:accounts');
         var settingScheduled = !container.filters.get('scheduled');
-        container.filters.set('scheduled', settingScheduled);
-        container.filters.applyFilters(); // TODO: see comments above
+        container.filters.get('propertiesToSet').setProperties({ scheduled: settingScheduled });
+        container.filters.applyFilters();
 
         if (settingScheduled) {
           $('#toolkit-toggleScheduled').removeClass('toolkit-button-toggle-hidden').addClass('toolkit-button-toggle-visible');
