@@ -317,21 +317,21 @@
                     <div class="reports-legend-square debts"></div> \
                     <span class="reports-inspector-heading">' +
                     ((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.debts']) || 'Debts') + '</span> \
-                    <span id="reports-inspector-debts" class="reports-inspector-value"></span> \
+                    <span id="reports-inspector-debts" class="reports-inspector-value currency"></span> \
                   </div> \
                   <div class="reports-inspector-divider"></div> \
                   <div class="reports-inspector-detail"> \
                     <div class="reports-legend-square assets"></div> \
                     <span class="reports-inspector-heading">' +
                     ((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.assets']) || 'Assets') + '</span> \
-                    <span id="reports-inspector-assets" class="reports-inspector-value"></span> \
+                    <span id="reports-inspector-assets" class="reports-inspector-value currency"></span> \
                   </div> \
                   <div class="reports-inspector-divider"></div> \
                   <div class="reports-inspector-detail"> \
                     <div class="reports-legend-line net-worth"></div> \
                     <span class="reports-inspector-heading">' +
                     ((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.netWorth']) || 'Net Worth') + '</span> \
-                    <span id="reports-inspector-net-worth" class="reports-inspector-value"></span> \
+                    <span id="reports-inspector-net-worth" class="reports-inspector-value currency"></span> \
                   </div> \
                 </div> \
               </div> \
