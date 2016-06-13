@@ -162,10 +162,11 @@
               oldValue = oldValue ? oldValue : 0;
 
               // YNAB stores values *1000 for decimal places, so just
-              // divide by 1000 to get the actual amount.
-              var newValue = (ynab.unformat(oldValue) + difference / 1000);
+              // multiple by 1000 to get the actual amount.
+              var newValue = (ynab.unformat(oldValue) * 1000 + difference);
 
-              input.val(newValue);
+              // format the calculated value back to selected number format
+              input.val(ynab.formatCurrency(newValue));
 
               if (ynabToolKit.options.warnOnQuickBudget == 0) {
                 // only seems to work if the confirmation doesn't pop up?
