@@ -2,7 +2,7 @@
          "name": "enableTransactionCalculator",
          "type": "checkbox",
       "default": false,
-      "section": "budget",
+      "section": "accounts",
         "title": "Enabled Calculator On Accounts Page",
   "description": "Allow usage of the calculator on the accounts page. (Adding transactions)",
       "actions": {

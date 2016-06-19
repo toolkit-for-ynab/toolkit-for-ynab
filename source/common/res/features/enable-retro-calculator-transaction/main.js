@@ -2,12 +2,13 @@ function injectInitializer() {
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined') {
 
     (function ($) {
-      var currentValue;
       var currentOperation;
-      var selector = 'div.ynab-grid-add-rows div.ynab-grid-cell-outflow div.currency-input, ' +
-                     'div.ynab-grid-add-rows div.ynab-grid-cell-inflow div.currency-input';
+      var selector = 'div.ynab-grid-body-row.is-editing div.ynab-grid-cell-outflow div.currency-input, ' +
+                          'div.ynab-grid-body-row.is-editing div.ynab-grid-cell-inflow div.currency-input, ' +
+                          'div.ynab-grid-add-rows div.ynab-grid-cell-outflow div.currency-input, ' +
+                          'div.ynab-grid-add-rows div.ynab-grid-cell-inflow div.currency-input';
 
-      $(document).on('keyup', selector, function (e) {
+      $(document).on('keypress', selector, function (e) {
         e = e || window.event;
 
         var charCode = e.which || e.keyCode;
