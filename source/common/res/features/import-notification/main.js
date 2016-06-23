@@ -4,7 +4,7 @@
     ynabToolKit.importNotification = function ()  {
         $('.import-notification').remove();
         $('.nav-account-row').each(function (index, row) {
-          var account = Ember.View.views[$(row).attr('id')].get('data');
+          var account = ynabToolKit.shared.getEmberView($(row).attr('id')).get('data');
           var transactions = ynab.utilities.TransactionImportUtilities.getImportTransactionsForAccount(account);
           if (transactions.length >= 1) {
             $(row).find('.nav-account-notification').append('<a class="notification import-notification">' + transactions.length + '</a>');

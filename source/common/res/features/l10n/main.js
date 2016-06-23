@@ -208,7 +208,7 @@
     // Rerender sidebar and content views on page load.
     var rerenderClasses = ['.content', '.nav'];
     for (var i = 0; i < rerenderClasses.length; i++) {
-      Ember.View.views[$(rerenderClasses[i])[0].id].rerender();
+      ynabToolKit.shared.getEmberView($(rerenderClasses[i])[0].id).rerender();
     }
 
     // When rerendering sidebar accounts lists are closing, open them.
