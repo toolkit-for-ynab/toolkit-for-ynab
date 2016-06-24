@@ -1,0 +1,7 @@
+{
+  "excludeFiles": ["source/common/res/features/allSettings.js", "source/common/res/features/act-on-change/feedChanges.js", "**/*.min.js"],
+  "preset": "airbnb",
+  "maxErrors": 999,
+  "maximumLineLength": null,
+  "requireDollarBeforejQueryAssignment": null
+}

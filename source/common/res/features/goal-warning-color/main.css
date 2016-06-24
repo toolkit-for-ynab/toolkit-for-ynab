@@ -1,0 +1,27 @@
+/* row */
+.budget-table-row.toolkit-row-goal.toolkit-row-availablepositive:not(.toolkit-row-upcoming) .budget-table-cell-available .cautious,
+.budget-table-row.toolkit-row-goal.toolkit-row-availablezero:not(.toolkit-row-upcoming) .budget-table-cell-available .cautious {
+	background-color: #009cc2;
+}
+.budget-table-row.toolkit-row-goal.toolkit-row-availablepositive:not(.toolkit-row-upcoming) .budget-table-cell-available .cautious:hover,
+.budget-table-row.toolkit-row-goal.toolkit-row-availablezero:not(.toolkit-row-upcoming) .budget-table-cell-available .cautious:hover {
+	background-color: #1f8ca7;
+}
+
+/* inspector */
+.budget-inspector-category-overview .toolkit-row-goal.toolkit-row-availablepositive:not(.toolkit-row-upcoming) dt.cautious,
+.budget-inspector-category-overview .toolkit-row-goal.toolkit-row-availablezero:not(.toolkit-row-upcoming) dt.cautious {
+	color: #009cc2;
+}
+.budget-inspector-category-overview .toolkit-row-goal.toolkit-row-availablepositive:not(.toolkit-row-upcoming) dd .cautious,
+.budget-inspector-category-overview .toolkit-row-goal.toolkit-row-availablezero:not(.toolkit-row-upcoming) dd .cautious {
+	background: #009cc2;
+}
+
+/* goal */
+.goal-warning .inner-circle {
+	stroke: #43aecb;	
+}
+.goal-warning .outer-circle {
+	fill: #1f8ca7;
+}

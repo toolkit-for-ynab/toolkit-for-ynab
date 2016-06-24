@@ -62,36 +62,50 @@ Contributions
 
 Contributions are greatly welcomed. If you want to contribute, it's best if you can let us know so we don't double up on effort. You can see what is being worked on and by whom on the roadmap. If you can't find what you want to build on the roadmap, feel free to put a note up on the github issues board to let the team know you're working on something new. When your code is ready, submit a pull request. You can also contact @blarg on [the YNAB forums](http://forum.youneedabudget.com).
 
-For documentation on how to build a feature, [see the documentation](https://github.com/blargity/toolkit-for-ynab/blob/master/src/common/res/features/HOW_TO_BUILD_FEATURES.md).
+For documentation on how to build a feature, [see the documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/res/features/HOW_TO_BUILD_FEATURES.md).
 
 Building the Code
 -----------------
-This extension uses Kango Extensions to provide cross browser support. To build:
+This extension uses three main things in its build process:
+
+- JSCS: Checks the style of your code to make sure it matches our style guide as you build.
+- Babel: Transpiles ES2015 back to ES5 for browser support of newer JS syntax.
+- Kango Extensions: Provide cross browser support for Chrome, Firefox, and Safari. To build:
 
 **Mac / Linux**
 
-1. Clone the repository
-1. Install Python 2.7 (or newer, but I haven't tested that) in your path so it's accessible with just plain ```python``` if you don't have it already.
-1. Run ```./build``` from within the folder you cloned above.
-1. You'll see platform specific output in the ```output``` folder.
-1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file, or load it into Safari using the extension builder.
+1. Clone the repository.
+1. Install Node/npm (tested with Node 5.3.0 and npm 3.3.12).
+1. Install Python 2.7 (Kango requires 2.7 specifically) and put it in your path so it's accessible with either `python` or `python2`.
+1. Run `npm install` within the folder you cloned. This installs JSCS and Babel for you. You only need to do this once.
+1. Run `./build` from within the folder you cloned. This will run all the tools.
+1. Finished extensions for each platform are available in the `output` directory.
+1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file, or load it into Safari using the extension builder (Mac only).
 
 **Windows**
 
-1. Clone the repository
-1. Install Python 2.7 (or newer, but I haven't tested that) in your path so it's accessible with just plain ```python``` if you don't have it already.
-1. Run ```build.bat``` from within the folder you cloned above.
-1. You'll see platform specific output in the ```output``` folder.
-1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file, or load it into Safari using the extension builder.
+1. Clone the repository.
+1. Install Node/npm (tested with Node 5.3.0 and npm 3.3.12).
+1. Install Python 2.7 (Kango requires 2.7 specifically) in your path so it's accessible with just plain `python`.
+1. Run `npm install` within the folder you cloned. This installs JSCS and Babel for you. You only need to do this once.
+1. Run `build.bat` from within the folder you cloned. This will run all the tools.
+1. Finished extensions for each platform are available in the `output` directory.
+1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file.
 
 Development Methodology
 -----------------------
 
-**This is janky! Why aren't you using Coffeescript / Typescript / Sass / Less / Compass / etc? Plain JS and CSS, WTF?**
-The primary concern for this extension from a development perspective is making it **easy** to work on. Every single one of those technologies above are awesome. I use a lot of them all the time at work. They do make your life easier, but unfortunately they add massively to the learning curve for contributing to the extension. Everyone knows JS and CSS. I want to make sure that working on the extension remains an accessible thing to do.
+**ES2015? What's that?**
+We've decided that it's better to use the latest and greatest than to wait for browsers to support all the nice new syntax of ES2015. If you're uncomfortable with the new syntax, feel free to use standard Javascript syntax from days of yore. It still works.
 
-**How do I build a Feature?**
-[Here's some documentation.](https://github.com/blargity/toolkit-for-ynab/blob/master/src/common/res/features/HOW_TO_BUILD_FEATURES.md) If you are still struggling to get up to speed let us know (email's fine!) and we'll make sure we help out.
+**Your JSCS style checker is annoying as heck! I don't code that way!**
+We have a large number of contributors who each bring their own style to the code base. It was getting a bit hard to navigate all the features, as they each had their own way of indenting, etc etc. We held a team vote to unify our styles, and decided to follow the AirBNB style guide. It's a pretty good way to go, so give it a shot before you get too upset about having to change your style.
+
+**How do I build a feature?**
+[Here's some documentation.](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/res/features/HOW_TO_BUILD_FEATURES.md) If you are still struggling to get up to speed let us know (email's fine!) and we'll make sure we help out.
+
+**Important note about line feeds!!!**
+You must ensure that your code editor is configued to use Unix style line feeds (LFs) or the build will fail. This will primarily affect contributors using Windows as the LFs are different on that platform.
 
 Legal Stuff
 -----------

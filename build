@@ -2,8 +2,28 @@
 
 set -e
 
+# Check our code style with jscs.
+echo "[   INFO] Checking code style with JSCS..."
+npm run jscs --silent || exit
+
+# Populate feature files like feed changes by reading thorugh the code and hooking up
+# all the calls we need, as well as processing settings files
 python populateFeaturesFiles.py
-python lib/kango-framework-latest/kango.py build .
+
+# Transpile the source/ directory, putting the files in src/ which is where Kango expects to see them.
+echo "[   INFO] Transpiling code with Babel on ES2015 preset..."
+rm -rf src
+npm run babel --silent || exit
+
+# Copy any non JS files across that babel didn't bring with it. Ignore existing files we just transpiled.
+rsync -r --ignore-existing source/* src/
+
+# Run the Kango build.
+if hash python2 2>/dev/null; then
+  python2 lib/kango-framework-latest/kango.py build .
+else
+  python lib/kango-framework-latest/kango.py build .
+fi
 
 # The safari icon needs to be different than the other browsers. Move it into place.
 echo "[   INFO] Moving Safari extension icons into place..."
@@ -13,3 +33,6 @@ pushd output/safari/*.safariextension/icons > /dev/null
   cp ../../../../src/common/icons/button-safari@2x.png button@2x.png
   rm button-safari@2x.png
 popd > /dev/null
+
+# Clean up.
+rm -rf src
