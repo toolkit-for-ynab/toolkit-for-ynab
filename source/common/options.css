@@ -46,7 +46,7 @@ label {
 }
 
 div.options {
-  display: flex;
+  text-align: center;
   position: fixed;
   bottom: 15px;
   left: 0;
@@ -58,6 +58,10 @@ div.options {
 
 div.options span {
   align-self: center;
+}
+
+div.options .darkMode {
+  display: flex;
 }
 
 /* Make all icons green to match the logo */
@@ -142,4 +146,13 @@ i {
   top: 0px;
   left: 0px;
   width: 100%;
+}
+
+#importExportModal textarea {
+  height: 200px;
+  width: 100%;
+}
+
+#importExportModal .modal-footer {
+  text-align: center;
 }
