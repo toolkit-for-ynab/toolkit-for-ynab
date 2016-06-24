@@ -234,7 +234,6 @@ function importExportModal() {
   function applySettings () {
     var newSettings = JSON.parse($('#importExportContent').val());
     var promises = newSettings.map(function (setting) {
-      console.log(setting);
       return setKangoSetting(setting.key, setting.value);
     });
 
