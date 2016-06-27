@@ -72,8 +72,7 @@ function restoreSelectOption(elementId) {
         // let's just pick the default.
         if (valueIsInSelect(select, data)) {
           select.value = data;
-        }
-        else {
+        } else {
           select.value = select.options[0].value
         }
 
@@ -115,7 +114,6 @@ function saveOptions() {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restoreOptions() {
-
   return new Promise(function (resolve, reject) {
     ensureDefaultsAreSet().then(function() {
 
@@ -135,7 +133,6 @@ function restoreOptions() {
 }
 
 function buildOptionsPage() {
-
   // Order by section, then type, then name.
   var settings = ynabToolKit.settings.slice();
 
@@ -205,6 +202,47 @@ function applyDarkMode(activate) {
   }
 }
 
+function importExportModal() {
+  var exportedSettings = {};
+
+  getKangoStorageKeys().then(function (keys) {
+    var promises = [];
+    keys.forEach(function (settingKey) {
+      promises.push(new Promise(function (resolve, reject) {
+        getKangoSetting(settingKey).then(function (settingValue) {
+          resolve({ key: settingKey, value: settingValue });
+        });
+      }));
+    });
+
+    Promise.all(promises).then(function (allSettings) {
+      $('#importExportContent').val(JSON.stringify(allSettings));
+
+      $('#importExportModal').modal();
+      $('#importExportModal').one('shown.bs.modal', function () {
+        $('#importExportContent').select();
+
+        $('#importExportContent').click(function () {
+          $(this).select();
+        });
+
+        $('.apply-settings').click(applySettings);
+      });
+    });
+  });
+
+  function applySettings () {
+    var newSettings = JSON.parse($('#importExportContent').val());
+    var promises = newSettings.map(function (setting) {
+      return setKangoSetting(setting.key, setting.value);
+    });
+
+    Promise.all(promises).then(function () {
+      location.reload();
+    });
+  }
+}
+
 KangoAPI.onReady(function() {
   // Set the logo.
   kango.invokeAsync('kango.io.getResourceUrl', 'assets/logos/toolkitforynab-logo-200.png', function(data) {
@@ -237,6 +275,7 @@ KangoAPI.onReady(function() {
   $('#accountsMenuItem').click(function(e) { loadPanel('accounts'); e.preventDefault(); });
   $('#budgetMenuItem').click(function(e) { loadPanel('budget'); e.preventDefault(); });
 
+  $('.import-export-button').click(importExportModal);
   $('.save-button').click(saveOptions);
   $('.cancel-button').click(KangoAPI.closeWindow);
 });
