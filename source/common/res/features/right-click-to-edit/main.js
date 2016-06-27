@@ -63,13 +63,7 @@
           });
 
           $('body').on('contextmenu', '.modal-account-edit-transaction-list', hideContextMenu);
-        },
-
-        observe: function (changedNodes) {
-          if (changedNodes.has('ynab-grid-body')) {
-            ynabToolKit.rightClickToEdit.invoke();
-          }
-        },
+        }
       };
     })(); // Keep feature functions contained within this object
 
