@@ -15,7 +15,7 @@
 
       // Convert array of similar objects (shared keys) into a CSV body
       function convertArrayOfObjectsToCSV(args) {
-        var result, ctr, keys, titles, columnDelimiter, lineDelimiter, data; // jscs:ignore
+        var result, keys, titles, columnDelimiter, lineDelimiter, data; // jscs:ignore
 
         data = args.data || null;
         if (data === null || !data.length) {
@@ -29,7 +29,7 @@
           val = val || '';
           try {
             val = val.replace(/"/g, '""');
-          } catch (ex) {}
+          } catch (ex) {/*ignore*/}
 
           return '"' + val + '"';
         }

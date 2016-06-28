@@ -15,7 +15,7 @@
 
       MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
-      var observer = new MutationObserver(function (mutations, observer) {
+      var observer = new MutationObserver(function (mutations) {
 
         if (ynabToolKit.debugNodes) {
           console.log('MODIFIED NODES');

@@ -31,7 +31,7 @@
         var list = document
             .getElementsByClassName('ynab-select-options');
         var options = document.getElementsByClassName('is-selectable');
-        o = options.length;
+        var o = options.length;
         var onkeydownFunc = function (event) {
           var e = event || window.event;
           if (e.keyCode == 40 &&
@@ -102,7 +102,7 @@
 
         if (originalentries === null) {
           originalentries = [];
-          for (c = 0; c < select.children.length; c++) {
+          for (var c = 0; c < select.children.length; c++) {
             originalentries.push(select.children[c]);
           }
         }
@@ -116,11 +116,11 @@
         var parts = newVal.split(' ');
 
         var toremove = [];
-        for (i = 0; i < select.children.length; i++) {
+        for (var i = 0; i < select.children.length; i++) {
           var entry = select.children[i];
           var match = true;
           var entryTxt = entry.textContent;
-          for (p = 0; p < parts.length; p++) {
+          for (var p = 0; p < parts.length; p++) {
             var part = parts[p].toUpperCase();
             if (entryTxt.toUpperCase().lastIndexOf(part) < 0) {
               match = false;
@@ -134,7 +134,7 @@
         }
 
         if (toremove !== null) {
-          for (t = 0; t < toremove.length; t++) {
+          for (var t = 0; t < toremove.length; t++) {
             // var entryTxt = toremove[t].text;
             select.removeChild(toremove[t]);
           }

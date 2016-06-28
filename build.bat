@@ -1,7 +1,7 @@
 @ECHO OFF
 
-echo [   INFO] Checking code style with JSCS...
-call npm run jscs --silent || goto :errexit
+echo [   INFO] Checking code style with ESLint...
+call npm run eslint --silent || goto :errexit
 
 rem Populate feature files like feed changes by reading through the code and hooking up
 rem all the calls we need, as well as processing settings files
