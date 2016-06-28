@@ -7,15 +7,15 @@
       // Supporting functions,
       // or variables, etc
       function displayContextMenu(element, e) {
-        // clear all toggled checkboxes
-        $('.ynab-checkbox-button.is-checked').click();
-
-        // toggle checkbox
+        // check for a right click on a split transaction
         if ($(element).hasClass('ynab-grid-body-sub')) {
-          // select parent transaction to toggle
-          $(element).prevAll('.ynab-grid-body-parent:first').find('.ynab-checkbox-button').click();
-        } else {
-          // select current transaction to toggle
+          // select parent transaction
+          element = $(element).prevAll('.ynab-grid-body-parent:first');
+        }
+
+        if (!$(element).hasClass('is-checked')) {
+          // clear existing, then check current
+          $('.ynab-checkbox-button.is-checked').click();
           $(element).find('.ynab-checkbox-button').click();
         }
 
@@ -67,7 +67,9 @@
       };
     })(); // Keep feature functions contained within this object
 
-    ynabToolKit.rightClickToEdit.invoke(); // Run once and activate setTimeOut()
+    if (/accounts/.test(window.location.href)) {
+      ynabToolKit.rightClickToEdit.invoke();
+    }
 
   } else {
     setTimeout(poll, 250);
