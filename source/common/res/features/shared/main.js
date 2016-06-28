@@ -192,7 +192,7 @@ ynabToolKit.shared = (function () {
     parseSelectedMonth: function () {
       // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
       if ($('.ember-view .budget-header').length) {
-        var headerView = Ember.View.views[$('.ember-view .budget-header').attr('id')];
+        var headerView = this.getEmberView($('.ember-view .budget-header').attr('id'));
         var selectedMonthUTC = headerView.get('currentMonth').toNativeDate();
         return new Date(selectedMonthUTC.getUTCFullYear(), selectedMonthUTC.getUTCMonth(), 1);
       } else {
@@ -257,7 +257,7 @@ ynabToolKit.shared = (function () {
       var containerName = name;
       var viewIndex = (typeof index !== 'undefined') ? index : 0;
 
-      return Ember.View.views[Ember.keys(Ember.View.views)[viewIndex]].container.lookup(containerName);
+      return this.getEmberView(Ember.keys(this.getEmberViewRegistry())[viewIndex]).container.lookup(containerName);
     },
 
     // Add formatting method to dates to get YYYY-MM.
@@ -265,6 +265,15 @@ ynabToolKit.shared = (function () {
       var yyyy = date.getFullYear().toString();
       var mm = (date.getMonth() + 1).toString(); // getMonth() is zero-based
       return yyyy + '-' + (mm[1] ? mm : '0' + mm[0]); // padding
+    },
+
+    getEmberView: function (viewId) {
+      var registry = this.getEmberViewRegistry();
+      return registry[viewId];
+    },
+
+    getEmberViewRegistry: function () {
+      return Ember.Component.create().get('_viewRegistry');
     },
 
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
