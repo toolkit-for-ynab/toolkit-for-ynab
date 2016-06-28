@@ -11,9 +11,9 @@
         invoke: function () {
           var transactionRows = $('.ynab-grid-body-row');
           var previousReconciled = false;
-          $(transactionRows).each(function (i) {
-            clearedField = $(this).find('.ynab-grid-cell-cleared>i').first();
-            isReconciled = clearedField.hasClass('is-reconciled');
+          $(transactionRows).each(function () {
+            var clearedField = $(this).find('.ynab-grid-cell-cleared>i').first();
+            var isReconciled = clearedField.hasClass('is-reconciled');
             if (isReconciled) {
               $(this).addClass('is-reconciled-row');
             }
