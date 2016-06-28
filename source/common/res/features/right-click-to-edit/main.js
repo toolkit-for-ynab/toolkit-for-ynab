@@ -63,7 +63,7 @@
           });
 
           $('body').on('contextmenu', '.modal-account-edit-transaction-list', hideContextMenu);
-        }
+        },
       };
     })(); // Keep feature functions contained within this object
 

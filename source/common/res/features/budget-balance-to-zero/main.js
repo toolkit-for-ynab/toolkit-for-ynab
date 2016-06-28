@@ -55,7 +55,6 @@
         },
 
         updateInspectorButton: function (f) {
-          var name = f.name;
           var amount = ynabToolKit.budgetBalanceToZero.getBudgetAmount(f);
           var fAmount = ynabToolKit.shared.formatCurrency(amount);
 
@@ -79,7 +78,7 @@
             .append($('<strong>', { class: 'user-data', title: fAmount })
             .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), amount)));
 
-          $('.inspector-quick-budget .ember-view').append(button);
+          $('.ember-view .inspector-quick-budget').append(button);
         },
 
         updateBudgetedBalance: function (name, difference) {
