@@ -44,7 +44,6 @@
 
         processDebtAccounts: function (debtAccounts) {
           debtAccounts.forEach(function (a) {
-            var accountName = a.name;
             var account = ynabToolKit.checkCreditBalances.budgetView
               .sidebarViewModel.accountCalculationsCollection
               .findItemByAccountId(a.accountId);
@@ -84,7 +83,7 @@
 
         updateRow: function (name) {
           var rows = $('.is-sub-category.is-debt-payment-category');
-          rows.each(function (i) {
+          rows.each(function () {
             var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
 
             if (name === accountName) {

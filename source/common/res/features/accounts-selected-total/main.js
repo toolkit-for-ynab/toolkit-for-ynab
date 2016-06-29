@@ -126,9 +126,9 @@
           transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
         }
 
-        for (var i = 0; i < transactions.length; i++) {
-          if (transactions[i].isChecked) {
-            checkedTransactions.push(transactions[i].entityId);
+        for (var j = 0; j < transactions.length; j++) {
+          if (transactions[j].isChecked) {
+            checkedTransactions.push(transactions[j].entityId);
           }
         }
 

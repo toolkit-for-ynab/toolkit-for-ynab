@@ -52,7 +52,7 @@
 
         function getSubCategoryByName(ele) {
           return ele.toolkitName == subCategoryName;
-        };
+        }
       }
 
       function addGoalProgress(subCategoryName, target) {
@@ -60,7 +60,6 @@
           var calculation = getCalculation(subCategoryName);
 
           var status = 0;
-          var tstatus = 0;
           var hasGoal = false;
 
           switch (calculation.goalType) {
@@ -89,7 +88,6 @@
               if (calculation.upcomingTransactions < 0) {
                 //hasGoal = true;
                 //status = 0 - calculation.balance / calculation.upcomingTransactions;
-                ;;
               }
           }
 
@@ -135,10 +133,6 @@
               [monthProgress - s, monthProgress]);
           }
         }
-      }
-
-      function addPacingProgressToMaster(subCategoryName, target) {
-
       }
 
       return {

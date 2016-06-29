@@ -235,7 +235,7 @@ ynabToolKit.shared = (function () {
 
           // Find and collect the available balances of each category in the budget
           var availableBalances = $('.budget-table-cell-available').find('span.user-data.currency').map(function () {
-            availableBalance = $(this).html();
+            var availableBalance = $(this).html();
             return Number(availableBalance.replace(/[^\d.-]/g, ''));
           });
 

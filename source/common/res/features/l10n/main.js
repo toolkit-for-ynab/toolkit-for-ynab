@@ -750,8 +750,8 @@
 //         var before = $('.modal-budget-settings').contents()[4];
 //         contentSetter.setSeveral(
 //           [l10n.BudgetSettingsModal.Title.Before + " (", 4, ' #currencyPlacement button'],
-//           [l10n.BudgetSettingsModal.Title.After + " (123 456,78", 13, ' #currencyPlacement button'],
-//           [l10n.BudgetSettingsModal.Title.Off + " (123 456,78)", 22, ' #currencyPlacement button']
+//           [l10n.BudgetSettingsModal.Title.After + " (123456,78", 13, ' #currencyPlacement button'],
+//           [l10n.BudgetSettingsModal.Title.Off + " (123456,78)", 22, ' #currencyPlacement button']
 //         );
 //       };
 //

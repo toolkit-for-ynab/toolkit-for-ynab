@@ -38,7 +38,7 @@
 
         function getSubCategoryByName(ele) {
           return ele.toolkitName == subCategoryName;
-        };
+        }
       }
 
       function setClasses(row, name, classes) {

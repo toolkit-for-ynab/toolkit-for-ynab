@@ -87,9 +87,7 @@
           },
 
           calculateNetWorthReport: function () {
-
-            return new Promise(function (resolve, reject) {
-
+            return new Promise(function (resolve) {
               ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then(function (transactionsViewModel) {
                 var transactionDisplayItems = transactionsViewModel.get('visibleTransactionDisplayItems');
 
