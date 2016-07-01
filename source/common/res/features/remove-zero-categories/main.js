@@ -11,7 +11,7 @@
       return {
         invoke: function () {
           var coverOverbudgetingCategories = $('.modal-budget-overspending .dropdown-list > li');
-          coverOverbudgetingCategories.each(function (i) {
+          coverOverbudgetingCategories.each(function () {
             var t = $(this).find('.category-available').text(); // Category balance text.
             var categoryBalance = parseInt(t.replace(/[^\d-]/g, ''));
             if (categoryBalance <= 0) {

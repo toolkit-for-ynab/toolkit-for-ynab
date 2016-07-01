@@ -10,71 +10,12 @@
       };
     })(jQuery);
 
-    DEBUG = false;
+    var DEBUG = false;
 
-    TransactionAmountTypes = {
+    var TransactionAmountTypes = {
       INFLOW: 0,
       OUTFLOW: 1,
     };
-
-    function getJumpTransaction(entryDate, amount) {
-      if (DEBUG) {
-        console.log('Entering getJumpTransaction()...');
-        console.log('var dump: entryDate');
-        console.log(entryDate);
-        console.log('var dump: amount');
-        console.log(amount);
-      }
-
-      var transaction = null;
-      if (amount.type === TransactionAmountTypes.INFLOW) {
-        transaction = $('div.ynab-grid-body-row').
-          has("div.ynab-grid-cell-date:contains('" + entryDate + "')").
-          has("div.ynab-grid-cell-outflow:contains('" + amount.amount + "')");
-      } else {
-        transaction = $('div.ynab-grid-body-row').
-          has("div.ynab-grid-cell-date:contains('" + entryDate + "')").
-          has("div.ynab-grid-cell-inflow:contains('" + amount.amount + "')");
-      }
-
-      if (DEBUG) {
-        console.log('var dump: transaction');
-        console.log(transaction);
-        console.log('Exiting getJumpTransaction()...');
-      }
-
-      return transaction;
-    }
-
-    function getTransactionData(clickedJumpElement) {
-      if (DEBUG) {
-        console.log('Entering getJumpTransaction()...');
-        console.log('var dump: clickedJumpElement');
-        console.log(clickedJumpElement);
-      }
-
-      var entry = clickedJumpElement.closest('div.ynab-grid-cell-payeeName');
-      var accountName = entry.attr('title').split(': ')[1];
-      var accountSelectorId = $("div.nav-account-name[title='" + accountName + "']").parent().attr('id');
-      var entryDate = entry.siblings('div.ynab-grid-cell-date').text();
-      var entryInflow = entry.siblings('div.ynab-grid-cell-inflow').text();
-      var entryOutflow = entry.siblings('div.ynab-grid-cell-outflow').text();
-      var transaction = {
-        accountName: accountName,
-        accountSelectorId: accountSelectorId,
-        date: entryDate,
-        inflow_amount: $.trim(entryInflow),
-        outflow_amount: $.trim(entryOutflow),
-      };
-
-      if (DEBUG) {
-        console.log('var dump: transaction');
-        console.log(transaction);
-        console.log('Exiting getJumpTransaction()...');
-      }
-
-      return transaction;
-    }
 
     $('.transfer-jump').off().on('click', function () {
       if (DEBUG) {
@@ -128,4 +69,63 @@
   }
 
   setTimeout(ynabTransferJump, 10);
+
+  function getJumpTransaction(entryDate, amount) {
+    if (DEBUG) {
+      console.log('Entering getJumpTransaction()...');
+      console.log('var dump: entryDate');
+      console.log(entryDate);
+      console.log('var dump: amount');
+      console.log(amount);
+    }
+
+    var transaction = null;
+    if (amount.type === TransactionAmountTypes.INFLOW) {
+      transaction = $('div.ynab-grid-body-row').
+        has("div.ynab-grid-cell-date:contains('" + entryDate + "')").
+        has("div.ynab-grid-cell-outflow:contains('" + amount.amount + "')");
+    } else {
+      transaction = $('div.ynab-grid-body-row').
+        has("div.ynab-grid-cell-date:contains('" + entryDate + "')").
+        has("div.ynab-grid-cell-inflow:contains('" + amount.amount + "')");
+    }
+
+    if (DEBUG) {
+      console.log('var dump: transaction');
+      console.log(transaction);
+      console.log('Exiting getJumpTransaction()...');
+    }
+
+    return transaction;
+  }
+
+  function getTransactionData(clickedJumpElement) {
+    if (DEBUG) {
+      console.log('Entering getJumpTransaction()...');
+      console.log('var dump: clickedJumpElement');
+      console.log(clickedJumpElement);
+    }
+
+    var entry = clickedJumpElement.closest('div.ynab-grid-cell-payeeName');
+    var accountName = entry.attr('title').split(': ')[1];
+    var accountSelectorId = $("div.nav-account-name[title='" + accountName + "']").parent().attr('id');
+    var entryDate = entry.siblings('div.ynab-grid-cell-date').text();
+    var entryInflow = entry.siblings('div.ynab-grid-cell-inflow').text();
+    var entryOutflow = entry.siblings('div.ynab-grid-cell-outflow').text();
+    var transaction = {
+      accountName: accountName,
+      accountSelectorId: accountSelectorId,
+      date: entryDate,
+      inflow_amount: $.trim(entryInflow),
+      outflow_amount: $.trim(entryOutflow),
+    };
+
+    if (DEBUG) {
+      console.log('var dump: transaction');
+      console.log(transaction);
+      console.log('Exiting getJumpTransaction()...');
+    }
+
+    return transaction;
+  }
 })();

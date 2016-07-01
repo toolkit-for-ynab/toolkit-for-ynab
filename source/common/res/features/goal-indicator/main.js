@@ -10,8 +10,7 @@
 
       function addIndicator(element, indicator, tooltip) {
 
-        $(element).each(function (index) {
-
+        $(element).each(function () {
           // set alternate position if necessary, to show both goal and upcoming indicators
           var alt = '';
           if ($(this).hasClass('toolkit-row-goal') && (indicator == 'U')) {

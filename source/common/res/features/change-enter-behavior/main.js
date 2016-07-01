@@ -60,26 +60,25 @@
         }
       }
 
-      setTimeout(changeEnterBehaviorInit, 250);
-    };
+      function getAddTransactionRow() {
+        var addRow = document.getElementsByClassName('ynab-grid-add-rows');
 
-    function getAddTransactionRow() {
-      var addRow = document.getElementsByClassName('ynab-grid-add-rows');
-
-      if (addRow.length) {
-        var addTransaction = addRow[0].getElementsByClassName('ynab-grid-body-row');
-        if (addTransaction.length) {
-          return addTransaction[0];
+        if (addRow.length) {
+          var addTransaction = addRow[0].getElementsByClassName('ynab-grid-body-row');
+          if (addTransaction.length) {
+            return addTransaction[0];
+          } else {
+            return null;
+          }
         } else {
           return null;
         }
-      } else {
-        return null;
       }
-    }
+
+      setTimeout(changeEnterBehaviorInit, 250);
+    };
 
     ynabToolKit.changeEnterBehavior(); // Activate itself
-
   } else {
     setTimeout(poll, 250);
   }

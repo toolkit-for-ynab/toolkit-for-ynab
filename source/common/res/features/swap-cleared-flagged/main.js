@@ -20,10 +20,10 @@
             return Array.prototype.indexOf.call(node.parentNode.childNodes, node);
           }
 
-          flags = $('.ynab-grid-cell-flag');
-          cleared = $('.ynab-grid-cell-cleared');
+          var flags = $('.ynab-grid-cell-flag');
+          var cleared = $('.ynab-grid-cell-cleared');
 
-          for (i = 0; i < flags.length; i += 1) {
+          for (var i = 0; i < flags.length; i += 1) {
             // If not swapped
             if (getChildNumber(cleared[i]) - getChildNumber(flags[i]) == 16) {
               swapElements(flags[i], cleared[i]);

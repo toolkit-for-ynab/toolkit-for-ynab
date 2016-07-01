@@ -4,24 +4,6 @@
   if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
 
     ynabToolKit.daysOfBuffering = (function () {
-
-      // Supporting functions,
-      // or variables, etc
-      function onlyUnique(value, index, self) {
-        return self.indexOf(value) === index;
-      }
-
-      function checkTransactionTypes(transactions) {
-        // Describe all handled transaction types and check that no other got.
-        var handeledTransactionTypes = ['subTransaction', 'transaction', 'scheduledTransaction', 'scheduledSubTransaction'];
-        var uniqueTransactionTypes = Array.from(transactions, function (el) { return el.displayItemType; }).filter(onlyUnique);
-        var allTypesHandeled = uniqueTransactionTypes.every(function (el) { return uniqueTransactionTypes.includes(el); });
-
-        if (!allTypesHandeled) {
-          throw 'Found unhandeled transaction type. ' + uniqueTransactionTypes;
-        }
-      }
-
       function DoBCalculate() {
         // Get outflow transactions.
         var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
