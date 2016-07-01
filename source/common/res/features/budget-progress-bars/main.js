@@ -109,8 +109,9 @@
       var s = 0.005;
 
       function addPacingProgress(subCategoryName, target) {
-        if (subCategoryName != 'Uncategorized Transactions') {
+        var deEmphasizedCategories = JSON.parse(localStorage.getItem('ynab_toolkit_pacing_deemphasized_categories')) || [];
 
+        if (subCategoryName !== 'Uncategorized Transactions' && deEmphasizedCategories.indexOf(subCategoryName) === -1) {
           var calculation = getCalculation(subCategoryName);
 
           var budgeted = calculation.balance - calculation.budgetedCashOutflows - calculation.budgetedCreditOutflows;
@@ -132,6 +133,8 @@
               ['white', '#CFD5D8', 'white'],
               [monthProgress - s, monthProgress]);
           }
+        } else {
+          target.style.background = '';
         }
       }
 
@@ -140,8 +143,7 @@
           var categories = $('.budget-table ul');
           var masterCategoryName = '';
 
-          if (subCats == null || subCats.length === 0 || loadCategories)
-          {
+          if (subCats == null || subCats.length === 0 || loadCategories) {
             subCats = ynabToolKit.shared.getMergedCategories();
             loadCategories = false;
           }
@@ -149,8 +151,7 @@
           selMonth = ynabToolKit.shared.parseSelectedMonth();
 
           // will be null on YNAB load when the user is not on the budget screen
-          if (selMonth !== null)
-          {
+          if (selMonth !== null) {
             selMonth = ynabToolKit.shared.yyyymm(selMonth);
             internalIdBase = 'mcbc/' + selMonth + '/';
           }
