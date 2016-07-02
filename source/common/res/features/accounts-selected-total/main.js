@@ -3,6 +3,15 @@
   if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
 
     ynabToolKit.enhancedSelectedTotals = function ()  {
+      function enhancedSelectedTotalsInit() {
+        var parentDiv = document.getElementsByClassName('accounts-header-balances');
+        var n = parentDiv.length;
+        if (n > 0) {
+          enhancedSelectedTotalsApply();
+        } else {
+          setTimeout(enhancedSelectedTotalsInit, 250);
+        }
+      }
 
       function enhancedSelectedTotalsApply() {
         var parent = document.getElementsByClassName('accounts-header-balances')[0];
@@ -20,79 +29,6 @@
         }
 
         enhancedSelectedTotalsPoll();
-      }
-
-      function enhancedSelectedTotalsCalculate() {
-        var outflows = 0;
-        var inflows = 0;
-        var transactionsFound = false;
-        var accountId;
-        var transactions;
-        accountId = 'null';
-        if (currentPath.indexOf('/accounts/') > -1) {
-          accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1);
-        }
-
-        transactions = ynabToolKit.shared.getVisibleTransactions(accountId);
-        var notSubTransactions = transactions.filter(function (el) { return el.displayItemType != ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType != ynab.constants.TransactionDisplayItemType.SubTransaction; });
-
-        for (var i = 0; i < notSubTransactions.length; i++) {
-          if (notSubTransactions[i].isChecked) {
-            inflows += notSubTransactions[i].inflow;
-            outflows += notSubTransactions[i].outflow;
-            transactionsFound = true;
-          }
-        }
-
-        var total = inflows - outflows;
-        if (!transactionsFound) {
-          total = false;
-        }
-
-        enhancedSelectedTotalsUpdate(total);
-
-        setTimeout(enhancedSelectedTotalsPoll, 750);
-      }
-
-      function enhancedSelectedTotalsUpdate(total) {
-        var parent = $('#accounts-selected-total');
-
-        if (parent.length == 0) {
-          return false;
-        }
-
-        if (total === false) {
-          parent.addClass('hidden');
-          return true;
-        }
-
-        parent.attr('class', 'accounts-header-balances-selected');
-
-        parent.find('.user-data').remove();
-
-        var userData = $('<span>', { class: 'user-data', title: ynabToolKit.shared.formatCurrency(total) });
-        var userCurrency = $('<span>', { class: 'user-data currency' });
-
-        if (total >= 0) {
-          userCurrency.addClass('positive');
-        } else {
-          userCurrency.addClass('negative');
-        }
-
-        ynabToolKit.shared.appendFormattedCurrencyHtml(userCurrency, total);
-
-        userData.append(userCurrency);
-        parent.append(userData);
-      }
-
-      function enhancedSelectedTotalsInit() {
-        var parentDiv = document.getElementsByClassName('accounts-header-balances');
-        var n = parentDiv.length;
-        if (n > 0) {
-          enhancedSelectedTotalsApply();
-        } else {
-          setTimeout(enhancedSelectedTotalsInit, 250);
-        }
       }
 
       function enhancedSelectedTotalsPoll() {
@@ -146,15 +82,77 @@
         setTimeout(enhancedSelectedTotalsPoll, 250);
       }
 
+      function enhancedSelectedTotalsCalculate() {
+        var outflows = 0;
+        var inflows = 0;
+        var transactionsFound = false;
+        var accountId;
+        var transactions;
+        accountId = 'null';
+        if (currentPath.indexOf('/accounts/') > -1) {
+          accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+        }
+
+        transactions = ynabToolKit.shared.getVisibleTransactions(accountId);
+        var notSubTransactions = transactions.filter(function (el) { return el.displayItemType != ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType != ynab.constants.TransactionDisplayItemType.SubTransaction; });
+
+        for (var i = 0; i < notSubTransactions.length; i++) {
+          if (notSubTransactions[i].isChecked) {
+            inflows += notSubTransactions[i].inflow;
+            outflows += notSubTransactions[i].outflow;
+            transactionsFound = true;
+          }
+        }
+
+        var total = inflows - outflows;
+        if (!transactionsFound) {
+          total = false;
+        }
+
+        enhancedSelectedTotalsUpdate(total);
+
+        setTimeout(enhancedSelectedTotalsPoll, 750);
+      }
+
+      function enhancedSelectedTotalsUpdate(total) {
+        var parent = $('#accounts-selected-total');
+
+        if (parent.length == 0) {
+          setTimeout(enhancedSelectedTotalsInit, 250);
+          return false;
+        }
+
+        if (total === false) {
+          parent.addClass('hidden');
+          return true;
+        }
+
+        parent.attr('class', 'accounts-header-balances-selected');
+
+        parent.find('.user-data').remove();
+
+        var userData = $('<span>', { class: 'user-data', title: ynabToolKit.shared.formatCurrency(total) });
+        var userCurrency = $('<span>', { class: 'user-data currency' });
+
+        if (total >= 0) {
+          userCurrency.addClass('positive');
+        } else {
+          userCurrency.addClass('negative');
+        }
+
+        ynabToolKit.shared.appendFormattedCurrencyHtml(userCurrency, total);
+
+        userData.append(userCurrency);
+        parent.append(userData);
+      }
+
       var currentPath = window.location.pathname;
       var previousSet = '';
       var dataSet = new Array();
       setTimeout(enhancedSelectedTotalsInit, 250);
-
     };
 
     ynabToolKit.enhancedSelectedTotals(); // Activate itself
-
   } else {
     setTimeout(poll, 250);
   }
