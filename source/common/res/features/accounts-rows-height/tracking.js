@@ -1,5 +1,5 @@
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     //
     // Keep feature functions contained in the function below!
     //
@@ -25,7 +25,7 @@
         console.log('grid.recordHeight: ' + grid.get('recordHeight'));
         console.log('ynab-grid-body-row count: ' + $('.ynab-grid-body-row').length);
         console.log('tracking:end of invoke()');
-      },
+      };
 
       this.process = function () {
         console.log('tracking:top of process()');
@@ -34,7 +34,7 @@
         console.log('ynab-grid-body-row-bottom height: ' + $('.ynab-grid-body-row-bottom').css('height'));
         console.log('ynab-grid-body-row count: ' + $('.ynab-grid-body-row').length);
         console.log('tracking:end of proess()');
-      },
+      };
 
       this.observe = function (changedNodes) {
         if (changedNodes.has('ynab-grid-body')) {
@@ -55,4 +55,4 @@
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

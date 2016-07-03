@@ -226,4 +226,4 @@ with open('./source/common/res/features/act-on-change/feedChanges.js', 'w') as f
                        '  } else {\n'
                        '    setTimeout(poll, 100);\n'
                        '  }\n'
-                       '})();\n'))
+                       '}());\n'))

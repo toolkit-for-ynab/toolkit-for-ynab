@@ -1,20 +1,15 @@
 (function poll() {
-
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
-
     ynabToolKit.moveMoneyAutocomplete = (function () {
-
       // Supporting functions,
       // or variables, etc
       var originalentries = null;
 
       function autoCompleteApply() {
-
         var selectLabel = document
             .getElementsByClassName('ynab-select-label')[0];
         if ($(selectLabel).hasClass('autocomplete-override')) {
           return;
-
         }
 
         selectLabel.className = selectLabel.className +
@@ -34,13 +29,13 @@
         var o = options.length;
         var onkeydownFunc = function (event) {
           var e = event || window.event;
-          if (e.keyCode == 40 &&
+          if (e.keyCode === 40 &&
               e.target.nextElementSibling !== null) {
             e.target.nextElementSibling.focus();
-          } else if (e.keyCode == 38 &&
+          } else if (e.keyCode === 38 &&
               e.target.previousElementSibling !== null) {
             e.target.previousElementSibling.focus();
-          } else if (e.keyCode == 13) {
+          } else if (e.keyCode === 13) {
             e.stopPropagation();
             e.preventDefault();
             e.target.click();
@@ -64,7 +59,7 @@
         if (txt !== null) {
           txt[0].onkeyup = function (event) {
             var e = event || window.event;
-            if (e.keyCode == 40) {
+            if (e.keyCode === 40) {
               document.getElementsByClassName('is-selectable')[0]
                   .focus();
             }
@@ -77,7 +72,7 @@
 
           txt[0].onkeydown = function (event) {
             var e = event || window.event;
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
               e.stopPropagation();
               e.preventDefault();
               document.getElementsByClassName('is-selectable')[0]
@@ -102,13 +97,13 @@
 
         if (originalentries === null) {
           originalentries = [];
-          for (var c = 0; c < select.children.length; c++) {
-            originalentries.push(select.children[c]);
+          for (var j = 0; j < select.children.length; j++) {
+            originalentries.push(select.children[j]);
           }
         }
 
         if (oldVal !== null && (newVal.length < oldVal.length)) {
-          for (c = 0; c < originalentries.length; c++) {
+          for (var c = 0; c < originalentries.length; c++) {
             select.appendChild(originalentries[c]);
           }
         }
@@ -158,23 +153,22 @@
       }
 
       return {
-        invoke: function () {
+        invoke() {
           var dialog = document.getElementsByClassName('ynab-select-options');
           if (dialog.length > 0) {
             autoCompleteApply();
           }
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           if (changedNodes.has('ynab-select user-data options-shown')) {
             // We found a modal pop-up
             ynabToolKit.moveMoneyAutocomplete.invoke();
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
-
+    }()); // Keep feature functions contained within this object
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

@@ -1,9 +1,7 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
-
     ynabToolKit.toggleTransactionFilters = (function () {
-
       function toggleReconciled() {
         var container = ynabToolKit.shared.containerLookup('controller:accounts');
         var settingReconciled = !container.filters.get('reconciled');
@@ -54,7 +52,7 @@
         // insert or edit buttons
         if (!$('#toolkit-toggleReconciled').length) {
           // create buttons if they don't already exist
-          if (ynabToolKit.options.toggleTransactionFilters == '2') {
+          if (ynabToolKit.options.toggleTransactionFilters === '2') {
             // show both text and icons
             $('.accounts-toolbar .accounts-toolbar-right').append('<button id="toolkit-toggleReconciled" class="button" title="Toggle Reconciled Transactions"><i class="flaticon solid lock-1 is-reconciled"></i> Reconciled</button>');
             $('.accounts-toolbar .accounts-toolbar-right').append('<button id="toolkit-toggleScheduled" class="button" title="Toggle Scheduled Transactions"><i class="flaticon solid clock-1 is-reconciled"></i> Scheduled</button>');
@@ -72,7 +70,7 @@
       }
 
       return {
-        invoke: function () {
+        invoke() {
           // invoke on load
           if (/accounts/.test(window.location.href)) {
             // create buttons
@@ -84,7 +82,7 @@
           $('body').on('click', 'button#toolkit-toggleScheduled', toggleScheduled);
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           // activate button styles if filters potentially change
           // activate if switch to individual account, or all accounts views
           if (
@@ -92,12 +90,12 @@
             changedNodes.has('ynab-grid-body')) {
             initToggleButtons();
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this
+    }()); // Keep feature functions contained within this
 
     ynabToolKit.toggleTransactionFilters.invoke();
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

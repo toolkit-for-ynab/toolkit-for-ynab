@@ -1,8 +1,7 @@
 // TODO: Consider refactoring with example.js logic.
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
-
-    ynabToolKit.enhancedSelectedTotals = function ()  {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
+    ynabToolKit.enhancedSelectedTotals = function () {
       function enhancedSelectedTotalsInit() {
         var parentDiv = document.getElementsByClassName('accounts-header-balances');
         var n = parentDiv.length;
@@ -33,22 +32,22 @@
 
       function enhancedSelectedTotalsPoll() {
         var parentDiv = document.getElementsByClassName('accounts-header-balances');
-        if (parentDiv.length == 0) {
+        if (parentDiv.length === 0) {
           setTimeout(enhancedSelectedTotalsInit, 250);
           return true;
         }
 
         var accountId;
         var transactions;
-        var checkedTransactions = new Array();
+        var checkedTransactions = [];
         var windowPath = window.location.pathname;
         var newDataSetParent = document.getElementsByClassName('ynab-grid-body')[0].getElementsByClassName('ynab-grid-body-row');
-        var newDataSet = new Array();
+        var newDataSet = [];
         for (var i = 0; i < newDataSetParent.length; i++) {
           newDataSet.push(newDataSetParent[i].id);
         }
 
-        if (windowPath != currentPath || newDataSet.toString() != dataSet.toString()) {
+        if (windowPath !== currentPath || newDataSet.toString() !== dataSet.toString()) {
           currentPath = windowPath;
           previousSet = '';
           dataSet = newDataSet;
@@ -68,11 +67,11 @@
           }
         }
 
-        if (checkedTransactions.length == 0) {
+        if (checkedTransactions.length === 0) {
           enhancedSelectedTotalsUpdate(false);
           previousSet = checkedTransactions;
         } else {
-          if (checkedTransactions.toString() != previousSet.toString()) {
+          if (checkedTransactions.toString() !== previousSet.toString()) {
             previousSet = checkedTransactions;
             enhancedSelectedTotalsCalculate();
             return true;
@@ -94,7 +93,7 @@
         }
 
         transactions = ynabToolKit.shared.getVisibleTransactions(accountId);
-        var notSubTransactions = transactions.filter(function (el) { return el.displayItemType != ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType != ynab.constants.TransactionDisplayItemType.SubTransaction; });
+        var notSubTransactions = transactions.filter(function (el) { return el.displayItemType !== ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType !== ynab.constants.TransactionDisplayItemType.SubTransaction; });
 
         for (var i = 0; i < notSubTransactions.length; i++) {
           if (notSubTransactions[i].isChecked) {
@@ -117,7 +116,7 @@
       function enhancedSelectedTotalsUpdate(total) {
         var parent = $('#accounts-selected-total');
 
-        if (parent.length == 0) {
+        if (parent.length === 0) {
           setTimeout(enhancedSelectedTotalsInit, 250);
           return false;
         }
@@ -148,7 +147,7 @@
 
       var currentPath = window.location.pathname;
       var previousSet = '';
-      var dataSet = new Array();
+      var dataSet = [];
       setTimeout(enhancedSelectedTotalsInit, 250);
     };
 
@@ -156,4 +155,4 @@
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

@@ -1,11 +1,8 @@
-// jscs:disable disallowMultipleLineStrings
-// jshint multistr: true
+/* eslint-disable no-multi-str */
 
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
-
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.collapseSideMenu = (function () {
-
       // Supporting functions,
       // or variables, etc
 
@@ -22,18 +19,18 @@
         originalButtons: {},
 
         originalSizes: {
-          sidebarWidth:   $('.sidebar').width(),
-          contentLeft:    $('.content').css('left'),
-          headerLeft:     $('.budget-header, .accounts-header').css('left'),
-          contentWidth:   $('.budget-content').css('width'),
-          inspectorWidth: $('.budget-inspector').css('width'),
+          sidebarWidth: $('.sidebar').width(),
+          contentLeft: $('.content').css('left'),
+          headerLeft: $('.budget-header, .accounts-header').css('left'),
+          contentWidth: $('.budget-content').css('width'),
+          inspectorWidth: $('.budget-inspector').css('width')
         },
 
-        invoke: function () {
+        invoke() {
           ynabToolKit.collapseSideMenu.setupBtns();
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           if (changedNodes.has('pure-g layout user-logged-in')) {
             if ($('.nav-main').length) {
               ynabToolKit.collapseSideMenu.setupBtns();
@@ -43,7 +40,6 @@
           changedNodes.forEach(function (changedNode) {
             if ($('.collapsed-buttons').is(':visible') &&
                 changedNode.startsWith('navlink-') && changedNode.endsWith(' active')) {
-
               ynabToolKit.collapseSideMenu.setCollapsedSizes();
               ynabToolKit.collapseSideMenu.setActiveButton();
             }
@@ -60,13 +56,11 @@
               ynabToolKit.collapseSideMenu.setUpCollapseBtn();
               ynabToolKit.collapseSideMenu.setUpCollapsedButtons();
             }
-
           }
         },
 
         // Add buttons and handlers to screen
-        setupBtns: function () {
-
+        setupBtns() {
           // Don't proceed if buttons already exist
           if ($('.navlink-collapse').is(':visible') ||
               $('.navbar-expand').is(':visible')) {
@@ -77,13 +71,13 @@
           ynabToolKit.collapseSideMenu.setUpCollapsedButtons();
         },
 
-        setUpCollapseBtn: function () {
+        setUpCollapseBtn() {
           $('.nav-main').append(ynabToolKit.collapseSideMenu.collapseBtn);
           $('.navlink-collapse').on('click',
             ynabToolKit.collapseSideMenu.collapseMenu);
         },
 
-        setUpCollapsedButtons: function () {
+        setUpCollapsedButtons() {
           var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup();
 
           if (!$('.collapsed-buttons').length) {
@@ -96,13 +90,13 @@
           $('.collapsed-buttons').hide();
         },
 
-        getUnCollapseBtnGroup: function () {
+        getUnCollapseBtnGroup() {
           var navChildren = $('.nav-main').children();
           var navChildrenLength = navChildren.length;
 
           var collapsedBtnContainer =
             $('<div>', {
-              class: 'collapsed-buttons',
+              class: 'collapsed-buttons'
             });
 
           var clickFunction = function () {
@@ -168,7 +162,7 @@
         },
 
         // Handle clicking expand button. Puts things back to original sizes
-        expandMenu: function (originalSizes) {
+        expandMenu(originalSizes) {
           $('.collapsed-buttons').hide();
           $('.sidebar > .ember-view').fadeIn();
           $('.navlink-collapse').show();
@@ -184,7 +178,7 @@
         },
 
         // Handle clicking the collapse button
-        collapseMenu: function () {
+        collapseMenu() {
           ynabToolKit.collapseSideMenu.setActiveButton();
           $('.navlink-collapse').hide();
           $('.sidebar > .ember-view').hide();
@@ -193,7 +187,7 @@
         },
 
         // Set collapsed sizes
-        setCollapsedSizes: function () {
+        setCollapsedSizes() {
           $('.sidebar').animate({ width: '40px' });
           $('.content').animate({ left: '40px' }, 400, 'swing', function () {
             // Need to remove width after animation completion
@@ -206,7 +200,7 @@
         },
 
         // Add the active style to correct button
-        setActiveButton: function () {
+        setActiveButton() {
           ynabToolKit.collapseSideMenu.deactivateCollapsedActive();
 
           var originalButtons = ynabToolKit.collapseSideMenu.originalButtons;
@@ -216,7 +210,6 @@
               var originalButton = $(originalButtons[classList]).closest('.ember-view');
 
               if (originalButton.hasClass('active')) {
-
                 // Set the active button in the collapsed panel.
                 var collapsedSelector = '.collapsed-buttons .' +
                         $(originalButton).attr('class')
@@ -231,16 +224,15 @@
         },
 
         // Deactivate collapsed buttons
-        deactivateCollapsedActive: function () {
+        deactivateCollapsedActive() {
           $('.collapsed-buttons a button').removeClass('collapsed-active');
           $('.collapsed-buttons a').removeClass('active');
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
 
     ynabToolKit.collapseSideMenu.invoke();
-
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

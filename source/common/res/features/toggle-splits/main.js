@@ -1,25 +1,26 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.actOnChangeInit === true) {
-
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.toggleSplits = (function () {
-
       // Supporting functions,
       // or variables, etc
 
       return {
         setting: 'init',
-        invoke: function () {
+        invoke() {
           if (!$('#toggleSplits').length) {
             var buttonText = (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.toggleSplits']) || 'Toggle Splits';
 
             $('<button>', { id: 'toggleSplits', class: 'ember-view button' }).append(
               $('<i>', { class: 'ember-view flaticon stroke right' })
-            ).append(
+            )
+            .append(
               $('<i>', { class: 'ember-view flaticon stroke down' })
-            ).append(
+            )
+            .append(
               ' ' + buttonText
-            ).insertAfter('.accounts-toolbar .undo-redo-container');
+            )
+            .insertAfter('.accounts-toolbar .undo-redo-container');
 
             $('.accounts-toolbar-left').find('#toggleSplits').click(function () {
               if (ynabToolKit.toggleSplits.setting === 'hide') {
@@ -50,16 +51,15 @@
           });
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           if (changedNodes.has('ynab-grid-body')) {
             // We found Account transactions rows
             ynabToolKit.toggleSplits.invoke();
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
-
+    }()); // Keep feature functions contained within this object
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

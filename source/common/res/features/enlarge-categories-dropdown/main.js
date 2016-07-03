@@ -1,10 +1,8 @@
 (function poll() {
-
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
-
     ynabToolKit.enlargeCategoriesDropdown = (function () {
       return {
-        invoke: function () {
+        invoke() {
           var defaultAdditionalHeight = 100; // 4 pixels of padding
           var bottomOfPagePadding = 4;
           var totalAdditionalHeight = defaultAdditionalHeight + bottomOfPagePadding;
@@ -20,12 +18,12 @@
               // pad the bottom of the screen with 4 pixels here.
               modal.css({
                 height: '+=' + (spaceAvailableAboveModal - bottomOfPagePadding),
-                top: '-=' + (spaceAvailableAboveModal - bottomOfPagePadding),
+                top: '-=' + (spaceAvailableAboveModal - bottomOfPagePadding)
               });
             } else if (spaceAvailableAboveModal >= totalAdditionalHeight) {
               modal.css({
                 height: '+=' + defaultAdditionalHeight,
-                top: '-=' + defaultAdditionalHeight,
+                top: '-=' + defaultAdditionalHeight
               });
             }
           } else { // modal is shown below autocomplete
@@ -37,14 +35,14 @@
           }
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           if (changedNodes.has('dropdown-container categories-dropdown-container')) {
             ynabToolKit.enlargeCategoriesDropdown.invoke();
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());
