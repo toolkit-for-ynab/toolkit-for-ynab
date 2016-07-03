@@ -15,6 +15,13 @@
 
       MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
+      Set.prototype.regex = function(regex) {
+        for(const item of this) {
+          if (regex.test(item)) return true;
+        }
+        return false;
+      };
+
       var observer = new MutationObserver(function (mutations) {
 
         if (ynabToolKit.debugNodes) {
