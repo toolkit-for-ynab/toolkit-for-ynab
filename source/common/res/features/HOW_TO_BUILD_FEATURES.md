@@ -159,7 +159,7 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
     // Supporting functions,
     // or variables, etc
 
-    return {      
+    return {
       invoke: function() {
         // Code you expect to run each time your feature needs to update or modify YNAB's state
       },
@@ -174,14 +174,14 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
 
       }
     };
-  })(); // Keep feature functions contained within this object
+  }()); // Keep feature functions contained within this object
 
   ynabToolKit.awesomeFeature.invoke(); // Run your script once on page load
 
 } else {
   setTimeout(poll, 250);
 }
-})();
+}());
 ```
 
 Let's break it down and talk about the sections.

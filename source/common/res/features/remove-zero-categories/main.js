@@ -1,17 +1,14 @@
 
 (function poll() {
-
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
-
     ynabToolKit.removeZeroCategories = (function () {
-
       // Supporting functions,
       // or variables, etc
 
       return {
-        invoke: function () {
+        invoke() {
           var coverOverbudgetingCategories = $('.modal-budget-overspending .dropdown-list > li');
-          coverOverbudgetingCategories.each(function (i) {
+          coverOverbudgetingCategories.each(function () {
             var t = $(this).find('.category-available').text(); // Category balance text.
             var categoryBalance = parseInt(t.replace(/[^\d-]/g, ''));
             if (categoryBalance <= 0) {
@@ -35,18 +32,17 @@
           }
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           if (changedNodes.has('dropdown-container categories-dropdown-container')) {
             // We found a modal pop-up
             ynabToolKit.removeZeroCategories.invoke();
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
 
     ynabToolKit.removeZeroCategories.invoke(); // Run itself once
-
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

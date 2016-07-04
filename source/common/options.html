@@ -43,7 +43,10 @@
         </ul>
 
         <div class="options">
-          <input type="checkbox" name="darkMode" id="darkMode"> <span>Dark Mode</span>
+          <div class="darkMode">
+            <input type="checkbox" name="darkMode" id="darkMode"> <span>Dark Mode</span>
+          </div>
+          <button class="btn btn-xs import-export-button">Import/Export Settings</button>
         </div>
       </div>
 
@@ -117,6 +120,27 @@
     <!-- /. PAGE WRAPPER  -->
   </div>
   <!-- /. WRAPPER  -->
+
+  <!-- importExportModal -->
+  <div id="importExportModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="importExportTitle">Import/Export Settings</h4>
+        </div>
+        <div class="modal-body">
+          <textarea id="importExportContent"></textarea>
+        </div>
+        <div class="modal-footer">
+          <p id="directions">Copy and paste the above text into the Import/Export Dialog on your other devices. This is currently a manual process and must be done on every new device.</p>
+
+          <button id="importExportApply" type="button" class="btn btn-primary apply-settings">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- JS Scripts-->
   <script type="text/javascript" src="assets/dream-admin-theme/js/jquery-1.10.2.js"></script>
   <script type="text/javascript" src="assets/dream-admin-theme/js/bootstrap.js"></script>

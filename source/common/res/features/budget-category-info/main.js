@@ -6,12 +6,10 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
-
     var loadCategories = true;
     var selMonth;
 
     ynabToolKit.budgetCategoryInfo = (function () {
-
       // Supporting functions, or variables, etc
       var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
       var subCats = [];
@@ -37,8 +35,8 @@
         return calculation;
 
         function getSubCategoryByName(ele) {
-          return ele.toolkitName == subCategoryName;
-        };
+          return ele.toolkitName === subCategoryName;
+        }
       }
 
       function setClasses(row, name, classes) {
@@ -50,7 +48,7 @@
           .removeClass('toolkit-row-budgetedpositive toolkit-row-budgetednegative toolkit-row-budgetedzero')
           .removeClass(' toolkit-row-availablepositive toolkit-row-availablenegative toolkit-row-availablezero')
           .removeClass(' toolkit-row-goalupcoming toolkit-row-goalTB toolkit-row-goalMF toolkit-row-goalTBD');
-        if (inspectorTitle == name) {
+        if (inspectorTitle === name) {
           $('dl.inspector-overview-available')
             .removeClass('toolkit-row-budgetedpositive toolkit-row-budgetednegative toolkit-row-budgetedzero')
             .removeClass('toolkit-row-availablepositive toolkit-row-availablenegative toolkit-row-availablezero')
@@ -60,19 +58,18 @@
         // add all new classes
         for (var i = 0, len = classes.length; i < len; i++) {
           $(row).addClass('toolkit-row-' + classes[i]);
-          if (inspectorTitle == name) {
+          if (inspectorTitle === name) {
             $('dl.inspector-overview-available').addClass('toolkit-row-' + classes[i]);
           }
         }
       }
 
       return {
-        invoke: function () {
-
+        invoke() {
           var categories = $('.budget-table ul');
           var masterCategoryName = '';
 
-          if (subCats == null || subCats.length === 0 || loadCategories) {
+          if (subCats === null || subCats.length === 0 || loadCategories) {
             subCats = ynabToolKit.shared.getMergedCategories();
             loadCategories = false;
           }
@@ -89,7 +86,7 @@
           $(categories).each(function () {
             if ($(this).hasClass('is-master-category')) {
               masterCategoryName = $(this).find('div.budget-table-cell-name-row-label-item>div>div[title]');
-              masterCategoryName = (masterCategoryName != 'undefined') ? $(masterCategoryName).attr('title') : '';
+              masterCategoryName = (masterCategoryName !== 'undefined') ? $(masterCategoryName).attr('title') : '';
             }
 
             if ($(this).hasClass('is-sub-category')) {
@@ -123,9 +120,9 @@
 
               // add goals and upcoming
               var calculation = getCalculation(masterCategoryName + '_' + subCategoryName);
-              if (calculation.goalType == 'TB' ||
-                calculation.goalType == 'MF' ||
-                calculation.goalType == 'TBD') {
+              if (calculation.goalType === 'TB' ||
+                calculation.goalType === 'MF' ||
+                calculation.goalType === 'TBD') {
                 classes.push('goal');
                 classes.push('goal' + calculation.goalType);
               }
@@ -140,12 +137,12 @@
           });
 
           // call external features if appropriate
-          if (ynabToolKit.options.goalIndicator != 0) {
+          if (ynabToolKit.options.goalIndicator !== 0) {
             ynabToolKit.goalIndicator.invoke();
           }
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           if (changedNodes.has('navlink-budget active') ||
             changedNodes.has('budget-inspector') ||
             changedNodes.has('budget-table-cell-available-div user-data') ||
@@ -164,17 +161,16 @@
              */
             loadCategories = true;
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
 
     // Run once and activate setTimeOut()
     ynabToolKit.budgetCategoryInfo.invoke();
-
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());
 
 // calculation variable differences for different types of goals.
 

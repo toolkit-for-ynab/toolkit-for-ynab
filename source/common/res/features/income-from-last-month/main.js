@@ -1,12 +1,11 @@
-/*jshint multistr: true */
+/* eslint-disable no-multi-str */
 
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true && typeof Ember !== 'undefined') {
-
     ynabToolKit.incomeFromLastMonth = (function () {
       return {
-        invoke: function () {
+        invoke() {
           if (ynabToolKit.options.incomeFromLastMonth > 0) {
             // Do nothing if no header found.
             if ($('.budget-header-totals-details-values').length === 0) return;
@@ -58,7 +57,7 @@
           }
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           // User has returned back to the budget screen
           // User switch budget month
           if (changedNodes.has('budget-header-flexbox') ||
@@ -66,13 +65,12 @@
             changedNodes.has('pure-g layout user-logged-in')) {
             ynabToolKit.incomeFromLastMonth.invoke();
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
 
     ynabToolKit.incomeFromLastMonth.invoke(); // Run your script once on page load
-
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

@@ -1,11 +1,10 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     var loadCategories = true;
     var selMonth;
 
     ynabToolKit.budgetProgressBars = (function () {
-
       // Supporting functions, or variables, etc
       var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
       var subCats = [];
@@ -21,7 +20,7 @@
         for (var i = 0; i < colors.length; i++) {
           style += colors[i] + ' ' + pointsPercent[i] + '%, ';
           style += colors[i] + ' ' + pointsPercent[i + 1] + '%';
-          style += (i + 1 == colors.length) ? ')' : ', ';
+          style += (i + 1 === colors.length) ? ')' : ', ';
         }
 
         return style;
@@ -36,8 +35,8 @@
           /**
            * Add a few values from the subCat object to the calculation object.
            */
-          calculation.targetBalance      = subCat.getTargetBalance();
-          calculation.goalType          = subCat.getGoalType();
+          calculation.targetBalance = subCat.getTargetBalance();
+          calculation.goalType = subCat.getGoalType();
           calculation.goalCreationMonth = (subCat.goalCreationMonth) ? subCat.goalCreationMonth.toString().substr(0, 7) : '';
           /**
            * If the month the goal was created in is greater than the selected month, null the goal type to prevent further
@@ -51,16 +50,15 @@
         return calculation;
 
         function getSubCategoryByName(ele) {
-          return ele.toolkitName == subCategoryName;
-        };
+          return ele.toolkitName === subCategoryName;
+        }
       }
 
       function addGoalProgress(subCategoryName, target) {
-        if (subCategoryName != 'Uncategorized Transactions') {
+        if (subCategoryName !== 'Uncategorized Transactions') {
           var calculation = getCalculation(subCategoryName);
 
           var status = 0;
-          var tstatus = 0;
           var hasGoal = false;
 
           switch (calculation.goalType) {
@@ -87,9 +85,8 @@
               break;
             default:
               if (calculation.upcomingTransactions < 0) {
-                //hasGoal = true;
-                //status = 0 - calculation.balance / calculation.upcomingTransactions;
-                ;;
+                // hasGoal = true;
+                // status = 0 - calculation.balance / calculation.upcomingTransactions;
               }
           }
 
@@ -98,7 +95,7 @@
             status = status < 0 ? 0 : status;
             var percent = Math.round(parseFloat(status) * 100);
             target.style.background = 'linear-gradient(to right, rgba(22, 163, 54, 0.3) ' + percent + '%, white ' + percent + '%)';
-          }  else {
+          } else {
             target.style.removeProperty('linear-gradient'); // only remove the style property we added!
           }
         }
@@ -111,8 +108,9 @@
       var s = 0.005;
 
       function addPacingProgress(subCategoryName, target) {
-        if (subCategoryName != 'Uncategorized Transactions') {
+        var deEmphasizedCategories = JSON.parse(localStorage.getItem('ynab_toolkit_pacing_deemphasized_categories')) || [];
 
+        if (subCategoryName !== 'Uncategorized Transactions' && deEmphasizedCategories.indexOf(subCategoryName) === -1) {
           var calculation = getCalculation(subCategoryName);
 
           var budgeted = calculation.balance - calculation.budgetedCashOutflows - calculation.budgetedCreditOutflows;
@@ -134,20 +132,17 @@
               ['white', '#CFD5D8', 'white'],
               [monthProgress - s, monthProgress]);
           }
+        } else {
+          target.style.background = '';
         }
       }
 
-      function addPacingProgressToMaster(subCategoryName, target) {
-
-      }
-
       return {
-        invoke: function () {
+        invoke() {
           var categories = $('.budget-table ul');
           var masterCategoryName = '';
 
-          if (subCats == null || subCats.length === 0 || loadCategories)
-          {
+          if (subCats === null || subCats.length === 0 || loadCategories) {
             subCats = ynabToolKit.shared.getMergedCategories();
             loadCategories = false;
           }
@@ -155,8 +150,7 @@
           selMonth = ynabToolKit.shared.parseSelectedMonth();
 
           // will be null on YNAB load when the user is not on the budget screen
-          if (selMonth !== null)
-          {
+          if (selMonth !== null) {
             selMonth = ynabToolKit.shared.yyyymm(selMonth);
             internalIdBase = 'mcbc/' + selMonth + '/';
           }
@@ -166,7 +160,7 @@
             var budgetedCell;
             if ($(this).hasClass('is-master-category')) {
               masterCategoryName = $(this).find('div.budget-table-cell-name-row-label-item>div>div[title]');
-              masterCategoryName = (masterCategoryName != 'undefined') ? $(masterCategoryName).attr('title') : '';
+              masterCategoryName = (masterCategoryName !== 'undefined') ? $(masterCategoryName).attr('title') : '';
             }
 
             if ($(this).hasClass('is-sub-category')) {
@@ -175,9 +169,9 @@
               if (subCategoryName === 'Uncategorized Transactions') {
                 // iterate the .each() function
                 return;
-              } else {
-                subCategoryName = masterCategoryName + '_' + subCategoryName;
               }
+
+              subCategoryName = masterCategoryName + '_' + subCategoryName;
 
               switch (ynabToolKit.options.budgetProgressBars) {
                 case 'goals':
@@ -216,7 +210,7 @@
           });
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           /**
            * Check for this node seperately from the other checks to ensure the flag to load
            * categories gets set just in case there is another changed node that drives invoke().
@@ -229,7 +223,7 @@
           if (changedNodes.has('budget-table-row') || changedNodes.has('navlink-budget active') || changedNodes.has('budget-inspector')) {
             ynabToolKit.budgetProgressBars.invoke();
           } else if (changedNodes.has('modal-overlay pure-u modal-popup modal-budget-edit-category active') ||
-                      changedNodes.has('modal-overlay pure-u modal-popup modal-add-master-category active')  ||
+                      changedNodes.has('modal-overlay pure-u modal-popup modal-add-master-category active') ||
                       changedNodes.has('modal-overlay pure-u modal-popup modal-add-sub-category active')) {
             /**
              * Seems there should be a more 'Embery' way to know when the categories have been
@@ -240,13 +234,13 @@
              */
             loadCategories = true;
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
 
     // Run once and activate setTimeOut()
     ynabToolKit.budgetProgressBars.invoke();
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

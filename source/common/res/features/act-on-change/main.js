@@ -1,22 +1,25 @@
 // Building a new feature that uses MutationObserver? You don't need to modify this file
 // Instead of adding conditionals to this file try the example from /shared/example.js
+Set.prototype.regex = function (regex) {
+  for (const item of this) {
+    if (regex.test(item)) return true;
+  }
+
+  return false;
+};
 
 (function poll() {
   if (ynabToolKit.pageReady === true && typeof ynabToolKit.shared.feedChanges !== 'undefined') {
-
     // When this is true, the feature scripts will know they can use the mutationObserver
     ynabToolKit.actOnChangeInit = {};
 
     // Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
     // during page interactions and updates to the developer tools console.
-    //ynabToolKit.debugNodes = true;
+    // ynabToolKit.debugNodes = true;
 
     ynabToolKit.actOnChange = function () {
-
-      MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-
-      var observer = new MutationObserver(function (mutations, observer) {
-
+      var _MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+      var observer = new _MutationObserver(function (mutations) {
         if (ynabToolKit.debugNodes) {
           console.log('MODIFIED NODES');
         }
@@ -31,7 +34,6 @@
             var nodeClass = $(this).attr('class');
             if (nodeClass) ynabToolKit.changedNodes.add(nodeClass.replace(/^ember-view /, ''));
           }); // each node mutation event
-
         }); // each mutation event
 
         if (ynabToolKit.debugNodes) {
@@ -52,15 +54,14 @@
         childList: true,
         characterData: true,
         attributes: true,
-        attributeFilter: ['class'],
+        attributeFilter: ['class']
       });
 
       ynabToolKit.actOnChangeInit = true;
     };
 
     ynabToolKit.actOnChange(); // Run itself once
-
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

@@ -1,9 +1,7 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true && typeof Ember !== 'undefined') {
-
     ynabToolKit.l10n = (function () {
-
       // Supporting functions,
       // or variables, etc
 
@@ -30,9 +28,9 @@
         }
 
         return {
-          selectedMonth: selectedMonth,
-          currentMonthName: currentMonthName,
-          previousMonthName: previousMonthName,
+          selectedMonth,
+          currentMonthName,
+          previousMonthName
         };
       }
 
@@ -40,35 +38,35 @@
       var contentSetter = (function () {
         return {
           selectorPrefix: '',
-          resetPrefix: function () {
+          resetPrefix() {
             contentSetter.selectorPrefix = '';
           },
 
           // Takes contentNum's .contents() of selector and sets it to text.
-          set: function (text, contentNum, selector) {
+          set(text, contentNum, selector) {
             var el = $(contentSetter.selectorPrefix + (selector || '')).contents()[contentNum];
             if (el) el.textContent = text;
           },
 
           // Each argument must be an array of 2 or 3 elements that become set arguments in order.
-          setSeveral: function () {
-            for (i = 0; i < arguments.length; i++) {
-              if (arguments[i].length == 2) contentSetter.set(arguments[i][0], arguments[i][1]);
-              if (arguments[i].length == 3) contentSetter.set(arguments[i][0], arguments[i][1], arguments[i][2]);
+          setSeveral() {
+            for (var i = 0; i < arguments.length; i++) {
+              if (arguments[i].length === 2) contentSetter.set(arguments[i][0], arguments[i][1]);
+              if (arguments[i].length === 3) contentSetter.set(arguments[i][0], arguments[i][1], arguments[i][2]);
             }
           },
 
-          setArray: function (textArray, selector, start, step) {
-            for (i = 0; i < textArray.length; i++) {
-              var contentNum = (start || 0) + i * (step || 1);
-              contentSetter.set(textArray[i], contentNum, selector);
+          setArray(textArray, selector, start, step) {
+            for (var j = 0; j < textArray.length; j++) {
+              var contentNum = (start || 0) + j * (step || 1);
+              contentSetter.set(textArray[j], contentNum, selector);
             }
-          },
+          }
         };
-      })();
+      }());
 
       return {
-        invoke: function () {
+        invoke() {
           if ($.isEmptyObject(ynabToolKit.l10nMissingStrings)) {
             ynabToolKit.l10nEmberData = Ember.I18n.translations;
             var toolkitStrings = new Set(Object.keys(ynabToolKit.l10nData));
@@ -83,7 +81,7 @@
           Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
         },
 
-        budgetHeader: function () {
+        budgetHeader() {
           if (!$('.navlink-budget').hasClass('active')) return;
           var dateInfo = getDateInfo();
           contentSetter.selectorPrefix = '.budget-header-';
@@ -95,12 +93,12 @@
             [
               l10n['budget.fundsFor'].replace('{{currentMonth}}', dateInfo.currentMonthName),
               l10n['budget.overspentIn'].replace('{{previousMonth}}', dateInfo.previousMonthName),
-              l10n['budget.fundedIn'].replace('{{currentMonth}}', dateInfo.currentMonthName),
+              l10n['budget.fundedIn'].replace('{{currentMonth}}', dateInfo.currentMonthName)
             ]
           );
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           ynabToolKit.l10n.invoke();
 
           // User has returned back to the budget screen
@@ -150,7 +148,7 @@
             contentSetter.setArray(
               [
                 l10n['toolkit.transfer'],
-                l10n['toolkit.memorized'],
+                l10n['toolkit.memorized']
               ],
               '', 1, 3
             );
@@ -187,20 +185,20 @@
           // Account row
           if (changedNodes.has('ynab-grid-body')) {
             $('.ynab-grid-cell-payeeName[title="Starting Balance"]').contents().each(function () {
-              if (this.textContent == 'Starting Balance') this.textContent = l10n['toolkit.startingBalance'];
+              if (this.textContent === 'Starting Balance') this.textContent = l10n['toolkit.startingBalance'];
             });
 
             $('.ynab-grid-cell-subCategoryName[title="Inflow: To be Budgeted"]').contents().each(function () {
-              if (this.textContent == 'Inflow: To be Budgeted') this.textContent = l10n['toolkit.inflowTBB'];
+              if (this.textContent === 'Inflow: To be Budgeted') this.textContent = l10n['toolkit.inflowTBB'];
             });
 
             $('.ynab-grid-cell-subCategoryName[title="Split (Multiple Categories)..."]').contents().each(function () {
-              if (this.textContent == 'Split (Multiple Categories)...') this.textContent = l10n['toolkit.splitMultipleCategories'];
+              if (this.textContent === 'Split (Multiple Categories)...') this.textContent = l10n['toolkit.splitMultipleCategories'];
             });
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
 
     ynabToolKit.l10n.invoke(); // Run your script once on page load
     ynabToolKit.l10n.budgetHeader();
@@ -208,16 +206,15 @@
     // Rerender sidebar and content views on page load.
     var rerenderClasses = ['.content', '.nav'];
     for (var i = 0; i < rerenderClasses.length; i++) {
-      Ember.View.views[$(rerenderClasses[i])[0].id].rerender();
+      ynabToolKit.shared.getEmberView($(rerenderClasses[i])[0].id).rerender();
     }
 
     // When rerendering sidebar accounts lists are closing, open them.
     // $('.nav-account-block').click();
-
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());
 
 // (function poll() {
 //   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
@@ -750,8 +747,8 @@
 //         var before = $('.modal-budget-settings').contents()[4];
 //         contentSetter.setSeveral(
 //           [l10n.BudgetSettingsModal.Title.Before + " (", 4, ' #currencyPlacement button'],
-//           [l10n.BudgetSettingsModal.Title.After + " (123 456,78", 13, ' #currencyPlacement button'],
-//           [l10n.BudgetSettingsModal.Title.Off + " (123 456,78)", 22, ' #currencyPlacement button']
+//           [l10n.BudgetSettingsModal.Title.After + " (123456,78", 13, ' #currencyPlacement button'],
+//           [l10n.BudgetSettingsModal.Title.Off + " (123456,78)", 22, ' #currencyPlacement button']
 //         );
 //       };
 //
