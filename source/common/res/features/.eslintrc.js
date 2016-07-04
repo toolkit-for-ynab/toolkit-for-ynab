@@ -22,6 +22,7 @@ module.exports = {
         "func-names": "off",
         "vars-on-top": "off",
         "no-console": "off",
+        "no-extend-native": "off",
         "no-param-reassign": "off",
         "no-restricted-syntax": "off",
         "no-underscore-dangle": "off",
