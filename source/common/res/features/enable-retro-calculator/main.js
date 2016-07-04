@@ -1,6 +1,5 @@
 function injectInitializer() {
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined') {
-
     (function ($) {
       var selector = 'li.budget-table-cell-budgeted div.currency-input, ' +
                      'div.ynab-grid-cell-outflow div.currency-input, ' +
@@ -11,11 +10,7 @@ function injectInitializer() {
         var charCode = e.which || e.keyCode;
         var charTyped = String.fromCharCode(charCode);
 
-        if (charTyped == '+' ||
-            charTyped == '-' ||
-            charTyped == '*' ||
-            charTyped == '/')
-        {
+        if (charTyped === '+' || charTyped === '-' || charTyped === '*' || charTyped === '/') {
           var input = $(this).find('input');
           var length = input.val().length;
 
@@ -27,7 +22,7 @@ function injectInitializer() {
         // Make sure we allow the event to bubble up so we don't mess with anything
         // that YNAB is doing.
       });
-    })(jQuery);
+    }(jQuery));
   } else {
     setTimeout(injectInitializer, 250);
   }

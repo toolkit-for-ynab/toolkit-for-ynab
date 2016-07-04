@@ -1,9 +1,7 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.actOnChangeInit === true) {
-
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.exportTransactions = (function () {
-
       // ######################
       // # LIBRARY / UTILITIES
       // ######################
@@ -15,7 +13,8 @@
 
       // Convert array of similar objects (shared keys) into a CSV body
       function convertArrayOfObjectsToCSV(args) {
-        var result, keys, titles, columnDelimiter, lineDelimiter, data; // jscs:ignore
+        // eslint-disable-next-line one-var, one-var-declaration-per-line
+        var result, keys, titles, columnDelimiter, lineDelimiter, data;
 
         data = args.data || null;
         if (data === null || !data.length) {
@@ -29,7 +28,7 @@
           val = val || '';
           try {
             val = val.replace(/"/g, '""');
-          } catch (ex) {/*ignore*/}
+          } catch (ex) { /* ignore*/ }
 
           return '"' + val + '"';
         }
@@ -73,14 +72,13 @@
       function downloadCSV(args) {
         args = Object.assign({
           filename: 'export.csv',
-          mimetype: 'text/csv',
+          mimetype: 'text/csv'
         }, args);
         downloadFile(args);
       }
 
       // Sort an Array of Objects by key
       function sortByKey(transactions, key, order) {
-
         // Simple comparator
         function compare(a, b) {
           if (a[key] < b[key]) return -1;
@@ -113,7 +111,6 @@
       // Build an array of "cleaned" transactions -- containing just the information to export
       // Pass in the entityManager -- theoretically allows swapping out a different interface
       function getTransactionArray(entityManager) {
-
         // get payee
         var getPayeeName = function (id) {
           var payee = entityManager.getPayeeById(id);
@@ -138,7 +135,7 @@
           'Internal Master Category': '*** YNAB Internal Categories',
           'Split (Multiple Categories)...': 'Split (Multiple Categories)',
           'Split SubCategory': 'Split (Multiple Categories)',
-          'Immediate Income SubCategory': '*** Inflow: To Be Budgeted',
+          'Immediate Income SubCategory': '*** Inflow: To Be Budgeted'
         };
 
         // get category -- returns {category, mastercategory} -- with internal cache
@@ -152,7 +149,7 @@
             var master = entityManager.getMasterCategoryById(sub.masterCategoryId);
             categoryMap[id] = {
               category: categoryNamesMap[sub.name] || sub.name,
-              master: categoryNamesMap[master.name] || master.name,
+              master: categoryNamesMap[master.name] || master.name
             };
           }
 
@@ -163,7 +160,7 @@
         function cleanTransaction(yTrans) {
           var trans = {};
 
-          //trans.id = yTrans.entityId;
+          // trans.id = yTrans.entityId;
           trans.flag = yTrans.flag || '';
           trans.account = getAccountName(yTrans.accountId);
           trans.date = yTrans.date.format('YYYY-MM-DD');
@@ -179,7 +176,7 @@
           trans.cleared = yTrans.cleared || '';
 
           // Check number is still implemented, though hidden from the UI
-          //trans.checkNumber = yTrans.checkNumber || '';
+          // trans.checkNumber = yTrans.checkNumber || '';
           return trans;
         }
 
@@ -229,7 +226,7 @@
 
         var csv = convertArrayOfObjectsToCSV({
           data: transactions,
-          titles: titles,
+          titles
         });
 
         downloadCSV({ contents: csv });
@@ -244,7 +241,7 @@
 
       return {
         button: $(EXPORT_BUTTON_MARKUP).on('click', downloadTransactions),
-        invoke: function () {
+        invoke() {
           // Determine whether to show or hide the export button
           // Only show button on the 'All Accounts' screen
           if (location.href.endsWith('/accounts')) {
@@ -254,19 +251,18 @@
           }
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           // Changes to `.navlink-accounts` means we are newly on or off the All Accounts page
           if (changedNodes.has('navlink-accounts') ||
               changedNodes.has('navlink-accounts active')) {
             ynabToolKit.exportTransactions.invoke();
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
 
     ynabToolKit.exportTransactions.invoke();
-
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

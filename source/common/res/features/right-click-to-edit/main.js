@@ -1,9 +1,7 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
-
     ynabToolKit.rightClickToEdit = (function () {
-
       // Supporting functions,
       // or variables, etc
       function displayContextMenu(element, e) {
@@ -56,22 +54,21 @@
       }
 
       return {
-        invoke: function () {
+        invoke() {
           $('.ynab-grid').on('contextmenu', '.ynab-grid-body-row', function (e) {
             displayContextMenu(this, e);
             return false;
           });
 
           $('body').on('contextmenu', '.modal-account-edit-transaction-list', hideContextMenu);
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
 
     if (/accounts/.test(window.location.href)) {
       ynabToolKit.rightClickToEdit.invoke();
     }
-
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

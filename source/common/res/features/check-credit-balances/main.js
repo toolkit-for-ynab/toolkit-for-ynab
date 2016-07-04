@@ -1,21 +1,18 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
-
     ynabToolKit.checkCreditBalances = (function () {
       return {
         budgetView: ynab.YNABSharedLib
           .getBudgetViewModel_AllBudgetMonthsViewModel()._result,
 
-        invoke: function () {
-
+        invoke() {
           if (ynabToolKit.checkCreditBalances.inMonth()) {
             var debtAccounts = ynabToolKit.checkCreditBalances.getDebtAccounts();
             ynabToolKit.checkCreditBalances.processDebtAccounts(debtAccounts);
           }
         },
 
-        observe: function (changedNodes) {
-
+        observe(changedNodes) {
           if (changedNodes.has('navlink-budget active') ||
               changedNodes.has('budget-table-cell-available-div user-data') ||
               changedNodes.has('budget-inspector')) {
@@ -23,7 +20,7 @@
           }
         },
 
-        inMonth: function () {
+        inMonth() {
           var today = new Date();
           var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
 
@@ -31,7 +28,7 @@
           return selectedMonth.getMonth() >= today.getMonth() && selectedMonth.getYear() >= today.getYear();
         },
 
-        getDebtAccounts: function () {
+        getDebtAccounts() {
           var categoryEntityId = ynabToolKit.checkCreditBalances.budgetView
             .categoriesViewModel.debtPaymentMasterCategory.entityId;
 
@@ -42,7 +39,7 @@
           return debtAccounts;
         },
 
-        processDebtAccounts: function (debtAccounts) {
+        processDebtAccounts(debtAccounts) {
           debtAccounts.forEach(function (a) {
             var account = ynabToolKit.checkCreditBalances.budgetView
               .sidebarViewModel.accountCalculationsCollection
@@ -73,7 +70,7 @@
 
               ynabToolKit.checkCreditBalances.updateInspectorButton(a.name, difference);
 
-              if (available != (balance * -1)) {
+              if (available !== (balance * -1)) {
                 ynabToolKit.checkCreditBalances.updateRow(a.name);
                 ynabToolKit.checkCreditBalances.updateInspectorStyle(a.name);
               }
@@ -81,13 +78,12 @@
           });
         },
 
-        updateRow: function (name) {
+        updateRow(name) {
           var rows = $('.is-sub-category.is-debt-payment-category');
           rows.each(function () {
             var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
 
             if (name === accountName) {
-
               var categoryBalance = $(this).find('.budget-table-cell-available-div .user-data.currency');
               categoryBalance.removeClass('positive zero');
               if (!categoryBalance.hasClass('negative')) {
@@ -97,7 +93,7 @@
           });
         },
 
-        updateInspectorStyle: function (name) {
+        updateInspectorStyle(name) {
           var inspectorName = $('.inspector-category-name.user-data').text().trim();
           if (name === inspectorName) {
             var inspectorBalance = $('.inspector-overview-available .user-data .user-data.currency');
@@ -108,13 +104,13 @@
           }
         },
 
-        updateInspectorButton: function (name, difference) {
+        updateInspectorButton(name, difference) {
           var inspectorName = $('.inspector-category-name.user-data').text().trim();
 
           if (name && name === inspectorName) {
-
-            if ($('.toolkit-toolkit-rectify-difference').length || difference == '-0')
+            if ($('.toolkit-toolkit-rectify-difference').length || difference === '-0') {
               return;
+            }
 
             var fDifference = ynabToolKit.shared.formatCurrency(difference);
             var positive = '';
@@ -123,13 +119,13 @@
             }
 
             var button = $('<a>', {
-                class: 'budget-inspector-button toolkit-rectify-difference',
-              })
+              class: 'budget-inspector-button toolkit-rectify-difference'
+            })
               .css({
                 'text-align': 'center',
                 'line-height': '30px',
                 display: 'block',
-                cursor: 'pointer',
+                cursor: 'pointer'
               })
               .data('name', name)
               .data('difference', difference)
@@ -145,20 +141,24 @@
           }
         },
 
-        updateCreditBalances: function (name, difference) {
-          if ((ynabToolKit.options.warnOnQuickBudget != 0) && (!confirm('Are you sure you want to do this?')))
+        updateCreditBalances(name, difference) {
+          // eslint-disable-next-line no-alert
+          if ((ynabToolKit.options.warnOnQuickBudget !== 0) && (!confirm('Are you sure you want to do this?'))) {
             return;
+          }
 
           var debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
 
           $(debtPaymentCategories).each(function () {
             var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
             if (accountName === name) {
-              var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click().find('input');
+              var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
+                                 .find('input');
+
               var oldValue = input.val();
 
               // If nothing is budgeted, the input will be empty
-              oldValue = oldValue ? oldValue : 0;
+              oldValue = oldValue || 0;
 
               // YNAB stores values *1000 for decimal places, so just
               // multiple by 1000 to get the actual amount.
@@ -167,24 +167,23 @@
               // format the calculated value back to selected number format
               input.val(ynab.formatCurrency(newValue));
 
-              if (ynabToolKit.options.warnOnQuickBudget == 0) {
+              if (ynabToolKit.options.warnOnQuickBudget === 0) {
                 // only seems to work if the confirmation doesn't pop up?
                 // haven't figured out a way to properly blur otherwise
                 input.blur();
               }
             }
           });
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
 
     var href = window.location.href;
     href = href.replace('youneedabudget.com', '');
     if (/budget/.test(href)) {
       ynabToolKit.checkCreditBalances.invoke();
     }
-
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

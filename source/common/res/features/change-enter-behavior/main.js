@@ -1,7 +1,6 @@
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
-
-    ynabToolKit.changeEnterBehavior = function ()  {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
+    ynabToolKit.changeEnterBehavior = function () {
       function changeEnterBehaviorInit() {
         var addTransactionRow = getAddTransactionRow();
 
@@ -37,13 +36,13 @@
       }
 
       function changeEnterBehaviorClick(e) {
-        if (e.keyCode == 13) {
+        if (e.keyCode === 13) {
           e.preventDefault();
           e.stopPropagation();
           var saveButtons = document.getElementsByClassName('ynab-grid-add-rows')[0].getElementsByClassName('button-primary');
           for (var i = 0; i < saveButtons.length; i++) {
             var button = saveButtons[i];
-            if ((' ' + button.className + ' ').indexOf(' button-another ') == -1) {
+            if ((' ' + button.className + ' ').indexOf(' button-another ') === -1) {
               button.click();
               return;
             }
@@ -67,12 +66,12 @@
           var addTransaction = addRow[0].getElementsByClassName('ynab-grid-body-row');
           if (addTransaction.length) {
             return addTransaction[0];
-          } else {
-            return null;
           }
-        } else {
+
           return null;
         }
+
+        return null;
       }
 
       setTimeout(changeEnterBehaviorInit, 250);
@@ -82,4 +81,4 @@
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

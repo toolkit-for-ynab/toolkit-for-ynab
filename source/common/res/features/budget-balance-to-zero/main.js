@@ -2,14 +2,13 @@
 /* jscs:disable disallowMultipleLineStrings */
 
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
-
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.budgetBalanceToZero = (function () {
       return {
         budgetView: ynab.YNABSharedLib
           .getBudgetViewModel_AllBudgetMonthsViewModel()._result, // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
 
-        invoke: function () {
+        invoke() {
           var categories = ynabToolKit.budgetBalanceToZero.getCategories();
           var categoryName = ynabToolKit.budgetBalanceToZero.getInspectorName();
 
@@ -20,13 +19,13 @@
           });
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           if (changedNodes.has('budget-inspector')) {
             ynabToolKit.budgetBalanceToZero.invoke();
           }
         },
 
-        getCategories: function () {
+        getCategories() {
           if (ynabToolKit.budgetBalanceToZero === 'undefined') {
             return [];
           }
@@ -54,11 +53,11 @@
           return categories;
         },
 
-        updateInspectorButton: function (f) {
+        updateInspectorButton(f) {
           var amount = ynabToolKit.budgetBalanceToZero.getBudgetAmount(f);
           var fAmount = ynabToolKit.shared.formatCurrency(amount);
 
-          if (($('.toolkit-balance-to-zero').length) || (amount == '-0')) {
+          if (($('.toolkit-balance-to-zero').length) || (amount === '-0')) {
             return;
           }
 
@@ -81,27 +80,31 @@
           $('.ember-view .inspector-quick-budget').append(button);
         },
 
-        updateBudgetedBalance: function (name, difference) {
-          if ((ynabToolKit.options.warnOnQuickBudget != 0) && (!confirm('Are you sure you want to do this?')))
+        updateBudgetedBalance(name, difference) {
+          // eslint-disable-next-line no-alert
+          if ((ynabToolKit.options.warnOnQuickBudget !== 0) && (!confirm('Are you sure you want to do this?'))) {
             return;
+          }
 
           var categories = $('.is-sub-category.is-checked');
 
           $(categories).each(function () {
             var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
             if (accountName === name) {
-              var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click().find('input');
+              var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
+                                 .find('input');
+
               var oldValue = input.val();
 
               // If nothing is budgetted, the input will be empty
-              oldValue = oldValue ? oldValue : 0;
+              oldValue = oldValue || 0;
 
               // YNAB stores currency values * 1000. What's our actual difference?
               var newValue = (ynab.unformat(oldValue) + difference / 1000);
 
               $(input).val(newValue);
 
-              if (ynabToolKit.options.warnOnQuickBudget == 0) {
+              if (ynabToolKit.options.warnOnQuickBudget === 0) {
                 // only seems to work if the confirmation doesn't pop up?
                 // haven't figured out a way to properly blur otherwise
                 input.blur();
@@ -110,11 +113,11 @@
           });
         },
 
-        getInspectorName: function () {
+        getInspectorName() {
           return $('.inspector-category-name.user-data').text().trim();
         },
 
-        getBudgetAmount: function (f) {
+        getBudgetAmount(f) {
           var currentMonth = moment(ynabToolKit.shared.parseSelectedMonth())
             .format('YYYY-MM');
           var monthlyBudget = ynabToolKit.budgetBalanceToZero.budgetView
@@ -122,10 +125,10 @@
             .findItemByEntityId('mcbc/' + currentMonth + '/' + f.entityId);
 
           return (monthlyBudget.balance * -1);
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

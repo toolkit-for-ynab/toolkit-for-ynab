@@ -1,11 +1,9 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
-
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.swapClearedFlagged = (function () {
-
       return {
-        invoke: function () {
+        invoke() {
           function swapElements(elm1, elm2) {
             var parent1 = elm1.parentNode;
             var next1 = elm1.nextSibling;
@@ -25,16 +23,16 @@
 
           for (var i = 0; i < flags.length; i += 1) {
             // If not swapped
-            if (getChildNumber(cleared[i]) - getChildNumber(flags[i]) == 16) {
+            if (getChildNumber(cleared[i]) - getChildNumber(flags[i]) === 16) {
               swapElements(flags[i], cleared[i]);
             }
           }
         },
 
-        swapYnabGridActions: function () {
+        swapYnabGridActions() {
           $('.ember-view.ynab-grid-body-row.is-editing .ember-view.ynab-grid-actions').css({
             right: 36,
-            bottom: -35,
+            bottom: -35
           });
 
           var ynabGridActions = $('.ember-view.ynab-grid-actions').detach();
@@ -50,7 +48,7 @@
           }
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           if (changedNodes.has('ynab-grid-body')) {
             // We found Account transactions rows
             ynabToolKit.swapClearedFlagged.invoke();
@@ -59,11 +57,10 @@
               ynabToolKit.swapClearedFlagged.swapYnabGridActions();
             }
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
-
+    }()); // Keep feature functions contained within this object
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());
