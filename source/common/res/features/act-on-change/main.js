@@ -1,6 +1,6 @@
 // Building a new feature that uses MutationObserver? You don't need to modify this file
 // Instead of adding conditionals to this file try the example from /shared/example.js
-Set.prototype.regex = function(regex) {
+Set.prototype.regex = function (regex) {
   for (const item of this) {
     if (regex.test(item)) return true;
   }
