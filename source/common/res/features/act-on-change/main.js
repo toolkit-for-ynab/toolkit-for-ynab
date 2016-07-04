@@ -1,5 +1,12 @@
 // Building a new feature that uses MutationObserver? You don't need to modify this file
 // Instead of adding conditionals to this file try the example from /shared/example.js
+Set.prototype.regex = function(regex) {
+  for (const item of this) {
+    if (regex.test(item)) return true;
+  }
+
+  return false;
+};
 
 (function poll() {
   if (ynabToolKit.pageReady === true && typeof ynabToolKit.shared.feedChanges !== 'undefined') {
@@ -12,7 +19,6 @@
 
     ynabToolKit.actOnChange = function () {
       var _MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-
       var observer = new _MutationObserver(function (mutations) {
         if (ynabToolKit.debugNodes) {
           console.log('MODIFIED NODES');
