@@ -23,6 +23,7 @@ module.exports = {
         "vars-on-top": "off",
         "no-console": "off",
         "no-extend-native": "off",
+        "no-nested-ternary": "off",
         "no-param-reassign": "off",
         "no-restricted-syntax": "off",
         "no-underscore-dangle": "off",
