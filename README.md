@@ -69,7 +69,7 @@ Building the Code
 -----------------
 This extension uses three main things in its build process:
 
-- JSCS: Checks the style of your code to make sure it matches our style guide as you build.
+- ESLint: Checks the style of your code to make sure it matches our style guide as you build.
 - Babel: Transpiles ES2015 back to ES5 for browser support of newer JS syntax.
 - Kango Extensions: Provide cross browser support for Chrome, Firefox, and Safari. To build:
 
@@ -78,7 +78,7 @@ This extension uses three main things in its build process:
 1. Clone the repository.
 1. Install Node/npm (tested with Node 5.3.0 and npm 3.3.12).
 1. Install Python 2.7 (Kango requires 2.7 specifically) and put it in your path so it's accessible with either `python` or `python2`.
-1. Run `npm install` within the folder you cloned. This installs JSCS and Babel for you. You only need to do this once.
+1. Run `npm install` within the folder you cloned. This installs ESLint and Babel for you. You only need to do this once.
 1. Run `./build` from within the folder you cloned. This will run all the tools.
 1. Finished extensions for each platform are available in the `output` directory.
 1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file, or load it into Safari using the extension builder (Mac only).
@@ -88,7 +88,7 @@ This extension uses three main things in its build process:
 1. Clone the repository.
 1. Install Node/npm (tested with Node 5.3.0 and npm 3.3.12).
 1. Install Python 2.7 (Kango requires 2.7 specifically) in your path so it's accessible with just plain `python`.
-1. Run `npm install` within the folder you cloned. This installs JSCS and Babel for you. You only need to do this once.
+1. Run `npm install` within the folder you cloned. This installs ESLint and Babel for you. You only need to do this once.
 1. Run `build.bat` from within the folder you cloned. This will run all the tools.
 1. Finished extensions for each platform are available in the `output` directory.
 1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file.
@@ -99,7 +99,7 @@ Development Methodology
 **ES2015? What's that?**
 We've decided that it's better to use the latest and greatest than to wait for browsers to support all the nice new syntax of ES2015. If you're uncomfortable with the new syntax, feel free to use standard Javascript syntax from days of yore. It still works.
 
-**Your JSCS style checker is annoying as heck! I don't code that way!**
+**Your ESLint style checker is annoying as heck! I don't code that way!**
 We have a large number of contributors who each bring their own style to the code base. It was getting a bit hard to navigate all the features, as they each had their own way of indenting, etc etc. We held a team vote to unify our styles, and decided to follow the AirBNB style guide. It's a pretty good way to go, so give it a shot before you get too upset about having to change your style.
 
 **How do I build a feature?**
