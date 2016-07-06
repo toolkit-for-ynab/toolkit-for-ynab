@@ -137,7 +137,7 @@
           });
 
           // call external features if appropriate
-          if (ynabToolKit.options.goalIndicator !== false) {
+          if (ynabToolKit.options.goalIndicator) {
             ynabToolKit.goalIndicator.invoke();
           }
         },
