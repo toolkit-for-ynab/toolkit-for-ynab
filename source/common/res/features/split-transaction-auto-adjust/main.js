@@ -28,8 +28,8 @@
 
       function getCurrentInputClass() {
         var firstRow = $('.ynab-grid-body-row', splitTransactionRow).first();
-        var outflowValue = parseFloat($('.ynab-grid-cell-outflow .ember-text-field', firstRow).val());
-        var inflowValue = parseFloat($('.ynab-grid-cell-inflow .ember-text-field', firstRow).val());
+        var outflowValue = ynab.unformat($('.ynab-grid-cell-outflow .ember-text-field', firstRow).val());
+        var inflowValue = ynab.unformat($('.ynab-grid-cell-inflow .ember-text-field', firstRow).val());
         return outflowValue > 0 ? '.ynab-grid-cell-outflow' :
                inflowValue > 0 ? '.ynab-grid-cell-inflow' : false;
       }
@@ -44,27 +44,27 @@
 
       function autoFillNextRow(currentInputElement) {
         var inputClass = getCurrentInputClass();
-        var total = parseFloat($(inputClass + ' .ember-text-field', splitTransactionRow.children().eq(0)).val());
+        var total = ynab.unformat($(inputClass + ' .ember-text-field', splitTransactionRow.children().eq(0)).val());
 
         if (inputClass && total) {
           var currentRow = $(currentInputElement).parents('.ynab-grid-body-row');
           var currentRowIndex = splitTransactionRow.children().index(currentRow);
-          var currentValue = parseFloat($(currentInputElement).val());
+          var currentValue = ynab.unformat($(currentInputElement).val());
 
           splitTransactionRow.children().each(function (index, splitRow) {
             if (index === currentRowIndex) {
               var nextRow = splitTransactionRow.children().eq(currentRowIndex + 1);
               if (index === 0) {
-                $(inputClass + ' .ember-text-field', nextRow).val(total.toFixed(2));
+                $(inputClass + ' .ember-text-field', nextRow).val(total);
                 $(inputClass + ' .ember-text-field', nextRow).trigger('change');
               } else {
                 total -= currentValue;
-                $(inputClass + ' .ember-text-field', nextRow).val(total.toFixed(2));
+                $(inputClass + ' .ember-text-field', nextRow).val(total);
                 $(inputClass + ' .ember-text-field', nextRow).trigger('change');
               }
             } else if (index < currentRowIndex) {
               if (index !== 0) { // don't decrement total if we're the total row, that's silly
-                total -= parseFloat($(inputClass + ' .ember-text-field', splitRow).val());
+                total -= ynab.unformat($(inputClass + ' .ember-text-field', splitRow).val());
               }
             }
           });
