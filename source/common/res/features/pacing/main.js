@@ -85,6 +85,13 @@
 
             var deemphasizedCategories = getDeemphasizedCategories();
 
+            var showIndicator = ynabToolKit.options.pacing;
+            if (showIndicator === '2') {
+              showIndicator = true;
+            } else {
+              showIndicator = false;
+            }
+
             $('.budget-table-row').each(function () {
               var available = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-available').text());
               var activity = -ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-activity').text());
@@ -109,13 +116,6 @@
                 temperature = 'cautious';
               } else {
                 temperature = 'positive';
-              }
-
-              var showIndicator = ynabToolKit.options.pacing;
-              if (showIndicator === 2) {
-                showIndicator = true;
-              } else {
-                showIndicator = false;
               }
 
               var deemphasized = (masterName === 'Credit Card Payments') || $.inArray(masterName + '_' + subcatName, deemphasizedCategories) >= 0;

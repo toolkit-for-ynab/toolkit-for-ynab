@@ -40,6 +40,8 @@ This is what the extension can do for you:
 - Add a split transaction keyboard shortcut, so typing "split" into the category input will automatically create a split transaction.
 - Add buttons within the Account view to easily show and hide upcoming and reconciled transactions with one click.
 - Change the default orange label for underfunded goals to blue
+- Change the default orange label for underfunded goals to blue.
+- Change the default green "To Be Budgeted" indicator to yellow if there is still unallocated money waiting to be budgeted.
 - Autofill inflow/outflow values with the remaining total when entering split transactions.
 
 All of these are configurable with options in the extension options page.

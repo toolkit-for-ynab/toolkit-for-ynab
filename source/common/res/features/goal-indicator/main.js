@@ -26,8 +26,8 @@
         invoke() {
           clearIndicators();
           addIndicator('.toolkit-row-goalTB', 'T', 'Target balance goal');
-          addIndicator('.toolkit-row-goalTBD', 'M', 'Monthly budgeting or Target by date goal');
-          addIndicator('.toolkit-row-goalMF', 'M', 'Monthly budgeting or Target by date goal');
+          addIndicator('.toolkit-row-goalTBD', 'D', 'Target by date goal');
+          addIndicator('.toolkit-row-goalMF', 'M', 'Monthly budgeting goal');
           addIndicator('.toolkit-row-upcoming', 'U', 'Upcoming transactions');
         }
       };
