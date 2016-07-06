@@ -22,7 +22,7 @@
           ynabToolKit.privacyMode.enabled = false;
           if (ynabToolKit.options.privacyMode === '2') {
             if (!$('#toolkit-togglePrivacy').length) {
-              $('.sidebar.logged-in .button-prefs-budget.user-data').after('<button id="toolkit-togglePrivacy"><i class="ember-view flaticon stroke lock-1"></i></button>');
+              $('nav.sidebar.logged-in .sidebar-contents').after('<button id="toolkit-togglePrivacy"><i class="ember-view flaticon stroke lock-1"></i></button>');
               $('body').on('click', 'button#toolkit-togglePrivacy', togglePrivacyMode);
             }
           } else if (ynabToolKit.options.privacyMode === '1') {

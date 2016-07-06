@@ -1,8 +1,7 @@
 #toolkit-togglePrivacy {
     color: #fff;
-    margin-left: 7px;
-}
-
-.sidebar.logged-in .button-prefs-budget {
-    width: 88%;
+    top: 2px;
+    right: 0;
+    position: absolute;
+    padding: 10px;
 }
