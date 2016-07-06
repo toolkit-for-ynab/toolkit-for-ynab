@@ -10,6 +10,23 @@ body {
 .inverted {
   -webkit-filter: invert(1) hue-rotate(180deg) brightness(1.2);
   filter: invert(1) hue-rotate(180deg) brightness(1.2);
+  color: gray;
+}
+
+.inverted h2 {
+  color: gray;
+}
+
+.inverted .help-block {
+  color: gray;
+}
+
+.inverted .nav li a {
+  color: gray;
+}
+
+.inverted .bootstrap-switch-handle-off {
+  color: gray !important;
 }
 
 /* Start the whole page hidden, then we'll show it with JS once
