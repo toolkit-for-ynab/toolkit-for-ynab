@@ -82,7 +82,7 @@
 
         updateBudgetedBalance(name, difference) {
           // eslint-disable-next-line no-alert
-          if ((ynabToolKit.options.warnOnQuickBudget !== 0) && (!confirm('Are you sure you want to do this?'))) {
+          if (ynabToolKit.options.warnOnQuickBudget && !confirm('Are you sure you want to do this?')) {
             return;
           }
 
@@ -104,7 +104,7 @@
 
               $(input).val(newValue);
 
-              if (ynabToolKit.options.warnOnQuickBudget === 0) {
+              if (!ynabToolKit.options.warnOnQuickBudget) {
                 // only seems to work if the confirmation doesn't pop up?
                 // haven't figured out a way to properly blur otherwise
                 input.blur();
