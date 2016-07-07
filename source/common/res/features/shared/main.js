@@ -272,6 +272,15 @@ ynabToolKit.shared = (function () {
       return registry[viewId];
     },
 
+    getEmberViewByContainerKey(containerKey) {
+      var registry = this.getEmberViewRegistry();
+      for (var viewId in registry) {
+        if (registry[viewId].get('_debugContainerKey') === containerKey) {
+          return registry[viewId];
+        }
+      }
+    },
+
     getEmberViewRegistry() {
       return Ember.Component.create().get('_viewRegistry');
     },
