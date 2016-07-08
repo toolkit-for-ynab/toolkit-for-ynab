@@ -51,25 +51,18 @@
       }
 
       return {
-        invoke: function invoke() {
-          Ember.Instrumentation.subscribe('render.view', {
-            before: function before() {},
-            after: function after(event, timestamp, view) {
-              if (view.containerKey === 'view:modals/budget/activity') {
-                return initialize();
-              }
+        onAfterViewRendered: function (view) {
+          if (view.containerKey === 'view:modals/budget/activity') {
+            return initialize();
+          }
 
-              if (view.containerKey === 'view:ynab-grid/rows' && waitForRowView) {
-                waitForRowView = false;
-                setTimeout(findSelectedTransaction, 250);
-              }
-            }
-          });
+          if (view.containerKey === 'view:ynab-grid/rows' && waitForRowView) {
+            waitForRowView = false;
+            setTimeout(findSelectedTransaction, 250);
+          }
         }
       };
     }());
-
-    ynabToolKit.activityTransactionLink.invoke();
   } else {
     setTimeout(poll, 250);
   }
