@@ -1,5 +1,5 @@
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true && ynabToolKit.onEmberViewRenderedInit === true) {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.accountTransactionSearch = (function () {
       var originalTransactions;
 
@@ -27,6 +27,8 @@
 
           $('.accounts-toolbar-right').append(searchBox);
         }
+
+        $('.toolkit-transaction-search').val('');
 
         originalTransactions = accountsController.get('contentResults').slice();
 
@@ -104,9 +106,9 @@
       }
 
       return {
-        onAfterViewRendered: function (view) {
-          if (view.containerKey === 'view:ynab-grid/header') {
-            setTimeout(addSearchBox, 250);
+        observe: function (changedNodes) {
+          if (changedNodes.has('ynab-grid-body') || changedNodes.has('accounts-header-balances')) {
+            Ember.run.later(addSearchBox, 0);
           }
         }
       };
