@@ -164,14 +164,37 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
         // Code you expect to run each time your feature needs to update or modify YNAB's state
       },
 
+      // REMOVE THIS IF IT'S NOT NEEDED
       observe: function(changedNodes) {
-
         if ( changedNodes.has('class-name-of-interest') ) {
           ynabToolKit.awesomeFeature.invoke();
           // Call this.invoke() to activate your function if you find any class names
           // in the set of changed nodes that indicates your function need may need to run.
         }
+      },
 
+      // REMOVE THIS IF IT'S NOT NEEDED
+      onRouteChanged: function (currentPath, router) {
+        if (currentPath.indexOf('accounts') !== -1) {
+          // do some stuff now that we've come to the accounts page!
+        }
+      },
+
+      // REMOVE THIS IF IT'S NOT NEEDED
+      onBeforeViewRendered: function (view) {
+        if (view.containerKey !== 'view:modals/budget/activity') {
+          // do some stuff before the budget activity modal has opened
+          // If you return a value from the before callback, that same value will
+          // be passed as a second parameter to the onAfterViewRendered callback.
+        }
+      },
+
+      // REMOVE THIS IF IT'S NOT NEEDED
+      onAfterViewRendered: function (view, fromBefore) {
+        if (view.containerKey !== 'view:modals/budget/activity') {
+          // do some stuff after the budget activity modal has opened
+          // check the fromBefore variable to check values from before view was rendered!
+        }
       }
     };
   }()); // Keep feature functions contained within this object
@@ -190,6 +213,9 @@ Let's break it down and talk about the sections.
 - ```ynabToolKit.awesomeFeature()```: This is your container object for your feature. The build system looks for this line in your file to include your feature into the observe stuff we'll talk about below.
 - ```this.invoke()```: Think of this like a constructor, or an initialiser. Do what you want to do here to get it set up.
 - ```this.observe(changedNodes)```: You can (optionally) define this function to watch the DOM for changes. ```changedNodes``` is a set of all the class names for all the nodes which have just changed. Since this gets called every single time anything on the page changes at all, please ensure you guard your logic with an ```if``` statement which makes sure something you care about changed, or the browser will likely struggle with the amount of work it has to do on every change. If you change the DOM every time you receive this function, you'll crash the browser, because you'll cause an infinite recursion. (DOM changes -> ```observe(changedNodes)``` -> DOM changes -> ```observe(changedNodes)``` etc.)
+- ```this.onRouteChanged(currentPath, router)```: You can (optionally) define this function to watch for changes to the `currentPath`. The function will be called with the `currentPath` a handle on the `router`, respectively.
+- ```this.onBeforeViewRendered(view)```: You can (optionally) define this function to watch for rendered views. View is going to be the handle on the Ember view. For more documentation on what to expect from this view see the [Instrumentation documentation](http://emberjs.com/api/classes/Ember.Instrumentation.html). Note that you should check that the view is what you need before processing in order to avoid slowing down the page. (ie: ```if (view.containerKey === 'view:modals/budget/activity') {```);
+- ```this.onAfterViewRendered(view)```: Same as `onBeforeViewRendered` only it happens _after_! An optional second parameter is sent if the `onBeforeViewRendered()` function returns a value.
 
 
 Mutation Observer Tips
