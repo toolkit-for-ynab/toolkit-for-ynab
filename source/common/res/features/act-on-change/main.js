@@ -69,9 +69,10 @@ Set.prototype.regex = function (regex) {
             renderedViewBefore: view
           });
         },
-        after: function after(event, timestamp, view) {
+        after: function after(event, timestamp, view, beforeParameter) {
           ynabToolKit.shared.feedChanges({
-            renderedViewAfter: view
+            renderedViewAfter: view,
+            beforeParameter: beforeParameter
           });
         }
       });
