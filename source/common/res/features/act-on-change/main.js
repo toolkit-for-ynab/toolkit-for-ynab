@@ -62,24 +62,6 @@ Set.prototype.regex = function (regex) {
       ynabToolKit.actOnChangeInit = true;
     };
 
-    ynabToolKit.onEmberViewRendered = function () {
-      Ember.Instrumentation.subscribe('render.view', {
-        before: function before(event, timestamp, view) {
-          ynabToolKit.shared.feedChanges({
-            renderedViewBefore: view
-          });
-        },
-        after: function after(event, timestamp, view, beforeParameter) {
-          ynabToolKit.shared.feedChanges({
-            renderedViewAfter: view,
-            beforeParameter: beforeParameter
-          });
-        }
-      });
-
-      ynabToolKit.onEmberViewRenderedInit = true;
-    };
-
     ynabToolKit.onCurrentPathChanged = function () {
       var routerContainer = ynabToolKit.shared.containerLookup('router:main');
       routerContainer.addObserver('currentPath', function (router) {
@@ -94,7 +76,6 @@ Set.prototype.regex = function (regex) {
 
     // Run listeners once
     ynabToolKit.actOnChange();
-    ynabToolKit.onEmberViewRendered();
     ynabToolKit.onCurrentPathChanged();
   } else {
     setTimeout(poll, 250);
