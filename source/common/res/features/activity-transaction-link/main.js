@@ -2,19 +2,29 @@
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.activityTransactionLink = (function () {
       var selectedTransaction;
-      var waitForRowView = false;
+      var waitingForAccountsPage = false;
 
       function initialize() {
-        var budgetController = ynabToolKit.shared.containerLookup('controller:budget');
-        var selectedActivityTransactions = budgetController.selectedActivityTransactions;
-
         $('.activity-rows').children().each(function (index, row) {
           $(row).on('click', function () {
-            selectedTransaction = selectedActivityTransactions[index];
-            $('.nav-account-name[title="' + selectedTransaction.accountName + '"]').trigger('click');
-            waitForRowView = true;
+            var selectedTransEmberId = $(this).attr('id');
+            var emberView = ynabToolKit.shared.getEmberView(selectedTransEmberId);
+            selectedTransaction = emberView.get('transaction');
+            $('.nav-account-name[title="' + selectedTransaction.get('accountName') + '"]').trigger('click');
+            waitingForAccountsPage = true;
           });
         });
+      }
+
+      // find the parent entity if the selectedTransaction has one.
+      function findTransactionIndex(contentResults) {
+        var entityId = selectedTransaction.get('parentEntityId') || selectedTransaction.get('entityId');
+        for (var i = 0; i < contentResults.length; i++) {
+          if (contentResults[i].get('entityId') === entityId) {
+            selectedTransaction = contentResults[i];
+            return i;
+          }
+        }
       }
 
       function resetFiltersAndShowSelectedTransaction(accountsController) {
@@ -32,7 +42,7 @@
       function findSelectedTransaction() {
         var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
         var contentResults = accountsController.get('contentResults');
-        var transactionIndex = contentResults.indexOf(selectedTransaction);
+        var transactionIndex = findTransactionIndex(contentResults);
 
         if (transactionIndex === -1) {
           resetFiltersAndShowSelectedTransaction(accountsController);
@@ -46,19 +56,22 @@
         var containerView = rowView.get('containerView');
         var recordHeight = rowView.get('recordHeight');
         var container = containerView.get('element');
-        $(container).scrollTop(recordHeight * transactionIndex);
-        rowView.gridView.uncheckAllBut(selectedTransaction);
+
+        Ember.run.later(function () {
+          $(container).scrollTop(recordHeight * transactionIndex);
+          rowView.gridView.uncheckAllBut(selectedTransaction);
+        }, 250);
       }
 
       return {
-        onAfterViewRendered: function (view) {
-          if (view.containerKey === 'view:modals/budget/activity') {
-            return initialize();
+        observe: function observe(changedNodes) {
+          if (changedNodes.has('pure-u modal-popup modal-budget-activity ember-view modal-overlay active')) {
+            initialize();
           }
 
-          if (view.containerKey === 'view:ynab-grid/rows' && waitForRowView) {
-            waitForRowView = false;
-            setTimeout(findSelectedTransaction, 250);
+          if (waitingForAccountsPage && changedNodes.has('ynab-grid-body') > -1) {
+            waitingForAccountsPage = false;
+            Ember.run.later(findSelectedTransaction, 250);
           }
         }
       };
