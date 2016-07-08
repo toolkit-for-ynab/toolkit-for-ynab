@@ -9,6 +9,7 @@ module.exports = {
         "Chart": true,
         "Ember": true,
         "jQuery": true,
+        "kango": true,
         "moment": true,
         "noUiSlider": true,
         "ynab": true,
