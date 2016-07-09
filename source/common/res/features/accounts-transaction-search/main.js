@@ -6,8 +6,6 @@
       var searchFields = ['outflow', 'inflow', 'accountName', 'payeeName', 'subCategoryNameWrapped', 'memo'];
 
       function addSearchBox() {
-        var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
-
         if ($('.toolkit-transaction-search', '.accounts-toolbar-right').length === 0) {
           var searchBox = $('<input class="accounts-text-field toolkit-transaction-search" placeholder="Search Transactions..."></input>')
             .on('keydown', function (event) {
@@ -25,16 +23,16 @@
               filterContentResults(searchTerm);
             });
 
-          $('.accounts-toolbar-right').append(searchBox);
+          $('.accounts-toolbar-right').prepend(searchBox);
         }
+      }
 
+      function onAccountChange() {
+        addSearchBox();
         $('.toolkit-transaction-search').val('');
 
+        var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
         originalTransactions = accountsController.get('contentResults').slice();
-
-        accountsController.addObserver('hiddenTxnsCount', function () {
-          originalTransactions = accountsController.get('contentResults').slice();
-        });
       }
 
       function filterContentResults(filterValue) {
@@ -106,13 +104,28 @@
       }
 
       return {
-        observe: function (changedNodes) {
-          if (changedNodes.has('ynab-grid-body') || changedNodes.has('accounts-header-balances')) {
-            Ember.run.later(addSearchBox, 0);
+        invoke: function () {
+          var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
+          var applicationController = ynabToolKit.shared.containerLookup('controller:application');
+
+          applicationController.addObserver('selectedAccountId', function () {
+            Ember.run.later(onAccountChange, 250);
+          });
+
+          if (applicationController.get('currentPath').indexOf('accounts')) {
+            onAccountChange();
           }
+
+          accountsController.addObserver('hiddenTxnsCount', function () {
+            Ember.run.next(function () {
+              originalTransactions = accountsController.get('contentResults').slice();
+            });
+          });
         }
       };
     }());
+
+    ynabToolKit.accountTransactionSearch.invoke();
   } else {
     setTimeout(poll, 250);
   }
