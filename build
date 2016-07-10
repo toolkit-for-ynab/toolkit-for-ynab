@@ -2,13 +2,13 @@
 
 set -e
 
-# Check our code style with jscs.
-echo "[   INFO] Checking code style with ESLint..."
-npm run eslint --silent || exit
-
 # Populate feature files like feed changes by reading thorugh the code and hooking up
 # all the calls we need, as well as processing settings files
 python populateFeaturesFiles.py
+
+# Check our code style with jscs.
+echo "[   INFO] Checking code style with ESLint..."
+npm run eslint --silent || exit
 
 # Transpile the source/ directory, putting the files in src/ which is where Kango expects to see them.
 echo "[   INFO] Transpiling code with Babel on ES2015 preset..."
