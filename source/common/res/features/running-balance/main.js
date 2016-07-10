@@ -3,19 +3,22 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.runningBalance = (function () {
+      var currentlyRunning = false;
+
       function updateRunningBalanceCalculation(arrangedContent) {
-        console.log('add dem balances!');
         var i;
         var transaction;
         var runningBalance = 0;
 
         var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
         if (accountController.get('sortAscending')) {
-          console.log('start from the end');
           for (i = 0; i < arrangedContent.length; i++) {
             transaction = arrangedContent[i];
 
-            if (transaction.get('parentEntityId') !== null) continue;
+            if (transaction.get('parentEntityId') !== null) {
+              transaction.__ynabToolKitRunningBalance = runningBalance;
+              continue;
+            }
 
             if (transaction.get('inflow')) {
               runningBalance += transaction.get('inflow');
@@ -26,11 +29,13 @@
             transaction.__ynabToolKitRunningBalance = runningBalance;
           }
         } else {
-          console.log('start from the beginning');
           for (i = arrangedContent.length - 1; i >= 0; i--) {
             transaction = arrangedContent[i];
 
-            if (transaction.get('parentEntityId') !== null) continue;
+            if (transaction.get('parentEntityId') !== null) {
+              transaction.__ynabToolKitRunningBalance = runningBalance;
+              continue;
+            }
 
             if (transaction.get('inflow')) {
               runningBalance += transaction.get('inflow');
@@ -41,23 +46,16 @@
             transaction.__ynabToolKitRunningBalance = runningBalance;
           }
         }
-
-        console.log('done with that!');
       }
 
       function updateRunningBalanceColumn() {
-        console.log('update runningBalance column!');
         insertHeader();
 
         $('.ynab-grid-container .ynab-grid-body .ynab-grid-body-row').each(function (index, element) {
           var $element = $(element);
           if ($element.hasClass('ynab-grid-body-empty')) return;
 
-          if ($('.ynab-grid-cell .ynab-toolkit-grid-cell-running-balance', element).length) {
-            // not empty
-          } else {
-            insertValue(element);
-          }
+          insertValue(element);
         });
       }
 
@@ -99,7 +97,12 @@
           currencySpan.addClass('user-data currency zero');
         }
 
-        currencySpan.text(currencySymbol + ynab.formatCurrency(runningBalance));
+        if (transaction.get('parentEntityId') !== null) {
+          currencySpan.text('');
+        } else {
+          currencySpan.text(currencySymbol + ynab.formatCurrency(runningBalance));
+        }
+
         currentRowRunningBalance.insertAfter($('.ynab-grid-cell-inflow', $currentRow));
       }
 
@@ -114,17 +117,45 @@
         }
       }
 
-      return {
-        observe: function invoke(changedNodes) {
-          var applicationController = ynabToolKit.shared.containerLookup('controller:application');
-          var isOnAccountPage = applicationController.get('currentPath').indexOf('accounts') > -1 && applicationController.get('selectedAccountId');
+      function addDeadColumnToAddRows() {
+        var $ynabGridAddRows = $('.ynab-grid-add-rows');
 
-          if (changedNodes.has('ynab-grid-body') && isOnAccountPage) {
-            onYnabGridyBodyChanged();
+        if ($ynabGridAddRows.children().length) {
+          if ($('.ynab-toolkit-grid-cell-running-balance', $ynabGridAddRows).length) return;
+          $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">').insertAfter($('.ynab-grid-cell-inflow', $ynabGridAddRows));
+        }
+      }
+
+      return {
+        invoke: function () {
+          currentlyRunning = true;
+
+          Ember.run.next(function () {
+            var applicationController = ynabToolKit.shared.containerLookup('controller:application');
+
+            if (applicationController.get('currentPath').indexOf('accounts') > -1 && applicationController.get('selectedAccountId')) {
+              onYnabGridyBodyChanged();
+            }
+
+            currentlyRunning = false;
+          }, 50);
+        },
+
+        observe: function invoke(changedNodes) {
+          if (changedNodes.has('ynab-grid-body') && !currentlyRunning) {
+            ynabToolKit.runningBalance.invoke();
+          }
+
+          if (changedNodes.has('ynab-grid-cell ynab-grid-cell-accountName user-data') &&
+              changedNodes.has('ynab-grid-cell ynab-grid-cell-date user-data')
+          ) {
+            addDeadColumnToAddRows();
           }
         }
       };
     }());
+
+    ynabToolKit.runningBalance.invoke();
   } else {
     setTimeout(poll, 250);
   }
