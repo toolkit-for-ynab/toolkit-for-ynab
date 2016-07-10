@@ -137,7 +137,7 @@
               .append($('<strong>', { class: 'user-data', title: fDifference })
                 .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), difference)));
 
-            $('.inspector-quick-budget .ember-view').append(button);
+            $('.inspector-quick-budget').append(button);
           }
         },
 
