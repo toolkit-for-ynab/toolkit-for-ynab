@@ -1,0 +1,14 @@
+{
+         "name": "accountTransactionSearch",
+         "type": "checkbox",
+      "default": true,
+      "section": "budget",
+        "title": "Add Transaction Search To Accounts",
+  "description": "Adds a basic search feature to the accounts page.",
+      "actions": {
+                  "true": [
+                    "injectCSS", "main.css",
+                    "injectScript", "main.js"
+                  ]
+                }
+}
