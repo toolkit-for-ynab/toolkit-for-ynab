@@ -137,7 +137,7 @@
             }
 
             currentlyRunning = false;
-          }, 50);
+          });
         },
 
         observe: function invoke(changedNodes) {
