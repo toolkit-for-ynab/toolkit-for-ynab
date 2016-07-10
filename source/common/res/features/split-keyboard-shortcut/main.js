@@ -3,9 +3,6 @@
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.splitKeyboardShortcut = (function () {
       return {
-        invoke() {
-        },
-
         observe(changedNodes) {
           if (/accounts/.test(window.location.href)) {
             if (changedNodes.regex(/^(?=.*\smodal-account-categories\s)(?=.*?\sactive)((?!closing).)*$/gm)) {
