@@ -138,7 +138,7 @@
 
           // call external features if appropriate
           if (ynabToolKit.options.goalIndicator) {
-            ynabToolKit.goalIndicator.invoke();
+            ynabToolKit.shared.invokeExternalFeature('goalIndicator');
           }
         },
 
