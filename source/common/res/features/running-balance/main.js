@@ -87,7 +87,6 @@
         var transaction = emberView.get('content');
         var runningBalance = transaction.get('__ynabToolKitRunningBalance');
         var currencySpan = $('.user-data', currentRowRunningBalance);
-        var currencySymbol = ynab.YNABSharedLib.currencyFormatter.getCurrency().currency_symbol;
 
         if (runningBalance < 0) {
           currencySpan.addClass('user-data currency negative');
@@ -100,7 +99,7 @@
         if (transaction.get('parentEntityId') !== null) {
           currencySpan.text('');
         } else {
-          currencySpan.text(currencySymbol + ynab.formatCurrency(runningBalance));
+          currencySpan.text(ynabToolKit.shared.formatCurrency(runningBalance));
         }
 
         currentRowRunningBalance.insertAfter($('.ynab-grid-cell-inflow', $currentRow));
