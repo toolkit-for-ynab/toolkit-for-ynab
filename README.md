@@ -53,7 +53,7 @@ If you don't want to build the extension from the source yourself, you can get i
 
 - Chrome on the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl)
 - Firefox on the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/)
-- Safari [on the Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.kangoextensions.ynabenhanced-7M68YQDBSE) NOTE: Safari is currently stuck on version 0.3.6 because Apple is still reviewing the update. You can install the latest [from us directly](http://toolkitforynab.com/safari-updates/toolkitforynab_latest.safariextz) but please keep in mind that it won't auto-update.
+- Safari [on the Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.kangoextensions.ynabenhanced-7M68YQDBSE) NOTE: Safari is currently stuck on version 0.4.3 because Apple is still reviewing the update. You can install the latest [from us directly](http://toolkitforynab.com/safari-updates/toolkitforynab_latest.safariextz) but please keep in mind that it won't auto-update.
 
 Roadmap
 -------
