@@ -285,6 +285,17 @@ ynabToolKit.shared = (function () {
       return Ember.Component.create().get('_viewRegistry');
     },
 
+    invokeExternalFeature(featureName) {
+      var self = this;
+      if (ynabToolKit[featureName] && typeof ynabToolKit[featureName].invoke === 'function') {
+        ynabToolKit[featureName].invoke();
+      } else {
+        setTimeout(function () {
+          self.invokeExternalFeature(featureName);
+        }, 250);
+      }
+    },
+
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
        ],

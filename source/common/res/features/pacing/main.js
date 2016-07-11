@@ -158,7 +158,7 @@
               }
 
               if (['pacing', 'both'].indexOf(ynabToolKit.options.budgetProgressBars) !== -1) {
-                ynabToolKit.budgetProgressBars.invoke();
+                ynabToolKit.shared.invokeExternalFeature('budgetProgressBars');
               }
 
               e.stopPropagation();
