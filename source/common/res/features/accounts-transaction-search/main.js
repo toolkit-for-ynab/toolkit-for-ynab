@@ -7,23 +7,34 @@
 
       function addSearchBox() {
         if ($('.toolkit-transaction-search', '.accounts-toolbar-right').length === 0) {
-          var searchBox = $('<input class="accounts-text-field toolkit-transaction-search" placeholder="Search Transactions..."></input>')
-            .on('keydown', function (event) {
-              if (event.keyCode === 46 || event.keyCode === 8 || event.keyCode === 67) { // delete/backspace/'c'
-                event.stopPropagation();
-              }
-            })
-            .on('keyup', function (event) {
-              if (event.keyCode === 46 || event.keyCode === 8 || event.keyCode === 67) { // delete/backspace/'c'
-                event.preventDefault();
-                event.stopPropagation();
-              }
+          var $searchBox = $('<div class="toolkit-transaction-search">' +
+                              '<i class="flaticon stroke x-2 toolkit-search-clear"></i>' +
+                              '<input class="accounts-text-field" placeholder="Search Transactions...">' +
+                            '</div>');
 
-              var searchTerm = $(this).val();
-              filterContentResults(searchTerm);
-            });
+          $('.accounts-text-field', $searchBox).on('keydown', function (event) {
+            if (event.keyCode === 46 || event.keyCode === 8 || event.keyCode === 67) {
+              // delete/backspace/'c'
+              event.stopPropagation();
+            }
+          }).on('keyup', function (event) {
+            if (event.keyCode === 46 || event.keyCode === 8 || event.keyCode === 67) {
+              // delete/backspace/'c'
+              event.preventDefault();
+              event.stopPropagation();
+            }
 
-          $('.accounts-toolbar-right').prepend(searchBox);
+            var searchTerm = $(this).val();
+            filterContentResults(searchTerm);
+          });
+
+          $('.toolkit-search-clear', $searchBox).click(function () {
+            $('.accounts-text-field', $searchBox).val('');
+            $('.accounts-text-field', $searchBox).focus();
+            filterContentResults('');
+          });
+
+          $('.accounts-toolbar-right').prepend($searchBox);
         }
       }
 
