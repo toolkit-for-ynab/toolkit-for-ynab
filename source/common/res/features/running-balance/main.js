@@ -85,7 +85,7 @@
 
         var emberView = ynabToolKit.shared.getEmberView($currentRow.attr('id'));
         var transaction = emberView.get('content');
-        var runningBalance = transaction.get('__ynabToolKitRunningBalance');
+        var runningBalance = transaction.__ynabToolKitRunningBalance;
         var currencySpan = $('.user-data', currentRowRunningBalance);
 
         if (runningBalance < 0) {
