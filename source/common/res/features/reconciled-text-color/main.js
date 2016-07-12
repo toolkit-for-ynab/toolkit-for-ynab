@@ -12,13 +12,21 @@
           $(transactionRows).each(function () {
             var clearedField = $(this).find('.ynab-grid-cell-cleared>i').first();
             var isReconciled = clearedField.hasClass('is-reconciled');
-            if (isReconciled) {
+            var isChecked = $(this).hasClass('is-checked');
+
+            if (isReconciled && !isChecked) {
               $(this).addClass('is-reconciled-row');
             }
 
-            if ($(this).hasClass('ynab-grid-body-sub') && previousReconciled) {
+            if ($(this).hasClass('ynab-grid-body-sub') && previousReconciled && !isChecked) {
               $(this).addClass('is-reconciled-row');
               isReconciled = true;
+            }
+
+            // if a sub-transaction was already marked as reconciled, then the above statement
+            // would not catch it. Do this to catch the sub transactions
+            if (isChecked) {
+              $(this).removeClass('is-reconciled-row');
             }
 
             previousReconciled = isReconciled;
@@ -26,7 +34,7 @@
         },
 
         observe(changedNodes) {
-          if (changedNodes.has('ynab-grid-body')) {
+          if (changedNodes.has('ynab-grid-body') || changedNodes.has('ynab-grid-body-row ynab-grid-body-parent is-checked')) {
             // We found Account transactions rows
             ynabToolKit.reconciledTextColor.invoke();
           }
