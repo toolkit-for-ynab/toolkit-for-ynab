@@ -2,6 +2,7 @@
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.accountTransactionSearch = (function () {
       var originalTransactions;
+      var filterOnRedraw = false;
 
       var searchFields = ['outflow', 'inflow', 'accountName', 'payeeName', 'subCategoryNameWrapped', 'memo'];
 
@@ -78,10 +79,10 @@
 
           if (filterCategory) {
             var categoryValue = transaction.get(filterCategory);
-            var isNumericCategory = (filterCategory === 'outflow' || filterCategory === 'inflow');
+            var isNumericCategory = filterCategory === 'outflow' || filterCategory === 'inflow';
 
             if (typeof categoryValue !== 'undefined' && categoryValue !== null) {
-              if (isNumericCategory && categoryValue === (ynab.unformat(filterValue) * 1000)) {
+              if (isNumericCategory && categoryValue === ynab.unformat(filterValue) * 1000) {
                 isMatchingTransaction = true;
               } else if (categoryValue.toString().toLowerCase().indexOf(filterValue) > -1) {
                 isMatchingTransaction = true;
@@ -95,7 +96,7 @@
               if (typeof fieldValue !== 'undefined' && fieldValue !== null) {
                 if (isNumericSearchField) {
                   var fieldValueNum = ynab.unformat(filterValue);
-                  if (fieldValueNum > 0 && fieldValue === (fieldValueNum * 1000)) {
+                  if (fieldValueNum > 0 && fieldValue === fieldValueNum * 1000) {
                     isMatchingTransaction = true;
                     break;
                   }
@@ -115,12 +116,28 @@
       }
 
       return {
-        invoke: function () {
+        observe(changedNodes) {
+          if (filterOnRedraw && changedNodes.has('ynab-grid-body')) {
+            filterOnRedraw = false;
+            var $searchBox = $('.toolkit-transaction-search', '.accounts-toolbar-right');
+            var $inputBox = $('.accounts-text-field', $searchBox);
+
+            if ($inputBox.val().length) {
+              filterContentResults($inputBox.val());
+            }
+          }
+        },
+
+        invoke() {
           var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
           var applicationController = ynabToolKit.shared.containerLookup('controller:application');
 
           applicationController.addObserver('selectedAccountId', function () {
             Ember.run.later(onAccountChange, 250);
+          });
+
+          accountsController.addObserver('editingId', function () {
+            filterOnRedraw = true;
           });
 
           if (applicationController.get('currentPath').indexOf('accounts')) {
