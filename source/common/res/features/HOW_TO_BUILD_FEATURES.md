@@ -308,9 +308,10 @@ Firefox
 -------
 
 1. Run `./build` (Linux / Mac) or `build.bat` (Windows)
-2. Go to the URL about:addons
-3. Click the gear button, then select `Install Add-on From File`
-4. Select the file (relative to the root of the repository) `output/toolkitforynab_[version].xpi`
+2. Ensure `xpinstall.signatures.required` is set to __false__ in `about:config`
+3. Go to the URL about:addons
+4. Click the gear button, then select `Install Add-on From File`
+5. Select the file (relative to the root of the repository) `output/toolkitforynab_[version].xpi`
 
 You'll see the toolkit loaded in to Firefox and it'll work as normal. Whenever you make a change to the files in `source` you'll need to run `./build` or `build.bat` again, then remove and reinstall the extension from file.
 
