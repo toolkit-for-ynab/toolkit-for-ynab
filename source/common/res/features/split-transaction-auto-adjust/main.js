@@ -58,7 +58,7 @@
                 $(inputClass + ' .ember-text-field', nextRow).val(total);
                 $(inputClass + ' .ember-text-field', nextRow).trigger('change');
               } else {
-                total -= currentValue;
+                total = Math.round((total - currentValue) * 100) / 100;
                 $(inputClass + ' .ember-text-field', nextRow).val(total);
                 $(inputClass + ' .ember-text-field', nextRow).trigger('change');
               }
