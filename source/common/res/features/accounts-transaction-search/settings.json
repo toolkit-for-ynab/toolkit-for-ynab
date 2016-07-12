@@ -2,7 +2,7 @@
          "name": "accountTransactionSearch",
          "type": "checkbox",
       "default": true,
-      "section": "budget",
+      "section": "accounts",
         "title": "Add Transaction Search To Accounts",
   "description": "Adds a basic search feature to the accounts page.",
       "actions": {

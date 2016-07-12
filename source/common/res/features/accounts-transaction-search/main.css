@@ -1,5 +1,25 @@
 .toolkit-transaction-search {
 	width: 35%;
 	float: right;
-	height: 2.3em;
+	position: relative;
+}
+
+.toolkit-transaction-search input {
+	height: 2.4em;
+}
+
+.toolkit-transaction-search input:focus {
+	border-color: #009cc2;
+}
+
+.toolkit-transaction-search .toolkit-search-clear {
+	color: #88979d;
+	position: absolute;
+	right: 5px;
+	top: 8px;
+	cursor: pointer;
+}
+
+.toolkit-transaction-search .toolkit-search-clear:hover {
+	color: #009cc2;
 }
