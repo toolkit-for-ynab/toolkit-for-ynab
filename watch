@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+
+const execSync = require('child_process').execSync;
+var building = false;
+var rebuild = false;
+
+var watcher = require('chokidar').watch('source/**',
+{
+  persistent: true,
+  ignoreInitial: true,
+  ignored: ['**/allSettings.js', '**/feedChanges.js']
+});
+
+watcher.on('all', function (event, path) {
+
+  if (building) {
+    rebuild = true;
+    return;
+  }
+
+  console.log('Changes detected, rebuilding...');
+
+  building = true;
+
+  execSync('./build', { stdio: [0, 1, 2] });
+
+  // In case we had a change while we were building.
+  if (rebuild) {
+    console.log('Changes detected, rebuilding...');
+
+    execSync('./build', { stdio: [0, 1, 2] });
+  }
+
+  rebuild = false;
+  building = false;
+
+  console.log('Watching for changes...');
+});
+
+console.log('Watching for changes...');
