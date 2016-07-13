@@ -85,7 +85,7 @@
 
         var emberView = ynabToolKit.shared.getEmberView($currentRow.attr('id'));
         var transaction = emberView.get('content');
-        var runningBalance = transaction.get('__ynabToolKitRunningBalance');
+        var runningBalance = transaction.__ynabToolKitRunningBalance;
         var currencySpan = $('.user-data', currentRowRunningBalance);
 
         if (runningBalance < 0) {
@@ -129,7 +129,7 @@
         invoke: function () {
           currentlyRunning = true;
 
-          Ember.run.next(function () {
+          Ember.run.later(function () {
             var applicationController = ynabToolKit.shared.containerLookup('controller:application');
 
             if (applicationController.get('currentPath').indexOf('accounts') > -1 && applicationController.get('selectedAccountId')) {
@@ -137,7 +137,7 @@
             }
 
             currentlyRunning = false;
-          });
+          }, 50);
         },
 
         observe: function invoke(changedNodes) {
