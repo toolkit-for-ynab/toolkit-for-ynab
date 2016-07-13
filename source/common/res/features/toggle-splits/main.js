@@ -4,6 +4,41 @@
     ynabToolKit.toggleSplits = (function () {
       // Supporting functions,
       // or variables, etc
+      function setDisplayEnd() {
+        var rowView = ynabToolKit.shared.getEmberViewByContainerKey('view:ynab-grid/rows');
+        var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
+        var containerView = rowView.get('containerView');
+        var content = accountsController.get('contentResults');
+        var displayStart = containerView.get('displayStart');
+        var displayEnd = containerView.get('displayEnd');
+        var wantToDisplay = displayEnd - displayStart;
+        var displayedCount = 0;
+
+        for (var i = this.get('displayStart'); i < content.length; i++) {
+          if (displayedCount === wantToDisplay) break;
+
+          if (content[i].parentEntityId) {
+            displayedCount++;
+          } else {
+            continue;
+          }
+        }
+
+        Ember.run.next(function () {
+          containerView.set('displayEnd', displayStart + wantToDisplay + displayedCount);
+        });
+      }
+
+      function addScrollListener() {
+        var rowView = ynabToolKit.shared.getEmberViewByContainerKey('view:ynab-grid/rows');
+        removeScrollListener();
+        rowView.get('containerView').addObserver('scrollTop', setDisplayEnd);
+      }
+
+      function removeScrollListener() {
+        var rowView = ynabToolKit.shared.getEmberViewByContainerKey('view:ynab-grid/rows');
+        rowView.get('containerView').removeObserver('scrollTop', setDisplayEnd);
+      }
 
       return {
         setting: 'init',
@@ -33,6 +68,8 @@
 
               $('#toggleSplits > i').toggle();
             });
+
+            addScrollListener();
           }
 
           // default the right arrow to hidden
