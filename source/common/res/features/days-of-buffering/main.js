@@ -35,8 +35,13 @@
 
         var averageDailyOutflow = totalOutflow / totalDays;
         var budgetAccountsTotal = ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel()._result.getOnBudgetAccountsBalance();
+        var daysOfBuffering = Math.floor(budgetAccountsTotal / averageDailyOutflow);
+        if (daysOfBuffering < 10) {
+          daysOfBuffering = (budgetAccountsTotal / averageDailyOutflow).toFixed(1);
+        }
+
         return {
-          DoB: Math.floor(budgetAccountsTotal / averageDailyOutflow),
+          DoB: daysOfBuffering,
           totalOutflow,
           totalDays,
           averageDailyOutflow,
@@ -63,8 +68,12 @@
               elementForDoB.children[0].textContent = '???';
               elementForDoB.children[0].title = 'Your budget history is less than 15 days. Go on with YNAB a while.';
             } else {
-              var dayText = (ynabToolKit.l10nData && ynabToolKit.l10nData['budget.ageOfMoneyDays.one']) || 'day';
-              if (calculation.DoB > 1) dayText = (ynabToolKit.l10nData && ynabToolKit.l10nData['budget.ageOfMoneyDays.other']) || 'days';
+              var dayText;
+              if (calculation.DoB === '1.0') {
+                dayText = (ynabToolKit.l10nData && ynabToolKit.l10nData['budget.ageOfMoneyDays.one']) || 'day';
+              } else {
+                dayText = (ynabToolKit.l10nData && ynabToolKit.l10nData['budget.ageOfMoneyDays.other']) || 'days';
+              }
 
               // Russian declension dummy.
               // if (ynabToolKit.options.l10n === 1){
