@@ -10,7 +10,7 @@
     "eslint-plugin-import": "^1.10.0"
   },
   "scripts": {
-    "eslint": "eslint -c source/common/res/features/.eslintrc.js --ignore-path source/common/res/features/.eslintignore source/common/res/features",
+    "eslint": "eslint -c source/.eslintrc.js --ignore-path source/.eslintignore source/",
     "babel": "babel source --compact false --quiet --ignore *.min.js --out-dir src"
   },
   "babel": {
