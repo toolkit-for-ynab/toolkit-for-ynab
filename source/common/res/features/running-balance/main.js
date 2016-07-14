@@ -132,8 +132,12 @@
           Ember.run.later(function () {
             var applicationController = ynabToolKit.shared.containerLookup('controller:application');
 
-            if (applicationController.get('currentPath').indexOf('accounts') > -1 && applicationController.get('selectedAccountId')) {
-              onYnabGridyBodyChanged();
+            if (applicationController.get('currentPath').indexOf('accounts') > -1) {
+              if (applicationController.get('selectedAccountId')) {
+                onYnabGridyBodyChanged();
+              } else {
+                $('.ynab-toolkit-grid-cell-running-balance').remove();
+              }
             }
 
             currentlyRunning = false;
