@@ -54,13 +54,20 @@
           splitTransactionRow.children().each(function (index, splitRow) {
             if (index === currentRowIndex) {
               var nextRow = splitTransactionRow.children().eq(currentRowIndex + 1);
+              var newRowInput = $(inputClass + ' .ember-text-field', nextRow);
+              var nextRowValue = ynab.unformat(newRowInput.val());
               if (index === 0) {
-                $(inputClass + ' .ember-text-field', nextRow).val(ynab.formatCurrency(total));
-                $(inputClass + ' .ember-text-field', nextRow).trigger('change');
+                if (nextRowValue === 0) {
+                  newRowInput.val(ynab.formatCurrency(total));
+                  newRowInput.trigger('change');
+                }
               } else {
                 total -= currentValue;
-                $(inputClass + ' .ember-text-field', nextRow).val(ynab.formatCurrency(total));
-                $(inputClass + ' .ember-text-field', nextRow).trigger('change');
+
+                if (nextRowValue === 0) {
+                  newRowInput.val(ynab.formatCurrency(total));
+                  newRowInput.trigger('change');
+                }
               }
             } else if (index < currentRowIndex) {
               if (index !== 0) { // don't decrement total if we're the total row, that's silly

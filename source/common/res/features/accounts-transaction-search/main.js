@@ -115,6 +115,12 @@
         accountsController.set('contentResults', newContents);
       }
 
+      // if we're on an accounts page
+      var router = ynabToolKit.shared.containerLookup('router:main');
+      if (router.get('currentPath').indexOf('accounts') > -1) {
+        Ember.run.later(onAccountChange, 250);
+      }
+
       return {
         observe(changedNodes) {
           if (filterOnRedraw && changedNodes.has('ynab-grid-body')) {
@@ -128,21 +134,16 @@
           }
         },
 
-        invoke() {
+        onRouteChanged() {
           var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
-          var applicationController = ynabToolKit.shared.containerLookup('controller:application');
 
-          applicationController.addObserver('selectedAccountId', function () {
+          if (router.get('currentPath').indexOf('accounts') > -1) {
             Ember.run.later(onAccountChange, 250);
-          });
+          }
 
           accountsController.addObserver('editingId', function () {
             filterOnRedraw = true;
           });
-
-          if (applicationController.get('currentPath').indexOf('accounts')) {
-            onAccountChange();
-          }
 
           accountsController.addObserver('hiddenTxnsCount', function () {
             Ember.run.next(function () {
@@ -152,8 +153,6 @@
         }
       };
     }());
-
-    ynabToolKit.accountTransactionSearch.invoke();
   } else {
     setTimeout(poll, 250);
   }
