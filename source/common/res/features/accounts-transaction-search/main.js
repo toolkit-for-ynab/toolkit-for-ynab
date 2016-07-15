@@ -41,13 +41,14 @@
 
       function onAccountChange() {
         addSearchBox();
-        $('.toolkit-transaction-search').val('');
+        $('.toolkit-transaction-search input').val('');
 
         var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
         originalTransactions = accountsController.get('contentResults').slice();
       }
 
       function filterContentResults(filterValue) {
+        filterValue = filterValue || '';
         filterValue = filterValue.toString().toLowerCase();
         var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
         var filterCategory = filterValue.substr(0, filterValue.indexOf(':'));
@@ -116,7 +117,31 @@
       }
 
       return {
-        observe(changedNodes) {
+        invoke: function () {
+          var router = ynabToolKit.shared.containerLookup('router:main');
+
+          if (router.get('currentPath').indexOf('accounts') > -1) {
+            var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
+
+            Ember.run.later(onAccountChange, 250);
+
+            accountsController.addObserver('hiddenTxnsCount', function () {
+              console.log('hiddenTxnsCount');
+              Ember.run.next(function () {
+                originalTransactions = accountsController.get('contentResults').slice();
+                var $searchBox = $('.toolkit-transaction-search', '.accounts-toolbar-right');
+                var $inputBox = $('.accounts-text-field', $searchBox);
+                filterContentResults($inputBox.val());
+              });
+            });
+
+            accountsController.addObserver('editingId', function () {
+              console.log('editingId happening');
+              filterOnRedraw = true;
+            });
+          }
+        },
+        observe: function observe(changedNodes) {
           if (filterOnRedraw && changedNodes.has('ynab-grid-body')) {
             filterOnRedraw = false;
             var $searchBox = $('.toolkit-transaction-search', '.accounts-toolbar-right');
@@ -127,28 +152,8 @@
             }
           }
         },
-
-        invoke() {
-          var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
-          var applicationController = ynabToolKit.shared.containerLookup('controller:application');
-
-          applicationController.addObserver('selectedAccountId', function () {
-            Ember.run.later(onAccountChange, 250);
-          });
-
-          accountsController.addObserver('editingId', function () {
-            filterOnRedraw = true;
-          });
-
-          if (applicationController.get('currentPath').indexOf('accounts')) {
-            onAccountChange();
-          }
-
-          accountsController.addObserver('hiddenTxnsCount', function () {
-            Ember.run.next(function () {
-              originalTransactions = accountsController.get('contentResults').slice();
-            });
-          });
+        onRouteChanged: function onRouteChanged() {
+          ynabToolKit.accountTransactionSearch.invoke();
         }
       };
     }());
