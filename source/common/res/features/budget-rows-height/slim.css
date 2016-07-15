@@ -10,6 +10,10 @@
     margin-top: 0px;
 }
 
+.budget-table-row.is-master-category:first-child {
+    margin-top: 5px;
+}
+
 .budget-table-row.is-master-category .budget-table-cell-name .budget-table-cell-name-row-label-item {
     padding-top: 0.1em !important;
 }
