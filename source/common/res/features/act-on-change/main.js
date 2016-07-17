@@ -63,12 +63,9 @@ Set.prototype.regex = function (regex) {
     };
 
     ynabToolKit.onCurrentPathChanged = function () {
-      var routerContainer = ynabToolKit.shared.containerLookup('router:main');
-      routerContainer.addObserver('currentPath', function (router) {
-        ynabToolKit.shared.feedChanges({
-          currentPath: router.currentPath,
-          router: router
-        });
+      var router = ynabToolKit.shared.containerLookup('router:main');
+      router.on('didTransition', function () {
+        ynabToolKit.shared.feedChanges({ router: this });
       });
 
       ynabToolKit.onCurrentPathChangedInit = true;
