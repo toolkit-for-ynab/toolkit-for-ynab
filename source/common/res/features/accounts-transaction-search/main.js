@@ -126,7 +126,6 @@
             Ember.run.later(onAccountChange, 250);
 
             accountsController.addObserver('hiddenTxnsCount', function () {
-              console.log('hiddenTxnsCount');
               Ember.run.next(function () {
                 originalTransactions = accountsController.get('contentResults').slice();
                 var $searchBox = $('.toolkit-transaction-search', '.accounts-toolbar-right');
@@ -136,7 +135,6 @@
             });
 
             accountsController.addObserver('editingId', function () {
-              console.log('editingId happening');
               filterOnRedraw = true;
             });
           }
