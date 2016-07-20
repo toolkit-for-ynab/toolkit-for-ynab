@@ -11,8 +11,6 @@
 2. ​
 3. ​
 
-  ...
-
 ### Export of Toolkit Settings
 
 ```
@@ -21,7 +19,7 @@
 
 ### System Settings
 
-Operating System (Mac/Windows/Etc): 
-Browser (Chrome/Firefox/Safari): 
-Browser Version: 
-Other Extensions: 
+Operating System (Mac/Windows/Etc):
+Browser (Chrome/Firefox/Safari):
+Browser Version:
+Other Extensions:
