@@ -1,0 +1,3 @@
+Contributions are greatly welcomed. If you want to contribute, it's best if you can let us know so we don't double up on effort. You can see what is being worked on and by whom on the roadmap. If you can't find what you want to build on the roadmap, feel free to put a note up on the github issues board to let the team know you're working on something new. When your code is ready, submit a pull request. You can also contact @blarg on [the YNAB forums](http://forum.youneedabudget.com).
+
+For documentation on how to build a feature, [see the documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/res/features/HOW_TO_BUILD_FEATURES.md).
