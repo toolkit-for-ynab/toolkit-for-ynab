@@ -25,13 +25,14 @@ watcher.on('all', function (event, path) {
   execSync('./build', { stdio: [0, 1, 2] });
 
   // In case we had a change while we were building.
-  if (rebuild) {
+  while (rebuild) {
+    rebuild = false;
+    
     console.log('Changes detected, rebuilding...');
 
     execSync('./build', { stdio: [0, 1, 2] });
   }
 
-  rebuild = false;
   building = false;
 
   console.log('Watching for changes...');
