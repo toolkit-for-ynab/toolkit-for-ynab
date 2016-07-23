@@ -2,6 +2,8 @@
   <img src="http://i.imgur.com/SJhwBpU.png" alt="Toolkit for YNAB">
 </p>
 
+[![Build Status](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab.svg?branch=master)](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab)
+
 Toolkit for YNAB is a general purpose YNAB enhancing chrome extension. Have it your way!
 
 YNAB have released an exciting new web version. Lots of power users of the older
