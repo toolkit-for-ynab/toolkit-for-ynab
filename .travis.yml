@@ -1,0 +1,11 @@
+osx_image: xcode7.3
+sudo: required
+matrix:
+  include:
+  - os: osx
+install:
+- nvm install 6
+- npm install
+- npm prune
+script:
+- ./build
