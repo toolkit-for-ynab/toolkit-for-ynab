@@ -6,5 +6,5 @@ addons:
     packages:
     - python
 script:
-- python -version
+- python --version
 - ./build
