@@ -47,7 +47,22 @@
         originalTransactions = accountsController.get('contentResults').slice();
       }
 
-      function filterContentResults(filterValue) {
+      function onHiddenTxnsChanged() {
+        if (filterOnRedraw) return;
+
+        Ember.run.next(function () {
+          var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
+
+          originalTransactions = accountsController.get('contentResults').slice();
+
+          var $searchBox = $('.toolkit-transaction-search', '.accounts-toolbar-right');
+          var $inputBox = $('.accounts-text-field', $searchBox);
+
+          filterContentResults($inputBox.val());
+        });
+      }
+
+      function filterContentResults(filterValue, useContentResults) {
         filterValue = filterValue || '';
         filterValue = filterValue.toString().toLowerCase();
         var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
@@ -75,7 +90,16 @@
             filterCategory = null;
         }
 
-        var newContents = originalTransactions.filter(function (transaction) {
+        var toFilter;
+        if (useContentResults) {
+          toFilter = accountsController.get('contentResults').slice();
+        } else {
+          toFilter = originalTransactions;
+        }
+
+        var newContents = toFilter.filter(function (transaction) {
+          if (transaction.get('registerDisplayType') !== null) return true;
+
           var isMatchingTransaction = false;
 
           if (filterCategory) {
@@ -112,31 +136,24 @@
           return isMatchingTransaction;
         });
 
-        newContents.push(originalTransactions[originalTransactions.length - 1]);
+
         accountsController.set('contentResults', newContents);
       }
 
+      function onEditingIdChanged() {
+        filterOnRedraw = true;
+      }
+
       return {
-        invoke: function () {
+        invoke: function invoke() {
           var router = ynabToolKit.shared.containerLookup('router:main');
 
           if (router.get('currentPath').indexOf('accounts') > -1) {
             var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
 
             Ember.run.later(onAccountChange, 250);
-
-            accountsController.addObserver('hiddenTxnsCount', function () {
-              Ember.run.next(function () {
-                originalTransactions = accountsController.get('contentResults').slice();
-                var $searchBox = $('.toolkit-transaction-search', '.accounts-toolbar-right');
-                var $inputBox = $('.accounts-text-field', $searchBox);
-                filterContentResults($inputBox.val());
-              });
-            });
-
-            accountsController.addObserver('editingId', function () {
-              filterOnRedraw = true;
-            });
+            accountsController.addObserver('hiddenTxnsCount', onHiddenTxnsChanged);
+            accountsController.addObserver('editingId', onEditingIdChanged);
           }
         },
         observe: function observe(changedNodes) {
@@ -146,7 +163,7 @@
             var $inputBox = $('.accounts-text-field', $searchBox);
 
             if ($inputBox.val().length) {
-              filterContentResults($inputBox.val());
+              filterContentResults($inputBox.val(), true);
             }
           }
         },
