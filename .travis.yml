@@ -1,5 +1,10 @@
 language: node_js
 node_js:
   - "6"
+addons:
+  apt:
+    packages:
+    - python
 script:
+- python -version
 - ./build
