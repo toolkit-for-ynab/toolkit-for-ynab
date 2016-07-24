@@ -3,48 +3,41 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.runningBalance = (function () {
+      var sortedContent;
       var currentlyRunning = false;
 
-      function updateRunningBalanceCalculation(arrangedContent) {
+      function sortContent(content) {
+        // if we have sorted content already and it has the same amount of transactions
+        // as unsorted content, just get out. this will not catch changes made to a transaction...
+        if (sortedContent && sortedContent.length === content.length) {
+          return;
+        }
+
+        sortedContent = content.slice().sort(function (a, b) {
+          return a.date.toNativeDate() - b.date.toNativeDate();
+        });
+      }
+
+      function updateRunningBalanceCalculation() {
         var i;
         var transaction;
         var runningBalance = 0;
 
-        var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
-        if (accountController.get('sortAscending')) {
-          for (i = 0; i < arrangedContent.length; i++) {
-            transaction = arrangedContent[i];
+        for (i = 0; i < sortedContent.length; i++) {
+          transaction = sortedContent[i];
 
-            if (transaction.get('parentEntityId') !== null) {
-              transaction.__ynabToolKitRunningBalance = runningBalance;
-              continue;
-            }
-
-            if (transaction.get('inflow')) {
-              runningBalance += transaction.get('inflow');
-            } else if (transaction.get('outflow')) {
-              runningBalance -= transaction.get('outflow');
-            }
-
+          if (transaction.get('parentEntityId') !== null) {
             transaction.__ynabToolKitRunningBalance = runningBalance;
+            continue;
           }
-        } else {
-          for (i = arrangedContent.length - 1; i >= 0; i--) {
-            transaction = arrangedContent[i];
 
-            if (transaction.get('parentEntityId') !== null) {
-              transaction.__ynabToolKitRunningBalance = runningBalance;
-              continue;
-            }
-
-            if (transaction.get('inflow')) {
-              runningBalance += transaction.get('inflow');
-            } else if (transaction.get('outflow')) {
-              runningBalance -= transaction.get('outflow');
-            }
-
-            transaction.__ynabToolKitRunningBalance = runningBalance;
+          if (transaction.get('inflow')) {
+            runningBalance += transaction.get('inflow');
+          } else if (transaction.get('outflow')) {
+            runningBalance -= transaction.get('outflow');
           }
+
+          transaction.__ynabToolKitRunningBalance = runningBalance;
         }
       }
 
@@ -108,12 +101,9 @@
       function onYnabGridyBodyChanged() {
         var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
 
-        if (accountController.get('sortProperties').indexOf('date') !== -1) {
-          updateRunningBalanceCalculation(accountController.get('arrangedContent'));
-          updateRunningBalanceColumn();
-        } else {
-          $('.ynab-toolkit-grid-cell-running-balance').remove();
-        }
+        sortContent(accountController.get('content'));
+        updateRunningBalanceCalculation();
+        updateRunningBalanceColumn();
       }
 
       function addDeadColumnToAddRows() {
@@ -126,7 +116,9 @@
       }
 
       return {
-        invoke: function () {
+        // invoke has potential of being pretty processing heavy (needing to sort content, then add calculation to every row)
+        // wrapping it in a later means that if the user continuously scrolls down we won't clog up the event loop.
+        invoke: function invoke() {
           currentlyRunning = true;
 
           Ember.run.later(function () {
@@ -141,7 +133,7 @@
             }
 
             currentlyRunning = false;
-          }, 50);
+          }, 250);
         },
 
         observe: function invoke(changedNodes) {
@@ -149,9 +141,7 @@
             ynabToolKit.runningBalance.invoke();
           }
 
-          if (changedNodes.has('ynab-grid-cell ynab-grid-cell-accountName user-data') &&
-              changedNodes.has('ynab-grid-cell ynab-grid-cell-date user-data')
-          ) {
+          if (changedNodes.has('ynab-grid-cell ynab-grid-cell-accountName user-data') && changedNodes.has('ynab-grid-cell ynab-grid-cell-date user-data')) {
             addDeadColumnToAddRows();
           }
         }
