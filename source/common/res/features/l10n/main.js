@@ -110,7 +110,7 @@
           if (changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals')) {
             // Inspector edit goal months list.
             contentSetter.resetPrefix();
-            contentSetter.setArray(ynabToolKit.shared.monthsFull, '.budget-inspector-goals .goal-target-month>option');
+            contentSetter.setArray(ynabToolKit.shared.monthsFull, '.budget-inspector-goals .goal-target-month>option', 1, 3);
           }
 
           // Hidden categories modal
