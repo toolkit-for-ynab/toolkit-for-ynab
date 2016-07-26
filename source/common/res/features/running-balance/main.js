@@ -4,13 +4,18 @@
       var sortedContent;
       var currentlyRunning = false;
 
-      function sortContent(visibleTransactionDisplayItems) {
+      function setSortContent() {
+        var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
+        var visibleTransactionDisplayItems = accountController.get('visibleTransactionDisplayItems');
+        var sortAscending = accountController.get('sortAscending');
+
         // if we have sorted content already and it has the same amount of transactions
         // as unsorted content, just get out. this will not catch changes made to a transaction...
         if (sortedContent && sortedContent.length === visibleTransactionDisplayItems.length) {
           return;
         }
 
+        // this is the sort provided by YNAB -- they have a check to determine if the
         sortedContent = visibleTransactionDisplayItems.slice().sort(function (a, b) {
           var propA = a.get('date');
           var propB = b.get('date');
@@ -21,7 +26,12 @@
           var res = Ember.compare(propA, propB);
 
           if (res === 0) {
-            return Ember.compare(a.getAmount(), b.getAmount());
+            res = Ember.compare(a.getAmount(), b.getAmount());
+            if (sortAscending) {
+              return res;
+            }
+
+            return -res;
           }
 
           return res;
@@ -109,11 +119,14 @@
       }
 
       function onYnabGridyBodyChanged() {
-        var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
-
-        sortContent(accountController.get('visibleTransactionDisplayItems'));
+        setSortContent();
         updateRunningBalanceCalculation();
         updateRunningBalanceColumn();
+      }
+
+      function onSortAscendingChanged() {
+        sortedContent = undefined;
+        onYnabGridyBodyChanged();
       }
 
       function addDeadColumnToAddRows() {
@@ -133,6 +146,9 @@
 
           Ember.run.later(function () {
             var applicationController = ynabToolKit.shared.containerLookup('controller:application');
+            var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
+
+            accountsController.addObserver('sortAscending', onSortAscendingChanged);
 
             if (applicationController.get('currentPath').indexOf('accounts') > -1) {
               if (applicationController.get('selectedAccountId')) {
