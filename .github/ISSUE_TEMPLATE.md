@@ -1,3 +1,5 @@
+Defective ToolKit Feature Name:
+
 ### Expected Behavior
 
 
@@ -11,7 +13,7 @@
 2. ​
 3. ​
 
-### Export of Toolkit Settings
+### Export of Toolkit Settings (Bottom Left of Settings Page)
 
 ```
 [paste settings here]
@@ -19,6 +21,7 @@
 
 ### System Settings
 
+ToolKit Version:
 Operating System (Mac/Windows/Etc):
 Browser (Chrome/Firefox/Safari):
 Browser Version:
