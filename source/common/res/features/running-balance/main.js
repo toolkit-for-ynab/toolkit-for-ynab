@@ -1,20 +1,30 @@
-'use strict';
-
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.runningBalance = (function () {
       var sortedContent;
       var currentlyRunning = false;
 
-      function sortContent(content) {
+      function sortContent(visibleTransactionDisplayItems) {
         // if we have sorted content already and it has the same amount of transactions
         // as unsorted content, just get out. this will not catch changes made to a transaction...
-        if (sortedContent && sortedContent.length === content.length) {
+        if (sortedContent && sortedContent.length === visibleTransactionDisplayItems.length) {
           return;
         }
 
-        sortedContent = content.slice().sort(function (a, b) {
-          return a.date.toNativeDate() - b.date.toNativeDate();
+        sortedContent = visibleTransactionDisplayItems.slice().sort(function (a, b) {
+          var propA = a.get('date');
+          var propB = b.get('date');
+
+          if (propA instanceof ynab.utilities.DateWithoutTime) propA = propA.getUTCTime();
+          if (propB instanceof ynab.utilities.DateWithoutTime) propB = propB.getUTCTime();
+
+          var res = Ember.compare(propA, propB);
+
+          if (res === 0) {
+            return Ember.compare(a.getAmount(), b.getAmount());
+          }
+
+          return res;
         });
       }
 
@@ -101,7 +111,7 @@
       function onYnabGridyBodyChanged() {
         var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
 
-        sortContent(accountController.get('content'));
+        sortContent(accountController.get('visibleTransactionDisplayItems'));
         updateRunningBalanceCalculation();
         updateRunningBalanceColumn();
       }
