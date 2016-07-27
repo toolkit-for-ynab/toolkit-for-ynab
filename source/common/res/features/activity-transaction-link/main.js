@@ -5,7 +5,9 @@
       var waitingForAccountsPage = false;
 
       function initialize() {
-        $('.activity-rows').children().each(function (index, row) {
+        $('.budget-activity').each(function (index, row) {
+          $(this).addClass('toolkit-activity-row');
+
           $(row).on('click', function () {
             var selectedTransEmberId = $(this).attr('id');
             var emberView = ynabToolKit.shared.getEmberView(selectedTransEmberId);
@@ -65,7 +67,7 @@
 
       return {
         observe: function observe(changedNodes) {
-          if (changedNodes.has('pure-u modal-popup modal-budget-activity ember-view modal-overlay active')) {
+          if (changedNodes.has('ynab-u modal-popup modal-budget-activity ember-view modal-overlay active')) {
             initialize();
           }
 
