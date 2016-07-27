@@ -15,7 +15,9 @@
           return;
         }
 
-        // this is the sort provided by YNAB -- they have a check to determine if the
+        // this is the sort provided by YNAB -- typically they sort off of accountsController.get('sortProperties')[0]
+        // but for running balance, we just want to sort by date. if two transactions have the same date, then we
+        // sort them descending unless the user is sorting their data ascending, then we do that too :D
         sortedContent = visibleTransactionDisplayItems.slice().sort(function (a, b) {
           var propA = a.get('date');
           var propB = b.get('date');
