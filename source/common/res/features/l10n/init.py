@@ -13,7 +13,7 @@ if len(sys.argv) != 2:
     print 'ERROR:'
     print ''
     print 'Please supply a crowd in API key, obtained on this page:'
-    print 'http://translate.toolkitforynab.com/project/toolkit-for-ynab/settings#integration\n'
+    print 'http://translate.toolkitforynab.com/project/toolkit-for-ynab/settings#api\n'
     print 'Example: ./get_l10ns <api key>'
     print ''
     exit(1)
