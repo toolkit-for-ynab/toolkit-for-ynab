@@ -17,7 +17,7 @@
         observe(changedNodes) {
           if (changedNodes.has('budget-header-totals-cell-value user-data') ||
             changedNodes.has('budget-content resizable') ||
-            changedNodes.has('pure-g layout user-logged-in')) {
+            changedNodes.has('layout user-logged-in')) {
             ynabToolKit.toBeBudgetedWarning.invoke();
           }
         }

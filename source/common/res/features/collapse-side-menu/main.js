@@ -31,7 +31,7 @@
         },
 
         observe(changedNodes) {
-          if (changedNodes.has('pure-g layout user-logged-in')) {
+          if (changedNodes.has('layout user-logged-in')) {
             if ($('.nav-main').length) {
               ynabToolKit.collapseSideMenu.setupBtns();
             }
