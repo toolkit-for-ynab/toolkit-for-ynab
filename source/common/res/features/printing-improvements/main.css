@@ -45,7 +45,7 @@
 	* {
 		flex: none !important;
 	}
-	body .pure-u {
+	body .ynab-u {
 		display: block;
 	}
 	body .resize-inspector {

@@ -149,9 +149,9 @@
             changedNodes.has('budget-inspector-goals')) {
             ynabToolKit.budgetCategoryInfo.invoke();
           } else if (
-            changedNodes.has('modal-overlay pure-u modal-popup modal-budget-edit-category active') ||
-            changedNodes.has('modal-overlay pure-u modal-popup modal-add-master-category active') ||
-            changedNodes.has('modal-overlay pure-u modal-popup modal-add-sub-category active')) {
+            changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-edit-category active') ||
+            changedNodes.has('modal-overlay ynab-u modal-popup modal-add-master-category active') ||
+            changedNodes.has('modal-overlay ynab-u modal-popup modal-add-sub-category active')) {
             /**
              * Seems there should be a more 'Embery' way to know when the categories have been
              * updated, added, or deleted but this'll have to do for now. Note that the flag is

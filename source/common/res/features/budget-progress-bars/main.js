@@ -222,9 +222,9 @@
           // Set {"budget-table-row is-sub-category goal-progress", "nav-main", "budget-header-item budget-header-calendar toolkit-highlight-current-month", "budget-header-flexbox"}
           if (changedNodes.has('budget-table-row') || changedNodes.has('navlink-budget active') || changedNodes.has('budget-inspector')) {
             ynabToolKit.budgetProgressBars.invoke();
-          } else if (changedNodes.has('modal-overlay pure-u modal-popup modal-budget-edit-category active') ||
-                      changedNodes.has('modal-overlay pure-u modal-popup modal-add-master-category active') ||
-                      changedNodes.has('modal-overlay pure-u modal-popup modal-add-sub-category active')) {
+          } else if (changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-edit-category active') ||
+                      changedNodes.has('modal-overlay ynab-u modal-popup modal-add-master-category active') ||
+                      changedNodes.has('modal-overlay ynab-u modal-popup modal-add-sub-category active')) {
             /**
              * Seems there should be a more 'Embery' way to know when the categories have been
              * updated, added, or deleted but this'll have to do for now. Note that the flag is
