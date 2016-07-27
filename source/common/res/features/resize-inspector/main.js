@@ -22,7 +22,7 @@
         },
 
         observe(changedNodes) {
-          if (changedNodes.has('pure-g layout user-logged-in')) {
+          if (changedNodes.has('layout user-logged-in')) {
             // The user has switched screens
             ynabToolKit.resizeInspector.invoke();
           }

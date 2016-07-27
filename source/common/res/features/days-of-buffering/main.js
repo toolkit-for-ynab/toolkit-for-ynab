@@ -95,7 +95,7 @@
           // User switch budget month
           if (changedNodes.has('budget-header-flexbox') ||
               changedNodes.has('budget-table') ||
-              changedNodes.has('pure-g layout user-logged-in')) {
+              changedNodes.has('layout user-logged-in')) {
             ynabToolKit.daysOfBuffering.invoke();
           }
         }

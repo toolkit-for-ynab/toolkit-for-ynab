@@ -505,8 +505,8 @@
         },
 
         observe(changedNodes) {
-          // Did they switch budgets?
-          if (changedNodes.has('pure-g layout user-logged-in')) {
+            // Did they switch budgets?
+          if (changedNodes.has('layout user-logged-in')) {
             if ($('.nav-main').length) {
               ynabToolKit.reports.invoke();
             }
