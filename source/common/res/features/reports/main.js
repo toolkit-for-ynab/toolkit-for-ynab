@@ -535,6 +535,12 @@
           if (changedNodes.has('sidebar-contents')) {
             ynabToolKit.reports.setUpReportsButton();
           }
+
+          // They've collapsed the collapsible nav. Resize.
+          if (changedNodes.has('navlink-collapse expanded') ||
+              changedNodes.has('navlink-collapse collapsed')) {
+            ynabToolKit.reports.updateCanvasSize();
+          }
         }
       };
     }()); // Keep feature functions contained within this object
