@@ -36,7 +36,7 @@
             .categoriesViewModel.subCategoriesCollection
             .findItemsByMasterCategoryId(categoryEntityId);
 
-          return debtAccounts;
+          return debtAccounts || [];
         },
 
         processDebtAccounts(debtAccounts) {
