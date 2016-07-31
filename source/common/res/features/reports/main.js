@@ -338,7 +338,7 @@
 
             var start = [labels[0], labels[labels.length - 1]];
 
-            if (start[0] === [start[1]]) {
+            if (start[0] === start[1]) {
                 // We only have one month. We can't show the filter.
               $('#reports-filter').hide();
             } else {
