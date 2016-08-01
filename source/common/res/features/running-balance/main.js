@@ -1,50 +1,65 @@
-'use strict';
-
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.runningBalance = (function () {
+      var sortedContent;
       var currentlyRunning = false;
 
-      function updateRunningBalanceCalculation(arrangedContent) {
+      function setSortContent() {
+        var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
+        var visibleTransactionDisplayItems = accountController.get('visibleTransactionDisplayItems');
+        var sortAscending = accountController.get('sortAscending');
+
+        // if we have sorted content already and it has the same amount of transactions
+        // as unsorted content, just get out. this will not catch changes made to a transaction...
+        if (sortedContent && sortedContent.length === visibleTransactionDisplayItems.length) {
+          return;
+        }
+
+        // this is the sort provided by YNAB -- typically they sort off of accountsController.get('sortProperties')[0]
+        // but for running balance, we just want to sort by date. if two transactions have the same date, then we
+        // sort them descending unless the user is sorting their data ascending, then we do that too :D
+        sortedContent = visibleTransactionDisplayItems.slice().sort(function (a, b) {
+          var propA = a.get('date');
+          var propB = b.get('date');
+
+          if (propA instanceof ynab.utilities.DateWithoutTime) propA = propA.getUTCTime();
+          if (propB instanceof ynab.utilities.DateWithoutTime) propB = propB.getUTCTime();
+
+          var res = Ember.compare(propA, propB);
+
+          if (res === 0) {
+            res = Ember.compare(a.getAmount(), b.getAmount());
+            if (sortAscending) {
+              return res;
+            }
+
+            return -res;
+          }
+
+          return res;
+        });
+      }
+
+      function updateRunningBalanceCalculation() {
         var i;
         var transaction;
         var runningBalance = 0;
 
-        var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
-        if (accountController.get('sortAscending')) {
-          for (i = 0; i < arrangedContent.length; i++) {
-            transaction = arrangedContent[i];
+        for (i = 0; i < sortedContent.length; i++) {
+          transaction = sortedContent[i];
 
-            if (transaction.get('parentEntityId') !== null) {
-              transaction.__ynabToolKitRunningBalance = runningBalance;
-              continue;
-            }
-
-            if (transaction.get('inflow')) {
-              runningBalance += transaction.get('inflow');
-            } else if (transaction.get('outflow')) {
-              runningBalance -= transaction.get('outflow');
-            }
-
+          if (transaction.get('parentEntityId') !== null) {
             transaction.__ynabToolKitRunningBalance = runningBalance;
+            continue;
           }
-        } else {
-          for (i = arrangedContent.length - 1; i >= 0; i--) {
-            transaction = arrangedContent[i];
 
-            if (transaction.get('parentEntityId') !== null) {
-              transaction.__ynabToolKitRunningBalance = runningBalance;
-              continue;
-            }
-
-            if (transaction.get('inflow')) {
-              runningBalance += transaction.get('inflow');
-            } else if (transaction.get('outflow')) {
-              runningBalance -= transaction.get('outflow');
-            }
-
-            transaction.__ynabToolKitRunningBalance = runningBalance;
+          if (transaction.get('inflow')) {
+            runningBalance += transaction.get('inflow');
+          } else if (transaction.get('outflow')) {
+            runningBalance -= transaction.get('outflow');
           }
+
+          transaction.__ynabToolKitRunningBalance = runningBalance;
         }
       }
 
@@ -106,14 +121,14 @@
       }
 
       function onYnabGridyBodyChanged() {
-        var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
+        setSortContent();
+        updateRunningBalanceCalculation();
+        updateRunningBalanceColumn();
+      }
 
-        if (accountController.get('sortProperties').indexOf('date') !== -1) {
-          updateRunningBalanceCalculation(accountController.get('arrangedContent'));
-          updateRunningBalanceColumn();
-        } else {
-          $('.ynab-toolkit-grid-cell-running-balance').remove();
-        }
+      function onSortAscendingChanged() {
+        sortedContent = undefined;
+        onYnabGridyBodyChanged();
       }
 
       function addDeadColumnToAddRows() {
@@ -126,11 +141,16 @@
       }
 
       return {
-        invoke: function () {
+        // invoke has potential of being pretty processing heavy (needing to sort content, then add calculation to every row)
+        // wrapping it in a later means that if the user continuously scrolls down we won't clog up the event loop.
+        invoke: function invoke() {
           currentlyRunning = true;
 
           Ember.run.later(function () {
             var applicationController = ynabToolKit.shared.containerLookup('controller:application');
+            var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
+
+            accountsController.addObserver('sortAscending', onSortAscendingChanged);
 
             if (applicationController.get('currentPath').indexOf('accounts') > -1) {
               if (applicationController.get('selectedAccountId')) {
@@ -141,7 +161,7 @@
             }
 
             currentlyRunning = false;
-          }, 50);
+          }, 250);
         },
 
         observe: function invoke(changedNodes) {
@@ -149,9 +169,7 @@
             ynabToolKit.runningBalance.invoke();
           }
 
-          if (changedNodes.has('ynab-grid-cell ynab-grid-cell-accountName user-data') &&
-              changedNodes.has('ynab-grid-cell ynab-grid-cell-date user-data')
-          ) {
+          if (changedNodes.has('ynab-grid-cell ynab-grid-cell-accountName user-data') && changedNodes.has('ynab-grid-cell ynab-grid-cell-date user-data')) {
             addDeadColumnToAddRows();
           }
         }

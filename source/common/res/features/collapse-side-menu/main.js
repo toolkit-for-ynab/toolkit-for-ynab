@@ -31,7 +31,7 @@
         },
 
         observe(changedNodes) {
-          if (changedNodes.has('pure-g layout user-logged-in')) {
+          if (changedNodes.has('layout user-logged-in')) {
             if ($('.nav-main').length) {
               ynabToolKit.collapseSideMenu.setupBtns();
             }
@@ -172,6 +172,11 @@
           $('.budget-content').animate({ width: originalSizes.contentWidth }, 400, 'swing', function () {
             // Need to remove width after animation completion
             $('.budget-content').removeAttr('style');
+
+            // We don't use these in our CSS, it's mostly so other features can observe
+            // for collapse/expand and update sizes / do whatever. E.g. reports needs
+            // to resize its canvas when this happens.
+            $('.navlink-collapse').removeClass('collapsed').addClass('expanded');
           });
 
           $('.budget-inspector').animate({ width: originalSizes.inspectorWidth });
@@ -192,6 +197,11 @@
           $('.content').animate({ left: '40px' }, 400, 'swing', function () {
             // Need to remove width after animation completion
             $('.ynab-grid-header').removeAttr('style');
+
+            // We don't use these in our CSS, it's mostly so other features can observe
+            // for collapse/expand and update sizes / do whatever. E.g. reports needs
+            // to resize its canvas when this happens.
+            $('.navlink-collapse').removeClass('expanded').addClass('collapsed');
           });
 
           $('.budget-header').animate({ left: '40px' });

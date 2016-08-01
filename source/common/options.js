@@ -1,5 +1,10 @@
 'use strict';
 
+// Other extensions (e.g. ebates) can load other versions of jQuery. We need to use ours in noconflict mode
+// or we lose bootstrapSwitch() which then breaks the options page.
+// For more info, see here: https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/287
+var jq = jQuery.noConflict(true);
+
 function saveCheckboxOption(elementId) {
   var element = document.getElementById(elementId);
 
@@ -99,7 +104,7 @@ function saveOptions() {
   });
 
   Promise.all(promises).then(function () {
-    $('#settingsSaved')
+    jq('#settingsSaved')
       .fadeIn()
       .delay(1500)
       .fadeOut();
@@ -144,12 +149,12 @@ function buildOptionsPage() {
 
   settings.forEach(function (setting) {
     if (setting.type === 'checkbox') {
-      $('#' + setting.section + 'SettingsPage').append($('<div>', { class: 'row option-row' }).append($('<input>', { type: 'checkbox', id: setting.name, name: setting.name, 'aria-describedby': setting.name + 'HelpBlock' })).append($('<div>', { class: 'option-description' }).append($('<label>', { for: setting.name, text: setting.title })).append($('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', text: setting.description }))));
+      jq('#' + setting.section + 'SettingsPage').append(jq('<div>', { class: 'row option-row' }).append(jq('<input>', { type: 'checkbox', id: setting.name, name: setting.name, 'aria-describedby': setting.name + 'HelpBlock' })).append(jq('<div>', { class: 'option-description' }).append(jq('<label>', { for: setting.name, text: setting.title })).append(jq('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', text: setting.description }))));
     } else if (setting.type === 'select') {
-      $('#' + setting.section + 'SettingsPage').append($('<div>', { class: 'row option-row' }).append($('<label>', { for: setting.name, text: setting.title })).append($('<select>', { name: setting.name, id: setting.name, class: 'form-control', 'aria-describedby': setting.name + 'HelpBlock' }).append(setting.options.map(function (option) {
-        return $('<option>', { value: option.value, style: option.style || '', text: option.name });
+      jq('#' + setting.section + 'SettingsPage').append(jq('<div>', { class: 'row option-row' }).append(jq('<label>', { for: setting.name, text: setting.title })).append(jq('<select>', { name: setting.name, id: setting.name, class: 'form-control', 'aria-describedby': setting.name + 'HelpBlock' }).append(setting.options.map(function (option) {
+        return jq('<option>', { value: option.value, style: option.style || '', text: option.name });
       })))
-      .append($('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', text: setting.description })));
+      .append(jq('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', text: setting.description })));
     }
   });
 }
@@ -160,28 +165,28 @@ function loadPanel(panel, animated) {
   }
 
   // Do we need to do anything?
-  var element = $('#' + panel + 'MenuItem');
+  var element = jq('#' + panel + 'MenuItem');
   if (element.hasClass('active-menu')) {
     return;
   }
 
-  $('.nav li a').removeClass('active-menu');
+  jq('.nav li a').removeClass('active-menu');
   element.addClass('active-menu');
 
-  $('.settingsPage').hide();
+  jq('.settingsPage').hide();
 
   if (animated) {
-    $('#' + panel + 'SettingsPage').fadeIn();
+    jq('#' + panel + 'SettingsPage').fadeIn();
   } else {
-    $('#' + panel + 'SettingsPage').show();
+    jq('#' + panel + 'SettingsPage').show();
   }
 }
 
 function applyDarkMode(activate) {
   if (activate) {
-    $('body').addClass('inverted');
+    jq('body').addClass('inverted');
   } else {
-    $('body').removeClass('inverted');
+    jq('body').removeClass('inverted');
   }
 }
 
@@ -197,23 +202,23 @@ function importExportModal() {
     });
 
     Promise.all(promises).then(function (allSettings) {
-      $('#importExportContent').val(JSON.stringify(allSettings));
+      jq('#importExportContent').val(JSON.stringify(allSettings));
 
-      $('#importExportModal').modal();
-      $('#importExportModal').one('shown.bs.modal', function () {
-        $('#importExportContent').select();
+      jq('#importExportModal').modal();
+      jq('#importExportModal').one('shown.bs.modal', function () {
+        jq('#importExportContent').select();
 
-        $('#importExportContent').click(function () {
-          $(this).select();
+        jq('#importExportContent').click(function () {
+          jq(this).select();
         });
 
-        $('.apply-settings').click(applySettings);
+        jq('.apply-settings').click(applySettings);
       });
     });
   });
 
   function applySettings() {
-    var newSettings = JSON.parse($('#importExportContent').val());
+    var newSettings = JSON.parse(jq('#importExportContent').val());
     var promises = newSettings.map(function (setting) {
       return setKangoSetting(setting.key, setting.value);
     });
@@ -227,49 +232,49 @@ function importExportModal() {
 KangoAPI.onReady(function () {
   // Set the logo.
   kango.invokeAsync('kango.io.getResourceUrl', 'assets/logos/toolkitforynab-logo-200.png', function (data) {
-    $('#logo').attr('src', data);
+    jq('#logo').attr('src', data);
   });
 
   buildOptionsPage();
 
   restoreOptions().then(function () {
-    $('input:checkbox').bootstrapSwitch();
+    jq('input:checkbox').bootstrapSwitch();
 
     loadPanel('general', false);
 
-    $('#wrapper').fadeIn();
+    jq('#wrapper').fadeIn();
   });
 
   getKangoSetting('options.dark-mode').then(function (data) {
     applyDarkMode(data);
 
-    $('#darkMode').bootstrapSwitch('state', data);
+    jq('#darkMode').bootstrapSwitch('state', data);
   });
 
-  $('#darkMode').on('switchChange.bootstrapSwitch', function (event, state) {
+  jq('#darkMode').on('switchChange.bootstrapSwitch', function (event, state) {
     setKangoSetting('options.dark-mode', state).then(function () {
       applyDarkMode(state);
     });
   });
 
-  $('#generalMenuItem').click(function (e) {
+  jq('#generalMenuItem').click(function (e) {
     loadPanel('general'); e.preventDefault();
-    $('#footer-buttons').show();
+    jq('#footer-buttons').show();
   });
-  $('#accountsMenuItem').click(function (e) {
+  jq('#accountsMenuItem').click(function (e) {
     loadPanel('accounts'); e.preventDefault();
-    $('#footer-buttons').show();
+    jq('#footer-buttons').show();
   });
-  $('#budgetMenuItem').click(function (e) {
+  jq('#budgetMenuItem').click(function (e) {
     loadPanel('budget'); e.preventDefault();
-    $('#footer-buttons').show();
+    jq('#footer-buttons').show();
   });
-  $('#supportMenuItem').click(function (e) {
+  jq('#supportMenuItem').click(function (e) {
     loadPanel('support'); e.preventDefault();
-    $('#footer-buttons').hide();
+    jq('#footer-buttons').hide();
   });
 
-  $('.import-export-button').click(importExportModal);
-  $('.save-button').click(saveOptions);
-  $('.cancel-button').click(KangoAPI.closeWindow);
+  jq('.import-export-button').click(importExportModal);
+  jq('.save-button').click(saveOptions);
+  jq('.cancel-button').click(KangoAPI.closeWindow);
 });

@@ -12,7 +12,7 @@
         },
 
         updateCanvasSize() {
-            // Set the canvas dimensions to the parent element dimensions.
+          // Set the canvas dimensions to the parent element dimensions.
           var width = $('div.scroll-wrap').closest('.ember-view').innerWidth() - 10;
           var height = $(window).height() - $('#reports-panel').height() - 20;
 
@@ -52,8 +52,8 @@
         },
 
         bindToResizeEvent() {
-            // We also want to make sure we bind to the window resize event.
-            // We only want to do this once though.
+          // We also want to make sure we bind to the window resize event.
+          // We only want to do this once though.
           if (ynabToolKit.reports.boundToResizeEvent !== true) {
             $(window).resize(this.updateCanvasSize);
             ynabToolKit.reports.boundToResizeEvent = true;
@@ -264,9 +264,9 @@
           $('#reports-inspector-net-worth').text(ynabToolKit.shared.formatCurrency(netWorths[endIndex]));
         },
 
-          // Remove the content and put our report there instead.
+        // Remove the content and put our report there instead.
         showReports() {
-            // Don't add another report if it already exists
+          // Don't add another report if it already exists
           if ($('#reports-panel').length) {
             return;
           }
@@ -338,7 +338,7 @@
 
             var start = [labels[0], labels[labels.length - 1]];
 
-            if (start[0] === [start[1]]) {
+            if (start[0] === start[1]) {
                 // We only have one month. We can't show the filter.
               $('#reports-filter').hide();
             } else {
@@ -506,7 +506,7 @@
 
         observe(changedNodes) {
             // Did they switch budgets?
-          if (changedNodes.has('pure-g layout user-logged-in')) {
+          if (changedNodes.has('layout user-logged-in')) {
             if ($('.nav-main').length) {
               ynabToolKit.reports.invoke();
             }
@@ -528,6 +528,18 @@
 
               // And restore the YNAB stuff we hid earlier
             $('.budget-header, .scroll-wrap').show();
+          }
+
+          // if YNAB overwrites the sidebar-contents just make sure the report button
+          // doesn't get deleted
+          if (changedNodes.has('sidebar-contents')) {
+            ynabToolKit.reports.setUpReportsButton();
+          }
+
+          // They've collapsed the collapsible nav. Resize.
+          if (changedNodes.has('navlink-collapse expanded') ||
+              changedNodes.has('navlink-collapse collapsed')) {
+            ynabToolKit.reports.updateCanvasSize();
           }
         }
       };
