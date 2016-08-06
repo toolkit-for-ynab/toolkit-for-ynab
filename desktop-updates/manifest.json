@@ -1,0 +1,43 @@
+{
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*.youneedabudget.com/*", 
+                "https://*.youneedabudget.com/*"
+            ], 
+            "all_frames": true, 
+            "run_at": "document_start", 
+            "js": [
+                "includes/content.js"
+            ]
+        }
+    ], 
+    "name": "Toolkit for YNAB", 
+    "icons": {
+        "128": "icons/icon128.png", 
+        "48": "icons/icon48.png", 
+        "16": "icons/button.png"
+    }, 
+    "web_accessible_resources": [
+        "res/*", 
+        "assets/*", 
+        "icons/*"
+    ], 
+    "description": "UI customisations and tweaks for the web version of YNAB.", 
+    "background": {
+        "page": "background.html"
+    }, 
+    "homepage_url": "https://github.com/toolkit-for-ynab/toolkit-for-ynab/", 
+    "version": "0.5.3", 
+    "options_page": "options.html", 
+    "manifest_version": 2, 
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'", 
+    "browser_action": {
+        "default_icon": "icons/button.png", 
+        "default_title": "Toolkit for YNAB"
+    }, 
+    "permissions": [
+        "http://*.youneedabudget.com/*", 
+        "https://*.youneedabudget.com/*"
+    ]
+}
