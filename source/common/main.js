@@ -18,7 +18,6 @@ var previouslyInjectedScripts = [];
 
 function injectScript(path) {
   if (previouslyInjectedScripts.indexOf(path) < 0) {
-
     previouslyInjectedScripts.push(path);
 
     var script = document.createElement('script');
@@ -37,17 +36,15 @@ function injectJSString(js) {
 }
 
 function applySettingsToDom() {
-  ynabToolKit.settings.forEach(function(setting) {
-
+  ynabToolKit.settings.forEach(function (setting) {
     getKangoSetting(setting.name).then(function (data) {
-
       // Check for specific upgrade path where a boolean setting gets
       // changed to a select. Previous value will be 'true' but
       // that should map to '1' in select land.
+      // eslint-disable-next-line eqeqeq
       if (data == 'true' &&
           '1' in setting.actions &&
           !('true' in setting.actions)) {
-
         data = '1';
       }
 
@@ -57,18 +54,19 @@ function applySettingsToDom() {
           var action = selectedActions[i];
           var target = selectedActions[i + 1];
 
-          if (action == "injectCSS") {
+          if (action === 'injectCSS') {
             injectCSS(target);
-          } else if (action == "injectScript") {
+          } else if (action === 'injectScript') {
             injectScript(target);
-          } else if (action == "injectJSString") {
+          } else if (action === 'injectJSString') {
             injectJSString(target);
           } else {
-            throw "Invalid action '" + action + "'. Only injectCSS, injectScript and injectJSString are currently supported.";
+            var error = "Invalid action '" + action + "'. Only injectCSS, injectScript and injectJSString are currently supported.";
+            throw error;
           }
         }
       }
-    })
+    });
   });
 }
 
@@ -76,19 +74,19 @@ function applySettingsToDom() {
 var options = {};
 
 function pushOption(setting) {
-    return getKangoSetting(setting.name).then(function (data) {
-      options[setting.name] = data;
-    });
+  return getKangoSetting(setting.name).then(function (data) {
+    options[setting.name] = data;
+  });
 }
 
 var optionsPromises = [];
 
-ynabToolKit.settings.forEach(function(setting) {
+ynabToolKit.settings.forEach(function (setting) {
   optionsPromises.push(pushOption(setting));
 });
 
-Promise.all(optionsPromises).then(function() {
-  injectJSString("window.ynabToolKit = {}; ynabToolKit.options = " + JSON.stringify(options) + "; Object.freeze(ynabToolKit.options); Object.seal(ynabToolKit.options);");
+Promise.all(optionsPromises).then(function () {
+  injectJSString('window.ynabToolKit = {}; ynabToolKit.options = ' + JSON.stringify(options) + '; Object.freeze(ynabToolKit.options); Object.seal(ynabToolKit.options);');
 
   /* Load this to setup shared utility functions */
   injectScript('res/features/shared/main.js');

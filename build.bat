@@ -1,11 +1,11 @@
 @ECHO OFF
 
-echo [   INFO] Checking code style with JSCS...
-call npm run jscs --silent || goto :errexit
-
 rem Populate feature files like feed changes by reading through the code and hooking up
 rem all the calls we need, as well as processing settings files
 python populateFeaturesFiles.py
+
+echo [   INFO] Checking code style with ESLint...
+call npm run eslint --silent || goto :errexit
 
 rem Transpile the source/ directory, putting the files in src/ which is where Kango expects to see them.
 echo [   INFO] Transpiling code with Babel on ES2015 preset...

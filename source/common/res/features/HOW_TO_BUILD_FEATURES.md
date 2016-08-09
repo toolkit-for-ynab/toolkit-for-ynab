@@ -1,13 +1,16 @@
+
 How to Build Features
 ---------------------
 
 **Main things to note:**
 
 1. Use plain HTML, JS and CSS
-1. We have a build system in ```build``` and ```build.bat``` that generates some files which help keep features contained to their own directories. If you follow the conventions below you'll find this makes life easy.
-1. There is a single [Mutation Observer](https://developer.mozilla.org/en/docs/Web/API/MutationObserver) that is available for you to hook into in order to watch for DOM changes and do what you want to do. We'll talk about how you hook into this below.
-1. Every feature must be configurable by users. It can have a default to on if it's very useful for a wide swath of users, but there must always be the ability to turn it off. There are no mandatory features.
-1. The settings and the things they do to get your feature to work when they're turned on are configured in your feature directory.
+2. We have a build system in ```build``` and ```build.bat``` that generates some files which help keep features contained to their own directories. If you follow the conventions below you'll find this makes life easy.
+3. There is a single [Mutation Observer](https://developer.mozilla.org/en/docs/Web/API/MutationObserver) that is available for you to hook into in order to watch for DOM changes and do what you want to do. We'll talk about how you hook into this below.
+4. Every feature must be configurable by users. It can have a default to on if it's very useful for a wide swath of users, but there must always be the ability to turn it off. There are no mandatory features.
+5. The settings and the things they do to get your feature to work when they're turned on are configured in your feature directory.
+
+
 
 General Structure
 -----------------
@@ -17,6 +20,7 @@ Each feature has its own folder. Please name the folder in a way that's clear wh
 Within that folder, there is only one mandatory file for your feature to do something, and that's the file that says what your setting looks like to users called ```settings.json```. You can include as many or as few other files in your feature directory as you require. Feel free to peruse some of the other features for examples.
 
 Many simple features like Colourblind Mode and Hide Age of Money are a single CSS file and the ```settings.json``` file with nothing more. The Reports feature includes Charts.js and a bunch of script. Make it as simple as you can. CSS is always preferred to Javascript if you can achieve what you want that way as it'll perform better and will be 100% consistently applied without relying on logic to reinstate itself as the user moves around the application.
+
 
 Settings
 --------
@@ -47,14 +51,14 @@ This particular setting adds a checkbox to the options page in the General tab. 
 
 Here's a full explanation of all the fields:
 
-| Field       | Meaning                                                                                                                                                                                                                                                                                                                                                          |
-|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| name        | This is the field that is used as the unique value that stores the option in the database. Give it a short but meaningful name.                                                                                                                                                                                                                                  |
-| type        | This field tells the settings system whether to generate a checkbox or select for you. Acceptable values are "checkbox" or "select".                                                                                                                                                                                                                             |
-| default     | This field tells the settings system what the default value for this setting should be.                                                                                                                                                                                                                                                                          |
-| section     | This field tells the settings system which tab in the options page your setting should show up on. Acceptable values are "general", "budget" or "accounts".                                                                                                                                                                                                      |
-| title       | This is the heading displayed to the user to describe your setting / feature.                                                                                                                                                                                                                                                                                    |
-| description | This is the help text that is shown underneath the setting. Please stay light on HTML here so if we decide to restyle the page we don't have to edit your settings file.                                                                                                                                                                                         |
+| Field       | Meaning                                  |
+| ----------- | ---------------------------------------- |
+| name        | This is the field that is used as the unique value that stores the option in the database. Give it a short but meaningful name. |
+| type        | This field tells the settings system whether to generate a checkbox or select for you. Acceptable values are "checkbox" or "select". |
+| default     | This field tells the settings system what the default value for this setting should be. |
+| section     | This field tells the settings system which tab in the options page your setting should show up on. Acceptable values are "general", "budget" or "accounts". |
+| title       | This is the heading displayed to the user to describe your setting / feature. |
+| description | This is the help text that is shown underneath the setting. Please stay light on HTML here so if we decide to restyle the page we don't have to edit your settings file. |
 | actions     | This object defines what action to take whenever it finds a settings value. Values are converted to strings for this operation, so "true" and "false", or "0" etc for selects are the correct choice here. Possible values for actions are "injectCSS", "injectScript", and "injectJSString". Any files need to be referenced relative to the current directory. |
 
 Here's an example for a select setting. The only difference is the ```options``` key, which tells the settings system what options to show in the drop down, and then the actions and default use these values instead of "true" or "false":
@@ -85,6 +89,7 @@ Here's an example for a select setting. The only difference is the ```options```
 ```
 
 Note that values of a select are always strings, which is why the default and actions use the format "0", not 0.
+
 
 Multiple Settings
 -----------------
@@ -129,13 +134,16 @@ It's also possible to have your single feature expose multiple settings, just pu
 }]
 ```
 
+
 How does this Magic Work?
 -------------------------
 There's a [python script](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/populateFeaturesFiles.py) that's invoked as part of the build process. It scans for these files and pulls them all into a single Javascript file, which is included in the extension. This saves us lots of time avoiding merge conflicts and makes building these features much easier as there's less code to write by hand.
 
+
 What If I Can't Get My Setting to Work?
 ---------------------------------------
 Open a pull request with where you're up to and ask for help. We'll update this document to explain whatever we failed to explain the first time!
+
 
 Writing Javascript Based Features / Act on Changes / Mutation Observer
 ----------------------------------------------------------------------
@@ -159,37 +167,90 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
     // Supporting functions,
     // or variables, etc
 
-    return {      
+    return {
       invoke: function() {
         // Code you expect to run each time your feature needs to update or modify YNAB's state
       },
 
+      // REMOVE THIS IF IT'S NOT NEEDED FOR YOUR FEATURE
       observe: function(changedNodes) {
-
         if ( changedNodes.has('class-name-of-interest') ) {
           ynabToolKit.awesomeFeature.invoke();
           // Call this.invoke() to activate your function if you find any class names
           // in the set of changed nodes that indicates your function need may need to run.
         }
+      },
 
+      // REMOVE THIS IF IT'S NOT NEEDED FOR YOUR FEATURE
+      onRouteChanged: function (currentPath, router) {
+        if (currentPath.indexOf('accounts') !== -1) {
+          // do some stuff now that we've come to the accounts page!
+        }
+      },
+
+      // REMOVE THIS IF IT'S NOT NEEDED FOR YOUR FEATURE
+      onBeforeViewRendered: function (view) {
+        if (view.containerKey !== 'view:modals/budget/activity') {
+          // do some stuff before the budget activity modal has opened
+          // If you return a value from the before callback, that same value will
+          // be passed as a second parameter to the onAfterViewRendered callback.
+        }
+      },
+
+      // REMOVE THIS IF IT'S NOT NEEDED FOR YOUR FEATURE
+      onAfterViewRendered: function (view, fromBefore) {
+        if (view.containerKey !== 'view:modals/budget/activity') {
+          // do some stuff after the budget activity modal has opened
+          // check the fromBefore variable to check values from before view was rendered!
+        }
       }
     };
-  })(); // Keep feature functions contained within this object
+  }()); // Keep feature functions contained within this object
 
   ynabToolKit.awesomeFeature.invoke(); // Run your script once on page load
 
 } else {
   setTimeout(poll, 250);
 }
-})();
+}());
 ```
 
-Let's break it down and talk about the sections.
+Let's break it down and talk about the sections:
 
-- ```poll()``` function: This waits until we're ready and then loads your feature in.
-- ```ynabToolKit.awesomeFeature()```: This is your container object for your feature. The build system looks for this line in your file to include your feature into the observe stuff we'll talk about below.
-- ```this.invoke()```: Think of this like a constructor, or an initialiser. Do what you want to do here to get it set up.
-- ```this.observe(changedNodes)```: You can (optionally) define this function to watch the DOM for changes. ```changedNodes``` is a set of all the class names for all the nodes which have just changed. Since this gets called every single time anything on the page changes at all, please ensure you guard your logic with an ```if``` statement which makes sure something you care about changed, or the browser will likely struggle with the amount of work it has to do on every change. If you change the DOM every time you receive this function, you'll crash the browser, because you'll cause an infinite recursion. (DOM changes -> ```observe(changedNodes)``` -> DOM changes -> ```observe(changedNodes)``` etc.)
+```
+function poll()
+```
+- This waits until we're ready and then loads your feature in.
+
+```
+ynabToolKit.awesomeFeature()
+```
+- This is your container object for your feature. The build system looks for this line in your file to include your feature into the observe stuff we'll talk about below.
+
+```
+this.invoke()
+```
+- Think of this like a constructor, or an initialiser. Do what you want to do here to get it set up.
+
+```
+this.observe(changedNodes)
+```
+- You can (optionally) define this function to watch the DOM for changes. ```changedNodes``` is a set of all the class names for all the nodes which have just changed. Since this gets called every single time anything on the page changes at all, please ensure you guard your logic with an ```if``` statement which makes sure something you care about changed, or the browser will likely struggle with the amount of work it has to do on every change. If you change the DOM every time you receive this function, you'll crash the browser, because you'll cause an infinite recursion. (DOM changes -> ```observe(changedNodes)``` -> DOM changes -> ```observe(changedNodes)``` etc.)
+
+```
+this.onRouteChanged(currentPath, router)
+```
+- You can (optionally) define this function to watch for changes to the `currentPath`. The function will be called with the `currentPath` a handle on the `router`, respectively.
+
+```
+this.onBeforeViewRendered(view)
+```
+- You can (optionally) define this function to watch for rendered views. View is going to be the handle on the Ember view. For more documentation on what to expect from this view see the [Instrumentation documentation](http://emberjs.com/api/classes/Ember.Instrumentation.html). Note that you should check that the view is what you need before processing in order to avoid slowing down the page. (ie: ```if (view.containerKey === 'view:modals/budget/activity') {```);
+
+```
+this.onAfterViewRendered(view, fromBefore)
+```
+- Same as `onBeforeViewRendered` only it happens _after_! An optional second parameter is sent if the `onBeforeViewRendered()` function returns a value.
 
 
 Mutation Observer Tips
@@ -221,10 +282,13 @@ L10n is done via the [Crowdin service](http://translate.toolkitforynab.com). To 
 - If there's no translation for a string in the user's chosen language they'll see 'DEFAULT' based on the code above.
 - New l10n strings added by YNAB core team can be found in ```ynabToolKit.l10nMissingStrings``` variable in the browser console with YNAB app started and l10n feature enabled. Removed strings aren't counted.
 
+
+
 How to Test
 ===========
 
 So you've built that awesome feature and want to see how it works in browsers? Here's the way we test:
+
 
 Chrome
 ------
@@ -239,15 +303,18 @@ Chrome is the easiest platform to test on as it seems the best set up for inspec
 
 You'll see the toolkit loaded in to Chrome and it'll work as normal. Whenever you make a change to the files in `source` you'll need to run `./build` or `build.bat` again, then click Reload on the extension. If you find it easier, [this extension](https://chrome.google.com/webstore/detail/extensions-reloader/fimgfedafeadlieiabdeeaodndnlbhid) will reload all unpacked extensions when clicked.
 
+
 Firefox
 -------
 
 1. Run `./build` (Linux / Mac) or `build.bat` (Windows)
-2. Go to the URL about:addons
-3. Click the gear button, then select `Install Add-on From File`
-4. Select the file (relative to the root of the repository) `output/toolkitforynab_[version].xpi`
+2. Ensure `xpinstall.signatures.required` is set to __false__ in `about:config`
+3. Go to the URL about:addons
+4. Click the gear button, then select `Install Add-on From File`
+5. Select the file (relative to the root of the repository) `output/toolkitforynab_[version].xpi`
 
 You'll see the toolkit loaded in to Firefox and it'll work as normal. Whenever you make a change to the files in `source` you'll need to run `./build` or `build.bat` again, then remove and reinstall the extension from file.
+
 
 Safari
 ------
@@ -266,6 +333,7 @@ Safari
 12. You can now click `Install` in the top right of the extension builder.
 
 You'll see the toolkit loaded in to Safari and it'll work as normal. Whenever you make a change to the files in `source` you'll need to run `./build` or `build.bat` again, then click `Install`. The extension builder seems to regularly lose the extension and you need to redo these settings.
+
 
 My Code Isn't in the Test Version
 =================================

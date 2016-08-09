@@ -1,34 +1,55 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
-  if (typeof ynabToolKit !== 'undefined'  && ynabToolKit.pageReady === true) {
-
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.splitKeyboardShortcut = (function () {
-
       return {
-        invoke: function () {
-        },
+        observe(changedNodes) {
+          if (/accounts/.test(window.location.href)) {
+            if (changedNodes.regex(/^(?=.*\smodal-account-categories\s)(?=.*?\sactive)((?!closing).)*$/gm)) {
+              var splitButton = $('.button.button-primary.modal-account-categories-split-transaction');
 
-        observe: function (changedNodes) {
+              // return if we are already inside a split subtransaction
+              if (splitButton.length < 1) return false;
 
-          // limit to accounts view
-          if (/accounts/.test(window.location.href))
-          {
-            if (changedNodes.has('modal-list'))
-            {
-              if ($('.ynab-grid-cell-subCategoryName input.accounts-text-field').val() == 'split')
-            {
-                $('button.modal-account-categories-split-transaction').mousedown();
-              }
+              var splitIcon = splitButton.html();
+              var categoryList = $('.modal-account-categories .modal-list');
+              var liElement = categoryList.find('li.user-data').last().clone();
+
+              liElement.find('.modal-account-categories-category').attr('title', 'Split Transaction');
+              liElement.find('.modal-account-categories-category-name').html(splitIcon);
+              liElement.find('.user-data.currency').remove();
+
+              categoryList.append('<li class="user-data"><strong class="modal-account-categories-section-item">Actions:</strong></li>');
+              categoryList.append(liElement);
+
+              $('.ynab-grid-cell-subCategoryName input').on('keydown', function (e) {
+                if (e.which === 13 || e.which === 9) {
+                  // Enter or Tab
+                  if (liElement.find('.button-list').hasClass('is-highlighted')) {
+                    e.preventDefault();
+                    splitButton.mousedown();
+                  }
+                }
+              }).on('keyup', function () {
+                const categoryInputString = new RegExp('^' + $(this).val());
+                if (categoryInputString.test('split') && categoryList.find('.no-button').length === 1) {
+                  // highlight new split button if input contains part of
+                  // 'split' and there are no other categories available
+                  liElement.find('.button-list').addClass('is-highlighted');
+                } else {
+                  liElement.find('.button-list').removeClass('is-highlighted');
+                }
+              });
+
+              liElement.on('mousedown', function () {
+                splitButton.mousedown();
+              });
             }
           }
-        },
+        }
       };
-
-    })(); // Keep feature functions contained within this object
-
-    ynabToolKit.splitKeyboardShortcut.invoke(); // Run once and activate setTimeOut()
-
+    }()); // Keep feature functions contained within this object
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

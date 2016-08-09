@@ -1,9 +1,7 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
-
     ynabToolKit.privacyMode = (function () {
-
       function togglePrivacyMode() {
         ynabToolKit.privacyMode.enabled = !ynabToolKit.privacyMode.enabled;
         updatePrivacyMode();
@@ -20,24 +18,24 @@
       }
 
       return {
-        invoke: function () {
+        invoke() {
           ynabToolKit.privacyMode.enabled = false;
-          if (ynabToolKit.options.privacyMode == '2') {
+          if (ynabToolKit.options.privacyMode === '2') {
             if (!$('#toolkit-togglePrivacy').length) {
-              $('.sidebar.logged-in .button-prefs-budget.user-data').after('<button id="toolkit-togglePrivacy"><i class="ember-view flaticon stroke lock-1"></i></button>');
+              $('nav.sidebar.logged-in .sidebar-contents').after('<button id="toolkit-togglePrivacy"><i class="ember-view flaticon stroke lock-1"></i></button>');
               $('body').on('click', 'button#toolkit-togglePrivacy', togglePrivacyMode);
             }
-          } else if (ynabToolKit.options.privacyMode == '1') {
+          } else if (ynabToolKit.options.privacyMode === '1') {
             ynabToolKit.privacyMode.enabled = true;
           }
 
           updatePrivacyMode();
-        },
+        }
       };
-    })(); // Keep feature functions contained within this
+    }()); // Keep feature functions contained within this
 
     ynabToolKit.privacyMode.invoke();
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());

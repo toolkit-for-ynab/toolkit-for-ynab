@@ -1,9 +1,7 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true && typeof Ember !== 'undefined') {
-
     ynabToolKit.l10n = (function () {
-
       // Supporting functions,
       // or variables, etc
 
@@ -30,9 +28,9 @@
         }
 
         return {
-          selectedMonth: selectedMonth,
-          currentMonthName: currentMonthName,
-          previousMonthName: previousMonthName,
+          selectedMonth,
+          currentMonthName,
+          previousMonthName
         };
       }
 
@@ -40,35 +38,35 @@
       var contentSetter = (function () {
         return {
           selectorPrefix: '',
-          resetPrefix: function () {
+          resetPrefix() {
             contentSetter.selectorPrefix = '';
           },
 
           // Takes contentNum's .contents() of selector and sets it to text.
-          set: function (text, contentNum, selector) {
+          set(text, contentNum, selector) {
             var el = $(contentSetter.selectorPrefix + (selector || '')).contents()[contentNum];
             if (el) el.textContent = text;
           },
 
           // Each argument must be an array of 2 or 3 elements that become set arguments in order.
-          setSeveral: function () {
-            for (i = 0; i < arguments.length; i++) {
-              if (arguments[i].length == 2) contentSetter.set(arguments[i][0], arguments[i][1]);
-              if (arguments[i].length == 3) contentSetter.set(arguments[i][0], arguments[i][1], arguments[i][2]);
+          setSeveral() {
+            for (var i = 0; i < arguments.length; i++) {
+              if (arguments[i].length === 2) contentSetter.set(arguments[i][0], arguments[i][1]);
+              if (arguments[i].length === 3) contentSetter.set(arguments[i][0], arguments[i][1], arguments[i][2]);
             }
           },
 
-          setArray: function (textArray, selector, start, step) {
-            for (i = 0; i < textArray.length; i++) {
-              var contentNum = (start || 0) + i * (step || 1);
-              contentSetter.set(textArray[i], contentNum, selector);
+          setArray(textArray, selector, start, step) {
+            for (var j = 0; j < textArray.length; j++) {
+              var contentNum = (start || 0) + j * (step || 1);
+              contentSetter.set(textArray[j], contentNum, selector);
             }
-          },
+          }
         };
-      })();
+      }());
 
       return {
-        invoke: function () {
+        invoke() {
           if ($.isEmptyObject(ynabToolKit.l10nMissingStrings)) {
             ynabToolKit.l10nEmberData = Ember.I18n.translations;
             var toolkitStrings = new Set(Object.keys(ynabToolKit.l10nData));
@@ -83,7 +81,7 @@
           Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
         },
 
-        budgetHeader: function () {
+        budgetHeader() {
           if (!$('.navlink-budget').hasClass('active')) return;
           var dateInfo = getDateInfo();
           contentSetter.selectorPrefix = '.budget-header-';
@@ -95,12 +93,12 @@
             [
               l10n['budget.fundsFor'].replace('{{currentMonth}}', dateInfo.currentMonthName),
               l10n['budget.overspentIn'].replace('{{previousMonth}}', dateInfo.previousMonthName),
-              l10n['budget.fundedIn'].replace('{{currentMonth}}', dateInfo.currentMonthName),
+              l10n['budget.fundedIn'].replace('{{currentMonth}}', dateInfo.currentMonthName)
             ]
           );
         },
 
-        observe: function (changedNodes) {
+        observe(changedNodes) {
           ynabToolKit.l10n.invoke();
 
           // User has returned back to the budget screen
@@ -112,23 +110,23 @@
           if (changedNodes.has('budget-inspector') || changedNodes.has('is-checked') || changedNodes.has('budget-inspector-goals')) {
             // Inspector edit goal months list.
             contentSetter.resetPrefix();
-            contentSetter.setArray(ynabToolKit.shared.monthsFull, '.budget-inspector-goals .goal-target-month>option');
+            contentSetter.setArray(ynabToolKit.shared.monthsFull, '.budget-inspector-goals .goal-target-month>option', 1, 3);
           }
 
           // Hidden categories modal
-          if (changedNodes.has('modal-overlay pure-u modal-budget-hidden-categories active')) {
+          if (changedNodes.has('modal-overlay ynab-u modal-budget-hidden-categories active')) {
             contentSetter.selectorPrefix = '.modal-budget-hidden-categories-master-unhidden:contains("Credit Card Payments")';
             contentSetter.set(l10n['toolkit.creditCardPayments'], 1);
           }
 
           // User prefs modal
-          if (changedNodes.has('modal-overlay pure-u modal-popup modal-user-prefs active')) {
+          if (changedNodes.has('modal-overlay ynab-u modal-popup modal-user-prefs active')) {
             contentSetter.selectorPrefix = '.modal-user-prefs button';
             contentSetter.set(l10n['toolkit.myAccount'], 1);
           }
 
           // New transaction fields modals
-          if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-flags active')) {
+          if (changedNodes.has('modal-overlay ynab-u modal-popup modal-account-flags active')) {
             contentSetter.selectorPrefix = '.modal-account-flags';
             var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'].map(function (color) {
               return l10n['toolkit.' + color];
@@ -138,25 +136,25 @@
             contentSetter.setArray(colors, ' .label-bg');
           }
 
-          if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-dropdown modal-account-categories active')) {
+          if (changedNodes.has('modal-overlay ynab-u modal-popup modal-account-dropdown modal-account-categories active')) {
             contentSetter.selectorPrefix = '.modal-account-categories ';
             contentSetter.setSeveral(
               [l10n['toolkit.inflow'], 0, '.modal-account-categories-section-item'], [l10n['budget.leftToBudget'], 1, '.modal-account-categories-category-name']
             );
           }
 
-          if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-dropdown modal-account-payees active')) {
+          if (changedNodes.has('modal-overlay ynab-u modal-popup modal-account-dropdown modal-account-payees active')) {
             contentSetter.selectorPrefix = '.modal-account-payees .is-section-item';
             contentSetter.setArray(
               [
                 l10n['toolkit.transfer'],
-                l10n['toolkit.memorized'],
+                l10n['toolkit.memorized']
               ],
               '', 1, 3
             );
           }
 
-          if (changedNodes.has('modal-overlay pure-u modal-account-calendar active') ||
+          if (changedNodes.has('modal-overlay ynab-u modal-account-calendar active') ||
             changedNodes.has('accounts-calendar')) {
             contentSetter.selectorPrefix = '.modal-account-calendar';
             var days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(function (day) {
@@ -172,7 +170,7 @@
           }
 
           // Accounts filters months options
-          if (changedNodes.has('modal-overlay pure-u modal-generic modal-account-filters active')) {
+          if (changedNodes.has('modal-overlay ynab-u modal-generic modal-account-filters active')) {
             contentSetter.selectorPrefix = '.modal-account-filters ';
             contentSetter.setArray(
               ynabToolKit.shared.monthsFull,
@@ -187,20 +185,20 @@
           // Account row
           if (changedNodes.has('ynab-grid-body')) {
             $('.ynab-grid-cell-payeeName[title="Starting Balance"]').contents().each(function () {
-              if (this.textContent == 'Starting Balance') this.textContent = l10n['toolkit.startingBalance'];
+              if (this.textContent === 'Starting Balance') this.textContent = l10n['toolkit.startingBalance'];
             });
 
             $('.ynab-grid-cell-subCategoryName[title="Inflow: To be Budgeted"]').contents().each(function () {
-              if (this.textContent == 'Inflow: To be Budgeted') this.textContent = l10n['toolkit.inflowTBB'];
+              if (this.textContent === 'Inflow: To be Budgeted') this.textContent = l10n['toolkit.inflowTBB'];
             });
 
             $('.ynab-grid-cell-subCategoryName[title="Split (Multiple Categories)..."]').contents().each(function () {
-              if (this.textContent == 'Split (Multiple Categories)...') this.textContent = l10n['toolkit.splitMultipleCategories'];
+              if (this.textContent === 'Split (Multiple Categories)...') this.textContent = l10n['toolkit.splitMultipleCategories'];
             });
           }
-        },
+        }
       };
-    })(); // Keep feature functions contained within this object
+    }()); // Keep feature functions contained within this object
 
     ynabToolKit.l10n.invoke(); // Run your script once on page load
     ynabToolKit.l10n.budgetHeader();
@@ -213,11 +211,10 @@
 
     // When rerendering sidebar accounts lists are closing, open them.
     // $('.nav-account-block').click();
-
   } else {
     setTimeout(poll, 250);
   }
-})();
+}());
 
 // (function poll() {
 //   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
@@ -750,8 +747,8 @@
 //         var before = $('.modal-budget-settings').contents()[4];
 //         contentSetter.setSeveral(
 //           [l10n.BudgetSettingsModal.Title.Before + " (", 4, ' #currencyPlacement button'],
-//           [l10n.BudgetSettingsModal.Title.After + " (123 456,78", 13, ' #currencyPlacement button'],
-//           [l10n.BudgetSettingsModal.Title.Off + " (123 456,78)", 22, ' #currencyPlacement button']
+//           [l10n.BudgetSettingsModal.Title.After + " (123456,78", 13, ' #currencyPlacement button'],
+//           [l10n.BudgetSettingsModal.Title.Off + " (123456,78)", 22, ' #currencyPlacement button']
 //         );
 //       };
 //
@@ -952,7 +949,7 @@
 //         }
 //
 //         // Calendar modal
-//         if ( changedNodes.has('modal-overlay pure-u modal-calendar active') ||
+//         if ( changedNodes.has('modal-overlay ynab-u modal-calendar active') ||
 //              changedNodes.has('ynab-calendar-months') ) { // Changing month
 //           ynabToolKit.l10n.calendarModal();
 //         }
@@ -974,57 +971,57 @@
 //         }
 //
 //         // Add master category modal
-//         if (changedNodes.has('modal-overlay pure-u modal-popup modal-add-master-category active')) {
+//         if (changedNodes.has('modal-overlay ynab-u modal-popup modal-add-master-category active')) {
 //           ynabToolKit.l10n.addCategoryGroupModal();
 //         }
 //
 //         // Add sub category modal
-//         if (changedNodes.has('modal-overlay pure-u modal-popup modal-add-sub-category active')) {
+//         if (changedNodes.has('modal-overlay ynab-u modal-popup modal-add-sub-category active')) {
 //           ynabToolKit.l10n.addCategoryModal();
 //         }
 //
 //         // Hidden categories modal
-//         if (changedNodes.has('modal-overlay pure-u modal-popup modal-budget-hidden-categories active')) {
+//         if (changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-hidden-categories active')) {
 //           ynabToolKit.l10n.hiddenCategoriesModal();
 //         }
 //
 //         // Edit category modal
-//         if (changedNodes.has('modal-overlay pure-u modal-popup modal-budget-edit-category active')) {
+//         if (changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-edit-category active')) {
 //           ynabToolKit.l10n.editCategoryModal();
 //         }
 //
 //         // Cover overspending modal
-//         if (changedNodes.has('modal-overlay pure-u modal-popup modal-budget-overspending active')) {
+//         if (changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-overspending active')) {
 //           ynabToolKit.l10n.coverOverspendingModal();
 //         }
 //
 //         // Move money modal
-//         if (changedNodes.has('modal-overlay pure-u modal-popup modal-budget-move-money active')) {
+//         if (changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-move-money active')) {
 //           ynabToolKit.l10n.moveMoneyModal();
 //         }
 //
 //         // Budget name dropdown
-//         if (changedNodes.has('modal-overlay pure-u modal-popup modal-select-budget active')) {
+//         if (changedNodes.has('modal-overlay ynab-u modal-popup modal-select-budget active')) {
 //           ynabToolKit.l10n.selectBudgetModal();
 //         }
 //
 //         // User settings dropdown
-//         if (changedNodes.has('modal-overlay pure-u modal-popup modal-user-prefs active')) {
+//         if (changedNodes.has('modal-overlay ynab-u modal-popup modal-user-prefs active')) {
 //           ynabToolKit.l10n.userPrefsModal();
 //         }
 //
 //         // Fresh start modal
-//         if (changedNodes.has('modal-overlay pure-u modal-popup modal-budget-fresh-start active')) {
+//         if (changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-fresh-start active')) {
 //           ynabToolKit.l10n.freshStartModal();
 //         }
 //
 //         // New budget and current budget settings modal
-//         if (changedNodes.has('modal-overlay pure-u modal-popup modal-budget-settings active')) {
+//         if (changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-settings active')) {
 //           ynabToolKit.l10n.budgetSettingsModal();
 //         }
 //
 //         // Reconcile account modal
-//         if (changedNodes.has('modal-overlay pure-u modal-popup modal-account-reconcile active')) {
+//         if (changedNodes.has('modal-overlay ynab-u modal-popup modal-account-reconcile active')) {
 //           ynabToolKit.l10n.reconcileAccountModal();
 //         }
 //
