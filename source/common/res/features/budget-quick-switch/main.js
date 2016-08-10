@@ -12,12 +12,13 @@
         budgets.forEach((budget) => {
           if (budget.get('budgetVersionId') === currentBudgetId) return;
 
-          let budgetListItem = $(`<li>
-                                    <button>
-                                      <i class="flaticon stroke mail-1"></i>
-                                      ${budget.get('budgetVersionName')}
-                                    </button>
-                                  </li>`)
+          let budgetListItem = $('<li>').append(
+                                    $('<button>', { text: budget.get('budgetVersionName') }).prepend(
+                                      $('<i>', {
+                                        class: 'flaticon stroke mail-1'
+                                      })
+                                    )
+                                  )
                                   .click(onBudgetClicked.bind(null, budget));
 
           $openBudgetListItem.after(budgetListItem);
