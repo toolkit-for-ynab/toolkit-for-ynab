@@ -8,6 +8,7 @@ module.exports = {
         "$": true,
         "Chart": true,
         "Ember": true,
+        "Intercom": true,
         "KangoAPI": true,
         "chrome": true,
         "ensureDefaultsAreSet": true,
