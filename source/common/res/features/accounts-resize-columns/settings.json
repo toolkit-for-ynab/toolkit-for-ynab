@@ -1,0 +1,15 @@
+{
+         "name": "resizeAccountColumns",
+         "type": "checkbox",
+      "default": true,
+      "section": "budget",
+        "title": "Allow Resizing of Account Columns",
+  "description": "Add the ability to drag and resize the account columns.",
+      "actions": {
+                    "true": [
+                      "injectScript", "../lib/jquery-resizable.min.js",
+                      "injectScript", "main.js",
+                      "injectCSS", "main.css"
+                    ]
+                 }
+}

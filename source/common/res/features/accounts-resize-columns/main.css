@@ -1,0 +1,14 @@
+.ynab-toolkit-resize-relative {
+  position: relative;
+}
+
+.resizer {
+  position: absolute;
+  top: 0;
+  right: -8px;
+  bottom: 0;
+  left: auto;
+  width: 16px;
+  cursor: col-resize;
+  background-color: red;
+}
