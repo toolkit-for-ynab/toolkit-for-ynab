@@ -4,6 +4,9 @@
       let accountsController;
       let transactionViewModel;
 
+      // this function was taken pretty much verbatim from YNAB source code
+      // they have a function called generateUpcomingTransactionNow which takes
+      // a list of entity ids to generate.
       function enterTransactionInRegisterNow(transactionsToEnter) {
         let entityManger = transactionViewModel.getEntityManager();
         entityManger.openChangeSet();
@@ -14,6 +17,7 @@
           .generateUpcomingTransactionNow(transactionIds)
           .then(() => {
             entityManger.closeChangeSet();
+            accountsController.send('closeModal');
           });
       }
 
