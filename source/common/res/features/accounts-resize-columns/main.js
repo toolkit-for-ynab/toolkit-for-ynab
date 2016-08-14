@@ -2,7 +2,7 @@
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.resizeAccountColumns = (function () {
       const minimumWidth = 50;
-      const localStoragePrefix = 'ynab-toolkit-resizable-columns-';
+      const localStoragePrefix = 'resizable-columns-';
       const resizableColumns = [
         'ynab-grid-cell-payeeName',
         'ynab-grid-cell-subCategoryName',
@@ -23,7 +23,7 @@
 
       function applyPersistedSettings() {
         resizableColumns.forEach((className) => {
-          let persistedWidth = parseFloat(localStorage.getItem(localStoragePrefix + className));
+          let persistedWidth = parseFloat(ynabToolKit.shared.getLocalStorageItem(localStoragePrefix + className));
           if (persistedWidth) {
             setWidthForHeaderAndRows(className, persistedWidth);
           }
@@ -66,10 +66,10 @@
 
             if (newWidth < minimumWidth) {
               setWidthForHeaderAndRows(className, minimumWidth);
-              localStorage.setItem(localStoragePrefix + className, minimumWidth);
+              ynabToolKit.shared.setLocalStorageItem(localStoragePrefix + className, minimumWidth);
             } else {
               $('.ynab-grid-body .ynab-grid-body-row-top .' + className).width(newWidth);
-              localStorage.setItem(localStoragePrefix + className, newWidth);
+              ynabToolKit.shared.setLocalStorageItem(localStoragePrefix + className, newWidth);
             }
           },
 

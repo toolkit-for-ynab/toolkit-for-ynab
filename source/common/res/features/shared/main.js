@@ -296,6 +296,14 @@ ynabToolKit.shared = (function () {
       }
     },
 
+    getLocalStorageItem(key) {
+      return localStorage.getItem('ynab-toolkit-' + key);
+    },
+
+    setLocalStorageItem(key, value) {
+      localStorage.setItem('ynab-toolkit-' + key, value);
+    },
+
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
        ],
