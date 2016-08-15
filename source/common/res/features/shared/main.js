@@ -311,8 +311,12 @@ ynabToolKit.shared = (function () {
                         </div>
                       </div>`);
 
-      $modal.find('.toolkit-modal-close').on('click', () => {
-        $('.layout .toolkit-modal').remove();
+      $modal.find('.toolkit-modal-action-close').on('click', () => {
+        return $('.layout .toolkit-modal').remove();
+      });
+
+      $modal.find('.toolkit-modal-action-reload').on('click', () => {
+        return windowReload();
       });
 
       if (!$('.modal-error').length) {
@@ -323,7 +327,7 @@ ynabToolKit.shared = (function () {
     showFeatureErrorModal(featureName) {
       let header = 'Toolkit for YNAB Error!';
       let message = `The toolkit is having an issue with the "${featureName}" feature. Please submit an issue <a href='https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/new' target='_blank'>here</a> if there isn't one already.`;
-      let actions = '<button class="button button-primary toolkit-modal-close">Okay!</button>';
+      let actions = '<button class="button button-primary toolkit-modal-action-close">Okay!</button>';
       this.showModal(header, message, actions);
     },
 
