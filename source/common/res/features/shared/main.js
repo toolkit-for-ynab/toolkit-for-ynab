@@ -296,6 +296,37 @@ ynabToolKit.shared = (function () {
       }
     },
 
+    showModal(header, message, actions = '') {
+      let $modal = $(`<div class="ynab-u modal-overlay modal-generic modal-error active toolkit-modal">
+                        <div class="modal" style="height: auto">
+                          <div class="modal-header">
+                            ${header}
+                          </div>
+                          <div class="modal-content">
+                            ${message}
+                          </div>
+                          <div class="modal-actions">
+                            ${actions}
+                          </div>
+                        </div>
+                      </div>`);
+
+      $modal.find('.toolkit-modal-close').on('click', () => {
+        $('.layout .toolkit-modal').remove();
+      });
+
+      if (!$('.modal-error').length) {
+        $('.layout').append($modal);
+      }
+    },
+
+    showFeatureErrorModal(featureName) {
+      let header = 'Toolkit for YNAB Error!';
+      let message = `The toolkit is having an issue with the "${featureName}" feature. Please submit an issue <a href='https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/new' target='_blank'>here</a> if there isn't one already.`;
+      let actions = '<button class="button button-primary toolkit-modal-close">Okay!</button>';
+      this.showModal(header, message, actions);
+    },
+
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
        ],

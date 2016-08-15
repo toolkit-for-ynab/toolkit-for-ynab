@@ -13,12 +13,17 @@
 
         let transactionIds = transactionsToEnter.map((t) => t.get('entityId'));
 
-        transactionViewModel.getYNABDatabase()
-          .generateUpcomingTransactionNow(transactionIds)
-          .then(() => {
-            entityManger.closeChangeSet();
-            accountsController.send('closeModal');
-          });
+        try {
+          transactionViewModel.getYNABDatabase()
+            .generateUpcomingTransactionNow(transactionIds)
+            .then(() => {
+              entityManger.closeChangeSet();
+              accountsController.send('closeModal');
+            });
+        } catch (e) {
+          accountsController.send('closeModal');
+          ynabToolKit.shared.showFeatureErrorModal('Enter In Register Now');
+        }
       }
 
       function addOptionToContextMenu() {
