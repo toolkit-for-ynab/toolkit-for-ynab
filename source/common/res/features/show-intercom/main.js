@@ -16,7 +16,9 @@
               </button>
              </li>
           `).click(() => {
+            let accountController = ynabToolKit.shared.containerLookup('controller:accounts');
             Intercom('show'); // eslint-disable-line new-cap
+            accountController.send('closeModal');
           }).appendTo($modalList);
 
           $modal.css({ height: '+=10px' });
