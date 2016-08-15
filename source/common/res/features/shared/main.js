@@ -1,7 +1,8 @@
 /* eslint-disable no-nested-ternary, one-var-declaration-per-line, one-var */
 
 ynabToolKit.shared = (function () {
-  var subCategories = []; // defined here for scope reasons but populated and returned in getCategories()
+  let storageKeyPrefix = 'ynab-toolkit-';
+  let subCategories = []; // defined here for scope reasons but populated and returned in getCategories()
   return {
     //
     // Get all master and sub categories and combine them into one array. This is needed because it's
@@ -296,11 +297,21 @@ ynabToolKit.shared = (function () {
       }
     },
 
-    showModal(header, message, actions = '') {
+    showModal(title, message, actionType) {
+      let actions;
+      switch (actionType) {
+        case 'reload':
+          actions = '<button class="button button-primary toolkit-modal-action-reload">Reload</button>';
+          break;
+        case 'close':
+          actions = '<button class="button button-primary toolkit-modal-action-close">Close</button>';
+          break;
+      }
+
       let $modal = $(`<div class="ynab-u modal-overlay modal-generic modal-error active toolkit-modal">
                         <div class="modal" style="height: auto">
                           <div class="modal-header">
-                            ${header}
+                            ${title}
                           </div>
                           <div class="modal-content">
                             ${message}
@@ -311,12 +322,12 @@ ynabToolKit.shared = (function () {
                         </div>
                       </div>`);
 
-      $modal.find('.toolkit-modal-action-close').on('click', () => {
-        return $('.layout .toolkit-modal').remove();
-      });
-
       $modal.find('.toolkit-modal-action-reload').on('click', () => {
         return windowReload();
+      });
+
+      $modal.find('.toolkit-modal-action-close').on('click', () => {
+        return $('.layout .toolkit-modal').remove();
       });
 
       if (!$('.modal-error').length) {
@@ -325,10 +336,17 @@ ynabToolKit.shared = (function () {
     },
 
     showFeatureErrorModal(featureName) {
-      let header = 'Toolkit for YNAB Error!';
+      let title = 'Toolkit for YNAB Error!';
       let message = `The toolkit is having an issue with the "${featureName}" feature. Please submit an issue <a href='https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/new' target='_blank'>here</a> if there isn't one already.`;
-      let actions = '<button class="button button-primary toolkit-modal-action-close">Okay!</button>';
-      this.showModal(header, message, actions);
+      this.showModal(title, message, 'close');
+    },
+
+    getToolkitStorageKey(key) {
+      return localStorage.getItem(storageKeyPrefix + key);
+    },
+
+    setToolkitStorageKey(key, value) {
+      return localStorage.setItem(storageKeyPrefix + key, value);
     },
 
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -344,9 +362,21 @@ ynabToolKit.shared = (function () {
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' &&
-        typeof $ !== 'undefined' && $('.ember-view.layout').length &&
-        typeof ynabToolKit !== 'undefined') {
+      typeof $ !== 'undefined' && $('.ember-view.layout').length &&
+      typeof ynabToolKit !== 'undefined') {
     ynabToolKit.pageReady = true;
+
+    let latestVersion = ynabToolKit.shared.getToolkitStorageKey('latest-version');
+    if (latestVersion) {
+      if (latestVersion !== ynabToolKit.version) {
+        let title = 'New Toolkit for YNAB Features!';
+        let message = 'The Toolkit for YNAB has been updated! Take a gander <a href="http://forum.youneedabudget.com/categories/ynab-extensions" target="_blank">over here</a> to see what new goodies are in store!';
+        ynabToolKit.shared.showModal(title, message, 'close');
+        ynabToolKit.shared.setToolkitStorageKey('latest-version', ynabToolKit.version);
+      }
+    } else {
+      ynabToolKit.shared.setToolkitStorageKey('latest-version', ynabToolKit.version);
+    }
   } else {
     setTimeout(poll, 250);
   }
