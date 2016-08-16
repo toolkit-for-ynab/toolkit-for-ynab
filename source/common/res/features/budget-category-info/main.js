@@ -90,7 +90,7 @@
             }
 
             if ($(this).hasClass('is-sub-category')) {
-              var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title;
+              var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
               var classes = [];
 
               // skip uncategorized
