@@ -1,6 +1,6 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
-    ynabToolKit.activityTransactionLink = (function () {
+    ynabToolKit.budgetQuickSwitch = (function () {
       let applicationController = ynabToolKit.shared.containerLookup('controller:application');
       let userBudgetsController = ynabToolKit.shared.containerLookup('controller:users/budgets');
 
