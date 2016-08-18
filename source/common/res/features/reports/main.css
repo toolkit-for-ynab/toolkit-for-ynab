@@ -1,7 +1,6 @@
 /* Filter Panel */
 
 #reports-header {
-  color: white;
   background-color: #003540;
   font-family: 'Lato',Arial,'Helvetica Neue',Helvetica,sans-serif;
   width: 100%;
@@ -11,10 +10,28 @@
 #reports-header h2 {
   margin-left: 25px;
   font-weight: 300;
+  float: left;
 }
 
 #reports-header h2 span {
   color: #fed168;
+}
+
+#reports-header .nav-reports {
+  display: inline-flex;
+  list-style: none;
+  height: 100%;
+  padding: 1.5em;
+  margin: 0px;
+}
+
+.nav-reports .nav-reports-navlink {
+  margin-left: 10px;
+}
+
+#reports-header a {
+  color: white;
+  text-decoration: none;
 }
 
 #reports-filter {
