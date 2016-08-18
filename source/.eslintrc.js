@@ -12,6 +12,7 @@ module.exports = {
         "KangoAPI": true,
         "chrome": true,
         "ensureDefaultsAreSet": true,
+        "getKangoExtensionInfo": true,
         "getKangoStorageKeys": true,
         "getKangoSetting": true,
         "jQuery": true,
