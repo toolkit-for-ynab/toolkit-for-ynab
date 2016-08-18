@@ -111,7 +111,10 @@
       };
     }());
 
-    ynabToolKit.toggleSplits.invoke();
+    let router = ynabToolKit.shared.containerLookup('router:main');
+    if (router.get('currentPath').indexOf('accounts') > -1) {
+      ynabToolKit.enhancedSelectedTotals.invoke();
+    }
   } else {
     setTimeout(poll, 250);
   }
