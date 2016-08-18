@@ -20,6 +20,7 @@ module.exports = {
         "noUiSlider": true,
         "safari": true,
         "setKangoSetting": true,
+        "windowReload": true,
         "ynab": true,
         "ynabToolKit": true
     },
