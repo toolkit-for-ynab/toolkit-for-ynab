@@ -11,6 +11,8 @@
 
     ynabToolKit.netWorthReport = (function () {
       return {
+        reportWidthPercentage: 100,
+        reportHeightPercentage: 100,
         reportHeaders() {
           return '<div id="reports-inspector"> \
             <div class="reports-inspector-detail"> \
@@ -37,30 +39,64 @@
         },
 
         calculate(transactions) {
-          reportData.labels.length = 0;
-          reportData.assets.length = 0;
-          reportData.liabilities.length = 0;
-          reportData.netWorths.length = 0;
+          return new Promise((resolve) => {
+            reportData.labels.length = 0;
+            reportData.assets.length = 0;
+            reportData.liabilities.length = 0;
+            reportData.netWorths.length = 0;
 
-          var lastLabel = null;
-          var balanceByAccount = {};
-          var date = null;
-          var formattedDate = null;
+            var lastLabel = null;
+            var balanceByAccount = {};
+            var date = null;
+            var formattedDate = null;
 
-          transactions.forEach(function (transaction) {
-            date = ynabToolKit.shared.toLocalDate(transaction.get('date'));
-            formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
-            var year = formattedDate.split(' ')[1];
-            var month = formattedDate.split(' ')[0];
-            month = (ynabToolKit.l10nData && ynabToolKit.l10nData['months.' + month]) || month;
-            formattedDate = month + ' ' + year;
+            transactions.forEach(function (transaction) {
+              date = ynabToolKit.shared.toLocalDate(transaction.get('date'));
+              formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
+              var year = formattedDate.split(' ')[1];
+              var month = formattedDate.split(' ')[0];
+              month = (ynabToolKit.l10nData && ynabToolKit.l10nData['months.' + month]) || month;
+              formattedDate = month + ' ' + year;
 
-            if (lastLabel === null) lastLabel = formattedDate;
+              if (lastLabel === null) lastLabel = formattedDate;
 
-            // If it's time to push the next month's data into the arrays let's
-            // go for it.
-            if (formattedDate !== lastLabel) {
-              reportData.labels.push(lastLabel);
+              // If it's time to push the next month's data into the arrays let's
+              // go for it.
+              if (formattedDate !== lastLabel) {
+                reportData.labels.push(lastLabel);
+
+                var totalAssets = 0;
+                var totalLiabilities = 0;
+
+                for (var key in balanceByAccount) {
+                  if (balanceByAccount.hasOwnProperty(key)) {
+                    if (balanceByAccount[key] > 0) {
+                      totalAssets += (balanceByAccount[key] || 0);
+                    } else {
+                      totalLiabilities += (-balanceByAccount[key] || 0);
+                    }
+                  }
+                }
+
+                reportData.assets.push(totalAssets);
+                reportData.liabilities.push(totalLiabilities);
+                reportData.netWorths.push(totalAssets - totalLiabilities);
+
+                lastLabel = formattedDate;
+              }
+
+                // If we need a holder in balanceByAccount let's get one.
+              if (!balanceByAccount.hasOwnProperty(transaction.getAccountName())) {
+                balanceByAccount[transaction.getAccountName()] = 0;
+              }
+
+                // Tally ho.
+              balanceByAccount[transaction.getAccountName()] += transaction.getAmount();
+            });
+
+              // Ensure we've pushed the last month in.
+            if (formattedDate !== reportData.labels[reportData.labels.length - 1]) {
+              reportData.labels.push(formattedDate);
 
               var totalAssets = 0;
               var totalLiabilities = 0;
@@ -78,82 +114,52 @@
               reportData.assets.push(totalAssets);
               reportData.liabilities.push(totalLiabilities);
               reportData.netWorths.push(totalAssets - totalLiabilities);
-
-              lastLabel = formattedDate;
             }
 
-              // If we need a holder in balanceByAccount let's get one.
-            if (!balanceByAccount.hasOwnProperty(transaction.getAccountName())) {
-              balanceByAccount[transaction.getAccountName()] = 0;
-            }
+            if (transactions.length > 0) {
+                // Fill in any gaps in the months in case they're missing data.
+              var currentIndex = 0;
 
-              // Tally ho.
-            balanceByAccount[transaction.getAccountName()] += transaction.getAmount();
-          });
+              var currentDate = ynabToolKit.shared.toLocalDate(transactions[0].get('date'));
+              var maxDate = ynabToolKit.shared.toLocalDate(transactions[transactions.length - 1].get('date'));
 
-            // Ensure we've pushed the last month in.
-          if (formattedDate !== reportData.labels[reportData.labels.length - 1]) {
-            reportData.labels.push(formattedDate);
+                // For debugging ----------------------------------------------------
+                // var currentDate = new Date(transactions[0].date);
+                // var maxDate = new Date(transactions[transactions.length - 1].date);
+                // ------------------------------------------------------------------
 
-            var totalAssets = 0;
-            var totalLiabilities = 0;
+                // Ensure we're on the 1st to avoid edge cases like the 31st.
+              currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
 
-            for (var key in balanceByAccount) {
-              if (balanceByAccount.hasOwnProperty(key)) {
-                if (balanceByAccount[key] > 0) {
-                  totalAssets += (balanceByAccount[key] || 0);
-                } else {
-                  totalLiabilities += (-balanceByAccount[key] || 0);
+              var labels = reportData.labels;
+              var assets = reportData.assets;
+              var liabilities = reportData.liabilities;
+              var netWorths = reportData.netWorths;
+
+              while (currentDate < maxDate) {
+                formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(currentDate, 'MMM YYYY');
+                var year = formattedDate.split(' ')[1];
+                var month = formattedDate.split(' ')[0];
+                month = (ynabToolKit.l10nData && ynabToolKit.l10nData['months.' + month]) || month;
+                formattedDate = month + ' ' + year;
+
+                if (labels.indexOf(formattedDate) < 0) {
+                  labels.splice(currentIndex + 1, 0, formattedDate);
+                  assets.splice(currentIndex + 1, 0, assets[currentIndex]);
+                  liabilities.splice(currentIndex + 1, 0, liabilities[currentIndex]);
+                  netWorths.splice(currentIndex + 1, 0, netWorths[currentIndex]);
                 }
+
+                currentIndex++;
+                currentDate.setMonth(currentDate.getMonth() + 1);
               }
             }
 
-            reportData.assets.push(totalAssets);
-            reportData.liabilities.push(totalLiabilities);
-            reportData.netWorths.push(totalAssets - totalLiabilities);
-          }
-
-          if (transactions.length > 0) {
-              // Fill in any gaps in the months in case they're missing data.
-            var currentIndex = 0;
-
-            var currentDate = ynabToolKit.shared.toLocalDate(transactions[0].get('date'));
-            var maxDate = ynabToolKit.shared.toLocalDate(transactions[transactions.length - 1].get('date'));
-
-              // For debugging ----------------------------------------------------
-              // var currentDate = new Date(transactions[0].date);
-              // var maxDate = new Date(transactions[transactions.length - 1].date);
-              // ------------------------------------------------------------------
-
-              // Ensure we're on the 1st to avoid edge cases like the 31st.
-            currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
-
-            var labels = reportData.labels;
-            var assets = reportData.assets;
-            var liabilities = reportData.liabilities;
-            var netWorths = reportData.netWorths;
-
-            while (currentDate < maxDate) {
-              formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(currentDate, 'MMM YYYY');
-              var year = formattedDate.split(' ')[1];
-              var month = formattedDate.split(' ')[0];
-              month = (ynabToolKit.l10nData && ynabToolKit.l10nData['months.' + month]) || month;
-              formattedDate = month + ' ' + year;
-
-              if (labels.indexOf(formattedDate) < 0) {
-                labels.splice(currentIndex + 1, 0, formattedDate);
-                assets.splice(currentIndex + 1, 0, assets[currentIndex]);
-                liabilities.splice(currentIndex + 1, 0, liabilities[currentIndex]);
-                netWorths.splice(currentIndex + 1, 0, netWorths[currentIndex]);
-              }
-
-              currentIndex++;
-              currentDate.setMonth(currentDate.getMonth() + 1);
-            }
-          }
+            resolve();
+          });
         },
 
-        createChart($reportsPanel) {
+        createChart($reportsData) {
           var dateFilter = document.getElementById('reports-date-filter');
           var labels = reportData.labels;
           var start = [labels[0], labels[labels.length - 1]];
@@ -247,7 +253,7 @@
             ]
           };
 
-          $reportsPanel.append('<canvas id="reportCanvas" width="100" height="100"></canvas>');
+          $reportsData.html('<canvas id="reportCanvas"></canvas>');
           let context = document.getElementById('reportCanvas').getContext('2d');
           ynabToolKit.reports.updateCanvasSize();
           ynabToolKit.netWorthReport.chart = new Chart(context, {

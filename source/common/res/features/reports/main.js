@@ -20,22 +20,27 @@
     ynabToolKit.reports = (function () {
       return {
         updateCanvasSize() {
-          // Set the canvas dimensions to the parent element dimensions.
-          var width = $('div.scroll-wrap').closest('.ember-view').innerWidth() - 10;
-          var height = $(window).height() - $('#reports-panel').height() - 20;
+          let currentReport = ynabToolKit.shared.getToolkitStorageKey('current-report');
+          let toolkitReport = ynabToolKit[currentReport];
 
+          // Set the canvas dimensions to the parent element dimensions.
+          let width = $('div.scroll-wrap').closest('.ember-view').innerWidth() - 10;
+          let height = $(window).height() - $('#reports-panel').height() - 20;
+
+          if (toolkitReport.chart) {
             // If we just set the width and height of the canvas, not max-height,
             // the chart resizes off the bottom of the screen because it calculates
             // based on an aspect ratio and the width. It will respect the max-height
             // CSS value though, so whatever, just set both.
-          $('#reportCanvas')
-            .attr('width', width)
-            .attr('height', height)
-            .css({ 'max-height': height });
+            $('#reportCanvas')
+              .attr('width', width)
+              .attr('height', height)
+              .css({
+                'max-height': height
+              });
 
-          supportedReports.forEach((report) => {
-            if (report.chart) report.chart.resize();
-          });
+            toolkitReport.chart.resize();
+          }
         },
 
         setUpReportsButton() {
@@ -144,32 +149,46 @@
             });
 
               // Clear out the content and put ours in there instead.
-            $('div.scroll-wrap').closest('.ember-view').prepend(
-              $('<div id="reports-panel">')
-                .append($reportsHeader)
-                .append(
-                   `<div id="reports-filter">
-                      <h3>
-                        ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.filters']) || 'Filters')}
-                      </h3>
-                      <span class="reports-filter-name"> +
-                        ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.timeframe']) || 'Timeframe')}
-                      </span>
-                      <div id="reports-date-filter"></div>
-                    </div>
-                    <div id="report-headers"></div>
-                  <div>`
-                )
-            );
+            $('div.scroll-wrap').closest('.ember-view')
+              .prepend('<div id="report-data"></div>')
+              .prepend(
+                $('<div id="reports-panel">')
+                  .append($reportsHeader)
+                  .append(
+                     `<div id="reports-filter">
+                        <h3>
+                          ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.filters']) || 'Filters')}
+                        </h3>
+                        <span class="reports-filter-name"> +
+                          ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.timeframe']) || 'Timeframe')}
+                        </span>
+                        <div id="reports-date-filter"></div>
+                      </div>
+                      <div id="report-headers"></div>`
+                  )
+              );
 
             // The budget header is absolute positioned
             $('.budget-header, .scroll-wrap').hide();
 
+            // on initialization of the reports view, make sure we're showing a report
+            var currentReport = ynabToolKit.shared.getToolkitStorageKey('current-report');
+            if (typeof currentReport === 'undefined' || currentReport === 'undefined') {
+              currentReport = supportedReports[0].toolkitId;
+            }
+
+            showReport(currentReport);
+
             function showReport(toolkitId) {
+              // change the current report in local storage.
+              ynabToolKit.shared.setToolkitStorageKey('current-report', toolkitId);
+
+              // show the report.
               let toolkitReport = ynabToolKit[toolkitId];
               $('#report-headers').html(toolkitReport.reportHeaders());
-              toolkitReport.calculate(transactions);
-              toolkitReport.createChart($('#reports-panel'));
+              toolkitReport.calculate(transactions).then(() => {
+                toolkitReport.createChart($('#report-data'));
+              });
             }
           });
         },

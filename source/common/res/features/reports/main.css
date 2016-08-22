@@ -65,6 +65,10 @@
   margin: 0 39px 0 29px;
 }
 
+#report-data {
+  position: relative;
+}
+
 .noUi-connect {
 	background: #8ED0DF;
 }
