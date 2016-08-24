@@ -1,8 +1,9 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && typeof Highcharts !== 'undefined') {
     ynabToolKit.spendingByCategory = (function () {
-      let colors = ['#c15d5d', '#dc5f7a', '#e87d68', '#f9ad60', '#fcd249', '#f5ea55', '#dce26a'];
+      let categories;
       let colorIndex = 0;
+      let colors = ['#c15d5d', '#dc5f7a', '#e87d68', '#f9ad60', '#fcd249', '#f5ea55', '#dce26a'];
       let reportData = {
         masterCategories: {}
       };
@@ -56,13 +57,26 @@
           return '';
         },
 
+        filterTransaction(transaction) {
+          let masterCategoryId = transaction.get('masterCategoryId');
+          let subCategoryId = transaction.get('subCategoryId');
+          let isTransfer = masterCategoryId === null || subCategoryId === null;
+          let internalMasterCategory = categories.getMasterCategoryById(masterCategoryId);
+          let isInternalYNABCategory = isTransfer ? false :
+                                       internalMasterCategory.isDebtPaymentMasterCategory() ||
+                                       internalMasterCategory.isHiddenMasterCategory() ||
+                                       internalMasterCategory.isInternalMasterCategory();
+
+          return !transaction.get('inflow') && !isTransfer && !isInternalYNABCategory;
+        },
+
         calculate(transactions) {
           reportData.masterCategories = {};
 
           return new Promise((resolve) => {
             ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel().then((categoryViewModel) => {
+              categories = categoryViewModel;
               transactions.forEach((transaction) => {
-                if (transaction.get('inflow')) return;
                 placeInMasterCategory(transaction, categoryViewModel);
               });
 
@@ -77,10 +91,10 @@
           $reportsData.css({
             display: 'inline-flex'
           }).html($(
-           `<div class="ynab-toolkit-spending-by-cat-chart-container">
+           `<div class="ynabtk-spending-by-cat-chart-container">
               <div id="report-chart" style="position: relative; height: 100%"></div>
             </div>
-            <div class="ynab-toolkit-category-panel"></div>`
+            <div class="ynabtk-category-panel"></div>`
           ));
 
           let masterCategoriesArray = [];
@@ -116,7 +130,7 @@
             tooltip: {
               formatter: function () {
                 return 'Total: ' + ynabToolKit.shared.formatCurrency(this.y) + '<br>' +
-                       'Percentage: ' + this.percentage.toFixed(2);
+                       'Percentage: ' + Math.round(this.percentage) + '%';
               }
             },
             series: [{
@@ -126,10 +140,6 @@
               innerSize: '50%'
             }]
           });
-        },
-
-        updateReportWithDataFilter() {
-
         }
       };
     }());

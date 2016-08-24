@@ -1,24 +1,24 @@
-.ynab-toolkit-reports {
+.ynabtk-reports {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-.ynab-toolkit-reports-nav {
+.ynabtk-reports-nav {
   background-color: #003540;
   padding-left: 20px;
   font-family: 'Lato',Arial,'Helvetica Neue',Helvetica,sans-serif;
 }
 
-.ynab-toolkit-reports-nav h2 {
+.ynabtk-reports-nav h2 {
   float: left;
 }
 
-.ynab-toolkit-reports-nav h2 span {
+.ynabtk-reports-nav h2 span {
   color: #fed168;
 }
 
-.ynab-toolkit-reports-nav .nav-reports {
+.ynabtk-reports-nav .nav-reports {
   display: inline-flex;
   list-style: none;
   height: 100%;
@@ -26,16 +26,16 @@
   margin: 0px;
 }
 
-.ynab-toolkit-reports-nav .nav-reports-navlink {
+.ynabtk-reports-nav .nav-reports-navlink {
   margin-right: 10px;
 }
 
-.ynab-toolkit-reports-nav .nav-reports-navlink a {
+.ynabtk-reports-nav .nav-reports-navlink a {
   text-decoration: none;
   color: white;
 }
 
-.ynab-toolkit-reports-filters {
+.ynabtk-reports-filters {
   height: 140px;
   background-color: #F4F4F4;
   margin: 10px 10px 0 10px;
@@ -47,20 +47,20 @@
   border-radius: 20px;
 }
 
-.ynab-toolkit-reports-filters .ynab-toolkit-filter-group {
+.ynabtk-reports-filters .ynabtk-filter-group {
   margin: 10px 0;
 }
 
-.ynab-toolkit-account-select {
+.ynabtk-account-select {
   width: 20%;
 }
 
-.ynab-toolkit-account-chips {
+.ynabtk-account-chips {
   display: inline-flex;
   max-width: 70%;
 }
 
-.ynab-toolkit-account-chips .account-chip {
+.ynabtk-account-chips .account-chip {
   border-radius: 1em;
   background-color: #34aebe;
   text-overflow: ellipsis;
@@ -72,20 +72,32 @@
   padding: .2em .4em;
 }
 
-.ynab-toolkit-filter-group.date-filter {
+.ynabtk-filter-group.date-filter {
   display: flex;
 }
 
-.ynab-toolkit-date-filter-slider {
+.ynabtk-date-filter-slider {
   flex-grow: 1;
   margin: 0px 40px 0px 30px;
 }
 
-.ynab-toolkit-reports-headers {
-
+.ynabtk-reports-legend-square {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 2px 5px 0 0;
+  width: 17px;
+  height: 17px;
 }
 
-.ynab-toolkit-reports-data {
+.ynabtk-reports-legend-line {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+  width: 13px;
+  height: 2px;
+}
+
+.ynabtk-reports-data {
   flex-grow: 1;
 }
 

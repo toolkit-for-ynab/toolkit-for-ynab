@@ -10,31 +10,45 @@
     };
 
     ynabToolKit.netWorthReport = (function () {
+      function setHeaderValues(pointIndex) {
+        let series = ynabToolKit.netWorthReport.chart.series;
+        series.forEach((seriesData, index) => {
+          let formattedCurrency = ynabToolKit.shared.formatCurrency(seriesData.data[pointIndex].y);
+          if (index === 0) $('#net-worth-report-debts').text(formattedCurrency);
+          if (index === 1) $('#net-worth-report-assets').text(formattedCurrency);
+          if (index === 2) $('#net-worth-report-net-worth').text(formattedCurrency);
+        });
+      }
+
       return {
         availableAccountTypes: 'all',
         reportHeaders() {
-          return '<div id="reports-inspector"> \
-            <div class="reports-inspector-detail"> \
-              <div class="reports-legend-square debts"></div> \
-              <span class="reports-inspector-heading">' +
-              ((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.debts']) || 'Debts') + '</span> \
-              <span id="reports-inspector-debts" class="reports-inspector-value currency"></span> \
-            </div> \
-            <div class="reports-inspector-divider"></div> \
-            <div class="reports-inspector-detail"> \
-              <div class="reports-legend-square assets"></div> \
-              <span class="reports-inspector-heading">' +
-              ((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.assets']) || 'Assets') + '</span> \
-              <span id="reports-inspector-assets" class="reports-inspector-value currency"></span> \
-            </div> \
-            <div class="reports-inspector-divider"></div> \
-            <div class="reports-inspector-detail"> \
-              <div class="reports-legend-line net-worth"></div> \
-              <span class="reports-inspector-heading">' +
-              ((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.netWorth']) || 'Net Worth') + '</span> \
-              <span id="reports-inspector-net-worth" class="reports-inspector-value currency"></span> \
-            </div> \
-          </div>';
+          return '<div class="ynabtk-net-worth-header"> \
+                    <div class="ynabtk-net-worth-header-detail"> \
+                      <div class="ynabtk-reports-legend-square debts"></div> \
+                      <span class="ynabtk-net-worth-header-heading">' +
+                      ((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.debts']) || 'Debts') + '</span> \
+                      <span id="net-worth-report-debts" class="ynabtk-net-worth-header-value currency"></span> \
+                    </div> \
+                    <div class="ynabtk-net-worth-header-divider"></div> \
+                    <div class="ynabtk-net-worth-header-detail"> \
+                      <div class="ynabtk-reports-legend-square assets"></div> \
+                      <span class="ynabtk-net-worth-header-heading">' +
+                      ((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.assets']) || 'Assets') + '</span> \
+                      <span id="net-worth-report-assets" class="ynabtk-net-worth-header-value currency"></span> \
+                    </div> \
+                    <div class="ynabtk-net-worth-header-divider"></div> \
+                    <div class="ynabtk-net-worth-header-detail"> \
+                      <div class="ynabtk-reports-legend-line net-worth"></div> \
+                      <span class="ynabtk-net-worth-header-heading">' +
+                      ((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.netWorth']) || 'Net Worth') + '</span> \
+                      <span id="net-worth-report-net-worth" class="ynabtk-net-worth-header-value currency"></span> \
+                    </div> \
+                  </div>';
+        },
+
+        filterTransaction(transaction) {
+          return transaction.get('displayItemType') === 'transaction';
         },
 
         calculate(transactions) {
@@ -78,14 +92,16 @@
                 lastLabel = formattedDate;
               }
 
-                // If we need a holder in balanceByAccount let's get one.
+              // If we need a holder in balanceByAccount let's get one.
               if (!balanceByAccount.hasOwnProperty(transaction.getAccountName())) {
                 balanceByAccount[transaction.getAccountName()] = 0;
               }
 
-                // Tally ho.
+              // Tally ho.
               balanceByAccount[transaction.getAccountName()] += transaction.getAmount();
             });
+
+            console.log(balanceByAccount);
 
               // Ensure we've pushed the last month in.
             if (formattedDate !== reportData.labels[reportData.labels.length - 1]) {
@@ -110,7 +126,7 @@
             }
 
             if (transactions.length > 0) {
-                // Fill in any gaps in the months in case they're missing data.
+              // Fill in any gaps in the months in case they're missing data.
               var currentIndex = 0;
 
               var currentDate = ynabToolKit.shared.toLocalDate(transactions[0].get('date'));
@@ -153,157 +169,84 @@
         },
 
         createChart($reportsData) {
-          var labels = reportData.labels;
+          $reportsData.css({
+            display: 'inline-flex'
+          }).html($(
+              '<div id="report-chart" style="flex-grow: 1; position: relative; width: 100%"></div>'
+          ));
 
-          // Is the report fully positive? If so we should start the chart at 0.
-          // If not, let the chart do its thing so that people can see their negative
-          // net worths. liabilities and Assets are always positive, so this only
-          // matters with the net worth data points.
-          var startAtZero = true;
-          reportData.netWorths.forEach(function (netWorth) {
-            if (netWorth < 0) {
-              startAtZero = false;
-            }
-          });
-
-          // If there's only one month's worth of data, then the net worth
-          // figure won't be visible, as there's only a dot. Let's set the
-          // dot colour in that case.
-          var netWorthDotColor = 'rgba(255,255,255,0)';
-
-          if (labels.length === 1) {
-            netWorthDotColor = 'rgba(102,147,176,1)';
-          }
-
-          var chartData = {
-            labels,
-            datasets: [
-              {
-                label: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.debts']) || 'Debts',
-                backgroundColor: 'rgba(234,106,81,1)',
-                data: reportData.liabilities
-              }, {
-                label: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.assets']) || 'Assets',
-                backgroundColor: 'rgba(142,208,223,1)',
-                data: reportData.assets
-              }, {
-                type: 'line',
-                label: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.netWorth']) || 'Net Worth',
-                fill: true,
-                tension: 0,
-                borderColor: 'rgba(102,147,176,1)',
-                backgroundColor: 'rgba(244,248,226,0.3)',
-                pointBorderColor: netWorthDotColor,
-                pointBackgroundColor: netWorthDotColor,
-                pointBorderWidth: 5,
-                pointHoverRadius: 5,
-                pointHoverBackgroundColor: netWorthDotColor,
-                pointHoverBorderColor: netWorthDotColor,
-                pointHoverBorderWidth: 5,
-                data: reportData.netWorths
+          ynabToolKit.netWorthReport.chart = new Highcharts.Chart({
+            credits: false,
+            chart: {
+              renderTo: 'report-chart'
+            },
+            legend: {
+              enabled: false
+            },
+            title: {
+              text: ''
+            },
+            xAxis: {
+              categories: reportData.labels
+            },
+            yAxis: {
+              labels: {
+                formatter: function () {
+                  return ynabToolKit.shared.formatCurrency(this.value);
+                }
               }
-            ]
-          };
-
-          $reportsData.html('<canvas id="report-chart"></canvas>');
-          let context = document.getElementById('report-chart').getContext('2d');
-          ynabToolKit.netWorthReport.chart = new Chart(context, {
-            type: 'bar',
-            data: chartData,
-            options: {
-              responsive: false,
-              responsiveAnimationDuration: 2500,
-              maintainAspectRatio: false,
-              legend: {
-                display: false
-              },
-              hover: {
-                onHover(points) {
-                    // This is an array with 3 values in it if they're moused over an
-                    // actual value. The point along the X axis is always the same
-                    // for all 3 values for us, so just grab the first one then populate
-                    // the inspector.
-                  if (points.length > 0) {
-                    var index = points[0]._index;
-
-                      // Need to calculate the adjusted index for the date filter if it's applied.
-                    if ($('#reports-filter').is(':visible')) {
-                      var values = document.getElementById('reports-date-filter').noUiSlider.get();
-                      index += reportData.labels.indexOf(values[0]);
+            },
+            tooltip: {
+              enabled: false
+            },
+            series: [
+              {
+                id: 'debts',
+                type: 'column',
+                name: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.debts']) || 'Debts',
+                color: 'rgba(234,106,81,1)',
+                data: reportData.liabilities,
+                pointPadding: 0,
+                point: {
+                  events: {
+                    mouseOver: function () {
+                      setHeaderValues(this.index);
                     }
-
-                    var liabilities = reportData.liabilities[index];
-                    var assets = reportData.assets[index];
-                    var netWorth = reportData.netWorths[index];
-
-                    $('#reports-inspector-debts').text(ynabToolKit.shared.formatCurrency(liabilities));
-                    $('#reports-inspector-assets').text(ynabToolKit.shared.formatCurrency(assets));
-                    $('#reports-inspector-net-worth').text(ynabToolKit.shared.formatCurrency(netWorth));
                   }
                 }
-              },
-              tooltips: {
-                enabled: false
-              },
-              scales: {
-                xAxes: [
-                  {
-                    gridLines: {
-                      display: false
-                    },
-                    labels: {
-                      show: true,
-                      fontFamily: "'Lato',Arial,'Helvetica Neue',Helvetica,sans-serif"
+              }, {
+                id: 'assets',
+                type: 'column',
+                name: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.assets']) || 'Assets',
+                color: 'rgba(142,208,223,1)',
+                data: reportData.assets,
+                pointPadding: 0,
+                point: {
+                  events: {
+                    mouseOver: function () {
+                      setHeaderValues(this.index);
                     }
                   }
-                ],
-                yAxes: [
-                  {
-                    ticks: {
-                      beginAtZero: startAtZero,
-
-                        // This formats the currency on the Y axis (to the left of the chart)
-                      callback(value) { return ynabToolKit.shared.formatCurrency(value); }
+                }
+              }, {
+                id: 'networth',
+                type: 'area',
+                name: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.netWorth']) || 'Net Worth',
+                fillColor: 'rgba(244,248,226,0.5)',
+                negativeFillColor: 'rgba(247, 220, 218, 0.5)',
+                data: reportData.netWorths,
+                point: {
+                  events: {
+                    mouseOver: function () {
+                      setHeaderValues(this.index);
                     }
                   }
-                ]
+                }
               }
-            }
+            ]
           });
 
-          ynabToolKit.netWorthReport.updateReportWithDateFilter();
-        },
-
-        updateReportWithDateFilter() {
-          var labels = reportData.labels;
-          var liabilities = reportData.liabilities;
-          var assets = reportData.assets;
-          var netWorths = reportData.netWorths;
-          var chart = ynabToolKit.netWorthReport.chart;
-          var values = [labels[0], labels[0]];
-
-          if ($('#reports-filter').is(':visible')) {
-            // Ok, the filter is in use, set the values to the filter values.
-            values = document.getElementById('reports-date-filter').noUiSlider.get();
-          }
-
-          var startIndex = labels.indexOf(values[0]);
-          var endIndex = labels.indexOf(values[1]);
-
-            // Save the date filter values in case they go to another tab and come back.
-          sessionStorage.setItem('reportsDateFilter', values);
-
-          chart.data.labels = labels.slice(startIndex, endIndex + 1);
-          chart.data.datasets[0].data = liabilities.slice(startIndex, endIndex + 1);
-          chart.data.datasets[1].data = assets.slice(startIndex, endIndex + 1);
-          chart.data.datasets[2].data = netWorths.slice(startIndex, endIndex + 1);
-
-          chart.update();
-
-            // Set the inspector values to the latest date in the date range.
-          $('#reports-inspector-debts').text(ynabToolKit.shared.formatCurrency(liabilities[endIndex]));
-          $('#reports-inspector-assets').text(ynabToolKit.shared.formatCurrency(assets[endIndex]));
-          $('#reports-inspector-net-worth').text(ynabToolKit.shared.formatCurrency(netWorths[endIndex]));
+          setHeaderValues(reportData.labels.length - 1);
         }
       };
     }());

@@ -9,12 +9,12 @@
                     "true": [
                       "injectScript", "../lib/highcharts.js",
                       "injectScript", "../lib/chartjs-2.2.1/Chart.min.js",
-                      "injectScript", "..lib/semantic-ui/ui-dropdown.min.js",
                       "injectCSS", "../lib/noUiSlider.8.2.1/nouislider.min.css",
                       "injectScript", "../lib/noUiSlider.8.2.1/nouislider.min.js",
                       "injectCSS", "main.css",
                       "injectScript", "main.js",
                       "injectScript", "netWorth/main.js",
+                      "injectCSS", "netWorth/main.css",
                       "injectScript", "spendingByCategory/main.js",
                       "injectCSS", "spendingByCategory/main.css"
                     ]

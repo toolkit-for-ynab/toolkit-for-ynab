@@ -43,38 +43,38 @@
       }
 
       function buildReportsPage($pane) {
-        if ($('.ynab-toolkit-reports').length) return;
+        if ($('.ynabtk-reports').length) return;
 
         updateNavigation();
 
         $pane.append(
-          $('<div class="ynab-toolkit-reports"></div>')
+          $('<div class="ynabtk-reports"></div>')
             .append(generateReportNavigation())
             .append(
-              $('<div class="ynab-toolkit-reports-filters"></div>')
+              $('<div class="ynabtk-reports-filters"></div>')
                 .append(
                   `<h3>
                     ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.filters']) || 'Filters')}
                   </h3>
-                  <div class="ynab-toolkit-filter-group date-filter">
+                  <div class="ynabtk-filter-group date-filter">
                     <span class="reports-filter-name">
                       ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.timeframe']) || 'Timeframe')}:
                     </span>
-                    <div id="ynab-toolkit-date-filter" class="ynab-toolkit-date-filter-slider"></div>
+                    <div id="ynabtk-date-filter" class="ynabtk-date-filter-slider"></div>
                   </div>
-                  <div class="ynab-toolkit-filter-group">
+                  <div class="ynabtk-filter-group">
                     <span class="reports-filter-name">
                       ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.accounts']) || 'Accounts')}:
                     </span>
-                    <select id="ynab-toolkit-report-accounts" class="accounts-text-field dropdown-text-field ynab-toolkit-account-select">
+                    <select id="ynabtk-report-accounts" class="accounts-text-field dropdown-text-field ynabtk-account-select">
                       <option value="all">All Budget Accounts</option>
                     </select>
-                    <div id="selected-account-list" class="ynab-toolkit-account-chips"></div>
+                    <div id="selected-account-list" class="ynabtk-account-chips"></div>
                   </div>`
                 )
             )
-            .append('<div class="ynab-toolkit-reports-headers"></div>')
-            .append('<div class="ynab-toolkit-reports-data"></div>')
+            .append('<div class="ynabtk-reports-headers"></div>')
+            .append('<div class="ynabtk-reports-data"></div>')
         );
 
         generateDateSlider();
@@ -101,7 +101,7 @@
 
       function generateReportNavigation() {
         let $reportsHeader = $(
-          `<div class="ynab-toolkit-reports-nav">
+          `<div class="ynabtk-reports-nav">
             <h2>
               <span><i class="flaticon stroke document-4"></i></span>
             </h2>
@@ -124,7 +124,7 @@
       }
 
       function generateDateSlider() {
-        let dateFilterContainer = document.getElementById('ynab-toolkit-date-filter');
+        let dateFilterContainer = document.getElementById('ynabtk-date-filter');
 
         allTransactions.forEach((transaction) => {
           let monthLabel = ynabToolKit.reports.formatTransactionDatel8n(transaction);
@@ -134,7 +134,7 @@
         });
 
         if (monthLabels.length < 2) {
-          $('.ynab-toolkit-filter-group.date-filter').hide();
+          $('.ynabtk-filter-group.date-filter').hide();
         } else {
           noUiSlider.create(dateFilterContainer, {
             connect: true,
@@ -156,11 +156,11 @@
           });
         }
 
-        dateFilterContainer.noUiSlider.on('slide', filterTransactionsAndUpdateChart);
+        dateFilterContainer.noUiSlider.on('slide', filterTransactionsAndBuildChart);
       }
 
       function generateAccountSelect(availableAccountTypes) {
-        let $select = $('#ynab-toolkit-report-accounts');
+        let $select = $('#ynabtk-report-accounts');
         let $accountList = $('#selected-account-list');
 
         // clear both lists before generating the options
@@ -199,7 +199,7 @@
           }
 
           updateAccountList();
-          filterTransactionsAndUpdateChart();
+          filterTransactionsAndBuildChart();
         });
 
         function updateAccountList() {
@@ -235,22 +235,24 @@
 
         // show the report.
         let toolkitReport = ynabToolKit[toolkitId];
-        $('.ynab-toolkit-reports-headers').html(toolkitReport.reportHeaders());
+        $('.ynabtk-reports-headers').html(toolkitReport.reportHeaders());
 
         generateAccountSelect(toolkitReport.availableAccountTypes);
-
-        toolkitReport.calculate(allTransactions).then(() => {
-          toolkitReport.createChart($('.ynab-toolkit-reports-data'));
-        });
+        filterTransactionsAndBuildChart();
       }
 
-      function filterTransaction(transaction) {
+      function filterTransaction(transaction, toolkitReport) {
         let filterType;
 
-        let transactionAccountId = transaction.get('accountId');
+        // if the transaction isTombstone, go ahead and stop now...
+        if (transaction.get('isTombstone') === true) {
+          return false;
+        }
 
+        // should we filter for all, on, or off budget accounts?
+        let transactionAccountId = transaction.get('accountId');
         if (selectedAccounts.length === 0) {
-          let $accountSelect = $('#ynab-toolkit-report-accounts');
+          let $accountSelect = $('#ynabtk-report-accounts');
           filterType = $accountSelect.val();
         }
 
@@ -269,14 +271,14 @@
           case 'all':
             // no filtering needed -- continue
             break;
-          default:
+          default: // specific accounts selected.
             if (selectedAccounts.indexOf(transactionAccountId) === -1) {
               return false;
             }
             break;
         }
 
-        let dateFilterRange = document.getElementById('ynab-toolkit-date-filter').noUiSlider.get();
+        let dateFilterRange = document.getElementById('ynabtk-date-filter').noUiSlider.get();
         let indexStart = monthLabels.indexOf(dateFilterRange[0]);
         let indexEnd = monthLabels.indexOf(dateFilterRange[1]) + 1;
         let allowedDates = monthLabels.slice(indexStart, indexEnd);
@@ -285,50 +287,42 @@
           return false;
         }
 
+        if (toolkitReport.filterTransaction) {
+          return toolkitReport.filterTransaction(transaction);
+        }
+
         return true;
       }
 
-      function filterTransactionsAndUpdateChart() {
-        let filtered = allTransactions.filter(filterTransaction);
+      function filterTransactionsAndBuildChart() {
         let toolkitId = ynabToolKit.shared.getToolkitStorageKey('current-report');
         let toolkitReport = ynabToolKit[toolkitId];
+        let filtered = allTransactions.filter((transaction) => {
+          return filterTransaction(transaction, toolkitReport);
+        });
         toolkitReport.calculate(filtered).then(() => {
-          toolkitReport.createChart($('.ynab-toolkit-reports-data'));
+          toolkitReport.createChart($('.ynabtk-reports-data'));
         });
       }
 
       function showReports() {
         ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then((transactionsViewModel) => {
           ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel().then((sideBarViewModel) => {
-            ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel().then((categoryViewModel) => {
-              onBudgetAccounts = sideBarViewModel.get('onBudgetAccounts');
-              offBudgetAccounts = sideBarViewModel.get('offBudgetAccounts');
+            onBudgetAccounts = sideBarViewModel.get('onBudgetAccounts');
+            offBudgetAccounts = sideBarViewModel.get('offBudgetAccounts');
 
-              let transactionDisplayItems = transactionsViewModel.get('visibleTransactionDisplayItems');
-              allTransactions = transactionDisplayItems.filter(function (transaction) {
-                let masterCategoryId = transaction.get('masterCategoryId');
-                let subCategoryId = transaction.get('subCategoryId');
-                let isTransfer = masterCategoryId === null || subCategoryId === null;
-                let internalMasterCategory = categoryViewModel.getMasterCategoryById(masterCategoryId);
-                let isInternalYNABCategory = isTransfer ? false :
-                                             internalMasterCategory.isDebtPaymentMasterCategory() ||
-                                             internalMasterCategory.isHiddenMasterCategory() ||
-                                             internalMasterCategory.isInternalMasterCategory();
+            allTransactions = transactionsViewModel.get('visibleTransactionDisplayItems');
 
-                return !isTransfer && !isInternalYNABCategory;
-              });
-
-              // Sort the transactions by date. They usually are already, but let's not depend on that:
-              allTransactions.sort(function (a, b) {
-                return a.get('date').toNativeDate() - b.get('date').toNativeDate();
-              });
-
-              // Clear out the content and put ours in there instead.
-              buildReportsPage($('div.scroll-wrap').closest('.ember-view'));
-
-              // The budget header is absolute positioned
-              $('.budget-header, .scroll-wrap').hide();
+            // Sort the transactions by date. They usually are already, but let's not depend on that:
+            allTransactions.sort(function (a, b) {
+              return a.get('date').toNativeDate() - b.get('date').toNativeDate();
             });
+
+            // Clear out the content and put ours in there instead.
+            buildReportsPage($('div.scroll-wrap').closest('.ember-view'));
+
+            // The budget header is absolute positioned
+            $('.budget-header, .scroll-wrap').hide();
           });
         });
       }
@@ -354,7 +348,7 @@
             // We're no longer the active page.
             $('.navlink-reports').removeClass('active');
 
-            $('.ynab-toolkit-reports').remove();
+            $('.ynabtk-reports').remove();
 
             // And restore the YNAB stuff we hid earlier
             $('.budget-header, .scroll-wrap').show();
