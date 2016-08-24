@@ -1,5 +1,5 @@
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
+  if (typeof ynabToolKit !== 'undefined' && typeof Highcharts !== 'undefined') {
     ynabToolKit.spendingByCategory = (function () {
       let colors = ['#c15d5d', '#dc5f7a', '#e87d68', '#f9ad60', '#fcd249', '#f5ea55', '#dce26a'];
       let colorIndex = 0;
@@ -51,30 +51,20 @@
       }
 
       return {
+        availableAccountTypes: 'onbudget',
         reportHeaders() {
           return '';
         },
 
         calculate(transactions) {
+          reportData.masterCategories = {};
+
           return new Promise((resolve) => {
             ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel().then((categoryViewModel) => {
               transactions.forEach((transaction) => {
-                let masterCategoryId = transaction.get('masterCategoryId');
-                let subCategoryId = transaction.get('subCategoryId');
-                let isTransfer = masterCategoryId === null || subCategoryId === null;
-                let internalMasterCategory = categoryViewModel.getMasterCategoryById(masterCategoryId);
-                let isInternalYNABCategory = isTransfer ? false :
-                                             internalMasterCategory.isDebtPaymentMasterCategory() ||
-                                             internalMasterCategory.isHiddenMasterCategory() ||
-                                             internalMasterCategory.isInternalMasterCategory();
-
-                // skip all inflow transactions, transfers and internal YNAB categories
-                if (transaction.get('inflow') || isTransfer || isInternalYNABCategory) return;
-
+                if (transaction.get('inflow')) return;
                 placeInMasterCategory(transaction, categoryViewModel);
               });
-
-              console.log(reportData);
 
               resolve();
             });
@@ -82,16 +72,16 @@
         },
 
         createChart($reportsData) {
+          colorIndex = 0;
+
           $reportsData.css({
-            position: 'relative'
-          }).append($(
-           `<div class="ynab-toolkit-spending-by-cat-chart">
-              <canvas id="reportCanvas" width="100" height="100"></canvas>
+            display: 'inline-flex'
+          }).html($(
+           `<div class="ynab-toolkit-spending-by-cat-chart-container">
+              <div id="report-chart" style="position: relative; height: 100%"></div>
             </div>
             <div class="ynab-toolkit-category-panel"></div>`
           ));
-
-          let context = document.getElementById('reportCanvas').getContext('2d');
 
           let masterCategoriesArray = [];
           for (let categoryId in reportData.masterCategories) {
@@ -102,35 +92,40 @@
             return a.total - b.total;
           });
 
-          let chartData = {
-            labels: [],
-            datasets: [{
-              data: [],
-              label: [],
-              backgroundColor: []
-            }]
-          };
+          let chartData = [];
 
           masterCategoriesArray.forEach((masterCategoryData) => {
-            chartData.labels.push(masterCategoryData.internalData.get('name'));
-            chartData.datasets[0].data.push(masterCategoryData.total);
-            chartData.datasets[0].label.push(masterCategoryData.internalData.get('name'));
-            chartData.datasets[0].backgroundColor.push(getColor());
+            chartData.push({
+              name: masterCategoryData.internalData.get('name'),
+              y: masterCategoryData.total,
+              color: getColor()
+            });
           });
 
-          ynabToolKit.spendingByCategory.chart = new Chart(context, {
-            type: 'doughnut',
-            data: chartData,
-            options: {
-              responsive: true,
-              rotation: 90 * Math.PI,
-              legend: {
-                display: false
+          ynabToolKit.spendingByCategory.chart = new Highcharts.Chart({
+            credits: false,
+            chart: {
+              type: 'pie',
+              renderTo: 'report-chart'
+            },
+            plotOptions: {
+              pie: {
+                startAngle: 90
               }
-            }
+            },
+            tooltip: {
+              formatter: function () {
+                return 'Total: ' + ynabToolKit.shared.formatCurrency(this.y) + '<br>' +
+                       'Percentage: ' + this.percentage.toFixed(2);
+              }
+            },
+            series: [{
+              name: 'Total Spending',
+              data: chartData,
+              size: '80%',
+              innerSize: '50%'
+            }]
           });
-
-          ynabToolKit.reports.updateCanvasSize();
         },
 
         updateReportWithDataFilter() {

@@ -11,8 +11,7 @@
 
     ynabToolKit.netWorthReport = (function () {
       return {
-        reportWidthPercentage: 100,
-        reportHeightPercentage: 100,
+        availableAccountTypes: 'all',
         reportHeaders() {
           return '<div id="reports-inspector"> \
             <div class="reports-inspector-detail"> \
@@ -47,16 +46,10 @@
 
             var lastLabel = null;
             var balanceByAccount = {};
-            var date = null;
             var formattedDate = null;
 
             transactions.forEach(function (transaction) {
-              date = ynabToolKit.shared.toLocalDate(transaction.get('date'));
-              formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
-              var year = formattedDate.split(' ')[1];
-              var month = formattedDate.split(' ')[0];
-              month = (ynabToolKit.l10nData && ynabToolKit.l10nData['months.' + month]) || month;
-              formattedDate = month + ' ' + year;
+              formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
 
               if (lastLabel === null) lastLabel = formattedDate;
 
@@ -160,48 +153,7 @@
         },
 
         createChart($reportsData) {
-          var dateFilter = document.getElementById('reports-date-filter');
           var labels = reportData.labels;
-          var start = [labels[0], labels[labels.length - 1]];
-
-          if (start[0] === start[1]) {
-              // We only have one month. We can't show the filter.
-            $('#reports-filter').hide();
-          } else {
-            // Restore the date filter values in case they've gone to another tab and come back.
-            var savedStart = sessionStorage.getItem('reportsDateFilter');
-
-            if (savedStart) {
-              savedStart = savedStart.split(',');
-
-              if (savedStart.length === 2 && savedStart[0].length > 0 && savedStart[1].length > 0) {
-                start = savedStart;
-              }
-            }
-
-            // Set up the date filter.
-            noUiSlider.create(dateFilter, {
-              connect: true,
-              start,
-              range: {
-                min: 0,
-                max: labels.length - 1
-              },
-              step: 1,
-              tooltips: true,
-              format: {
-                to(index) {
-                  return reportData.labels[Math.round(index)];
-                },
-
-                from(value) {
-                  return reportData.labels.indexOf(value);
-                }
-              }
-            });
-
-            dateFilter.noUiSlider.on('slide', ynabToolKit.netWorthReport.updateReportWithDateFilter);
-          }
 
           // Is the report fully positive? If so we should start the chart at 0.
           // If not, let the chart do its thing so that people can see their negative
@@ -253,9 +205,8 @@
             ]
           };
 
-          $reportsData.html('<canvas id="reportCanvas"></canvas>');
-          let context = document.getElementById('reportCanvas').getContext('2d');
-          ynabToolKit.reports.updateCanvasSize();
+          $reportsData.html('<canvas id="report-chart"></canvas>');
+          let context = document.getElementById('report-chart').getContext('2d');
           ynabToolKit.netWorthReport.chart = new Chart(context, {
             type: 'bar',
             data: chartData,
