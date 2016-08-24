@@ -7,8 +7,7 @@
   "description": "Adds a button to the side bar to access reports. At this stage only the Net Worth report is implemented.",
       "actions": {
                     "true": [
-                      "injectScript", "../lib/highcharts.js",
-                      "injectScript", "../lib/chartjs-2.2.1/Chart.min.js",
+                      "injectScript", "../lib/highcharts-4.2.6/highcharts.js",
                       "injectCSS", "../lib/noUiSlider.8.2.1/nouislider.min.css",
                       "injectScript", "../lib/noUiSlider.8.2.1/nouislider.min.js",
                       "injectCSS", "main.css",
