@@ -7,9 +7,11 @@
       };
 
       function placeInSubCategory(transaction, masterCategoryData, categoryViewModel) {
+        // grab the sub category id the data for it inside of our nested object
         let subCategoryId = transaction.get('subCategoryId');
         let subCategoryData = masterCategoryData.subCategories[subCategoryId];
 
+        // if we haven't created that data yet, then default everything to 0/empty
         if (typeof subCategoryData === 'undefined') {
           masterCategoryData.subCategories[subCategoryId] = {
             internalData: categoryViewModel.getSubCategoryById(subCategoryId),
@@ -20,14 +22,18 @@
           subCategoryData = masterCategoryData.subCategories[subCategoryId];
         }
 
+        // push the transaction and increment the total. storing the transaction just because
+        // we might want it for the drilldown stuff. not certain yet.
         subCategoryData.transactions.push(transaction);
         subCategoryData.total += transaction.get('outflow');
       }
 
       function placeInMasterCategory(transaction, categoryViewModel) {
+        // grab the master category date from our master category object
         let masterCategoryId = transaction.get('masterCategoryId');
         let masterCategoryData = reportData.masterCategories[masterCategoryId];
 
+        // if we haven't created that data yet, then default everything to 0/empty
         if (typeof masterCategoryData === 'undefined') {
           reportData.masterCategories[masterCategoryId] = {
             internalData: categoryViewModel.getMasterCategoryById(masterCategoryId),
@@ -37,6 +43,8 @@
 
           masterCategoryData = reportData.masterCategories[masterCategoryId];
         }
+
+        // increment the total of the category and then call placeInSubCategory so that we can do drilldowns
         masterCategoryData.total += transaction.get('outflow');
         placeInSubCategory(transaction, masterCategoryData, categoryViewModel);
       }
@@ -47,7 +55,13 @@
           return '';
         },
 
+        // custom data filter for our transactions. YNAB has a debt master category and an internal master category
+        // which I'm pretty sure stores credit card transfer stuff and things like "Split (Multiple Categories...)"
+        // type transactions. we ignore these guys because they will throw off numbers! we also ignore inflows and transfers
+        // because this is a "spending" by category report and neither of those are "spending" right? I think that's right.
         filterTransaction(transaction) {
+          // can't use a promise here and the _result *should* if there's anything to worry about, it's this line
+          // but im still not worried about it.
           let categoriesViewModel = ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel()._result;
           let masterCategoryId = transaction.get('masterCategoryId');
           let subCategoryId = transaction.get('subCategoryId');
@@ -55,16 +69,17 @@
           let internalMasterCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
           let isInternalYNABCategory = isTransfer ? false :
                                        internalMasterCategory.isDebtPaymentMasterCategory() ||
-                                       // internalMasterCategory.isHiddenMasterCategory() ||
                                        internalMasterCategory.isInternalMasterCategory();
 
           return !transaction.get('inflow') && !isTransfer && !isInternalYNABCategory;
         },
 
         calculate(transactions) {
+          // make sure the data is empty before we start doing an calculating/data layout stuff
           reportData.masterCategories = {};
 
           return new Promise((resolve) => {
+            // grab the categories from ynab's shared lib with their promise -- we can trust it.
             ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel().then((categoryViewModel) => {
               transactions.forEach((transaction) => {
                 placeInMasterCategory(transaction, categoryViewModel);
@@ -76,6 +91,7 @@
         },
 
         createChart($reportsData) {
+          // set up the container for our graph and for our side-panel (the legend)
           $reportsData.css({
             display: 'inline-flex'
           }).html($(
@@ -91,24 +107,29 @@
             </div>`
           ));
 
+          // store all the categories into an array so we can sort it!
           let masterCategoriesArray = [];
           for (let categoryId in reportData.masterCategories) {
             masterCategoriesArray.push(reportData.masterCategories[categoryId]);
           }
 
-          // sort data descending
+          // sort it! (descending)
           masterCategoriesArray.sort((a, b) => {
             return b.total - a.total;
           });
 
+          // we want to have a separate chartData array because there's only 10 slices in this pie
           let chartData = [];
           let totalSpending = 0;
+
+          // the 10th will be a house for everything not in the top 9 slices...
           let otherCategories = {
             name: 'All Other Categories',
             y: 0,
             color: '#696a69'
           };
 
+          // throw the categories into the chartData FILO style because that's what Highcharts wants.
           masterCategoriesArray.forEach(function (masterCategoryData, index) {
             let categoryName = masterCategoryData.internalData.get('name');
             let categoryTotal = masterCategoryData.total;
@@ -126,6 +147,7 @@
               otherCategories.y += masterCategoryData.total;
             }
 
+            // also add the category to the legend so users can still see all the data
             $('.ynabtk-category-panel').append(
               `<div class="ynabtk-category-entry">
                 <div class="ynabtk-category-entry-name">
@@ -137,10 +159,12 @@
             );
           });
 
+          // if we had enough data for otherCategories, make sure we put it in the chart!
           if (otherCategories.y) {
             chartData.unshift(otherCategories);
           }
 
+          // throw the total into the legend as well so they can see how much money the spend in two places!
           $('.ynabtk-category-panel').append(
             `<hr>
              <div class="ynabtk-category-entry">
@@ -149,6 +173,7 @@
              </div>`
           );
 
+          // make that chart!
           ynabToolKit.spendingByCategory.chart = new Highcharts.Chart({
             credits: false,
             chart: {
