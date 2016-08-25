@@ -101,9 +101,7 @@
               balanceByAccount[transaction.getAccountName()] += transaction.getAmount();
             });
 
-            console.log(balanceByAccount);
-
-              // Ensure we've pushed the last month in.
+            // Ensure we've pushed the last month in.
             if (formattedDate !== reportData.labels[reportData.labels.length - 1]) {
               reportData.labels.push(formattedDate);
 
@@ -132,12 +130,12 @@
               var currentDate = ynabToolKit.shared.toLocalDate(transactions[0].get('date'));
               var maxDate = ynabToolKit.shared.toLocalDate(transactions[transactions.length - 1].get('date'));
 
-                // For debugging ----------------------------------------------------
-                // var currentDate = new Date(transactions[0].date);
-                // var maxDate = new Date(transactions[transactions.length - 1].date);
-                // ------------------------------------------------------------------
+              // For debugging ----------------------------------------------------
+              // var currentDate = new Date(transactions[0].date);
+              // var maxDate = new Date(transactions[transactions.length - 1].date);
+              // ------------------------------------------------------------------
 
-                // Ensure we're on the 1st to avoid edge cases like the 31st.
+              // Ensure we're on the 1st to avoid edge cases like the 31st.
               currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1);
 
               var labels = reportData.labels;

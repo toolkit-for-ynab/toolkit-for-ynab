@@ -106,7 +106,8 @@
           masterCategoriesArray.forEach(function (masterCategoryData, index) {
             totalSpending += masterCategoryData.total;
 
-            if (chartData.length < 10) {
+            // the 10th data element will get grouped into "all other transactions"
+            if (chartData.length < 9) {
               chartData.unshift({
                 name: masterCategoryData.internalData.get('name'),
                 y: masterCategoryData.total,
