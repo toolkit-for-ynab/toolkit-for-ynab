@@ -137,27 +137,27 @@
         });
 
         if (monthLabels.length < 2) {
-          $('.ynabtk-filter-group.date-filter').hide();
-        } else {
-          noUiSlider.create(dateFilterContainer, {
-            connect: true,
-            start: [monthLabels[0], monthLabels[monthLabels.length - 1]],
-            range: {
-              min: 0,
-              max: monthLabels.length - 1
-            },
-            step: 1,
-            tooltips: true,
-            format: {
-              to(index) {
-                return monthLabels[Math.round(index)];
-              },
-              from(value) {
-                return monthLabels.indexOf(value);
-              }
-            }
-          });
+          return $('.ynabtk-filter-group.date-filter').hide();
         }
+
+        noUiSlider.create(dateFilterContainer, {
+          connect: true,
+          start: [monthLabels[0], monthLabels[monthLabels.length - 1]],
+          range: {
+            min: 0,
+            max: monthLabels.length - 1
+          },
+          step: 1,
+          tooltips: true,
+          format: {
+            to(index) {
+              return monthLabels[Math.round(index)];
+            },
+            from(value) {
+              return monthLabels.indexOf(value);
+            }
+          }
+        });
 
         dateFilterContainer.noUiSlider.on('slide', filterTransactionsAndBuildChart);
       }
@@ -285,9 +285,16 @@
             break;
         }
 
-        let dateFilterRange = document.getElementById('ynabtk-date-filter').noUiSlider.get();
-        let indexStart = monthLabels.indexOf(dateFilterRange[0]);
-        let indexEnd = monthLabels.indexOf(dateFilterRange[1]) + 1;
+        let indexStart = 0;
+        let indexEnd = monthLabels.length;
+        let sliderElement = document.getElementById('ynabtk-date-filter');
+
+        if (sliderElement.noUiSlider && typeof sliderElement.noUiSlider.get === 'function') {
+          let dateFilterRange = document.getElementById('ynabtk-date-filter').noUiSlider.get();
+          indexStart = monthLabels.indexOf(dateFilterRange[0]);
+          indexEnd = monthLabels.indexOf(dateFilterRange[1]) + 1;
+        }
+
         let allowedDates = monthLabels.slice(indexStart, indexEnd);
         let transactionDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
         if (allowedDates.indexOf(transactionDate) === -1) {
