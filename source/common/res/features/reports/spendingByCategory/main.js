@@ -1,9 +1,7 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && typeof Highcharts !== 'undefined') {
     ynabToolKit.spendingByCategory = (function () {
-      let categories;
-      let colorIndex = 0;
-      let colors = ['#c15d5d', '#dc5f7a', '#e87d68', '#f9ad60', '#fcd249', '#f5ea55', '#dce26a'];
+      let colors = ['#ea5439', '#f3ad51', '#ebe598', '#74a9e6', '#c8df68', '#8ba157', '#91c5b4', '#009dae', '#cbdb3c'];
       let reportData = {
         masterCategories: {}
       };
@@ -43,14 +41,6 @@
         placeInSubCategory(transaction, masterCategoryData, categoryViewModel);
       }
 
-      function getColor() {
-        if (typeof colors[colorIndex] === 'undefined') {
-          colorIndex = 0;
-        }
-
-        return colors[colorIndex++];
-      }
-
       return {
         availableAccountTypes: 'onbudget',
         reportHeaders() {
@@ -58,13 +48,14 @@
         },
 
         filterTransaction(transaction) {
+          let categoriesViewModel = ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel()._result;
           let masterCategoryId = transaction.get('masterCategoryId');
           let subCategoryId = transaction.get('subCategoryId');
           let isTransfer = masterCategoryId === null || subCategoryId === null;
-          let internalMasterCategory = categories.getMasterCategoryById(masterCategoryId);
+          let internalMasterCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
           let isInternalYNABCategory = isTransfer ? false :
                                        internalMasterCategory.isDebtPaymentMasterCategory() ||
-                                       internalMasterCategory.isHiddenMasterCategory() ||
+                                       // internalMasterCategory.isHiddenMasterCategory() ||
                                        internalMasterCategory.isInternalMasterCategory();
 
           return !transaction.get('inflow') && !isTransfer && !isInternalYNABCategory;
@@ -75,7 +66,6 @@
 
           return new Promise((resolve) => {
             ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel().then((categoryViewModel) => {
-              categories = categoryViewModel;
               transactions.forEach((transaction) => {
                 placeInMasterCategory(transaction, categoryViewModel);
               });
@@ -86,8 +76,6 @@
         },
 
         createChart($reportsData) {
-          colorIndex = 0;
-
           $reportsData.css({
             display: 'inline-flex'
           }).html($(
@@ -102,19 +90,36 @@
             masterCategoriesArray.push(reportData.masterCategories[categoryId]);
           }
 
+          // sort data descending
           masterCategoriesArray.sort((a, b) => {
-            return a.total - b.total;
+            return b.total - a.total;
           });
 
           let chartData = [];
+          let totalSpending = 0;
+          let otherCategories = {
+            name: 'All Other Categories',
+            y: 0,
+            color: '#696a69'
+          };
 
-          masterCategoriesArray.forEach((masterCategoryData) => {
-            chartData.push({
-              name: masterCategoryData.internalData.get('name'),
-              y: masterCategoryData.total,
-              color: getColor()
-            });
+          masterCategoriesArray.forEach(function (masterCategoryData, index) {
+            totalSpending += masterCategoryData.total;
+
+            if (chartData.length < 10) {
+              chartData.unshift({
+                name: masterCategoryData.internalData.get('name'),
+                y: masterCategoryData.total,
+                color: colors[index]
+              });
+            } else {
+              otherCategories.y += masterCategoryData.total;
+            }
           });
+
+          if (otherCategories.y) {
+            chartData.unshift(otherCategories);
+          }
 
           ynabToolKit.spendingByCategory.chart = new Highcharts.Chart({
             credits: false,
@@ -128,16 +133,24 @@
               }
             },
             tooltip: {
-              formatter: function () {
-                return 'Total: ' + ynabToolKit.shared.formatCurrency(this.y) + '<br>' +
-                       'Percentage: ' + Math.round(this.percentage) + '%';
-              }
+              enabled: false
+            },
+            title: {
+              align: 'center',
+              verticalAlign: 'middle',
+              text: 'Total Spending<br>' + ynabToolKit.shared.formatCurrency(totalSpending)
             },
             series: [{
               name: 'Total Spending',
               data: chartData,
               size: '80%',
-              innerSize: '50%'
+              innerSize: '50%',
+              dataLabels: {
+                formatter: function () {
+                  let formattedNumber = ynabToolKit.shared.formatCurrency(this.y);
+                  return this.point.name + '<br>' + formattedNumber + ' (' + Math.round(this.percentage) + '%)';
+                }
+              }
             }]
           });
         }
