@@ -1,7 +1,7 @@
 /* eslint-disable no-multi-str */
 
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
+  if (typeof ynabToolKit !== 'undefined' && typeof Highcharts !== 'undefined') {
     let reportData = {
       labels: [],
       assets: [],

@@ -75,12 +75,12 @@
         },
 
         calculate(transactions) {
-          // make sure the data is empty before we start doing an calculating/data layout stuff
-          reportData.masterCategories = {};
-
           return new Promise((resolve) => {
             // grab the categories from ynab's shared lib with their promise -- we can trust it.
             ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel().then((categoryViewModel) => {
+              // make sure the data is empty before we start doing an calculating/data layout stuff
+              reportData.masterCategories = {};
+
               transactions.forEach((transaction) => {
                 placeInMasterCategory(transaction, categoryViewModel);
               });
