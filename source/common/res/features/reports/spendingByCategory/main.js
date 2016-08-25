@@ -82,7 +82,13 @@
            `<div class="ynabtk-spending-by-cat-chart-container">
               <div id="report-chart" style="position: relative; height: 100%"></div>
             </div>
-            <div class="ynabtk-category-panel"></div>`
+            <div class="ynabtk-category-panel">
+              <div class="ynabtk-category-entry">
+                <div class="ynabtk-category-entry-name">Category</div>
+                <div class="ynabtk-category-entry-amount">Spending</div>
+              </div>
+              <hr>
+            </div>`
           ));
 
           let masterCategoriesArray = [];
@@ -104,23 +110,44 @@
           };
 
           masterCategoriesArray.forEach(function (masterCategoryData, index) {
+            let categoryName = masterCategoryData.internalData.get('name');
+            let categoryTotal = masterCategoryData.total;
+            let color = colors[index] || otherCategories.color;
             totalSpending += masterCategoryData.total;
 
             // the 10th data element will get grouped into "all other transactions"
             if (chartData.length < 9) {
               chartData.unshift({
-                name: masterCategoryData.internalData.get('name'),
-                y: masterCategoryData.total,
-                color: colors[index]
+                name: categoryName,
+                y: categoryTotal,
+                color: color
               });
             } else {
               otherCategories.y += masterCategoryData.total;
             }
+
+            $('.ynabtk-category-panel').append(
+              `<div class="ynabtk-category-entry">
+                <div class="ynabtk-category-entry-name">
+                  <div class="ynabtk-reports-legend-square category-color" style="background-color: ${color};"></div>
+                  ${categoryName}
+                </div>
+                <div class="ynabtk-category-entry-amount">${ynabToolKit.shared.formatCurrency(categoryTotal)}</div>
+              </div>`
+            );
           });
 
           if (otherCategories.y) {
             chartData.unshift(otherCategories);
           }
+
+          $('.ynabtk-category-panel').append(
+            `<hr>
+             <div class="ynabtk-category-entry">
+                <div class="ynabtk-category-entry-name total">Total</div>
+                <div class="ynabtk-category-entry-amount total">${ynabToolKit.shared.formatCurrency(totalSpending)}</div>
+             </div>`
+          );
 
           ynabToolKit.spendingByCategory.chart = new Highcharts.Chart({
             credits: false,

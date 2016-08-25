@@ -223,6 +223,7 @@
                     let index = selectedAccounts.indexOf(accountId);
                     selectedAccounts.splice(index, 1);
                     updateAccountList();
+                    filterTransactionsAndBuildChart();
                   })
               );
           });
