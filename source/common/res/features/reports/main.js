@@ -10,12 +10,15 @@
     toolkitId: 'spendingByCategory'
   }];
 
+  // ynabToolKit[report.toolkitId] should be undefined if the report hasn't finished
+  // loading yet. if that's the case set allReportsReady to false to avoid silly race conditions
   supportedReports.forEach(function (report) {
     if (!ynabToolKit[report.toolkitId]) {
       allReportsReady = false;
     }
   });
 
+  // if all the reports have finished loading (and so have their deps) then we're good to go!
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true && allReportsReady) {
     ynabToolKit.reports = (function () {
       let onBudgetAccounts;
@@ -24,6 +27,7 @@
       let monthLabels = [];
       let selectedAccounts = [];
 
+      // throw our reports button into the left-hand navigation pane so they can click it!
       function setUpReportsButton() {
         if ($('li.navlink-reports').length > 0) return;
 
@@ -47,9 +51,12 @@
 
         updateNavigation();
 
+        // append the entire page to the .scroll-wrap pane in YNAB (called by showReports)
         $pane.append(
           $('<div class="ynabtk-reports"></div>')
+            // append the navigation (list of supportedReports)
             .append(generateReportNavigation())
+            // append the filters and containers for report headers/report data
             .append(
               $('<div class="ynabtk-reports-filters"></div>')
                 .append(
@@ -60,6 +67,7 @@
                     <span class="reports-filter-name">
                       ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.timeframe']) || 'Timeframe')}:
                     </span>
+                    <div class="ynabtk-quick-date-filters"></div>
                     <div id="ynabtk-date-filter" class="ynabtk-date-filter-slider"></div>
                   </div>
                   <div class="ynabtk-filter-group">
@@ -81,6 +89,7 @@
       }
 
       function updateNavigation() {
+        // remove the active class from all navigation items and add active to our guy
         $('.navlink-budget, .navlink-accounts').removeClass('active');
         $('.nav-account-row').removeClass('is-selected');
         $('.navlink-reports').addClass('active');
@@ -100,6 +109,7 @@
       }
 
       function generateReportNavigation() {
+        // create the reports header
         let $reportsHeader = $(
           `<div class="ynabtk-reports-nav">
             <h2>
@@ -108,6 +118,7 @@
             <ul class="nav-reports"></ul>
           </div>`);
 
+        // now populate the reports header!
         supportedReports.forEach((report) => {
           $('.nav-reports', $reportsHeader).append(
             $('<li>', { class: 'nav-reports-navlink' }).append(
@@ -124,22 +135,42 @@
       }
 
       function generateDateSlider() {
-        let dateFilterContainer = document.getElementById('ynabtk-date-filter');
+        // grab the current month, this is the last label of our slider
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
 
-        allTransactions.forEach((transaction) => {
-          // skip scheduled transactions so we don't show the next month as a filter
-          if (transaction.get('isScheduledTransaction')) return;
+        // get the date on the first transaction. if it doesn't exist just start with the current month/year
+        let firstTransactionDate = allTransactions[0] && allTransactions[0].get('date');
+        let currentLabelMonth = firstTransactionDate ? firstTransactionDate.getMonth() : currentMonth;
+        let currentLabelYear = firstTransactionDate ? firstTransactionDate.getYear() : currentYear;
 
-          let monthLabel = ynabToolKit.reports.formatTransactionDatel8n(transaction);
-          if (monthLabels.indexOf(monthLabel) === -1) {
-            monthLabels.push(monthLabel);
+        // start with the month/year on the very first transaction, we should create the labels needed
+        // for our slider until the current month/year. use a while loop to do this because there's no need
+        // to loop over every transaction.
+        while (!(currentLabelYear === currentYear && currentLabelMonth === currentMonth)) {
+          if (currentLabelMonth === 12) {
+            currentLabelMonth = 0;
+            currentLabelYear++;
           }
-        });
 
+          let labelDate = new Date(currentLabelYear, currentLabelMonth);
+          let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
+          monthLabels.push(labelDateFormatted);
+          currentLabelMonth++;
+        }
+
+        // push the current month as well :D
+        let labelDate = new Date(currentYear, currentMonth);
+        let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
+        monthLabels.push(labelDateFormatted);
+
+        // if we only have one or no months of data that we should just hide the slider
+        // return early so we don't even try to initialize the slider
         if (monthLabels.length < 2) {
           return $('.ynabtk-filter-group.date-filter').hide();
         }
 
+        let dateFilterContainer = document.getElementById('ynabtk-date-filter');
         noUiSlider.create(dateFilterContainer, {
           connect: true,
           start: [monthLabels[0], monthLabels[monthLabels.length - 1]],
@@ -163,6 +194,7 @@
       }
 
       function generateAccountSelect(availableAccountTypes) {
+        // grab handles to the drop down and the list of selected accounts first
         let $select = $('#ynabtk-report-accounts');
         let $accountList = $('#selected-account-list');
 
@@ -170,6 +202,8 @@
         $select.empty();
         $accountList.empty();
 
+        // based on the available account types for the report we're generating, add options
+        // to the drop down. for 'all', add options to filter on on/off budget accounts as well
         switch (availableAccountTypes) {
           case 'onbudget':
             $select.append('<option value="onbudget">All Budget Accounts</option>');
@@ -194,6 +228,8 @@
             break;
         }
 
+        // once the user changes the select find out if it's one of the "grouped" options (all/on/off) if it
+        // is, then get rid of the selected accounts array, if it's not then add it to the selected accounts array
         $select.change(function () {
           if (['all', 'onbudget', 'offbudget'].indexOf($select.val()) !== -1) {
             selectedAccounts = [];
@@ -205,17 +241,22 @@
           filterTransactionsAndBuildChart();
         });
 
+        // this function updates the "chips" on the page every time the user changes the select
         function updateAccountList() {
+          // remove them all first
           $accountList.empty();
 
           if (selectedAccounts.length === 0) {
             // if the selected accounts are empty and we didn't just click one of the "all" options
-            // then go ahead and set the select to whatever our default is.
+            // then go ahead and set the select to whatever our default for the report is.
             if (['all', 'onbudget', 'offbudget'].indexOf($select.val()) === -1) {
               $select.val(availableAccountTypes);
             }
           }
 
+          // for each selected account, add a chip to the page when someone clicks the chip, it will get
+          // removed from the list of chips. if they've clicked the last chip then the above code will default
+          // us to whatever the default option of the report is
           selectedAccounts.forEach((accountId) => {
             let accountData = onBudgetAccounts.find((account) => accountId === account.get('entityId')) ||
                               offBudgetAccounts.find((account) => accountId === account.get('entityId'));
@@ -234,17 +275,21 @@
       }
 
       function onReportSelected(toolkitId) {
-        // change the current report in local storage.
+        // change the current report in local storage so we can show it if they come back
         ynabToolKit.shared.setToolkitStorageKey('current-report', toolkitId);
 
-        // show the report.
+        // grab the report, get any headers that the report may want to build
         let toolkitReport = ynabToolKit[toolkitId];
         $('.ynabtk-reports-headers').html(toolkitReport.reportHeaders());
 
+        // update the report navigation to highlight the current active report
         $('.nav-reports .active').removeClass('active');
         $('#' + toolkitId, '.nav-reports').addClass('active');
 
+        // generate the account filter options for our report
         generateAccountSelect(toolkitReport.availableAccountTypes);
+
+        // finally, filter all the transactions for the report and call report.createChart()
         filterTransactionsAndBuildChart();
       }
 
@@ -285,22 +330,32 @@
             break;
         }
 
+        // default our date filter to all dates int the monthLabels array
         let indexStart = 0;
         let indexEnd = monthLabels.length;
-        let sliderElement = document.getElementById('ynabtk-date-filter');
 
+        // grab the slider from the page, if it's initialized then make sure we get the current
+        // dates set by the user. if it's not then our above default will suffice
+        let sliderElement = document.getElementById('ynabtk-date-filter');
         if (sliderElement.noUiSlider && typeof sliderElement.noUiSlider.get === 'function') {
+          // noUiSlider.get() returns the string representations of the items in the labels, so grab the
+          // index of those elements afterwards. add one to the index end of self-explanatory array indexing reasons
           let dateFilterRange = document.getElementById('ynabtk-date-filter').noUiSlider.get();
           indexStart = monthLabels.indexOf(dateFilterRange[0]);
           indexEnd = monthLabels.indexOf(dateFilterRange[1]) + 1;
         }
 
+        // now that we have a start and end index, we know what slice of the array to take
         let allowedDates = monthLabels.slice(indexStart, indexEnd);
+
+        // make sure the transaction date is in the slice of the above array
         let transactionDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
         if (allowedDates.indexOf(transactionDate) === -1) {
           return false;
         }
 
+        // now that we've filtered by account and date, make sure there's no extra filtering required
+        // by our report. if there is, return the value of that function, otherwise, return true, she's a keeper!
         if (toolkitReport.filterTransaction) {
           return toolkitReport.filterTransaction(transaction);
         }
@@ -309,37 +364,52 @@
       }
 
       function filterTransactionsAndBuildChart() {
+        // grab the toolkitReport based of the current-report in local storage
         let toolkitId = ynabToolKit.shared.getToolkitStorageKey('current-report');
         let toolkitReport = ynabToolKit[toolkitId];
+
+        // filter out the transactions
         let filtered = allTransactions.filter((transaction) => {
           return filterTransaction(transaction, toolkitReport);
         });
+
+        // call calculate. all reports should return us a promise for calculate just in case
+        // they need to grab all categories or some item that's returned to us through a promise.
         toolkitReport.calculate(filtered).then(() => {
+          // send the ynabtk-reports-data container into createChart so it knows where to build the data
           toolkitReport.createChart($('.ynabtk-reports-data'));
         });
       }
 
       function showReports() {
+        // grab all the transactions...
         ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then((transactionsViewModel) => {
+          // then grab the sidebar so we can get all the accounts...
           ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel().then((sideBarViewModel) => {
+            // store the accounts/transactions off on their own variables so we can use them later
             onBudgetAccounts = sideBarViewModel.get('onBudgetAccounts');
             offBudgetAccounts = sideBarViewModel.get('offBudgetAccounts');
-
             allTransactions = transactionsViewModel.get('visibleTransactionDisplayItems');
 
-            // Sort the transactions by date. They usually are already, but let's not depend on that:
+            // sort the transactions by date. They usually are already, but let's not depend on that:
             allTransactions.sort(function (a, b) {
               return a.get('date').toNativeDate() - b.get('date').toNativeDate();
             });
 
-            // Clear out the content and put ours in there instead.
+            // clear out the content and put ours in there instead.
             buildReportsPage($('div.scroll-wrap').closest('.ember-view'));
 
             // The budget header is absolute positioned
             $('.budget-header, .scroll-wrap').hide();
 
+            // grab the value of the current-report inside localStorage
             let storedCurrentReport = ynabToolKit.shared.getToolkitStorageKey('current-report');
+
+            // make sure whatever it is is actually a supported report (might be 'null' or 'undefined') because
+            // string storage of values is a cool thing, ya know?
             let currentReport = supportedReports.find((report) => report.toolkitId === storedCurrentReport);
+
+            // if it's a valid report, then go ahead and show it, if it's not then show the first available report
             if (currentReport) {
               onReportSelected(currentReport.toolkitId);
             } else {
@@ -384,9 +454,12 @@
         },
 
         formatTransactionDatel8n(transaction) {
-          // first, we get the date
-          let transactionDate = ynabToolKit.shared.toLocalDate(transaction.get('date'));
-          let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(transactionDate, 'MMM YYYY');
+          let nativeDate = transaction.get('date').toNativeDate();
+          return this.formatDatel8n(nativeDate);
+        },
+
+        formatDatel8n(date) {
+          let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
 
           // now split it with year and month so that we can get the localized version of the month
           let year = formattedDate.split(' ')[1];
