@@ -25,6 +25,12 @@
 	background-color: #4b4c4b;
 }
 
+.ynabtk-category-entry-name {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
 .ynabtk-category-entry-amount {
 	margin-left: auto;
 }
