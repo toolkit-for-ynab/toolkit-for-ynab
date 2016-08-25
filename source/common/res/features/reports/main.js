@@ -111,7 +111,7 @@
         supportedReports.forEach((report) => {
           $('.nav-reports', $reportsHeader).append(
             $('<li>', { class: 'nav-reports-navlink' }).append(
-              $('<a>', { href: '#' }).append(
+              $('<a>', { id: report.toolkitId, href: '#' }).append(
                 report.name
               ).click(() => {
                 onReportSelected(report.toolkitId);
@@ -127,6 +127,9 @@
         let dateFilterContainer = document.getElementById('ynabtk-date-filter');
 
         allTransactions.forEach((transaction) => {
+          // skip scheduled transactions so we don't show the next month as a filter
+          if (transaction.get('isScheduledTransaction')) return;
+
           let monthLabel = ynabToolKit.reports.formatTransactionDatel8n(transaction);
           if (monthLabels.indexOf(monthLabel) === -1) {
             monthLabels.push(monthLabel);
@@ -238,6 +241,9 @@
         let toolkitReport = ynabToolKit[toolkitId];
         $('.ynabtk-reports-headers').html(toolkitReport.reportHeaders());
 
+        $('.nav-reports .active').removeClass('active');
+        $('#' + toolkitId, '.nav-reports').addClass('active');
+
         generateAccountSelect(toolkitReport.availableAccountTypes);
         filterTransactionsAndBuildChart();
       }
@@ -245,8 +251,8 @@
       function filterTransaction(transaction, toolkitReport) {
         let filterType;
 
-        // if the transaction isTombstone, go ahead and stop now...
-        if (transaction.get('isTombstone') === true) {
+        // if the transaction isTombstone, or a scheduledTransaction then filter it out...
+        if (transaction.get('isTombstone') === true && !transaction.get('isScheduledTransaction')) {
           return false;
         }
 
@@ -324,6 +330,14 @@
 
             // The budget header is absolute positioned
             $('.budget-header, .scroll-wrap').hide();
+
+            let storedCurrentReport = ynabToolKit.shared.getToolkitStorageKey('current-report');
+            let currentReport = supportedReports.find((report) => report.toolkitId === storedCurrentReport);
+            if (currentReport) {
+              onReportSelected(currentReport.toolkitId);
+            } else {
+              onReportSelected(supportedReports[0].toolkitId);
+            }
           });
         });
       }

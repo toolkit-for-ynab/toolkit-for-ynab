@@ -32,7 +32,11 @@
 
 .ynabtk-reports-nav .nav-reports-navlink a {
   text-decoration: none;
-  color: white;
+  color: #ffffff;
+}
+
+.ynabtk-reports-nav .nav-reports-navlink a.active {
+  color: #fed168;
 }
 
 .ynabtk-reports-filters {
