@@ -135,6 +135,9 @@
       }
 
       function generateDateSlider() {
+        // reset monthLabels to an empty array first (in case they tabbed away and back)...
+        monthLabels = [];
+
         // grab the current month, this is the last label of our slider
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
@@ -174,10 +177,24 @@
           return $('.ynabtk-filter-group.date-filter').hide();
         }
 
+        // default the start to the full range of dates, if there's a current-date-filter in localStorage
+        // then make sure it's valid for our set of dates and use it.
+        let start = [monthLabels[0], monthLabels[monthLabels.length - 1]];
+        let storedStart = ynabToolKit.shared.getToolkitStorageKey('current-date-filter');
+        if (storedStart && storedStart !== 'null' && storedStart !== 'undefined') {
+          storedStart = storedStart.split(',');
+
+          // they might have switched to a budget that doesn't have the dates in the stored value,
+          // so make sure the values exist in our month labels. if they do, let it happen.
+          if (storedStart.length === 2 && monthLabels.indexOf(storedStart[0]) !== -1 && monthLabels.indexOf(storedStart[1]) !== -1) {
+            start = storedStart;
+          }
+        }
+
         let dateFilterContainer = document.getElementById('ynabtk-date-filter');
         noUiSlider.create(dateFilterContainer, {
           connect: true,
-          start: [monthLabels[0], monthLabels[monthLabels.length - 1]],
+          start,
           range: {
             min: 0,
             max: monthLabels.length - 1
@@ -194,7 +211,12 @@
           }
         });
 
-        dateFilterContainer.noUiSlider.on('slide', filterTransactionsAndBuildChart);
+        // on slide, set the new values in local storage and call filterTransactionsAndBuildChart!
+        dateFilterContainer.noUiSlider.on('slide', function () {
+          let slideValue = dateFilterContainer.noUiSlider.get();
+          ynabToolKit.shared.setToolkitStorageKey('current-date-filter', slideValue);
+          filterTransactionsAndBuildChart();
+        });
       }
 
       function generateAccountSelect(availableAccountTypes) {
