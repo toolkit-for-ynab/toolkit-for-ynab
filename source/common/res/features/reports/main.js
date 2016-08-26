@@ -139,8 +139,12 @@
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
 
-        // get the date on the first transaction. if it doesn't exist just start with the current month/year
-        let firstTransactionDate = allTransactions[0] && allTransactions[0].get('date');
+        // find the first non-tombstoned, non scheduled transaction.
+        let firstTransaction = allTransactions.find((transaction) =>
+          !transaction.get('isTombstone') && !transaction.get('isScheduledTransaction'));
+
+        // grab the date from that transaction
+        let firstTransactionDate = firstTransaction.get('date');
         let currentLabelMonth = firstTransactionDate ? firstTransactionDate.getMonth() : currentMonth;
         let currentLabelYear = firstTransactionDate ? firstTransactionDate.getYear() : currentYear;
 
@@ -387,8 +391,9 @@
           // then grab the sidebar so we can get all the accounts...
           ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel().then((sideBarViewModel) => {
             // store the accounts/transactions off on their own variables so we can use them later
-            onBudgetAccounts = sideBarViewModel.get('onBudgetAccounts');
-            offBudgetAccounts = sideBarViewModel.get('offBudgetAccounts');
+            let closedAccounts = sideBarViewModel.get('closedAccounts');
+            onBudgetAccounts = sideBarViewModel.get('onBudgetAccounts').concat(closedAccounts.filter((account) => account.get('onBudget')));
+            offBudgetAccounts = sideBarViewModel.get('offBudgetAccounts').concat(closedAccounts.filter((account) => !account.get('onBudget')));
             allTransactions = transactionsViewModel.get('visibleTransactionDisplayItems');
 
             // sort the transactions by date. They usually are already, but let's not depend on that:
@@ -454,7 +459,7 @@
         },
 
         formatTransactionDatel8n(transaction) {
-          let nativeDate = transaction.get('date').toNativeDate();
+          let nativeDate = ynabToolKit.shared.toLocalDate(transaction.get('date'));
           return this.formatDatel8n(nativeDate);
         },
 
