@@ -8,6 +8,9 @@
   }, {
     name: 'Spending By Category',
     toolkitId: 'spendingByCategory'
+  }, {
+    name: 'Income vs. Expense',
+    toolkitId: 'incomeVsExpense'
   }];
 
   // ynabToolKit[report.toolkitId] should be undefined if the report hasn't finished
