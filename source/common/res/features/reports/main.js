@@ -220,6 +220,8 @@
       }
 
       function generateAccountSelect(availableAccountTypes) {
+        let nonAccountOptions = ['all', 'onbudget', 'offbudget', 'custom'];
+
         // grab handles to the drop down and the list of selected accounts first
         let $select = $('#ynabtk-report-accounts');
         let $accountList = $('#selected-account-list');
@@ -259,7 +261,7 @@
         // once the user changes the select find out if it's one of the "grouped" options (all/on/off) if it
         // is, then get rid of the selected accounts array, if it's not then add it to the selected accounts array
         $select.change(function () {
-          if (['all', 'onbudget', 'offbudget'].indexOf($select.val()) !== -1) {
+          if (nonAccountOptions.indexOf($select.val()) !== -1) {
             selectedAccounts = [];
           } else if (selectedAccounts.indexOf(this.value) === -1) {
             selectedAccounts.push(this.value);
@@ -277,7 +279,7 @@
           if (selectedAccounts.length === 0) {
             // if the selected accounts are empty and we didn't just click one of the "all" options
             // then go ahead and set the select to whatever our default for the report is.
-            if (['all', 'onbudget', 'offbudget'].indexOf($select.val()) === -1) {
+            if (nonAccountOptions.indexOf($select.val()) === -1) {
               $select.val(availableAccountTypes);
             }
           } else {

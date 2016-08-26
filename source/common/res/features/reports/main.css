@@ -62,6 +62,7 @@
 .ynabtk-account-chips {
   display: inline-flex;
   max-width: 70%;
+  margin-left: 4px;
 }
 
 .ynabtk-account-chips .account-chip {
@@ -74,6 +75,11 @@
   max-width: 120px;
   margin-right: 4px;
   padding: .2em .4em;
+  cursor: pointer;
+}
+
+.ynabtk-account-chips .account-chip:hover {
+  background-color: #ea5439;
 }
 
 .ynabtk-filter-group.date-filter {
