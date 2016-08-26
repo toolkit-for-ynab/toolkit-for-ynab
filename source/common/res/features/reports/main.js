@@ -228,6 +228,8 @@
         $select.empty();
         $accountList.empty();
 
+        $select.append('<option disabled value="custom">Select Specific Account...</option>');
+
         // based on the available account types for the report we're generating, add options
         // to the drop down. for 'all', add options to filter on on/off budget accounts as well
         switch (availableAccountTypes) {
@@ -278,6 +280,8 @@
             if (['all', 'onbudget', 'offbudget'].indexOf($select.val()) === -1) {
               $select.val(availableAccountTypes);
             }
+          } else {
+            $select.val('custom');
           }
 
           // for each selected account, add a chip to the page when someone clicks the chip, it will get
@@ -298,6 +302,8 @@
               );
           });
         }
+
+        updateAccountList();
       }
 
       function onReportSelected(toolkitId) {
