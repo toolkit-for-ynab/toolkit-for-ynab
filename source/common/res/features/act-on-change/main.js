@@ -11,7 +11,9 @@ Set.prototype.regex = function (regex) {
 (function poll() {
   if (ynabToolKit.pageReady === true && typeof ynabToolKit.shared.feedChanges !== 'undefined') {
     // When this is true, the feature scripts will know they can use the mutationObserver
-    ynabToolKit.actOnChangeInit = {};
+    ynabToolKit.actOnChangeInit = false;
+    ynabToolKit.onEmberViewRenderedInit = false;
+    ynabToolKit.onCurrentPathChangedInit = false;
 
     // Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
     // during page interactions and updates to the developer tools console.
@@ -44,7 +46,7 @@ Set.prototype.regex = function (regex) {
         // Now we are ready to feed the change digest to the
         // automatically setup feedChanges file/function
         if (ynabToolKit.changedNodes.size > 0) {
-          ynabToolKit.shared.feedChanges(ynabToolKit.changedNodes);
+          ynabToolKit.shared.feedChanges({ changedNodes: ynabToolKit.changedNodes });
         }
       });
 
@@ -60,7 +62,18 @@ Set.prototype.regex = function (regex) {
       ynabToolKit.actOnChangeInit = true;
     };
 
-    ynabToolKit.actOnChange(); // Run itself once
+    ynabToolKit.onCurrentPathChanged = function () {
+      var router = ynabToolKit.shared.containerLookup('router:main');
+      router.on('didTransition', function () {
+        ynabToolKit.shared.feedChanges({ router: this });
+      });
+
+      ynabToolKit.onCurrentPathChangedInit = true;
+    };
+
+    // Run listeners once
+    ynabToolKit.actOnChange();
+    ynabToolKit.onCurrentPathChanged();
   } else {
     setTimeout(poll, 250);
   }

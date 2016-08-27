@@ -1,4 +1,4 @@
-.accounts-header-balances-selected {
+.ynab-toolkit-selected-total {
     -webkit-box-flex: 1;
     -moz-box-flex: 1;
     -o-box-flex: 1;
@@ -13,6 +13,6 @@
     margin-left: 5em;
 }
 
-.accounts-header .accounts-header-balances-selected .currency.negative {
+.accounts-header .ynab-toolkit-selected-total .currency.negative {
     color: #e0766c;
 }

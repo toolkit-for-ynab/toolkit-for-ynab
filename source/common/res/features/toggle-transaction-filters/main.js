@@ -86,7 +86,7 @@
           // activate button styles if filters potentially change
           // activate if switch to individual account, or all accounts views
           if (
-            changedNodes.has('modal-overlay pure-u modal-generic modal-account-filters active closing') ||
+            changedNodes.has('modal-overlay ynab-u modal-generic modal-account-filters active closing') ||
             changedNodes.has('ynab-grid-body')) {
             initToggleButtons();
           }

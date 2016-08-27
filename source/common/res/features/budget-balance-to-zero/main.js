@@ -1,12 +1,8 @@
-/* jshint multistr: true */
-/* jscs:disable disallowMultipleLineStrings */
-
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.budgetBalanceToZero = (function () {
       return {
-        budgetView: ynab.YNABSharedLib
-          .getBudgetViewModel_AllBudgetMonthsViewModel()._result, // jscs:ignore requireCamelCaseOrUpperCaseIdentifiers
+        budgetView: ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result,
 
         invoke() {
           var categories = ynabToolKit.budgetBalanceToZero.getCategories();
@@ -77,12 +73,12 @@
             .append($('<strong>', { class: 'user-data', title: fAmount })
             .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), amount)));
 
-          $('.ember-view .inspector-quick-budget').append(button);
+          $('.inspector-quick-budget').append(button);
         },
 
         updateBudgetedBalance(name, difference) {
           // eslint-disable-next-line no-alert
-          if ((ynabToolKit.options.warnOnQuickBudget !== 0) && (!confirm('Are you sure you want to do this?'))) {
+          if (ynabToolKit.options.warnOnQuickBudget && !confirm('Are you sure you want to do this?')) {
             return;
           }
 
@@ -104,7 +100,7 @@
 
               $(input).val(newValue);
 
-              if (ynabToolKit.options.warnOnQuickBudget === 0) {
+              if (!ynabToolKit.options.warnOnQuickBudget) {
                 // only seems to work if the confirmation doesn't pop up?
                 // haven't figured out a way to properly blur otherwise
                 input.blur();

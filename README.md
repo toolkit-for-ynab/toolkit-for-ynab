@@ -2,6 +2,8 @@
   <img src="http://i.imgur.com/SJhwBpU.png" alt="Toolkit for YNAB">
 </p>
 
+[![Build Status](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab.svg?branch=master)](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab)
+
 Toolkit for YNAB is a general purpose YNAB enhancing chrome extension. Have it your way!
 
 YNAB have released an exciting new web version. Lots of power users of the older
@@ -13,8 +15,10 @@ This is what the extension can do for you:
 
 - Localisation - Allows you to use YNAB in an ever-growing list of foreign languages.
 - Net Worth Report - Shows you how much your net worth is over time. Includes transactions in tracking accounts.
+- Check Number Column - Allows you to enter your check numbers on transactions.
+- Enter Transaction Now - Allows you to enter upcoming scheduled transactions in the budget now instead of having to wait for them to populate.
 - Days of Buffering Calculation - Forecasts how long it'll take to burn through all your available money using averages. We know there's no such thing as an average month, but some people prefer this calculation over the Age of Money calculation.
-- Export all transactions from the current budget in CSV format.
+- Running balance column - Shows what the balance of an account is after each transaction.
 - Colour Blind Mode - Changes colours of some of the numbers to make the interface easier on people with certain visual disabilities.
 - Make the calculator work like YNAB4. When you press + or - (etc) the calculator moves to the end of the line so your number isn't lost.
 - Printing Improvements: Now when you print your budget or account it looks good!
@@ -40,6 +44,9 @@ This is what the extension can do for you:
 - Add a split transaction keyboard shortcut, so typing "split" into the category input will automatically create a split transaction.
 - Add buttons within the Account view to easily show and hide upcoming and reconciled transactions with one click.
 - Change the default orange label for underfunded goals to blue
+- Change the default orange label for underfunded goals to blue.
+- Change the default green "To Be Budgeted" indicator to yellow if there is still unallocated money waiting to be budgeted.
+- Autofill inflow/outflow values with the remaining total when entering split transactions.
 
 All of these are configurable with options in the extension options page.
 
@@ -50,7 +57,7 @@ If you don't want to build the extension from the source yourself, you can get i
 
 - Chrome on the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl)
 - Firefox on the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/)
-- Safari [on the Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.kangoextensions.ynabenhanced-7M68YQDBSE) NOTE: Safari is currently stuck on version 0.3.6 because Apple is still reviewing the update. You can install the latest [from us directly](http://toolkitforynab.com/safari-updates/toolkitforynab_latest.safariextz) but please keep in mind that it won't auto-update.
+- Safari [on the Safari Extension Gallery](https://safari-extensions.apple.com/details/?id=com.kangoextensions.ynabenhanced-7M68YQDBSE) NOTE: Safari is currently stuck on version 0.4.3 because Apple is still reviewing the update. You can install the latest [from us directly](http://toolkitforynab.com/safari-updates/toolkitforynab_latest.safariextz) but please keep in mind that it won't auto-update.
 
 Roadmap
 -------
@@ -68,7 +75,7 @@ Building the Code
 -----------------
 This extension uses three main things in its build process:
 
-- JSCS: Checks the style of your code to make sure it matches our style guide as you build.
+- ESLint: Checks the style of your code to make sure it matches our style guide as you build.
 - Babel: Transpiles ES2015 back to ES5 for browser support of newer JS syntax.
 - Kango Extensions: Provide cross browser support for Chrome, Firefox, and Safari. To build:
 
@@ -77,7 +84,7 @@ This extension uses three main things in its build process:
 1. Clone the repository.
 1. Install Node/npm (tested with Node 5.3.0 and npm 3.3.12).
 1. Install Python 2.7 (Kango requires 2.7 specifically) and put it in your path so it's accessible with either `python` or `python2`.
-1. Run `npm install` within the folder you cloned. This installs JSCS and Babel for you. You only need to do this once.
+1. Run `npm install` within the folder you cloned. This installs ESLint and Babel for you. You only need to do this once.
 1. Run `./build` from within the folder you cloned. This will run all the tools.
 1. Finished extensions for each platform are available in the `output` directory.
 1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file, or load it into Safari using the extension builder (Mac only).
@@ -87,7 +94,7 @@ This extension uses three main things in its build process:
 1. Clone the repository.
 1. Install Node/npm (tested with Node 5.3.0 and npm 3.3.12).
 1. Install Python 2.7 (Kango requires 2.7 specifically) in your path so it's accessible with just plain `python`.
-1. Run `npm install` within the folder you cloned. This installs JSCS and Babel for you. You only need to do this once.
+1. Run `npm install` within the folder you cloned. This installs ESLint and Babel for you. You only need to do this once.
 1. Run `build.bat` from within the folder you cloned. This will run all the tools.
 1. Finished extensions for each platform are available in the `output` directory.
 1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file.
@@ -98,7 +105,7 @@ Development Methodology
 **ES2015? What's that?**
 We've decided that it's better to use the latest and greatest than to wait for browsers to support all the nice new syntax of ES2015. If you're uncomfortable with the new syntax, feel free to use standard Javascript syntax from days of yore. It still works.
 
-**Your JSCS style checker is annoying as heck! I don't code that way!**
+**Your ESLint style checker is annoying as heck! I don't code that way!**
 We have a large number of contributors who each bring their own style to the code base. It was getting a bit hard to navigate all the features, as they each had their own way of indenting, etc etc. We held a team vote to unify our styles, and decided to follow the AirBNB style guide. It's a pretty good way to go, so give it a shot before you get too upset about having to change your style.
 
 **How do I build a feature?**

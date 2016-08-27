@@ -1,157 +1,68 @@
-// TODO: Consider refactoring with example.js logic.
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
-    ynabToolKit.enhancedSelectedTotals = function () {
-      function enhancedSelectedTotalsInit() {
-        var parentDiv = document.getElementsByClassName('accounts-header-balances');
-        var n = parentDiv.length;
-        if (n > 0) {
-          enhancedSelectedTotalsApply();
-        } else {
-          setTimeout(enhancedSelectedTotalsInit, 250);
-        }
-      }
+    ynabToolKit.enhancedSelectedTotals = (function () {
+      function calculateSelectedTotal(accountsController) {
+        var total = 0;
+        var transactions = accountsController.get('areChecked');
 
-      function enhancedSelectedTotalsApply() {
-        var parent = document.getElementsByClassName('accounts-header-balances')[0];
-        var totals = document.createElement('div');
-        totals.className = 'accounts-header-balances-selected hidden';
-        totals.id = 'accounts-selected-total';
-        var label = document.createElement('div');
-        label.className = 'accounts-header-balances-label';
-        label.textContent = (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.selectedTotal']) || 'Selected Transactions Total';
-        totals.appendChild(label);
-        parent.appendChild(totals);
-        var dataSetParent = document.getElementsByClassName('ynab-grid-body')[0].getElementsByClassName('ynab-grid-body-row');
-        for (var i = 0; i < dataSetParent.length; i++) {
-          dataSet.push(dataSetParent[i].id);
-        }
-
-        enhancedSelectedTotalsPoll();
-      }
-
-      function enhancedSelectedTotalsPoll() {
-        var parentDiv = document.getElementsByClassName('accounts-header-balances');
-        if (parentDiv.length === 0) {
-          setTimeout(enhancedSelectedTotalsInit, 250);
-          return true;
-        }
-
-        var accountId;
-        var transactions;
-        var checkedTransactions = [];
-        var windowPath = window.location.pathname;
-        var newDataSetParent = document.getElementsByClassName('ynab-grid-body')[0].getElementsByClassName('ynab-grid-body-row');
-        var newDataSet = [];
-        for (var i = 0; i < newDataSetParent.length; i++) {
-          newDataSet.push(newDataSetParent[i].id);
-        }
-
-        if (windowPath !== currentPath || newDataSet.toString() !== dataSet.toString()) {
-          currentPath = windowPath;
-          previousSet = '';
-          dataSet = newDataSet;
-          enhancedSelectedTotalsUpdate(-1);
-        }
-
-        if (currentPath.indexOf('/accounts/') > -1) {
-          accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1);
-          transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.transactionDisplayItemsCollection.findItemsByAccountId(accountId);
-        } else {
-          transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems;
-        }
-
-        for (var j = 0; j < transactions.length; j++) {
-          if (transactions[j].isChecked) {
-            checkedTransactions.push(transactions[j].entityId);
+        transactions.forEach(function (transaction) {
+          if (transaction.inflow) {
+            total += transaction.inflow;
+          } else {
+            total -= transaction.outflow;
           }
-        }
+        });
 
-        if (checkedTransactions.length === 0) {
-          enhancedSelectedTotalsUpdate(false);
-          previousSet = checkedTransactions;
-        } else {
-          if (checkedTransactions.toString() !== previousSet.toString()) {
-            previousSet = checkedTransactions;
-            enhancedSelectedTotalsCalculate();
-            return true;
+        return total;
+      }
+
+      function addSelectedTotalContainer() {
+        if ($('.ynab-toolkit-selected-total').length === 0) {
+          $('<div class="ynab-toolkit-selected-total">' +
+              '<div class="accounts-header-balances-label" title="The total of the current selected transactions.">Selected Total</div>' +
+            '</div>').appendTo('.accounts-header-balances');
+        }
+      }
+
+      function updateSelectedTotal(accountsController) {
+        Ember.run.next(function () {
+          addSelectedTotalContainer();
+
+          var areChecked = accountsController.get('areChecked');
+
+          if (areChecked.length === 0) {
+            return $('.ynab-toolkit-selected-total').hide();
           }
-        }
 
-        setTimeout(enhancedSelectedTotalsPoll, 250);
-      }
+          $('.ynab-toolkit-selected-total').show();
+          $('.ynab-toolkit-selected-total .currency-container').remove();
 
-      function enhancedSelectedTotalsCalculate() {
-        var outflows = 0;
-        var inflows = 0;
-        var transactionsFound = false;
-        var accountId;
-        var transactions;
-        accountId = 'null';
-        if (currentPath.indexOf('/accounts/') > -1) {
-          accountId = currentPath.substr(currentPath.lastIndexOf('/') + 1);
-        }
+          var total = calculateSelectedTotal(accountsController);
+          var formattedCurrency = ynabToolKit.shared.formatCurrency(total);
+          var userData = $('<span>', { class: 'user-data currency-container', title: formattedCurrency });
+          var userCurrency = $('<span>', { class: 'user-data currency' });
 
-        transactions = ynabToolKit.shared.getVisibleTransactions(accountId);
-        var notSubTransactions = transactions.filter(function (el) { return el.displayItemType !== ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction && el.displayItemType !== ynab.constants.TransactionDisplayItemType.SubTransaction; });
-
-        for (var i = 0; i < notSubTransactions.length; i++) {
-          if (notSubTransactions[i].isChecked) {
-            inflows += notSubTransactions[i].inflow;
-            outflows += notSubTransactions[i].outflow;
-            transactionsFound = true;
+          if (total < 0) {
+            userCurrency.addClass('negative');
+          } else {
+            userCurrency.addClass('positive');
           }
-        }
 
-        var total = inflows - outflows;
-        if (!transactionsFound) {
-          total = false;
-        }
-
-        enhancedSelectedTotalsUpdate(total);
-
-        setTimeout(enhancedSelectedTotalsPoll, 750);
+          ynabToolKit.shared.appendFormattedCurrencyHtml(userCurrency, total);
+          userCurrency.appendTo(userData);
+          userData.appendTo($('.ynab-toolkit-selected-total'));
+        });
       }
 
-      function enhancedSelectedTotalsUpdate(total) {
-        var parent = $('#accounts-selected-total');
-
-        if (parent.length === 0) {
-          setTimeout(enhancedSelectedTotalsInit, 250);
-          return false;
+      return {
+        invoke: function () {
+          var accounts = ynabToolKit.shared.containerLookup('controller:accounts');
+          accounts.addObserver('areChecked', updateSelectedTotal);
         }
+      };
+    }());
 
-        if (total === false) {
-          parent.addClass('hidden');
-          return true;
-        }
-
-        parent.attr('class', 'accounts-header-balances-selected');
-
-        parent.find('.user-data').remove();
-
-        var userData = $('<span>', { class: 'user-data', title: ynabToolKit.shared.formatCurrency(total) });
-        var userCurrency = $('<span>', { class: 'user-data currency' });
-
-        if (total >= 0) {
-          userCurrency.addClass('positive');
-        } else {
-          userCurrency.addClass('negative');
-        }
-
-        ynabToolKit.shared.appendFormattedCurrencyHtml(userCurrency, total);
-
-        userData.append(userCurrency);
-        parent.append(userData);
-      }
-
-      var currentPath = window.location.pathname;
-      var previousSet = '';
-      var dataSet = [];
-      setTimeout(enhancedSelectedTotalsInit, 250);
-    };
-
-    ynabToolKit.enhancedSelectedTotals(); // Activate itself
+    ynabToolKit.enhancedSelectedTotals.invoke();
   } else {
     setTimeout(poll, 250);
   }

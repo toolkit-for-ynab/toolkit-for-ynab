@@ -1,9 +1,9 @@
 {
     "name": "Toolkit for YNAB",
-    "version": "0.4.7",
+    "version": "0.6.1",
     "creator": "Open Source Community",
     "description": "UI customisations and tweaks for the web version of YNAB.",
-    "homepage_url": "https://github.com/blargity/ynab-enhanced/",
+    "homepage_url": "https://github.com/toolkit-for-ynab/toolkit-for-ynab/",
     "default_locale": "en",
 
     "background_scripts": ["background.js"],

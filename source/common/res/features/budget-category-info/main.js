@@ -90,7 +90,7 @@
             }
 
             if ($(this).hasClass('is-sub-category')) {
-              var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title;
+              var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
               var classes = [];
 
               // skip uncategorized
@@ -137,8 +137,8 @@
           });
 
           // call external features if appropriate
-          if (ynabToolKit.options.goalIndicator !== 0) {
-            ynabToolKit.goalIndicator.invoke();
+          if (ynabToolKit.options.goalIndicator) {
+            ynabToolKit.shared.invokeExternalFeature('goalIndicator');
           }
         },
 
@@ -149,9 +149,9 @@
             changedNodes.has('budget-inspector-goals')) {
             ynabToolKit.budgetCategoryInfo.invoke();
           } else if (
-            changedNodes.has('modal-overlay pure-u modal-popup modal-budget-edit-category active') ||
-            changedNodes.has('modal-overlay pure-u modal-popup modal-add-master-category active') ||
-            changedNodes.has('modal-overlay pure-u modal-popup modal-add-sub-category active')) {
+            changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-edit-category active') ||
+            changedNodes.has('modal-overlay ynab-u modal-popup modal-add-master-category active') ||
+            changedNodes.has('modal-overlay ynab-u modal-popup modal-add-sub-category active')) {
             /**
              * Seems there should be a more 'Embery' way to know when the categories have been
              * updated, added, or deleted but this'll have to do for now. Note that the flag is
