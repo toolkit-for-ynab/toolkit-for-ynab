@@ -1,5 +1,27 @@
+.income-vs-expense-report table {
+	table-layout: fixed;
+	width: 100%;
+}
+
 .income-vs-expense-report table,
 .income-vs-expense-report th,
 .income-vs-expense-report td {
-    border: 1px solid black;
+	border: 1px solid black;
 }
+
+.income-vs-expense-report th,
+.income-vs-expense-report td {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.income-vs-expense-report .col-title {
+	width: 180px;
+}
+
+.income-vs-expense-report .col-data {
+	width: 140px;
+	text-align: center;
+}
+

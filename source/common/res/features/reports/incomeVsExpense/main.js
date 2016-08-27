@@ -135,22 +135,23 @@
             <table class="ynabtk-table inflows">
               <thead>
                 <tr class="ynabtk-tr ynabtk-header-row inflows">
-                  <th class="ynabtk-th">Income</th>
+                  <th class="ynabtk-th col-title">Income</th>
                 </tr>
               </thead>
               <tfoot class="ynabtk-tfoot">
                 <tr class="ynabtk-tr">
-                  <th class="ynabtk-th">Total Income</th>
+                  <th class="ynabtk-th col-title">Total Income</th>
                 </tr>
               </tfoot>
               <tbody class="ynabtk-tbody">
                 <tr>
-                  <td class="ynabtk-td">All Income Sources</td>
+                  <td class="ynabtk-td col-title">All Income Sources</td>
                 </tr>
               </tbody>
             </table>
 
             <table class="ynabtk-table outflows">
+              <col class="payee-names">
               <thead>
                 <tr class="ynabtk-tr ynab-header-row outflows">
                   <th class="ynabtk-th">Expenses</th>
@@ -172,19 +173,20 @@
 
           // fill in the header and the footer first
           dateLabels.forEach((dateLabel, dateIndex) => {
-            $('.ynabtk-header-row', $inflowTable).append(`<th>${dateLabel}</th>`);
             let inflowTotal = ynabToolKit.shared.formatCurrency(reportData.totalInflowsByDate[dateIndex]);
-            $('.ynabtk-tfoot .ynabtk-tr', $inflowTable).append(`<th>${inflowTotal}</th>`);
+
+            $('.ynabtk-header-row', $inflowTable).append(`<th class="col-data">${dateLabel}</th>`);
+            $('.ynabtk-tfoot .ynabtk-tr', $inflowTable).append(`<th class="col-data">${inflowTotal}</th>`);
           });
 
           for (let payeeId in reportData.inflowsByPayee) {
             let payeeData = reportData.inflowsByPayee[payeeId];
             let payeeName = payeeData.internalData.get('name');
-            let payeeRow = $(`<tr><td>${payeeName}</td></tr>`);
+            let payeeRow = $(`<tr><td class="col-title">${payeeName}</td></tr>`);
 
             payeeData.totalByDate.forEach((total) => {
               let payeeDateTotal = ynabToolKit.shared.formatCurrency(total);
-              payeeRow.append(`<td>${payeeDateTotal}</td>`);
+              payeeRow.append(`<td class="col-data">${payeeDateTotal}</td>`);
             });
 
             $('.ynabtk-tbody', $inflowTable).append(payeeRow);
