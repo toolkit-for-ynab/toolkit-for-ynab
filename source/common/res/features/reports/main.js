@@ -146,10 +146,24 @@
           return $('.ynabtk-filter-group.date-filter').hide();
         }
 
+        // default the start to the full range of dates, if there's a current-date-filter in localStorage
+        // then make sure it's valid for our set of dates and use it.
+        let start = [monthLabels[0], monthLabels[monthLabels.length - 1]];
+        let storedStart = ynabToolKit.shared.getToolkitStorageKey('current-date-filter');
+        if (storedStart && storedStart !== 'null' && storedStart !== 'undefined') {
+          storedStart = storedStart.split(',');
+
+          // they might have switched to a budget that doesn't have the dates in the stored value,
+          // so make sure the values exist in our month labels. if they do, let it happen.
+          if (storedStart.length === 2 && monthLabels.indexOf(storedStart[0]) !== -1 && monthLabels.indexOf(storedStart[1]) !== -1) {
+            start = storedStart;
+          }
+        }
+
         let dateFilterContainer = document.getElementById('ynabtk-date-filter');
         noUiSlider.create(dateFilterContainer, {
           connect: true,
-          start: [monthLabels[0], monthLabels[monthLabels.length - 1]],
+          start,
           range: {
             min: 0,
             max: monthLabels.length - 1
@@ -166,10 +180,17 @@
           }
         });
 
-        dateFilterContainer.noUiSlider.on('slide', filterTransactionsAndBuildChart);
+        // on slide, set the new values in local storage and call filterTransactionsAndBuildChart!
+        dateFilterContainer.noUiSlider.on('slide', function () {
+          let slideValue = dateFilterContainer.noUiSlider.get();
+          ynabToolKit.shared.setToolkitStorageKey('current-date-filter', slideValue);
+          filterTransactionsAndBuildChart();
+        });
       }
 
       function generateAccountSelect(availableAccountTypes) {
+        let nonAccountOptions = ['all', 'onbudget', 'offbudget', 'custom'];
+
         // grab handles to the drop down and the list of selected accounts first
         let $select = $('#ynabtk-report-accounts');
         let $accountList = $('#selected-account-list');
@@ -177,6 +198,8 @@
         // clear both lists before generating the options
         $select.empty();
         $accountList.empty();
+
+        $select.append('<option disabled value="custom">Select Specific Account...</option>');
 
         // based on the available account types for the report we're generating, add options
         // to the drop down. for 'all', add options to filter on on/off budget accounts as well
@@ -207,7 +230,7 @@
         // once the user changes the select find out if it's one of the "grouped" options (all/on/off) if it
         // is, then get rid of the selected accounts array, if it's not then add it to the selected accounts array
         $select.change(function () {
-          if (['all', 'onbudget', 'offbudget'].indexOf($select.val()) !== -1) {
+          if (nonAccountOptions.indexOf($select.val()) !== -1) {
             selectedAccounts = [];
           } else if (selectedAccounts.indexOf(this.value) === -1) {
             selectedAccounts.push(this.value);
@@ -225,9 +248,11 @@
           if (selectedAccounts.length === 0) {
             // if the selected accounts are empty and we didn't just click one of the "all" options
             // then go ahead and set the select to whatever our default for the report is.
-            if (['all', 'onbudget', 'offbudget'].indexOf($select.val()) === -1) {
+            if (nonAccountOptions.indexOf($select.val()) === -1) {
               $select.val(availableAccountTypes);
             }
+          } else {
+            $select.val('custom');
           }
 
           // for each selected account, add a chip to the page when someone clicks the chip, it will get
@@ -248,6 +273,8 @@
               );
           });
         }
+
+        updateAccountList();
       }
 
       function onReportSelected(toolkitId) {

@@ -25,7 +25,7 @@
         // push the transaction and increment the total. storing the transaction just because
         // we might want it for the drilldown stuff. not certain yet.
         subCategoryData.transactions.push(transaction);
-        subCategoryData.total += transaction.get('outflow');
+        subCategoryData.total += (-transaction.getAmount());
       }
 
       function placeInMasterCategory(transaction, categoryViewModel) {
@@ -45,7 +45,7 @@
         }
 
         // increment the total of the category and then call placeInSubCategory so that we can do drilldowns
-        masterCategoryData.total += transaction.get('outflow');
+        masterCategoryData.total += (-transaction.getAmount());
         placeInSubCategory(transaction, masterCategoryData, categoryViewModel);
       }
 
@@ -56,22 +56,23 @@
         },
 
         // custom data filter for our transactions. YNAB has a debt master category and an internal master category
-        // which I'm pretty sure stores credit card transfer stuff and things like "Split (Multiple Categories...)"
-        // type transactions. we ignore these guys because they will throw off numbers! we also ignore inflows and transfers
-        // because this is a "spending" by category report and neither of those are "spending" right? I think that's right.
+        // the internalMasterCategory contains things like "Split Transaction (Multiple Categories...)" and starting
+        // balances. The starting balances that are negative are actually important to this report in order to match YNAB4
+        // so make sure we have them in the report here. We ignore any splits, transfers, debt categories, and
+        // positive starting balances
         filterTransaction(transaction) {
-          // can't use a promise here and the _result *should* if there's anything to worry about, it's this line
-          // but im still not worried about it.
+          // can't use a promise here and the _result *should* if there's anything to worry about,
+          // it's this line but im still not worried about it.
           let categoriesViewModel = ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel()._result;
           let masterCategoryId = transaction.get('masterCategoryId');
           let subCategoryId = transaction.get('subCategoryId');
           let isTransfer = masterCategoryId === null || subCategoryId === null;
-          let internalMasterCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
-          let isInternalYNABCategory = isTransfer ? false :
-                                       internalMasterCategory.isDebtPaymentMasterCategory() ||
-                                       internalMasterCategory.isInternalMasterCategory();
+          let ynabCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
+          let isInternalDebtCategory = isTransfer ? false : ynabCategory.isDebtPaymentMasterCategory();
+          let isInternalMasterCategory = isTransfer ? false : ynabCategory.isInternalMasterCategory();
+          let isPositiveStartingBalance = transaction.get('inflow') && isInternalMasterCategory;
 
-          return !transaction.get('inflow') && !isTransfer && !isInternalYNABCategory;
+          return !transaction.get('isSplit') && !isTransfer && !isInternalDebtCategory && !isPositiveStartingBalance;
         },
 
         calculate(transactions) {
