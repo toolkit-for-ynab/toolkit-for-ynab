@@ -1,3 +1,5 @@
-.ynabtk-table, .ynabtk-th, .ynabtk-td {
+.income-vs-expense-report table,
+.income-vs-expense-report th,
+.income-vs-expense-report td {
     border: 1px solid black;
 }

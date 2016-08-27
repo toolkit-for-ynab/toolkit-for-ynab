@@ -1,11 +1,20 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && typeof Highcharts !== 'undefined') {
     ynabToolKit.incomeVsExpense = (function () {
+      let dateLabels;
       let reportData = {
-        months: []
+        inflowsByPayee: { total: 0 },
+        outflowsByCategory: { total: 0 }
       };
 
+      function generateInitialDataArray() {
+        return dateLabels.map(() => 0);
+      }
+
       function placeInSubCategory(transaction, masterCategoryData, categoryViewModel) {
+        let formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
+        let dateIndex = dateLabels.indexOf(formattedDate);
+
         // grab the sub category id the data for it inside of our nested object
         let subCategoryId = transaction.get('subCategoryId');
         let subCategoryData = masterCategoryData.subCategories[subCategoryId];
@@ -14,52 +23,52 @@
         if (typeof subCategoryData === 'undefined') {
           masterCategoryData.subCategories[subCategoryId] = {
             internalData: categoryViewModel.getSubCategoryById(subCategoryId),
-            total: 0,
-            transactions: []
+            totalByDate: generateInitialDataArray()
           };
 
           subCategoryData = masterCategoryData.subCategories[subCategoryId];
         }
 
-        subCategoryData.transactions.push(transaction);
-        subCategoryData.total += transaction.get('outflow');
+        subCategoryData.totalByDate[dateIndex] += transaction.get('outflow');
       }
 
-      function placeInMasterCategory(transaction, moneyFlowObject, categoryViewModel, payeeViewModel) {
-        let payeeId = transaction.get('payeeId');
+      function placeInMasterCategory(transaction, categoriesObject, categoryViewModel) {
+        let formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
+        let dateIndex = dateLabels.indexOf(formattedDate);
         let masterCategoryId = transaction.get('masterCategoryId');
+        let masterCategoryData = categoriesObject[masterCategoryId];
 
-        // if the transaction is negative, throw it in the outflow object keyed on
-        // the masterCategoryId and then grab the data for the subCategory as well
-        if (transaction.getAmount() < 0) {
-          let outflowData = moneyFlowObject.outflows[masterCategoryId];
+        if (!masterCategoryData) {
+          categoriesObject[masterCategoryId] = {
+            internalData: categoryViewModel.getMasterCategoryById(masterCategoryId),
+            subCategories: {},
+            totalByDate: generateInitialDataArray()
+          };
 
-          if (!outflowData) {
-            moneyFlowObject.outflows[masterCategoryId] = {
-              internalData: categoryViewModel.getMasterCategoryById(masterCategoryId),
-              subCategories: {},
-              total: 0
-            };
-
-            outflowData = moneyFlowObject.outflows[masterCategoryId];
-          }
-
-          outflowData.total += transaction.getAmount();
-          placeInSubCategory(transaction, outflowData, categoryViewModel);
-        } else {
-          let inflowData = moneyFlowObject.inflows[payeeId];
-
-          if (!inflowData) {
-            moneyFlowObject.inflows[payeeId] = {
-              internalData: payeeViewModel.getPayeeById(payeeId),
-              total: 0
-            };
-
-            inflowData = moneyFlowObject.inflows[payeeId];
-          }
-
-          inflowData.total += transaction.getAmount();
+          masterCategoryData = categoriesObject[masterCategoryId];
         }
+
+        reportData.totalOutflowsByDate[dateIndex] += transaction.get('outflow');
+        placeInSubCategory(transaction, masterCategoryData, categoryViewModel);
+      }
+
+      function placeInPayee(transaction, payeesObject, payeeViewModel) {
+        let formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
+        let dateIndex = dateLabels.indexOf(formattedDate);
+        let payeeId = transaction.get('payeeId');
+        let payeeData = payeesObject[payeeId];
+
+        if (typeof payeeData === 'undefined') {
+          payeesObject[payeeId] = {
+            internalData: payeeViewModel.getPayeeById(payeeId),
+            totalByDate: generateInitialDataArray()
+          };
+
+          payeeData = payeesObject[payeeId];
+        }
+
+        reportData.totalInflowsByDate[dateIndex] += transaction.get('inflow');
+        payeeData.totalByDate[dateIndex] += transaction.get('inflow');
       }
 
       return {
@@ -92,34 +101,21 @@
             ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel().then((categoryViewModel) => {
               ynab.YNABSharedLib.getBudgetViewModel_PayeesViewModel().then((payeeViewModel) => {
                 // make sure the data is empty before we start doing an calculating/data layout stuff
-                let currentDataObject = null;
+                dateLabels = ynabToolKit.reports.generateMonthLabelsFromFirstTransaction(transactions, true);
+
+                reportData.inflowsByPayee = {};
+                reportData.totalInflowsByDate = generateInitialDataArray();
+
+                reportData.outflowsByCategory = {};
+                reportData.totalOutflowsByDate = generateInitialDataArray();
 
                 transactions.forEach((transaction) => {
-                  let formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
-
-                  if (currentDataObject === null) {
-                    // we're the first object, get it started.
-                    currentDataObject = {
-                      date: formattedDate,
-                      inflows: {},
-                      outflows: {}
-                    };
-                  } else if (currentDataObject.date !== formattedDate) {
-                    // it's time for a new dataObject, push the current one and make a new one
-                    reportData.months.push(currentDataObject);
-
-                    currentDataObject = {
-                      date: formattedDate,
-                      inflows: {},
-                      outflows: {}
-                    };
+                  if (transaction.getAmount() > 0) {
+                    placeInPayee(transaction, reportData.inflowsByPayee, payeeViewModel);
+                  } else {
+                    placeInMasterCategory(transaction, reportData.outflowsByCategory, categoryViewModel);
                   }
-
-                  placeInMasterCategory(transaction, currentDataObject, categoryViewModel, payeeViewModel);
                 });
-
-                // make sure we push the last month of data
-                reportData.months.push(currentDataObject);
 
                 console.log(reportData);
 
@@ -131,14 +127,18 @@
 
         createChart($reportsData) {
           // set up the container for our graph and for our side-panel (the legend)
-          $reportsData.html(
-            `<table class="ynabtk-table inflows">
+          $reportsData.css({
+            overflow: 'scroll',
+            'overflow-y': 'scroll'
+          }).html(
+          `<div class="income-vs-expense-report">
+            <table class="ynabtk-table inflows">
               <thead>
-                <tr class="ynabtk-tr ynab-header-row inflows">
+                <tr class="ynabtk-tr ynabtk-header-row inflows">
                   <th class="ynabtk-th">Income</th>
                 </tr>
               </thead>
-              <tfoot>
+              <tfoot class="ynabtk-tfoot">
                 <tr class="ynabtk-tr">
                   <th class="ynabtk-th">Total Income</th>
                 </tr>
@@ -163,13 +163,32 @@
               </tfoot>
               <tbody class="ynabtk-tbody">
               </tbody>
-            </table>`
+            </table>
+          </div>`
           );
 
-          // reportData.months.forEach((monthData) => {
-          //   // first append the date to the header
-          //   $('.ynabtk-tr.ynab-header-row.income').append(monthData.date);
-          // });
+          let $inflowTable = $('.ynabtk-table.inflows');
+          // let $outflowTable = $('.ynabtk-table.outflows');
+
+          // fill in the header and the footer first
+          dateLabels.forEach((dateLabel, dateIndex) => {
+            $('.ynabtk-header-row', $inflowTable).append(`<th>${dateLabel}</th>`);
+            let inflowTotal = ynabToolKit.shared.formatCurrency(reportData.totalInflowsByDate[dateIndex]);
+            $('.ynabtk-tfoot .ynabtk-tr', $inflowTable).append(`<th>${inflowTotal}</th>`);
+          });
+
+          for (let payeeId in reportData.inflowsByPayee) {
+            let payeeData = reportData.inflowsByPayee[payeeId];
+            let payeeName = payeeData.internalData.get('name');
+            let payeeRow = $(`<tr><td>${payeeName}</td></tr>`);
+
+            payeeData.totalByDate.forEach((total) => {
+              let payeeDateTotal = ynabToolKit.shared.formatCurrency(total);
+              payeeRow.append(`<td>${payeeDateTotal}</td>`);
+            });
+
+            $('.ynabtk-tbody', $inflowTable).append(payeeRow);
+          }
         }
       };
     }());
