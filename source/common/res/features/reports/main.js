@@ -138,38 +138,7 @@
       }
 
       function generateDateSlider() {
-        // grab the current month, this is the last label of our slider
-        let currentMonth = new Date().getMonth();
-        let currentYear = new Date().getFullYear();
-
-        // find the first non-tombstoned, non scheduled transaction.
-        let firstTransaction = allTransactions.find((transaction) =>
-          !transaction.get('isTombstone') && !transaction.get('isScheduledTransaction'));
-
-        // grab the date from that transaction
-        let firstTransactionDate = firstTransaction.get('date');
-        let currentLabelMonth = firstTransactionDate ? firstTransactionDate.getMonth() : currentMonth;
-        let currentLabelYear = firstTransactionDate ? firstTransactionDate.getYear() : currentYear;
-
-        // start with the month/year on the very first transaction, we should create the labels needed
-        // for our slider until the current month/year. use a while loop to do this because there's no need
-        // to loop over every transaction.
-        while (!(currentLabelYear === currentYear && currentLabelMonth === currentMonth)) {
-          if (currentLabelMonth === 12) {
-            currentLabelMonth = 0;
-            currentLabelYear++;
-          }
-
-          let labelDate = new Date(currentLabelYear, currentLabelMonth);
-          let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
-          monthLabels.push(labelDateFormatted);
-          currentLabelMonth++;
-        }
-
-        // push the current month as well :D
-        let labelDate = new Date(currentYear, currentMonth);
-        let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
-        monthLabels.push(labelDateFormatted);
+        monthLabels = ynabToolKit.reports.generateMonthLabelsFromFirstTransaction(allTransactions);
 
         // if we only have one or no months of data that we should just hide the slider
         // return early so we don't even try to initialize the slider
@@ -477,6 +446,56 @@
 
           // finally, return the l8n date.
           return formattedDate;
+        },
+
+        generateMonthLabelsFromFirstTransaction(transactions, endWithLastTransaction) {
+          let monthLabelsForTransaction = [];
+          // grab the current month, this is the last label of our slider
+          let endMonth = new Date().getMonth();
+          let endYear = new Date().getFullYear();
+
+          if (endWithLastTransaction) {
+            let lastTransaction;
+            for (var i = transactions.length - 1; i >= 0; i--) {
+              lastTransaction = transactions[i];
+              if (!lastTransaction.get('isTombstone') && !lastTransaction.get('isScheduledTransaction')) break;
+            }
+
+            let lastTransactionDate = lastTransaction.get('date');
+            endMonth = lastTransactionDate ? lastTransactionDate.getMonth() : endMonth;
+            endYear = lastTransactionDate ? lastTransactionDate.getYear() : endYear;
+          }
+
+          // find the first non-tombstoned, non scheduled transaction.
+          let firstTransaction = transactions.find((transaction) =>
+            !transaction.get('isTombstone') && !transaction.get('isScheduledTransaction'));
+
+          // grab the date from that transaction
+          let firstTransactionDate = firstTransaction.get('date');
+          let currentLabelMonth = firstTransactionDate ? firstTransactionDate.getMonth() : endMonth;
+          let currentLabelYear = firstTransactionDate ? firstTransactionDate.getYear() : endYear;
+
+          // start with the month/year on the very first transaction, we should create the labels needed
+          // for our slider until the current month/year. use a while loop to do this because there's no need
+          // to loop over every transaction.
+          while (!(currentLabelYear === endYear && currentLabelMonth === endMonth)) {
+            if (currentLabelMonth === 12) {
+              currentLabelMonth = 0;
+              currentLabelYear++;
+            }
+
+            let labelDate = new Date(currentLabelYear, currentLabelMonth);
+            let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
+            monthLabelsForTransaction.push(labelDateFormatted);
+            currentLabelMonth++;
+          }
+
+          // push the current month as well :D
+          let labelDate = new Date(endYear, endMonth);
+          let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
+          monthLabelsForTransaction.push(labelDateFormatted);
+
+          return monthLabelsForTransaction;
         }
       };
     }());
