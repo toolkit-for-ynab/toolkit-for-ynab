@@ -67,17 +67,19 @@
                     ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.filters']) || 'Filters')}
                   </h3>
                   <div class="ynabtk-filter-group date-filter">
-                    <span class="reports-filter-name">
+                    <span class="reports-filter-name timeframe">
                       ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.timeframe']) || 'Timeframe')}:
                     </span>
-                    <div class="ynabtk-quick-date-filters"></div>
+                    <select class="ynabtk-filter-select ynabtk-quick-date-filters">
+                      <option value="none" disabled selected>Quick Filter...</option>
+                    </select>
                     <div id="ynabtk-date-filter" class="ynabtk-date-filter-slider"></div>
                   </div>
                   <div class="ynabtk-filter-group">
                     <span class="reports-filter-name">
                       ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.accounts']) || 'Accounts')}:
                     </span>
-                    <select id="ynabtk-report-accounts" class="accounts-text-field dropdown-text-field ynabtk-account-select">
+                    <select id="ynabtk-report-accounts" class="ynabtk-filter-select">
                       <option value="all">All Budget Accounts</option>
                     </select>
                     <div id="selected-account-list" class="ynabtk-account-chips"></div>
@@ -89,6 +91,7 @@
         );
 
         generateDateSlider();
+        generateQuickDateFilters();
       }
 
       function updateNavigation() {
@@ -182,9 +185,56 @@
 
         // on slide, set the new values in local storage and call filterTransactionsAndBuildChart!
         dateFilterContainer.noUiSlider.on('slide', function () {
+          $('.ynabtk-quick-date-filters').val('none');
+
           let slideValue = dateFilterContainer.noUiSlider.get();
           ynabToolKit.shared.setToolkitStorageKey('current-date-filter', slideValue);
           filterTransactionsAndBuildChart();
+        });
+      }
+
+      function generateQuickDateFilters() {
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+        const todayFormatted = ynabToolKit.reports.formatDatel8n(new Date(currentYear, currentMonth));
+        const dateFilter = document.getElementById('ynabtk-date-filter');
+
+        if (!dateFilter.noUiSlider) return;
+
+        const quickFilters = [{
+          name: 'This Month',
+          filter: [todayFormatted, todayFormatted]
+        }, {
+          name: 'Latest Three Months',
+          filter: [ynabToolKit.reports.formatDatel8n(new Date(currentYear, currentMonth - 2)), todayFormatted]
+        }, {
+          name: 'This Year',
+          filter: [ynabToolKit.reports.formatDatel8n(new Date(currentYear, 0)), todayFormatted]
+        }, {
+          name: 'Last Year',
+          filter: [ynabToolKit.reports.formatDatel8n(new Date(currentYear - 1, 0)), ynabToolKit.reports.formatDatel8n(new Date(currentYear - 1, 11))]
+        }, {
+          name: 'All Dates',
+          filter: [monthLabels[0], monthLabels[monthLabels.length - 1]]
+        }];
+
+        quickFilters.forEach((quickFilter, index) => {
+          let disabled = '';
+          // if we can't meet the end filter, then the button should be disabled
+          if (monthLabels.indexOf(quickFilter.filter[1]) === -1) {
+            disabled = 'disabled';
+          } else if (monthLabels.indexOf(quickFilter.filter[0]) === -1) {
+            // if we can't meet the start filter, just set the dates to the first available
+            quickFilter[0] = monthLabels[0];
+          }
+
+          $('.ynabtk-quick-date-filters')
+            .append(`<option value="${index}" ${disabled}>${quickFilter.name}</option>`)
+            .change(function () {
+              let quickFilterIndex = parseInt($(this).val());
+              dateFilter.noUiSlider.set(quickFilters[quickFilterIndex].filter);
+              filterTransactionsAndBuildChart();
+            });
         });
       }
 
@@ -263,7 +313,7 @@
                               offBudgetAccounts.find((account) => accountId === account.get('entityId'));
             $accountList
               .append(
-                $(`<div class="account-chip" title="${accountData.get('accountName')}">${accountData.get('accountName')}</div>`)
+                $(`<div class="ynabtk-chip" title="${accountData.get('accountName')}">${accountData.get('accountName')}</div>`)
                   .click(() => {
                     let index = selectedAccounts.indexOf(accountId);
                     selectedAccounts.splice(index, 1);

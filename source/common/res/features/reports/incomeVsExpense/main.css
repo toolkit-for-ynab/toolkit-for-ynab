@@ -73,6 +73,7 @@
 
 .expandable-toggle {
 	font-weight: bold;
+	cursor: pointer;
 }
 .expandable-toggle.expanded .col-data {
 	display: none;
