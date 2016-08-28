@@ -28,6 +28,12 @@
 
 .ynabtk-reports-nav .nav-reports-navlink {
   margin-right: 10px;
+  padding-right: 10px;
+  border-right: 1px solid #ffffff;
+}
+
+.ynabtk-reports-nav .nav-reports-navlink:last-child {
+  border: none;
 }
 
 .ynabtk-reports-nav .nav-reports-navlink a {
