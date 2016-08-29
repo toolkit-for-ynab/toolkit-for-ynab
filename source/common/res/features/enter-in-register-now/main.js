@@ -33,15 +33,16 @@
         if (!canEnterNow) return;
 
         $('.modal-account-edit-transaction-list .modal-list')
-          .prepend(`<li>
-                      <button class="button-list ynab-toolkit-enter-in-register-now">
-                        <i class="flaticon stroke share-2"></i>
-                        Enter In Register Now
-                      </button>
-                    </li>`)
-          .click(() => {
-            enterTransactionInRegisterNow(selectedTransactions);
-          });
+          .prepend(
+            $(`<li>
+                <button class="button-list ynab-toolkit-enter-in-register-now">
+                  <i class="flaticon stroke share-2"></i>
+                  Enter In Register Now
+                </button>
+              </li>`).click(() => {
+                enterTransactionInRegisterNow(selectedTransactions);
+              })
+          );
       }
 
       return {
