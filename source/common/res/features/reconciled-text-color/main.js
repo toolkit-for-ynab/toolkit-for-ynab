@@ -34,7 +34,7 @@
         },
 
         observe(changedNodes) {
-          if (changedNodes.has('ynab-grid-body') || changedNodes.has('ynab-grid-body-row ynab-grid-body-parent is-checked')) {
+          if (changedNodes.has('ynab-grid-body') || changedNodes.has('ynab-grid-body-row ynab-grid-body-parent')) {
             // We found Account transactions rows
             ynabToolKit.reconciledTextColor.invoke();
           }
