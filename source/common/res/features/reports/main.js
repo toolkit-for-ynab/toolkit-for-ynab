@@ -294,13 +294,17 @@
                               offBudgetAccounts.find((account) => accountId === account.get('entityId'));
             $accountList
               .append(
-                $(`<div class="account-chip" title="${accountData.get('accountName')}">${accountData.get('accountName')}</div>`)
-                  .click(() => {
-                    let index = selectedAccounts.indexOf(accountId);
-                    selectedAccounts.splice(index, 1);
-                    updateAccountList();
-                    filterTransactionsAndBuildChart();
-                  })
+                $('<div>', {
+                  class: 'account-chip',
+                  title: accountData.get('accountName'),
+                  text: accountData.get('accountName')
+                })
+                .click(() => {
+                  let index = selectedAccounts.indexOf(accountId);
+                  selectedAccounts.splice(index, 1);
+                  updateAccountList();
+                  filterTransactionsAndBuildChart();
+                })
               );
           });
         }
