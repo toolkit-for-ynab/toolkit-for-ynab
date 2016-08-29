@@ -46,6 +46,16 @@
         let formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
         let dateIndex = dateLabels.indexOf(formattedDate);
         let masterCategoryId = transaction.get('masterCategoryId');
+        let internalData = categoryViewModel.getMasterCategoryById(masterCategoryId);
+
+        // if this transaction's category is in the internal master category, throw the data into the
+        // hidden category object so we don't confuse users with an 'Internal Master Category' row.
+        if (internalData.isInternalMasterCategory()) {
+          let hiddenMasterCategory = categoryViewModel.get('hiddenMasterCategory');
+          masterCategoryId = hiddenMasterCategory.get('entityId');
+          internalData = hiddenMasterCategory;
+        }
+
         let masterCategoryData = categoriesObject[masterCategoryId];
 
         if (!masterCategoryData) {
@@ -122,10 +132,8 @@
           let isTransfer = masterCategoryId === null || subCategoryId === null;
           let ynabCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
           let isInternalDebtCategory = isTransfer ? false : ynabCategory.isDebtPaymentMasterCategory();
-          // let isInternalMasterCategory = isTransfer ? false : ynabCategory.isInternalMasterCategory();
-          // let isPositiveStartingBalance = transaction.get('inflow') && isInternalMasterCategory;
 
-          return !transaction.get('isSplit') && !isTransfer && !isInternalDebtCategory;// && isPositiveStartingBalance;// && !isPositiveStartingBalance;
+          return !transaction.get('isSplit') && !isTransfer && !isInternalDebtCategory;
         },
 
         calculate(transactions) {
@@ -247,19 +255,19 @@
             let netIncomeFormatted = ynabToolKit.shared.formatCurrency(netIncome);
 
             // inflow table header/footer
-            $('.ynabtk-header-row', $inflowTable).append(`<th class="col-data">${dateLabel}</th>`);
-            $('.ynabtk-tfoot .ynabtk-tr', $inflowTable).append(`<th class="col-data">${inflowFormatted}</th>`);
+            $('.ynabtk-header-row', $inflowTable).append($('<th>', { class: 'col-data', text: dateLabel }));
+            $('.ynabtk-tfoot .ynabtk-tr', $inflowTable).append($('<th>', { class: 'col-data', text: inflowFormatted }));
 
             // inflow table toggle/summary row
-            allPayeesToggleRow.append(`<td class="col-data">${inflowFormatted}</td>`);
-            allPayeesTotalRow.append(`<td class="col-data">${inflowFormatted}</td>`);
+            allPayeesToggleRow.append($('<td>', { class: 'col-data', text: inflowFormatted }));
+            allPayeesTotalRow.append($('<td>', { class: 'col-data', text: inflowFormatted }));
 
             // outflow table header/footer
-            $('.ynabtk-header-row', $outflowTable).append(`<th class="col-data">${dateLabel}</th>`);
-            $('.ynabtk-tfoot .ynabtk-tr', $outflowTable).append(`<th class="col-data">${outflowFormatted}</th>`);
+            $('.ynabtk-header-row', $outflowTable).append($('<th>', { class: 'col-data', text: dateLabel }));
+            $('.ynabtk-tfoot .ynabtk-tr', $outflowTable).append($('<th>', { class: 'col-data', text: outflowFormatted }));
 
             // net-income table
-            $('.ynabtk-header-row', $netIncomeTable).append(`<th class="col-data">${netIncomeFormatted}</th>`);
+            $('.ynabtk-header-row', $netIncomeTable).append($('<th>', { class: 'col-data', text: netIncomeFormatted }));
           });
 
           // add the toggle row for the payees first
@@ -270,13 +278,14 @@
             let payeeData = reportData.inflowsByPayee[payeeId];
             let payeeName = payeeData.internalData.get('name');
             let payeeRow = $(
-              `<tr class="expandable-row" data-expand-for="all-payees">
-                <td class="col-title payee-name" title="${payeeName}">${payeeName}</td>
-              </tr>`);
+              $('<tr>', { class: 'expandable-row', 'data-expand-for': 'all-payees' }).append(
+                $('<td>', { class: 'col-title payee-name', title: payeeName, text: ynabToolKit.shared.escapeHtml(payeeName) })
+              )
+            );
 
             payeeData.totalByDate.forEach((total) => {
               let payeeDateTotal = ynabToolKit.shared.formatCurrency(total);
-              payeeRow.append(`<td class="col-data">${payeeDateTotal}</td>`);
+              payeeRow.append($('<td>', { class: 'col-data', text: payeeDateTotal }));
             });
 
             $('.ynabtk-tbody', $inflowTable).append(payeeRow);
@@ -322,26 +331,25 @@
 
             // create the "toggle" row
             let masterCategoryToggleRow = $(
-              `<tr class="expandable-toggle" id="${masterCategoryId}">
-                <td class="col-title master-category" title="${masterCategoryName}">
-                  <i class="flaticon stroke up"></i>
-                  ${masterCategoryName}
-                </td>
-              </tr>
-            `);
+              $('<tr>', { class: 'expandable-toggle', id: masterCategoryId }).append(
+                $('<td>', { class: 'col-title master-category', title: ynabToolKit.shared.escapeHtml(masterCategoryName) }).append(
+                  $('<i>', { class: 'flaticon stroke up' })
+                ).append(ynabToolKit.shared.escapeHtml(masterCategoryName))
+              )
+            );
 
             // create the "summary" row which will show only when expanded
             let masterCategoryTotalRow = $(
-              `<tr class="expandable-row summary-row" data-expand-for="${masterCategoryId}">
-                <td class="col-title master-category">Total ${masterCategoryName}</td>
-              </tr>
-            `);
+              $('<tr>', { class: 'expandable-row summary-row', 'data-expand-for': masterCategoryId }).append(
+                $('<td>', { class: 'col-title master-category', text: ynabToolKit.shared.escapeHtml('Total ' + masterCategoryName) })
+              )
+            );
 
             // add the totals to both the toggle and the total row
             masterCategoryData.totalByDate.forEach((total) => {
               let masterCategoryDateTotal = ynabToolKit.shared.formatCurrency(-total);
-              masterCategoryToggleRow.append(`<td class="col-data">${masterCategoryDateTotal}</td>`);
-              masterCategoryTotalRow.append(`<td class="col-data">${masterCategoryDateTotal}</td>`);
+              masterCategoryToggleRow.append($('<td>', { class: 'col-data', text: masterCategoryDateTotal }));
+              masterCategoryTotalRow.append($('<td>', { class: 'col-data', text: masterCategoryDateTotal }));
             });
 
             // add the toggle row to the table before the sub categories
@@ -352,12 +360,14 @@
               let subCategoryName = subCategoryData.internalData.get('name');
               let subCategoryRow = $(
                 // default the subcategory row as display: none
-                `<tr class="expandable-row" data-expand-for="${masterCategoryId}"><td class="col-title sub-category">${subCategoryName}</td></tr>`
+                $('<tr>', { class: 'expandable-row', 'data-expand-for': masterCategoryId }).append(
+                  $('<td>', { class: 'col-title sub-category', text: ynabToolKit.shared.escapeHtml(subCategoryName) })
+                )
               );
 
               subCategoryData.totalByDate.forEach((total) => {
                 let subCategoryDateTotal = ynabToolKit.shared.formatCurrency(-total);
-                subCategoryRow.append(`<td class="col-data">${subCategoryDateTotal}</td>`);
+                subCategoryRow.append($('<td>', { class: 'col-data', text: subCategoryDateTotal }));
               });
 
               $('.ynabtk-tbody', $outflowTable).append(subCategoryRow);

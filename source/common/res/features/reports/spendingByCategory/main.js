@@ -159,7 +159,7 @@
                     class: 'ynabtk-reports-legend-square category-color',
                     css: { 'background-color': color }
                   })
-                ).append(document.createTextNode(categoryName))
+                ).append(ynabToolKit.shared.escapeHtml(categoryName))
               )
               .append(
                 $('<div>', {

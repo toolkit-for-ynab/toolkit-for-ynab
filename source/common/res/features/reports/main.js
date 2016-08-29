@@ -259,13 +259,13 @@
           case 'onbudget':
             $select.append('<option value="onbudget">All Budget Accounts</option>');
             onBudgetAccounts.forEach((account) => {
-              $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
+              $select.append($('<option>', { value: account.get('entityId'), text: ynabToolKit.shared.escapeHtml(account.get('accountName')) }));
             });
             break;
           case 'offbudget':
             $select.append('<option value="offbudget">All Tracking Accounts</option>');
             offBudgetAccounts.forEach((account) => {
-              $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
+              $select.append($('<option>', { value: account.get('entityId'), text: ynabToolKit.shared.escapeHtml(account.get('accountName')) }));
             });
             break;
           case 'all':
@@ -274,7 +274,7 @@
             $select.append('<option value="onbudget">All Budget Accounts</option>');
             $select.append('<option value="offbudget">All Tracking Accounts</option>');
             onBudgetAccounts.concat(offBudgetAccounts).forEach((account) => {
-              $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
+              $select.append($('<option>', { value: account.get('entityId'), text: ynabToolKit.shared.escapeHtml(account.get('accountName')) }));
             });
             break;
         }
@@ -318,7 +318,7 @@
                 $('<div>', {
                   class: 'ynabtk-chip',
                   title: accountData.get('accountName'),
-                  text: accountData.get('accountName')
+                  text: ynabToolKit.shared.escapeHtml(accountData.get('accountName'))
                 })
                 .click(() => {
                   let index = selectedAccounts.indexOf(accountId);
