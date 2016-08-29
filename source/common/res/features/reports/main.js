@@ -128,7 +128,7 @@
         supportedReports.forEach((report) => {
           $('.nav-reports', $reportsHeader).append(
             $('<li>', { class: 'nav-reports-navlink' }).append(
-              $('<a>', { id: report.toolkitId, href: '#' }).append(
+              $('<a>', { id: report.toolkitId, href: '#' }).text(
                 report.name
               ).click(() => {
                 onReportSelected(report.toolkitId);
@@ -219,17 +219,17 @@
         }];
 
         quickFilters.forEach((quickFilter, index) => {
-          let disabled = '';
+          let disabled = false;
           // if we can't meet the end filter, then the button should be disabled
           if (monthLabels.indexOf(quickFilter.filter[1]) === -1) {
-            disabled = 'disabled';
+            disabled = true;
           } else if (monthLabels.indexOf(quickFilter.filter[0]) === -1) {
             // if we can't meet the start filter, just set the dates to the first available
             quickFilter[0] = monthLabels[0];
           }
 
           $('.ynabtk-quick-date-filters')
-            .append(`<option value="${index}" ${disabled}>${quickFilter.name}</option>`)
+            .append($('<option>', { value: index, disabled: disabled }).text(quickFilter.name))
             .change(function () {
               let quickFilterIndex = parseInt($(this).val());
               let quickFilterValue = quickFilters[quickFilterIndex].filter;
@@ -259,13 +259,13 @@
           case 'onbudget':
             $select.append('<option value="onbudget">All Budget Accounts</option>');
             onBudgetAccounts.forEach((account) => {
-              $select.append($('<option>', { value: account.get('entityId'), text: ynabToolKit.shared.escapeHtml(account.get('accountName')) }));
+              $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
             });
             break;
           case 'offbudget':
             $select.append('<option value="offbudget">All Tracking Accounts</option>');
             offBudgetAccounts.forEach((account) => {
-              $select.append($('<option>', { value: account.get('entityId'), text: ynabToolKit.shared.escapeHtml(account.get('accountName')) }));
+              $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
             });
             break;
           case 'all':
@@ -274,7 +274,7 @@
             $select.append('<option value="onbudget">All Budget Accounts</option>');
             $select.append('<option value="offbudget">All Tracking Accounts</option>');
             onBudgetAccounts.concat(offBudgetAccounts).forEach((account) => {
-              $select.append($('<option>', { value: account.get('entityId'), text: ynabToolKit.shared.escapeHtml(account.get('accountName')) }));
+              $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
             });
             break;
         }
@@ -318,7 +318,7 @@
                 $('<div>', {
                   class: 'ynabtk-chip',
                   title: accountData.get('accountName'),
-                  text: ynabToolKit.shared.escapeHtml(accountData.get('accountName'))
+                  text: accountData.get('accountName')
                 })
                 .click(() => {
                   let index = selectedAccounts.indexOf(accountId);
