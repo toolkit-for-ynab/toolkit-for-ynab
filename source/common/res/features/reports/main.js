@@ -232,7 +232,9 @@
             .append(`<option value="${index}" ${disabled}>${quickFilter.name}</option>`)
             .change(function () {
               let quickFilterIndex = parseInt($(this).val());
-              dateFilter.noUiSlider.set(quickFilters[quickFilterIndex].filter);
+              let quickFilterValue = quickFilters[quickFilterIndex].filter;
+              dateFilter.noUiSlider.set(quickFilterValue);
+              ynabToolKit.shared.setToolkitStorageKey('current-date-filter', quickFilterValue);
               filterTransactionsAndBuildChart();
             });
         });
