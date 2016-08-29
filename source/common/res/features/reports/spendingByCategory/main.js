@@ -150,13 +150,15 @@
 
             // also add the category to the legend so users can still see all the data
             $('.ynabtk-category-panel').append(
-              `<div class="ynabtk-category-entry">
-                <div class="ynabtk-category-entry-name">
-                  <div class="ynabtk-reports-legend-square category-color" style="background-color: ${color};"></div>
-                  ${categoryName}
-                </div>
-                <div class="ynabtk-category-entry-amount">${ynabToolKit.shared.formatCurrency(categoryTotal)}</div>
-              </div>`
+              $('<div>', { class: 'ynabtk-category-entry' }).append(
+                $('<div>', { class: 'ynabtk-category-entry-name' }).append(
+                  $('<div>', { class: 'ynabtk-reports-legend-square category-color', css: { 'background-color': color } })
+                    .append(categoryName)
+                  )
+                )
+                .append(
+                  $('<div', { class: 'ynabtk-category-entry-amount', text: ynabToolKit.shared.formatCurrency(categoryTotal) })
+                )
             );
           });
 
