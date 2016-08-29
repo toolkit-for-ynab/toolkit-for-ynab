@@ -95,16 +95,17 @@
           // set up the container for our graph and for our side-panel (the legend)
           $reportsData.css({
             display: 'inline-flex'
-          }).html(
-            $('<div>', { class: 'ynabtk-spending-by-cat-chart-container' }).append(
-              $('<div>', { id: 'report-chart', css: { position: 'relative', height: '100%' } }))
-            )
-            .append($('<div>', { class: 'ynabtk-category-panel' }).append(
-              $('<div>', { class: 'ynabtk-category-entry' })
-                .append($('<div>', { class: 'ynabtk-category-entry-name' }).append('Category'))
-                .append($('<div>', { class: 'ynabtk-category-entry-amount' }).append('Spending'))
+          }).html($('<div>', {
+            class: 'ynabtk-spending-by-cat-chart-container'
+          }).append(
+            $('<div>', { id: 'report-chart', css: { position: 'relative', height: '100%' } })
+          )).append(
+            $('<div>', { class: 'ynabtk-category-panel' })
+              .append($('<div>', { class: 'ynabtk-category-entry' })
+                .append($('<div>', { class: 'ynabtk-category-entry-name', text: 'Category' }))
+                .append($('<div>', { class: 'ynabtk-category-entry-amount', text: 'Spending' }))
               )
-            );
+          );
 
           // store all the categories into an array so we can sort it!
           let masterCategoriesArray = [];
@@ -148,13 +149,23 @@
 
             // also add the category to the legend so users can still see all the data
             $('.ynabtk-category-panel').append(
-              $('<div>', { class: 'ynabtk-category-entry' }).append(
-                $('<div>', { class: 'ynabtk-category-entry-name' }).append(
-                  $('<div>', { class: 'ynabtk-reports-legend-square category-color', css: { 'background-color': color } })
-                ).append(categoryName)
+              $('<div>', {
+                class: 'ynabtk-category-entry'
+              }).append(
+                $('<div>', {
+                  class: 'ynabtk-category-entry-name'
+                }).append(
+                  $('<div>', {
+                    class: 'ynabtk-reports-legend-square category-color',
+                    css: { 'background-color': color }
+                  })
+                ).append(document.createTextNode(categoryName))
               )
               .append(
-                $('<div>', { class: 'ynabtk-category-entry-amount', text: ynabToolKit.shared.formatCurrency(categoryTotal) })
+                $('<div>', {
+                  class: 'ynabtk-category-entry-amount',
+                  text: ynabToolKit.shared.formatCurrency(categoryTotal)
+                })
               )
             );
           });
@@ -167,9 +178,16 @@
           // throw the total into the legend as well so they can see how much money the spend in two places!
           $('.ynabtk-category-panel')
             .append($('<hr>'))
-            .append($('<div>', { class: 'ynabtk-category-entry' })
-              .append($('<div>', { class: 'ynabtk-category-entry-name total', text: 'Total' }))
-              .append($('<div>', { class: 'ynabtk-category-entry-amount total', text: ynabToolKit.shared.formatCurrency(totalSpending) }))
+            .append($('<div>', {
+              class: 'ynabtk-category-entry'
+            }).append($('<div>', {
+              class: 'ynabtk-category-entry-name total',
+              text: 'Total'
+            }))
+            .append($('<div>', {
+              class: 'ynabtk-category-entry-amount total',
+              text: ynabToolKit.shared.formatCurrency(totalSpending)
+            }))
           );
 
           // make that chart!
