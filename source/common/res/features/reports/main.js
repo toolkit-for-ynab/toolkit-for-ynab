@@ -259,13 +259,13 @@
           case 'onbudget':
             $select.append('<option value="onbudget">All Budget Accounts</option>');
             onBudgetAccounts.forEach((account) => {
-              $select.append(`<option value=${account.get('entityId')}>${account.get('accountName')}</option>`);
+              $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
             });
             break;
           case 'offbudget':
             $select.append('<option value="offbudget">All Tracking Accounts</option>');
             offBudgetAccounts.forEach((account) => {
-              $select.append(`<option value=${account.get('entityId')}>${account.get('accountName')}</option>`);
+              $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
             });
             break;
           case 'all':
@@ -274,7 +274,7 @@
             $select.append('<option value="onbudget">All Budget Accounts</option>');
             $select.append('<option value="offbudget">All Tracking Accounts</option>');
             onBudgetAccounts.concat(offBudgetAccounts).forEach((account) => {
-              $select.append(`<option value=${account.get('entityId')}>${account.get('accountName')}</option>`);
+              $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
             });
             break;
         }
