@@ -8,6 +8,9 @@
   }, {
     name: 'Spending By Category',
     toolkitId: 'spendingByCategory'
+  }, {
+    name: 'Income vs. Expense',
+    toolkitId: 'incomeVsExpense'
   }];
 
   // ynabToolKit[report.toolkitId] should be undefined if the report hasn't finished
@@ -64,17 +67,19 @@
                     ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.filters']) || 'Filters')}
                   </h3>
                   <div class="ynabtk-filter-group date-filter">
-                    <span class="reports-filter-name">
+                    <span class="reports-filter-name timeframe">
                       ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.timeframe']) || 'Timeframe')}:
                     </span>
-                    <div class="ynabtk-quick-date-filters"></div>
+                    <select class="ynabtk-filter-select ynabtk-quick-date-filters">
+                      <option value="none" disabled selected>Quick Filter...</option>
+                    </select>
                     <div id="ynabtk-date-filter" class="ynabtk-date-filter-slider"></div>
                   </div>
                   <div class="ynabtk-filter-group">
                     <span class="reports-filter-name">
                       ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.accounts']) || 'Accounts')}:
                     </span>
-                    <select id="ynabtk-report-accounts" class="accounts-text-field dropdown-text-field ynabtk-account-select">
+                    <select id="ynabtk-report-accounts" class="ynabtk-filter-select">
                       <option value="all">All Budget Accounts</option>
                     </select>
                     <div id="selected-account-list" class="ynabtk-account-chips"></div>
@@ -86,6 +91,7 @@
         );
 
         generateDateSlider();
+        generateQuickDateFilters();
       }
 
       function updateNavigation() {
@@ -122,7 +128,7 @@
         supportedReports.forEach((report) => {
           $('.nav-reports', $reportsHeader).append(
             $('<li>', { class: 'nav-reports-navlink' }).append(
-              $('<a>', { id: report.toolkitId, href: '#' }).append(
+              $('<a>', { id: report.toolkitId, href: '#' }).text(
                 report.name
               ).click(() => {
                 onReportSelected(report.toolkitId);
@@ -135,41 +141,7 @@
       }
 
       function generateDateSlider() {
-        // reset monthLabels to an empty array first (in case they tabbed away and back)...
-        monthLabels = [];
-
-        // grab the current month, this is the last label of our slider
-        let currentMonth = new Date().getMonth();
-        let currentYear = new Date().getFullYear();
-
-        // find the first non-tombstoned, non scheduled transaction.
-        let firstTransaction = allTransactions.find((transaction) =>
-          !transaction.get('isTombstone') && !transaction.get('isScheduledTransaction'));
-
-        // grab the date from that transaction
-        let firstTransactionDate = firstTransaction.get('date');
-        let currentLabelMonth = firstTransactionDate ? firstTransactionDate.getMonth() : currentMonth;
-        let currentLabelYear = firstTransactionDate ? firstTransactionDate.getYear() : currentYear;
-
-        // start with the month/year on the very first transaction, we should create the labels needed
-        // for our slider until the current month/year. use a while loop to do this because there's no need
-        // to loop over every transaction.
-        while (!(currentLabelYear === currentYear && currentLabelMonth === currentMonth)) {
-          if (currentLabelMonth === 12) {
-            currentLabelMonth = 0;
-            currentLabelYear++;
-          }
-
-          let labelDate = new Date(currentLabelYear, currentLabelMonth);
-          let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
-          monthLabels.push(labelDateFormatted);
-          currentLabelMonth++;
-        }
-
-        // push the current month as well :D
-        let labelDate = new Date(currentYear, currentMonth);
-        let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
-        monthLabels.push(labelDateFormatted);
+        monthLabels = ynabToolKit.reports.generateMonthLabelsFromFirstTransaction(allTransactions);
 
         // if we only have one or no months of data that we should just hide the slider
         // return early so we don't even try to initialize the slider
@@ -213,9 +185,58 @@
 
         // on slide, set the new values in local storage and call filterTransactionsAndBuildChart!
         dateFilterContainer.noUiSlider.on('slide', function () {
+          $('.ynabtk-quick-date-filters').val('none');
+
           let slideValue = dateFilterContainer.noUiSlider.get();
           ynabToolKit.shared.setToolkitStorageKey('current-date-filter', slideValue);
           filterTransactionsAndBuildChart();
+        });
+      }
+
+      function generateQuickDateFilters() {
+        const currentMonth = new Date().getMonth();
+        const currentYear = new Date().getFullYear();
+        const todayFormatted = ynabToolKit.reports.formatDatel8n(new Date(currentYear, currentMonth));
+        const dateFilter = document.getElementById('ynabtk-date-filter');
+
+        if (!dateFilter.noUiSlider) return;
+
+        const quickFilters = [{
+          name: 'This Month',
+          filter: [todayFormatted, todayFormatted]
+        }, {
+          name: 'Latest Three Months',
+          filter: [ynabToolKit.reports.formatDatel8n(new Date(currentYear, currentMonth - 2)), todayFormatted]
+        }, {
+          name: 'This Year',
+          filter: [ynabToolKit.reports.formatDatel8n(new Date(currentYear, 0)), todayFormatted]
+        }, {
+          name: 'Last Year',
+          filter: [ynabToolKit.reports.formatDatel8n(new Date(currentYear - 1, 0)), ynabToolKit.reports.formatDatel8n(new Date(currentYear - 1, 11))]
+        }, {
+          name: 'All Dates',
+          filter: [monthLabels[0], monthLabels[monthLabels.length - 1]]
+        }];
+
+        quickFilters.forEach((quickFilter, index) => {
+          let disabled = false;
+          // if we can't meet the end filter, then the button should be disabled
+          if (monthLabels.indexOf(quickFilter.filter[1]) === -1) {
+            disabled = true;
+          } else if (monthLabels.indexOf(quickFilter.filter[0]) === -1) {
+            // if we can't meet the start filter, just set the dates to the first available
+            quickFilter[0] = monthLabels[0];
+          }
+
+          $('.ynabtk-quick-date-filters')
+            .append($('<option>', { value: index, disabled: disabled }).text(quickFilter.name))
+            .change(function () {
+              let quickFilterIndex = parseInt($(this).val());
+              let quickFilterValue = quickFilters[quickFilterIndex].filter;
+              dateFilter.noUiSlider.set(quickFilterValue);
+              ynabToolKit.shared.setToolkitStorageKey('current-date-filter', quickFilterValue);
+              filterTransactionsAndBuildChart();
+            });
         });
       }
 
@@ -295,7 +316,7 @@
             $accountList
               .append(
                 $('<div>', {
-                  class: 'account-chip',
+                  class: 'ynabtk-chip',
                   title: accountData.get('accountName'),
                   text: accountData.get('accountName')
                 })
@@ -508,6 +529,56 @@
 
           // finally, return the l8n date.
           return formattedDate;
+        },
+
+        generateMonthLabelsFromFirstTransaction(transactions, endWithLastTransaction) {
+          let monthLabelsForTransaction = [];
+          // grab the current month, this is the last label of our slider
+          let endMonth = new Date().getMonth();
+          let endYear = new Date().getFullYear();
+
+          if (endWithLastTransaction) {
+            let lastTransaction;
+            for (var i = transactions.length - 1; i >= 0; i--) {
+              lastTransaction = transactions[i];
+              if (!lastTransaction.get('isTombstone') && !lastTransaction.get('isScheduledTransaction')) break;
+            }
+
+            let lastTransactionDate = lastTransaction ? lastTransaction.get('date') : undefined;
+            endMonth = lastTransactionDate ? lastTransactionDate.getMonth() : endMonth;
+            endYear = lastTransactionDate ? lastTransactionDate.getYear() : endYear;
+          }
+
+          // find the first non-tombstoned, non scheduled transaction.
+          let firstTransaction = transactions.find((transaction) =>
+            !transaction.get('isTombstone') && !transaction.get('isScheduledTransaction'));
+
+          // grab the date from that transaction
+          let firstTransactionDate = firstTransaction ? firstTransaction.get('date') : undefined;
+          let currentLabelMonth = firstTransactionDate ? firstTransactionDate.getMonth() : endMonth;
+          let currentLabelYear = firstTransactionDate ? firstTransactionDate.getYear() : endYear;
+
+          // start with the month/year on the very first transaction, we should create the labels needed
+          // for our slider until the current month/year. use a while loop to do this because there's no need
+          // to loop over every transaction.
+          while (!(currentLabelYear === endYear && currentLabelMonth === endMonth)) {
+            if (currentLabelMonth === 12) {
+              currentLabelMonth = 0;
+              currentLabelYear++;
+            }
+
+            let labelDate = new Date(currentLabelYear, currentLabelMonth);
+            let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
+            monthLabelsForTransaction.push(labelDateFormatted);
+            currentLabelMonth++;
+          }
+
+          // push the current month as well :D
+          let labelDate = new Date(endYear, endMonth);
+          let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
+          monthLabelsForTransaction.push(labelDateFormatted);
+
+          return monthLabelsForTransaction;
         }
       };
     }());

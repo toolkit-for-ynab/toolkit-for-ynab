@@ -28,19 +28,22 @@
 
 .ynabtk-reports-nav .nav-reports-navlink {
   margin-right: 10px;
+  padding-right: 10px;
+  border-right: 1px solid #ffffff;
+}
+.ynabtk-reports-nav .nav-reports-navlink:last-child {
+  border: none;
 }
 
 .ynabtk-reports-nav .nav-reports-navlink a {
   text-decoration: none;
   color: #ffffff;
 }
-
 .ynabtk-reports-nav .nav-reports-navlink a.active {
   color: #fed168;
 }
 
 .ynabtk-reports-filters {
-  height: 140px;
   background-color: #F4F4F4;
   margin: 10px 10px 0 10px;
   border: 1px solid #CCCCCC;
@@ -55,17 +58,19 @@
   margin: 10px 0;
 }
 
-.ynabtk-account-select {
+.ynabtk-filter-group .reports-filter-name {
+  margin: auto;
+}
+
+.ynabtk-filter-group .reports-filter-name.timeframe {
+  margin-right: 4px;
+}
+
+.ynabtk-filter-select {
   width: 20%;
 }
 
-.ynabtk-account-chips {
-  display: inline-flex;
-  max-width: 70%;
-  margin-left: 4px;
-}
-
-.ynabtk-account-chips .account-chip {
+.ynabtk-chip {
   border-radius: 1em;
   background-color: #34aebe;
   text-overflow: ellipsis;
@@ -78,7 +83,26 @@
   cursor: pointer;
 }
 
-.ynabtk-account-chips .account-chip:hover {
+.ynabtk-quick-date-filters {
+  display: inline-flex;
+}
+
+.ynabtk-quick-date-filters .ynabtk-chip {
+  background-color: inherit;
+}
+
+.ynabtk-quick-date-filters .ynabtk-chip:hover,
+.ynabtk-quick-date-filters .ynabtk-chip.active {
+  background-color: #34aebe;
+}
+
+.ynabtk-account-chips {
+  display: inline-flex;
+  max-width: 70%;
+  margin-left: 4px;
+}
+
+.ynabtk-account-chips .ynabtk-chip:hover {
   background-color: #ea5439;
 }
 
@@ -88,7 +112,7 @@
 
 .ynabtk-date-filter-slider {
   flex-grow: 1;
-  margin: 0px 40px 0px 30px;
+  margin: auto 40px auto 30px;
 }
 
 .ynabtk-reports-legend-square {
@@ -124,5 +148,5 @@
   top: -52px;
 }
 .noUi-horizontal .noUi-handle-upper .noUi-tooltip {
-  bottom: -52px;
+  bottom: 28px;
 }

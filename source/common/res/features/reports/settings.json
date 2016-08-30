@@ -4,7 +4,7 @@
       "default": true,
       "section": "general",
         "title": "Reports",
-  "description": "Adds a button to the side bar to access reports. At this stage only the Net Worth report is implemented.",
+  "description": "Adds a button to the side bar to access reports. Net Worth, Spending By Category, and Income vs. Expense are all available reports.",
       "actions": {
                     "true": [
                       "injectScript", "../lib/highcharts-4.2.6/highcharts.js",
@@ -15,7 +15,9 @@
                       "injectScript", "netWorth/main.js",
                       "injectCSS", "netWorth/main.css",
                       "injectScript", "spendingByCategory/main.js",
-                      "injectCSS", "spendingByCategory/main.css"
+                      "injectCSS", "spendingByCategory/main.css",
+                      "injectScript", "incomeVsExpense/main.js",
+                      "injectCSS", "incomeVsExpense/main.css"
                     ]
                  }
 }

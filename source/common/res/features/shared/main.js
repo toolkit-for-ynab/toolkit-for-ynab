@@ -349,6 +349,24 @@ ynabToolKit.shared = (function () {
       return localStorage.setItem(storageKeyPrefix + key, value);
     },
 
+    // https://github.com/janl/mustache.js/blob/master/mustache.js#L60
+    escapeHtml(htmlString) {
+      let entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+      };
+
+      return String(htmlString).replace(/[&<>"'`=\/]/g, function fromEntityMap(s) {
+        return entityMap[s];
+      });
+    },
+
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
        ],

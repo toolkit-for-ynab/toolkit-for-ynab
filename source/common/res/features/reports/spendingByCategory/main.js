@@ -25,12 +25,20 @@
         // push the transaction and increment the total. storing the transaction just because
         // we might want it for the drilldown stuff. not certain yet.
         subCategoryData.transactions.push(transaction);
-        subCategoryData.total += (-transaction.getAmount());
+        subCategoryData.total += -(transaction.getAmount());
       }
 
       function placeInMasterCategory(transaction, categoryViewModel) {
         // grab the master category date from our master category object
         let masterCategoryId = transaction.get('masterCategoryId');
+        let internalData = categoryViewModel.getMasterCategoryById(masterCategoryId);
+
+        if (internalData.isInternalMasterCategory()) {
+          let hiddenMasterCategory = categoryViewModel.get('hiddenMasterCategory');
+          masterCategoryId = hiddenMasterCategory.get('entityId');
+          internalData = hiddenMasterCategory;
+        }
+
         let masterCategoryData = reportData.masterCategories[masterCategoryId];
 
         // if we haven't created that data yet, then default everything to 0/empty
@@ -45,7 +53,7 @@
         }
 
         // increment the total of the category and then call placeInSubCategory so that we can do drilldowns
-        masterCategoryData.total += (-transaction.getAmount());
+        masterCategoryData.total += -(transaction.getAmount());
         placeInSubCategory(transaction, masterCategoryData, categoryViewModel);
       }
 
@@ -72,7 +80,7 @@
           let isInternalMasterCategory = isTransfer ? false : ynabCategory.isInternalMasterCategory();
           let isPositiveStartingBalance = transaction.get('inflow') && isInternalMasterCategory;
 
-          return !transaction.get('isSplit') && !isTransfer && !isInternalDebtCategory && !isPositiveStartingBalance;
+          return !transaction.get('isSplit') && !isTransfer && !isInternalDebtCategory && (!isPositiveStartingBalance || !transaction.get('inflow'));
         },
 
         calculate(transactions) {
@@ -102,8 +110,8 @@
           )).append(
             $('<div>', { class: 'ynabtk-category-panel' })
               .append($('<div>', { class: 'ynabtk-category-entry' })
-                .append($('<div>', { class: 'ynabtk-category-entry-name', text: 'Category' }))
-                .append($('<div>', { class: 'ynabtk-category-entry-amount', text: 'Spending' }))
+                .append($('<div>', { class: 'ynabtk-category-entry-name' }).append('Category'))
+                .append($('<div>', { class: 'ynabtk-category-entry-amount' }).append('Spending'))
               )
           );
 

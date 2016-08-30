@@ -14,9 +14,26 @@
         let series = ynabToolKit.netWorthReport.chart.series;
         series.forEach((seriesData, index) => {
           let formattedCurrency = ynabToolKit.shared.formatCurrency(seriesData.data[pointIndex].y);
-          if (index === 0) $('#net-worth-report-debts').text(formattedCurrency);
-          if (index === 1) $('#net-worth-report-assets').text(formattedCurrency);
-          if (index === 2) $('#net-worth-report-net-worth').text(formattedCurrency);
+          if (index === 0) {
+            seriesData.data[pointIndex].setState('hover');
+            $('#net-worth-report-debts').text(formattedCurrency);
+          }
+
+          if (index === 1) {
+            seriesData.data[pointIndex].setState('hover');
+            $('#net-worth-report-assets').text(formattedCurrency);
+          }
+
+          if (index === 2) {
+            seriesData.data[pointIndex].setState('hover');
+            $('#net-worth-report-net-worth').text(formattedCurrency);
+          }
+        });
+      }
+
+      function onMouseOut(pointIndex) {
+        ynabToolKit.netWorthReport.chart.series.forEach((seriesData) => {
+          seriesData.data[pointIndex].setState('');
         });
       }
 
@@ -173,6 +190,17 @@
               '<div id="report-chart" style="flex-grow: 1; position: relative; width: 100%"></div>'
           ));
 
+          let pointHover = {
+            events: {
+              mouseOver: function () {
+                setHeaderValues(this.index);
+              },
+              mouseOut: function () {
+                onMouseOut(this.index);
+              }
+            }
+          };
+
           ynabToolKit.netWorthReport.chart = new Highcharts.Chart({
             credits: false,
             chart: {
@@ -188,6 +216,7 @@
               categories: reportData.labels
             },
             yAxis: {
+              title: { text: '' },
               labels: {
                 formatter: function () {
                   return ynabToolKit.shared.formatCurrency(this.value);
@@ -205,13 +234,7 @@
                 color: 'rgba(234,106,81,1)',
                 data: reportData.liabilities,
                 pointPadding: 0,
-                point: {
-                  events: {
-                    mouseOver: function () {
-                      setHeaderValues(this.index);
-                    }
-                  }
-                }
+                point: pointHover
               }, {
                 id: 'assets',
                 type: 'column',
@@ -219,13 +242,7 @@
                 color: 'rgba(142,208,223,1)',
                 data: reportData.assets,
                 pointPadding: 0,
-                point: {
-                  events: {
-                    mouseOver: function () {
-                      setHeaderValues(this.index);
-                    }
-                  }
-                }
+                point: pointHover
               }, {
                 id: 'networth',
                 type: 'area',
@@ -233,13 +250,7 @@
                 fillColor: 'rgba(244,248,226,0.5)',
                 negativeFillColor: 'rgba(247, 220, 218, 0.5)',
                 data: reportData.netWorths,
-                point: {
-                  events: {
-                    mouseOver: function () {
-                      setHeaderValues(this.index);
-                    }
-                  }
-                }
+                point: pointHover
               }
             ]
           });
