@@ -544,7 +544,7 @@
               if (!lastTransaction.get('isTombstone') && !lastTransaction.get('isScheduledTransaction')) break;
             }
 
-            let lastTransactionDate = lastTransaction.get('date');
+            let lastTransactionDate = lastTransaction ? lastTransaction.get('date') : undefined;
             endMonth = lastTransactionDate ? lastTransactionDate.getMonth() : endMonth;
             endYear = lastTransactionDate ? lastTransactionDate.getYear() : endYear;
           }
@@ -554,7 +554,7 @@
             !transaction.get('isTombstone') && !transaction.get('isScheduledTransaction'));
 
           // grab the date from that transaction
-          let firstTransactionDate = firstTransaction.get('date');
+          let firstTransactionDate = firstTransaction ? firstTransaction.get('date') : undefined;
           let currentLabelMonth = firstTransactionDate ? firstTransactionDate.getMonth() : endMonth;
           let currentLabelYear = firstTransactionDate ? firstTransactionDate.getYear() : endYear;
 
