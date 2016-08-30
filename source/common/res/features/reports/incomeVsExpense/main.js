@@ -29,11 +29,12 @@
           subCategoryData = masterCategoryData.subCategories[subCategoryId];
         }
 
-        subCategoryData.totalByDate[dateIndex] += transaction.get('outflow');
+        let amount = -(transaction.getAmount());
+        subCategoryData.totalByDate[dateIndex] += amount;
 
         // update the master category total
         let subCategoryTotal = subCategoryData.totalByDate[subCategoryData.totalByDate.length - 1];
-        subCategoryTotal += transaction.get('outflow');
+        subCategoryTotal += amount;
         subCategoryData.totalByDate[subCategoryData.totalByDate.length - 1] = subCategoryTotal;
 
         // update the master category average
@@ -69,14 +70,18 @@
         }
 
         // update the report data total objects (by date/total all dates)
-        reportData.totalOutflowsByDate[dateIndex] += transaction.get('outflow');
-        reportData.totalOutflowsByDate[masterCategoryData.totalByDate.length - 1] += transaction.get('outflow');
+        // we use the negative of 'getAmount' because if it's an inflow (called from placeInPayee because of the
+        // special case where income was attributed to categories, which is really positive spending in YNABs eyes)
+        // the values don't get messed up in our table
+        let amount = -(transaction.getAmount());
+        reportData.totalOutflowsByDate[dateIndex] += amount;
+        reportData.totalOutflowsByDate[masterCategoryData.totalByDate.length - 1] += amount;
 
-        masterCategoryData.totalByDate[dateIndex] += transaction.get('outflow');
+        masterCategoryData.totalByDate[dateIndex] += amount;
 
         // update the master category total
         let masterCategoryTotal = masterCategoryData.totalByDate[masterCategoryData.totalByDate.length - 1];
-        masterCategoryTotal += transaction.get('outflow');
+        masterCategoryTotal += amount;
         masterCategoryData.totalByDate[masterCategoryData.totalByDate.length - 1] = masterCategoryTotal;
 
         // update the master category average
@@ -91,11 +96,27 @@
         let formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
         let dateIndex = dateLabels.indexOf(formattedDate);
         let payeeId = transaction.get('payeeId');
-        let payeeData = payeesObject[payeeId];
+        let internalPayee = payeeViewModel.getPayeeById(payeeId);
 
+        // if there is no payeeId, check to see if there is a parentEntity because we might just be a subCat
+        // if there is no parent, then we're just going to have to throw this guy into null category
+        // and handle it as an unknown payee later...
+        if (!payeeId) {
+          let parentTransactionId = transaction.getParentEntityId();
+          let parentTransaction = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()
+                                      ._result.get('transactionsCollection')
+                                      .findItemByEntityId(parentTransactionId);
+
+          if (parentTransaction && parentTransaction.get('payeeId')) {
+            payeeId = parentTransaction.get('payeeId');
+            internalPayee = payeeViewModel.getPayeeById(payeeId);
+          }
+        }
+
+        let payeeData = payeesObject[payeeId];
         if (typeof payeeData === 'undefined') {
           payeesObject[payeeId] = {
-            internalData: payeeViewModel.getPayeeById(payeeId),
+            internalData: internalPayee,
             totalByDate: generateInitialDataArray()
           };
 
@@ -155,7 +176,10 @@
 
                 // for each transaction, add it to the payee or category based on it's amount (negative v. positive)
                 transactions.forEach((transaction) => {
-                  if (transaction.getAmount() > 0) {
+                  let masterCategoryId = transaction.get('masterCategoryId');
+                  let transactionCategory = categoryViewModel.getMasterCategoryById(masterCategoryId);
+
+                  if (transaction.getAmount() > 0 && transactionCategory.isInternalMasterCategory()) {
                     placeInPayee(transaction, reportData.inflowsByPayee, payeeViewModel);
                   } else {
                     placeInMasterCategory(transaction, reportData.outflowsByCategory, categoryViewModel);
@@ -273,13 +297,43 @@
           // add the toggle row for the payees first
           $('.ynabtk-tbody', $inflowTable).append(allPayeesToggleRow);
 
-          // add all the payee rows next
+          // unknown payee? no problem, we got your back.
+          let hasUnkownPayee = false;
+
+          // first, go through and get all the known payees....
           for (let payeeId in reportData.inflowsByPayee) {
+            if (payeeId === 'null') {
+              hasUnkownPayee = true;
+              continue;
+            }
+
             let payeeData = reportData.inflowsByPayee[payeeId];
             let payeeName = payeeData.internalData.get('name');
             let payeeRow = $(
               $('<tr>', { class: 'expandable-row', 'data-expand-for': 'all-payees' }).append(
-                $('<td>', { class: 'col-title payee-name', title: payeeName, text: ynabToolKit.shared.escapeHtml(payeeName) })
+                $('<td>', { class: 'col-title payee-name', title: payeeName, text: payeeName })
+              )
+            );
+
+            payeeData.totalByDate.forEach((total) => {
+              let payeeDateTotal = ynabToolKit.shared.formatCurrency(total);
+              payeeRow.append($('<td>', { class: 'col-data', text: payeeDateTotal }));
+            });
+
+            $('.ynabtk-tbody', $inflowTable).append(payeeRow);
+          }
+
+          if (hasUnkownPayee) {
+            ynabToolKit.shared.showModal(
+              'Unknown Payee',
+              "It looks like you have inflows that don't have a payee. We've decided to still show you this income but please consider adding a payee to your inflow transactions.",
+              'close'
+            );
+
+            let payeeData = reportData.inflowsByPayee.null;
+            let payeeRow = $(
+              $('<tr>', { class: 'expandable-row', 'data-expand-for': 'all-payees' }).append(
+                $('<td>', { class: 'col-title payee-name', title: 'Unknown payee. Make sure all inflow transactions have a payee.', text: 'Unknown' })
               )
             );
 
@@ -332,16 +386,16 @@
             // create the "toggle" row
             let masterCategoryToggleRow = $(
               $('<tr>', { class: 'expandable-toggle', id: masterCategoryId }).append(
-                $('<td>', { class: 'col-title master-category', title: ynabToolKit.shared.escapeHtml(masterCategoryName) }).append(
+                $('<td>', { class: 'col-title master-category', title: masterCategoryName }).append(
                   $('<i>', { class: 'flaticon stroke up' })
-                ).append(ynabToolKit.shared.escapeHtml(masterCategoryName))
+                ).append(document.createTextNode(masterCategoryName))
               )
             );
 
             // create the "summary" row which will show only when expanded
             let masterCategoryTotalRow = $(
               $('<tr>', { class: 'expandable-row summary-row', 'data-expand-for': masterCategoryId }).append(
-                $('<td>', { class: 'col-title master-category', text: ynabToolKit.shared.escapeHtml('Total ' + masterCategoryName) })
+                $('<td>', { class: 'col-title master-category', text: 'Total ' + masterCategoryName })
               )
             );
 
@@ -361,7 +415,8 @@
               let subCategoryRow = $(
                 // default the subcategory row as display: none
                 $('<tr>', { class: 'expandable-row', 'data-expand-for': masterCategoryId }).append(
-                  $('<td>', { class: 'col-title sub-category', text: ynabToolKit.shared.escapeHtml(subCategoryName) })
+                  $('<td>', { class: 'col-title sub-category' })
+                    .append(document.createTextNode(subCategoryName))
                 )
               );
 
