@@ -70,9 +70,6 @@
         }
 
         // update the report data total objects (by date/total all dates)
-        // we use the negative of 'getAmount' because if it's an inflow (called from placeInPayee because of the
-        // special case where income was attributed to categories, which is really positive spending in YNABs eyes)
-        // the values don't get messed up in our table
         let amount = -(transaction.getAmount());
         reportData.totalOutflowsByDate[dateIndex] += amount;
         reportData.totalOutflowsByDate[masterCategoryData.totalByDate.length - 1] += amount;
@@ -324,6 +321,7 @@
           }
 
           if (hasUnkownPayee) {
+            // show an alert to the user that they have unknown payees. Ideally they fix that.
             ynabToolKit.shared.showModal(
               'Unknown Payee',
               "It looks like you have inflows that don't have a payee. We've decided to still show you this income but please consider adding a payee to your inflow transactions.",
