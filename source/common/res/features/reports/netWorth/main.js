@@ -191,9 +191,17 @@
               '<div id="report-chart" style="flex-grow: 1; position: relative; width: 100%"></div>'
           ));
 
-          let allowedDateFilter = ynabToolKit.reports.allowedDates;
-          let startIndex = reportData.labels.indexOf(allowedDateFilter[0]);
-          let endIndex = reportData.labels.indexOf(allowedDateFilter[allowedDateFilter.length - 1]);
+          // grab the current date filter from reports
+          // let allowedDateFilter = ynabToolKit.reports.allowedDates;
+
+          let startIndex = ynabToolKit.reports.allowedDateStart;
+          let endIndex = ynabToolKit.reports.allowedDateEnd;
+
+          // only show the data that's available in the filters we have set
+          let reportLabels = reportData.labels.slice(startIndex, endIndex);
+          let liabilities = reportData.liabilities.slice(startIndex, endIndex);
+          let assets = reportData.assets.slice(startIndex, endIndex);
+          let netWorths = reportData.netWorths.slice(startIndex, endIndex);
 
           let pointHover = {
             events: {
@@ -218,7 +226,7 @@
               text: ''
             },
             xAxis: {
-              categories: reportData.labels.slice(startIndex, endIndex)
+              categories: reportLabels
             },
             yAxis: {
               title: { text: '' },
@@ -237,7 +245,7 @@
                 type: 'column',
                 name: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.debts']) || 'Debts',
                 color: 'rgba(234,106,81,1)',
-                data: reportData.liabilities.slice(startIndex, endIndex),
+                data: liabilities,
                 pointPadding: 0,
                 point: pointHover
               }, {
@@ -245,7 +253,7 @@
                 type: 'column',
                 name: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.assets']) || 'Assets',
                 color: 'rgba(142,208,223,1)',
-                data: reportData.assets.slice(startIndex, endIndex),
+                data: assets,
                 pointPadding: 0,
                 point: pointHover
               }, {
@@ -254,13 +262,13 @@
                 name: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.netWorth']) || 'Net Worth',
                 fillColor: 'rgba(244,248,226,0.5)',
                 negativeFillColor: 'rgba(247, 220, 218, 0.5)',
-                data: reportData.netWorths.slice(startIndex, endIndex),
+                data: netWorths,
                 point: pointHover
               }
             ]
           });
 
-          setHeaderValues(reportData.labels.length - 1);
+          setHeaderValues(reportLabels.length - 1);
         }
       };
     }());

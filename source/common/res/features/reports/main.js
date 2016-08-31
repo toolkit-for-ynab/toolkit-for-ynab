@@ -229,14 +229,19 @@
           }
 
           $('.ynabtk-quick-date-filters')
-            .append($('<option>', { value: index, disabled: disabled }).text(quickFilter.name))
-            .change(function () {
-              let quickFilterIndex = parseInt($(this).val());
-              let quickFilterValue = quickFilters[quickFilterIndex].filter;
-              dateFilter.noUiSlider.set(quickFilterValue);
-              ynabToolKit.shared.setToolkitStorageKey('current-date-filter', quickFilterValue);
-              filterTransactionsAndBuildChart();
-            });
+            .append($('<option>', {
+              value: index,
+              disabled: disabled
+            })
+            .text(quickFilter.name));
+        });
+
+        $('.ynabtk-quick-date-filters').change(function () {
+          let quickFilterIndex = parseInt($(this).val());
+          let quickFilterValue = quickFilters[quickFilterIndex].filter;
+          dateFilter.noUiSlider.set(quickFilterValue);
+          ynabToolKit.shared.setToolkitStorageKey('current-date-filter', quickFilterValue);
+          filterTransactionsAndBuildChart();
         });
       }
 
@@ -352,7 +357,7 @@
         filterTransactionsAndBuildChart();
       }
 
-      function filterTransaction(transaction, toolkitReport) {
+      function filterTransaction(transaction, allowedDates, toolkitReport) {
         let filterType;
 
         // if the transaction isTombstone, or a scheduledTransaction then filter it out...
@@ -389,28 +394,10 @@
             break;
         }
 
-        // default our date filter to all dates int the monthLabels array
-        let indexStart = 0;
-        let indexEnd = monthLabels.length;
-
-        // grab the slider from the page, if it's initialized then make sure we get the current
-        // dates set by the user. if it's not then our above default will suffice
-        let sliderElement = document.getElementById('ynabtk-date-filter');
-        if (sliderElement.noUiSlider && typeof sliderElement.noUiSlider.get === 'function') {
-          // noUiSlider.get() returns the string representations of the items in the labels, so grab the
-          // index of those elements afterwards. add one to the index end of self-explanatory array indexing reasons
-          let dateFilterRange = document.getElementById('ynabtk-date-filter').noUiSlider.get();
-          indexStart = monthLabels.indexOf(dateFilterRange[0]);
-          indexEnd = monthLabels.indexOf(dateFilterRange[1]) + 1;
-        }
-
-        // now that we have a start and end index, we know what slice of the array to take
-        ynabToolKit.reports.allowedDates = monthLabels.slice(indexStart, indexEnd);
-
         // make sure the transaction date is in the slice of the above array
         if (!toolkitReport.ignoreDateFilter) {
           let transactionDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
-          if (ynabToolKit.reports.allowedDates.indexOf(transactionDate) === -1) {
+          if (allowedDates.indexOf(transactionDate) === -1) {
             return false;
           }
         }
@@ -429,9 +416,29 @@
         let toolkitId = ynabToolKit.shared.getToolkitStorageKey('current-report');
         let toolkitReport = ynabToolKit[toolkitId];
 
+        // default our date filter to all dates int the monthLabels array
+        let indexStart = 0;
+        let indexEnd = monthLabels.length;
+
+        // grab the slider from the page, if it's initialized then make sure we get the current
+        // dates set by the user. if it's not then our above default will suffice
+        let sliderElement = document.getElementById('ynabtk-date-filter');
+        if (sliderElement.noUiSlider && typeof sliderElement.noUiSlider.get === 'function') {
+          // noUiSlider.get() returns the string representations of the items in the labels, so grab the
+          // index of those elements afterwards. add one to the index end of self-explanatory array indexing reasons
+          let dateFilterRange = document.getElementById('ynabtk-date-filter').noUiSlider.get();
+          indexStart = monthLabels.indexOf(dateFilterRange[0]);
+          indexEnd = monthLabels.indexOf(dateFilterRange[1]) + 1;
+        }
+
+        // now that we have a start and end index, we know what slice of the array to take
+        ynabToolKit.reports.allowedDateStart = indexStart;
+        ynabToolKit.reports.allowedDateEnd = indexEnd;
+        let allowedDates = monthLabels.slice(indexStart, indexEnd);
+
         // filter out the transactions
         let filtered = allTransactions.filter((transaction) => {
-          return filterTransaction(transaction, toolkitReport);
+          return filterTransaction(transaction, allowedDates, toolkitReport);
         });
 
         // call calculate. all reports should return us a promise for calculate just in case
