@@ -39,6 +39,7 @@
 
       return {
         availableAccountTypes: 'all',
+        ignoreDateFilter: true,
         reportHeaders() {
           return '<div class="ynabtk-net-worth-header"> \
                     <div class="ynabtk-net-worth-header-detail"> \
@@ -190,6 +191,10 @@
               '<div id="report-chart" style="flex-grow: 1; position: relative; width: 100%"></div>'
           ));
 
+          let allowedDateFilter = ynabToolKit.reports.allowedDates;
+          let startIndex = reportData.labels.indexOf(allowedDateFilter[0]);
+          let endIndex = reportData.labels.indexOf(allowedDateFilter[allowedDateFilter.length - 1]);
+
           let pointHover = {
             events: {
               mouseOver: function () {
@@ -213,7 +218,7 @@
               text: ''
             },
             xAxis: {
-              categories: reportData.labels
+              categories: reportData.labels.slice(startIndex, endIndex)
             },
             yAxis: {
               title: { text: '' },
@@ -232,7 +237,7 @@
                 type: 'column',
                 name: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.debts']) || 'Debts',
                 color: 'rgba(234,106,81,1)',
-                data: reportData.liabilities,
+                data: reportData.liabilities.slice(startIndex, endIndex),
                 pointPadding: 0,
                 point: pointHover
               }, {
@@ -240,7 +245,7 @@
                 type: 'column',
                 name: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.assets']) || 'Assets',
                 color: 'rgba(142,208,223,1)',
-                data: reportData.assets,
+                data: reportData.assets.slice(startIndex, endIndex),
                 pointPadding: 0,
                 point: pointHover
               }, {
@@ -249,7 +254,7 @@
                 name: (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.netWorth']) || 'Net Worth',
                 fillColor: 'rgba(244,248,226,0.5)',
                 negativeFillColor: 'rgba(247, 220, 218, 0.5)',
-                data: reportData.netWorths,
+                data: reportData.netWorths.slice(startIndex, endIndex),
                 point: pointHover
               }
             ]
