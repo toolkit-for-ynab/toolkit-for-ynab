@@ -569,9 +569,7 @@
 
             let labelDate = new Date(currentLabelYear, currentLabelMonth);
             let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
-            if (monthLabelsForTransaction.indexOf(labelDateFormatted) === -1) {
-              monthLabelsForTransaction.push(labelDateFormatted);
-            }
+            monthLabelsForTransaction.push(labelDateFormatted);
 
             currentLabelMonth++;
           }
