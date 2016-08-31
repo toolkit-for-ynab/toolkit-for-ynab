@@ -309,7 +309,9 @@
               $select.val(availableAccountTypes);
             }
           } else {
-            $select.val('custom');
+            setTimeout(function () {
+              $select.val('custom');
+            }, 0);
           }
 
           // for each selected account, add a chip to the page when someone clicks the chip, it will get
