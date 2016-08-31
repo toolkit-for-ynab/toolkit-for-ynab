@@ -18,11 +18,12 @@
         // grab the sub category id the data for it inside of our nested object
         let subCategoryId = transaction.get('subCategoryId');
         let subCategoryData = masterCategoryData.subCategories[subCategoryId];
+        let internalSubCategoryData = categoryViewModel.getSubCategoryById(subCategoryId);
 
         // if we haven't created that data yet, then default everything to 0/empty
         if (typeof subCategoryData === 'undefined') {
           masterCategoryData.subCategories[subCategoryId] = {
-            internalData: categoryViewModel.getSubCategoryById(subCategoryId),
+            internalData: internalSubCategoryData,
             totalByDate: generateInitialDataArray()
           };
 
@@ -61,7 +62,7 @@
 
         if (!masterCategoryData) {
           categoriesObject[masterCategoryId] = {
-            internalData: categoryViewModel.getMasterCategoryById(masterCategoryId),
+            internalData: internalData,
             subCategories: {},
             totalByDate: generateInitialDataArray()
           };
@@ -89,52 +90,36 @@
         placeInSubCategory(transaction, masterCategoryData, categoryViewModel);
       }
 
-      function placeInPayee(transaction, payeesObject, payeeViewModel) {
+      function placeInPayee(transaction, payeesObject, internalPayeeData) {
         let formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
         let dateIndex = dateLabels.indexOf(formattedDate);
-        let payeeId = transaction.get('payeeId');
-        let internalPayee = payeeViewModel.getPayeeById(payeeId);
+        let payeeId = internalPayeeData.get('entityId');
+        let reportPayeeData = payeesObject[payeeId];
 
-        // if there is no payeeId, check to see if there is a parentEntity because we might just be a subCat
-        // if there is no parent, then we're just going to have to throw this guy into null category
-        // and handle it as an unknown payee later...
-        if (!payeeId) {
-          let parentTransactionId = transaction.getParentEntityId();
-          let parentTransaction = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()
-                                      ._result.get('transactionsCollection')
-                                      .findItemByEntityId(parentTransactionId);
-
-          if (parentTransaction && parentTransaction.get('payeeId')) {
-            payeeId = parentTransaction.get('payeeId');
-            internalPayee = payeeViewModel.getPayeeById(payeeId);
-          }
-        }
-
-        let payeeData = payeesObject[payeeId];
-        if (typeof payeeData === 'undefined') {
+        if (typeof reportPayeeData === 'undefined') {
           payeesObject[payeeId] = {
-            internalData: internalPayee,
+            internalData: internalPayeeData,
             totalByDate: generateInitialDataArray()
           };
 
-          payeeData = payeesObject[payeeId];
+          reportPayeeData = payeesObject[payeeId];
         }
 
         // update the report data total objects (by date/total all dates)
-        reportData.totalInflowsByDate[dateIndex] += transaction.get('inflow');
-        reportData.totalInflowsByDate[payeeData.totalByDate.length - 1] += transaction.get('inflow');
+        reportData.totalInflowsByDate[dateIndex] += transaction.getAmount();
+        reportData.totalInflowsByDate[reportPayeeData.totalByDate.length - 1] += transaction.getAmount();
 
-        payeeData.totalByDate[dateIndex] += transaction.get('inflow');
+        reportPayeeData.totalByDate[dateIndex] += transaction.getAmount();
 
         // update the payee total
-        let payeeTotal = payeeData.totalByDate[payeeData.totalByDate.length - 1];
-        payeeTotal += transaction.get('inflow');
-        payeeData.totalByDate[payeeData.totalByDate.length - 1] = payeeTotal;
+        let payeeTotal = reportPayeeData.totalByDate[reportPayeeData.totalByDate.length - 1];
+        payeeTotal += transaction.getAmount();
+        reportPayeeData.totalByDate[reportPayeeData.totalByDate.length - 1] = payeeTotal;
 
         // update the average
-        let payeeAverage = payeeData.totalByDate[payeeData.totalByDate.length - 2];
-        payeeAverage = payeeTotal / (payeeData.totalByDate.length - 2);
-        payeeData.totalByDate[payeeData.totalByDate.length - 2] = payeeAverage;
+        let payeeAverage = reportPayeeData.totalByDate[reportPayeeData.totalByDate.length - 2];
+        payeeAverage = payeeTotal / (reportPayeeData.totalByDate.length - 2);
+        reportPayeeData.totalByDate[reportPayeeData.totalByDate.length - 2] = payeeAverage;
       }
 
       return {
@@ -173,14 +158,34 @@
 
                 // for each transaction, add it to the payee or category based on it's amount (negative v. positive)
                 transactions.forEach((transaction) => {
-                  let masterCategoryId = transaction.get('masterCategoryId');
-                  let transactionCategory = categoryViewModel.getMasterCategoryById(masterCategoryId);
+                  let subCategoryId = transaction.get('subCategoryId');
+                  let subTransactionCategory = categoryViewModel.getSubCategoryById(subCategoryId);
 
-                  if (transaction.getAmount() > 0 && transactionCategory.isInternalMasterCategory()) {
-                    placeInPayee(transaction, reportData.inflowsByPayee, payeeViewModel);
-                  } else {
-                    placeInMasterCategory(transaction, reportData.outflowsByCategory, categoryViewModel);
+                  if (subTransactionCategory.isIncomeCategory()) {
+                    let payeeId = transaction.get('payeeId');
+                    let payeeData = payeeViewModel.getPayeeById(payeeId);
+
+                    // if there is no payeeId, check to see if there is a parentEntity because we might just be a subCat
+                    // if there is no parent, then we're just going to have to throw this guy into null category
+                    // and handle it as an unknown payee later...
+                    if (!payeeId) {
+                      let parentTransactionId = transaction.getParentEntityId();
+                      let parentTransaction = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()
+                                                  ._result.get('transactionsCollection')
+                                                  .findItemByEntityId(parentTransactionId);
+
+                      if (parentTransaction && parentTransaction.get('payeeId')) {
+                        payeeId = parentTransaction.get('payeeId');
+                        payeeData = payeeViewModel.getPayeeById(payeeId);
+                      }
+                    }
+
+                    if (!(payeeData.isStartingBalancePayee() && transaction.getAmount() < 0)) {
+                      return placeInPayee(transaction, reportData.inflowsByPayee, payeeData);
+                    }
                   }
+
+                  placeInMasterCategory(transaction, reportData.outflowsByCategory, categoryViewModel);
                 });
 
                 // divide the total by the amount of dates to get our average
@@ -409,7 +414,8 @@
 
             // loop throw each subcategory and add them to underneath the toggle row.
             masterCategoryData.subCategoriesArray.forEach((subCategoryData) => {
-              let subCategoryName = subCategoryData.internalData.get('name');
+              let isImmediateIncome = subCategoryData.internalData.isImmediateIncomeCategory();
+              let subCategoryName = isImmediateIncome ? 'Negative Starting Balances' : subCategoryData.internalData.get('name');
               let subCategoryRow = $(
                 // default the subcategory row as display: none
                 $('<tr>', { class: 'expandable-row', 'data-expand-for': masterCategoryId }).append(
