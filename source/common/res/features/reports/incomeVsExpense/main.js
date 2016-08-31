@@ -414,7 +414,8 @@
 
             // loop throw each subcategory and add them to underneath the toggle row.
             masterCategoryData.subCategoriesArray.forEach((subCategoryData) => {
-              let subCategoryName = subCategoryData.internalData.get('name');
+              let isImmediateIncome = subCategoryData.internalData.isImmediateIncomeCategory();
+              let subCategoryName = isImmediateIncome ? 'Negative Starting Balances' : subCategoryData.internalData.get('name');
               let subCategoryRow = $(
                 // default the subcategory row as display: none
                 $('<tr>', { class: 'expandable-row', 'data-expand-for': masterCategoryId }).append(
