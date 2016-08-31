@@ -405,12 +405,14 @@
         }
 
         // now that we have a start and end index, we know what slice of the array to take
-        let allowedDates = monthLabels.slice(indexStart, indexEnd);
+        ynabToolKit.reports.allowedDates = monthLabels.slice(indexStart, indexEnd);
 
         // make sure the transaction date is in the slice of the above array
-        let transactionDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
-        if (allowedDates.indexOf(transactionDate) === -1) {
-          return false;
+        if (!toolkitReport.ignoreDateFilter) {
+          let transactionDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
+          if (ynabToolKit.reports.allowedDates.indexOf(transactionDate) === -1) {
+            return false;
+          }
         }
 
         // now that we've filtered by account and date, make sure there's no extra filtering required
