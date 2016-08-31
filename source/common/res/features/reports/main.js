@@ -560,8 +560,12 @@
 
           // start with the month/year on the very first transaction, we should create the labels needed
           // for our slider until the current month/year. use a while loop to do this because there's no need
-          // to loop over every transaction.
-          while (!(currentLabelYear === endYear && currentLabelMonth === endMonth)) {
+          // to loop over every transaction. we get the current and end values from date objects which are
+          // all 0-indexed but when this loop runs, we increment currentMonth at the very end which means
+          // we're going to need to check currentLabelMonth - 1 in our while condition. this isn't a bad thing
+          // because it means we'll also always insert our last month in the while loop and there's no need for
+          // extra lines of code after. just extra lines of comments before :D
+          while (!(currentLabelYear === endYear && currentLabelMonth - 1 === endMonth)) {
             if (currentLabelMonth === 12) {
               currentLabelMonth = 0;
               currentLabelYear++;
@@ -570,13 +574,9 @@
             let labelDate = new Date(currentLabelYear, currentLabelMonth);
             let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
             monthLabelsForTransaction.push(labelDateFormatted);
+
             currentLabelMonth++;
           }
-
-          // push the current month as well :D
-          let labelDate = new Date(endYear, endMonth);
-          let labelDateFormatted = ynabToolKit.reports.formatDatel8n(labelDate);
-          monthLabelsForTransaction.push(labelDateFormatted);
 
           return monthLabelsForTransaction;
         }
