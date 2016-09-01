@@ -87,7 +87,9 @@
             $('.sidebar').prepend(expandBtns);
           }
 
-          $('.collapsed-buttons').hide();
+          if ($('.sidebar-contents').is(':visible')) {
+             $('.collapsed-buttons').hide();
+          }
         },
 
         getUnCollapseBtnGroup() {
