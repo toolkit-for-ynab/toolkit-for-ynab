@@ -29,8 +29,7 @@
           let isInternalMasterCategory = isTransfer ? false : ynabCategory.isInternalMasterCategory();
           let isPositiveStartingBalance = transaction.get('inflow') && isInternalMasterCategory;
 
-          return transaction.payeeName.length > 0 &&
-                 transaction.getAmount() &&
+          return transaction.getAmount() &&
                  !transaction.get('isSplit') &&
                  !isTransfer &&
                  !isInternalDebtCategory &&
@@ -42,17 +41,38 @@
           reportData.payees = {};
 
           return new Promise((resolve) => {
-            // Bucket the transactions by payee
-            transactions.forEach((transaction) => {
-              let payeeObject = reportData.payees[transaction.payeeName] || { name: transaction.payeeName, total: 0, transactions: [] };
+            ynab.YNABSharedLib.getBudgetViewModel_PayeesViewModel().then((payeeViewModel) => {
+              ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then((transactionViewModel) => {
+                transactions.forEach((transaction) => {
+                  let transactionsCollection = transactionViewModel.get('transactionsCollection');
+                  let payeeId = transaction.get('payeeId');
+                  let payeeData = payeeViewModel.getPayeeById(payeeId);
 
-              payeeObject.total += -(transaction.getAmount());
-              payeeObject.transactions.push(transaction);
+                  // if there is no payeeId, check to see if there is a parentEntity because we might just be a
+                  // subtransaction if there is no parent, then we're just going to have to throw this guy
+                  // into null category and handle it as an unknown payee later...
+                  if (!payeeId) {
+                    let parentTransactionId = transaction.getParentEntityId();
+                    let parentTransaction = transactionsCollection.findItemByEntityId(parentTransactionId);
 
-              reportData.payees[transaction.payeeName] = payeeObject;
+                    if (parentTransaction && parentTransaction.get('payeeId')) {
+                      payeeId = parentTransaction.get('payeeId');
+                      payeeData = payeeViewModel.getPayeeById(payeeId);
+                    }
+                  }
+
+                  let payeeName = payeeData ? payeeData.get('name') : 'Unknown Payee';
+                  let payeeObject = reportData.payees[payeeId] || { name: payeeName, total: 0, transactions: [] };
+
+                  payeeObject.total += -(transaction.getAmount());
+                  payeeObject.transactions.push(transaction);
+
+                  reportData.payees[payeeId] = payeeObject;
+                });
+
+                resolve();
+              });
             });
-
-            resolve();
           });
         },
 
