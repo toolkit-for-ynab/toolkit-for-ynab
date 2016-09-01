@@ -80,7 +80,11 @@
           let isInternalMasterCategory = isTransfer ? false : ynabCategory.isInternalMasterCategory();
           let isPositiveStartingBalance = transaction.get('inflow') && isInternalMasterCategory;
 
-          return !transaction.get('isSplit') && !isTransfer && !isInternalDebtCategory && (!isPositiveStartingBalance || !transaction.get('inflow'));
+          return !transaction.get('isSplit') &&
+                 transaction.getAmount() &&
+                 !isTransfer &&
+                 !isInternalDebtCategory &&
+                 (!isPositiveStartingBalance || !transaction.get('inflow'));
         },
 
         calculate(transactions) {

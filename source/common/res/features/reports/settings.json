@@ -16,6 +16,8 @@
                       "injectCSS", "netWorth/main.css",
                       "injectScript", "spendingByCategory/main.js",
                       "injectCSS", "spendingByCategory/main.css",
+                      "injectScript", "spendingByPayee/main.js",
+                      "injectCSS", "spendingByPayee/main.css",
                       "injectScript", "incomeVsExpense/main.js",
                       "injectCSS", "incomeVsExpense/main.css"
                     ]

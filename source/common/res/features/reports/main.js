@@ -9,6 +9,9 @@
     name: 'Spending By Category',
     toolkitId: 'spendingByCategory'
   }, {
+    name: 'Spending By Payee',
+    toolkitId: 'spendingByPayee'
+  }, {
     name: 'Income vs. Expense',
     toolkitId: 'incomeVsExpense'
   }];
