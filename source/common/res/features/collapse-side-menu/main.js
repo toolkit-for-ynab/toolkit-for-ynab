@@ -88,7 +88,7 @@
           }
 
           if ($('.sidebar-contents').is(':visible')) {
-             $('.collapsed-buttons').hide();
+            $('.collapsed-buttons').hide();
           }
         },
 
