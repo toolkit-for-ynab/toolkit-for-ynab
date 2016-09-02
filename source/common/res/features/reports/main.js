@@ -208,6 +208,9 @@
           name: 'This Month',
           filter: [todayFormatted, todayFormatted]
         }, {
+          name: 'Last Month',
+          filter: [ynabToolKit.reports.formatDatel8n(new Date(currentYear, currentMonth - 1)), ynabToolKit.reports.formatDatel8n(new Date(currentYear, currentMonth - 1))]
+        }, {
           name: 'Latest Three Months',
           filter: [ynabToolKit.reports.formatDatel8n(new Date(currentYear, currentMonth - 2)), todayFormatted]
         }, {
