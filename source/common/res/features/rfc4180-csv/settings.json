@@ -1,0 +1,8 @@
+{
+        "name": "rfc4180",
+        "type": "checkbox",
+     "default": true,
+     "section": "general"
+       "title": "Safe & Complete CSV"
+ "description": "Performs a CSV export that conforms to the 'standard' CSV format. This export will also include all your hidden categories in the budget.csv file (which the standard export does not).
+}
