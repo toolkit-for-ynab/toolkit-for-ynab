@@ -93,7 +93,7 @@
       function placeInPayee(transaction, payeesObject, internalPayeeData) {
         let formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
         let dateIndex = dateLabels.indexOf(formattedDate);
-        let payeeId = internalPayeeData.get('entityId');
+        let payeeId = internalPayeeData ? internalPayeeData.get('entityId') : null;
         let reportPayeeData = payeesObject[payeeId];
 
         if (typeof reportPayeeData === 'undefined') {
@@ -142,60 +142,60 @@
         calculate(transactions) {
           return new Promise((resolve) => {
             // grab the categories from ynab's shared lib with their promise -- we can trust it.
-            ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel().then((categoryViewModel) => {
-              ynab.YNABSharedLib.getBudgetViewModel_PayeesViewModel().then((payeeViewModel) => {
-                // make sure the data is empty before we start doing an calculating/data layout stuff
-                dateLabels = ynabToolKit.reports.generateMonthLabelsFromFirstTransaction(transactions, true);
-                dateLabels.push('Average', 'Total');
+            ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then((transactionViewModel) => {
+              ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel().then((categoryViewModel) => {
+                ynab.YNABSharedLib.getBudgetViewModel_PayeesViewModel().then((payeeViewModel) => {
+                  // make sure the data is empty before we start doing an calculating/data layout stuff
+                  dateLabels = ynabToolKit.reports.generateMonthLabelsFromFirstTransaction(transactions, true);
+                  dateLabels.push('Average', 'Total');
 
-                // create the inflow by payee object and total array object
-                reportData.inflowsByPayee = {};
-                reportData.totalInflowsByDate = generateInitialDataArray();
+                  // create the inflow by payee object and total array object
+                  reportData.inflowsByPayee = {};
+                  reportData.totalInflowsByDate = generateInitialDataArray();
 
-                // create the outflow by category object and total array object
-                reportData.outflowsByCategory = {};
-                reportData.totalOutflowsByDate = generateInitialDataArray();
+                  // create the outflow by category object and total array object
+                  reportData.outflowsByCategory = {};
+                  reportData.totalOutflowsByDate = generateInitialDataArray();
 
-                // for each transaction, add it to the payee or category based on it's amount (negative v. positive)
-                transactions.forEach((transaction) => {
-                  let subCategoryId = transaction.get('subCategoryId');
-                  let subTransactionCategory = categoryViewModel.getSubCategoryById(subCategoryId);
+                  // for each transaction, add it to the payee or category based on it's amount (negative v. positive)
+                  transactions.forEach((transaction) => {
+                    let subCategoryId = transaction.get('subCategoryId');
+                    let subTransactionCategory = categoryViewModel.getSubCategoryById(subCategoryId);
 
-                  if (subTransactionCategory.isIncomeCategory()) {
-                    let payeeId = transaction.get('payeeId');
-                    let payeeData = payeeViewModel.getPayeeById(payeeId);
+                    if (subTransactionCategory.isIncomeCategory()) {
+                      let payeeId = transaction.get('payeeId');
+                      let payeeData = payeeViewModel.getPayeeById(payeeId);
 
-                    // if there is no payeeId, check to see if there is a parentEntity because we might just be a subCat
-                    // if there is no parent, then we're just going to have to throw this guy into null category
-                    // and handle it as an unknown payee later...
-                    if (!payeeId) {
-                      let parentTransactionId = transaction.getParentEntityId();
-                      let parentTransaction = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()
-                                                  ._result.get('transactionsCollection')
-                                                  .findItemByEntityId(parentTransactionId);
+                      // if there is no payeeId, check to see if there is a parentEntity because we might just be a subCat
+                      // if there is no parent, then we're just going to have to throw this guy into null category
+                      // and handle it as an unknown payee later...
+                      if (!payeeId) {
+                        let parentTransactionId = transaction.getParentEntityId();
+                        let parentTransaction = transactionViewModel.get('transactionsCollection').findItemByEntityId(parentTransactionId);
 
-                      if (parentTransaction && parentTransaction.get('payeeId')) {
-                        payeeId = parentTransaction.get('payeeId');
-                        payeeData = payeeViewModel.getPayeeById(payeeId);
+                        if (parentTransaction && parentTransaction.get('payeeId')) {
+                          payeeId = parentTransaction.get('payeeId');
+                          payeeData = payeeViewModel.getPayeeById(payeeId);
+                        }
+                      }
+
+                      if (!payeeData || !(payeeData.isStartingBalancePayee() && transaction.getAmount() < 0)) {
+                        return placeInPayee(transaction, reportData.inflowsByPayee, payeeData);
                       }
                     }
 
-                    if (!(payeeData.isStartingBalancePayee() && transaction.getAmount() < 0)) {
-                      return placeInPayee(transaction, reportData.inflowsByPayee, payeeData);
-                    }
-                  }
+                    placeInMasterCategory(transaction, reportData.outflowsByCategory, categoryViewModel);
+                  });
 
-                  placeInMasterCategory(transaction, reportData.outflowsByCategory, categoryViewModel);
+                  // divide the total by the amount of dates to get our average
+                  reportData.totalInflowsByDate[dateLabels.length - 2] =
+                    reportData.totalInflowsByDate[dateLabels.length - 1] / (dateLabels.length - 2);
+
+                  reportData.totalOutflowsByDate[dateLabels.length - 2] =
+                    reportData.totalOutflowsByDate[dateLabels.length - 1] / (dateLabels.length - 2);
+
+                  resolve();
                 });
-
-                // divide the total by the amount of dates to get our average
-                reportData.totalInflowsByDate[dateLabels.length - 2] =
-                  reportData.totalInflowsByDate[dateLabels.length - 1] / (dateLabels.length - 2);
-
-                reportData.totalOutflowsByDate[dateLabels.length - 2] =
-                  reportData.totalOutflowsByDate[dateLabels.length - 1] / (dateLabels.length - 2);
-
-                resolve();
               });
             });
           });
@@ -326,13 +326,6 @@
           }
 
           if (hasUnkownPayee) {
-            // show an alert to the user that they have unknown payees. Ideally they fix that.
-            ynabToolKit.shared.showModal(
-              'Unknown Payee',
-              "It looks like you have inflows that don't have a payee. We've decided to still show you this income but please consider adding a payee to your inflow transactions.",
-              'close'
-            );
-
             let payeeData = reportData.inflowsByPayee.null;
             let payeeRow = $(
               $('<tr>', { class: 'expandable-row', 'data-expand-for': 'all-payees' }).append(
