@@ -1,7 +1,7 @@
 ynabToolKit.l10nData = {
   "toolkit.selectedTotal":"Suma wybranych transakcji",
   "toolkit.balanceToZero":"Rozlicz do 0.00:",
-  "toolkit.collapse":"Collapse",
+  "toolkit.collapse":"Zwiń",
   "toolkit.DoB":"Dni buforu",
   "toolkit.search":"Szukaj:",
   "toolkit.pacing":"PACING",
@@ -65,7 +65,7 @@ ynabToolKit.l10nData = {
   "app.next":"Następny",
   "app.complete":"Gotowe",
   "app.why":"Dlaczego",
-  "app.for":"{{field}} for {{institution}}",
+  "app.for":"{{field}} dla {{institution}}",
   "app.recategorize":"Ponownie kategoryzuj",
   "app.refresh_now":"Odśwież teraz",
   "app.nothing":"Nic",

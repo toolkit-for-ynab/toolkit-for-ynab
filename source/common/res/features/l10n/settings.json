@@ -42,7 +42,7 @@
             "value": "french"
         }, 
         {
-            "name": "German (61%)", 
+            "name": "German (63%)", 
             "value": "german"
         }, 
         {
@@ -62,6 +62,10 @@
             "value": "korean"
         }, 
         {
+            "name": "Lithuanian (1%)", 
+            "value": "lithuanian"
+        }, 
+        {
             "name": "Norwegian (100%)", 
             "value": "norwegian"
         }, 
@@ -76,6 +80,10 @@
         {
             "name": "Portuguese (15%)", 
             "value": "portuguese"
+        }, 
+        {
+            "name": "Romanian (4%)", 
+            "value": "romanian"
         }, 
         {
             "name": "Russian (100%)", 
@@ -151,6 +159,12 @@
             "injectScript", 
             "main.js"
         ], 
+        "romanian": [
+            "injectScript", 
+            "locales/Romanian.json", 
+            "injectScript", 
+            "main.js"
+        ], 
         "slovenian": [
             "injectScript", 
             "locales/Slovenian.json", 
@@ -190,6 +204,12 @@
         "ukrainian": [
             "injectScript", 
             "locales/Ukrainian.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "lithuanian": [
+            "injectScript", 
+            "locales/Lithuanian.json", 
             "injectScript", 
             "main.js"
         ], 
