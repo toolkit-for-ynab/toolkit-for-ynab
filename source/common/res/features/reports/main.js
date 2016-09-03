@@ -366,7 +366,7 @@
         let filterType;
 
         // if the transaction isTombstone, or a scheduledTransaction then filter it out...
-        if (transaction.get('isTombstone') === true && !transaction.get('isScheduledTransaction')) {
+        if (transaction.get('isTombstone') || transaction.get('isScheduledTransaction')) {
           return false;
         }
 
