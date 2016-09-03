@@ -38,10 +38,10 @@
         },
 
         calculate(transactions) {
-          // Ensure we're calculating from scratch each time.
-          reportData.payees = {};
-
           return new Promise((resolve) => {
+            // Ensure we're calculating from scratch each time.
+            reportData.payees = {};
+
             // Bucket the transactions by payee
             transactions.forEach((transaction) => {
               let payeeObject = reportData.payees[transaction.payeeName] || { name: transaction.payeeName, total: 0, transactions: [] };
