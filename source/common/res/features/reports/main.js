@@ -458,6 +458,14 @@
       }
 
       function showReports() {
+        // If we're not on the budget tab, then we need to be for the drill down detail
+        // dialog to work. Go ahead and ask to be there.
+        let router = ynabToolKit.shared.containerLookup('router:main');
+
+        if (router.currentRouteName !== 'budget.select') {
+          $('.navlink-budget a').click();
+        }
+
         // grab all the transactions...
         ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then((transactionsViewModel) => {
           // then grab the sidebar so we can get all the accounts...
