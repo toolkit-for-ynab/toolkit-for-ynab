@@ -104,6 +104,31 @@
         );
       }
 
+      function showCategoryTransactions(category, transactions) {
+        let budgetController = ynabToolKit.shared.containerLookup('controller:budget');
+        let budgetViewModel = ynab.YNABSharedLib.getBudgetViewModel_BudgetMonthViewModel(transactions[0].get('date'))._result;
+        let displayItemsCollection = budgetViewModel.getBudgetMonthDisplayItemsCollection();
+        let subCategoryDisplayItem = displayItemsCollection.findItemByCategoryId(category.get('entityId'));
+
+        budgetController.setProperties({
+          selectedActivityCategory: subCategoryDisplayItem,
+          selectedActivityTransactions: transactions
+        });
+
+        budgetController.send('openModal', 'modals/budget/activity', {
+          triggerElement: $(event.currentTarget),
+          controller: 'budget',
+          arrow: 'up',
+          offset: {
+            y: event.chartY,
+            x: event.chartX - $(event.currentTarget).width() / 2
+          },
+          arrowOffset: {
+            x: event.chartX - $(event.currentTarget).width() / 2
+          }
+        });
+      }
+
       return {
         availableAccountTypes: 'onbudget',
         reportHeaders() {
@@ -244,7 +269,13 @@
               masterCategoryDrillDown.data.unshift({
                 name: categoryName,
                 y: subCategoryData.total,
-                color: colors[subCatIndex % colors.length]
+                color: colors[subCatIndex % colors.length],
+                transactions: subCategoryData.transactions,
+                events: {
+                  click: function () {
+                    showCategoryTransactions(subCategoryData.internalData, this.transactions);
+                  }
+                }
               });
             });
 
@@ -271,8 +302,7 @@
                   // e points to the clicked category point, seriesOptions has all the data for the drilldown
                   updateLegend(e.seriesOptions);
                 },
-                drillup: function (e) {
-                  console.log(e);
+                drillup: function () {
                   this.setTitle({
                     text: 'Total Spending<br>' + ynabToolKit.shared.formatCurrency(totalSpending)
                   });
