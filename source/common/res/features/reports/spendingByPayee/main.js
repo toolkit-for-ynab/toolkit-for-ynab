@@ -37,12 +37,12 @@
         },
 
         calculate(transactions) {
-          // Ensure we're calculating from scratch each time.
-          reportData.payees = {};
-
           return new Promise((resolve) => {
             ynab.YNABSharedLib.getBudgetViewModel_PayeesViewModel().then((payeeViewModel) => {
               ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then((transactionViewModel) => {
+                // Ensure we're calculating from scratch each time.
+                reportData.payees = {};
+
                 transactions.forEach((transaction) => {
                   let transactionsCollection = transactionViewModel.get('transactionsCollection');
                   let payeeId = transaction.get('payeeId');
