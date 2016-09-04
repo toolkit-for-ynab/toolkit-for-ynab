@@ -1,7 +1,7 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && typeof Highcharts !== 'undefined') {
     ynabToolKit.spendingByCategory = (function () {
-      let colors = ['#ea5439', '#f3ad51', '#ebe598', '#74a9e6', '#c8df68', '#8ba157', '#91c5b4', '#009dae', '#cbdb3c'];
+      let colors = ['#ea5439', '#f3ad51', '#ebe598', '#74a9e6', '#c8df68', '#8ba157', '#91c5b4', '#009dae', '#cbdb3c', '#e4d354', '#8085e9', '#f7a35c', '#434348', '#7cb5ec', '#c7f6be'];
       let reportData = {
         masterCategories: {}
       };
@@ -55,6 +55,53 @@
         // increment the total of the category and then call placeInSubCategory so that we can do drilldowns
         masterCategoryData.total += -(transaction.getAmount());
         placeInSubCategory(transaction, masterCategoryData, categoryViewModel);
+      }
+
+      function updateLegend(data) {
+        let legendData = data.data;
+        let legendName = data.name;
+        let legendTotal = 0;
+
+        $('.ynabtk-category-panel').empty();
+
+        for (var i = legendData.length - 1; i >= 0; i--) {
+          legendTotal += legendData[i].y;
+
+          $('.ynabtk-category-panel').append(
+            $('<div>', {
+              class: 'ynabtk-category-entry'
+            }).append(
+              $('<div>', {
+                class: 'ynabtk-category-entry-name'
+              }).append(
+                $('<div>', {
+                  class: 'ynabtk-reports-legend-square category-color',
+                  css: { 'background-color': legendData[i].color }
+                })
+              ).append(document.createTextNode(legendData[i].name))
+            )
+            .append(
+              $('<div>', {
+                class: 'ynabtk-category-entry-amount',
+                text: ynabToolKit.shared.formatCurrency(legendData[i].y)
+              })
+            )
+          );
+        }
+
+        $('.ynabtk-category-panel')
+          .append($('<hr>'))
+          .append($('<div>', {
+            class: 'ynabtk-category-entry'
+          }).append($('<div>', {
+            class: 'ynabtk-category-entry-name total',
+            text: legendName
+          }))
+          .append($('<div>', {
+            class: 'ynabtk-category-entry-amount total',
+            text: ynabToolKit.shared.formatCurrency(legendTotal)
+          }))
+        );
       }
 
       return {
@@ -121,8 +168,21 @@
 
           // store all the categories into an array so we can sort it!
           let masterCategoriesArray = [];
-          for (let categoryId in reportData.masterCategories) {
-            masterCategoriesArray.push(reportData.masterCategories[categoryId]);
+          for (let masterCategoryId in reportData.masterCategories) {
+            let masterCategoryData = reportData.masterCategories[masterCategoryId];
+            let subCategoryArray = [];
+
+            for (let subCategoryId in masterCategoryData.subCategories) {
+              subCategoryArray.push(masterCategoryData.subCategories[subCategoryId]);
+            }
+
+            // sort it descending
+            subCategoryArray.sort((a, b) => {
+              return b.total - a.total;
+            });
+
+            masterCategoryData.subCategoryArray = subCategoryArray;
+            masterCategoriesArray.push(masterCategoryData);
           }
 
           // sort it! (descending)
@@ -132,54 +192,63 @@
 
           // we want to have a separate chartData array because there's only 10 slices in this pie
           let chartData = [];
+          let drilldownData = [];
           let totalSpending = 0;
 
           // the 10th will be a house for everything not in the top 9 slices...
           let otherCategories = {
             name: 'All Other Categories',
             y: 0,
-            color: '#696a69'
+            color: '#696a69',
+            drilldown: null
           };
 
           // throw the categories into the chartData FILO style because that's what Highcharts wants.
-          masterCategoriesArray.forEach(function (masterCategoryData, index) {
-            let categoryName = masterCategoryData.internalData.get('name');
-            let categoryTotal = masterCategoryData.total;
-            let color = colors[index] || otherCategories.color;
+          masterCategoriesArray.forEach((masterCategoryData, index) => {
+            let masterCategoryId = masterCategoryData.internalData.get('entityId');
+            let masterCategoryName = masterCategoryData.internalData.get('name');
+            let masterCategoryTotal = masterCategoryData.total;
+            let color = colors[index];
             totalSpending += masterCategoryData.total;
 
             // the 10th data element will get grouped into "all other transactions"
             if (chartData.length < 9) {
               chartData.unshift({
-                name: categoryName,
-                y: categoryTotal,
-                color: color
+                name: masterCategoryName,
+                y: masterCategoryTotal,
+                color: color,
+                drilldown: masterCategoryId
               });
             } else {
               otherCategories.y += masterCategoryData.total;
             }
 
-            // also add the category to the legend so users can still see all the data
-            $('.ynabtk-category-panel').append(
-              $('<div>', {
-                class: 'ynabtk-category-entry'
-              }).append(
-                $('<div>', {
-                  class: 'ynabtk-category-entry-name'
-                }).append(
-                  $('<div>', {
-                    class: 'ynabtk-reports-legend-square category-color',
-                    css: { 'background-color': color }
-                  })
-                ).append(document.createTextNode(categoryName))
-              )
-              .append(
-                $('<div>', {
-                  class: 'ynabtk-category-entry-amount',
-                  text: ynabToolKit.shared.formatCurrency(categoryTotal)
-                })
-              )
-            );
+            let masterCategoryDrillDown = {
+              name: masterCategoryName,
+              id: masterCategoryId,
+              size: '80%',
+              innerSize: '50%',
+              dataLabels: {
+                formatter: function () {
+                  let formattedNumber = ynabToolKit.shared.formatCurrency(this.y);
+                  return this.point.name + '<br>' + formattedNumber + ' (' + Math.round(this.percentage) + '%)';
+                }
+              },
+              data: []
+            };
+
+            masterCategoryData.subCategoryArray.forEach((subCategoryData, subCatIndex) => {
+              let categoryName = subCategoryData.internalData.isImmediateIncomeCategory() ? 'Negative Starting Balances' :
+                                 subCategoryData.internalData.get('name');
+
+              masterCategoryDrillDown.data.unshift({
+                name: categoryName,
+                y: subCategoryData.total,
+                color: colors[subCatIndex % colors.length]
+              });
+            });
+
+            drilldownData.push(masterCategoryDrillDown);
           });
 
           // if we had enough data for otherCategories, make sure we put it in the chart!
@@ -187,27 +256,39 @@
             chartData.unshift(otherCategories);
           }
 
-          // throw the total into the legend as well so they can see how much money the spend in two places!
-          $('.ynabtk-category-panel')
-            .append($('<hr>'))
-            .append($('<div>', {
-              class: 'ynabtk-category-entry'
-            }).append($('<div>', {
-              class: 'ynabtk-category-entry-name total',
-              text: 'Total'
-            }))
-            .append($('<div>', {
-              class: 'ynabtk-category-entry-amount total',
-              text: ynabToolKit.shared.formatCurrency(totalSpending)
-            }))
-          );
-
           // make that chart!
           ynabToolKit.spendingByCategory.chart = new Highcharts.Chart({
             credits: false,
             chart: {
               type: 'pie',
-              renderTo: 'report-chart'
+              renderTo: 'report-chart',
+              events: {
+                drilldown: function (e) {
+                  this.setTitle({
+                    text: e.point.name + '<br>' + ynabToolKit.shared.formatCurrency(e.point.y)
+                  });
+
+                  // e points to the clicked category point, seriesOptions has all the data for the drilldown
+                  updateLegend(e.seriesOptions);
+                },
+                drillup: function (e) {
+                  console.log(e);
+                  this.setTitle({
+                    text: 'Total Spending<br>' + ynabToolKit.shared.formatCurrency(totalSpending)
+                  });
+
+                  updateLegend({
+                    name: 'Total Spending',
+                    data: chartData
+                  });
+                },
+                load: function () {
+                  updateLegend({
+                    name: 'Total Spending',
+                    data: chartData
+                  });
+                }
+              }
             },
             plotOptions: {
               pie: {
@@ -233,7 +314,10 @@
                   return this.point.name + '<br>' + formattedNumber + ' (' + Math.round(this.percentage) + '%)';
                 }
               }
-            }]
+            }],
+            drilldown: {
+              series: drilldownData
+            }
           });
         }
       };
