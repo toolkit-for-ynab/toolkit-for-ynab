@@ -1,16 +1,5 @@
 /* eslint-disable no-unused-vars, no-undef, no-shadow */
-/**
- * Use this template to add new js functions to your features
- *
- * To help isolate and protect our functions and variables from
- * the production code, we want to contain all of our optional features
- * within the global ynabToolKit object, which is created on page load.
- *
- * Note: Using this.observe() is optional, but we use a MutationObserver instance
- * to evaluate changes on the page and feed those changes to each function
- * that might want to act on a specific change in the DOM.
- */
-
+// Not sure how to fix these for eslint??
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
