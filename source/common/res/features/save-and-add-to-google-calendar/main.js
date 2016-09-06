@@ -22,6 +22,16 @@
       googleAPI.src = 'https://apis.google.com/js/client.js';
       document.head.appendChild(googleAPI);
       /**
+       * Add a button with the option to save and send to Google Calendar
+       */
+      function saveToCalendarButton() {
+        var newButton = document.createElement('BUTTON');
+        newButton.setAttribute('class', 'button button-primary calendar-button');
+        newButton.addEventListener('click', newEvent);
+        newButton.innerHTML = 'Save + Calendar';
+        document.getElementsByClassName('ynab-grid-actions')[0].appendChild(newButton);
+      }
+      /**
        * BEGIN BLOCK FROM GOOGLE API SITE
        *
        * Check if current user has authorized this application.
@@ -63,44 +73,7 @@
        * once client library is loaded.
        */
       function loadCalendarApi() {
-        gapi.client.load('calendar', 'v3', listUpcomingEvents);
-      }
-
-      /**
-       * Print the summary and start datetime/date of the next ten events in
-       * the authorized user's calendar. If no events are found an
-       * appropriate message is printed.
-       */
-      function listUpcomingEvents() {
-        var request = gapi.client.calendar.events.list({ calendarId: 'primary', timeMin: (new Date()).toISOString(), showDeleted: false, singleEvents: true, maxResults: 10, orderBy: 'startTime' });
-        request.execute(function (resp) {
-          var events = resp.items;
-          appendPre('Upcoming events:');
-          if (events.length > 0) {
-            for (i = 0; i < events.length; i++) {
-              var event = events[i];
-              var when = event.start.dateTime;
-              if (!when) {
-                when = event.start.date;
-              }
-              appendPre(event.summary + ' (' + when + ')');
-            }
-          } else {
-            appendPre('No upcoming events found.');
-          }
-        });
-      }
-
-       /**
-        * Append a pre element to the body containing the given message
-        * as its text node.
-        *
-        * @param {string} message Text to be placed in pre element.
-        */
-      function appendPre(message) {
-        var pre = document.getElementsByClassName('nav-main');
-        var textContent = document.createTextNode(message + '\n');
-        pre.appendChild(textContent);
+        gapi.client.load('calendar', 'v3');
       }
 
        // Refer to the JavaScript quickstart on how to setup the environment:
@@ -141,17 +114,6 @@
 
         // document.getElementById('eventName').value = '';
         // This was reseting a form field originally??
-      }
-
-      /**
-       * Adds a button with the option to save and send to Google Calendar
-       */
-      function saveToCalendarButton() {
-        var newButton = document.createElement('BUTTON');
-        newButton.setAttribute('class', 'button button-primary calendar-button');
-        newButton.addEventListener('click', newEvent);
-        newButton.innerHTML = 'Save + Calendar';
-        document.getElementsByClassName('ynab-grid-actions')[0].appendChild(newButton);
       }
 
       return {
