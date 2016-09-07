@@ -3,7 +3,7 @@
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
-    ynabToolKit.awesomeFeature = (function () {
+    ynabToolKit.addToGoogleCalendar = (function () {
       // Pull in Google calendar API
       var CLIENT_ID = '158925675835-uhm7ksaftbi7ef3vp9otk9kng4opg4qb.apps.googleusercontent.com';
       var SCOPES = ['https://www.googleapis.com/auth/calendar'];
@@ -115,7 +115,7 @@
         observe(changedNodes) {
           var calendarButton = document.getElementsByClassName('calendar-button');
           if (changedNodes.has('ynab-u modal-account-calendar ember-view modal-overlay active') && calendarButton.length < 1) {
-            ynabToolKit.awesomeFeature.invoke();
+            ynabToolKit.addToGoogleCalendar.invoke();
             // in the set of changed nodes that indicates your function need may need to run.
             // Call this.invoke() to activate your function if you find any class names
           }
@@ -123,7 +123,7 @@
       };
     }()); // Keep feature functions contained within this object
 
-    // ynabToolKit.awesomeFeature.invoke(); // Run your script once on page load
+    // ynabToolKit.addToGoogleCalendar.invoke(); // Run your script once on page load
   } else {
     setTimeout(poll, 250);
   }
