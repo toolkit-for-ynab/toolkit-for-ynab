@@ -1,0 +1,17 @@
+{
+         "name": "accountsRowHeight",
+         "type": "checkbox",
+      "default": "0",
+      "section": "accounts",
+        "title": "Height of Rows in Account Register",
+  "description": "Add toolbar button that allows you to select the height of transaction rows.",
+      "actions": {
+                    "true": [
+                      "injectCSS", "main.css",
+                      "injectCSS", "compact.css",
+                      "injectCSS", "slim.css",
+                      "injectScript", "main.js"
+                    ]
+                 }
+}
+

@@ -6,7 +6,8 @@
 .ynab-grid-cell {
 	height: 1.2em !important;
 	top: 0 !important;
-	padding-top: 0.1em !important;
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
 	font-size: .90em !important;
 }
 
@@ -18,7 +19,7 @@
 .ynab-grid-body-row {
 	height: 1.4em !important;
 	top: 0 !important;
-	padding-top: 0.1em !important;
+	padding-top: 0 !important;
 }
 
 .ynab-grid-cell-checkbox
