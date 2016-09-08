@@ -4,9 +4,11 @@
       $('.import-notification').remove();
       $('.nav-account-row').each(function (index, row) {
         var account = ynabToolKit.shared.getEmberView($(row).attr('id')).get('data');
-        var transactions = ynab.utilities.TransactionImportUtilities.getImportTransactionsForAccount(account);
-        if (transactions.length >= 1) {
-          $(row).find('.nav-account-notification').append('<a class="notification import-notification">' + transactions.length + '</a>');
+        if( account.getDirectConnectEnabled()) {
+          var transactions = ynab.utilities.TransactionImportUtilities.getImportTransactionsForAccount(account);
+          if (transactions.length >= 1) {
+            $(row).find('.nav-account-notification').append('<a class="notification import-notification">' + transactions.length + '</a>');
+          }
         }
       });
     };
