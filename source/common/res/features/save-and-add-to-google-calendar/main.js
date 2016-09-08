@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars, no-undef, no-shadow */
-// Not sure how to fix these for eslint??
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
@@ -50,7 +48,7 @@
        *
        * @param {Event} event Button click event.
        */
-      function handleAuth(event) {
+      function handleAuth() {
         gapi.auth.authorize(
         { client_id: CLIENT_ID, scope: SCOPES, immediate: false },
         handleAuthResult);
@@ -95,10 +93,8 @@
           resource: event
         });
 
-        request.execute(function (event) {
-          // appendPre('Event created: ' + name);
+        request.execute(function () {
           getSave.click();
-          alert('Your event was added to your calendar');
         });
 
         // document.getElementById('eventName').value = '';

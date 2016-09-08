@@ -24,7 +24,8 @@ module.exports = {
         "setKangoSetting": true,
         "windowReload": true,
         "ynab": true,
-        "ynabToolKit": true
+        "ynabToolKit": true,
+        "gapi": true
     },
     "rules": {
         "consistent-return": "off",
