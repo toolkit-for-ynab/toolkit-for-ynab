@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
@@ -65,11 +64,10 @@
         gapi.client.load('calendar', 'v3');
       }
 
-       // Refer to the JavaScript quickstart on how to setup the environment:
-       // https://developers.google.com/google-apps/calendar/quickstart/js
-       // Change the scope to 'https://www.googleapis.com/auth/calendar' and delete any
-       // stored credentials.
 
+      /*
+       * set event parameters and send to calendar
+       */
       function newEvent() {
         console.log(recurValue);
         var getSave = document.getElementsByClassName('ynab-grid-actions')[0].childNodes[4];
@@ -102,6 +100,11 @@
         });
       }
 
+      /*
+       * Set RRULE's for each option in the ynab calendar select box
+       *
+       * I have yet to figure out 'TwiceAMonth'
+       */
       function getRecur() {
         switch (recurValue) {
           case 'Never': return 'RRULE:FREQ=DAILY;COUNT=1';
@@ -120,6 +123,9 @@
         }
       }
 
+      /*
+       * set global value from select box before modal closes
+       */
       function addRecurrence() {
         var recurSelect = document.getElementsByClassName('ember-select');
         recurValue = recurSelect[0].value;
@@ -143,10 +149,6 @@
           if (changedNodes.has('ynab-u modal-account-calendar ember-view modal-overlay active')) {
             document.getElementsByClassName('ember-select')[0].addEventListener('click', addRecurrence);
           }
-          // var c = document.querySelectorAll('.ember-select')[0].value;
-          // if (changedNodes.has('accounts-calendar')) {
-          // console.log('sel ' + c);
-          // }
         }
       };
     }()); // Keep feature functions contained within this object
