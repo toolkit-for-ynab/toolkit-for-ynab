@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 (function poll() {
   // Waits until an external function gives us the all clear that we can run (at /shared/main.js)
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
@@ -8,6 +9,7 @@
       var googleAPI = document.createElement('SCRIPT');
       googleAPI.src = 'https://apis.google.com/js/client.js';
       document.head.appendChild(googleAPI);
+      var recurValue = '';
       /**
        * Add a button with the option to save and send to Google Calendar
        */
@@ -69,10 +71,12 @@
        // stored credentials.
 
       function newEvent() {
+        console.log(recurValue);
         var getSave = document.getElementsByClassName('ynab-grid-actions')[0].childNodes[4];
         var dateCell = document.querySelectorAll('.ynab-grid-add-rows .ynab-grid-cell-date input');
         var payeeName = document.querySelectorAll('.ynab-grid-add-rows .ynab-grid-cell-payeeName input');
         var date = new Date(dateCell[0].value).toISOString();
+        var recurrence = getRecur();
         var outflow = document.querySelectorAll('.ynab-grid-add-rows .ynab-grid-cell-outflow input');
         var event = {
           summary: payeeName[0].value,
@@ -84,7 +88,7 @@
             date: date.substr(0, 10)
           },
           recurrence: [
-            'RRULE:FREQ=DAILY;COUNT=1'
+            recurrence
           ]
         };
 
@@ -96,9 +100,30 @@
         request.execute(function () {
           getSave.click();
         });
+      }
 
-        // document.getElementById('eventName').value = '';
-        // This was reseting a form field originally??
+      function getRecur() {
+        switch (recurValue) {
+          case 'Never': return 'RRULE:FREQ=DAILY;COUNT=1';
+          case 'Daily': return 'RRULELFREQ=DAILY';
+          case 'Weekly': return 'RRULE:FREQ=WEEKLY';
+          case 'EveryOtherWeek': return 'RRULE:FREQ=WEEKLY;INTERVAL=2';
+          case 'TwiceAMonth': return '';
+          case 'Every4Weeks': return 'RRULE:FREQ=WEEKLY;INTERVAL=4';
+          case 'Monthly': return 'RRULE:FREQ=MONTHLY';
+          case 'EveryOtherMonth': return 'RRULE:FREQ=MONTHLY;INTERVAL=2';
+          case 'Every3Months': return 'RRULE:FREQ=MONTHLY;INTERVAL=3';
+          case 'Every4Months': return 'RRULE:FREQ=MONTHLY;INTERVAL=4';
+          case 'TwiceAYear': return 'RRULE:FREQ=MONTHLY;INTERVAL=6';
+          case 'Yearly': return 'RRULE:FREQ=YEARLY';
+          case 'EveryOtherYear': return 'RRULE:FREQ=YEARLY;INTERVAL=2';
+        }
+      }
+
+      function addRecurrence() {
+        var recurSelect = document.getElementsByClassName('ember-select');
+        recurValue = recurSelect[0].value;
+        console.log(recurValue);
       }
 
       return {
@@ -115,6 +140,13 @@
             // in the set of changed nodes that indicates your function need may need to run.
             // Call this.invoke() to activate your function if you find any class names
           }
+          if (changedNodes.has('ynab-u modal-account-calendar ember-view modal-overlay active')) {
+            document.getElementsByClassName('ember-select')[0].addEventListener('click', addRecurrence);
+          }
+          // var c = document.querySelectorAll('.ember-select')[0].value;
+          // if (changedNodes.has('accounts-calendar')) {
+          // console.log('sel ' + c);
+          // }
         }
       };
     }()); // Keep feature functions contained within this object
