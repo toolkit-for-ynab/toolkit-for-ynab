@@ -60,23 +60,22 @@
       }
 
       function showSelectedTransaction(accountsController, contentResults, transactionIndex) {
-        var rowView = ynabToolKit.shared.getEmberViewByContainerKey('view:ynab-grid/rows');
-        var containerView = rowView.get('containerView');
-        var recordHeight = rowView.get('recordHeight');
-        var container = containerView.get('element');
+        var ynabGrid = ynabToolKit.shared.getEmberView($('.ynab-grid').attr('id'));
+        var ynabGridContainer = ynabToolKit.shared.getEmberView($('.ynab-grid-container').attr('id'));
+        var recordHeight = ynabGridContainer.get('recordHeight');
 
         Ember.run.later(function () {
           var skipSplits = ynabToolKit.options.toggleSplits && ynabToolKit.toggleSplits.setting === 'hide';
           var transactionScrollTo = recordHeight * transactionIndex;
 
-          $(container).scrollTop(transactionScrollTo);
+          $(ynabGridContainer.element).scrollTop(transactionScrollTo);
 
           // if the toggle splits feature is enabled and we're hiding splits, then we need to recalculate
           // the actual scroll position of the transaction we're linking to.
           if (skipSplits) {
             Ember.run.later(function () {
               var newIndex = transactionIndex;
-              for (var i = containerView.get('displayStart'); i < transactionIndex; i++) {
+              for (var i = ynabGridContainer.get('displayStart'); i < transactionIndex; i++) {
                 if (contentResults[i].get('parentEntityId')) {
                   newIndex--;
                 }
@@ -88,11 +87,11 @@
               // to scroll 5 more transactions. this isn't perfect, it's as magic number as it gets but it works until
               // i can pinpoint the actual issue here.
               var newTransactionScrollTo = recordHeight * (newIndex - 5);
-              rowView.gridView.uncheckAllBut(selectedTransaction);
-              $(container).scrollTop(newTransactionScrollTo);
+              ynabGrid.uncheckAllBut(selectedTransaction);
+              $(ynabGridContainer.element).scrollTop(newTransactionScrollTo);
             }, 250);
           } else {
-            rowView.gridView.uncheckAllBut(selectedTransaction);
+            ynabGrid.uncheckAllBut(selectedTransaction);
           }
         }, 250);
       }
