@@ -111,7 +111,7 @@
           case 'Daily': return 'RRULELFREQ=DAILY';
           case 'Weekly': return 'RRULE:FREQ=WEEKLY';
           case 'EveryOtherWeek': return 'RRULE:FREQ=WEEKLY;INTERVAL=2';
-          case 'TwiceAMonth': return '';
+          case 'TwiceAMonth': return 'RRULE:FREQ=MONTHLY;BYMONTHDAY=1,15';
           case 'Every4Weeks': return 'RRULE:FREQ=WEEKLY;INTERVAL=4';
           case 'Monthly': return 'RRULE:FREQ=MONTHLY';
           case 'EveryOtherMonth': return 'RRULE:FREQ=MONTHLY;INTERVAL=2';
