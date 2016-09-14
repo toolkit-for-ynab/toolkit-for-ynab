@@ -160,7 +160,7 @@
             var budgetedCell;
             if ($(this).hasClass('is-master-category')) {
               masterCategoryName = $(this).find('div.budget-table-cell-name-row-label-item>div>div[title]');
-              masterCategoryName = (masterCategoryName !== 'undefined') ? $(masterCategoryName).attr('title') : '';
+              masterCategoryName = (masterCategoryName !== 'undefined') ? ($(masterCategoryName).attr('title') + '_') : '';
             }
 
             if ($(this).hasClass('is-sub-category')) {
@@ -171,7 +171,7 @@
                 return;
               }
 
-              subCategoryName = masterCategoryName + '_' + subCategoryName;
+              subCategoryName = masterCategoryName + subCategoryName;
 
               switch (ynabToolKit.options.budgetProgressBars) {
                 case 'goals':
