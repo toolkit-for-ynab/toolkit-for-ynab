@@ -34,6 +34,7 @@ ynabToolKit.l10nData = {
   "toolkit.debts":"Długi",
   "toolkit.assets":"Aktywa",
   "toolkit.incomeFrom":"Dochody z",
+  "toolkit.accountsClearSelection":"Clear Selection",
   "app.done":"Zrobione",
   "app.continue":"Konynuuj",
   "app.ok":"OK",
