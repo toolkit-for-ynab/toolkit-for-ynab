@@ -34,6 +34,7 @@ ynabToolKit.l10nData = {
   "toolkit.debts":"Tartozások",
   "toolkit.assets":"Vagyon",
   "toolkit.incomeFrom":"Jövedelem:",
+  "toolkit.accountsClearSelection":"Clear Selection",
   "app.done":"Kész",
   "app.continue":"Folytatás",
   "app.ok":"Ok",

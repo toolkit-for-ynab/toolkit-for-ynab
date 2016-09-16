@@ -34,6 +34,7 @@ ynabToolKit.l10nData = {
   "toolkit.debts":"Datorii",
   "toolkit.assets":"Active",
   "toolkit.incomeFrom":"Venituri din",
+  "toolkit.accountsClearSelection":"Clear Selection",
   "app.done":"Finalizat",
   "app.continue":"Continuare",
   "app.ok":"OK",

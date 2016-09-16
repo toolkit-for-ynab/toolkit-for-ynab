@@ -34,6 +34,7 @@ ynabToolKit.l10nData = {
   "toolkit.debts":"Schulden",
   "toolkit.assets":"Activa",
   "toolkit.incomeFrom":"Inkomsten van",
+  "toolkit.accountsClearSelection":"Clear Selection",
   "app.done":"Klaar",
   "app.continue":"Verder",
   "app.ok":"OK",
