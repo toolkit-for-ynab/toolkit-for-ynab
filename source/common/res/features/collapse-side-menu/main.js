@@ -19,11 +19,21 @@
         originalButtons: {},
 
         originalSizes: {
-          sidebarWidth: $('.sidebar').width(),
-          contentLeft: $('.content').css('left'),
-          headerLeft: $('.budget-header, .accounts-header').css('left'),
-          contentWidth: $('.budget-content').css('width'),
-          inspectorWidth: $('.budget-inspector').css('width')
+          sidebarWidth: 0,
+          contentLeft: 0,
+          headerLeft: 0,
+          contentWidth: 0,
+          inspectorWidth: 0
+        },
+
+        setOriginalSizes() {
+          ynabToolKit.collapseSideMenu.originalSizes = ({
+            sidebarWidth: $('.sidebar').width(),
+            contentLeft: $('.content').css('left'),
+            headerLeft: $('.budget-header, .accounts-header').css('left'),
+            contentWidth: $('.budget-content').css('width'),
+            inspectorWidth: $('.budget-inspector').css('width')
+          });
         },
 
         invoke() {
@@ -172,8 +182,10 @@
           $('.content').animate({ left: originalSizes.contentLeft });
           $('.budget-header').animate({ left: originalSizes.headerLeft });
           $('.budget-content').animate({ width: originalSizes.contentWidth }, 400, 'swing', function () {
-            // Need to remove width after animation completion
-            $('.budget-content').removeAttr('style');
+            // Need to remove width after animation completion IF resize-inspector feature not on
+            if (!ynabToolKit.options.resizeInspector) {
+              $('.budget-content').removeAttr('style');
+            }
 
             // We don't use these in our CSS, it's mostly so other features can observe
             // for collapse/expand and update sizes / do whatever. E.g. reports needs
@@ -181,11 +193,16 @@
             $('.navlink-collapse').removeClass('collapsed').addClass('expanded');
           });
 
-          $('.budget-inspector').animate({ width: originalSizes.inspectorWidth });
+          // Need to resize the inspector section IF resize-inspector feature not on
+          if (!ynabToolKit.options.resizeInspector) {
+            $('.budget-inspector').animate({ width: originalSizes.inspectorWidth });
+          }
         },
 
         // Handle clicking the collapse button
         collapseMenu() {
+          // resize-inspector feature could have changed these so fetch current sizes.
+          ynabToolKit.collapseSideMenu.setOriginalSizes();
           ynabToolKit.collapseSideMenu.setActiveButton();
           $('.navlink-collapse').hide();
           $('.sidebar > .ember-view').hide();
@@ -207,8 +224,17 @@
           });
 
           $('.budget-header').animate({ left: '40px' });
-          $('.budget-content').animate({ width: '73%' });
-          $('.budget-inspector').animate({ width: '27%' });
+
+          if (ynabToolKit.options.resizeInspector) { // just stretch to the left preserving the users inspector width
+            let $width = parseInt($('.budget-content').css('width').match(/.[^px]*/)) +
+                         parseInt($('.budget-inspector').css('width').match(/.[^px]*/)) -
+                         parseInt($('.inspector-resize-handle').css('width').match(/.[^px]*/)) - 40;
+
+            $('.budget-content').animate({ width: $width });
+          } else {
+            $('.budget-content').animate({ width: '73%' });
+            $('.budget-inspector').animate({ width: '27%' });
+          }
         },
 
         // Add the active style to correct button

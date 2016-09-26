@@ -99,16 +99,22 @@
               var burned = activity / budgeted;
               var pace = burned / timeSpent();
 
-              var masterName = $.trim($(this).prevAll('.is-master-category').first()
-                                      .find('.budget-table-cell-name')
-                                      .text());
+              if ($(this).hasClass('is-master-category')) return;
 
-              var subcatName = $.trim($(this).find('.budget-table-cell-name').text());
+              let masterCategoryViewId = $(this).prevAll('.is-master-category').attr('id');
+              let masterCategory = ynabToolKit.shared.getEmberView(masterCategoryViewId).get('data');
+              let masterCategoryId = masterCategory.get('categoryId');
+              var masterCategoryDisplayName = masterCategory.get('displayName');
+
+              let subCategoryViewId = $(this).attr('id');
+              let subCategory = ynabToolKit.shared.getEmberView(subCategoryViewId).get('data');
+              let subCategoryId = subCategory.get('categoryId');
+              var subCategoryDisplayName = subCategory.get('displayName');
 
               var transactionCount = allTransactions.filter(function (el) {
-                return el.transferAccountId === null &&
-                  el.outflow > 0 &&
-                  el.subCategoryNameWrapped === (masterName + '_' + subcatName);
+                return el.outflow > 0 &&
+                  el.masterCategoryId === masterCategoryId &&
+                  el.subCategoryId === subCategoryId;
               }).length;
 
               var temperature;
@@ -118,7 +124,7 @@
                 temperature = 'positive';
               }
 
-              var deemphasized = (masterName === 'Credit Card Payments') || $.inArray(masterName + '_' + subcatName, deemphasizedCategories) >= 0;
+              var deemphasized = masterCategory.get('isDebtPaymentCategory') || $.inArray(masterCategoryDisplayName + '_' + subCategoryDisplayName, deemphasizedCategories) >= 0;
               var display = Math.round((budgeted * timeSpent() - activity) * 1000);
               var tooltip;
 
@@ -137,7 +143,7 @@
               $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="' + tooltip +
                              '" class="budget-table-cell-pacing-display ' + temperature + ' ' +
                              (deemphasized ? 'deemphasized' : '') + (showIndicator ? ' indicator' : '') +
-                             '" data-name="' + masterName + '_' + subcatName + '">' +
+                             '" data-name="' + masterCategoryDisplayName + '_' + subCategoryDisplayName + '">' +
                              ynabToolKit.shared.formatCurrency(display, true) + '</span></li>');
             });
 
