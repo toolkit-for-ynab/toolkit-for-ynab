@@ -22,6 +22,10 @@
             "value": "chinese simplified"
         }, 
         {
+            "name": "Chinese Traditional (16%)", 
+            "value": "chinese traditional"
+        }, 
+        {
             "name": "Czech (100%)", 
             "value": "czech"
         }, 
@@ -38,7 +42,7 @@
             "value": "finnish"
         }, 
         {
-            "name": "French (44%)", 
+            "name": "French (51%)", 
             "value": "french"
         }, 
         {
@@ -70,7 +74,7 @@
             "value": "norwegian"
         }, 
         {
-            "name": "Polish (49%)", 
+            "name": "Polish (50%)", 
             "value": "polish"
         }, 
         {
@@ -94,7 +98,7 @@
             "value": "slovenian"
         }, 
         {
-            "name": "Spanish (82%)", 
+            "name": "Spanish (85%)", 
             "value": "spanish"
         }, 
         {
@@ -246,6 +250,12 @@
         "catalan": [
             "injectScript", 
             "locales/Catalan.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "chinese traditional": [
+            "injectScript", 
+            "locales/Chinese Traditional.json", 
             "injectScript", 
             "main.js"
         ], 
