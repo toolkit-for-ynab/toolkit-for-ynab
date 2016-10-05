@@ -1,0 +1,13 @@
+{
+         "name": "addToGoogleCalendar",
+         "type": "checkbox",
+      "default": true,
+      "section": "accounts",
+        "title": "Schedule an event in Google calendar when a new transaction is saved",
+  "description": "",
+      "actions": {
+                    "true": [
+                      "injectScript", "main.js"
+                    ]
+                 }
+}
