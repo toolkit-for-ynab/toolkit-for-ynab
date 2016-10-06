@@ -34,7 +34,7 @@ ynabToolKit.l10nData = {
   "toolkit.debts":"Dluhy",
   "toolkit.assets":"Aktiva",
   "toolkit.incomeFrom":"Příjmy z",
-  "toolkit.accountsClearSelection":"Clear Selection",
+  "toolkit.accountsClearSelection":"Vyčistit výběr",
   "app.done":"Hotovo",
   "app.continue":"Pokračovat",
   "app.ok":"OK",

@@ -34,7 +34,7 @@ ynabToolKit.l10nData = {
   "toolkit.debts":"Gjeld",
   "toolkit.assets":"Eiendeler",
   "toolkit.incomeFrom":"Inntekter fra",
-  "toolkit.accountsClearSelection":"Clear Selection",
+  "toolkit.accountsClearSelection":"Nullstill valg",
   "app.done":"Ferdig",
   "app.continue":"Fortsett",
   "app.ok":"OK",
