@@ -145,7 +145,7 @@
       }
 
       function hasNativeSearch() {
-        return $('.transaction-search').length !== 0;
+        return window.YNABFEATURES.get('register-search');
       }
 
       return {
