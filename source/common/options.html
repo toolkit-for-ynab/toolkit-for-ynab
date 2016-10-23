@@ -165,6 +165,15 @@
   </div>
 
   <!-- JS Scripts-->
+  <!-- In Electron loading jQuery fails because module is already defined. Store it on the
+       window object and restore it later. -->
+  <script>
+    if (typeof module === 'object') {
+      window.module = module;
+      module = undefined;
+    }
+  </script>
+
   <script type="text/javascript" src="assets/dream-admin-theme/js/jquery-1.10.2.js"></script>
   <script type="text/javascript" src="assets/dream-admin-theme/js/bootstrap.js"></script>
   <script type="text/javascript" src="assets/dream-admin-theme/js/custom-scripts.js"></script>
@@ -172,6 +181,11 @@
   <script type="text/javascript" src="kango-ui/kango_api.js"></script>
   <script type="text/javascript" src="res/features/allSettings.js"></script>
   <script type="text/javascript" src="options.js"></script>
+
+  <!-- If we hid module before, bring it back. -->
+  <script>
+    if (window.module) module = window.module;
+  </script>
 </body>
 
 </html>

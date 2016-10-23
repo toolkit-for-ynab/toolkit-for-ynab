@@ -22,7 +22,11 @@
             "value": "chinese simplified"
         },
         {
-            "name": "Czech (100%)", 
+            "name": "Chinese Traditional (16%)",
+            "value": "chinese traditional"
+        },
+        {
+            "name": "Czech (100%)",
             "value": "czech"
         },
         {
@@ -30,7 +34,7 @@
             "value": "danish"
         },
         {
-            "name": "Dutch (90%)",
+            "name": "Dutch (100%)",
             "value": "dutch"
         },
         {
@@ -38,11 +42,11 @@
             "value": "finnish"
         },
         {
-            "name": "French (41%)",
+            "name": "French (51%)",
             "value": "french"
         },
         {
-            "name": "German (54%)",
+            "name": "German (63%)",
             "value": "german"
         },
         {
@@ -62,20 +66,28 @@
             "value": "korean"
         },
         {
-            "name": "Norwegian (90%)",
+            "name": "Lithuanian (1%)",
+            "value": "lithuanian"
+        },
+        {
+            "name": "Norwegian (100%)",
             "value": "norwegian"
         },
         {
-            "name": "Polish (49%)",
+            "name": "Polish (50%)",
             "value": "polish"
         },
         {
-            "name": "Portuguese, Brazilian (6%)",
+            "name": "Portuguese, Brazilian (95%)",
             "value": "portuguese, brazilian"
         },
         {
-            "name": "Portuguese (15%)",
+            "name": "Portuguese (16%)",
             "value": "portuguese"
+        },
+        {
+            "name": "Romanian (4%)",
+            "value": "romanian"
         },
         {
             "name": "Russian (100%)",
@@ -86,7 +98,7 @@
             "value": "slovenian"
         },
         {
-            "name": "Spanish (82%)",
+            "name": "Spanish (85%)",
             "value": "spanish"
         },
         {
@@ -151,6 +163,12 @@
             "injectScript",
             "main.js"
         ],
+        "romanian": [
+            "injectScript",
+            "locales/Romanian.json",
+            "injectScript",
+            "main.js"
+        ],
         "slovenian": [
             "injectScript",
             "locales/Slovenian.json",
@@ -193,6 +211,12 @@
             "injectScript",
             "main.js"
         ],
+        "lithuanian": [
+            "injectScript",
+            "locales/Lithuanian.json",
+            "injectScript",
+            "main.js"
+        ],
         "french": [
             "injectScript",
             "locales/French.json",
@@ -226,6 +250,12 @@
         "catalan": [
             "injectScript",
             "locales/Catalan.json",
+            "injectScript",
+            "main.js"
+        ], 
+        "chinese traditional": [
+            "injectScript",
+            "locales/Chinese Traditional.json",
             "injectScript",
             "main.js"
         ],

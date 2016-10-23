@@ -144,8 +144,14 @@
         filterOnRedraw = true;
       }
 
+      function hasNativeSearch() {
+        return $('.transaction-search').length !== 0;
+      }
+
       return {
         invoke: function invoke() {
+          if (hasNativeSearch()) return;
+
           var router = ynabToolKit.shared.containerLookup('router:main');
 
           if (router.get('currentPath').indexOf('accounts') > -1) {
@@ -157,6 +163,8 @@
           }
         },
         observe: function observe(changedNodes) {
+          if (hasNativeSearch()) return;
+
           if (filterOnRedraw && changedNodes.has('ynab-grid-body')) {
             filterOnRedraw = false;
             var $searchBox = $('.toolkit-transaction-search', '.accounts-toolbar-right');
@@ -168,6 +176,8 @@
           }
         },
         onRouteChanged: function onRouteChanged() {
+          if (hasNativeSearch()) return;
+
           ynabToolKit.accountTransactionSearch.invoke();
         }
       };

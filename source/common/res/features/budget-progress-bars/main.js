@@ -160,18 +160,18 @@
             var budgetedCell;
             if ($(this).hasClass('is-master-category')) {
               masterCategoryName = $(this).find('div.budget-table-cell-name-row-label-item>div>div[title]');
-              masterCategoryName = (masterCategoryName !== 'undefined') ? $(masterCategoryName).attr('title') : '';
+              masterCategoryName = (masterCategoryName !== 'undefined') ? ($(masterCategoryName).attr('title') + '_') : '';
             }
 
             if ($(this).hasClass('is-sub-category')) {
-              var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title;
+              var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
 
               if (subCategoryName === 'Uncategorized Transactions') {
                 // iterate the .each() function
                 return;
               }
 
-              subCategoryName = masterCategoryName + '_' + subCategoryName;
+              subCategoryName = masterCategoryName + subCategoryName;
 
               switch (ynabToolKit.options.budgetProgressBars) {
                 case 'goals':

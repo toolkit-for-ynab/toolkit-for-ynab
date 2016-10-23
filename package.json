@@ -12,7 +12,8 @@
   },
   "scripts": {
     "eslint": "eslint -c source/.eslintrc.js --ignore-path source/.eslintignore source/",
-    "babel": "babel source --compact false --quiet --ignore *.min.js --out-dir src"
+    "eslint-fix": "eslint -c source/.eslintrc.js --ignore-path source/.eslintignore source/ --fix",
+    "babel": "babel source --compact false --quiet --ignore source/common/res/features/lib/*,source/common/assets/*,*.min.js --out-dir src"
   },
   "babel": {
     "presets": [

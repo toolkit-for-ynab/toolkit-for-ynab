@@ -55,7 +55,7 @@
 
       function hideSubTransactions() {
         ynabToolKit.toggleSplits.setting = 'hide';
-        $('.ynab-grid-body .ynab-grid-body-sub').hide();
+        $('.ynab-grid-body .ynab-grid-body-sub:not(.is-editing)').hide();
         $(".ynab-grid-cell-subCategoryName[title^='Split']").css('font-weight', 700);
         setDisplayEnd();
       }
@@ -111,7 +111,10 @@
       };
     }());
 
-    ynabToolKit.toggleSplits.invoke();
+    let router = ynabToolKit.shared.containerLookup('router:main');
+    if (router.get('currentPath').indexOf('accounts') > -1) {
+      ynabToolKit.toggleSplits.invoke();
+    }
   } else {
     setTimeout(poll, 250);
   }
