@@ -35,21 +35,21 @@
 
       // throw our reports button into the left-hand navigation pane so they can click it!
       function setUpReportsButton() {
-        if ($('li.navlink-reports').length > 0) return;
+        if ($('li.ynabtk-navlink-reports').length > 0) return;
 
         $('.nav-main').append(
           $('<li>').append(
-            $('<li>', { class: 'ember-view navlink-reports' }).append(
+            $('<li>', { class: 'ember-view ynabtk-navlink-reports' }).append(
               $('<a>', { href: '#' }).append(
                 $('<span>', { class: 'ember-view flaticon stroke document-4' })
               ).append(
-                (ynabToolKit.l10nData && ynabToolKit.l10nData['sidebar.reports']) || 'Reports'
+                (ynabToolKit.l10nData && ynabToolKit.l10nData['sidebar.reports']) || 'Toolkit Reports'
               )
             )
           )
         );
 
-        $('.navlink-reports').on('click', showReports);
+        $('.ynabtk-navlink-reports').on('click', showReports);
       }
 
       function buildReportsPage($pane) {
