@@ -101,7 +101,7 @@
         // remove the active class from all navigation items and add active to our guy
         $('.navlink-budget, .navlink-accounts').removeClass('active');
         $('.nav-account-row').removeClass('is-selected');
-        $('.navlink-reports').addClass('active');
+        $('.ynabtk-navlink-reports').addClass('active');
 
         $('.navlink-budget, .navlink-accounts, .nav-account-row').on('click', function () {
           // They're trying to navigate away.
@@ -523,7 +523,7 @@
               changedNodes.has('nav-account-row is-selected')) {
             // The user has left the reports page.
             // We're no longer the active page.
-            $('.navlink-reports').removeClass('active');
+            $('.ynabtk-navlink-reports').removeClass('active');
 
             $('.ynabtk-reports').remove();
 
