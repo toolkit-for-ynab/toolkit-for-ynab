@@ -24,9 +24,13 @@
         <array>
             <dict>
                 <key>Filename</key>
-                <string>popup.html</string>
+                <string>popup/popup.html</string>
+                <key>Height</key>
+                <integer>260</integer>
                 <key>Identifier</key>
                 <string>kango-ui-popup</string>
+                <key>Width</key>
+                <integer>330</integer>
             </dict>
         </array>
         <key>Toolbar Items</key>

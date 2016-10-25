@@ -4,5 +4,6 @@
 }
 
 .days-of-buffering .budget-header-days-age {
+    white-space: nowrap;
     color: #23b2ce;
 }

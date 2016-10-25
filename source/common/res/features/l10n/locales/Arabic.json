@@ -34,6 +34,7 @@ ynabToolKit.l10nData = {
   "toolkit.debts":"الديون",
   "toolkit.assets":"الأصول",
   "toolkit.incomeFrom":"الدخل من",
+  "toolkit.accountsClearSelection":"Clear Selection",
   "app.done":"Done",
   "app.continue":"استمر",
   "app.ok":"موافق",

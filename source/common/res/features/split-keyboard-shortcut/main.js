@@ -13,12 +13,15 @@
 
               var splitIcon = splitButton.html();
               var categoryList = $('.modal-account-categories .modal-list');
-              var liElement = categoryList.find('li.user-data').last().clone();
+              var liElement = $(`<li class="user-data">
+                                      <button class="button-list ">
+                                        <div class="modal-account-categories-category" title="Split Transaction">
+                                          <span class="modal-account-categories-category-name"></span>
+                                        </div>
+                                      </button>
+                                  </li>`);
 
-              liElement.find('.modal-account-categories-category').attr('title', 'Split Transaction');
               liElement.find('.modal-account-categories-category-name').html(splitIcon);
-              liElement.find('.user-data.currency').remove();
-
               categoryList.append('<li class="user-data"><strong class="modal-account-categories-section-item">Actions:</strong></li>');
               categoryList.append(liElement);
 

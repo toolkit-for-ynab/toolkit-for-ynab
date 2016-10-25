@@ -86,7 +86,9 @@ ynabToolKit.settings.forEach(function (setting) {
 });
 
 Promise.all(optionsPromises).then(function () {
-  injectJSString('window.ynabToolKit = {}; ynabToolKit.options = ' + JSON.stringify(options) + '; Object.freeze(ynabToolKit.options); Object.seal(ynabToolKit.options);');
+  let version = getKangoExtensionInfo().version;
+
+  injectJSString('window.ynabToolKit = { version: \'' + version + '\'}; ynabToolKit.options = ' + JSON.stringify(options) + '; Object.freeze(ynabToolKit.options); Object.seal(ynabToolKit.options);');
 
   /* Load this to setup shared utility functions */
   injectScript('res/features/shared/main.js');

@@ -161,6 +161,10 @@ function getKangoStorageKeys() {
   });
 }
 
+function getKangoExtensionInfo() {
+  return kango.getExtensionInfo();
+}
+
 function ensureDefaultsAreSet() {
   return new Promise(function (resolve) {
     getKangoStorageKeys().then(function (storedKeys) {

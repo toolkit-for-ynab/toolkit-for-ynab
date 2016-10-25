@@ -68,7 +68,7 @@
             .click(function () {
               ynabToolKit.budgetBalanceToZero.updateBudgetedBalance($(this).data('name'), $(this).data('amount'));
             })
-            .append(((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.balanceToZero']) || 'Balance to 0.00:'))
+            .append(ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.balanceToZero'] || 'Balance to ' + ynabToolKit.shared.formatCurrency('0') + ': ')
             .append(' ' + positive)
             .append($('<strong>', { class: 'user-data', title: fAmount })
             .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), amount)));

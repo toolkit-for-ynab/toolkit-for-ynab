@@ -15,9 +15,10 @@ This is what the extension can do for you:
 
 - Localisation - Allows you to use YNAB in an ever-growing list of foreign languages.
 - Net Worth Report - Shows you how much your net worth is over time. Includes transactions in tracking accounts.
+- Check Number Column - Allows you to enter your check numbers on transactions.
+- Enter Transaction Now - Allows you to enter upcoming scheduled transactions in the budget now instead of having to wait for them to populate.
 - Days of Buffering Calculation - Forecasts how long it'll take to burn through all your available money using averages. We know there's no such thing as an average month, but some people prefer this calculation over the Age of Money calculation.
 - Running balance column - Shows what the balance of an account is after each transaction.
-- Export all transactions from the current budget in CSV format.
 - Colour Blind Mode - Changes colours of some of the numbers to make the interface easier on people with certain visual disabilities.
 - Make the calculator work like YNAB4. When you press + or - (etc) the calculator moves to the end of the line so your number isn't lost.
 - Printing Improvements: Now when you print your budget or account it looks good!

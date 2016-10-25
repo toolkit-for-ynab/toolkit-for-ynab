@@ -1,0 +1,14 @@
+{
+         "name": "checkNumbers",
+         "type": "checkbox",
+      "default": false,
+      "section": "accounts",
+        "title": "Add Check Number Column",
+  "description": "Adds the check number column to your account view.",
+      "actions": {
+                  "true": [
+                    "injectCSS", "main.css",
+                    "injectScript", "main.js"
+                  ]
+                }
+}
