@@ -281,6 +281,7 @@ L10n is done via the [Crowdin service](http://translate.toolkitforynab.com). To 
 ```
 - If there's no translation for a string in the user's chosen language they'll see 'DEFAULT' based on the code above.
 - New l10n strings added by YNAB core team can be found in ```ynabToolKit.l10nMissingStrings``` variable in the browser console with YNAB app started and l10n feature enabled. Removed strings aren't counted.
+- There is a script that checks app for new strings for localisation and uploads them to Crowdin ```./update_l10n_strings CROWDIN_KEY``` phantomjs and jq json parser must be installed to use it.
 
 
 
