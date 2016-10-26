@@ -252,7 +252,7 @@
             "locales/Catalan.json",
             "injectScript",
             "main.js"
-        ], 
+        ],
         "chinese traditional": [
             "injectScript",
             "locales/Chinese Traditional.json",
