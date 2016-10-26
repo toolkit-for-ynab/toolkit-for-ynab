@@ -1,0 +1,45 @@
+#toolkitPopupCalc {
+	padding-right: .3em;
+}
+
+.toolkit-popup-calc-button-hide {
+    visibility: hidden;
+}
+
+.toolkit-popup-calc-hide {
+    visibility: hidden;
+}
+
+.toolkit-popup-calc-btnrow > li {
+    display: inline-block;
+}
+
+.toolkit-popup-calc-button1 {
+    width: 38px;
+    box-sizing: border-box;
+    text-align: center;
+    margin-bottom: .3em;
+    margin-left: .3em;
+    margin-top: .3em;
+}
+
+.toolkit-popup-calc-button2 {
+    margin-bottom: .3em;
+    margin-top: .3em;
+    padding-bottom: .3em;
+    padding-top: .3em;
+}
+
+.toolkit-popup-calc-btnrow  {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#toolkitPopupCalcInput  {
+    margin-top: .3em;
+    margin-bottom: .3em;
+    width: 176px;
+		text-align: right;
+}
