@@ -798,7 +798,7 @@
   "accounts.enterInAccountNow": "Enter Now",
   "accounts.hiddenTxnsMsgWithSearch.one": "{{countText}} transaction hidden by your search for \"<strong>{{search}}</strong>\".",
   "accounts.hiddenTxnsMsgWithSearch.other": "{{countText}} transactions hidden by your search for \"<strong>{{search}}</strong>\".",
-  "accounts.matchingRules": "To match, select two transactions with the same amount, one you entered and one from your bank.",
+  "accounts.matchingRules": "To match, select two transactions, one you entered and one from your bank.",
   "accounts.showAllTxnsButtonText": "Show all.",
   "app.1": "One",
   "app.2": "Two",
