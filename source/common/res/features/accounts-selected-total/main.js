@@ -19,7 +19,7 @@
       function addSelectedTotalContainer() {
         if ($('.ynab-toolkit-selected-total').length === 0) {
           $('<div class="ynab-toolkit-selected-total">' +
-              '<div class="accounts-header-balances-label" title="The total of the current selected transactions.">Selected Total</div>' +
+              '<div id="ynab-toolkit-selected-total-message" class="accounts-header-balances-label" title="The total of the current selected transactions."></div>' +
             '</div>').appendTo('.accounts-header-balances');
         }
       }
@@ -28,7 +28,7 @@
         Ember.run.next(function () {
           addSelectedTotalContainer();
 
-          var areChecked = accountsController.get('areChecked');
+          let areChecked = accountsController.get('areChecked');
 
           if (areChecked.length === 0) {
             return $('.ynab-toolkit-selected-total').hide();
@@ -37,16 +37,20 @@
           $('.ynab-toolkit-selected-total').show();
           $('.ynab-toolkit-selected-total .currency-container').remove();
 
-          var total = calculateSelectedTotal(accountsController);
-          var formattedCurrency = ynabToolKit.shared.formatCurrency(total);
-          var userData = $('<span>', { class: 'user-data currency-container', title: formattedCurrency });
-          var userCurrency = $('<span>', { class: 'user-data currency' });
+          let message = areChecked.length + ' selected transaction' + (areChecked.length > 1 ? 's' : '') + ' totaling:';
+
+          let total = calculateSelectedTotal(accountsController);
+          let formattedCurrency = ynabToolKit.shared.formatCurrency(total);
+          let userData = $('<span>', { class: 'user-data currency-container', title: formattedCurrency });
+          let userCurrency = $('<span>', { class: 'user-data currency' });
 
           if (total < 0) {
             userCurrency.addClass('negative');
           } else {
             userCurrency.addClass('positive');
           }
+
+          $('#ynab-toolkit-selected-total-message').text(message);
 
           ynabToolKit.shared.appendFormattedCurrencyHtml(userCurrency, total);
           userCurrency.appendTo(userData);
@@ -56,7 +60,7 @@
 
       return {
         invoke: function () {
-          var accounts = ynabToolKit.shared.containerLookup('controller:accounts');
+          let accounts = ynabToolKit.shared.containerLookup('controller:accounts');
           accounts.addObserver('areChecked', updateSelectedTotal);
         }
       };
