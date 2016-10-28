@@ -520,6 +520,7 @@
           // Did they switch away from our tab?
           if (changedNodes.has('navlink-budget active') ||
               changedNodes.has('navlink-accounts active') ||
+              changedNodes.has('navlink-reports active') ||
               changedNodes.has('nav-account-row is-selected')) {
             // The user has left the reports page.
             // We're no longer the active page.
