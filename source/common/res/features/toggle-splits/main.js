@@ -1,35 +1,36 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.toggleSplits = (function () {
-      // let grid = ynabToolKit.shared.getEmberView($('.ynab-gird').attr('id'));
-      let accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
-      accountsController.reopen({
-        __toolkitShowSubTransactions: false,
-        content: Ember.computed({
-          get: function () { return []; },
-          set: function (key, val) {
-            if (!this.get('__toolkitShowSubTransactions')) {
-              val = val.filter((transaction) => {
-                let displayItemType = transaction.get('displayItemType');
-                return displayItemType !== ynab.constants.TransactionDisplayItemType.SubTransaction &&
-                       displayItemType !== ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction;
-              });
-            }
-            return val;
-          }
-        })
-      });
+      // let grid = ynabToolKit.shared.getEmberView($('.ynab-grid').attr('id'));
+      // // let accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
+      // grid.reopen({
+      //   __toolkitShowSubTransactions: false,
+      //   content: Ember.computed({
+      //     // get: function () { return []; },
+      //     get: function () {
+      //       console.log(this);
+      //       // if (!this.get('__toolkitShowSubTransactions')) {
+      //       //   val = val.filter((transaction) => {
+      //       //     let displayItemType = transaction.get('displayItemType');
+      //       //     return displayItemType !== ynab.constants.TransactionDisplayItemType.SubTransaction &&
+      //       //            displayItemType !== ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction;
+      //       //   });
+      //       // }
+      //       // return val;
+      //     }
+      //   })
+      // });
 
       function hideSubTransactions() {
         ynabToolKit.toggleSplits.setting = 'hide';
-        accountsController.set('__toolkitShowSubTransactions', false);
+        // grid.set('__toolkitShowSubTransactions', false);
         $('.ynab-grid-body .ynab-grid-body-sub:not(.is-editing)').hide();
         $(".ynab-grid-cell-subCategoryName[title^='Split']").css('font-weight', 700);
       }
 
       function showSubTransactions() {
         ynabToolKit.toggleSplits.setting = 'show';
-        accountsController.set('__toolkitShowSubTransactions', true);
+        // grid.set('__toolkitShowSubTransactions', true);
         $('.ynab-grid-body .ynab-grid-body-sub').show();
         $(".ynab-grid-cell-subCategoryName[title^='Split']").css('font-weight', '');
       }
