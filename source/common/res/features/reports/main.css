@@ -1,81 +1,121 @@
-/* Filter Panel */
+.ynabtk-reports {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
-#reports-header {
-  color: white;
+.ynabtk-reports-nav {
   background-color: #003540;
+  padding-left: 20px;
   font-family: 'Lato',Arial,'Helvetica Neue',Helvetica,sans-serif;
-  width: 100%;
-  padding: 2px 0;
 }
 
-#reports-header h2 {
-  margin-left: 25px;
-  font-weight: 300;
+.ynabtk-reports-nav h2 {
+  float: left;
 }
 
-#reports-header h2 span {
+.ynabtk-reports-nav h2 span {
   color: #fed168;
 }
 
-#reports-filter {
-  display: flex;
-  justify-content: flex-start;
-  height: 140px;
+.ynabtk-reports-nav .nav-reports {
+  display: inline-flex;
+  list-style: none;
+  height: 100%;
+  padding: 1.5em;
+  margin: 0px;
+}
+
+.ynabtk-reports-nav .nav-reports-navlink {
+  margin-right: 10px;
+  padding-right: 10px;
+  border-right: 1px solid #ffffff;
+}
+.ynabtk-reports-nav .nav-reports-navlink:last-child {
+  border: none;
+}
+
+.ynabtk-reports-nav .nav-reports-navlink a {
+  text-decoration: none;
+  color: #ffffff;
+}
+.ynabtk-reports-nav .nav-reports-navlink a.active {
+  color: #fed168;
+}
+
+.ynabtk-reports-filters {
   background-color: #F4F4F4;
   margin: 10px 10px 0 10px;
   border: 1px solid #CCCCCC;
+  padding-left: 20px;
 
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   border-radius: 20px;
 }
 
-#reports-filter h3 {
-  display: block;
-  margin-left: 19px;
-  align-self: flex-start;
+.ynabtk-reports-filters .ynabtk-filter-group {
+  margin: 10px 0;
 }
 
-#reports-filter span {
-  align-self: center;
+.ynabtk-filter-group .reports-filter-name {
+  margin: auto;
 }
 
-/* Date Filter */
-
-#reports-date-filter {
-  flex: 1;
-  align-self: center;
-  margin: 0 39px 0 29px;
+.ynabtk-filter-group .reports-filter-name.timeframe {
+  margin-right: 4px;
 }
 
-.noUi-connect {
-	background: #8ED0DF;
+.ynabtk-filter-select {
+  width: 20%;
 }
 
-.noUi-tooltip {
-	left: -25%;
+.ynabtk-chip {
+  border-radius: 1em;
+  background-color: #34aebe;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  max-width: 120px;
+  margin-right: 4px;
+  padding: .2em .4em;
+  cursor: pointer;
 }
 
-.noUi-horizontal .noUi-handle-lower .noUi-tooltip {
-	top: -52px;
-}
-.noUi-horizontal .noUi-handle-upper .noUi-tooltip {
-	bottom: -52px;
+.ynabtk-quick-date-filters {
+  display: inline-flex;
 }
 
-/* Reports Inspector */
+.ynabtk-quick-date-filters .ynabtk-chip {
+  background-color: inherit;
+}
 
-#reports-inspector {
-  display: -webkit-flex;
-  -webkit-flex-direction: row;
-  -webkit-justify-content: flex-end;
+.ynabtk-quick-date-filters .ynabtk-chip:hover,
+.ynabtk-quick-date-filters .ynabtk-chip.active {
+  background-color: #34aebe;
+}
 
+.ynabtk-account-chips {
+  display: inline-flex;
+  max-width: 70%;
+  margin-left: 4px;
+}
+
+.ynabtk-account-chips .ynabtk-chip:hover {
+  background-color: #ea5439;
+}
+
+.ynabtk-filter-group.date-filter {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
 }
 
-.reports-legend-square {
+.ynabtk-date-filter-slider {
+  flex-grow: 1;
+  margin: auto 40px auto 30px;
+}
+
+.ynabtk-reports-legend-square {
   display: inline-block;
   vertical-align: middle;
   margin: 2px 5px 0 0;
@@ -83,15 +123,7 @@
   height: 17px;
 }
 
-.reports-legend-square.assets {
-  background-color: rgba(142, 208, 223, 1);
-}
-
-.reports-legend-square.debts {
-  background-color: rgba(234, 106, 81, 1);
-}
-
-.reports-legend-line {
+.ynabtk-reports-legend-line {
   display: inline-block;
   vertical-align: middle;
   margin-right: 5px;
@@ -99,35 +131,22 @@
   height: 2px;
 }
 
-.reports-legend-line.net-worth {
-  border: 2px solid rgba(102, 147, 176, 1);
-  background-color: rgba(244,248,226,0.3);
+.ynabtk-reports-data {
+  flex-grow: 1;
 }
 
-.reports-inspector-detail {
-  width: 12%;
-  min-width: 100px;
-  margin: 10px;
+/* noUiSlider classes */
+.noUi-connect {
+  background: #34aebe;
 }
 
-.reports-inspector-detail .reports-inspector-heading {
-  display: inline-block;
-  vertical-align: middle;
-  font-size: .9em;
+.noUi-tooltip {
+  left: -25%;
 }
 
-.reports-inspector-value {
-  display: block;
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-top: 5px;
+.noUi-horizontal .noUi-handle-lower .noUi-tooltip {
+  top: -52px;
 }
-
-/* Dividers */
-.reports-inspector-divider {
-  display: inline-block;
-  width: 1px;
-  height: 50px;
-  margin: 10px 10px 0 0;
-  background-color: #F4F4F4;
+.noUi-horizontal .noUi-handle-upper .noUi-tooltip {
+  bottom: 28px;
 }

@@ -22,6 +22,10 @@
             "value": "chinese simplified"
         }, 
         {
+            "name": "Chinese Traditional (53%)", 
+            "value": "chinese traditional"
+        }, 
+        {
             "name": "Czech (100%)", 
             "value": "czech"
         }, 
@@ -30,23 +34,23 @@
             "value": "danish"
         }, 
         {
-            "name": "Dutch (100%)", 
+            "name": "Dutch (92%)", 
             "value": "dutch"
         }, 
         {
-            "name": "Finnish (76%)", 
+            "name": "Finnish (68%)", 
             "value": "finnish"
         }, 
         {
-            "name": "French (41%)", 
+            "name": "French (49%)", 
             "value": "french"
         }, 
         {
-            "name": "German (61%)", 
+            "name": "German (67%)", 
             "value": "german"
         }, 
         {
-            "name": "Hungarian (77%)", 
+            "name": "Hungarian (68%)", 
             "value": "hungarian"
         }, 
         {
@@ -54,7 +58,7 @@
             "value": "icelandic"
         }, 
         {
-            "name": "Italian (16%)", 
+            "name": "Italian (14%)", 
             "value": "italian"
         }, 
         {
@@ -62,20 +66,28 @@
             "value": "korean"
         }, 
         {
-            "name": "Norwegian (100%)", 
+            "name": "Lithuanian (1%)", 
+            "value": "lithuanian"
+        }, 
+        {
+            "name": "Norwegian (95%)", 
             "value": "norwegian"
         }, 
         {
-            "name": "Polish (49%)", 
+            "name": "Polish (44%)", 
             "value": "polish"
         }, 
         {
-            "name": "Portuguese, Brazilian (95%)", 
+            "name": "Portuguese, Brazilian (85%)", 
             "value": "portuguese, brazilian"
         }, 
         {
-            "name": "Portuguese (15%)", 
+            "name": "Portuguese (28%)", 
             "value": "portuguese"
+        }, 
+        {
+            "name": "Romanian (4%)", 
+            "value": "romanian"
         }, 
         {
             "name": "Russian (100%)", 
@@ -86,11 +98,11 @@
             "value": "slovenian"
         }, 
         {
-            "name": "Spanish (82%)", 
+            "name": "Spanish (75%)", 
             "value": "spanish"
         }, 
         {
-            "name": "Swedish (71%)", 
+            "name": "Swedish (63%)", 
             "value": "swedish"
         }, 
         {
@@ -98,7 +110,7 @@
             "value": "ukrainian"
         }, 
         {
-            "name": "Vietnamese (13%)", 
+            "name": "Vietnamese (12%)", 
             "value": "vietnamese"
         }
     ], 
@@ -151,6 +163,12 @@
             "injectScript", 
             "main.js"
         ], 
+        "romanian": [
+            "injectScript", 
+            "locales/Romanian.json", 
+            "injectScript", 
+            "main.js"
+        ], 
         "slovenian": [
             "injectScript", 
             "locales/Slovenian.json", 
@@ -193,6 +211,12 @@
             "injectScript", 
             "main.js"
         ], 
+        "lithuanian": [
+            "injectScript", 
+            "locales/Lithuanian.json", 
+            "injectScript", 
+            "main.js"
+        ], 
         "french": [
             "injectScript", 
             "locales/French.json", 
@@ -226,6 +250,12 @@
         "catalan": [
             "injectScript", 
             "locales/Catalan.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "chinese traditional": [
+            "injectScript", 
+            "locales/Chinese Traditional.json", 
             "injectScript", 
             "main.js"
         ], 
