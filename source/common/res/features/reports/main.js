@@ -37,7 +37,7 @@
       function setUpReportsButton() {
         if ($('li.ynabtk-navlink-reports').length > 0) return;
 
-        $('.nav-main').append(
+        $('.nav-main > li:eq(1)').after(
           $('<li>').append(
             $('<li>', { class: 'ember-view ynabtk-navlink-reports' }).append(
               $('<a>', { href: '#' }).append(
