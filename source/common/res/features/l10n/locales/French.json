@@ -70,7 +70,7 @@ ynabToolKit.l10nData = {
   "app.recategorize":"Affecter à une nouvelle catégorie",
   "app.refresh_now":"Actualiser maintenant",
   "app.nothing":"Rien",
-  "app.noThanks":"No, thanks",
+  "app.noThanks":"Non, Merci",
   "loading.loading":"Chargement {{{item}}}",
   "loading.reticulatingSplines":"Splines réticulants...",
   "loading.countingMoney":"Compter l'argent...",
