@@ -904,5 +904,7 @@ ynabToolKit.l10nData = {
   "search.title":"Find de transaktioner, du leder efter...",
   "search.unapproved":"Ikke godkendt",
   "search.uncleared":"Ikke clearet",
-  "search.unreconciled":"Ikke afstemt"
+  "search.unreconciled":"Ikke afstemt",
+  "modal.workshops":"Deltag i en workshop",
+  "modal.searchHelpDocs":"Søg i hjælpedokumenter"
 }

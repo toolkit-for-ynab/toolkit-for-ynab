@@ -904,5 +904,7 @@ ynabToolKit.l10nData = {
   "search.title":"Find the transactions you're looking for...",
   "search.unapproved":"Desaprovadas",
   "search.uncleared":"Não Apurados",
-  "search.unreconciled":"Não conciliadas"
+  "search.unreconciled":"Não conciliadas",
+  "modal.workshops":"Join a Workshop",
+  "modal.searchHelpDocs":"Search Help Docs"
 }
