@@ -47,6 +47,10 @@
 
       return {
         invoke() {
+          if (window.YNABFEATURES['enter-scheduled-transaction-now']) {
+            return;
+          }
+
           accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
           transactionViewModel = accountsController.get('transactionViewModel');
           addOptionToContextMenu();

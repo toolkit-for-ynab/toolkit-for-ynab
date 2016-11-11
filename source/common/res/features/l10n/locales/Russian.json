@@ -904,5 +904,7 @@ ynabToolKit.l10nData = {
   "search.title":"Найти проводки, которые вы ищете...",
   "search.unapproved":"Отклоненные",
   "search.uncleared":"Неподтвержденные",
-  "search.unreconciled":"Не сверенные"
+  "search.unreconciled":"Не сверенные",
+  "modal.workshops":"Подключиться к обучению",
+  "modal.searchHelpDocs":"Поиск в документации"
 }

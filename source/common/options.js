@@ -269,6 +269,10 @@ KangoAPI.onReady(function () {
     loadPanel('budget'); e.preventDefault();
     jq('#footer-buttons').show();
   });
+  jq('#reportsMenuItem').click(function (e) {
+    loadPanel('reports'); e.preventDefault();
+    jq('#footer-buttons').show();
+  });
   jq('#supportMenuItem').click(function (e) {
     loadPanel('support'); e.preventDefault();
     jq('#footer-buttons').hide();

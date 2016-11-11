@@ -1,5 +1,6 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
+    let saveButtonText = ynabToolKit.l10nData && ynabToolKit.l10nData['app.save'] || 'Save';
     ynabToolKit.changeEnterBehavior = function () {
       function changeEnterBehaviorInit() {
         var addTransactionRow = getAddTransactionRow();
@@ -42,7 +43,7 @@
           var saveButtons = document.getElementsByClassName('ynab-grid-add-rows')[0].getElementsByClassName('button-primary');
           for (var i = 0; i < saveButtons.length; i++) {
             var button = saveButtons[i];
-            if ((' ' + button.className + ' ').indexOf(' button-another ') === -1) {
+            if (button.innerText.trim() === saveButtonText) {
               button.click();
               return;
             }

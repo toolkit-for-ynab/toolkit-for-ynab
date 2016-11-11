@@ -78,7 +78,7 @@
             });
           }
 
-          Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
+          Ember.I18n.translations = jQuery.extend(true, Ember.I18n.translations, ynabToolKit.l10nData);
         },
 
         budgetHeader() {

@@ -12,7 +12,7 @@
         var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
         var lastDayOfThisMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 0);
         var daysInMonth = lastDayOfThisMonth.getDate(); // The date of the last day in the month is the number of days in the month
-        var day = Math.max(today.getDate() - 1, 1);
+        var day = Math.max(today.getDate(), 1);
 
         return day / daysInMonth;
       }

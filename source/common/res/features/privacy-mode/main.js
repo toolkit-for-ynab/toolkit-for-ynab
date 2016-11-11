@@ -3,6 +3,7 @@
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.privacyMode = (function () {
       function togglePrivacyMode() {
+        $('button#toolkit-togglePrivacy').toggleClass('active');
         ynabToolKit.privacyMode.enabled = !ynabToolKit.privacyMode.enabled;
         updatePrivacyMode();
       }
