@@ -1,82 +1,43 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.toggleSplits = (function () {
-      var calculatingDisplayEnd = false;
-
-      function setDisplayEnd() {
-        if (ynabToolKit.toggleSplits.setting === 'show') return;
-
-        calculatingDisplayEnd = true;
-        var rowView = ynabToolKit.shared.getEmberViewByContainerKey('view:ynab-grid/rows');
-        var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
-        var contentResults = accountsController.get('contentResults');
-        var containerView = rowView.get('containerView');
-        var gridView = rowView.get('gridView');
-        var displayStart = containerView.get('displayStart');
-        var recordsPerBody = containerView.get('recordsPerBody');
-
-        // this calculation was taken from YNAB's current codebase
-        var wouldBeDisplayEnd = Math.round(Math.min(displayStart + 4 * recordsPerBody, gridView.get('total')));
-
-        var fitOnPage = wouldBeDisplayEnd - displayStart;
-        var displayedCount = 0;
-        var displayEnd = displayStart;
-
-        for (var i = displayStart; i < contentResults.length; i++) {
-          if (displayedCount === fitOnPage) break;
-
-          if (contentResults[i].get('parentEntityId')) {
-            if (ynabToolKit.toggleSplits.setting === 'hide') {
-              displayEnd++;
-              continue;
-            } else {
-              displayedCount++;
+      let isToggling = false;
+      let accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
+      accountsController.reopen({
+        toolkitShowSubTransactions: false,
+        contentResults: Ember.computed({
+          get: function () { return []; },
+          set: function (key, val) {
+            if (!this.get('toolkitShowSubTransactions')) {
+              val = val.filter((transaction) => {
+                let displayItemType = transaction.get('displayItemType');
+                return displayItemType !== ynab.constants.TransactionDisplayItemType.SubTransaction &&
+                       displayItemType !== ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction;
+              });
             }
-          } else {
-            displayedCount++;
-            displayEnd++;
+            return val;
           }
-        }
+        })
+      });
 
-        Ember.run.next(function () {
-          containerView.set('displayEnd', displayEnd);
-          calculatingDisplayEnd = false;
-        });
-      }
-
-      function addScrollListener() {
-        var rowView = ynabToolKit.shared.getEmberViewByContainerKey('view:ynab-grid/rows');
-        rowView.get('containerView').addObserver('scrollTop', setDisplayEnd);
-
-        if (rowView.get('containerView').get('scrollTop') === 0) {
-          setDisplayEnd();
-        }
-      }
 
       function hideSubTransactions() {
+        isToggling = true;
         ynabToolKit.toggleSplits.setting = 'hide';
-        $('.ynab-grid-body .ynab-grid-body-sub:not(.is-editing)').hide();
-        $(".ynab-grid-cell-subCategoryName[title^='Split']").css('font-weight', 700);
-        setDisplayEnd();
+        accountsController.set('toolkitShowSubTransactions', false);
+        Ember.run.debounce(accountsController, accountsController._filterContent, 25);
       }
 
       function showSubTransactions() {
+        isToggling = true;
         ynabToolKit.toggleSplits.setting = 'show';
-        $('.ynab-grid-body .ynab-grid-body-sub').show();
-        $(".ynab-grid-cell-subCategoryName[title^='Split']").css('font-weight', '');
+        accountsController.set('toolkitShowSubTransactions', true);
+        Ember.run.debounce(accountsController, accountsController._filterContent, 25);
       }
 
       return {
         setting: 'init',
         invoke: function invoke() {
-          // default the right arrow to hidden
-          if (ynabToolKit.toggleSplits.setting === 'init' || ynabToolKit.toggleSplits.setting === 'hide') {
-            $('#toggle-splits > .down').hide();
-            hideSubTransactions();
-          } else {
-            showSubTransactions();
-          }
-
           if (!$('#toggle-splits').length) {
             var buttonText = ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.toggleSplits'] || 'Toggle Splits';
 
@@ -95,17 +56,20 @@
 
               $('#toggle-splits > i').toggle();
             });
+          }
 
-            addScrollListener();
+          // default the right arrow to hidden
+          if (ynabToolKit.toggleSplits.setting === 'init' || ynabToolKit.toggleSplits.setting === 'hide') {
+            $('#toggle-splits > .down').hide();
+            hideSubTransactions();
+          } else {
+            showSubTransactions();
           }
         },
 
         observe: function observe(changedNodes) {
-          if (changedNodes.has('ynab-grid-body')) {
+          if (changedNodes.has('ynab-grid-body') && !isToggling) {
             ynabToolKit.toggleSplits.invoke();
-            if (!calculatingDisplayEnd) {
-              setDisplayEnd();
-            }
           }
         }
       };

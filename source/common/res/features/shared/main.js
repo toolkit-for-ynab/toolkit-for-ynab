@@ -367,6 +367,11 @@ ynabToolKit.shared = (function () {
       });
     },
 
+    getCurrentRoute: function () {
+      let router = this.containerLookup('router:main');
+      return router.get('currentRouteName');
+    },
+
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
        ],

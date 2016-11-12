@@ -904,5 +904,7 @@ ynabToolKit.l10nData = {
   "search.title":"Najděte transakce, po kterých pátráte...",
   "search.unapproved":"Neschválené",
   "search.uncleared":"Nepotvrzené",
-  "search.unreconciled":"Neodsouhlasené"
+  "search.unreconciled":"Neodsouhlasené",
+  "modal.workshops":"Join a Workshop",
+  "modal.searchHelpDocs":"Search Help Docs"
 }
