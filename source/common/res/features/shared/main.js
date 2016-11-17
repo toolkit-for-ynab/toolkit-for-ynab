@@ -341,8 +341,14 @@ ynabToolKit.shared = (function () {
       this.showModal(title, message, 'close');
     },
 
-    getToolkitStorageKey(key) {
-      return localStorage.getItem(storageKeyPrefix + key);
+    getToolkitStorageKey(key, type) {
+      let value = localStorage.getItem(storageKeyPrefix + key);
+
+      switch (type) {
+        case 'boolean': return value === 'true';
+        case 'number': return Number(value);
+        default: return value;
+      }
     },
 
     setToolkitStorageKey(key, value) {
