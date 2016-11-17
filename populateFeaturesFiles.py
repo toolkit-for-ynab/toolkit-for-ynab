@@ -228,7 +228,7 @@ with open('./source/common/res/features/act-on-change/feedChanges.js', 'w') as f
     for feedChangesBlock in allFeedChangesContent:
         feedChanges.write('\n      try {\n')
         feedChanges.write('        if (changes.changedNodes) ' + feedChangesBlock + '.observe(changes.changedNodes);\n')
-        feedChanges.write('        if (changes.router) ' + feedChangesBlock + '.onRouteChanged(changes.router);\n')
+        feedChanges.write('        if (changes.routeChanged) ' + feedChangesBlock + '.onRouteChanged(changes.routeChanged);\n')
         feedChanges.write('      } catch (err) { /* ignore */ }\n')
 
     feedChanges.write(('    };\n'
