@@ -70,7 +70,7 @@ ynabToolKit.l10nData = {
   "app.recategorize":"Affecter à une nouvelle catégorie",
   "app.refresh_now":"Actualiser maintenant",
   "app.nothing":"Rien",
-  "app.noThanks":"No, thanks",
+  "app.noThanks":"Non, Merci",
   "loading.loading":"Chargement {{{item}}}",
   "loading.reticulatingSplines":"Splines réticulants...",
   "loading.countingMoney":"Compter l'argent...",
@@ -904,5 +904,7 @@ ynabToolKit.l10nData = {
   "search.title":"Find the transactions you're looking for...",
   "search.unapproved":"Unapproved",
   "search.uncleared":"Uncleared",
-  "search.unreconciled":"Unreconciled"
+  "search.unreconciled":"Unreconciled",
+  "modal.workshops":"Join a Workshop",
+  "modal.searchHelpDocs":"Search Help Docs"
 }

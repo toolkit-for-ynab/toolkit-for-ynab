@@ -1,12 +1,21 @@
-.collapsed-active {
-	background-color: #194853;
-	color: #fed168;
+.layout.collapsed .content,
+.layout.collapsed .budget-header {
+	left: 40px;
 }
 
-.collapsed-budget.collapsed-active {
+.collapsed-buttons .active button {
+	background-color: #194853;
+	color: #fff;
+}
+
+.collapsed-buttons .active .collapsed-budget {
 	color: #ceec00;
 }
 
-.collapsed-account.collapsed-active {
+.collapsed-buttons .active .collapsed-reports {
+	color: #fed168;
+}
+
+.collapsed-buttons .active .collapsed-account {
 	color: #32dcff;
 }
