@@ -51,19 +51,25 @@
 
       return {
         invoke() {
-          var elementForAoM = document.getElementsByClassName('budget-header-days');
-          var elementForDoB = document.getElementsByClassName('days-of-buffering');
-          if (elementForAoM.length === 1 && elementForDoB.length === 0) {
-            var YNABheader = document.getElementsByClassName('budget-header-flexbox')[0];
-            elementForAoM = document.getElementsByClassName('budget-header-days')[0];
-            elementForDoB = elementForAoM.cloneNode(true);
+          // If current screen is Budget.
+          if (document.getElementsByClassName('budget-header').length > 0) {
+            var elementForDoB = document.getElementsByClassName('days-of-buffering')[0];
 
-            elementForDoB.className = elementForDoB.className + ' days-of-buffering';
-            elementForDoB.children[1].textContent = (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.DoB']) || 'Days of Buffering';
-            elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
+            // Create an element for DoB in the header if doesn't exist.
+            if (typeof elementForDoB === 'undefined') {
+              elementForDoB = document.getElementsByClassName('budget-header-days')[0]
+                                      .cloneNode(true);
 
+              elementForDoB.className = elementForDoB.className + ' days-of-buffering';
+              elementForDoB.children[1].textContent = (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.DoB']) || 'Days of Buffering';
+              elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
+
+              document.getElementsByClassName('budget-header-flexbox')[0]
+                      .appendChild(elementForDoB);
+            }
+
+            // Calculate and set DoB.
             var calculation = calculateDaysOfBuffering();
-
             if (!calculation) {
               elementForDoB.children[0].textContent = '???';
               elementForDoB.children[0].title = 'Your budget history is less than 15 days. Go on with YNAB a while.';
@@ -85,8 +91,6 @@
                   '\nAverage daily outflow: ~' + ynab.YNABSharedLib.currencyFormatter.format(calculation.averageDailyOutflow) +
                   '\nAverage daily transactions: ' + calculation.averageDailyTransactions.toFixed(1);
             }
-
-            YNABheader.appendChild(elementForDoB);
           }
         },
 
