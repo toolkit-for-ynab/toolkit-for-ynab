@@ -26,10 +26,15 @@
             return [];
           }
 
+          // After using Budget Quick Switch, budgetView needs to be reset to the new budget.
+          if (ynabToolKit.budgetBalanceToZero.budgetView.categoriesViewModel === null) {
+            ynabToolKit.budgetBalanceToZero.budgetView = ynab.YNABSharedLib.
+              getBudgetViewModel_AllBudgetMonthsViewModel()._result;
+          }
           var categories = [];
-          var masterCategories = [];
           var masterCats = ynabToolKit.budgetBalanceToZero.budgetView
-            .categoriesViewModel.masterCategoriesCollection._internalDataArray;
+          .categoriesViewModel.masterCategoriesCollection._internalDataArray;
+          var masterCategories = [];
 
           masterCats.forEach(function (c) {
             // Filter out "special" categories
