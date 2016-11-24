@@ -541,7 +541,7 @@
         },
 
         formatTransactionDatel8n(transaction) {
-          let nativeDate = ynabToolKit.shared.toLocalDate(transaction.get('date'));
+          let nativeDate = transaction.get('date').toNativeDate();
           return this.formatDatel8n(nativeDate);
         },
 
