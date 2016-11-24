@@ -175,6 +175,7 @@
                      (e.which > 95 && e.which < 112) || // numpad
                       e.which === 8 ||  // backspace
                       e.which === 13 || // numpad enter
+                      e.which === 190 || // numpad enter
                       e.which === 187) { // keyboard enter
             doCalculation(e.key);
 
