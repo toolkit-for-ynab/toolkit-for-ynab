@@ -220,6 +220,10 @@
               result = '';
             }
 
+            if (result.indexOf('.') !== -1 && key === '.') {
+              key = '';
+            }
+
             result = value2 + key + ''; // ensure concatenation
             value2 = result;  // set potential second value
             return result;
