@@ -176,7 +176,7 @@
                       e.which === 8 ||  // backspace
                       e.which === 13 || // numpad enter
                       e.which === 190 || // numpad enter
-                      e.which === 187) { // keyboard enter
+                      e.which === 187) { // decimal
             doCalculation(e.key);
 
             if (e.which === 13 || e.which === 18) { // Enter key?
