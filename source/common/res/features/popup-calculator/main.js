@@ -175,7 +175,8 @@
                      (e.which > 95 && e.which < 112) || // numpad
                       e.which === 8 ||  // backspace
                       e.which === 13 || // numpad enter
-                      e.which === 187) { // keyboard enter
+                      e.which === 190 || // numpad enter
+                      e.which === 187) { // decimal
             doCalculation(e.key);
 
             if (e.which === 13 || e.which === 18) { // Enter key?
@@ -217,6 +218,10 @@
 
             if (result === '0' || result === ynab.YNABSharedLib.currencyFormatter.format(ynab.YNABSharedLib.currencyFormatter.convertToMilliDollars(result))) {
               result = '';
+            }
+
+            if (result.indexOf('.') !== -1 && key === '.') {
+              key = '';
             }
 
             result = value2 + key + ''; // ensure concatenation
