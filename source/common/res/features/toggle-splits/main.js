@@ -20,7 +20,6 @@
         })
       });
 
-
       function hideSubTransactions() {
         isToggling = true;
         ynabToolKit.toggleSplits.setting = 'hide';
@@ -63,12 +62,19 @@
             $('#toggle-splits > .down').hide();
             hideSubTransactions();
           } else {
+            $('#toggle-splits > .right').hide();
             showSubTransactions();
           }
         },
 
         observe: function observe(changedNodes) {
           if (changedNodes.has('ynab-grid-body') && !isToggling) {
+            ynabToolKit.toggleSplits.invoke();
+          }
+        },
+
+        onRouteChanged: function onRouteChanged(changedRoute) {
+          if (changedRoute.indexOf('accounts') > -1) {
             ynabToolKit.toggleSplits.invoke();
           }
         }
