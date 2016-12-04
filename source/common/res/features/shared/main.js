@@ -176,22 +176,6 @@ ynabToolKit.shared = (function () {
       return jQueryElement;
     },
 
-    toLocalDate(date) {
-      var result = date.toNativeDate();
-      var offset = new Date().getTimezoneOffset();
-
-      result.setMinutes(result.getMinutes() + offset);
-
-      // Sometimes we don't end up exactly where we need to be because of floating point
-      // accuracy issues. If we're in PM, we should round up to the next day.
-      if (result.getHours() > 0) {
-        // Bumps us to the first hour of the next day.
-        result.setHours(24, 0, 0, 0);
-      }
-
-      return result;
-    },
-
     parseSelectedMonth() {
       // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
       if ($('.ember-view .budget-header').length) {

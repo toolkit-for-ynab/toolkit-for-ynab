@@ -80,13 +80,13 @@
             var balanceByAccount = {};
             var formattedDate = null;
 
+            // first, go through all transactions and get balances of the accounts each month
             transactions.forEach(function (transaction) {
               formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
 
               if (lastLabel === null) lastLabel = formattedDate;
 
-              // If it's time to push the next month's data into the arrays let's
-              // go for it.
+              // were on the next month, push a new label
               if (formattedDate !== lastLabel) {
                 reportData.labels.push(lastLabel);
 
@@ -110,12 +110,12 @@
                 lastLabel = formattedDate;
               }
 
-              // If we need a holder in balanceByAccount let's get one.
+              // do we have a key for this account yet? if not, create it and set it to 0
               if (!balanceByAccount.hasOwnProperty(transaction.getAccountName())) {
                 balanceByAccount[transaction.getAccountName()] = 0;
               }
 
-              // Tally ho.
+              // add the amount to the account.
               balanceByAccount[transaction.getAccountName()] += transaction.getAmount();
             });
 
@@ -145,8 +145,8 @@
               // Fill in any gaps in the months in case they're missing data.
               var currentIndex = 0;
 
-              var currentDate = ynabToolKit.shared.toLocalDate(transactions[0].get('date'));
-              var maxDate = ynabToolKit.shared.toLocalDate(transactions[transactions.length - 1].get('date'));
+              var currentDate = transactions[0].get('date').toNativeDate();
+              var maxDate = transactions[transactions.length - 1].get('date').toNativeDate();
 
               // For debugging ----------------------------------------------------
               // var currentDate = new Date(transactions[0].date);
@@ -190,9 +190,6 @@
           }).html($(
               '<div id="report-chart" style="flex-grow: 1; position: relative; width: 100%"></div>'
           ));
-
-          // grab the current date filter from reports
-          // let allowedDateFilter = ynabToolKit.reports.allowedDates;
 
           let startIndex = ynabToolKit.reports.allowedDateStart;
           let endIndex = ynabToolKit.reports.allowedDateEnd;
