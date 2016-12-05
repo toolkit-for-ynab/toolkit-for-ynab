@@ -13,7 +13,7 @@ Set.prototype.regex = function (regex) {
     // When this is true, the feature scripts will know they can use the mutationObserver
     ynabToolKit.actOnChangeInit = false;
     ynabToolKit.onEmberViewRenderedInit = false;
-    ynabToolKit.onCurrentPathChangedInit = false;
+    ynabToolKit.onCurrentRouteChangedInit = false;
 
     // Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
     // during page interactions and updates to the developer tools console.
@@ -62,18 +62,21 @@ Set.prototype.regex = function (regex) {
       ynabToolKit.actOnChangeInit = true;
     };
 
-    ynabToolKit.onCurrentPathChanged = function () {
-      var router = ynabToolKit.shared.containerLookup('router:main');
-      router.on('didTransition', function () {
-        ynabToolKit.shared.feedChanges({ router: this });
+    ynabToolKit.onCurrentRouteChanged = function () {
+      let applicationController = ynabToolKit.shared.containerLookup('controller:application');
+      applicationController.addObserver('currentRouteName', function () {
+        let currentRoute = applicationController.get('currentRouteName');
+        Ember.run.scheduleOnce('afterRender', function () {
+          ynabToolKit.shared.feedChanges({ routeChanged: currentRoute });
+        });
       });
 
-      ynabToolKit.onCurrentPathChangedInit = true;
+      ynabToolKit.onCurrentRouteChangedInit = true;
     };
 
     // Run listeners once
     ynabToolKit.actOnChange();
-    ynabToolKit.onCurrentPathChanged();
+    ynabToolKit.onCurrentRouteChanged();
   } else {
     setTimeout(poll, 250);
   }

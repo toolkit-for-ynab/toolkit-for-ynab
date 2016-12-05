@@ -21,7 +21,7 @@
             accountController.send('closeModal');
           }).appendTo($modalList);
 
-          $modal.css({ height: '+=10px' });
+          $modal.css({ height: '+=12px' });
         },
 
         observe(changedNodes) {

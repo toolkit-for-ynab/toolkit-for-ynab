@@ -905,6 +905,6 @@ ynabToolKit.l10nData = {
   "search.unapproved":"Neschválené",
   "search.uncleared":"Nepotvrzené",
   "search.unreconciled":"Neodsouhlasené",
-  "modal.workshops":"Join a Workshop",
-  "modal.searchHelpDocs":"Search Help Docs"
+  "modal.workshops":"Zapojit se do Workshopu",
+  "modal.searchHelpDocs":"Prohledat nápovědu"
 }

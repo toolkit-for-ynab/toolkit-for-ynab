@@ -521,6 +521,7 @@
           if (changedNodes.has('navlink-budget active') ||
               changedNodes.has('navlink-accounts active') ||
               changedNodes.has('navlink-reports active') ||
+              changedNodes.has('active navlink-reports') ||
               changedNodes.has('nav-account-row is-selected')) {
             // The user has left the reports page.
             // We're no longer the active page.
@@ -540,7 +541,7 @@
         },
 
         formatTransactionDatel8n(transaction) {
-          let nativeDate = ynabToolKit.shared.toLocalDate(transaction.get('date'));
+          let nativeDate = transaction.get('date').toNativeDate();
           return this.formatDatel8n(nativeDate);
         },
 

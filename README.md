@@ -46,6 +46,7 @@ This is what the extension can do for you:
 - Change the default orange label for underfunded goals to blue.
 - Change the default green "To Be Budgeted" indicator to yellow if there is still unallocated money waiting to be budgeted.
 - Autofill inflow/outflow values with the remaining total when entering split transactions.
+- Hide and show the help (?) button.
 
 All of these are configurable with options in the extension options page.
 
