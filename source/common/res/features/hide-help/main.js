@@ -3,9 +3,19 @@
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.hideHelp = (function () {
       return {
+        hideHelp: 'true',
+
         invoke() {
-          // hide button by default
-          $('#hs-beacon').hide();
+          let hideHelp = ynabToolKit.shared.getToolkitStorageKey('hide-help');
+
+          if (typeof hideHelp === 'undefined' || hideHelp === null) {
+            ynabToolKit.shared.setToolkitStorageKey('hide-help', 'true');
+            hideHelp = 'true';
+          }
+
+          if (hideHelp === 'true') {
+            $('body').addClass('toolkit-hide-help');
+          }
         },
 
         observe(changedNodes) {
@@ -30,8 +40,10 @@
             </button>
            </li>
           `).click(() => {
+            ynabToolKit.hideHelp.hideHelp = !ynabToolKit.hideHelp.hideHelp;
+            ynabToolKit.shared.setToolkitStorageKey('hide-help', ynabToolKit.hideHelp.hideHelp);
+            $('body').toggleClass('toolkit-hide-help');
             let accountController = ynabToolKit.shared.containerLookup('controller:accounts');
-            $('#hs-beacon').toggle();
             accountController.send('closeModal');
           }).appendTo($modalList);
 
