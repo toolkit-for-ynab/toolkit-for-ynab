@@ -8,7 +8,7 @@
         invoke() {
           let hideHelp = ynabToolKit.shared.getToolkitStorageKey('hide-help');
 
-          if (typeof hideHelp === 'undefined' || hideHelp === null) {
+          if (hideHelp === null) {
             ynabToolKit.shared.setToolkitStorageKey('hide-help', 'true');
             hideHelp = 'true';
           }
