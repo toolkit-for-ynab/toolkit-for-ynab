@@ -17,6 +17,8 @@
           calcValue = '0.00';
         }
 
+        calcValue = calcValue.replace(/,/g, ''); // Removes thousand seperator, probably not i18n compatable
+
         popupCalc.value(calcValue);
 
         if ($('#toolkitPopupCalc').length) {
