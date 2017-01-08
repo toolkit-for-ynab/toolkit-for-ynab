@@ -151,6 +151,12 @@ ynabToolKit.shared = (function () {
       return new Ember.Handlebars.SafeString(formatted);
     },
 
+	// This function returns an unformated number
+    unformatCurrency(number) {
+      var unformatted = ynab.unformat(number);
+      return unformatted;
+    },
+
     appendFormattedCurrencyHtml(jQueryElement, number) {
       var formatted = ynab.formatCurrency(number);
       var currency = ynab.YNABSharedLib.currencyFormatter.getCurrency();

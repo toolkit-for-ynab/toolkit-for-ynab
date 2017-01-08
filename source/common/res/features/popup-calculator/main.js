@@ -17,8 +17,6 @@
           calcValue = '0.00';
         }
 
-        calcValue = calcValue.replace(/,/g, ''); // Removes thousand seperator, probably not i18n compatable
-
         popupCalc.value(calcValue);
 
         if ($('#toolkitPopupCalc').length) {
@@ -222,7 +220,7 @@
               result = '';
             }
 
-            if (result.indexOf('.') !== -1 && key === '.') {
+            if (result.toString().indexOf('.') !== -1 && key === '.') { // Prevents multiple decimal points
               key = '';
             }
 
@@ -295,8 +293,8 @@
             }
           },
           value: function (key) {
-            value1 = key;
-            result = key;
+            value1 = ynabToolKit.shared.unformatCurrency(key);
+            result = ynabToolKit.shared.unformatCurrency(key);
           },
           display: function () {
             return reveal;
