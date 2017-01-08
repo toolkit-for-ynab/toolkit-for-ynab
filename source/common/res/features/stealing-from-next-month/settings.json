@@ -1,9 +1,10 @@
 {
          "name": "stealingFromNextMonth",
          "type": "checkbox",
-      "default": true,
+      "default": false,
       "section": "budget",
-        "title": "Highlights \"Budget Next Month\" red when next month's available to budget goes negative.",
+      "title": "Stealing From Future Alert",
+"description": "Highlights \"Budget Next Month\" red when next month's available to budget goes negative.",
       "actions": {
                     "true": [
                       "injectScript", "main.js",
