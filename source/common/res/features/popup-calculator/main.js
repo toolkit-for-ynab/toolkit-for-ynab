@@ -220,7 +220,7 @@
               result = '';
             }
 
-            if (result.indexOf('.') !== -1 && key === '.') {
+            if (result.toString().indexOf('.') !== -1 && key === '.') { // Prevents multiple decimal points
               key = '';
             }
 
@@ -293,8 +293,8 @@
             }
           },
           value: function (key) {
-            value1 = key;
-            result = key;
+            value1 = ynabToolKit.shared.unformatCurrency(key);
+            result = ynabToolKit.shared.unformatCurrency(key);
           },
           display: function () {
             return reveal;
