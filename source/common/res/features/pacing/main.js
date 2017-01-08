@@ -92,60 +92,62 @@
               showIndicator = false;
             }
 
-            $('.budget-table-row').each(function () {
-              var available = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-available').text());
-              var activity = -ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-activity').text());
-              var budgeted = available + activity;
-              var burned = activity / budgeted;
-              var pace = burned / timeSpent();
+            // Select all budget table rows but not the uncategorized category and not master categories.
+            $('.budget-table-row')
+              .not('.budget-table-uncategorized-transactions')
+              .not('.is-master-category')
+              .each(function () {
+                var available = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-available').text());
+                var activity = -ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-activity').text());
+                var budgeted = available + activity;
+                var burned = activity / budgeted;
+                var pace = burned / timeSpent();
 
-              if ($(this).hasClass('is-master-category')) return;
+                let masterCategoryViewId = $(this).prevAll('.is-master-category').attr('id');
+                let masterCategory = ynabToolKit.shared.getEmberView(masterCategoryViewId).get('data');
+                let masterCategoryId = masterCategory.get('categoryId');
+                var masterCategoryDisplayName = masterCategory.get('displayName');
 
-              let masterCategoryViewId = $(this).prevAll('.is-master-category').attr('id');
-              let masterCategory = ynabToolKit.shared.getEmberView(masterCategoryViewId).get('data');
-              let masterCategoryId = masterCategory.get('categoryId');
-              var masterCategoryDisplayName = masterCategory.get('displayName');
+                let subCategoryViewId = $(this).attr('id');
+                let subCategory = ynabToolKit.shared.getEmberView(subCategoryViewId).get('data');
+                let subCategoryId = subCategory.get('categoryId');
+                var subCategoryDisplayName = subCategory.get('displayName');
 
-              let subCategoryViewId = $(this).attr('id');
-              let subCategory = ynabToolKit.shared.getEmberView(subCategoryViewId).get('data');
-              let subCategoryId = subCategory.get('categoryId');
-              var subCategoryDisplayName = subCategory.get('displayName');
+                var transactionCount = allTransactions.filter(function (el) {
+                  return el.outflow > 0 &&
+                    el.masterCategoryId === masterCategoryId &&
+                    el.subCategoryId === subCategoryId;
+                }).length;
 
-              var transactionCount = allTransactions.filter(function (el) {
-                return el.outflow > 0 &&
-                  el.masterCategoryId === masterCategoryId &&
-                  el.subCategoryId === subCategoryId;
-              }).length;
+                var temperature;
+                if (pace > 1) {
+                  temperature = 'cautious';
+                } else {
+                  temperature = 'positive';
+                }
 
-              var temperature;
-              if (pace > 1) {
-                temperature = 'cautious';
-              } else {
-                temperature = 'positive';
-              }
+                var deemphasized = masterCategory.get('isDebtPaymentCategory') || $.inArray(masterCategoryDisplayName + '_' + subCategoryDisplayName, deemphasizedCategories) >= 0;
+                var display = Math.round((budgeted * timeSpent() - activity) * 1000);
+                var tooltip;
 
-              var deemphasized = masterCategory.get('isDebtPaymentCategory') || $.inArray(masterCategoryDisplayName + '_' + subCategoryDisplayName, deemphasizedCategories) >= 0;
-              var display = Math.round((budgeted * timeSpent() - activity) * 1000);
-              var tooltip;
+                if (display >= 0) {
+                  tooltip = 'In ' + transactionCount + ' transaction' + (transactionCount !== 1 ? 's' : '') +
+                    ' you have spent ' + ynabToolKit.shared.formatCurrency(display, false) +
+                    ' less than your available budget for this category ' + Math.round(timeSpent() * 100) +
+                    '% of the way through the month.&#13;&#13;' + (deemphasized ? 'Click to unhide.' : 'Click to hide.');
+                } else if (display < 0) {
+                  tooltip = 'In ' + transactionCount + ' transaction' + (transactionCount !== 1 ? 's' : '') +
+                    ' you have spent ' + ynabToolKit.shared.formatCurrency(-display, false) +
+                    ' more than your available budget for this category ' + Math.round(timeSpent() * 100) +
+                    '% of the way through the month.&#13;&#13;' + (deemphasized ? 'Click to unhide.' : 'Click to hide.');
+                }
 
-              if (display >= 0) {
-                tooltip = 'In ' + transactionCount + ' transaction' + (transactionCount !== 1 ? 's' : '') +
-                  ' you have spent ' + ynabToolKit.shared.formatCurrency(display, false) +
-                  ' less than your available budget for this category ' + Math.round(timeSpent() * 100) +
-                  '% of the way through the month.&#13;&#13;' + (deemphasized ? 'Click to unhide.' : 'Click to hide.');
-              } else if (display < 0) {
-                tooltip = 'In ' + transactionCount + ' transaction' + (transactionCount !== 1 ? 's' : '') +
-                  ' you have spent ' + ynabToolKit.shared.formatCurrency(-display, false) +
-                  ' more than your available budget for this category ' + Math.round(timeSpent() * 100) +
-                  '% of the way through the month.&#13;&#13;' + (deemphasized ? 'Click to unhide.' : 'Click to hide.');
-              }
-
-              $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="' + tooltip +
-                             '" class="budget-table-cell-pacing-display ' + temperature + ' ' +
-                             (deemphasized ? 'deemphasized' : '') + (showIndicator ? ' indicator' : '') +
-                             '" data-name="' + masterCategoryDisplayName + '_' + subCategoryDisplayName + '">' +
-                             ynabToolKit.shared.formatCurrency(display, true) + '</span></li>');
-            });
+                $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="' + tooltip +
+                               '" class="budget-table-cell-pacing-display ' + temperature + ' ' +
+                               (deemphasized ? 'deemphasized' : '') + (showIndicator ? ' indicator' : '') +
+                               '" data-name="' + masterCategoryDisplayName + '_' + subCategoryDisplayName + '">' +
+                               ynabToolKit.shared.formatCurrency(display, true) + '</span></li>');
+              });
 
             $('.budget-table-cell-pacing-display').click(function (e) {
               var latestDemphasizedCategories = getDeemphasizedCategories();
