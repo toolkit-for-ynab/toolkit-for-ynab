@@ -1,7 +1,7 @@
 {
          "name": "importNotification",
          "type": "select",
-      "default": false,
+      "default": "0",
       "section": "general",
         "title": "Show Import Notifications in Sidebar",
   "description": "Display a notification in the sidebar when there are transactions to be imported.",
