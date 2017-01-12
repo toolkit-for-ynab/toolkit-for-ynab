@@ -6,7 +6,7 @@
       function inCurrentMonth() {
         var today = new Date();
         var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
-        if (selectedMonth === null) return;
+        if (selectedMonth === null) return false;
         return selectedMonth.getMonth() === today.getMonth() && selectedMonth.getYear() === today.getYear();
       }
 
