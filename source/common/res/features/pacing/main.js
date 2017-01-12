@@ -21,7 +21,7 @@
       function inCurrentMonth() {
         var today = new Date();
         var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
-        return selectedMonth.getMonth() === today.getMonth() && selectedMonth.getYear() === today.getYear();
+        return (selectedMonth === null) ? false : selectedMonth.getMonth() === today.getMonth() && selectedMonth.getYear() === today.getYear();
       }
 
       function getDeemphasizedCategoriesSetting() {
