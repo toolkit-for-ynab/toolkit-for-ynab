@@ -14,20 +14,24 @@
           // register.
           if (ynabToolKit.options.activityTransactionLink) {
             let ynabGridContainer = ynabToolKit.shared.getEmberView($('.ynab-grid-container').attr('id'));
-            let recordHeight = ynabGridContainer.get('recordHeight');
 
-            // The second check is to minimize the times that recordHeight is changed because
-            // each time it's changed YNAB reacts to it and that contributes to the scrolling
-            // jumpyness.
-            if (ynabToolKit.options.accountsRowHeight === '1' && recordHeight !== compactHeight) {
-              ynabGridContainer.set('recordHeight', compactHeight);
-            } else if (ynabToolKit.options.accountsRowHeight === '2' && recordHeight !== slimHeight) {
-              ynabGridContainer.set('recordHeight', slimHeight);
+            // Will be undefined when YNAB is loaded going directly to the budget screen.
+            if (typeof ynabGridContainer !== 'undefined') {
+              let recordHeight = ynabGridContainer.get('recordHeight');
+
+              // The second check is to minimize the times that recordHeight is changed because
+              // each time it's changed YNAB reacts to it and that contributes to the scrolling
+              // jumpyness.
+              if (ynabToolKit.options.accountsRowHeight === '1' && recordHeight !== compactHeight) {
+                ynabGridContainer.set('recordHeight', compactHeight);
+              } else if (ynabToolKit.options.accountsRowHeight === '2' && recordHeight !== slimHeight) {
+                ynabGridContainer.set('recordHeight', slimHeight);
+              }
             }
-          }
 
-          // Add our class so our CSS can take effect.
-          $('.ynab-grid-body-row-top > .ynab-grid-cell').addClass('toolkit-ynab-grid-cell');
+            // Add our class so our CSS can take effect.
+            $('.ynab-grid-body-row-top > .ynab-grid-cell').addClass('toolkit-ynab-grid-cell');
+          }
         },
 
         observe: function invoke(changedNodes) {
