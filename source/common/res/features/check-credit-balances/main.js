@@ -23,6 +23,7 @@
         inMonth() {
           var today = new Date();
           var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
+          if (selectedMonth === null) return false;
 
           // check for current month or future month
           return selectedMonth.getMonth() >= today.getMonth() && selectedMonth.getYear() >= today.getYear();
@@ -178,9 +179,7 @@
       };
     }()); // Keep feature functions contained within this object
 
-    var href = window.location.href;
-    href = href.replace('youneedabudget.com', '');
-    if (/budget/.test(href)) {
+    if (ynabToolKit.shared.getCurrentRoute() === 'budget.index') {
       ynabToolKit.checkCreditBalances.invoke();
     }
   } else {
