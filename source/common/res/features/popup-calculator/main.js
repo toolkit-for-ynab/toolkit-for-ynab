@@ -3,204 +3,287 @@
     ynabToolKit.popupCalculator = (function () {
       let popupCalc = new Calculator();
       let $field = '';
+      let btnRight = 0;
+      let btnBottom = -242;
+      let afterElement = '';
+      let appendElement = '';
+      let deleteOnDismiss = false;
+      let origValue = '';
+      let popupButton = 'toolkit-popup-calc-button';
+      let calcValue = 0;
+      let setValueCallback = '';
+      let getValueCallback = '';
 
-      function showCalculator() {
-        $('#toolkit-popup-calc-button').prop('disabled', true);
+      return {
+        setDeleteOnDismiss(val) {
+          deleteOnDismiss = val;
 
-        popupCalc.reset();
+          return;
+        },
 
-        $field = ynabToolKit.popupCalculator.$field;
+        setInsertAfterElement(val) {
+          afterElement = val;
+          appendElement = '';
 
-        let calcValue = $field.val();
+          return;
+        },
 
-        if (calcValue === '') {
-          calcValue = '0.00';
-        }
+        setAppendToElement(val) {
+          appendElement = val;
+          afterElement = '';
 
-        popupCalc.value(calcValue);
+          return;
+        },
 
-        if ($('#toolkitPopupCalc').length) {
-          $('#toolkitPopupCalcInput').val(calcValue);
-          $('#toolkitPopupCalc').removeClass('toolkit-popup-calc-hide');
-          $('#toolkit-popup-calc-button').addClass('toolkit-popup-calc-button-hide');
-        } else {
-          let btnRight = parseFloat($('.ynab-grid-actions').position().left) * -1;
+        setButtonRight(val) {
+          btnRight = val;
 
-          $('<div>', { id: 'toolkitPopupCalc', class: 'ember-view ynab-grid-actions', style: 'right: ' + btnRight + 'px; bottom: -242px;' })
-            .append($('<input>', { id: 'toolkitPopupCalcInput', readonly: 'readonly', class: 'ember-view ember-text-field' })
-              .val(calcValue))
-            .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtnC', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('C')
-                .click(() => {
-                  doCalculation('C');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtnN', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('+/-')
-                .click(() => {
-                  doCalculation('N');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtnB', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('<-')
-                .click(() => {
-                  doCalculation('Delete');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtnD', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('/')
-                .click(() => {
-                  doCalculation('/');
-                }))))
-            .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtn7', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('7')
-                .click(() => {
-                  doCalculation('7');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtn8', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('8')
-                .click(() => {
-                  doCalculation('8');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtn9', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('9')
-                .click(() => {
-                  doCalculation('9');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtnM', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('X')
-                .click(() => {
-                  doCalculation('*');
-                }))))
-            .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtn4', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('4')
-                .click(() => {
-                  doCalculation('4');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtn5', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('5')
-                .click(() => {
-                  doCalculation('5');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtn6', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('6')
-                .click(() => {
-                  doCalculation('6');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtnS', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('-')
-                .click(() => {
-                  doCalculation('-');
-                }))))
-            .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtn1', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('1')
-                .click(() => {
-                  doCalculation('1');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtn2', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('2')
-                .click(() => {
-                  doCalculation('2');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtn3', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('3')
-                .click(() => {
-                  doCalculation('3');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtnA', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('+')
-                .click(() => {
-                  doCalculation('+');
-                }))))
-            .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtn0', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('0')
-                .click(() => {
-                  doCalculation('0');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtnP', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('.')
-                .click(() => {
-                  doCalculation('.');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtnE', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('=')
-                .click(() => {
-                  doCalculation('=');
-                })))
-              .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
-                .append($('<button>', { id: 'toolkitBtn%', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                .append('%')
-                .click(() => {
-                  doCalculation('%');
-                }))))
-            .append($('<button>', { id: 'toolkitBtnOk', class: 'ember-view button button-primary toolkit-popup-calc-button2' })
-              .append('OK')
-              .click(() => {
-                doCalculation('OK');
-                dismissCalculator();
-              }))
-            .append($('<button>', { id: 'toolkitBtnCan', class: 'ember-view button button-primary toolkit-popup-calc-button2' })
-              .append('Cancel')
-              .click(() => {
-                dismissCalculator();
-              }))
-            .insertAfter('div.is-editing div.ynab-grid-actions');
-        }
+          return;
+        },
 
-        $(document).on('keyup.toolkitPopupCalc', (e) => {
-          if (e.which === 27) { // ESC key?
-            dismissCalculator();
-          } else if ((e.which > 45 && e.which < 58) || // keyboard
-                     (e.which > 95 && e.which < 112) || // numpad
-                      e.which === 8 ||  // backspace
-                      e.which === 13 || // numpad enter
-                      e.which === 187) { // keyboard enter
-            doCalculation(e.key);
+        setButtonBottom(val) {
+          btnBottom = val;
 
-            if (e.which === 13 || e.which === 18) { // Enter key?
-              dismissCalculator();
+          return;
+        },
+
+        setPopupButton(val) {
+          popupButton = val;
+
+          return;
+        },
+
+        setEntryField(val) {
+          $field = val;
+
+          return;
+        },
+
+        getEntryField() {
+          return $field;
+        },
+
+        setSetValueCallback(callback) {
+          setValueCallback = callback;
+        },
+
+        setGetValueCallback(callback) {
+          getValueCallback = callback;
+        },
+
+        showCalculator(budgetScreen) {
+          $('#' + popupButton).prop('disabled', true);
+
+          popupCalc.reset();
+
+          origValue = getValueCallback($field);
+          // origValue = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat(getValueCallback($field));
+
+          if (origValue === '') {
+            origValue = '0.00';
+          }
+
+          popupCalc.value(origValue);
+
+          if ($('#toolkitPopupCalc').length) {
+            $('#toolkitPopupCalcInput').val(origValue);
+            $('#toolkitPopupCalc').removeClass('toolkit-popup-calc-hide');
+          } else {
+            let actionsClass = (budgetScreen) ? 'ynab-grid-actions' : 'toolkit-calc-actions';
+            let $calc = $('<div>', { id: 'toolkitPopupCalc', class: 'ember-view ' + actionsClass, style: 'right: ' + btnRight + 'px; bottom: ' + btnBottom + 'px;' })
+              .append($('<input>', { id: 'toolkitPopupCalcInput', readonly: 'readonly', class: 'ember-view ember-text-field' })
+                .val(origValue))
+              .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtnC', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('C')
+                  .click(() => {
+                    doCalculation('C');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtnN', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('+/-')
+                  .click(() => {
+                    doCalculation('N');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtnB', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('<-')
+                  .click(() => {
+                    doCalculation('Delete');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtnD', class: 'ember-view button button-primary toolkit-popup-calc-button1 toolkit-popup-calc-btncol4' })
+                  .append('/')
+                  .click(() => {
+                    doCalculation('/');
+                  }))))
+              .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtn7', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('7')
+                  .click(() => {
+                    doCalculation('7');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtn8', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('8')
+                  .click(() => {
+                    doCalculation('8');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtn9', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('9')
+                  .click(() => {
+                    doCalculation('9');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtnM', class: 'ember-view button button-primary toolkit-popup-calc-button1 toolkit-popup-calc-btncol4' })
+                  .append('X')
+                  .click(() => {
+                    doCalculation('*');
+                  }))))
+              .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtn4', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('4')
+                  .click(() => {
+                    doCalculation('4');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtn5', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('5')
+                  .click(() => {
+                    doCalculation('5');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtn6', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('6')
+                  .click(() => {
+                    doCalculation('6');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtnS', class: 'ember-view button button-primary toolkit-popup-calc-button1 toolkit-popup-calc-btncol4' })
+                  .append('-')
+                  .click(() => {
+                    doCalculation('-');
+                  }))))
+              .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtn1', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('1')
+                  .click(() => {
+                    doCalculation('1');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtn2', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('2')
+                  .click(() => {
+                    doCalculation('2');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtn3', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('3')
+                  .click(() => {
+                    doCalculation('3');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtnA', class: 'ember-view button button-primary toolkit-popup-calc-button1 toolkit-popup-calc-btncol4' })
+                  .append('+')
+                  .click(() => {
+                    doCalculation('+');
+                  }))))
+              .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtn0', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('0')
+                  .click(() => {
+                    doCalculation('0');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtnP', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('.')
+                  .click(() => {
+                    doCalculation('.');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtnE', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
+                  .append('=')
+                  .click(() => {
+                    doCalculation('=');
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtn%', class: 'ember-view button button-primary toolkit-popup-calc-button1 toolkit-popup-calc-btncol4' })
+                  .append('%')
+                  .click(() => {
+                    doCalculation('%');
+                  }))))
+              .append($('<button>', { id: 'toolkitBtnOk', class: 'ember-view button button-primary toolkit-popup-calc-button2' })
+                .append('OK')
+                .click(() => {
+                  doCalculation('OK');
+                  dismissCalculator();
+                }))
+              .append($('<button>', { id: 'toolkitBtnCan', class: 'ember-view button button-primary toolkit-popup-calc-button2' })
+                .append('Cancel')
+                .click(() => {
+                  dismissCalculator();
+                }));
+
+            if (afterElement !== '') {
+              $calc.insertAfter(afterElement);
+            } else {
+              $calc.appendTo(appendElement);
             }
           }
-        });
 
-        // Handle mouse clicks outside the drop-down modal. Namespace the
-        // click event so we can remove our specific instance.
-        $(document).on('click.toolkitPopupCalc', (e) => {
-          if (e.target.id !== 'toolkitPopupCalc') {
-            dismissCalculator();
+          $(document).on('keyup.toolkitPopupCalc', (e) => {
+            console.log('e.which: ' + e.which + ', is symbol: ' + e.which.toString().includes('+,-./'));
+            if (e.which === 27) { // ESC key?
+              dismissCalculator();
+            } else if ((e.which > 45 && e.which < 58) ||   // keyboard
+                       (e.which > 95 && e.which < 112) ||  // numpad
+                       (e.which > 186 && e.which < 192) || // keyboard symbols + , - . /
+                        e.which === 8 ||                   // backspace
+                        e.which === 13) {                  // numpad enter
+                        // e.which === 187 || // keyboard plus (shift key plus equal key)
+                        // e.which === 188 || // keyboard comma
+                        // e.which === 189 || // keyboard minus
+                        // e.which === 190 || // keyboard period (decimal point)
+                        // e.which === 191) { // keyboard forward slash (divide)
+              doCalculation(e.key);
+
+              if (e.which === 13 || e.which === 18) { // Enter key?
+                dismissCalculator();
+              }
+            }
+          });
+
+          // Handle mouse clicks outside the drop-down modal. Namespace the
+          // click event so we can remove our specific instance.
+          $(document).on('click.toolkitPopupCalc', (e) => {
+            if (e.target.id !== 'toolkitPopupCalc') {
+              dismissCalculator();
+            }
+          });
+
+          function dismissCalculator() {
+            if (deleteOnDismiss) {
+              $('#toolkitPopupCalc').remove();
+            } else {
+              $('#toolkitPopupCalc').addClass('toolkit-popup-calc-hide');
+            }
+
+            $('#' + popupButton).removeClass('toolkit-popup-calc-button-hide');
+            $('#' + popupButton).prop('disabled', false);
+
+            $(document).off('click.toolkitPopupCalc');
+            $(document).off('keyup.toolkitPopupCalc');
+
+            calcValue = '';
           }
-        });
-
-        function dismissCalculator() {
-          $('#toolkitPopupCalc').addClass('toolkit-popup-calc-hide');
-          $('#toolkit-popup-calc-button').removeClass('toolkit-popup-calc-button-hide');
-          $('#toolkit-popup-calc-button').prop('disabled', false);
-
-          $(document).off('click.toolkitPopupCalc');
-          $(document).off('keyup.toolkitPopupCalc');
         }
-      }
+      };
 
       function Calculator() {
         let oper = '';
@@ -217,6 +300,10 @@
 
             if (result === '0' || result === ynab.YNABSharedLib.currencyFormatter.format(ynab.YNABSharedLib.currencyFormatter.convertToMilliDollars(result))) {
               result = '';
+            }
+
+            if (value2.toString().includes('.') && key === '.') {
+              key = '';
             }
 
             result = value2 + key + ''; // ensure concatenation
@@ -288,8 +375,8 @@
             }
           },
           value: function (key) {
-            value1 = key;
-            result = key;
+            value1 = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat(key);
+            result = value1;
           },
           display: function () {
             return reveal;
@@ -310,25 +397,18 @@
             result = '';
             value1 = '';
             value2 = '';
+            calcValue = '';
           }
         };
       }
 
       function doCalculation(calcVerb) {
-        let calcValue;
-
         switch (calcVerb) {
           case 'Enter' : // keypad <enter>
           case 'OK' :    // button OK
             calcValue = popupCalc.eval();
-            $field.val(ynab.YNABSharedLib.currencyFormatter.format(ynab.YNABSharedLib.currencyFormatter.convertToMilliDollars(calcValue)));
-            // eslint-disable-next-line new-cap
-            $field.trigger(jQuery.Event('keyup', {
-              which: 13
-            })); // YNAB will see this and think the updated the field directly
 
-            $field.focus();
-
+            setValueCallback($field, ynab.YNABSharedLib.currencyFormatter.format(ynab.YNABSharedLib.currencyFormatter.convertToMilliDollars(calcValue)));
             break;
           case 'Delete' :    // button <-
           case 'Backspace' : // keyboard <-
@@ -367,57 +447,10 @@
             $('#toolkitPopupCalcInput').val(calcValue);
           }
         }
+
+        event.stopPropagation();
       }
-
-      function focusHandler() {
-        if ($(this).prop('placeholder') === 'outflow' || $(this).prop('placeholder') === 'inflow') {
-          ynabToolKit.popupCalculator.$field = $('#' + $(this).attr('id'));
-
-          if (!$('#toolkit-popup-calc-button').length) {
-            let $grid = '#' + $('div.ynab-grid-actions').attr('id');
-            ynabToolKit.popupCalculator.$calcBtn.prependTo($($grid));
-
-            $('#toolkit-popup-calc-button').prop('disabled', false);
-            $('#toolkit-popup-calc-button').removeClass('toolkit-popup-calc-button-hide');
-          }
-        } else {
-          if ($('#toolkit-popup-calc-button').length) {
-            $('#toolkit-popup-calc-button').addClass('toolkit-popup-calc-button-hide');
-            $('#toolkit-popup-calc-button').prop('disabled', true);
-
-            ynabToolKit.popupCalculator.$calcBtn.detach();
-          }
-        }
-      }
-
-      return {
-        $field: '',
-        $calcBtn: $('<button>', { id: 'toolkit-popup-calc-button', class: 'ember-view button button-primary' })
-                .append($('<i>', { class: 'ember-view flaticon stroke calculator' }))
-                .click(function () {
-                  showCalculator();
-                }),
-        invoke: function invoke() {
-          if ($('div.ynab-grid-actions').length) {
-            // Add the focus event high enough up the DOM to catch new input fields that are added
-            // when a new split is added to a split transaction.
-            $('.ynab-grid').on('focus.toolkitPopupCalc', '.is-editing input', focusHandler);
-          }
-        },
-
-        observe: function observe(changedNodes) {
-          if (changedNodes.has('accounts-toolbar-edit-transaction ember-view button') ||
-              changedNodes.has('ynab-grid-add-rows')) {
-            ynabToolKit.popupCalculator.invoke();
-          }
-        }
-      };
     }());
-
-    let router = ynabToolKit.shared.containerLookup('router:main');
-    if (router.get('currentPath').indexOf('accounts') > -1) {
-      ynabToolKit.popupCalculator.invoke();
-    }
   } else {
     setTimeout(poll, 250);
   }
