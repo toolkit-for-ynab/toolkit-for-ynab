@@ -13,6 +13,10 @@
       let calcValue = 0;
       let setValueCallback = '';
       let getValueCallback = '';
+      let decimalDigits = ynab.YNABSharedLib.currencyFormatter.getCurrency().decimal_digits;
+      let decimalSeparator = ynab.YNABSharedLib.currencyFormatter.getCurrency().decimal_separator;
+      // let groupSeparator = ynab.YNABSharedLib.currencyFormatter.getCurrency().group_separator; // needed?
+      let separatorCode = decimalSeparator.charCodeAt(0);
 
       return {
         setDeleteOnDismiss(val) {
@@ -80,7 +84,7 @@
           // origValue = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat(getValueCallback($field));
 
           if (origValue === '') {
-            origValue = '0.00';
+            origValue = '0' + decimalSeparator + '0'.repeat(decimalDigits);
           }
 
           popupCalc.value(origValue);
@@ -238,19 +242,16 @@
           }
 
           $(document).on('keyup.toolkitPopupCalc', (e) => {
-            console.log('e.which: ' + e.which + ', is symbol: ' + e.which.toString().includes('+,-./'));
             if (e.which === 27) { // ESC key?
               dismissCalculator();
-            } else if ((e.which > 45 && e.which < 58) ||   // keyboard
-                       (e.which > 95 && e.which < 112) ||  // numpad
-                       (e.which > 186 && e.which < 192) || // keyboard symbols + , - . /
-                        e.which === 8 ||                   // backspace
-                        e.which === 13) {                  // numpad enter
-                        // e.which === 187 || // keyboard plus (shift key plus equal key)
-                        // e.which === 188 || // keyboard comma
-                        // e.which === 189 || // keyboard minus
-                        // e.which === 190 || // keyboard period (decimal point)
-                        // e.which === 191) { // keyboard forward slash (divide)
+            } else if ((e.which > 45 && e.which < 58) ||  // keyboard
+                       (e.which > 95 && e.which < 112) || // numpad
+                        e.which === separatorCode ||      // keyboard period (190) or comma (188) or ???
+                        e.which === 187 ||                // keyboard plus (shift key plus equal key)
+                        e.which === 189 ||                // keyboard minus
+                        e.which === 191 ||                // keyboard forward slash (divide)
+                        e.which === 8 ||                  // backspace
+                        e.which === 13) {                 // numpad enter
               doCalculation(e.key);
 
               if (e.which === 13 || e.which === 18) { // Enter key?
@@ -302,7 +303,7 @@
               result = '';
             }
 
-            if (value2.toString().includes('.') && key === '.') {
+            if (value2.toString().includes(decimalSeparator) && key === decimalSeparator) {
               key = '';
             }
 
@@ -315,6 +316,10 @@
               reveal = false;
               format = false;
             } else {
+              if (decimalSeparator !== '.') {
+                value2 = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat(value2);
+              }
+
               switch (oper) {
                 case '+' :
                   result = parseFloat(value1) + parseFloat(value2);
@@ -385,7 +390,9 @@
             return format;
           },
           backspace: function () {
-            value1 = value1.slice(0, value1.length - 1);
+            if (value1.length > 0) {
+              value1 = value1.slice(0, value1.length - 1);
+            }
             value2 = '';
             result = '';
             format = false;
