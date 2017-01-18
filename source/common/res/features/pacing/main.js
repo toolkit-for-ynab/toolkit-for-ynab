@@ -143,8 +143,8 @@
                 }
 
                 $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="' + tooltip +
-                               '" class="budget-table-cell-pacing-display ' + temperature + ' ' +
-                               (deemphasized ? 'deemphasized' : '') + (showIndicator ? ' indicator' : '') +
+                               '" class="budget-table-cell-pacing-display currency ' + temperature +
+                               (deemphasized ? ' deemphasized' : '') + (showIndicator ? ' indicator' : '') +
                                '" data-name="' + masterCategoryDisplayName + '_' + subCategoryDisplayName + '">' +
                                ynabToolKit.shared.formatCurrency(display, true) + '</span></li>');
               });
