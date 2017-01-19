@@ -7,7 +7,7 @@
 }
 
 .budget-content ul, .budget-table-row.is-dragging {
-  height: 2em; /* !important; */
+  height: 2em;
 }
 
 .budget-table-row.is-master-category .budget-table-cell-add-category .flaticon {

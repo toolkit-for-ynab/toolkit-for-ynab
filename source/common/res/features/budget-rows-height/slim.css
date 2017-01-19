@@ -3,7 +3,7 @@
 }
 
 .budget-content ul, .budget-table-row.is-dragging {
-  height: 1.6em; /* !important;*/
+  height: 1.6em;
 }
 
 .budget-table-row.is-master-category {

@@ -81,7 +81,6 @@
           popupCalc.reset();
 
           origValue = getValueCallback($field);
-          // origValue = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat(getValueCallback($field));
 
           if (origValue === '') {
             origValue = '0' + decimalSeparator + '0'.repeat(decimalDigits);

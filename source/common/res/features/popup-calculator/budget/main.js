@@ -37,8 +37,6 @@
       }
 
       function clickSubCatHandler() {
-        // console.log('clickSubCatHandler::$this.id: ' + $(this).attr('id'));
-
         let subCat = '#' + $(this).attr('id');
         // If the ID for the current ID is not the same as the last ID, rearrange the class names needed to hide/show the calculator icon.
         if (subCat !== ynabToolKit.budgetPopupCalculator.lastSubCat) {
@@ -57,8 +55,6 @@
       }
 
       function clickMstrCatHandler() {
-        // console.log('clickMstrCatHandler::$this.id: ' + $(this).attr('id'));
-
         $('div.budget-table > ul > li.toolkit-popup-calc-button.toolkit-popup-calc-button-show')
           .addClass('toolkit-popup-calc-button-hide')
           .removeClass('toolkit-popup-calc-button-show');
