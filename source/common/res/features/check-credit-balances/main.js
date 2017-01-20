@@ -30,6 +30,11 @@
         },
 
         getDebtAccounts() {
+          if (ynabToolKit.checkCreditBalances.budgetView === null) {
+            ynabToolKit.checkCreditBalances.budgetView = ynab.YNABSharedLib.
+            getBudgetViewModel_AllBudgetMonthsViewModel()._result;
+          }
+
           var categoryEntityId = ynabToolKit.checkCreditBalances.budgetView
             .categoriesViewModel.debtPaymentMasterCategory.entityId;
 
