@@ -150,7 +150,9 @@
           var debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
 
           $(debtPaymentCategories).each(function () {
-            var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
+            var accountName = $(this).find('.budget-table-cell-name div.button-truncate')
+                                     .prop('title')
+                                     .match(/.[^\n]*/)[0];
             if (accountName === name) {
               var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
                                  .find('input');
