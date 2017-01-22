@@ -3,6 +3,11 @@
 	left: 40px;
 }
 
+.layout.collapsed .content .scroll-wrap {
+	width: inherit;
+	min-width: 838px;
+}
+
 .collapsed-buttons .active button {
 	background-color: #194853;
 	color: #fff;
