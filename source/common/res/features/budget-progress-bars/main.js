@@ -55,49 +55,47 @@
       }
 
       function addGoalProgress(subCategoryName, target) {
-        if (subCategoryName !== 'Uncategorized Transactions') {
-          var calculation = getCalculation(subCategoryName);
+        var calculation = getCalculation(subCategoryName);
 
-          var status = 0;
-          var hasGoal = false;
+        var status = 0;
+        var hasGoal = false;
 
-          switch (calculation.goalType) {
-            case 'TB' :
-            case 'TBD' :
-              hasGoal = true;
+        switch (calculation.goalType) {
+          case 'TB' :
+          case 'TBD' :
+            hasGoal = true;
 
-              if (calculation.balance >= calculation.targetBalance) {
-                status = 100;
-              } else {
-                status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
-              }
+            if (calculation.balance >= calculation.targetBalance) {
+              status = 100;
+            } else {
+              status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
+            }
 
-              break;
-            case 'MF' :
-              hasGoal = true;
+            break;
+          case 'MF' :
+            hasGoal = true;
 
-              if (calculation.balance >= calculation.goalTarget) {
-                status = 100;
-              } else {
-                status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
-              }
+            if (calculation.balance >= calculation.goalTarget) {
+              status = 100;
+            } else {
+              status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
+            }
 
-              break;
-            default:
-              if (calculation.upcomingTransactions < 0) {
-                // hasGoal = true;
-                // status = 0 - calculation.balance / calculation.upcomingTransactions;
-              }
-          }
+            break;
+          default:
+            if (calculation.upcomingTransactions < 0) {
+              // hasGoal = true;
+              // status = 0 - calculation.balance / calculation.upcomingTransactions;
+            }
+        }
 
-          if (hasGoal) {
-            status = status > 1 ? 1 : status;
-            status = status < 0 ? 0 : status;
-            var percent = Math.round(parseFloat(status) * 100);
-            target.style.background = 'linear-gradient(to right, rgba(22, 163, 54, 0.3) ' + percent + '%, white ' + percent + '%)';
-          } else {
-            target.style.removeProperty('linear-gradient'); // only remove the style property we added!
-          }
+        if (hasGoal) {
+          status = status > 1 ? 1 : status;
+          status = status < 0 ? 0 : status;
+          var percent = Math.round(parseFloat(status) * 100);
+          target.style.background = 'linear-gradient(to right, rgba(22, 163, 54, 0.3) ' + percent + '%, white ' + percent + '%)';
+        } else {
+          target.style.removeProperty('linear-gradient'); // only remove the style property we added!
         }
       }
 
@@ -110,7 +108,7 @@
       function addPacingProgress(subCategoryName, target) {
         var deEmphasizedCategories = JSON.parse(localStorage.getItem('ynab_toolkit_pacing_deemphasized_categories')) || [];
 
-        if (subCategoryName !== 'Uncategorized Transactions' && deEmphasizedCategories.indexOf(subCategoryName) === -1) {
+        if (deEmphasizedCategories.indexOf(subCategoryName) === -1) {
           var calculation = getCalculation(subCategoryName);
 
           var budgeted = calculation.balance - calculation.budgetedCashOutflows - calculation.budgetedCreditOutflows;
@@ -139,7 +137,7 @@
 
       return {
         invoke() {
-          var categories = $('.budget-table ul');
+          var categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions');
           var masterCategoryName = '';
 
           if (subCats === null || subCats.length === 0 || loadCategories) {
@@ -165,11 +163,6 @@
 
             if ($(this).hasClass('is-sub-category')) {
               var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
-
-              if (subCategoryName === 'Uncategorized Transactions') {
-                // iterate the .each() function
-                return;
-              }
 
               subCategoryName = masterCategoryName + subCategoryName;
 
@@ -232,6 +225,12 @@
              * be rebuilt. Rebuilding at this point won't work becuase the user hasn't completed
              * the update activity at this point.
              */
+            loadCategories = true;
+          }
+        },
+
+        onRouteChanged(currentRoute) {
+          if (currentRoute.indexOf('budget') !== -1) {
             loadCategories = true;
           }
         }

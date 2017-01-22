@@ -5,12 +5,17 @@
         budgetView: ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result,
 
         invoke() {
-          var categories = ynabToolKit.budgetBalanceToZero.getCategories();
-          var categoryName = ynabToolKit.budgetBalanceToZero.getInspectorName();
+          let categories = ynabToolKit.budgetBalanceToZero.getCategories();
+          let categoryName = ynabToolKit.budgetBalanceToZero.getInspectorName();
+          let masterCategoryViewId = $('ul.is-checked').prevAll('ul.is-master-category').attr('id');
+          let masterCategory = ynabToolKit.shared.getEmberView(masterCategoryViewId).get('data');
+          let masterCategoryId = masterCategory.get('categoryId');
 
           categories.forEach(function (f) {
-            if (f.name === categoryName) {
+            if (f.name === categoryName && f.masterCategoryId === masterCategoryId) {
               ynabToolKit.budgetBalanceToZero.updateInspectorButton(f);
+
+              return false;
             }
           });
         },
@@ -27,7 +32,7 @@
           }
 
           // After using Budget Quick Switch, budgetView needs to be reset to the new budget.
-          if (ynabToolKit.budgetBalanceToZero.budgetView.categoriesViewModel === null) {
+          if (ynabToolKit.budgetBalanceToZero.budgetView === null) {
             ynabToolKit.budgetBalanceToZero.budgetView = ynab.YNABSharedLib.
               getBudgetViewModel_AllBudgetMonthsViewModel()._result;
           }
@@ -90,7 +95,10 @@
           var categories = $('.is-sub-category.is-checked');
 
           $(categories).each(function () {
-            var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
+            var accountName = $(this).find('.budget-table-cell-name div.button-truncate')
+                                     .prop('title')
+                                     .match(/.[^\n]*/)[0];
+
             if (accountName === name) {
               var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
                                  .find('input');

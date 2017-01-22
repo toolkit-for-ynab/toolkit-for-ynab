@@ -46,6 +46,8 @@
               .append(' ' + buttonText)
               .insertAfter('.accounts-toolbar .undo-redo-container');
 
+            $('.accounts-toolbar-left').addClass('toolkit-accounts-toolbar-left');
+
             $('.accounts-toolbar-left').find('#toggle-splits').click(function () {
               if (ynabToolKit.toggleSplits.setting === 'hide') {
                 showSubTransactions();

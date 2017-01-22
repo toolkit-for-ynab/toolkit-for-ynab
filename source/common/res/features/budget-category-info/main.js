@@ -66,7 +66,7 @@
 
       return {
         invoke() {
-          var categories = $('.budget-table ul');
+          var categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions');
           var masterCategoryName = '';
 
           if (subCats === null || subCats.length === 0 || loadCategories) {
@@ -92,11 +92,6 @@
             if ($(this).hasClass('is-sub-category')) {
               var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
               var classes = [];
-
-              // skip uncategorized
-              if (subCategoryName === 'Uncategorized Transactions') {
-                return;
-              }
 
               // add budgeted
               var budgeted = $(this).find('.budget-table-cell-budgeted .currency').text();

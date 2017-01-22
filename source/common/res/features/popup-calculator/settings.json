@@ -2,13 +2,17 @@
          "name": "popupCalculator",
          "type": "checkbox",
       "default": false,
-      "section": "accounts",
-        "title": "Add a popup calculator",
-  "description": "When adding or editing a transaction a button will be added to the left of the 'Save and add another' or 'Save' button that when clicked will display a full calculator.",
+      "section": "general",
+        "title": "Add popup calculator to account and budget screens",
+  "description": "<b>Account screen:</b> when adding or editing a transaction a button will be added to the left of the 'Save and add another' or 'Save' button that when clicked will display a full calculator.<br /><b>Budget screen:</b> Adds a button to the right of the BUDGETED column when the sub-category is selected.",
       "actions": {
                     "true": [
                       "injectCSS", "main.css",
-                      "injectScript", "main.js"
+                      "injectScript", "main.js",
+                      "injectScript", "account/main.js",
+                      "injectCSS", "account/main.css",
+                      "injectCSS", "budget/main.css",
+                      "injectScript", "budget/main.js"
                     ]
                  }
 }

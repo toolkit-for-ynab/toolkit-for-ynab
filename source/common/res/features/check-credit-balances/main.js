@@ -23,12 +23,18 @@
         inMonth() {
           var today = new Date();
           var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
+          if (selectedMonth === null) return false;
 
           // check for current month or future month
           return selectedMonth.getMonth() >= today.getMonth() && selectedMonth.getYear() >= today.getYear();
         },
 
         getDebtAccounts() {
+          if (ynabToolKit.checkCreditBalances.budgetView === null) {
+            ynabToolKit.checkCreditBalances.budgetView = ynab.YNABSharedLib.
+            getBudgetViewModel_AllBudgetMonthsViewModel()._result;
+          }
+
           var categoryEntityId = ynabToolKit.checkCreditBalances.budgetView
             .categoriesViewModel.debtPaymentMasterCategory.entityId;
 
@@ -150,7 +156,9 @@
           var debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
 
           $(debtPaymentCategories).each(function () {
-            var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
+            var accountName = $(this).find('.budget-table-cell-name div.button-truncate')
+                                     .prop('title')
+                                     .match(/.[^\n]*/)[0];
             if (accountName === name) {
               var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
                                  .find('input');
@@ -178,9 +186,7 @@
       };
     }()); // Keep feature functions contained within this object
 
-    var href = window.location.href;
-    href = href.replace('youneedabudget.com', '');
-    if (/budget/.test(href)) {
+    if (ynabToolKit.shared.getCurrentRoute() === 'budget.index') {
       ynabToolKit.checkCreditBalances.invoke();
     }
   } else {
