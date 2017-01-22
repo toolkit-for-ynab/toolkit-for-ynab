@@ -27,7 +27,7 @@
           }
 
           // After using Budget Quick Switch, budgetView needs to be reset to the new budget.
-          if (ynabToolKit.budgetBalanceToZero.budgetView.categoriesViewModel === null) {
+          if (ynabToolKit.budgetBalanceToZero.budgetView === null) {
             ynabToolKit.budgetBalanceToZero.budgetView = ynab.YNABSharedLib.
               getBudgetViewModel_AllBudgetMonthsViewModel()._result;
           }
