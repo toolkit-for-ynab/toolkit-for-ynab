@@ -74,7 +74,11 @@ YNABEnhanced.prototype = {
         // eslint-disable-next-line new-cap
         var httpChannel = subject.QueryInterface(interfaces.nsIHttpChannel);
 
+        // We don't care about unsuccessful requests.
         if (httpChannel.responseStatus !== 200) return;
+
+        // We don't care about requests for a host that we don't operate on.
+        if (httpChannel.originalURI.host !== 'app.youneedabudget.com') return;
 
         // There is unfortunately no clean way to check the presence of csp header. An exception
         // will be thrown if it is not there, hence the try catch malarky.
