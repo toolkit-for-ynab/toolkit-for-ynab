@@ -147,10 +147,10 @@
                   }
 
                   $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="' + tooltip +
-                                 '" class="budget-table-cell-pacing-display ' + temperature + ' ' +
-                                 (deemphasized ? 'deemphasized' : '') + (showIndicator ? ' indicator' : '') +
-                                 '" data-name="' + masterCategoryDisplayName + '_' + subCategoryDisplayName + '">' +
-                                 ynabToolKit.shared.formatCurrency(display, true) + '</span></li>');
+                               '" class="budget-table-cell-pacing-display currency ' + temperature +
+                               (deemphasized ? ' deemphasized' : '') + (showIndicator ? ' indicator' : '') +
+                               '" data-name="' + masterCategoryDisplayName + '_' + subCategoryDisplayName + '">' +
+                               ynabToolKit.shared.formatCurrency(display, true) + '</span></li>');
                 });
 
               $('.budget-table-cell-pacing-display').click(function (e) {
@@ -172,12 +172,6 @@
                 if (['pacing', 'both'].indexOf(ynabToolKit.options.budgetProgressBars) !== -1) {
                   ynabToolKit.shared.invokeExternalFeature('budgetProgressBars');
                 }
-
-                $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="' + tooltip +
-                               '" class="budget-table-cell-pacing-display currency ' + temperature +
-                               (deemphasized ? ' deemphasized' : '') + (showIndicator ? ' indicator' : '') +
-                               '" data-name="' + masterCategoryDisplayName + '_' + subCategoryDisplayName + '">' +
-                               ynabToolKit.shared.formatCurrency(display, true) + '</span></li>');
 
                 e.stopPropagation();
               });
