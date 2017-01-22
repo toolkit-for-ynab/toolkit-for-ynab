@@ -24,10 +24,12 @@
         invoke() {
           let budgetController = ynabToolKit.shared.containerLookup('controller:budget');
           let budgetViewModel = budgetController.get('budgetViewModel');
-          let nextMonth = budgetViewModel.get('monthlyBudgetCalculationForNextMonth');
+          if (budgetViewModel) {
+            let nextMonth = budgetViewModel.get('monthlyBudgetCalculationForNextMonth');
 
-          nextMonth.addObserver('availableToBudget', onNextMonthCalculationChanged);
-          onNextMonthCalculationChanged.call(nextMonth);
+            nextMonth.addObserver('availableToBudget', onNextMonthCalculationChanged);
+            onNextMonthCalculationChanged.call(nextMonth);
+          }
         },
 
         onRouteChanged(currentRoute) {
