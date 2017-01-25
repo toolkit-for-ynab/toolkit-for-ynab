@@ -47,7 +47,7 @@
 
       return {
         invoke() {
-          if (window.YNABFEATURES['enter-scheduled-transaction-now']) {
+          if (window.YNABFEATURES && window.YNABFEATURES.hasOwnProperty('enter-scheduled-transaction-now') && window.YNABFEATURES['enter-scheduled-transaction-now']) {
             return;
           }
 
