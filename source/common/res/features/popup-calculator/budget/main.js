@@ -20,7 +20,6 @@
       }
 
       function clickSubCatCheckBox() {
-        console.log('clickSubCatCheckBox:: checked? ' + $(this).hasClass('is-checked'));
         if ($(this).hasClass('is-checked')) {
           $(this) // hide the calculator button on my sibling
             .closest('li')
