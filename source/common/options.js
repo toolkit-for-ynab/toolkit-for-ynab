@@ -5,10 +5,13 @@
 // For more info, see here: https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/287
 var jq = jQuery.noConflict(true);
 
+let syncObj = {};
+
 function saveCheckboxOption(elementId) {
   var element = document.getElementById(elementId);
 
   if (element) {
+    syncObj[elementId] = element.checked;
     return setKangoSetting(elementId, element.checked);
   }
 
@@ -19,7 +22,9 @@ function saveSelectOption(elementId) {
   var select = document.getElementById(elementId);
 
   if (select) {
-    return setKangoSetting(elementId, select.options[select.selectedIndex].value);
+    let value = select.options[select.selectedIndex].value;
+    syncObj[elementId] = value;
+    return setKangoSetting(elementId, value);
   }
 
   console.log("WARNING: Tried to saveSelectOption but couldn't find element " + elementId + ' on the page.');
@@ -30,11 +35,18 @@ function restoreCheckboxOption(elementId) {
     var element = document.getElementById(elementId);
 
     if (element) {
-      getKangoSetting(elementId).then(function (value) {
-        element.checked = value;
+      if (kango.browser.getName() === 'chrome') {
+        chrome.storage.sync.get(elementId, function (val) {
+          element.checked = val[elementId];
+          resolve();
+        });
+      } else {
+        getKangoSetting(elementId).then(function (value) {
+          element.checked = value;
 
-        resolve();
-      });
+          resolve();
+        });
+      }
     } else {
       console.log("WARNING: Tried to restoreCheckboxOption but couldn't find element " + elementId + ' on the page.');
 
@@ -60,28 +72,18 @@ function restoreSelectOption(elementId) {
     var select = document.getElementById(elementId);
 
     if (select) {
-      getKangoSetting(elementId).then(function (data) {
-        data = data || 0;
-
-        // Is the value in the select list?
-        if (data === true && !valueIsInSelect(select, data) && valueIsInSelect(select, '1')) {
-          // There is a specific upgrade path where a boolean setting
-          // gets changed to a select setting, and users who had it set
-          // at 'true' should now be set to '1' so the feature is still
-          // enabled.
-          data = '1';
-        }
-
-        // If we're down here the value should be a legitimate one, but if not
-        // let's just pick the default.
-        if (valueIsInSelect(select, data)) {
-          select.value = data;
-        } else {
-          select.value = select.options[0].value;
-        }
-
-        resolve();
-      });
+      if (kango.browser.getName() === 'chrome') {
+        chrome.storage.sync.get(elementId, function (val) {
+          let data = val[elementId];
+          restoreSelectOptionCallback(select, data);
+          resolve();
+        });
+      } else {
+        getKangoSetting(elementId).then(function (data) {
+          restoreSelectOptionCallback(select, data);
+          resolve();
+        });
+      }
     } else {
       console.log("WARNING: Tried to restoreSelectOption but couldn't find element " + elementId + ' on the page.');
 
@@ -90,6 +92,27 @@ function restoreSelectOption(elementId) {
       resolve();
     }
   });
+}
+
+function restoreSelectOptionCallback(select, data) {
+  data = data || 0;
+
+  // Is the value in the select list?
+  if (data === true && !valueIsInSelect(select, data) && valueIsInSelect(select, '1')) {
+    // There is a specific upgrade path where a boolean setting
+    // gets changed to a select setting, and users who had it set
+    // at 'true' should now be set to '1' so the feature is still
+    // enabled.
+    data = '1';
+  }
+
+  // If we're down here the value should be a legitimate one, but if not
+  // let's just pick the default.
+  if (valueIsInSelect(select, data)) {
+    select.value = data;
+  } else {
+    select.value = select.options[0].value;
+  }
 }
 
 function saveOptions() {
@@ -101,6 +124,10 @@ function saveOptions() {
     } else if (setting.type === 'select') {
       promises.push(saveSelectOption(setting.name));
     }
+  });
+
+  chrome.storage.sync.set(syncObj, function () {
+    console.log('Settings saved');
   });
 
   Promise.all(promises).then(function () {
@@ -117,6 +144,12 @@ function restoreOptions() {
   return new Promise(function (resolve) {
     ensureDefaultsAreSet().then(function () {
       var promises = [];
+
+      if (kango.browser.getName() === 'chrome') {
+        chrome.storage.sync.get(null, function (val) {
+          syncObj = val;
+        });
+      }
 
       ynabToolKit.settings.forEach(function (setting) {
         if (setting.type === 'checkbox') {

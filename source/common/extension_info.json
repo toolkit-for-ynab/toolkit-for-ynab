@@ -24,6 +24,6 @@
         "web_navigation": false,
         "notifications": false,
         "cookies": false,
-        "xhr": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"]
+        "xhr": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*", "storage"]
     }
 }
