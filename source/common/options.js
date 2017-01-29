@@ -9,16 +9,13 @@ var jq = jQuery.noConflict(true);
 // MAX_WRITE_OPERATIONS_PER_MINUTE limitation.
 let syncObj = {};
 
+/* Save Settings */
+
 function saveCheckboxOption(elementId) {
   var element = document.getElementById(elementId);
 
   if (element) {
-    switch (kango.browser.getName()) {
-      case 'chrome':
-        return setChromeSetting(elementId, element.checked);
-      default:
-        return setKangoSetting(elementId, element.checked);
-    }
+    setSetting(elementId, element.checked);
   }
 
   console.log("WARNING: Tried to saveCheckboxOption but couldn't find element " + elementId + ' on the page.');
@@ -28,27 +25,22 @@ function saveSelectOption(elementId) {
   var select = document.getElementById(elementId);
 
   if (select) {
-    let value = select.options[select.selectedIndex].value;
-
-    switch (kango.browser.getName()) {
-      case 'chrome':
-        return setChromeSetting(elementId, value);
-      default:
-        return setKangoSetting(elementId, value);
-    }
+    setSetting(elementId, select.options[select.selectedIndex].value);
   }
 
   console.log("WARNING: Tried to saveSelectOption but couldn't find element " + elementId + ' on the page.');
 }
 
-function setChromeSetting(settingName, data) {
-  return new Promise(function (resolve) {
-    syncObj[settingName] = data;
-    resolve('success');
-  });
+function setSetting(settingName, value) {
+  switch (kango.browser.getName()) {
+    case 'chrome':
+      return setChromeSetting(settingName, value);
+    default:
+      return setKangoSetting(settingName, value);
+  }
 }
 
-function saveOptions() {
+function saveSettings() {
   var promises = [];
 
   ynabToolKit.settings.forEach(function (setting) {
@@ -68,8 +60,6 @@ function saveOptions() {
       });
       promises.push(syncPromise);
       break;
-    default:
-      break;
   }
 
   Promise.all(promises).then(function () {
@@ -80,34 +70,26 @@ function saveOptions() {
   });
 }
 
+/* Restore Settings */
+
+function getSetting(key) {
+  switch (kango.browser.getName()) {
+    case 'chrome':
+      return getChromeSetting(key);
+    default:
+      return getKangoSetting(key);
+  }
+}
+
 function restoreCheckboxOption(elementId) {
   return new Promise(function (resolve) {
     var element = document.getElementById(elementId);
 
     if (element) {
-      switch (kango.browser.getName()) {
-        case 'chrome':
-          chrome.storage.sync.get(elementId, function (val) {
-            if (Object.keys(val).length > 0) {
-              element.checked = val[elementId];
-              resolve();
-            } else {
-              // Fallback on Kango if no setting is found with chrome sync.
-              // This will occur initially for every feature for all users, and
-              // for any new settings added in the future.
-              getKangoSetting(elementId).then(function (value) {
-                element.checked = value;
-                resolve();
-              });
-            }
-          });
-          break;
-        default:
-          getKangoSetting(elementId).then(function (value) {
-            element.checked = value;
-            resolve();
-          });
-      }
+      getSetting(elementId).then(function (value) {
+        element.checked = value;
+        resolve();
+      });
     } else {
       console.log("WARNING: Tried to restoreCheckboxOption but couldn't find element " + elementId + ' on the page.');
 
@@ -123,30 +105,27 @@ function restoreSelectOption(elementId) {
     var select = document.getElementById(elementId);
 
     if (select) {
-      switch (kango.browser.getName()) {
-        case 'chrome':
-          chrome.storage.sync.get(elementId, function (val) {
-            if (Object.keys(val).length > 0) {
-              let data = val[elementId];
-              restoreSelectOptionCompletion(select, data);
-              resolve();
-            } else {
-              // Fallback on Kango if no setting is found with chrome sync.
-              // This will occur initially for every feature for all users, and
-              // for any new settings added in the future.
-              getKangoSetting(elementId).then(function (data) {
-                restoreSelectOptionCompletion(select, data);
-                resolve();
-              });
-            }
-          });
-          break;
-        default:
-          getKangoSetting(elementId).then(function (data) {
-            restoreSelectOptionCompletion(select, data);
-            resolve();
-          });
-      }
+      getSetting(elementId).then(function (data) {
+        data = data || 0;
+
+        // Is the value in the select list?
+        if (data === true && !valueIsInSelect(select, data) && valueIsInSelect(select, '1')) {
+          // There is a specific upgrade path where a boolean setting
+          // gets changed to a select setting, and users who had it set
+          // at 'true' should now be set to '1' so the feature is still
+          // enabled.
+          data = '1';
+        }
+
+        // If we're down here the value should be a legitimate one, but if not
+        // let's just pick the default.
+        if (valueIsInSelect(select, data)) {
+          select.value = data;
+        } else {
+          select.value = select.options[0].value;
+        }
+        resolve();
+      });
     } else {
       console.log("WARNING: Tried to restoreSelectOption but couldn't find element " + elementId + ' on the page.');
 
@@ -155,27 +134,6 @@ function restoreSelectOption(elementId) {
       resolve();
     }
   });
-}
-
-function restoreSelectOptionCompletion(select, data) {
-  data = data || 0;
-
-  // Is the value in the select list?
-  if (data === true && !valueIsInSelect(select, data) && valueIsInSelect(select, '1')) {
-    // There is a specific upgrade path where a boolean setting
-    // gets changed to a select setting, and users who had it set
-    // at 'true' should now be set to '1' so the feature is still
-    // enabled.
-    data = '1';
-  }
-
-  // If we're down here the value should be a legitimate one, but if not
-  // let's just pick the default.
-  if (valueIsInSelect(select, data)) {
-    select.value = data;
-  } else {
-    select.value = select.options[0].value;
-  }
 }
 
 function valueIsInSelect(select, value) {
@@ -267,12 +225,21 @@ function applyDarkMode(activate) {
   }
 }
 
+function getStorageKeys() {
+  switch (kango.browser.getName()) {
+    case 'chrome':
+      return getChromeKeys();
+    default:
+      return getKangoStorageKeys();
+  }
+}
+
 function importExportModal() {
-  getKangoStorageKeys().then(function (keys) {
+  getStorageKeys().then(function (keys) {
     var promises = [];
     keys.forEach(function (settingKey) {
       promises.push(new Promise(function (resolve) {
-        getKangoSetting(settingKey).then(function (settingValue) {
+        getSetting(settingKey).then(function (settingValue) {
           resolve({ key: settingKey, value: settingValue });
         });
       }));
@@ -291,19 +258,68 @@ function importExportModal() {
 
         jq('.apply-settings').click(applySettings);
       });
+
+      switch (kango.browser.getName()) {
+        case 'chrome':
+          jq('#importExportModal #directions').html('Copy and paste the above text into the Import/Export Dialog on your other devices. This will sync with other Chrome browsers that you are signed into.');
+          break;
+      }
     });
   });
 
   function applySettings() {
     var newSettings = JSON.parse(jq('#importExportContent').val());
     var promises = newSettings.map(function (setting) {
-      return setKangoSetting(setting.key, setting.value);
+      return setSetting(setting.key, setting.value);
     });
 
     Promise.all(promises).then(function () {
       location.reload();
     });
   }
+}
+
+/* Chrome */
+
+function getChromeKeys() {
+  return new Promise(function (resolve) {
+    chrome.storage.sync.get(null, function (val) {
+      if (Object.keys(val).length > 0) {
+        resolve(Object.keys(val));
+      } else {
+        // Fallback on Kango if no setting is found with chrome sync.
+        // This will occur initially for every feature for all users, and
+        // for any new settings added in the future.
+        getKangoStorageKeys().then(function (keys) {
+          resolve(keys);
+        });
+      }
+    });
+  });
+}
+
+function getChromeSetting(settingName) {
+  return new Promise(function (resolve) {
+    chrome.storage.sync.get(settingName, function (val) {
+      if (Object.keys(val).length > 0) {
+        resolve(val[settingName]);
+      } else {
+        // Fallback on Kango if no setting is found with chrome sync.
+        // This will occur initially for every feature for all users, and
+        // for any new settings added in the future.
+        getKangoSetting(settingName).then(function (value) {
+          resolve(value);
+        });
+      }
+    });
+  });
+}
+
+function setChromeSetting(settingName, data) {
+  return new Promise(function (resolve) {
+    syncObj[settingName] = data;
+    resolve('success');
+  });
 }
 
 KangoAPI.onReady(function () {
@@ -356,6 +372,6 @@ KangoAPI.onReady(function () {
   });
 
   jq('.import-export-button').click(importExportModal);
-  jq('.save-button').click(saveOptions);
+  jq('.save-button').click(saveSettings);
   jq('.cancel-button').click(KangoAPI.closeWindow);
 });
