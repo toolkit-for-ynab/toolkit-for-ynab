@@ -15,7 +15,7 @@ function saveCheckboxOption(elementId) {
   var element = document.getElementById(elementId);
 
   if (element) {
-    setSetting(elementId, element.checked);
+    return setSetting(elementId, element.checked);
   }
 
   console.log("WARNING: Tried to saveCheckboxOption but couldn't find element " + elementId + ' on the page.');
@@ -25,7 +25,7 @@ function saveSelectOption(elementId) {
   var select = document.getElementById(elementId);
 
   if (select) {
-    setSetting(elementId, select.options[select.selectedIndex].value);
+    return setSetting(elementId, select.options[select.selectedIndex].value);
   }
 
   console.log("WARNING: Tried to saveSelectOption but couldn't find element " + elementId + ' on the page.');
