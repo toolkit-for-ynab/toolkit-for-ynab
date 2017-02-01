@@ -15,7 +15,7 @@
       let getValueCallback = '';
       let decimalDigits = ynab.YNABSharedLib.currencyFormatter.getCurrency().decimal_digits;
       let decimalSeparator = ynab.YNABSharedLib.currencyFormatter.getCurrency().decimal_separator;
-      let separatorCode = decimalSeparator.charCodeAt(0);
+      let separatorCode = decimalSeparator === '.' ? 190 : 188;
 
       return {
         setDeleteOnDismiss(val) {
@@ -204,9 +204,9 @@
                   })))
                 .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
                   .append($('<button>', { id: 'toolkitBtnP', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
-                  .append('.')
+                  .append(decimalSeparator)
                   .click(() => {
-                    doCalculation('.');
+                    doCalculation(decimalSeparator);
                   })))
                 .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
                   .append($('<button>', { id: 'toolkitBtnE', class: 'ember-view button button-primary toolkit-popup-calc-button1' })
@@ -249,6 +249,7 @@
                         e.which === 189 ||                // keyboard minus
                         e.which === 191 ||                // keyboard forward slash (divide)
                         e.which === 8 ||                  // backspace
+                        e.which === 67 ||                 // c (clear)
                         e.which === 13) {                 // numpad enter
               doCalculation(e.key);
 
@@ -297,16 +298,19 @@
             reveal = true;
             format = false;
 
-            if (result === '0' || result === ynab.YNABSharedLib.currencyFormatter.format(ynab.YNABSharedLib.currencyFormatter.convertToMilliDollars(result))) {
-              result = '';
-            }
+            if (key === decimalSeparator) {
+              if (value2.toString().includes(decimalSeparator)) {
+                key = '';
+              }
 
-            if (value2.toString().includes(decimalSeparator) && key === decimalSeparator) {
-              key = '';
+              if (value2 === '') {
+                value2 = '0'; // results in displaying a leading 0 for fractional values
+              }
             }
 
             result = value2 + key + ''; // ensure concatenation
             value2 = result;  // set potential second value
+
             return result;
           },
           eval: function () {
@@ -315,7 +319,8 @@
               format = false;
             } else {
               if (decimalSeparator !== '.') {
-                value2 = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat(value2);
+                value1 = ynab.unformat(value1);
+                value2 = ynab.unformat(value2);
               }
 
               switch (oper) {
@@ -421,6 +426,7 @@
 
             break;
           case 'C' : // button C
+          case 'c' : // keyboard c
             calcValue = popupCalc.clear();
 
             break;
