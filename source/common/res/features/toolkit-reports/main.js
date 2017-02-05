@@ -52,7 +52,7 @@
         $('.ynabtk-navlink-reports').on('click', showReports);
       }
 
-      function buildReportsPage($pane) {
+      function buildReportsPage($pane, transactionsViewModel) {
         if ($('.ynabtk-reports').length) return;
 
         updateNavigation();
@@ -93,7 +93,7 @@
             .append('<div class="ynabtk-reports-data"></div>')
         );
 
-        generateDateSlider();
+        generateDateSlider(transactionsViewModel);
         generateQuickDateFilters();
       }
 
@@ -143,8 +143,8 @@
         return $reportsHeader;
       }
 
-      function generateDateSlider() {
-        monthLabels = ynabToolKit.reports.generateMonthLabelsFromFirstTransaction(allTransactions);
+      function generateDateSlider(transactionsViewModel) {
+        monthLabels = ynabToolKit.reports.generateMonthLabelsFromFirstTransaction(transactionsViewModel);
 
         // if we only have one or no months of data that we should just hide the slider
         // return early so we don't even try to initialize the slider
@@ -482,7 +482,7 @@
             });
 
             // clear out the content and put ours in there instead.
-            buildReportsPage($('div.scroll-wrap').closest('.ember-view'));
+            buildReportsPage($('div.scroll-wrap').closest('.ember-view'), transactionsViewModel);
 
             // The budget header is absolute positioned
             $('.budget-header, .scroll-wrap').hide();
@@ -541,12 +541,15 @@
         },
 
         formatTransactionDatel8n(transaction) {
-          let nativeDate = transaction.get('date').toNativeDate();
-          return this.formatDatel8n(nativeDate);
+          return this.formatDatel8n(transaction.get('date'));
         },
 
         formatDatel8n(date) {
-          let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
+          date = typeof date.format === 'function' ? date : moment(date);
+          let dateWithoutTime = ynab.formatDateWithoutTime(date);
+
+          // this just uses moment but we'll use it instead of just using moment incase YNAB gets funky
+          let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(new Date(dateWithoutTime), 'MMM YYYY');
 
           // now split it with year and month so that we can get the localized version of the month
           let year = formattedDate.split(' ')[1];
@@ -558,30 +561,20 @@
           return formattedDate;
         },
 
-        generateMonthLabelsFromFirstTransaction(transactions, endWithLastTransaction) {
+        generateMonthLabelsFromFirstTransaction(transactionsViewModel, endWithLastTransaction) {
           let monthLabelsForTransaction = [];
           // grab the current month, this is the last label of our slider
           let endMonth = new Date().getMonth();
           let endYear = new Date().getFullYear();
 
           if (endWithLastTransaction) {
-            let lastTransaction;
-            for (var i = transactions.length - 1; i >= 0; i--) {
-              lastTransaction = transactions[i];
-              if (!lastTransaction.get('isTombstone') && !lastTransaction.get('isScheduledTransaction')) break;
-            }
-
-            let lastTransactionDate = lastTransaction ? lastTransaction.get('date') : undefined;
+            let lastTransactionDate = transactionsViewModel.maxTransactionDate;
             endMonth = lastTransactionDate ? lastTransactionDate.getMonth() : endMonth;
             endYear = lastTransactionDate ? lastTransactionDate.getYear() : endYear;
           }
 
-          // find the first non-tombstoned, non scheduled transaction.
-          let firstTransaction = transactions.find((transaction) =>
-            !transaction.get('isTombstone') && !transaction.get('isScheduledTransaction'));
-
           // grab the date from that transaction
-          let firstTransactionDate = firstTransaction ? firstTransaction.get('date') : undefined;
+          let firstTransactionDate = transactionsViewModel.minTransactionDate;
           let currentLabelMonth = firstTransactionDate ? firstTransactionDate.getMonth() : endMonth;
           let currentLabelYear = firstTransactionDate ? firstTransactionDate.getYear() : endYear;
 
