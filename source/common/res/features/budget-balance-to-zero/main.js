@@ -100,18 +100,16 @@
                                      .match(/.[^\n]*/)[0];
 
             if (accountName === name) {
-              var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
+              let input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
                                  .find('input');
 
-              var oldValue = input.val();
+              let oldValue = input.val();
 
-              // If nothing is budgetted, the input will be empty
-              oldValue = oldValue || 0;
+              oldValue = ynab.unformat(oldValue);
+              difference = ynab.unformat(ynab.convertFromMilliDollars(difference)); // YNAB stores currency values * 1000
+              let newValue = oldValue + difference;
 
-              // YNAB stores currency values * 1000. What's our actual difference?
-              var newValue = (ynab.unformat(oldValue) + difference / 1000);
-
-              $(input).val(newValue);
+              $(input).val(ynab.YNABSharedLib.currencyFormatter.format(ynab.convertToMilliDollars(newValue)));
 
               if (!ynabToolKit.options.warnOnQuickBudget) {
                 // only seems to work if the confirmation doesn't pop up?
