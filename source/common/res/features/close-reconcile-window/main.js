@@ -1,5 +1,5 @@
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.closeReconcileWindow = (function () {
       return {
         observe(changedNodes) {
