@@ -5,17 +5,17 @@ export default class Feature {
     // set this.settings to this.constructor.names's settings
   }
 
+  shouldInvoke() {
+    throw Error(`Feature: ${this.constructor.name} does not implement required shouldInvoke() method.`)
+  }
+
   invoke() {
-    throw Error(`Feature: ${this.constructor.name} does not implement invoke() method.`)
+    throw Error(`Feature: ${this.constructor.name} does not implement required invoke() method.`)
   }
 
-  observe() {
-    console.log('Feature Class');
-  }
+  observe() { /* stubbed listener function */ }
 
-  onRouteChanged() {
-    console.log('Feature Class');
-  }
+  onRouteChanged() { /* stubbed listener function */ }
 
   applyListeners() {
     let observeListener = new ObserveListener();

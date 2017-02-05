@@ -14,7 +14,10 @@ const featureInstances = features.map((Feature) => new Feature());
 
     featureInstances.forEach((feature) => {
       feature.applyListeners();
-      feature.invoke();
+
+      if (feature.settings.enabled && feature.shouldInvoke()) {
+        feature.invoke();
+      }
     });
   } else {
     setTimeout(poll, 250);
