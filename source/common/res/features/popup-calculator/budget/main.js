@@ -8,7 +8,7 @@
         $('#ember' + who).addClass('toolkit-popup-calc-overflow');
 
         event.stopPropagation();
-        ynabToolKit.popupCalculator.setEntryField($who.closest('ul').find('li.budget-table-cell-budgeted > div').attr('id'));
+        ynabToolKit.popupCalculator.setEntryField($who.closest('ul').find('li.budget-table-cell-budgeted > div.currency-input').attr('id'));
         ynabToolKit.popupCalculator.setPopupButton($who.attr('id'));
         ynabToolKit.popupCalculator.setButtonRight(ynabToolKit.budgetPopupCalculator.buttonRight);
         ynabToolKit.popupCalculator.setButtonBottom(ynabToolKit.budgetPopupCalculator.buttonBottom);
