@@ -1,0 +1,174 @@
+(function poll() {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
+    ynabToolKit.spareChange = (function () {
+      var selectedTransactions;
+      var currentlyRunning = false;
+
+      function setSelectedTransactions() {
+        var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
+        var visibleTransactionDisplayItems = accountController.get('visibleTransactionDisplayItems');
+        selectedTransactions = visibleTransactionDisplayItems.filter(function (item) {
+          return item.isChecked && item.get('outflow');
+        });
+      }
+
+      function updateSpareChangeCalculation() {
+        var i;
+        var transaction;
+        var runningSpareChange = 0;
+
+        for (i = 0; i < selectedTransactions.length; i++) {
+          transaction = selectedTransactions[i];
+
+          if (transaction.get('parentEntityId') !== null) {
+            transaction.__ynabToolKitSpareChange = 0;
+            continue;
+          }
+
+          if (transaction.get('outflow')) {
+            var amount = transaction.get('outflow');
+            runningSpareChange += Math.round((Math.ceil(amount / 1000.0) - amount / 1000.0) * 1000);
+          }
+
+          window.__ynabToolKitSpareChange = runningSpareChange;
+        }
+      }
+
+      function insertHeaderAndUpdateValue() {
+        insertHeader();
+        updateValue();
+      }
+
+      function updateSpareChangeHeader() {
+        if (selectedTransactions.length > 0) {
+          Ember.run.later(function () {
+            insertHeaderAndUpdateValue();
+          }, 250);
+        } else {
+          removeHeader();
+        }
+      }
+
+      function insertHeader() {
+        var balancesHeader = $('.accounts-header-balances');
+
+        var spareChangeDiv = $('.ynab-toolkit-accounts-header-balances-spare-change');
+        var selectedTotalDiv = $('.accounts-header-selected-total');
+        var flexGrowSpacer = $('.ynab-toolkit-spare-change-flex-grow-spacer');
+        var separator = $('.accounts-header-balances > i:contains("***")');
+        var isSelectedTotalVisible = selectedTotalDiv.length > 0;
+
+        spareChangeDiv.remove();
+        flexGrowSpacer.remove();
+        separator.remove();
+
+        spareChangeDiv = $('<div />')
+          .addClass('ynab-toolkit-accounts-header-balances-spare-change');
+
+        var spareChangeAmount = $('<span />').addClass('user-data');
+        var spareChangeTitle =
+          $('<div />')
+            .addClass('accounts-header-balances-label')
+            .attr('title', 'The selected items "spare change" when rounded up to the nearest dollar.')
+            .text('Spare Change');
+
+        var currencySpan = $('<span />').addClass('user-data currency');
+
+        spareChangeAmount.append(currencySpan);
+        spareChangeDiv.append(spareChangeTitle);
+        spareChangeDiv.append(spareChangeAmount);
+
+        if (isSelectedTotalVisible) {
+          spareChangeDiv.insertBefore(selectedTotalDiv);
+          separator = $('<i />').text('***');
+          separator.insertAfter(spareChangeDiv);
+        } else {
+          spareChangeDiv.css('margin-right', '32px');
+          spareChangeDiv.removeClass('ynab-toolkit-before-selected-total').addClass('ynab-toolkit-vanilla-spare-change');
+          balancesHeader.append(spareChangeDiv);
+        }
+
+        flexGrowSpacer = $('<div />')
+          .addClass('ynab-toolkit-spare-change-flex-grow-spacer')
+          .css('flex-grow', '1');
+        flexGrowSpacer.insertBefore(spareChangeDiv);
+      }
+
+      function removeHeader() {
+        $('.ynab-toolkit-accounts-header-balances-spare-change').remove();
+        $('.accounts-header-balances > i:contains("***")').remove();
+        $('.ynab-toolkit-spare-change-flex-grow-spacer').remove();
+      }
+
+      function updateValue() {
+        var spareChange = window.__ynabToolKitSpareChange;
+
+        var spareChangeHeader = $('.ynab-toolkit-accounts-header-balances-spare-change');
+        var spareChangeAmount = $('.user-data:not(.currency)', spareChangeHeader);
+        var currencySpan = $('.user-data.currency', spareChangeHeader);
+
+        currencySpan.removeClass('negative positive zero');
+
+        if (spareChange < 0) {
+          currencySpan.addClass('negative');
+        } else if (spareChange > 0) {
+          currencySpan.addClass('positive');
+        } else {
+          currencySpan.addClass('zero');
+        }
+
+        var formatted = ynabToolKit.shared.formatCurrency(spareChange);
+        spareChangeAmount.attr('title', formatted.string);
+
+        var formattedHtml = formatted.string.replace(/\$/g, '<bdi>$</bdi>');
+        currencySpan.html(formattedHtml);
+      }
+
+      function onYnabGridyBodyChanged() {
+        setSelectedTransactions();
+        updateSpareChangeCalculation();
+        updateSpareChangeHeader();
+      }
+
+      function onYnabSelectionChanged() {
+        selectedTransactions = undefined;
+        onYnabGridyBodyChanged();
+      }
+
+      return {
+        // invoke has potential of being pretty processing heavy (needing to sort content, then add calculation to every row)
+        // wrapping it in a later means that if the user continuously scrolls down we won't clog up the event loop.
+        invoke: function invoke() {
+          currentlyRunning = true;
+
+          Ember.run.later(function () {
+            var applicationController = ynabToolKit.shared.containerLookup('controller:application');
+            var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
+
+            accountsController.addObserver('areChecked', onYnabSelectionChanged);
+
+            if (applicationController.get('currentPath').indexOf('accounts') > -1) {
+              if (applicationController.get('selectedAccountId')) {
+                onYnabGridyBodyChanged();
+              } else {
+                removeHeader();
+              }
+            }
+
+            currentlyRunning = false;
+          }, 250);
+        },
+
+        observe: function invoke(changedNodes) {
+          if (changedNodes.has('ynab-grid-body') && !currentlyRunning) {
+            ynabToolKit.runningBalance.invoke();
+          }
+        }
+      };
+    }());
+
+    ynabToolKit.spareChange.invoke();
+  } else {
+    setTimeout(poll, 250);
+  }
+}());
