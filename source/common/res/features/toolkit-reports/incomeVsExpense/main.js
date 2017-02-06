@@ -146,7 +146,7 @@
               ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel().then((categoryViewModel) => {
                 ynab.YNABSharedLib.getBudgetViewModel_PayeesViewModel().then((payeeViewModel) => {
                   // make sure the data is empty before we start doing an calculating/data layout stuff
-                  dateLabels = ynabToolKit.reports.generateMonthLabelsFromFirstTransaction(transactions, true);
+                  dateLabels = ynabToolKit.reports.generateMonthLabelsFromFirstOfTransactions(transactions, true);
                   dateLabels.push('Average', 'Total');
 
                   // create the inflow by payee object and total array object
