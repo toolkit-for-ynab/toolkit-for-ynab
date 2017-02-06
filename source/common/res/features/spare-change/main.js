@@ -34,16 +34,10 @@
         }
       }
 
-      function insertHeaderAndUpdateValue() {
-        insertHeader();
-        updateValue();
-      }
-
       function updateSpareChangeHeader() {
         if (selectedTransactions.length > 0) {
-          Ember.run.later(function () {
-            insertHeaderAndUpdateValue();
-          }, 250);
+          insertHeader();
+          updateValue();
         } else {
           removeHeader();
         }
@@ -125,9 +119,11 @@
       }
 
       function onYnabGridyBodyChanged() {
-        setSelectedTransactions();
-        updateSpareChangeCalculation();
-        updateSpareChangeHeader();
+        Ember.run.later(function () {
+          setSelectedTransactions();
+          updateSpareChangeCalculation();
+          updateSpareChangeHeader();
+        }, 250);
       }
 
       function onYnabSelectionChanged() {
