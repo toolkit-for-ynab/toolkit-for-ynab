@@ -174,7 +174,7 @@
 
         observe: function invoke(changedNodes) {
           if (changedNodes.has('ynab-grid-body') && !currentlyRunning) {
-            ynabToolKit.runningBalance.invoke();
+            ynabToolKit.spareChange.invoke();
           }
         }
       };
