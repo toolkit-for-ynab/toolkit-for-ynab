@@ -35,7 +35,11 @@
                 $('section').css('width', ynabToolKit.resizeInspector.getContentSize());
                 // react to changed window size
                 $(window).resize(function () {
-                  $('section').css('width', ynabToolKit.resizeInspector.getContentSize());
+                  if ($('.layout.collapsed').length) {
+                    $('section').css('width', ynabToolKit.resizeInspector.getContentSizeCollapsed());
+                  } else {
+                    $('section').css('width', ynabToolKit.resizeInspector.getContentSize());
+                  }
                 });
               }
             }
