@@ -7,9 +7,7 @@
       function setSelectedTransactions() {
         var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
         var visibleTransactionDisplayItems = accountController.get('visibleTransactionDisplayItems');
-        selectedTransactions = visibleTransactionDisplayItems.filter(function (item) {
-          return item.isChecked && item.get('outflow');
-        });
+        selectedTransactions = visibleTransactionDisplayItems.filter(i => i.isChecked && i.get('outflow'));
       }
 
       function getSelectedAccount() {
@@ -19,9 +17,7 @@
         if (selectedAccountId) {
           var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
           var selectedAccounts = accountController.get('activeAccounts');
-          var selectedAccount = selectedAccounts.find(function (account) {
-            return account.itemId === selectedAccountId;
-          });
+          var selectedAccount = selectedAccounts.find(a => a.itemId === selectedAccountId);
 
           return selectedAccount;
         }
