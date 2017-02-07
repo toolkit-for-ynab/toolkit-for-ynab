@@ -12,25 +12,44 @@
         });
       }
 
+      function getSelectedAccount() {
+        var applicationController = ynabToolKit.shared.containerLookup('controller:application');
+        var selectedAccountId = applicationController.get('selectedAccountId');
+
+        if (selectedAccountId) {
+          var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
+          var selectedAccounts = accountController.get('activeAccounts');
+          var selectedAccount = selectedAccounts.find(function (account) {
+            return account.itemId === selectedAccountId;
+          });
+
+          return selectedAccount;
+        }
+
+        return null;
+      }
+
       function updateSpareChangeCalculation() {
         var i;
         var transaction;
         var runningSpareChange = 0;
 
-        for (i = 0; i < selectedTransactions.length; i++) {
-          transaction = selectedTransactions[i];
+        var selectedAccount = getSelectedAccount();
+        if (selectedAccount) {
+          for (i = 0; i < selectedTransactions.length; i++) {
+            transaction = selectedTransactions[i];
 
-          if (transaction.get('parentEntityId') !== null) {
-            transaction.__ynabToolKitSpareChange = 0;
-            continue;
+            if (transaction.get('parentEntityId') !== null) {
+              continue;
+            }
+
+            if (transaction.get('outflow')) {
+              var amount = transaction.get('outflow');
+              runningSpareChange += Math.round((Math.ceil(amount / 1000.0) - amount / 1000.0) * 1000);
+            }
+
+            selectedAccount.__ynabToolKitSpareChange = runningSpareChange;
           }
-
-          if (transaction.get('outflow')) {
-            var amount = transaction.get('outflow');
-            runningSpareChange += Math.round((Math.ceil(amount / 1000.0) - amount / 1000.0) * 1000);
-          }
-
-          window.__ynabToolKitSpareChange = runningSpareChange;
         }
       }
 
@@ -78,7 +97,6 @@
           separator.insertAfter(spareChangeDiv);
         } else {
           spareChangeDiv.css('margin-right', '32px');
-          spareChangeDiv.removeClass('ynab-toolkit-before-selected-total').addClass('ynab-toolkit-vanilla-spare-change');
           balancesHeader.append(spareChangeDiv);
         }
 
@@ -95,27 +113,30 @@
       }
 
       function updateValue() {
-        var spareChange = window.__ynabToolKitSpareChange;
+        var selectedAccount = getSelectedAccount();
+        if (selectedAccount) {
+          var spareChange = selectedAccount.__ynabToolKitSpareChange;
 
-        var spareChangeHeader = $('.ynab-toolkit-accounts-header-balances-spare-change');
-        var spareChangeAmount = $('.user-data:not(.currency)', spareChangeHeader);
-        var currencySpan = $('.user-data.currency', spareChangeHeader);
+          var spareChangeHeader = $('.ynab-toolkit-accounts-header-balances-spare-change');
+          var spareChangeAmount = $('.user-data:not(.currency)', spareChangeHeader);
+          var currencySpan = $('.user-data.currency', spareChangeHeader);
 
-        currencySpan.removeClass('negative positive zero');
+          currencySpan.removeClass('negative positive zero');
 
-        if (spareChange < 0) {
-          currencySpan.addClass('negative');
-        } else if (spareChange > 0) {
-          currencySpan.addClass('positive');
-        } else {
-          currencySpan.addClass('zero');
+          if (spareChange < 0) {
+            currencySpan.addClass('negative');
+          } else if (spareChange > 0) {
+            currencySpan.addClass('positive');
+          } else {
+            currencySpan.addClass('zero');
+          }
+
+          var formatted = ynabToolKit.shared.formatCurrency(spareChange);
+          spareChangeAmount.attr('title', formatted.string);
+
+          var formattedHtml = formatted.string.replace(/\$/g, '<bdi>$</bdi>');
+          currencySpan.html(formattedHtml);
         }
-
-        var formatted = ynabToolKit.shared.formatCurrency(spareChange);
-        spareChangeAmount.attr('title', formatted.string);
-
-        var formattedHtml = formatted.string.replace(/\$/g, '<bdi>$</bdi>');
-        currencySpan.html(formattedHtml);
       }
 
       function onYnabGridyBodyChanged() {
