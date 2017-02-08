@@ -143,8 +143,8 @@
         return $reportsHeader;
       }
 
-      function generateDateSlider(transactionsViewModel) {
-        monthLabels = ynabToolKit.reports.generateMonthLabelsFromFirstTransaction(transactionsViewModel);
+      function generateDateSlider() {
+        monthLabels = ynabToolKit.reports.generateMonthLabelsFromFirstOfTransactions(allTransactions);
 
         // if we only have one or no months of data that we should just hide the slider
         // return early so we don't even try to initialize the slider
@@ -561,20 +561,19 @@
           return formattedDate;
         },
 
-        generateMonthLabelsFromFirstTransaction(transactionsViewModel, endWithLastTransaction) {
+        generateMonthLabelsFromFirstOfTransactions(transactions, endWithLastTransaction) {
           let monthLabelsForTransaction = [];
           // grab the current month, this is the last label of our slider
           let endMonth = new Date().getMonth();
           let endYear = new Date().getFullYear();
 
           if (endWithLastTransaction) {
-            let lastTransactionDate = transactionsViewModel.maxTransactionDate;
+            let lastTransactionDate = transactions[transactions.length - 1].get('date');
             endMonth = lastTransactionDate ? lastTransactionDate.getMonth() : endMonth;
             endYear = lastTransactionDate ? lastTransactionDate.getYear() : endYear;
           }
 
-          // grab the date from that transaction
-          let firstTransactionDate = transactionsViewModel.minTransactionDate;
+          let firstTransactionDate = transactions[0].get('date');
           let currentLabelMonth = firstTransactionDate ? firstTransactionDate.getMonth() : endMonth;
           let currentLabelYear = firstTransactionDate ? firstTransactionDate.getYear() : endYear;
 
