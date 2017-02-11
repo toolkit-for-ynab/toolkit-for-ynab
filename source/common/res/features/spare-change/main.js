@@ -40,8 +40,10 @@
             }
 
             if (transaction.get('outflow')) {
-              var amount = transaction.get('outflow');
-              runningSpareChange += Math.round((Math.ceil(amount / 1000.0) - amount / 1000.0) * 1000);
+              var amount = ynab.convertFromMilliDollars(transaction.get('outflow'));
+              var nextDollar = Math.ceil(amount);
+              var spareChangeForThisRow = nextDollar - amount;
+              runningSpareChange += ynab.convertToMilliDollars(spareChangeForThisRow);
             }
 
             selectedAccount.__ynabToolKitSpareChange = runningSpareChange;
@@ -136,7 +138,7 @@
       }
 
       function onYnabGridyBodyChanged() {
-        Ember.run.later(function () {
+        Ember.run.debounce(function () {
           setSelectedTransactions();
           updateSpareChangeCalculation();
           updateSpareChangeHeader();
@@ -149,12 +151,12 @@
       }
 
       return {
-        // invoke has potential of being pretty processing heavy (needing to sort content, then add calculation to every row)
-        // wrapping it in a later means that if the user continuously scrolls down we won't clog up the event loop.
+        // invoke has potential of being pretty processing heavy (needing to sort content, then update calculation for every row)
+        // wrapping it in a debounce means that if the user continuously scrolls down we won't clog up the event loop.
         invoke: function invoke() {
           currentlyRunning = true;
 
-          Ember.run.later(function () {
+          Ember.run.debounce(function () {
             var applicationController = ynabToolKit.shared.containerLookup('controller:application');
             var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
 

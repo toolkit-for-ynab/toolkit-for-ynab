@@ -66,6 +66,25 @@
 
       return {
         invoke() {
+          var uncategorized = $('.budget-table-uncategorized-transactions');
+          $(uncategorized).each(function () {
+            var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
+            var classes = [];
+
+            // add available balance
+            var available = $(this).find('.budget-table-cell-available .currency').text();
+            if (ynab.unformat(available) < 0) {
+              classes.push('availablenegative');
+            } else if (ynab.unformat(available) > 0) {
+              classes.push('availablepositive');
+            } else {
+              classes.push('availablezero');
+            }
+
+            // set classes
+            setClasses(this, subCategoryName, classes);
+          });
+
           var categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions');
           var masterCategoryName = '';
 
