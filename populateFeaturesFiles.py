@@ -14,7 +14,7 @@ allFeedChangesContent = set()
 previousNames = set()
 
 
-def checkIndividualSetting(setting, dirName):
+def checkIndividualSetting(setting, dirName, markDown):
     """Validate feature settings in a given dirName."""
     if 'name' not in setting:
         raise ValueError('Every setting must have a name property.')
@@ -59,6 +59,9 @@ def checkIndividualSetting(setting, dirName):
     if 'default' not in setting:
         setting['default'] = False
 
+    if markDown != '':
+        setting['description'] = markDown
+
     if 'description' not in setting:
         setting['description'] = ''
 
@@ -82,13 +85,13 @@ def checkIndividualSetting(setting, dirName):
             i += 2
 
 
-def checkSettingStructure(setting, dirName):
+def checkSettingStructure(setting, dirName, markDown):
     """Validate the structure of a given setting or group of settings."""
     if isinstance(setting, dict):
-        checkIndividualSetting(setting, dirName)
+        checkIndividualSetting(setting, dirName, markDown)
     elif isinstance(setting, list):
         for individualSetting in setting:
-            checkIndividualSetting(individualSetting, dirName)
+            checkIndividualSetting(individualSetting, dirName, markDown)
     else:
         raise ValueError('Settings must be a single JSON object or an array of JSON objects. '
                          'See the setting file in hide-age-of-money for an example setting.')
@@ -101,9 +104,15 @@ for dirName, subdirList, fileList in os.walk('./source/common/res/features/'):
         with open(os.path.join(dirName, 'settings.json'), 'r') as settingsFile:
             settingsContents = json.loads(settingsFile.read())
 
+            if ('description.md' in fileList):
+                with open(os.path.join(dirName, 'description.md'), 'r') as mdFile:
+                    mdContents = mdFile.read().replace('\n','\n') # convert internal new lines to external newlines
+            else:
+                mdContents = ''
+                
             # Validate first
             try:
-                checkSettingStructure(settingsContents, dirName)
+                checkSettingStructure(settingsContents, dirName, mdContents)
             except ValueError:
                 formatted_lines = traceback.format_exc().splitlines()
                 print("[  ERROR] Settings error: {0}".format(formatted_lines[-1]))
