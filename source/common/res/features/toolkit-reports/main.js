@@ -545,20 +545,19 @@
         },
 
         formatDatel8n(date) {
+          // Ensure we're always dealing with moment objects.
           date = typeof date.format === 'function' ? date : moment(date);
-          let dateWithoutTime = ynab.formatDateWithoutTime(date);
 
-          // this just uses moment but we'll use it instead of just using moment incase YNAB gets funky
-          let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(new Date(dateWithoutTime), 'MMM YYYY');
+          // Get the English name for the date.
+          let formattedDate = date.format('MMM YYYY');
 
           // now split it with year and month so that we can get the localized version of the month
           let year = formattedDate.split(' ')[1];
           let month = formattedDate.split(' ')[0];
           month = (ynabToolKit.l10nData && ynabToolKit.l10nData['months.' + month]) || month;
-          formattedDate = month + ' ' + year;
 
           // finally, return the l8n date.
-          return formattedDate;
+          return `${month} ${year}`;
         },
 
         generateMonthLabelsFromFirstOfTransactions(transactions, endWithLastTransaction) {

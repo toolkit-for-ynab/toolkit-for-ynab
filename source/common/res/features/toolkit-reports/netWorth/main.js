@@ -76,30 +76,32 @@
             reportData.liabilities.length = 0;
             reportData.netWorths.length = 0;
 
-            var lastLabel = null;
-            var balanceByAccount = {};
-            var formattedDate = null;
+            const balanceByAccount = {};
+            let lastLabel = null;
+            let formattedDate = null;
 
-            // first, go through all transactions and get balances of the accounts each month
-            transactions.forEach(function (transaction) {
+            // Go through all transactions and get balances of the accounts each month
+            // Net worth is calculated by dictating the entire account as either an asset
+            // or a liability, then totalling up those values for the month.
+            for (const transaction of transactions) {
               formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
 
-              if (lastLabel === null) lastLabel = formattedDate;
+              if (lastLabel === null) {
+                lastLabel = formattedDate;
+              }
 
-              // were on the next month, push a new label
+              // We're on the next month, push a new label
               if (formattedDate !== lastLabel) {
                 reportData.labels.push(lastLabel);
 
-                var totalAssets = 0;
-                var totalLiabilities = 0;
+                let totalAssets = 0;
+                let totalLiabilities = 0;
 
-                for (var key in balanceByAccount) {
-                  if (balanceByAccount.hasOwnProperty(key)) {
-                    if (balanceByAccount[key] > 0) {
-                      totalAssets += (balanceByAccount[key] || 0);
-                    } else {
-                      totalLiabilities += (-balanceByAccount[key] || 0);
-                    }
+                for (let account of Object.keys(balanceByAccount)) {
+                  if (balanceByAccount[account] > 0) {
+                    totalAssets += balanceByAccount[account];
+                  } else {
+                    totalLiabilities -= balanceByAccount[account];
                   }
                 }
 
@@ -110,29 +112,29 @@
                 lastLabel = formattedDate;
               }
 
-              // do we have a key for this account yet? if not, create it and set it to 0
-              if (!balanceByAccount.hasOwnProperty(transaction.getAccountName())) {
-                balanceByAccount[transaction.getAccountName()] = 0;
+              const accountName = transaction.getAccountName();
+
+              // Do we have a key for this account yet? if not, create it and set it to 0
+              if (!balanceByAccount.hasOwnProperty(accountName)) {
+                balanceByAccount[accountName] = 0;
               }
 
-              // add the amount to the account.
-              balanceByAccount[transaction.getAccountName()] += transaction.getAmount();
-            });
+              // Add the amount to the account.
+              balanceByAccount[accountName] += transaction.getAmount();
+            }
 
             // Ensure we've pushed the last month in.
             if (formattedDate !== reportData.labels[reportData.labels.length - 1]) {
               reportData.labels.push(formattedDate);
 
-              var totalAssets = 0;
-              var totalLiabilities = 0;
+              let totalAssets = 0;
+              let totalLiabilities = 0;
 
-              for (var key in balanceByAccount) {
-                if (balanceByAccount.hasOwnProperty(key)) {
-                  if (balanceByAccount[key] > 0) {
-                    totalAssets += (balanceByAccount[key] || 0);
-                  } else {
-                    totalLiabilities += (-balanceByAccount[key] || 0);
-                  }
+              for (let account of Object.keys(balanceByAccount)) {
+                if (balanceByAccount[account] > 0) {
+                  totalAssets += balanceByAccount[account];
+                } else {
+                  totalLiabilities -= balanceByAccount[account];
                 }
               }
 
@@ -162,11 +164,7 @@
               var netWorths = reportData.netWorths;
 
               while (currentDate < maxDate) {
-                formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(currentDate, 'MMM YYYY');
-                var year = formattedDate.split(' ')[1];
-                var month = formattedDate.split(' ')[0];
-                month = (ynabToolKit.l10nData && ynabToolKit.l10nData['months.' + month]) || month;
-                formattedDate = month + ' ' + year;
+                formattedDate = ynabToolKit.reports.formatDatel8n(currentDate);
 
                 if (labels.indexOf(formattedDate) < 0) {
                   labels.splice(currentIndex + 1, 0, formattedDate);
