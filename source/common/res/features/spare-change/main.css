@@ -1,0 +1,25 @@
+.ynab-toolkit-accounts-header-balances-spare-change {
+	box-sizing: border-box;
+	color: rgb(91, 190, 114);
+	display: block;
+	flex-basis: auto;
+	flex-grow: 0;
+	flex-shrink: 1;
+	font-family: Lato, Arial, "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	height: 37px;
+	letter-spacing: normal;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 13.5px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+	text-align: right;
+	text-rendering: auto;
+	text-size-adjust: 100%;
+	width: 70.5625px;
+	word-spacing: 0px;
+	-webkit-box-flex: 1;
+	-webkit-font-smoothing: subpixel-antialiased
+}

@@ -1,7 +1,3 @@
-.budget-table {
-  top: 1em !important;
-}
-
 .budget-content ul, .budget-table-row.is-dragging {
   height: 1.6em;
 }

@@ -5,6 +5,17 @@
 // For more info, see here: https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/287
 var jq = jQuery.noConflict(true);
 
+/* eslint-disable no-undef */
+marked.setOptions({
+  gfm: true,
+  tables: true,
+  breaks: true,
+  pedantic: false,
+  sanitize: true, // prevent xss attacks by not allowing html in the markdown
+  smartLists: true,
+  smartypants: false
+});
+
 function saveCheckboxOption(elementId) {
   var element = document.getElementById(elementId);
 
@@ -148,13 +159,26 @@ function buildOptionsPage() {
   });
 
   settings.forEach(function (setting) {
+    let markDown = marked(setting.description);
+
     if (setting.type === 'checkbox') {
-      jq('#' + setting.section + 'SettingsPage').append(jq('<div>', { class: 'row option-row' }).append(jq('<input>', { type: 'checkbox', id: setting.name, name: setting.name, 'aria-describedby': setting.name + 'HelpBlock' })).append(jq('<div>', { class: 'option-description' }).append(jq('<label>', { for: setting.name, text: setting.title })).append(jq('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', text: setting.description }))));
+      jq('#' + setting.section + 'SettingsPage')
+        .append(jq('<div>', { class: 'row option-row' })
+          .append(jq('<input>', { type: 'checkbox', id: setting.name, name: setting.name, 'aria-describedby': setting.name + 'HelpBlock' }))
+          .append(jq('<div>', { class: 'option-description' })
+            .append(jq('<label>', { for: setting.name, text: setting.title }))
+            .append(jq('<span>', { id: setting.name + 'HelpBlock', class: 'help-block' }))));
+      jq('#' + setting.name + 'HelpBlock').html(markDown);
     } else if (setting.type === 'select') {
-      jq('#' + setting.section + 'SettingsPage').append(jq('<div>', { class: 'row option-row' }).append(jq('<label>', { for: setting.name, text: setting.title })).append(jq('<select>', { name: setting.name, id: setting.name, class: 'form-control', 'aria-describedby': setting.name + 'HelpBlock' }).append(setting.options.map(function (option) {
-        return jq('<option>', { value: option.value, style: option.style || '', text: option.name });
-      })))
-      .append(jq('<span>', { id: setting.name + 'HelpBlock', class: 'help-block', text: setting.description })));
+      jq('#' + setting.section + 'SettingsPage')
+        .append(jq('<div>', { class: 'row option-row' })
+          .append(jq('<label>', { for: setting.name, text: setting.title }))
+          .append(jq('<select>', { name: setting.name, id: setting.name, class: 'form-control', 'aria-describedby': setting.name + 'HelpBlock' })
+            .append(setting.options.map(function (option) {
+              return jq('<option>', { value: option.value, style: option.style || '', text: option.name });
+            })))
+          .append(jq('<span>', { id: setting.name + 'HelpBlock', class: 'help-block' })));
+      jq('#' + setting.name + 'HelpBlock').html(markDown);
     }
   });
 }
