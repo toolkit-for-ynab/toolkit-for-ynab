@@ -89,6 +89,10 @@ function validateSetting(settingObj) {
     }
   });
 
+  if (typeof featureSettings.description === 'undefined') {
+    featureSettings.description = '';
+  }
+
   if (settingObj.legacy) {
     validateActions(settingObj);
   }

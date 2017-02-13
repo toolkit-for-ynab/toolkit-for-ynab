@@ -9,5 +9,8 @@ save-commands.json
 source/common/res/features/act-on-change/feedChanges.js
 source/common/res/features/allInits.js
 source/common/res/features/allSettings.js
-source/common/res/features/ynabToolkit.js
 .python-version
+
+# bundled toolkit
+source/common/res/features/ynabToolkit.js
+source/common/res/features/ynabToolkit.js.map
