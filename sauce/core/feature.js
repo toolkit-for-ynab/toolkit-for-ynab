@@ -1,16 +1,18 @@
-import { ObserveListener, RouteChangeListener } from 'core/listeners'
+import { ObserveListener, RouteChangeListener } from 'core/listeners';
 
 export default class Feature {
-	constructor() {
-    // set this.settings to this.constructor.names's settings
+  constructor() {
+    this.settings = {
+      enabled: ynabToolKit.options[this.constructor.name]
+    };
   }
 
   shouldInvoke() {
-    throw Error(`Feature: ${this.constructor.name} does not implement required shouldInvoke() method.`)
+    throw Error(`Feature: ${this.constructor.name} does not implement required shouldInvoke() method.`);
   }
 
   invoke() {
-    throw Error(`Feature: ${this.constructor.name} does not implement required invoke() method.`)
+    throw Error(`Feature: ${this.constructor.name} does not implement required invoke() method.`);
   }
 
   observe() { /* stubbed listener function */ }

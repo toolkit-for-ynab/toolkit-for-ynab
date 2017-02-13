@@ -2,7 +2,7 @@ import ShowCategoryBalance from 'features/accounts/showCategoryBalance';
 
 const features = [
   ShowCategoryBalance
-]
+];
 
 const featureInstances = features.map((Feature) => new Feature());
 
@@ -11,7 +11,6 @@ const featureInstances = features.map((Feature) => new Feature());
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' &&
       typeof $ !== 'undefined' && $('.ember-view.layout').length &&
       typeof ynabToolKit !== 'undefined') {
-
     featureInstances.forEach((feature) => {
       feature.applyListeners();
 

@@ -48,7 +48,7 @@ function applySettingsToDom() {
         data = '1';
       }
 
-      if (data in setting.actions) {
+      if (setting.actions && data in setting.actions) {
         var selectedActions = setting.actions[data.toString()];
         for (var i = 0; i < selectedActions.length; i += 2) {
           var action = selectedActions[i];

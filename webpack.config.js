@@ -1,12 +1,12 @@
 const path = require('path');
-const GenerateFeatureIndex = require('./tasks/generateFeatureIndex')
+const GenerateSettings = require('./tasks/generateSettings');
 
 module.exports = {
   entry: './sauce/main.js',
 
   // The plain compiled Javascript will be output into this file
   output: {
-    filename: 'output/chrome/res/features/ynabToolkit.js'
+    filename: 'source/common/res/features/ynabToolkit.js'
   },
 
   resolve: {
@@ -33,7 +33,7 @@ module.exports = {
   },
 
   plugins: [
-    new GenerateFeatureIndex()
+    new GenerateSettings()
   ],
 
   devtool: 'source-map'

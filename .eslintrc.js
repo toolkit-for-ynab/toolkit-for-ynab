@@ -3,6 +3,14 @@ module.exports = {
         "browser": true,
         "es6": true
     },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+    },
+    "plugins": ["import"],
+    "settings": {
+      "import/resolver": "webpack"
+    },
     "extends": "airbnb-base/legacy",
     "globals": {
         "$": true,
@@ -40,6 +48,7 @@ module.exports = {
         "no-restricted-syntax": "off",
         "no-underscore-dangle": "off",
         "no-use-before-define": "off",
-        "radix": "off"
+        "radix": "off",
+        "no-shadow": ["error", { "allow": ["resolve", "reject", "error"] }]
     }
 };

@@ -1,5 +1,5 @@
 import Feature from 'core/feature';
-import * as toolkitHelper from 'helpers/toolkit'
+import * as toolkitHelper from 'helpers/toolkit';
 
 export default class ShowCategoryBalance extends Feature {
   constructor() {
@@ -38,7 +38,7 @@ export default class ShowCategoryBalance extends Feature {
     });
   }
 
-  onRouteChanged(route) {
+  onRouteChanged() {
     if (!this.shouldInvoke()) return;
 
     this.invoke();
@@ -55,6 +55,6 @@ function didRender(subCategoryCalculations, categoryLookupPrefix) {
   if (!budgetData) return;
 
   let title = $('.ynab-grid-cell-subCategoryName', element).attr('title');
-  let newTitle = `${title} (Balance: ${toolkitHelper.formatCurrency(budgetData.get('balance'))})`
+  let newTitle = `${title} (Balance: ${toolkitHelper.formatCurrency(budgetData.get('balance'))})`;
   $('.ynab-grid-cell-subCategoryName', element).attr('title', newTitle);
 }

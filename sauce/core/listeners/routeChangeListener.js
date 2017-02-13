@@ -1,4 +1,4 @@
-import { controllerLookup, scheduleOnce } from 'helpers/toolkit';
+import { controllerLookup } from 'helpers/toolkit';
 
 let instance = null;
 
@@ -18,14 +18,14 @@ export default class RouteChangeListener {
         'budgetVersionId', // this will handle changing budgets
         'selectedAccountId', // this will handle switching around accounts
         'monthString', // this will handle changing which month of a budget you're looking at
-        (controller, changed) => {
+        (controller) => {
           Ember.run.scheduleOnce('afterRender', controller, 'emitChanges');
-      }),
+        }),
 
       emitChanges: function () {
         let currentRoute = applicationController.get('currentRouteName');
         routeChangeListener.features.forEach((feature) => {
-          setTimeout(feature.onRouteChanged.bind(feature, currentRoute), 0)
+          setTimeout(feature.onRouteChanged.bind(feature, currentRoute), 0);
         });
       }
     });

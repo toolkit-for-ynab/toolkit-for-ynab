@@ -11,9 +11,13 @@ echo "[   INFO] Checking code style with ESLint..."
 npm run eslint --silent || exit
 
 # Transpile the source/ directory, putting the files in src/ which is where Kango expects to see them.
-echo "[   INFO] Transpiling code with Babel on ES2015 preset..."
+echo "[   INFO] Transpiling legacy code with Babel on ES2015 preset..."
 rm -rf src
 npm run babel --silent || exit
+
+# Run webpack to grab all new framework features
+echo "[   INFO] Webpacking..."
+npm run webpack
 
 # Copy any non JS files across that babel didn't bring with it. Ignore existing files we just transpiled.
 rsync -r --ignore-existing source/* src/

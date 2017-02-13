@@ -10,18 +10,22 @@
     "chokidar": "^1.6.0",
     "eslint": "^2.13.1",
     "eslint-config-airbnb-base": "^3.0.1",
-    "eslint-plugin-import": "^1.10.0",
+    "eslint-import-resolver-webpack": "^0.8.1",
+    "eslint-plugin-import": "^1.16.0",
+    "glob": "^7.1.1",
     "webpack": "^2.2.1"
   },
   "scripts": {
     "develop": "webpack -w",
-    "eslint": "eslint -c source/.eslintrc.js --ignore-path source/.eslintignore source/",
-    "eslint-fix": "eslint -c source/.eslintrc.js --ignore-path source/.eslintignore source/ --fix",
+    "webpack": "webpack",
+    "eslint": "eslint -c .eslintrc.js --ignore-path .eslintignore ./",
+    "eslint-fix": "eslint -c .eslintrc.js --ignore-path .eslintignore ./ --fix",
     "babel": "babel source --compact false --quiet --ignore source/common/res/features/lib/*,source/common/assets/*,*.min.js --out-dir src"
   },
   "babel": {
     "presets": [
       "es2015"
     ]
-  }
+  },
+  "defaultFeatures": []
 }

@@ -35,7 +35,7 @@ export function formatCurrency(value) {
   let userCurrency = ynab.YNABSharedLib.currencyFormatter.getCurrency();
   let currencyFormatter = new ynab.formatters.CurrencyFormatter;
   currencyFormatter.initialize(userCurrency);
-  userCurrency = currencyFormatter.getCurrency()
+  userCurrency = currencyFormatter.getCurrency();
 
   let formattedCurrency = currencyFormatter.format(value).toString();
   if (userCurrency.symbol_first) {

@@ -51,7 +51,7 @@ export default class ObserveListener {
 
   emitChanges() {
     this.features.forEach((feature) => {
-      setTimeout(feature.observe.bind(feature, this.changedNodes), 0)
+      setTimeout(feature.observe.bind(feature, this.changedNodes), 0);
     });
   }
 }
