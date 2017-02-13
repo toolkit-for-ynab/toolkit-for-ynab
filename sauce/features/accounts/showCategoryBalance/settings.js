@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'showCategoryBalance',
+  name: 'ShowCategoryBalance',
   type: 'checkbox',
-  default: true,
+  default: false,
   section: 'accounts',
   title: 'Show Available Category Balance on Hover',
   description: 'Adds the total available balance to the category tooltip on each row in the Accounts register.'

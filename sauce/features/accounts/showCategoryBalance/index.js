@@ -47,7 +47,6 @@ export default class ShowCategoryBalance extends Feature {
 
 function didRender(subCategoryCalculations, categoryLookupPrefix) {
   let element = this.get('element');
-  // let transaction = this.get('content');
   let subCategoryId = this.get('content.subCategoryId');
   let budgetData = subCategoryCalculations.findItemByEntityId(`${categoryLookupPrefix}/${subCategoryId}`);
 

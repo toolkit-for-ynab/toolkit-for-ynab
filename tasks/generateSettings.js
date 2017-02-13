@@ -9,7 +9,7 @@ const NEW_SETTINGS_PROJECT_DIR = 'sauce/features';
 const ALL_SETTINGS_OUTPUT = 'source/common/res/features/allSettings.js';
 const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
-let previousSettings = new Set();
+let previousSettings;
 
 function GenerateSettings() {
   this.startTime = Date.now();
@@ -17,6 +17,7 @@ function GenerateSettings() {
 
 GenerateSettings.prototype.apply = function (compiler) {
   compiler.plugin('emit', function (compilation, callback) {
+    previousSettings = new Set();
     Promise.all([
       gatherLegacySettings(),
       gatherNewSettings()
@@ -98,7 +99,7 @@ function validateSetting(settingObj) {
   }
 
   if (previousSettings.has(featureSettings.name)) {
-    logFatal(`Duplicate Setting: ${featureSettings.name}`);
+    logFatal(settingFilename, `Duplicate Setting: ${featureSettings.name}`);
   }
 
   previousSettings.add(featureSettings.name);
