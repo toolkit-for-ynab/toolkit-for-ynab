@@ -104,11 +104,10 @@ detected from the DOM, we iterate ove every node and add the `class` attribute
 from the underylying element to a `Set`. `ember-view ` is stripped from every
 class name to reduce complexity.
 
-Note that it is completely possible to get more than one observe call at the
-point of mutation. Althought you can guarantee you're only going to get on
-call per mutated node, this could cause issues. It is required that you check
-the `changedNodes` set that you're passed for the specific thing you're looking
-for.
+Note that it is extremely likely to receive many calls to observe when things
+change on the page and not all changes are sent in the first request. It is for
+this reason that you're you should check both `this.shouldInvoke()` and the
+`changedNodes` set inside `observe()`.
 
 Example:
 
@@ -116,7 +115,7 @@ Example:
 observe(changedNodes) {
   if (!this.shouldInvoke()) return;
 
-  if (changedNodes.has('element-i-care-about')) {
+  if (changedNodes.has('element-class-i-care-about')) {
     this.invoke();
   }
 }

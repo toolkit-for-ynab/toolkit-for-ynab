@@ -1,8 +1,4 @@
-import ShowCategoryBalance from 'features/accounts/showCategoryBalance';
-
-const features = [
-  ShowCategoryBalance
-];
+import features from 'features';
 
 const featureInstances = features.map((Feature) => new Feature());
 
