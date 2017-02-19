@@ -45,7 +45,7 @@ GenerateSettings.prototype.apply = function (compiler) {
 
 function gatherLegacySettings() {
   return new Promise((resolve, reject) => {
-    glob(`${LEAGACY_SETTINGS_PROJECT_DIR}/**/settings.json`, (error, files) => {
+    glob(`${LEAGACY_SETTINGS_PROJECT_DIR}/**/settings.js*`, (error, files) => {
       if (error) return reject(error);
 
       let legacySettingsPromises = [];

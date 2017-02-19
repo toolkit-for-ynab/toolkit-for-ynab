@@ -5,7 +5,6 @@ const GenerateFeatureIndex = require('./tasks/generateFeatureIndex');
 module.exports = {
   entry: './sauce/main.js',
 
-  // The plain compiled Javascript will be output into this file
   output: {
     filename: 'source/common/res/features/ynabToolkit.js'
   },

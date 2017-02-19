@@ -7,3 +7,4 @@ node_modules
 **/*/lib/
 **/assets
 **/common/res/features/ynabToolkit.js
+src/**/*
