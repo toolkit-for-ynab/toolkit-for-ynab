@@ -13,7 +13,7 @@ allSettings = []
 allFeedChangesContent = set()
 previousNames = set()
 
-print('[   INFO] Building settings and feed changes files...')
+print('[   INFO] Building feed changes files...')
 
 # Write the feedChanges file
 pattern = re.compile(r"^[\s]*(ynabToolKit\..+?)[\s]*=[\s]*\([\s]*function[\s]*\([\s]*\)[\s]*\{.*$", re.MULTILINE)
