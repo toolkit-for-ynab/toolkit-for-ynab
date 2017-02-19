@@ -10,7 +10,7 @@ module.exports = {
   },
 
   resolve: {
-    modules: [path.resolve(__dirname, 'sauce'), 'node_modules']
+    modules: [path.join(__dirname, 'sauce'), 'node_modules']
   },
 
   module: {
@@ -25,14 +25,6 @@ module.exports = {
       test: /\.js$/,
       include: [
         path.resolve(__dirname, 'sauce')
-      ],
-      use: [{
-        loader: 'babel-loader?presets[]=es2015'
-      }]
-    }, {
-      test: /\.js$/,
-      include: [
-        path.resolve(__dirname, 'source')
       ],
       use: [{
         loader: 'babel-loader?presets[]=es2015'
