@@ -52,11 +52,18 @@ function gatherLegacySettings() {
 
       files.forEach(file => {
         legacySettingsPromises.push(new Promise((resolve, reject) => {
-          fs.readFile(`${__dirname}/../${file}`, 'utf8', (error, data) => {
-            if (error) return reject(error);
-            const setting = JSON.parse(data);
-            resolve({ file, setting, legacy: true });
-          });
+          let setting;
+          const filePath = `${__dirname}/../${file}`;
+          try {
+            setting = require(filePath); // eslint-disable-line global-require
+          } catch (e) {
+            fs.readFile(filePath, 'utf8', (error, data) => {
+              if (error) return reject(error);
+              setting = JSON.parse(data);
+            });
+          }
+
+          resolve({ file, setting, legacy: true });
         }));
       });
 

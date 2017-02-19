@@ -15,22 +15,30 @@ module.exports = {
   },
 
   module: {
-    loaders: [
-      {
-        // Only working with files that in in a .js
-        test: /\.js$/,
-        // Webpack will only process files in our app folder. This avoids processing
-        // node modules and server files unnecessarily
-        include: [
-          path.resolve(__dirname, 'sauce')
-        ],
-        loader: 'babel-loader',
-        query: {
-          // These are the specific transformations we'll be using.
-          presets: ['es2015']
-        }
-      }
-    ]
+    rules: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      enforce: 'pre',
+      use: [{
+        loader: 'eslint-loader'
+      }]
+    }, {
+      test: /\.js$/,
+      include: [
+        path.resolve(__dirname, 'sauce')
+      ],
+      use: [{
+        loader: 'babel-loader?presets[]=es2015'
+      }]
+    }, {
+      test: /\.js$/,
+      include: [
+        path.resolve(__dirname, 'source')
+      ],
+      use: [{
+        loader: 'babel-loader?presets[]=es2015'
+      }]
+    }]
   },
 
   plugins: [
