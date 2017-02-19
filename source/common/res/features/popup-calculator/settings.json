@@ -5,10 +5,14 @@
       "section": "general",
         "title": "Popup Calculator",
   "description": "markdown",
-      "actions": {
-                    "true": [
-                      "injectCSS", "main.css",
-                      "injectScript", "main.js"
-                    ]
-                 }
+  "actions": {
+                "true": [
+                  "injectCSS", "main.css",
+                  "injectScript", "main.js",
+                  "injectScript", "account/main.js",
+                  "injectCSS", "account/main.css",
+                  "injectCSS", "budget/main.css",
+                  "injectScript", "budget/main.js"
+                ]
+             }
 }
