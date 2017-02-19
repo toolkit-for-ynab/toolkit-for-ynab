@@ -10,7 +10,7 @@ module.exports = {
   },
 
   resolve: {
-    modules: [path.join(__dirname, 'sauce'), 'node_modules']
+    modules: [path.resolve(__dirname, 'sauce'), 'node_modules']
   },
 
   module: {
