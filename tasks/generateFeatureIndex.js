@@ -70,6 +70,7 @@ export default features;
   let featureIndexPath = path.join(__dirname, '..', FEATURES_INDEX_PROJECT_PATH);
   fs.writeFile(featureIndexPath, fileContents, (error, result) => {
     console.log(error, result);
+
     callback(error, result);
   });
 }
