@@ -1,6 +1,6 @@
 import features from 'features';
 
-const featureInstances = features.map((Feature) => new Feature());
+const featureInstances = features.map(Feature => new Feature());
 
 // This poll() function will only need to run until we find that the DOM is ready
 (function poll() {

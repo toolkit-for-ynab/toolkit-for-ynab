@@ -29,14 +29,6 @@ module.exports = {
       use: [{
         loader: 'babel-loader?presets[]=es2015'
       }]
-    }, {
-      test: /\.js$/,
-      include: [
-        path.resolve(__dirname, 'source')
-      ],
-      use: [{
-        loader: 'babel-loader?presets[]=es2015'
-      }]
     }]
   },
 
