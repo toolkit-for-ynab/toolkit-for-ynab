@@ -66,13 +66,10 @@ const features = [
 export default features;
 `;
 
-  console.log(fileContents);
   let featureIndexPath = path.join(__dirname, '..', FEATURES_INDEX_PROJECT_PATH);
-  fs.writeFile(featureIndexPath, fileContents, (error, result) => {
-    console.log(error, result);
+  fs.writeFile(featureIndexPath, fileContents, callback);
 
-    callback(error, result);
-  });
+  console.log(glob(`${FEATURES_PROJECT_DIR}/**/*`).sync)
 }
 
 module.exports = GenerateFeatureIndex;
