@@ -1,6 +1,4 @@
 const path = require('path');
-const GenerateSettings = require('./tasks/generateSettings');
-const GenerateFeatureIndex = require('./tasks/generateFeatureIndex');
 
 module.exports = {
   entry: './sauce/main.js',
@@ -31,11 +29,6 @@ module.exports = {
       }]
     }]
   },
-
-  plugins: [
-    new GenerateSettings(),
-    new GenerateFeatureIndex()
-  ],
 
   devtool: 'source-map'
 };

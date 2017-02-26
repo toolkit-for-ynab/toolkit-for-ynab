@@ -6,38 +6,32 @@ const path = require('path');
 const FEATURES_PROJECT_DIR = path.join('sauce', 'features');
 const FEATURES_INDEX_PROJECT_PATH = path.join(FEATURES_PROJECT_DIR, 'index.js');
 
-function GenerateFeatureIndex() {
-  this.startTime = Date.now();
-}
+function run(callback) {
+  glob(`${FEATURES_PROJECT_DIR}/*/**/index.js`, (error, files) => {
+    if (error) return callback(error);
 
-GenerateFeatureIndex.prototype.apply = function (compiler) {
-  compiler.plugin('emit', function (compilation, callback) {
-    glob(`${FEATURES_PROJECT_DIR}/*/**/index.js`, (error, files) => {
-      if (error) return callback(error);
+    let imports = [];
+    let featureNames = [];
 
-      let imports = [];
-      let featureNames = [];
+    files.forEach((filePath) => {
+      let filePathSplit = filePath.split(path.sep);
+      let projectFeaturePath = filePathSplit.slice(0, filePathSplit.length - 1).join(path.sep);
 
-      files.forEach((filePath) => {
-        let filePathSplit = filePath.split(path.sep);
-        let projectFeaturePath = filePathSplit.slice(0, filePathSplit.length - 1).join(path.sep);
+      // up one directory to use the project path
+      let featureSetting = require(`../${projectFeaturePath}/settings.js`); // eslint-disable-line global-require
 
-        // up one directory to use the project path
-        let featureSetting = require(`../${projectFeaturePath}/settings.js`); // eslint-disable-line global-require
+      // features/index will source from the features folder, so remove
+      // `sauce/features` from the path here.
+      let featureIndexPath = filePathSplit.slice(2, filePathSplit.length - 1).join(path.sep);
 
-        // features/index will source from the features folder, so remove
-        // `sauce/features` from the path here.
-        let featureIndexPath = filePathSplit.slice(2, filePathSplit.length - 1).join(path.sep);
-
-        let importLine = `import ${featureSetting.name} from './${featureIndexPath}';\n`;
-        imports.push(importLine);
-        featureNames.push(featureSetting.name);
-      });
-
-      writeFeatureIndex(imports, featureNames, callback);
+      let importLine = `import ${featureSetting.name} from './${featureIndexPath}';\n`;
+      imports.push(importLine);
+      featureNames.push(featureSetting.name);
     });
+
+    writeFeatureIndex(imports, featureNames, callback);
   });
-};
+}
 
 function writeFeatureIndex(importLines, featureNames, callback) {
   let importLinesString = '';
@@ -66,13 +60,17 @@ const features = [
 export default features;
 `;
 
-  console.log(fileContents);
   let featureIndexPath = path.join(__dirname, '..', FEATURES_INDEX_PROJECT_PATH);
   fs.writeFile(featureIndexPath, fileContents, (error, result) => {
-    console.log(error, result);
-
     callback(error, result);
   });
 }
 
-module.exports = GenerateFeatureIndex;
+run(error => {
+  if (error) {
+    console.log(`Error: ${error}`.red);
+    process.exit(1);
+  }
+
+  process.exit();
+});

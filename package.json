@@ -20,9 +20,12 @@
   "scripts": {
     "develop": "./watch",
     "webpack": "webpack",
-    "eslint": "eslint -c .eslintrc.js --ignore-path .eslintignore ./",
-    "eslint-fix": "eslint -c .eslintrc.js --ignore-path .eslintignore ./ --fix",
-    "babel": "babel source --compact false --quiet --ignore source/common/res/features/lib/*,source/common/assets/*,*.min.js --out-dir src"
+    "legacy-eslint": "eslint -c .eslintrc.js --ignore-path .eslintignore ./source",
+    "legacy-eslint-fix": "eslint -c .eslintrc.js --ignore-path .eslintignore ./ --fix",
+    "legacy-babel": "babel source --compact false --quiet --ignore source/common/res/features/lib/*,source/common/assets/*,*.min.js --out-dir src",
+    "gen-settings": "node tasks/generateSettings",
+    "gen-featureIndex": "node tasks/generateFeatureIndex",
+    "gen-feedChanges": "python generateFeedChanges.py"
   },
   "babel": {
     "presets": [
