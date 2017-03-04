@@ -32,13 +32,13 @@
               });
 
               if (asideWidth !== '') {
-                $('section').css('width', ynabToolKit.resizeInspector.getContentSize());
+                $('section').css('width', ynabToolKit.resizeInspector.getContentSize(false));
                 // react to changed window size
                 $(window).resize(function () {
                   if ($('.layout.collapsed').length) {
                     $('section').css('width', ynabToolKit.resizeInspector.getContentSizeCollapsed());
                   } else {
-                    $('section').css('width', ynabToolKit.resizeInspector.getContentSize());
+                    $('section').css('width', ynabToolKit.resizeInspector.getContentSize(false));
                   }
                 });
               }
@@ -48,11 +48,13 @@
           }
         },
 
-        getContentSize() {
+        getContentSize(externalCall) {
           var headerWidth = parseInt($('header').css('width').match(/.[^px]*/));
           var resizeHandleWidth = 13;
           var sectionWidth = parseInt(headerWidth) - parseInt(resizeHandleWidth) - ynabToolKit.resizeInspector.asideWidth - 21.2; // don't know why 21.2, but it works
-          if ($('.layout.collapsed').length) {
+
+          // Only subtract the 220 if this function was called externally.
+          if ($('.layout.collapsed').length & externalCall) {
             // calculate non-collapsed layout
             sectionWidth -= 220;
           }
@@ -60,7 +62,7 @@
         },
 
         getContentSizeCollapsed() {
-          return ynabToolKit.resizeInspector.getContentSize() + 220;
+          return ynabToolKit.resizeInspector.getContentSize(false) + 220;
         },
 
         observe(changedNodes) {
