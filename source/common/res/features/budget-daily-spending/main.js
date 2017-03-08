@@ -44,8 +44,6 @@
             return [];
           }
 
-
-
           // After using Budget Quick Switch, budgetView needs to be reset to the new budget.
           if (ynabToolKit.dailySpending.budgetView === null) {
             try {
