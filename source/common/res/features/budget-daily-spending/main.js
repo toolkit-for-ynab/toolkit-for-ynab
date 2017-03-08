@@ -21,8 +21,21 @@
         },
 
         observe(changedNodes) {
-          if (changedNodes.has('budget-inspector')) {
+          if (changedNodes.has('navlink-budget active') ||
+              changedNodes.has('budget-table-cell-available-div user-data') ||
+              changedNodes.has('budget-inspector')) {
             ynabToolKit.dailySpending.invoke();
+          }
+        },
+
+        addBudgetVersionIdObserver() {
+          let applicationController = ynabToolKit.shared.containerLookup('controller:application');
+          applicationController.addObserver('budgetVersionId', function () {
+            Ember.run.scheduleOnce('afterRender', this, resetBudgetViewCheckCreditBalances);
+          });
+
+          function resetBudgetViewCheckCreditBalances() {
+            ynabToolKit.checkCreditBalances.budgetView = null;
           }
         },
 
@@ -103,6 +116,8 @@
         }
       };
     }()); // Keep feature functions contained within this object
+    // Run once to activate the budget observer()
+    ynabToolKit.checkCreditBalances.addBudgetVersionIdObserver();
   } else {
     setTimeout(poll, 250);
   }
