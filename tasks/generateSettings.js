@@ -21,12 +21,22 @@ function run(callback) {
     let settingsConcatenated = values[0].concat(values[1]);
     settingsConcatenated.forEach(setting => {
       if (Array.isArray(setting.setting)) {
-        setting.setting.forEach(subSetting => validatedSettings.push(validateSetting({
-          setting: subSetting,
-          file: setting.file
-        })));
+        setting.setting.forEach(subSetting => {
+          let validatedSetting = validateSetting({
+            setting: subSetting,
+            file: setting.file
+          });
+
+          if (validatedSetting.hidden !== true) {
+            validatedSettings.push(validatedSetting);
+          }
+        });
       } else {
-        validatedSettings.push(validateSetting(setting));
+        let validatedSetting = validateSetting(setting);
+
+        if (validatedSetting.hidden !== true) {
+          validatedSettings.push(validatedSetting);
+        }
       }
     });
 
@@ -34,6 +44,8 @@ function run(callback) {
     fs.writeFile(ALL_SETTINGS_OUTPUT, allSetingsFile, callback);
   }, reason => {
     callback(reason);
+  }).catch(exception => {
+    callback(exception.stack);
   });
 }
 
