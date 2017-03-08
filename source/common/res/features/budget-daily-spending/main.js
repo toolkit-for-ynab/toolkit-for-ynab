@@ -77,19 +77,10 @@
           const amount = ynabToolKit.dailySpending.getBalanceAmount(f);
           const date = new Date();
           const remainingDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate() - date.getDate();
-          let dailySpendingAmount = amount / remainingDays;
-          if (dailySpendingAmount < 0) {
-            dailySpendingAmount = 0;
-          }
+          const classDt = amount > 0 ? 'positive' : '';
+          const classSpan = amount > 0 ? 'positive' : 'zero';
+          const dailySpendingAmount = amount > 0 ? amount / remainingDays : 0;
           const fdailySpending = ynabToolKit.shared.formatCurrency(dailySpendingAmount * 1000);
-          let classDt = 'positive';
-          let classSpan = 'positive';
-          if (dailySpendingAmount === 0) {
-            classSpan = 'zero';
-          }
-          if (dailySpendingAmount === 0) {
-            classDt = '';
-          }
           const available = $('<dl>', { class: 'inspector-overview-available' })
           .append($('<dt>', { class: classDt })
                   .append('Daily Spending')
