@@ -27,7 +27,7 @@
         },
 
         addBudgetVersionIdObserver() {
-          let applicationController = ynabToolKit.shared.containerLookup('controller:application');
+          const applicationController = ynabToolKit.shared.containerLookup('controller:application');
           applicationController.addObserver('budgetVersionId', function () {
             Ember.run.scheduleOnce('afterRender', this, resetBudgetViewDailySpending);
           });
@@ -50,10 +50,10 @@
               return;
             }
           }
-          var categories = [];
-          var masterCats = ynabToolKit.dailySpending.budgetView
+          let categories = [];
+          const masterCats = ynabToolKit.dailySpending.budgetView
           .categoriesViewModel.masterCategoriesCollection._internalDataArray;
-          var masterCategories = [];
+          const masterCategories = [];
 
           masterCats.forEach(function (c) {
             // Filter out "special" categories
@@ -63,7 +63,7 @@
           });
 
           masterCategories.forEach(function (c) {
-            var accounts = ynabToolKit.dailySpending.budgetView
+            let accounts = ynabToolKit.dailySpending.budgetView
               .categoriesViewModel.subCategoriesCollection
               .findItemsByMasterCategoryId(c);
 
@@ -74,23 +74,23 @@
         },
 
         updateDailySpending(f) {
-          var amount = ynabToolKit.dailySpending.getBalanceAmount(f);
-          var date = new Date();
-          var remainingDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate() - date.getDate();
-          var dailySpendingAmount = amount / remainingDays;
+          const amount = ynabToolKit.dailySpending.getBalanceAmount(f);
+          const date = new Date();
+          const remainingDays = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate() - date.getDate();
+          let dailySpendingAmount = amount / remainingDays;
           if (dailySpendingAmount < 0) {
             dailySpendingAmount = 0;
           }
-          var fdailySpending = ynabToolKit.shared.formatCurrency(dailySpendingAmount * 1000);
-          var classDt = 'positive';
-          var classSpan = 'positive';
+          const fdailySpending = ynabToolKit.shared.formatCurrency(dailySpendingAmount * 1000);
+          let classDt = 'positive';
+          let classSpan = 'positive';
           if (dailySpendingAmount === 0) {
             classSpan = 'zero';
           }
           if (dailySpendingAmount === 0) {
             classDt = '';
           }
-          var available = $('<dl>', { class: 'inspector-overview-available' })
+          const available = $('<dl>', { class: 'inspector-overview-available' })
           .append($('<dt>', { class: classDt })
                   .append('Daily Spending')
                   )
@@ -107,9 +107,9 @@
         },
 
         getBalanceAmount(f) {
-          var currentMonth = moment(ynabToolKit.shared.parseSelectedMonth())
+          const currentMonth = moment(ynabToolKit.shared.parseSelectedMonth())
             .format('YYYY-MM');
-          var monthlyBudget = ynabToolKit.dailySpending.budgetView
+          const monthlyBudget = ynabToolKit.dailySpending.budgetView
             .monthlySubCategoryBudgetCalculationsCollection
             .findItemByEntityId('mcbc/' + currentMonth + '/' + f.entityId);
 
