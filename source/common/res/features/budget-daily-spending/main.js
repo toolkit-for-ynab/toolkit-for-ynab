@@ -21,9 +21,7 @@
         },
 
         observe(changedNodes) {
-          if (changedNodes.has('navlink-budget active') ||
-              changedNodes.has('budget-table-cell-available-div user-data') ||
-              changedNodes.has('budget-inspector')) {
+          if (changedNodes.has('budget-inspector')) {
             ynabToolKit.dailySpending.invoke();
           }
         },
