@@ -11,37 +11,43 @@ const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
 let previousSettings;
 
-function GenerateSettings() {
-  this.startTime = Date.now();
-}
-
-GenerateSettings.prototype.apply = function (compiler) {
-  compiler.plugin('emit', function (compilation, callback) {
-    previousSettings = new Set();
-    Promise.all([
-      gatherLegacySettings(),
-      gatherNewSettings()
-    ]).then(values => {
-      let validatedSettings = [];
-      let settingsConcatenated = values[0].concat(values[1]);
-      settingsConcatenated.forEach(setting => {
-        if (Array.isArray(setting.setting)) {
-          setting.setting.forEach(subSetting => validatedSettings.push(validateSetting({
+function run(callback) {
+  previousSettings = new Set();
+  Promise.all([
+    gatherLegacySettings(),
+    gatherNewSettings()
+  ]).then(values => {
+    let validatedSettings = [];
+    let settingsConcatenated = values[0].concat(values[1]);
+    settingsConcatenated.forEach(setting => {
+      if (Array.isArray(setting.setting)) {
+        setting.setting.forEach(subSetting => {
+          let validatedSetting = validateSetting({
             setting: subSetting,
             file: setting.file
-          })));
-        } else {
-          validatedSettings.push(validateSetting(setting));
-        }
-      });
+          });
 
-      let allSetingsFile = generateAllSettingsFile(validatedSettings);
-      fs.writeFile(ALL_SETTINGS_OUTPUT, allSetingsFile, callback);
-    }, reason => {
-      callback(reason);
+          if (validatedSetting.hidden !== true) {
+            validatedSettings.push(validatedSetting);
+          }
+        });
+      } else {
+        let validatedSetting = validateSetting(setting);
+
+        if (validatedSetting.hidden !== true) {
+          validatedSettings.push(validatedSetting);
+        }
+      }
     });
+
+    let allSetingsFile = generateAllSettingsFile(validatedSettings);
+    fs.writeFile(ALL_SETTINGS_OUTPUT, allSetingsFile, callback);
+  }, reason => {
+    callback(reason);
+  }).catch(exception => {
+    callback(exception.stack);
   });
-};
+}
 
 function gatherLegacySettings() {
   return new Promise((resolve, reject) => {
@@ -91,7 +97,7 @@ function validateSetting(settingObj) {
 
   REQUIRED_SETTINGS.forEach(requiredSetting => {
     if (typeof featureSettings[requiredSetting] === 'undefined') {
-      logWarning(settingFilename,
+      logFatal(settingFilename,
         `"${requiredSetting}" is a required setting for all features.`
       );
     }
@@ -262,4 +268,11 @@ Object.seal(window.ynabToolKit.settings);
 `;
 }
 
-module.exports = GenerateSettings;
+run(error => {
+  if (error) {
+    console.log(`Error: ${error}`.red);
+    process.exit(1);
+  }
+
+  process.exit();
+});
