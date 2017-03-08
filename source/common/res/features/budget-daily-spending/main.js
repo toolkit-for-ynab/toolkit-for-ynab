@@ -31,11 +31,11 @@
         addBudgetVersionIdObserver() {
           let applicationController = ynabToolKit.shared.containerLookup('controller:application');
           applicationController.addObserver('budgetVersionId', function () {
-            Ember.run.scheduleOnce('afterRender', this, resetBudgetViewCheckCreditBalances);
+            Ember.run.scheduleOnce('afterRender', this, resetBudgetViewDailySpending);
           });
 
-          function resetBudgetViewCheckCreditBalances() {
-            ynabToolKit.checkCreditBalances.budgetView = null;
+          function resetBudgetViewDailySpending() {
+            ynabToolKit.dailySpending.budgetView = null;
           }
         },
 
@@ -44,10 +44,15 @@
             return [];
           }
 
+
+
           // After using Budget Quick Switch, budgetView needs to be reset to the new budget.
           if (ynabToolKit.dailySpending.budgetView === null) {
-            ynabToolKit.dailySpending.budgetView = ynab.YNABSharedLib.
-              getBudgetViewModel_AllBudgetMonthsViewModel()._result;
+            try {
+              ynabToolKit.dailySpending.budgetView = ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result;
+            } catch (e) {
+              return;
+            }
           }
           var categories = [];
           var masterCats = ynabToolKit.dailySpending.budgetView
@@ -117,7 +122,7 @@
       };
     }()); // Keep feature functions contained within this object
     // Run once to activate the budget observer()
-    ynabToolKit.checkCreditBalances.addBudgetVersionIdObserver();
+    ynabToolKit.dailySpending.addBudgetVersionIdObserver();
   } else {
     setTimeout(poll, 250);
   }
