@@ -2,10 +2,6 @@ import Feature from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
 export default class ShowCategoryBalance extends Feature {
-  constructor() {
-    super();
-  }
-
   shouldInvoke() {
     return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
   }

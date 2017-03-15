@@ -80,11 +80,11 @@ function gatherLegacySettings() {
 
 function gatherNewSettings() {
   return new Promise((resolve, reject) => {
-    glob(`${NEW_SETTINGS_PROJECT_DIR}/**/settings.js`, (error, files) => {
+    glob(path.join(NEW_SETTINGS_PROJECT_DIR, '**', 'settings.js'), (error, files) => {
       if (error) return reject(error);
 
       resolve(files.map(file => {
-        const setting = require(`${__dirname}/../${file}`); // eslint-disable-line global-require
+        const setting = require(path.join(__dirname, '..', file)); // eslint-disable-line global-require
         return { file, setting };
       }));
     });
@@ -96,16 +96,14 @@ function validateSetting(settingObj) {
   const settingFilename = settingObj.file;
 
   REQUIRED_SETTINGS.forEach(requiredSetting => {
-    if (typeof featureSettings[requiredSetting] === 'undefined') {
+    if (typeof featureSettings[requiredSetting] === 'undefined' || featureSettings[requiredSetting] === null) {
       logFatal(settingFilename,
         `"${requiredSetting}" is a required setting for all features.`
       );
     }
   });
 
-  if (typeof featureSettings.description === 'undefined') {
-    featureSettings.description = '';
-  }
+  featureSettings.description = featureSettings.description || '';
 
   if (settingObj.legacy) {
     validateActions(settingObj);
@@ -180,7 +178,7 @@ function validateActions(settingObj) {
 
       if (currentAction === 'injectCSS' || currentAction === 'injectScript') {
         let fullPath = path.join(featureDir, featureSettings.actions[actionKey][i + 1]);
-        fullPath = fullPath.replace('source/common', '');
+        fullPath = path.relative(path.join('source', 'common'), fullPath);
         featureSettings.actions[actionKey][i + 1] = fullPath;
       }
 

@@ -31,7 +31,7 @@ It is extremely easy to get started with your first feature. In order to do so,
 follow these stpes:
 
 1. Determine where your feature belongs in YNAB (budget/accounts/all pages)
-2. Create a sub-directorry in the proper `features/` directory.
+2. Create a sub-directorry in the proper `features/` sub-directory.
 3. Create an index.js file which has the following:
   <!-- spacing is intentionally weird here because of markdown -->
   ```javascript
@@ -100,7 +100,7 @@ at this point, the page is ready for manipulation and YNAB is loaded.
 
 Observe will be called every time there's a change to the DOM. The underlying
 code of observe uses a [Mutation Observer][mutation-observer]. Once a change is
-detected from the DOM, we iterate ove every node and add the `class` attribute
+detected from the DOM, we iterate over every node and add the `class` attribute
 from the underylying element to a `Set`. `ember-view ` is stripped from every
 class name to reduce complexity.
 
