@@ -47,6 +47,10 @@
             }
           }
 
+          // if (changedNodes.has('sidebar-onboarding-close') && $('.collapsed-buttons').length) {
+          //   $('.collapsed-buttons').remove();
+          // }
+
           if (changedNodes.has('nav-main')) {
             var numNavLinks = $('.nav-main').children().length;
             var collapseIndex = $('.nav-main').children()
@@ -84,12 +88,7 @@
         setUpCollapsedButtons() {
           var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup();
 
-          if (!$('.collapsed-buttons').length) {
-            $('.sidebar').prepend(expandBtns);
-          } else {
-            $('.collapsed-buttons').remove();
-            $('.sidebar').prepend(expandBtns);
-          }
+          $('.sidebar').prepend(expandBtns);
 
           if ($('.sidebar-contents').is(':visible')) {
             $('.collapsed-buttons').hide();
@@ -99,11 +98,14 @@
         getUnCollapseBtnGroup() {
           var navChildren = $('.nav-main').children();
           var navChildrenLength = navChildren.length;
+          var collapsedBtnContainer = $('.collapsed-buttons');
 
-          var collapsedBtnContainer =
-            $('<div>', {
-              class: 'collapsed-buttons'
-            });
+          if (collapsedBtnContainer.length) {
+            collapsedBtnContainer.children().remove();
+            collapsedBtnContainer.hide();
+          } else {
+            collapsedBtnContainer = $('<div>', { class: 'collapsed-buttons', style: 'display: none' });
+          }
 
           var clickFunction = function () {
             ynabToolKit.collapseSideMenu.originalButtons[this.className.replace(' active', '')].click();
@@ -185,7 +187,7 @@
           $('.budget-header').animate({ left: originalSizes.headerLeft });
           if ($('.budget-content').is(':visible')) {
             if (ynabToolKit.options.resizeInspector) {
-              $('.budget-content').animate({ width: ynabToolKit.resizeInspector.getContentSize() }, 400, 'swing', function () {
+              $('.budget-content').animate({ width: ynabToolKit.resizeInspector.getContentSize(true) }, 400, 'swing', function () {
                 $('.navlink-collapse').removeClass('collapsed').addClass('expanded');
               });
             } else {
