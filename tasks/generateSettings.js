@@ -151,7 +151,6 @@ function validateSetting(settingObj) {
 function validateActions(settingObj) {
   const featureSettings = settingObj.setting;
   const settingFilename = settingObj.file;
-  console.log('validateActions::settingFilename: ' + settingFilename);
 
   if (typeof featureSettings.actions === 'undefined') {
     logFatal(settingFilename,
