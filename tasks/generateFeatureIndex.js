@@ -14,21 +14,14 @@ function run(callback) {
     let featureNames = [];
 
     files.forEach((filePath) => {
-      // let filePathSplit = filePath.split(path.sep);
       let filePathSplit = filePath.split('/');
-      console.log('filePathSplit: ' + filePathSplit + ', length: ' + filePathSplit.length + ', path.sep:' + path.sep);
       let projectFeaturePath = filePathSplit.slice(0, filePathSplit.length - 1).join(path.sep);
-      // let projectFeaturePath = path.join(filePath, '..');
-      console.log('filePath: ' + filePath + ', projectFeaturePath: ' + projectFeaturePath);
       // up one directory to use the project path
-      // let featureSetting = require(`../${projectFeaturePath}/settings.js`); // eslint-disable-line global-require
       let featureSetting = require(path.join('..', projectFeaturePath, 'settings.js')); // eslint-disable-line global-require
-      console.log('featureSetting: ' + featureSetting);
 
       // features/index will source from the features folder, so remove
       // `sauce/features` from the path here.
       let featureIndexPath = filePathSplit.slice(2, filePathSplit.length - 1).join('/');
-      console.log('featureIndexPath: ' + featureIndexPath);
 
       let importLine = `import ${featureSetting.name} from './${featureIndexPath}';\n`;
       imports.push(importLine);

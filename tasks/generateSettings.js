@@ -22,8 +22,6 @@ function run(callback) {
     settingsConcatenated.forEach(setting => {
       if (Array.isArray(setting.setting)) {
         setting.setting.forEach(subSetting => {
-          // subSetting.legacy = setting.legacy;
-          // console.log('run-then::subSetting.legacy: ' + subSetting.legacy);
           let validatedSetting = validateSetting({
             setting: subSetting,
             file: setting.file,
@@ -97,7 +95,6 @@ function gatherNewSettings() {
 function validateSetting(settingObj) {
   const featureSettings = settingObj.setting;
   const settingFilename = settingObj.file;
-  // console.log('validateSetting::settingFilename: ' + settingFilename + ', settingObj.legacy: ' + settingObj.legacy);
 
   REQUIRED_SETTINGS.forEach(requiredSetting => {
     if (typeof featureSettings[requiredSetting] === 'undefined') {
@@ -185,10 +182,7 @@ function validateActions(settingObj) {
 
       if (currentAction === 'injectCSS' || currentAction === 'injectScript') {
         let fullPath = path.join(featureDir, featureSettings.actions[actionKey][i + 1]);
-        console.log('1) fullPath: ' + fullPath);
-        // fullPath = fullPath.replace(/\\/g, '/').replace('source/common/', '');
         fullPath = path.relative(path.join('source', 'common'), fullPath);
-        console.log('2) fullPath: ' + fullPath);
         featureSettings.actions[actionKey][i + 1] = fullPath;
       }
 
