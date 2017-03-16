@@ -6,10 +6,6 @@ export function componentLookup(componentName) {
   return containerLookup(`component:${componentName}`);
 }
 
-export function scheduleOnce(onEvent, handler) {
-  Ember.run.scheduleOnce(onEvent, handler);
-}
-
 export function getEmberView(viewId) {
   return getViewRegistry()[viewId];
 }

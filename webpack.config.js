@@ -25,7 +25,7 @@ module.exports = {
         path.resolve(__dirname, 'sauce')
       ],
       use: [{
-        loader: 'babel-loader?presets[]=es2015'
+        loader: 'babel-loader?presets[]=es2016'
       }]
     }]
   },

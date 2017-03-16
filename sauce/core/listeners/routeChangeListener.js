@@ -18,14 +18,25 @@ export default class RouteChangeListener {
         'budgetVersionId', // this will handle changing budgets
         'selectedAccountId', // this will handle switching around accounts
         'monthString', // this will handle changing which month of a budget you're looking at
-        (controller) => {
-          Ember.run.scheduleOnce('afterRender', controller, 'emitChanges');
+        (controller, changedProperty) => {
+          if (changedProperty === 'budgetVersionId') {
+            Ember.run.scheduleOnce('afterRender', controller, 'emitBudgetRouteChange');
+          } else {
+            Ember.run.scheduleOnce('afterRender', controller, 'emitSameBudgetRouteChange');
+          }
         }),
 
-      emitChanges: function () {
+      emitSameBudgetRouteChange: function () {
         let currentRoute = applicationController.get('currentRouteName');
         routeChangeListener.features.forEach((feature) => {
           setTimeout(feature.onRouteChanged.bind(feature, currentRoute), 0);
+        });
+      },
+
+      emitBudgetRouteChange: function () {
+        let currentRoute = applicationController.get('currentRouteName');
+        routeChangeListener.features.forEach((feature) => {
+          setTimeout(feature.onBudgetChanged.bind(feature, currentRoute), 0);
         });
       }
     });
