@@ -2,8 +2,7 @@
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.checkCreditBalances = (function () {
       return {
-        budgetView: ynab.YNABSharedLib
-          .getBudgetViewModel_AllBudgetMonthsViewModel()._result,
+        budgetView: ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result,
 
         invoke() {
           if (ynabToolKit.checkCreditBalances.inMonth()) {
@@ -20,6 +19,17 @@
           }
         },
 
+        addBudgetVersionIdObserver() {
+          let applicationController = ynabToolKit.shared.containerLookup('controller:application');
+          applicationController.addObserver('budgetVersionId', function () {
+            Ember.run.scheduleOnce('afterRender', this, resetBudgetViewCheckCreditBalances);
+          });
+
+          function resetBudgetViewCheckCreditBalances() {
+            ynabToolKit.checkCreditBalances.budgetView = null;
+          }
+        },
+
         inMonth() {
           var today = new Date();
           var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
@@ -30,9 +40,14 @@
         },
 
         getDebtAccounts() {
+          // After using Budget Quick Switch, budgetView needs to be reset to the new budget. The try catch construct is necessary
+          // because this function can be called several times during the budget switch process.
           if (ynabToolKit.checkCreditBalances.budgetView === null) {
-            ynabToolKit.checkCreditBalances.budgetView = ynab.YNABSharedLib.
-            getBudgetViewModel_AllBudgetMonthsViewModel()._result;
+            try {
+              ynabToolKit.checkCreditBalances.budgetView = ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result;
+            } catch (e) {
+              return;
+            }
           }
 
           var categoryEntityId = ynabToolKit.checkCreditBalances.budgetView
@@ -47,38 +62,42 @@
 
         processDebtAccounts(debtAccounts) {
           debtAccounts.forEach(function (a) {
-            var account = ynabToolKit.checkCreditBalances.budgetView
-              .sidebarViewModel.accountCalculationsCollection
-              .findItemByAccountId(a.accountId);
+            // Not sure why but sometimes on a reload (F5 or CTRL-R) of YNAB, the accountId field is null which if not handled
+            // throws an error and kills the feature.
+            if (a.accountId !== null) {
+              var account = ynabToolKit.checkCreditBalances.budgetView
+                .sidebarViewModel.accountCalculationsCollection
+                .findItemByAccountId(a.accountId);
 
-            var balance = account.clearedBalance + account.unclearedBalance;
+              var balance = account.clearedBalance + account.unclearedBalance;
 
-            var currentMonth = moment(ynabToolKit.shared.parseSelectedMonth()).format('YYYY-MM');
-            var monthlyBudget = ynabToolKit.checkCreditBalances.budgetView
-              .monthlySubCategoryBudgetCalculationsCollection
-              .findItemByEntityId('mcbc/' + currentMonth + '/' + a.entityId);
+              var currentMonth = moment(ynabToolKit.shared.parseSelectedMonth()).format('YYYY-MM');
+              var monthlyBudget = ynabToolKit.checkCreditBalances.budgetView
+                .monthlySubCategoryBudgetCalculationsCollection
+                .findItemByEntityId('mcbc/' + currentMonth + '/' + a.entityId);
 
-            var available = 0;
-            if (monthlyBudget) {
-              available = monthlyBudget.balance;
-            }
-
-            // ensure that available is >= zero, otherwise don't update
-            if (available >= 0) {
-              // If cleared balance is positive, bring available to 0, otherwise
-              // offset by the correct amount
-              var difference = 0;
-              if (balance > 0) {
-                difference = (available * -1);
-              } else {
-                difference = ((available + balance) * -1);
+              var available = 0;
+              if (monthlyBudget) {
+                available = monthlyBudget.balance;
               }
 
-              ynabToolKit.checkCreditBalances.updateInspectorButton(a.name, difference);
+              // ensure that available is >= zero, otherwise don't update
+              if (available >= 0) {
+                // If cleared balance is positive, bring available to 0, otherwise
+                // offset by the correct amount
+                var difference = 0;
+                if (balance > 0) {
+                  difference = (available * -1);
+                } else {
+                  difference = ((available + balance) * -1);
+                }
 
-              if (available !== (balance * -1)) {
-                ynabToolKit.checkCreditBalances.updateRow(a.name);
-                ynabToolKit.checkCreditBalances.updateInspectorStyle(a.name);
+                ynabToolKit.checkCreditBalances.updateInspectorButton(a.name, difference);
+
+                if (available !== (balance * -1)) {
+                  ynabToolKit.checkCreditBalances.updateRow(a.name);
+                  ynabToolKit.checkCreditBalances.updateInspectorStyle(a.name);
+                }
               }
             }
           });
@@ -87,7 +106,9 @@
         updateRow(name) {
           var rows = $('.is-sub-category.is-debt-payment-category');
           rows.each(function () {
-            var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
+            var accountName = $(this).find('.budget-table-cell-name div.button-truncate')
+                                     .prop('title')
+                                     .match(/.[^\n]*/)[0]; // strip the Note string
 
             if (name === accountName) {
               var categoryBalance = $(this).find('.budget-table-cell-available-div .user-data.currency');
@@ -189,6 +210,8 @@
     if (ynabToolKit.shared.getCurrentRoute() === 'budget.index') {
       ynabToolKit.checkCreditBalances.invoke();
     }
+    // Run once to activate our observer()
+    ynabToolKit.checkCreditBalances.addBudgetVersionIdObserver();
   } else {
     setTimeout(poll, 250);
   }

@@ -134,7 +134,6 @@
           target.style.background = '';
         }
       }
-
       return {
         invoke() {
           var categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions');
@@ -233,12 +232,24 @@
           if (currentRoute.indexOf('budget') !== -1) {
             loadCategories = true;
           }
+        },
+
+        addBudgetVersionIdObserver() {
+          let applicationController = ynabToolKit.shared.containerLookup('controller:application');
+          applicationController.addObserver('budgetVersionId', function () {
+            Ember.run.scheduleOnce('afterRender', this, resetBudgetViewBudgetProgressBars);
+          });
+
+          function resetBudgetViewBudgetProgressBars() {
+            loadCategories = true;
+          }
         }
       };
     }()); // Keep feature functions contained within this object
 
     // Run once and activate setTimeOut()
     ynabToolKit.budgetProgressBars.invoke();
+    ynabToolKit.budgetProgressBars.addBudgetVersionIdObserver();
   } else {
     setTimeout(poll, 250);
   }

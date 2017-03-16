@@ -19,6 +19,8 @@ export default class Feature {
 
   onRouteChanged() { /* stubbed listener function */ }
 
+  onBudgetChanged() { /* stubbed listener function */ }
+
   applyListeners() {
     let observeListener = new ObserveListener();
     observeListener.addFeature(this);
