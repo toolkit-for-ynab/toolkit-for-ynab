@@ -22,9 +22,12 @@ function run(callback) {
     settingsConcatenated.forEach(setting => {
       if (Array.isArray(setting.setting)) {
         setting.setting.forEach(subSetting => {
+          // subSetting.legacy = setting.legacy;
+          // console.log('run-then::subSetting.legacy: ' + subSetting.legacy);
           let validatedSetting = validateSetting({
             setting: subSetting,
-            file: setting.file
+            file: setting.file,
+            legacy: setting.legacy
           });
 
           if (validatedSetting.hidden !== true) {
@@ -40,8 +43,8 @@ function run(callback) {
       }
     });
 
-    let allSetingsFile = generateAllSettingsFile(validatedSettings);
-    fs.writeFile(ALL_SETTINGS_OUTPUT, allSetingsFile, callback);
+    let allSettingsFile = generateAllSettingsFile(validatedSettings);
+    fs.writeFile(ALL_SETTINGS_OUTPUT, allSettingsFile, callback);
   }, reason => {
     callback(reason);
   }).catch(exception => {
@@ -94,6 +97,7 @@ function gatherNewSettings() {
 function validateSetting(settingObj) {
   const featureSettings = settingObj.setting;
   const settingFilename = settingObj.file;
+  // console.log('validateSetting::settingFilename: ' + settingFilename + ', settingObj.legacy: ' + settingObj.legacy);
 
   REQUIRED_SETTINGS.forEach(requiredSetting => {
     if (typeof featureSettings[requiredSetting] === 'undefined') {
@@ -150,6 +154,7 @@ function validateSetting(settingObj) {
 function validateActions(settingObj) {
   const featureSettings = settingObj.setting;
   const settingFilename = settingObj.file;
+  console.log('validateActions::settingFilename: ' + settingFilename);
 
   if (typeof featureSettings.actions === 'undefined') {
     logFatal(settingFilename,
@@ -180,7 +185,10 @@ function validateActions(settingObj) {
 
       if (currentAction === 'injectCSS' || currentAction === 'injectScript') {
         let fullPath = path.join(featureDir, featureSettings.actions[actionKey][i + 1]);
-        fullPath = fullPath.replace('source/common', '');
+        console.log('1) fullPath: ' + fullPath);
+        // fullPath = fullPath.replace(/\\/g, '/').replace('source/common/', '');
+        fullPath = path.relative(path.join('source', 'common'), fullPath);
+        console.log('2) fullPath: ' + fullPath);
         featureSettings.actions[actionKey][i + 1] = fullPath;
       }
 
