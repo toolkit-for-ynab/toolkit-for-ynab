@@ -175,7 +175,7 @@ function validateActions(settingObj) {
     let i = 0;
     while (i < featureSettings.actions[actionKey].length) {
       let currentAction = featureSettings.actions[actionKey][i];
-      let featureDir = settingFilename.replace('settings.json', '');
+      let featureDir = settingFilename.replace(/settings.js(on)?/, ''); // handle old & new style settings files
 
       if (currentAction === 'injectCSS' || currentAction === 'injectScript') {
         let fullPath = path.join(featureDir, featureSettings.actions[actionKey][i + 1]);
