@@ -14,7 +14,7 @@ function run(callback) {
     let featureNames = [];
 
     files.forEach((filePath) => {
-      const filePathSplit = filePath.split(path.sep);
+      const filePathSplit = filePath.split('/');
       const projectFeaturePath = filePathSplit.slice(0, filePathSplit.length - 1).join(path.sep);
 
       // up one directory to use the project path
@@ -22,8 +22,7 @@ function run(callback) {
 
       // features/index will source from the features folder, so remove
       // `sauce/features` from the path here.
-      const featureIndexPath = filePathSplit.slice(2, filePathSplit.length - 1).join(path.sep);
-
+      const featureIndexPath = filePathSplit.slice(2, filePathSplit.length - 1).join('/');
       const importLine = `import ${featureSetting.name} from './${featureIndexPath}';\n`;
       imports.push(importLine);
       featureNames.push(featureSetting.name);

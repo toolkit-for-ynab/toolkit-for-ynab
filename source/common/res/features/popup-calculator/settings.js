@@ -5,11 +5,9 @@ module.exports = {
   section: 'general',
   title: 'Popup Calculator',
   description: `
-Adds the total available balance to the category tooltip on each row in the Accounts register.
-
-* Item 1
-* Item 2
-* Item 3
+Provides the same calculator capability that YNAB4 had.
+* Account Screen - when adding or editing a transaction, a new button is added to the left of the 'Save and add another' or 'Save' buttons. Click the button to display the calculator.
+* Budget Screen - adds a new button to the right of the value in the BUDGETED column when the sub-category is selected. Click the button to display the calculator.
 `,
   actions: {
     true: [

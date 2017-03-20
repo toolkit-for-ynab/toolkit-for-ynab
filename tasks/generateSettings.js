@@ -24,7 +24,8 @@ function run(callback) {
         setting.setting.forEach(subSetting => {
           let validatedSetting = validateSetting({
             setting: subSetting,
-            file: setting.file
+            file: setting.file,
+            legacy: setting.legacy
           });
 
           if (validatedSetting.hidden !== true) {
@@ -40,8 +41,8 @@ function run(callback) {
       }
     });
 
-    let allSetingsFile = generateAllSettingsFile(validatedSettings);
-    fs.writeFile(ALL_SETTINGS_OUTPUT, allSetingsFile, callback);
+    let allSettingsFile = generateAllSettingsFile(validatedSettings);
+    fs.writeFile(ALL_SETTINGS_OUTPUT, allSettingsFile, callback);
   }, reason => {
     callback(reason);
   }).catch(exception => {
@@ -174,7 +175,7 @@ function validateActions(settingObj) {
     let i = 0;
     while (i < featureSettings.actions[actionKey].length) {
       let currentAction = featureSettings.actions[actionKey][i];
-      let featureDir = settingFilename.replace('settings.json', '');
+      let featureDir = settingFilename.replace(/settings.js(on)?/, ''); // handle old & new style settings files
 
       if (currentAction === 'injectCSS' || currentAction === 'injectScript') {
         let fullPath = path.join(featureDir, featureSettings.actions[actionKey][i + 1]);
