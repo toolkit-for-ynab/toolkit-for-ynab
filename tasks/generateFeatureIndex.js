@@ -43,7 +43,7 @@ function writeFeatureIndex(importLines, featureNames, callback) {
 */
 ${importLines.join('')}
 const features = [
-  ${featureNames.join('\n ')}
+  ${featureNames.join(',\n  ')}
 ];
 
 export default features;
