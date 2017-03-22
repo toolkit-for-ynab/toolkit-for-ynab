@@ -10,3 +10,8 @@ source/common/res/features/act-on-change/feedChanges.js
 source/common/res/features/allInits.js
 source/common/res/features/allSettings.js
 .python-version
+
+# new framework ingores
+sauce/features/index.js
+source/common/res/features/ynabToolkit.js
+source/common/res/features/ynabToolkit.js.map
