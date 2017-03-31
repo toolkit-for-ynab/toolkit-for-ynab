@@ -1,0 +1,13 @@
+[{
+        "name": "budget-to-goal",
+        "type": "checkbox",
+     "default": true,
+     "section": "budget",
+       "title": "Budget to Goal",
+ "description": "Adds a quick budget button that adds or subtracts a sufficient amount to balance the category to its final goal.",
+     "actions": {
+                  "true": [
+                    "injectScript","main.js"
+                  ]
+                }
+}]
