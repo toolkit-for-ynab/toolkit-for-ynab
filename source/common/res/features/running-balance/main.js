@@ -1,17 +1,20 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.runningBalance = (function () {
+      var lastSortedContent;
       var sortedContent;
       var currentlyRunning = false;
 
-      function setSortContent() {
+      function setSortContent(useQuickExit) {
+        lastSortedContent = sortedContent;
+
         var accountController = ynabToolKit.shared.containerLookup('controller:accounts');
         var visibleTransactionDisplayItems = accountController.get('visibleTransactionDisplayItems');
         var sortAscending = accountController.get('sortAscending');
 
         // if we have sorted content already and it has the same amount of transactions
         // as unsorted content, just get out. this will not catch changes made to a transaction...
-        if (sortedContent && sortedContent.length === visibleTransactionDisplayItems.length) {
+        if (useQuickExit && sortedContent && sortedContent.length === visibleTransactionDisplayItems.length) {
           return;
         }
 
@@ -38,6 +41,30 @@
 
           return res;
         });
+
+        if (areRunningBalancesEqual(lastSortedContent, sortedContent)) {
+          // nothing has changed, so no need to update
+          return false;
+        }
+
+        // something has changed, so let's update
+        return true;
+      }
+
+      function areRunningBalancesEqual(oldContent, newContent) {
+        if (!oldContent || !newContent || oldContent.length !== newContent.length) {
+          return false;
+        }
+
+        for (var i = 0; i < oldContent.length; i++) {
+          var oldItem = oldContent[i];
+          var newItem = newContent[i];
+          if (oldItem.__ynabToolKitRunningBalance !== newItem.__ynabToolKitRunningBalance) {
+            return false;
+          }
+        }
+
+        return true;
       }
 
       function updateRunningBalanceCalculation() {
@@ -121,14 +148,24 @@
       }
 
       function onYnabGridyBodyChanged() {
-        setSortContent();
+        // always update
+        setSortContent(true);
         updateRunningBalanceCalculation();
         updateRunningBalanceColumn();
       }
 
       function onSortAscendingChanged() {
+        lastSortedContent = undefined;
         sortedContent = undefined;
         onYnabGridyBodyChanged();
+      }
+
+      function onAreCheckedChanged() {
+        // update only if the list of transactions has changed somehow
+        if (setSortContent(false)) {
+          updateRunningBalanceCalculation();
+          updateRunningBalanceColumn();
+        }
       }
 
       function addDeadColumnToAddRows() {
@@ -151,6 +188,7 @@
             var accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
 
             accountsController.addObserver('sortAscending', onSortAscendingChanged);
+            accountsController.addObserver('areChecked', onAreCheckedChanged);
 
             if (applicationController.get('currentPath').indexOf('accounts') > -1) {
               if (applicationController.get('selectedAccountId')) {

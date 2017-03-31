@@ -78,7 +78,7 @@
             });
           }
 
-          Ember.I18n.translations = jQuery.extend(true, {}, ynabToolKit.l10nData);
+          Ember.I18n.translations = jQuery.extend(true, Ember.I18n.translations, ynabToolKit.l10nData);
         },
 
         budgetHeader() {
@@ -204,9 +204,9 @@
     ynabToolKit.l10n.budgetHeader();
 
     // Rerender sidebar and content views on page load.
-    var rerenderClasses = ['.content', '.nav'];
+    var rerenderClasses = ['.content', 'nav'];
     for (var i = 0; i < rerenderClasses.length; i++) {
-      ynabToolKit.shared.getEmberView($(rerenderClasses[i])[0].id).rerender();
+      ynabToolKit.shared.getEmberView($(rerenderClasses[i]).attr('id')).rerender();
     }
 
     // When rerendering sidebar accounts lists are closing, open them.

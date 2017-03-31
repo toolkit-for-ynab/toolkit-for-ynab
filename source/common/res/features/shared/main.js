@@ -176,22 +176,6 @@ ynabToolKit.shared = (function () {
       return jQueryElement;
     },
 
-    toLocalDate(date) {
-      var result = date.toNativeDate();
-      var offset = new Date().getTimezoneOffset();
-
-      result.setMinutes(result.getMinutes() + offset);
-
-      // Sometimes we don't end up exactly where we need to be because of floating point
-      // accuracy issues. If we're in PM, we should round up to the next day.
-      if (result.getHours() > 0) {
-        // Bumps us to the first hour of the next day.
-        result.setHours(24, 0, 0, 0);
-      }
-
-      return result;
-    },
-
     parseSelectedMonth() {
       // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
       if ($('.ember-view .budget-header').length) {
@@ -341,8 +325,14 @@ ynabToolKit.shared = (function () {
       this.showModal(title, message, 'close');
     },
 
-    getToolkitStorageKey(key) {
-      return localStorage.getItem(storageKeyPrefix + key);
+    getToolkitStorageKey(key, type) {
+      let value = localStorage.getItem(storageKeyPrefix + key);
+
+      switch (type) {
+        case 'boolean': return value === 'true';
+        case 'number': return Number(value);
+        default: return value;
+      }
     },
 
     setToolkitStorageKey(key, value) {
@@ -365,6 +355,11 @@ ynabToolKit.shared = (function () {
       return String(htmlString).replace(/[&<>"'`=\/]/g, function fromEntityMap(s) {
         return entityMap[s];
       });
+    },
+
+    getCurrentRoute: function () {
+      let applicationController = this.containerLookup('controller:application');
+      return applicationController.get('currentRouteName');
     },
 
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',

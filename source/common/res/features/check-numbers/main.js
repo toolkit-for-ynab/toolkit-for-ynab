@@ -53,9 +53,7 @@
 
       function addCheckNumberInputBox() {
         let accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
-        let $ynabGridAddRows = $('.ynab-grid-add-rows');
         let $editingRow = $('.ynab-grid-body-row.is-editing');
-
         let $inputBox = $('<input placeholder="check number">')
                           .addClass('accounts-text-field')
                           .addClass('ynab-toolkit-grid-cell-check-number-input')
@@ -64,24 +62,22 @@
                             editingTransaction.set('checkNumber', $(this).val());
                           });
 
-        if ($ynabGridAddRows.children().length) {
-          if (!$('.ynab-toolkit-grid-cell-check-number', $ynabGridAddRows).length) {
-            $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-check-number"><div>')
-              .append($inputBox)
-              .insertAfter($('.ynab-grid-cell-memo', $ynabGridAddRows));
-          }
-        }
+        $editingRow.each((index, element) => {
+          var $element = $(element);
+          if (!$('.ynab-toolkit-grid-cell-check-number', $element).length) {
+            if (index) { // No input field on these lines
+              $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-check-number"><div>')
+                .insertAfter($('.ynab-grid-cell-memo', $element));
+            } else { // Add input field to first line only
+              let editingTransaction = accountsController.get('editingTransaction');
+              $inputBox.val(editingTransaction.get('checkNumber'));
 
-        if ($editingRow.length) {
-          if (!$('.ynab-toolkit-grid-cell-check-number', $editingRow).length) {
-            let editingTransaction = accountsController.get('editingTransaction');
-            $inputBox.val(editingTransaction.get('checkNumber'));
-
-            $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-check-number"><div>')
+              $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-check-number"><div>')
               .append($inputBox)
-              .insertAfter($('.ynab-grid-cell-memo', $editingRow));
+              .insertAfter($('.ynab-grid-cell-memo', $element));
+            }
           }
-        }
+        });
       }
 
       return {

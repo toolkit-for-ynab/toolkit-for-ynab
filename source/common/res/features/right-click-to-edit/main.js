@@ -23,12 +23,6 @@
         // make context menu appear
         $('.accounts-toolbar-edit-transaction').click();
 
-        // hide disabled buttons and dividers above them
-        var parents = $('.modal-account-edit-transaction-list .modal-list .button-disabled').parent();
-        var above = $(parents).prev();
-        $(parents).hide();
-        $(above).hide();
-
         // determine if modal needs to be positioned above or below clicked element
         var below = true;
         var height = $('.modal-account-edit-transaction-list .modal').outerHeight();

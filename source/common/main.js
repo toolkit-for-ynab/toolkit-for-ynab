@@ -48,7 +48,7 @@ function applySettingsToDom() {
         data = '1';
       }
 
-      if (data in setting.actions) {
+      if (setting.actions && data in setting.actions) {
         var selectedActions = setting.actions[data.toString()];
         for (var i = 0; i < selectedActions.length; i += 2) {
           var action = selectedActions[i];
@@ -101,6 +101,9 @@ Promise.all(optionsPromises).then(function () {
 
   /* Load this to setup behaviors when the DOM updates and shared functions */
   injectScript('res/features/act-on-change/main.js');
+
+  /* Load the ynabToolKit bundle */
+  injectScript('res/features/ynabToolKit.js');
 
   ensureDefaultsAreSet().then(applySettingsToDom);
 });

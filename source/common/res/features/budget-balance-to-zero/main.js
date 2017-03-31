@@ -5,12 +5,17 @@
         budgetView: ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result,
 
         invoke() {
-          var categories = ynabToolKit.budgetBalanceToZero.getCategories();
-          var categoryName = ynabToolKit.budgetBalanceToZero.getInspectorName();
+          let categories = ynabToolKit.budgetBalanceToZero.getCategories();
+          let categoryName = ynabToolKit.budgetBalanceToZero.getInspectorName();
+          let masterCategoryViewId = $('ul.is-checked').prevAll('ul.is-master-category').attr('id');
+          let masterCategory = ynabToolKit.shared.getEmberView(masterCategoryViewId).get('data');
+          let masterCategoryId = masterCategory.get('categoryId');
 
           categories.forEach(function (f) {
-            if (f.name === categoryName) {
+            if (f.name === categoryName && f.masterCategoryId === masterCategoryId) {
               ynabToolKit.budgetBalanceToZero.updateInspectorButton(f);
+
+              return false;
             }
           });
         },
@@ -21,15 +26,31 @@
           }
         },
 
+        addBudgetVersionIdObserver() {
+          let applicationController = ynabToolKit.shared.containerLookup('controller:application');
+          applicationController.addObserver('budgetVersionId', function () {
+            Ember.run.scheduleOnce('afterRender', this, resetBudgetView);
+          });
+
+          function resetBudgetView() {
+            ynabToolKit.budgetBalanceToZero.budgetView = null;
+          }
+        },
+
         getCategories() {
-          if (ynabToolKit.budgetBalanceToZero === 'undefined') {
-            return [];
+          // After using Budget Quick Switch, budgetView needs to be reset to the new budget. The try catch construct is necessary
+          // because this function can be called several times during the budget switch process.
+          if (ynabToolKit.budgetBalanceToZero.budgetView === null) {
+            try {
+              ynabToolKit.budgetBalanceToZero.budgetView = ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result;
+            } catch (e) {
+              return;
+            }
           }
 
           var categories = [];
+          var masterCats = ynabToolKit.budgetBalanceToZero.budgetView.categoriesViewModel.masterCategoriesCollection._internalDataArray;
           var masterCategories = [];
-          var masterCats = ynabToolKit.budgetBalanceToZero.budgetView
-            .categoriesViewModel.masterCategoriesCollection._internalDataArray;
 
           masterCats.forEach(function (c) {
             // Filter out "special" categories
@@ -85,20 +106,21 @@
           var categories = $('.is-sub-category.is-checked');
 
           $(categories).each(function () {
-            var accountName = $(this).find('.budget-table-cell-name div.button-truncate').prop('title');
+            var accountName = $(this).find('.budget-table-cell-name div.button-truncate')
+                                     .prop('title')
+                                     .match(/.[^\n]*/)[0];
+
             if (accountName === name) {
-              var input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
+              let input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
                                  .find('input');
 
-              var oldValue = input.val();
+              let oldValue = input.val();
 
-              // If nothing is budgetted, the input will be empty
-              oldValue = oldValue || 0;
+              oldValue = ynab.unformat(oldValue);
+              difference = ynab.unformat(ynab.convertFromMilliDollars(difference)); // YNAB stores currency values * 1000
+              let newValue = oldValue + difference;
 
-              // YNAB stores currency values * 1000. What's our actual difference?
-              var newValue = (ynab.unformat(oldValue) + difference / 1000);
-
-              $(input).val(newValue);
+              $(input).val(ynab.YNABSharedLib.currencyFormatter.format(ynab.convertToMilliDollars(newValue)));
 
               if (!ynabToolKit.options.warnOnQuickBudget) {
                 // only seems to work if the confirmation doesn't pop up?
@@ -124,6 +146,9 @@
         }
       };
     }()); // Keep feature functions contained within this object
+
+    // Run once to activate our observer()
+    ynabToolKit.budgetBalanceToZero.addBudgetVersionIdObserver();
   } else {
     setTimeout(poll, 250);
   }

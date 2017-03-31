@@ -3,12 +3,17 @@
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.privacyMode = (function () {
       function togglePrivacyMode() {
-        ynabToolKit.privacyMode.enabled = !ynabToolKit.privacyMode.enabled;
+        $('button#toolkit-togglePrivacy').toggleClass('active');
+
+        let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode', 'boolean');
+        ynabToolKit.shared.setToolkitStorageKey('privacy-mode', !toggle);
         updatePrivacyMode();
       }
 
       function updatePrivacyMode() {
-        if (ynabToolKit.privacyMode.enabled) {
+        let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode', 'boolean');
+
+        if (toggle) {
           $('body').addClass('toolkit-privacyMode');
           $('#toolkit-togglePrivacy i').removeClass('unlock-1').addClass('lock-1');
         } else {
@@ -19,14 +24,18 @@
 
       return {
         invoke() {
-          ynabToolKit.privacyMode.enabled = false;
+          let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode', 'boolean');
+          if (typeof toggle === 'undefined') {
+            ynabToolKit.shared.setToolkitStorageKey('privacy-mode', false);
+          }
+
           if (ynabToolKit.options.privacyMode === '2') {
             if (!$('#toolkit-togglePrivacy').length) {
               $('nav.sidebar.logged-in .sidebar-contents').after('<button id="toolkit-togglePrivacy"><i class="ember-view flaticon stroke lock-1"></i></button>');
               $('body').on('click', 'button#toolkit-togglePrivacy', togglePrivacyMode);
             }
           } else if (ynabToolKit.options.privacyMode === '1') {
-            ynabToolKit.privacyMode.enabled = true;
+            ynabToolKit.shared.setToolkitStorageKey('privacy-mode', true);
           }
 
           updatePrivacyMode();

@@ -43,10 +43,10 @@ This is what the extension can do for you:
 - Right click on a transaction when in the Accounts view to display the Edit menu.
 - Add a split transaction keyboard shortcut, so typing "split" into the category input will automatically create a split transaction.
 - Add buttons within the Account view to easily show and hide upcoming and reconciled transactions with one click.
-- Change the default orange label for underfunded goals to blue
 - Change the default orange label for underfunded goals to blue.
 - Change the default green "To Be Budgeted" indicator to yellow if there is still unallocated money waiting to be budgeted.
 - Autofill inflow/outflow values with the remaining total when entering split transactions.
+- Hide and show the help (?) button.
 
 All of these are configurable with options in the extension options page.
 
@@ -82,8 +82,8 @@ This extension uses three main things in its build process:
 **Mac / Linux**
 
 1. Clone the repository.
-1. Install Node/npm (tested with Node 5.3.0 and npm 3.3.12).
-1. Install Python 2.7 (Kango requires 2.7 specifically) and put it in your path so it's accessible with either `python` or `python2`.
+1. Install Node/npm (tested with Node 5.3.0 and npm 3.3.12). You can manage different versions of Node with [nvm](https://github.com/creationix/nvm).
+1. Install Python 2.7 (Kango requires 2.7 specifically) and put it in your path so it's accessible with either `python` or `python2`. You can manage different Python versions with [pyenv](https://github.com/yyuu/pyenv).
 1. Run `npm install` within the folder you cloned. This installs ESLint and Babel for you. You only need to do this once.
 1. Run `./build` from within the folder you cloned. This will run all the tools.
 1. Finished extensions for each platform are available in the `output` directory.

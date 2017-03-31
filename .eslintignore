@@ -1,0 +1,10 @@
+lib
+output
+node_modules
+**/*/allSettings.js
+**/*/resize-inspector/jquery-resizable.min.js
+**/*/l10n/get_ember_strings.js
+**/*/lib/
+**/assets
+**/common/res/features/ynabToolkit.js
+src/**/*

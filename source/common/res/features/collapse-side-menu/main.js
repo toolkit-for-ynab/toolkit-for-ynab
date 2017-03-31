@@ -19,11 +19,21 @@
         originalButtons: {},
 
         originalSizes: {
-          sidebarWidth: $('.sidebar').width(),
-          contentLeft: $('.content').css('left'),
-          headerLeft: $('.budget-header, .accounts-header').css('left'),
-          contentWidth: $('.budget-content').css('width'),
-          inspectorWidth: $('.budget-inspector').css('width')
+          sidebarWidth: 0,
+          contentLeft: 0,
+          headerLeft: 0,
+          contentWidth: 0,
+          inspectorWidth: 0
+        },
+
+        setOriginalSizes() {
+          ynabToolKit.collapseSideMenu.originalSizes = ({
+            sidebarWidth: $('.sidebar').width(),
+            contentLeft: $('.content').css('left'),
+            headerLeft: $('.budget-header, .accounts-header').css('left'),
+            contentWidth: $('.budget-content').outerWidth(),
+            inspectorWidth: $('.budget-inspector').outerWidth()
+          });
         },
 
         invoke() {
@@ -37,20 +47,17 @@
             }
           }
 
-          changedNodes.forEach(function (changedNode) {
-            if ($('.collapsed-buttons').is(':visible') &&
-                changedNode.startsWith('navlink-') && changedNode.endsWith(' active')) {
-              ynabToolKit.collapseSideMenu.setCollapsedSizes();
-              ynabToolKit.collapseSideMenu.setActiveButton();
-            }
-          });
+          // if (changedNodes.has('sidebar-onboarding-close') && $('.collapsed-buttons').length) {
+          //   $('.collapsed-buttons').remove();
+          // }
 
           if (changedNodes.has('nav-main')) {
             var numNavLinks = $('.nav-main').children().length;
             var collapseIndex = $('.nav-main').children()
               .index($('.navlink-collapse'));
+            var numCollapsedLinks = $('.collapsed-buttons').children().length;
 
-            if (numNavLinks > (collapseIndex + 1)) {
+            if (numNavLinks > (collapseIndex + 1) || numNavLinks > numCollapsedLinks) {
               $('.navlink-collapse').remove();
 
               ynabToolKit.collapseSideMenu.setUpCollapseBtn();
@@ -73,19 +80,15 @@
 
         setUpCollapseBtn() {
           $('.nav-main').append(ynabToolKit.collapseSideMenu.collapseBtn);
-          $('.navlink-collapse').on('click',
-            ynabToolKit.collapseSideMenu.collapseMenu);
+          $('body').on('click', '.navlink-collapse', function () {
+            ynabToolKit.collapseSideMenu.collapseMenu();
+          });
         },
 
         setUpCollapsedButtons() {
           var expandBtns = ynabToolKit.collapseSideMenu.getUnCollapseBtnGroup();
 
-          if (!$('.collapsed-buttons').length) {
-            $('.sidebar').prepend(expandBtns);
-          } else {
-            $('.collapsed-buttons').remove();
-            $('.sidebar').prepend(expandBtns);
-          }
+          $('.sidebar').prepend(expandBtns);
 
           if ($('.sidebar-contents').is(':visible')) {
             $('.collapsed-buttons').hide();
@@ -95,14 +98,19 @@
         getUnCollapseBtnGroup() {
           var navChildren = $('.nav-main').children();
           var navChildrenLength = navChildren.length;
+          var collapsedBtnContainer = $('.collapsed-buttons');
 
-          var collapsedBtnContainer =
-            $('<div>', {
-              class: 'collapsed-buttons'
-            });
+          if (collapsedBtnContainer.length) {
+            collapsedBtnContainer.children().remove();
+            collapsedBtnContainer.hide();
+          } else {
+            collapsedBtnContainer = $('<div>', { class: 'collapsed-buttons', style: 'display: none' });
+          }
 
           var clickFunction = function () {
             ynabToolKit.collapseSideMenu.originalButtons[this.className.replace(' active', '')].click();
+            ynabToolKit.collapseSideMenu.deactivateCollapsedActive();
+            $(this).addClass('active');
           };
 
           for (var i = 0; i < navChildrenLength; i++) {
@@ -139,6 +147,8 @@
             // Set proper class so the active styling can be applied
             if (btnClasses.indexOf('mail-1') > -1) {
               button.addClass('collapsed-budget');
+            } else if (btnClasses.indexOf('graph-1') > -1) {
+              button.addClass('collapsed-reports');
             } else if (btnClasses.indexOf('government-1') > -1) {
               button.addClass('collapsed-account');
             } else {
@@ -168,33 +178,38 @@
           $('.collapsed-buttons').hide();
           $('.sidebar > .ember-view').fadeIn();
           $('.navlink-collapse').show();
-          $('.sidebar').animate({ width: originalSizes.sidebarWidth });
-          $('.content').animate({ left: originalSizes.contentLeft });
-          $('.budget-header').animate({ left: originalSizes.headerLeft });
-          $('.budget-content').animate({ width: originalSizes.contentWidth }, 400, 'swing', function () {
-            // Need to remove width after animation completion
-            $('.budget-content').removeAttr('style');
 
-            // We don't use these in our CSS, it's mostly so other features can observe
-            // for collapse/expand and update sizes / do whatever. E.g. reports needs
-            // to resize its canvas when this happens.
-            $('.navlink-collapse').removeClass('collapsed').addClass('expanded');
+          $('.sidebar').animate({ width: originalSizes.sidebarWidth });
+          $('.content').animate({ left: originalSizes.contentLeft }, function () {
+            $('.layout').removeClass('collapsed');
           });
 
-          $('.budget-inspector').animate({ width: originalSizes.inspectorWidth });
+          $('.budget-header').animate({ left: originalSizes.headerLeft });
+          if ($('.budget-content').is(':visible')) {
+            if (ynabToolKit.options.resizeInspector) {
+              $('.budget-content').animate({ width: ynabToolKit.resizeInspector.getContentSize(true) }, 400, 'swing', function () {
+                $('.navlink-collapse').removeClass('collapsed').addClass('expanded');
+              });
+            } else {
+              // if resize-inspector feature not on
+              $('.budget-content').animate({ width: originalSizes.contentWidth }, 400, 'swing', function () {
+                $('.budget-content').removeAttr('style');
+                $('.navlink-collapse').removeClass('collapsed').addClass('expanded');
+              });
+              $('.budget-inspector').animate({ width: originalSizes.inspectorWidth });
+            }
+          }
         },
 
         // Handle clicking the collapse button
         collapseMenu() {
-          ynabToolKit.collapseSideMenu.setActiveButton();
+          // resize-inspector feature could have changed these so fetch current sizes.
+          ynabToolKit.collapseSideMenu.setOriginalSizes();
+          ynabToolKit.collapseSideMenu.setActiveButton($('.nav-main li.active').attr('class'));
           $('.navlink-collapse').hide();
           $('.sidebar > .ember-view').hide();
           $('.collapsed-buttons').fadeIn();
-          ynabToolKit.collapseSideMenu.setCollapsedSizes();
-        },
 
-        // Set collapsed sizes
-        setCollapsedSizes() {
           $('.sidebar').animate({ width: '40px' });
           $('.content').animate({ left: '40px' }, 400, 'swing', function () {
             // Need to remove width after animation completion
@@ -204,40 +219,33 @@
             // for collapse/expand and update sizes / do whatever. E.g. reports needs
             // to resize its canvas when this happens.
             $('.navlink-collapse').removeClass('expanded').addClass('collapsed');
+            $('.layout').addClass('collapsed');
           });
 
           $('.budget-header').animate({ left: '40px' });
-          $('.budget-content').animate({ width: '73%' });
-          $('.budget-inspector').animate({ width: '27%' });
+          if ($('.budget-content').is(':visible')) {
+            if (ynabToolKit.options.resizeInspector) {
+              $('.budget-content').animate({ width: ynabToolKit.resizeInspector.getContentSizeCollapsed() });
+            } else {
+              $('.budget-content').animate({ width: '73%' });
+              $('.budget-inspector').animate({ width: '27%' });
+            }
+          }
         },
 
         // Add the active style to correct button
-        setActiveButton() {
-          ynabToolKit.collapseSideMenu.deactivateCollapsedActive();
-
-          var originalButtons = ynabToolKit.collapseSideMenu.originalButtons;
-
-          for (var classList in originalButtons) {
-            if (originalButtons.hasOwnProperty(classList)) {
-              var originalButton = $(originalButtons[classList]).closest('.ember-view');
-
-              if (originalButton.hasClass('active')) {
-                // Set the active button in the collapsed panel.
-                var collapsedSelector = '.collapsed-buttons .' +
-                        $(originalButton).attr('class')
-                          .replace(' active', '')
-                          .replace(' ', '.') +
-                            ' button';
-
-                $(collapsedSelector).addClass('collapsed-active');
-              }
-            }
+        setActiveButton(button) {
+          if (typeof button !== 'undefined') {
+            ynabToolKit.collapseSideMenu.deactivateCollapsedActive();
+            button = button.replace('active', '').replace('ember-view', '').trim();
+            $('.collapsed-buttons a.' + button).addClass('active');
+          } else {
+            $('.collapsed-buttons a').removeClass('active');
           }
         },
 
         // Deactivate collapsed buttons
         deactivateCollapsedActive() {
-          $('.collapsed-buttons a button').removeClass('collapsed-active');
           $('.collapsed-buttons a').removeClass('active');
         }
       };
