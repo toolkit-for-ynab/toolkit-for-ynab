@@ -1,0 +1,37 @@
+[{
+        "name": "hideAccountBalances",
+        "type": "checkbox",
+     "default": true,
+     "section": "general",
+       "title": "Hide Account Balances",
+ "description": "Hides account balances. See dropdown below for further configuration.",
+     "actions": {
+                  "true": [
+                    "injectScript","main.js"
+                  ]
+                }
+},
+{
+        "name": "hideAccountBalancesType",
+        "type": "select",
+        "default": 0,
+        "section": "general",
+        "title": "Hide which account balances?",
+        "desription": "Lets users decided whether to hide account type total and/or account totals.",
+	"options": [
+		{ "name": "All", "value": "0" },
+		{ "name": "Account Type", "value": "1"},
+		{ "name": "Accounts", "value": "2" }
+	],
+        "actions": {
+                "0": [
+                        "injectJSString", "var hideAccountTypeTotals = true; hideAccountTotals = true;"
+                        ],
+                "1": [
+                        "injectJSString", "var hideAccountTypeTotals = false; hideAccountTotals = true;"
+                        ],
+                "2": [
+                        "injectJSString", "var hideAccountTypeTotals = true; hideAccountTotals = false;"
+                        ]
+        }
+}]
