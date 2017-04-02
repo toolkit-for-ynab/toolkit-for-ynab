@@ -1,0 +1,13 @@
+.nav-account-row .nav-account-value {
+    visibility: hidden;
+    width: 0px;
+}
+
+.nav-account-row .nav-account-spacer {
+    width: 0px;
+}
+
+.nav-account-row .nav-account-name {
+    overflow: inherit;
+    width: 210px
+}
