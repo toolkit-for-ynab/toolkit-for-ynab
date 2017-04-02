@@ -3,6 +3,7 @@
         "type": "select",
         "default": 0,
         "section": "general",
+        "title": "Hide Account Balances",
         "desription": "Lets users decided whether to hide account type total and/or account totals.",
 	"options": [
         { "name": "None/Disable", "value": "0"},
