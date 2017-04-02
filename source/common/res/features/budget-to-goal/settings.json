@@ -1,10 +1,10 @@
 [{
         "name": "budget-to-goal",
         "type": "checkbox",
-     "default": true,
+     "default": false,
      "section": "budget",
        "title": "Budget to Goal",
- "description": "Adds a quick budget button that adds or subtracts a sufficient amount to balance the category to its final goal.",
+ "description": "Adds a button to inspector to balance a category budget to its final goal.",
      "actions": {
                   "true": [
                     "injectScript","main.js"
