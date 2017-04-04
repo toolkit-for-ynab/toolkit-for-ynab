@@ -1,20 +1,26 @@
 {
   "red": {
-    "label": "Red"
-  },
-  "blue": {
-    "label": "Blue"
-  },
-  "yellow": {
-    "label": "Yellow"
-  },
-  "green": {
-    "label": "Green"
+    "label": "Red",
+    "color": "#d43d2e"
   },
   "orange": {
-    "label": "Orange"
+    "label": "Orange",
+    "color": "#ff7b00"
+  },
+  "yellow": {
+    "label": "Yellow",
+    "color": "#f8e136"
+  },
+  "green": {
+    "label": "Green",
+    "color": "#9ac234"
+  },
+  "blue": {
+    "label": "Blue",
+    "color": "#0082cb"
   },
   "purple": {
-    "label": "Purple"
+    "label": "Purple",
+    "color": "#9384b7"
   }
 }

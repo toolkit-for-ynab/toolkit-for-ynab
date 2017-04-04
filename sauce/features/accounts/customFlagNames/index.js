@@ -2,34 +2,56 @@ import Feature from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 import flags from './flags.json';
 
-const redFlag = flags.red.label;
-const blueFlag = flags.blue.label;
-const orangeFlag = flags.orange.label;
-const yellowFlag = flags.yellow.label;
-const greenFlag = flags.green.label;
-const purpleFlag = flags.purple.label;
-let $modal;
+const redFlagLabel = flags.red.label;
+const blueFlagLabel = flags.blue.label;
+const orangeFlagLabel = flags.orange.label;
+const yellowFlagLabel = flags.yellow.label;
+const greenFlagLabel = flags.green.label;
+const purpleFlagLabel = flags.purple.label;
+
+const $modalOverlay =
+  $('<div class="modal-generic modal-overlay active" style="display:none;"></div>');
+const $modal = $('<div id="flags-modal" class="modal"></div>');
+const $modalHeader = $('<div class="modal-header">Customize Flag Names</div><hr>');
+const $modalContent = $('<div class="modal-content"><ul class="flags-list"></ul></div><hr>');
+const $modalActions =
+  $('<div class="modal-actions">' +
+    '<button class="button button-primary" id="flags-save">OK <i class="flaticon stroke checkmark-2"><!----></i></button>' +
+    '<button class="button button-cancel" id="flags-cancel">Cancel <i class="flaticon stroke x-2"><!----></i></button>' +
+    '</div>' +
+    '<div class="modal-arrow" style="position:absolute;width: 0;height: 0;bottom: 100%;left:150px;border: solid transparent;border-color: transparent;border-width: 15px;border-bottom-color: #ffffff"></div>');
 
 export default class CustomFlagNames extends Feature {
   constructor() {
     super();
   }
 
+  setupModal() {
+    $modalOverlay.append($modal);
+    $modal.append($modalHeader);
+    $modal.append($modalContent);
+    $modal.append($modalActions);
+    $('body').append($modalOverlay);
+    this.addFlagListItems();
+    this.setModalStyles();
+    this.addEventListeners();
+  }
+
   shouldInvoke() {
     return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
   }
 
-
   invoke() {
-    $('.ynab-grid-cell-flag .ynab-flag-red').parent().attr('title', redFlag);
-    $('.ynab-grid-cell-flag .ynab-flag-blue').parent().attr('title', blueFlag);
-    $('.ynab-grid-cell-flag .ynab-flag-orange').parent().attr('title', orangeFlag);
-    $('.ynab-grid-cell-flag .ynab-flag-yellow').parent().attr('title', yellowFlag);
-    $('.ynab-grid-cell-flag .ynab-flag-green').parent().attr('title', greenFlag);
-    $('.ynab-grid-cell-flag .ynab-flag-purple').parent().attr('title', purpleFlag);
+    $('.ynab-grid-cell-flag .ynab-flag-red').parent().attr('title', redFlagLabel);
+    $('.ynab-grid-cell-flag .ynab-flag-blue').parent().attr('title', blueFlagLabel);
+    $('.ynab-grid-cell-flag .ynab-flag-orange').parent().attr('title', orangeFlagLabel);
+    $('.ynab-grid-cell-flag .ynab-flag-yellow').parent().attr('title', yellowFlagLabel);
+    $('.ynab-grid-cell-flag .ynab-flag-green').parent().attr('title', greenFlagLabel);
+    $('.ynab-grid-cell-flag .ynab-flag-purple').parent().attr('title', purpleFlagLabel);
   }
 
   observe(changedNodes) {
+    console.log('changedNodes', changedNodes);
     if (!this.shouldInvoke()) return;
 
     if (changedNodes.has('ynab-flag-red') || changedNodes.has('ynab-flag-blue')
@@ -39,61 +61,67 @@ export default class CustomFlagNames extends Feature {
     }
 
     if (changedNodes.has('ynab-u modal-popup modal-account-flags ember-view modal-overlay active')) {
-      $('.ynab-flag-red .label').html(redFlag);
-      $('.ynab-flag-red .label-bg').html(redFlag);
-      $('.ynab-flag-blue .label').html(blueFlag);
-      $('.ynab-flag-blue .label-bg').html(blueFlag);
-      $('.ynab-flag-orange .label').html(orangeFlag);
-      $('.ynab-flag-orange .label-bg').html(orangeFlag);
-      $('.ynab-flag-yellow .label').html(yellowFlag);
-      $('.ynab-flag-yellow .label-bg').html(yellowFlag);
-      $('.ynab-flag-green .label').html(greenFlag);
-      $('.ynab-flag-green .label-bg').html(greenFlag);
-      $('.ynab-flag-purple .label').html(purpleFlag);
-      $('.ynab-flag-purple .label-bg').html(purpleFlag);
+      $('.ynab-flag-red .label, .ynab-flag-red .label-bg').html(redFlagLabel);
+      // $('.ynab-flag-red .label-bg').html(redFlagLabel);
+      $('.ynab-flag-blue .label, .ynab-flag-blue .label-bg').html(blueFlagLabel);
+      // $('.ynab-flag-blue .label-bg').html(blueFlagLabel);
+      $('.ynab-flag-orange .label, .ynab-flag-orange .label-bg').html(orangeFlagLabel);
+      // $('.ynab-flag-orange .label-bg').html(orangeFlagLabel);
+      $('.ynab-flag-yellow .label, .ynab-flag-yellow .label-bg').html(yellowFlagLabel);
+      // $('.ynab-flag-yellow .label-bg').html(yellowFlagLabel);
+      $('.ynab-flag-green .label, .ynab-flag-green .label-bg').html(greenFlagLabel);
+      // $('.ynab-flag-green .label-bg').html(greenFlagLabel);
+      $('.ynab-flag-purple .label, .ynab-flag-purple .label-bg').html(purpleFlagLabel);
+      // $('.ynab-flag-purple .label-bg').html(purpleFlagLabel);
     }
   }
 
   onRouteChanged() {
     if (!this.shouldInvoke()) return;
-    addFlagModal();
-    addFlagMenu();
+    this.addFlagsMenu();
+    this.setupModal();
     this.invoke();
   }
-}
 
-function addFlagModal() {
-  $modal = $(
-    '<div class="ynab-u modal-generic modal-account-filters ember-view modal-overlay active">' +
-    '<div id="flag-modal" class="modal" style="left: 1149px; top: 72.2969px;">' +
-    '<div class="modal-header">Flag Names</div>' +
-    '<div class="modal-content">' +
-    '<hr>' +
-    '<ul>' +
-    '<li style="fill: #d43d2e; background-color: #d43d2e;">Red</li>' +
-    '<li style="fill: #ff7b00; background-color: #ff7b00;">Orange</li>' +
-    '<li style="fill: #f8e136; background-color: #f8e136;">Yellow</li>' +
-    '<li style="fill: #9ac234; background-color: #9ac234;">Green</li>' +
-    '<li style="fill: #0082cb; background-color: #0082cb;">Blue</li>' +
-    '<li style="fill: #9384b7; background-color: #9384b7;">Purple</li>' +
-    '</ul>' +
-    '</div>' +
-    '<hr>' +
-    '<div class="modal-actions">' +
-    '<button class="button button-primary" id="flags-ok">OK <i class="flaticon stroke checkmark-2"><!----></i></button>' +
-    '<button class="button button-cancel" id="flags-cancel">Cancel <i class="flaticon stroke x-2"><!----></i></button>' +
-    '</div>' +
-    '<div class="modal-arrow" style="position:absolute;width: 0;height: 0;bottom: 100%;left:277.453125px;border: solid transparent;border-color: transparent;border-width: 15px;border-bottom-color: #ffffff"></div>' +
-    '</div></div>');
-  $('body').append($modal);
-  $modal.hide();
-  console.log('addFlagModal');
-}
+  addFlagsMenu() {
+    $('.accounts-toolbar-right')
+      .append('<button id="flags-menu" title="Edit Flag Names" class="button">Flags<i class="flaticon stroke down"><!----></i></button>');
+  }
 
-function addFlagMenu() {
-  $('.accounts-toolbar-right')
-    .append('<button id="flag-menu" title="Edit Flag Names" class="button">Flags<i class="flaticon stroke down"><!----></i></button>');
-  $('#flag-menu').click(function () {
-    $modal.show();
-  });
+  addFlagListItems() {
+    $('ul.flags-list').empty();
+    for (var key in flags) {
+      var flag = flags[key];
+      $('ul.flags-list').append('<li><input type="text" style="color: #fff; fill: ' + flag.color + '; background-color: ' + flag.color + '; height: 30px; padding:.5em .7em;" value="' + flag.label + '" placeholder="' + flag.label + '" /></li>');
+    }
+  }
+
+  setModalStyles() {
+    $('ul.flags-list').css({ 'text-align': 'left', padding: '.4em 0', margin: '0', zoom: '1', 'list-style-type': 'none' });
+    $('ul.flags-list li').css({ color: '#588697', 'text-align': 'left', 'list-style': 'none', 'font-size': '1em', padding: '0 .3em', 'padding-bottom': '.3em', position: 'relative' });
+  }
+
+  addEventListeners() {
+    $('#flags-menu').click(function () {
+      const offset = $('#flags-menu').offset();
+      const height = $('#flags-menu').height();
+      const width = $('#flags-menu').width();
+      const top = offset.top + height + 30;
+      const left = offset.left + width - $modal.width() / 2;
+      $modal.css({ width: '20em', left: left, top: top });
+      $modalOverlay.show();
+    });
+    $('#flags-cancel').click(function () {
+      $modalOverlay.hide();
+    });
+    $('#flags-save').click(function () {
+      $modalOverlay.hide();
+    });
+    $modalOverlay.click(function () {
+      $modalOverlay.hide();
+    });
+    $modal.click(function (event) {
+      event.stopPropagation();
+    });
+  }
 }
