@@ -1,0 +1,20 @@
+{
+  "red": {
+    "label": "Red"
+  },
+  "blue": {
+    "label": "Blue"
+  },
+  "yellow": {
+    "label": "Yellow"
+  },
+  "green": {
+    "label": "Green"
+  },
+  "orange": {
+    "label": "Orange"
+  },
+  "purple": {
+    "label": "Purple"
+  }
+}
