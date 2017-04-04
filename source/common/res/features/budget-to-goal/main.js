@@ -1,6 +1,7 @@
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageRead === true) {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.pageReady === true) {
     ynabToolKit.budgetBalanceToGoal = (function () {
+      return {
         budgetView: ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result,
 
         invoke() {
@@ -20,7 +21,15 @@
         },
 
         observe(changedNodes) {
-          if (changedNodes.has('budget-inspector')) {
+          console.log(changedNodes);
+          if (changedNodes.has('budget-inspector-goals')) {
+            // In theory, if there's a 'budget-inspector-goals' classed node, then the user is or has changed the goal.
+            // However, there seems to be some disconnect between this event and when YNAB updates the values.
+            setTimeout(function () {
+              ynabToolKit.budgetBalanceToGoal.invoke();
+            }, 60000);
+          } else if (changedNodes.has('budget-inspector')) {
+            // User has changed selected budget item or changed budgeted amount.
             ynabToolKit.budgetBalanceToGoal.invoke();
           }
         },
@@ -70,28 +79,28 @@
         },
 
         updateInspectorButton(f) {
-          var amount = ynabToolKit.budgetBalanceToGoal.getBudgetAmount(f);
-          var fAmount = ynabToolKit.shared.formatCurrency(amount);
+          var goalAmount = ynabToolKit.budgetBalanceToGoal.getBudgetGoalLeft(f);
+          var fGoal = ynabToolKit.shared.formatCurrency(goalAmount);
 
-          if (($('.toolkit-balance-to-goal').length) || (amount === '-0')) {
+          if (($('.toolkit-balance-to-goal').length) || (goalAmount === '-0')) {
             return;
           }
 
           /* check for positive amounts */
           var positive = '';
-          if (ynab.unformat(amount) > 0) { positive = '+'; }
+          if (ynab.unformat(goalAmount) > 0) { positive = '+'; }
 
           var button = $('<a>', { class: 'budget-inspector-button toolkit-balance-to-goal' })
             .css({ 'text-align': 'center', 'line-height': '30px', display: 'block', cursor: 'pointer' })
             .data('name', f.name)
-            .data('amount', amount)
+            .data('amount', goalAmount)
             .click(function () {
               ynabToolKit.budgetBalanceToGoal.updateBudgetedBalance($(this).data('name'), $(this).data('amount'));
             })
-            .append(ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.balanceToGoal'] || 'Balance to ' + ynabToolKit.shared.formatCurrency('0') + ': ')
+            .append(ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.balanceToGoal'] || 'Balance to Goal: ')
             .append(' ' + positive)
-            .append($('<strong>', { class: 'user-data', title: fAmount })
-            .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), amount)));
+            .append($('<strong>', { class: 'user-data', title: fGoal })
+            .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), goalAmount)));
 
           $('.inspector-quick-budget').append(button);
         },
@@ -134,22 +143,21 @@
           return $('.inspector-category-name.user-data').text().trim();
         },
 
-        getBudgetAmount(f) {
+        getBudgetGoalLeft(f) {
           var currentMonth = moment(ynabToolKit.shared.parseSelectedMonth())
             .format('YYYY-MM');
           var monthlyBudget = ynabToolKit.budgetBalanceToGoal.budgetView
             .monthlySubCategoryBudgetCalculationsCollection
             .findItemByEntityId('mcbc/' + currentMonth + '/' + f.entityId);
 
-          return (monthlyBudget.balance * -1);
+          return (monthlyBudget.goalOverallLeft);
         }
       };
     }()); // Keep feature functions contained within this object
 
     // Run once to activate our observer()
     ynabToolKit.budgetBalanceToGoal.addBudgetVersionIdObserver();
-  }
-  else {
+  } else {
     setTimeout(poll, 250);
   }
 }());
