@@ -12,11 +12,11 @@ let purpleFlagLabel;
 export default class CustomFlagNames extends Feature {
   constructor() {
     super();
-    if (!localStorage.getItem('flags')) {
+    if (!toolkitHelper.getToolkitStorageKey('flags')) {
       this.storeDefaultFlags();
     }
     if (typeof flags === 'undefined') {
-      flags = JSON.parse(localStorage.getItem('flags'));
+      flags = JSON.parse(toolkitHelper.getToolkitStorageKey('flags'));
       this.updateFlagLabels();
     }
   }
@@ -44,15 +44,20 @@ export default class CustomFlagNames extends Feature {
     }
 
     if (changedNodes.has('ynab-u modal-popup modal-account-flags ember-view modal-overlay active')) {
-      $('.ynab-flag-red .label, .ynab-flag-red .label-bg').html(redFlagLabel);
-      $('.ynab-flag-blue .label, .ynab-flag-blue .label-bg').html(blueFlagLabel);
-      $('.ynab-flag-orange .label, .ynab-flag-orange .label-bg').html(orangeFlagLabel);
-      $('.ynab-flag-yellow .label, .ynab-flag-yellow .label-bg').html(yellowFlagLabel);
-      $('.ynab-flag-green .label, .ynab-flag-green .label-bg').html(greenFlagLabel);
-      $('.ynab-flag-purple .label, .ynab-flag-purple .label-bg').html(purpleFlagLabel);
+      $('.ynab-flag-red .label, .ynab-flag-red .label-bg').text(redFlagLabel);
+      $('.ynab-flag-blue .label, .ynab-flag-blue .label-bg').text(blueFlagLabel);
+      $('.ynab-flag-orange .label, .ynab-flag-orange .label-bg').text(orangeFlagLabel);
+      $('.ynab-flag-yellow .label, .ynab-flag-yellow .label-bg').text(yellowFlagLabel);
+      $('.ynab-flag-green .label, .ynab-flag-green .label-bg').text(greenFlagLabel);
+      $('.ynab-flag-purple .label, .ynab-flag-purple .label-bg').text(purpleFlagLabel);
 
-      $('.modal-account-flags .modal').css({ height: '22em' })
-        .append('<div id="account-flags-actions" style="padding: 0 .3em"><button id="flags-edit" class="button button-primary">Edit <i class="flaticon stroke compose-3"><!----></i></button></div>');
+      $('.modal-account-flags .modal').css({ height: '22em' }).append(
+        $('<div>', { id: 'account-flags-actions' }).css({ padding: '0 .3em' }).append(
+          $('<button>', { id: 'flags-edit', class: 'button button-primary' }).append(
+            'Edit '
+          ).append($('<i>', { class: 'flaticon stroke compose-3' }).append('<!---->'))
+        )
+      );
 
       this.addEventListeners();
     }
@@ -71,12 +76,21 @@ export default class CustomFlagNames extends Feature {
 
       for (let key in flags) {
         let flag = flags[key];
-        $('.modal-account-flags .modal-list').append('<li><input type="text" id="' + key + '" class="flag-input" style="color: #fff; fill: ' + flag.color + '; background-color: ' + flag.color + '; height: 30px; padding:0 .7em; margin-bottom: .3em; border: none;" value="' + flag.label + '" placeholder="' + flag.label + '" /></li>');
+
+        $('.modal-account-flags .modal-list').append(
+          $('<li>').append(
+            $('<input>', { id: key, type: 'text', class: 'flag-input', value: flag.label, placeholder: flag.label }).css({ color: '#fff', fill: flag.color, 'background-color': flag.color, height: 30, padding: '0 .7em', 'margin-bottom': '.3em', border: 'none' })
+          )
+        );
       }
 
       $('#account-flags-actions').empty();
 
-      $('#account-flags-actions').append('<button id="flags-close" class="button button-primary">Close <i class="flaticon stroke checkmark-2"><!----></i></button>');
+      $('#account-flags-actions').append(
+        $('<button>', { id: 'flags-close', class: 'button button-primary' }).append(
+          'Ok '
+        ).append($('<i>', { class: 'flaticon stroke checkmark-2' }).append('<!---->'))
+      );
 
       $('input.flag-input').focus(function () {
         $(this).css({
@@ -100,8 +114,10 @@ export default class CustomFlagNames extends Feature {
   saveFlag(flag) {
     if (flag.attr('placeholder') !== flag.val()) {
       let key = flag.attr('id');
+
       flags[key].label = flag.val();
-      localStorage.setItem('flags', JSON.stringify(flags));
+      toolkitHelper.setToolkitStorageKey('flags', JSON.stringify(flags));
+
       this.updateFlagLabels();
       this.invoke();
     }
@@ -143,6 +159,6 @@ export default class CustomFlagNames extends Feature {
         color: '#9384b7'
       }
     };
-    localStorage.setItem('flags', JSON.stringify(flagsJSON));
+    toolkitHelper.setToolkitStorageKey('flags', JSON.stringify(flagsJSON));
   }
 }
