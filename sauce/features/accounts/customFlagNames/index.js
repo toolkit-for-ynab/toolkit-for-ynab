@@ -1,18 +1,24 @@
 import Feature from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
-import flags from './flags.json';
-const fs = require('fs');
 
-const redFlagLabel = flags.red.label;
-const blueFlagLabel = flags.blue.label;
-const orangeFlagLabel = flags.orange.label;
-const yellowFlagLabel = flags.yellow.label;
-const greenFlagLabel = flags.green.label;
-const purpleFlagLabel = flags.purple.label;
+let flags;
+let redFlagLabel;
+let blueFlagLabel;
+let orangeFlagLabel;
+let yellowFlagLabel;
+let greenFlagLabel;
+let purpleFlagLabel;
 
 export default class CustomFlagNames extends Feature {
   constructor() {
     super();
+    if (!localStorage.getItem('flags')) {
+      this.storeDefaultFlags();
+    }
+    if (typeof flags === 'undefined') {
+      flags = JSON.parse(localStorage.getItem('flags'));
+      this.updateFlagLabels();
+    }
   }
 
   shouldInvoke() {
@@ -29,7 +35,6 @@ export default class CustomFlagNames extends Feature {
   }
 
   observe(changedNodes) {
-    console.log('changedNodes', changedNodes);
     if (!this.shouldInvoke()) return;
 
     if (changedNodes.has('ynab-flag-red') || changedNodes.has('ynab-flag-blue')
@@ -60,19 +65,18 @@ export default class CustomFlagNames extends Feature {
   }
 
   addEventListeners() {
+    let $this = this;
     $('#flags-edit').click(function () {
       $('.modal-account-flags .modal-list').empty();
 
-      for (var key in flags) {
+      for (let key in flags) {
         let flag = flags[key];
         $('.modal-account-flags .modal-list').append('<li><input type="text" id="' + key + '" class="flag-input" style="color: #fff; fill: ' + flag.color + '; background-color: ' + flag.color + '; height: 30px; padding:0 .7em; margin-bottom: .3em; border: none;" value="' + flag.label + '" placeholder="' + flag.label + '" /></li>');
       }
 
       $('#account-flags-actions').empty();
 
-      $('#account-flags-actions').append('<button id="flags-cancel" class="button button-primary">Cancel <i class="flaticon stroke x-2"><!----></i></button>');
-
-      $('#account-flags-actions').append('<button id="flags-save" class="button button-primary" style="float:right">Save <i class="flaticon stroke checkmark-2"><!----></i></button>');
+      $('#account-flags-actions').append('<button id="flags-close" class="button button-primary">Close <i class="flaticon stroke checkmark-2"><!----></i></button>');
 
       $('input.flag-input').focus(function () {
         $(this).css({
@@ -81,20 +85,64 @@ export default class CustomFlagNames extends Feature {
       });
 
       $('input.flag-input').blur(function () {
-        console.log('$(this)', $(this));
-        console.log('this', this);
         $(this).css({
           color: '#fff'
         });
+        $this.saveFlag($(this));
       });
 
-      $('#flags-cancel').click(function () {
-        $('.modal-overlay').click();
-      });
-
-      $('#flags-save').click(function () {
+      $('#flags-close').click(function () {
         $('.modal-overlay').click();
       });
     });
+  }
+
+  saveFlag(flag) {
+    if (flag.attr('placeholder') !== flag.val()) {
+      let key = flag.attr('id');
+      flags[key].label = flag.val();
+      localStorage.setItem('flags', JSON.stringify(flags));
+      this.updateFlagLabels();
+      this.invoke();
+    }
+  }
+
+  updateFlagLabels() {
+    redFlagLabel = flags.red.label;
+    blueFlagLabel = flags.blue.label;
+    orangeFlagLabel = flags.orange.label;
+    yellowFlagLabel = flags.yellow.label;
+    greenFlagLabel = flags.green.label;
+    purpleFlagLabel = flags.purple.label;
+  }
+
+  storeDefaultFlags() {
+    const flagsJSON = {
+      red: {
+        label: 'Red',
+        color: '#d43d2e'
+      },
+      orange: {
+        label: 'Orange',
+        color: '#ff7b00'
+      },
+      yellow: {
+        label: 'Yellow',
+        color: '#f8e136'
+      },
+      green: {
+        label: 'Green',
+        color: '#9ac234'
+      },
+      blue: {
+        label: 'Blue',
+        color: '#0082cb'
+      },
+      purple: {
+        label: 'Purple',
+        color: '#9384b7'
+      }
+    };
+    localStorage.setItem('flags', JSON.stringify(flagsJSON));
   }
 }

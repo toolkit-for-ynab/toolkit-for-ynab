@@ -3,6 +3,6 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Add Custom Flag Names',
-  description: 'Adds the ability to change the flag names.'
+  title: 'Adds Custom Flag Names',
+  description: 'Adds the ability to change set custom flag names. **WARNING** Flag names are stored in localStorage and will be lost if localStorage is cleared.'
 };
