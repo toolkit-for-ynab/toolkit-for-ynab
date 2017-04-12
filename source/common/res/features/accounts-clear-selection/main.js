@@ -8,6 +8,8 @@
 
         try {
           accountsController.get('areChecked').setEach('isChecked', 0);
+          let gridHeader = ynabToolKit.shared.getEmberView($('.ynab-grid-header').attr('id'));
+          gridHeader.childViews[0].set('isChecked', false);
           accountsController.send('closeModal');
         } catch (e) {
           accountsController.send('closeModal');
