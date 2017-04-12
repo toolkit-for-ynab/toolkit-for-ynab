@@ -1,3 +1,5 @@
+const storageKeyPrefix = 'ynab-toolkit-';
+
 export function controllerLookup(controllerName) {
   return containerLookup(`controller:${controllerName}`);
 }
@@ -45,6 +47,20 @@ export function formatCurrency(value) {
   }
 
   return formattedCurrency;
+}
+
+export function getToolkitStorageKey(key, type) {
+  let value = localStorage.getItem(storageKeyPrefix + key);
+
+  switch (type) {
+    case 'boolean': return value === 'true';
+    case 'number': return Number(value);
+    default: return value;
+  }
+}
+
+export function setToolkitStorageKey(key, value) {
+  return localStorage.setItem(storageKeyPrefix + key, value);
 }
 
 /* Private Functions */
