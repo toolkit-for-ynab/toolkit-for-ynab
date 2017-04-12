@@ -1,0 +1,25 @@
+[{
+        "name": "hideAccountBalancesType",
+        "type": "select",
+        "default": 0,
+        "section": "general",
+        "title": "Hide Account Balances",
+        "desription": "Lets users decided whether to hide account type total and/or account totals.",
+	"options": [
+        { "name": "None/Disable", "value": "0"},
+		{ "name": "All", "value": "1" },
+		{ "name": "Account Type", "value": "2"},
+		{ "name": "Accounts", "value": "3" }
+	],
+        "actions": {
+                "1": [
+                        "injectCSS", "account.css", "injectCSS", "accountGroup.css"
+                        ],
+                "2": [
+                        "injectCSS", "accountGroup.css"
+                ],
+                "3": [
+                        "injectCSS", "account.css"
+                ]
+        }
+}]
