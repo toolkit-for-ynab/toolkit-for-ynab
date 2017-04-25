@@ -11,8 +11,10 @@ export default class DisplayTargetGoalAmount extends Feature {
   }
 
   invoke() {
-    $('.budget-table-header .budget-table-cell-name').after('<li class=\'budget-table-cell-goal\' style=\'font-size: .75em; text-align: right;\'>GOAL</li>');
-    $('.budget-table-row.is-sub-category li.budget-table-cell-name').after('<li class=\'budget-table-cell-goal\' style=\'text-align: right; font-size: 80%; color: gray;\'></li>');
+    $('.budget-table-header .budget-table-cell-name').css('position', 'relative');
+    $('.budget-table-row.is-sub-category li.budget-table-cell-name').css('position', 'relative');
+    $('.budget-table-header .budget-table-cell-name').append('<div class=\'budget-table-cell-goal\' style=\'position: absolute; right: 0; top: 6px;\'>GOAL</div>');
+    $('.budget-table-row.is-sub-category li.budget-table-cell-name').append('<div class=\'budget-table-cell-goal\' style=\'background: -webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 30%); position: absolute; font-size: 80%; color: gray; padding-left: 2em; line-height: 2.55em;\'></div>');
     $('.budget-table-row.is-sub-category').each((index, element) => {
       const emberId = element.id;
       const viewData = toolkitHelper.getEmberView(emberId).data;
@@ -23,19 +25,18 @@ export default class DisplayTargetGoalAmount extends Feature {
       const targetBalance = subCategory.get('targetBalance');
       const targetBalanceDate = monthlySubCategoryBudgetCalculation.get('goalTarget');
       if (goalType === 'MF') {
-        $('#' + emberId + '.budget-table-row.is-sub-category li.budget-table-cell-goal').text('$' + monthlyFunding / 1000);
+        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text('$' + monthlyFunding / 1000);
       } else if (goalType === 'TB') {
-        $('#' + emberId + '.budget-table-row.is-sub-category li.budget-table-cell-goal').text('$' + targetBalance / 1000);
+        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text('$' + targetBalance / 1000);
       } else if (goalType === 'TBD') {
-        $('#' + emberId + '.budget-table-row.is-sub-category li.budget-table-cell-goal').text('$' + targetBalanceDate / 1000);
+        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text('$' + targetBalanceDate / 1000);
       }
     });
   }
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
-    console.log(changedNodes);
-    if (changedNodes.has('fieldset') && changedNodes.has('budget-inspector-goals') || changedNodes.has('budget-table-cell-goal')) {
+    if (changedNodes.has('fieldset') && changedNodes.has('budget-inspector-goals')) {
       $('.budget-table-cell-goal').remove();
       this.invoke();
     }
