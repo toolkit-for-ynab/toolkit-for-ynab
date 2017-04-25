@@ -17,19 +17,25 @@ export default class DisplayTargetGoalAmount extends Feature {
       const emberId = element.id;
       const viewData = toolkitHelper.getEmberView(emberId).data;
       const { subCategory } = viewData;
+      const { monthlySubCategoryBudgetCalculation } = viewData;
+      const goalType = subCategory.get('goalType');
       const monthlyFunding = subCategory.get('monthlyFunding');
       const targetBalance = subCategory.get('targetBalance');
-      if (targetBalance === 0 || targetBalance === null) {
+      const targetBalanceDate = monthlySubCategoryBudgetCalculation.get('goalTarget');
+      if (goalType === 'MF') {
         $('#' + emberId + '.budget-table-row.is-sub-category li.budget-table-cell-goal').text('$' + monthlyFunding / 1000);
-      } else if (monthlyFunding === 0 || monthlyFunding === null) {
+      } else if (goalType === 'TB') {
         $('#' + emberId + '.budget-table-row.is-sub-category li.budget-table-cell-goal').text('$' + targetBalance / 1000);
+      } else if (goalType === 'TBD') {
+        $('#' + emberId + '.budget-table-row.is-sub-category li.budget-table-cell-goal').text('$' + targetBalanceDate / 1000);
       }
     });
   }
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
-    if (changedNodes.has('fieldset') && changedNodes.has('budget-inspector-goals')) {
+    console.log(changedNodes);
+    if (changedNodes.has('fieldset') && changedNodes.has('budget-inspector-goals') || changedNodes.has('budget-table-cell-goal')) {
       $('.budget-table-cell-goal').remove();
       this.invoke();
     }
