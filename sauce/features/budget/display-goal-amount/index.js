@@ -25,11 +25,11 @@ export default class DisplayTargetGoalAmount extends Feature {
       const targetBalance = subCategory.get('targetBalance');
       const targetBalanceDate = monthlySubCategoryBudgetCalculation.get('goalTarget');
       if (goalType === 'MF') {
-        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text('$' + ynab.YNABSharedLib.currencyFormatter.format(monthlyFunding));
+        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(monthlyFunding));
       } else if (goalType === 'TB') {
-        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text('$' + ynab.YNABSharedLib.currencyFormatter.format(targetBalance));
+        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(targetBalance));
       } else if (goalType === 'TBD') {
-        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text('$' + ynab.YNABSharedLib.currencyFormatter.format(targetBalanceDate));
+        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(targetBalanceDate));
       }
     });
   }
