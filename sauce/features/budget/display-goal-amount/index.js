@@ -39,23 +39,23 @@ export default class DisplayTargetGoalAmount extends Feature {
       if (goalType === 'MF') {
         $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(monthlyFunding));
         if (budgetedAmount <= monthlyFunding) {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: 'grey' });
+          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#65bb5f' });
         } else {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: 'red' });
+          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
         }
       } else if (goalType === 'TB') {
         $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(targetBalance));
         if (budgetedAmount <= targetBalance) {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: 'grey' });
+          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#65bb5f' });
         } else {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: 'red' });
+          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
         }
       } else if (goalType === 'TBD') {
         $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(targetBalanceDate));
         if (budgetedAmount <= targetBalanceDate) {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: 'grey' });
+          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#65bb5f' });
         } else {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: 'red' });
+          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
         }
       }
     });
