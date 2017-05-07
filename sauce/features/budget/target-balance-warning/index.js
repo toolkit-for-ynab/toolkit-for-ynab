@@ -21,7 +21,7 @@ export default class TargetBalanceWarning extends Feature {
         const targetBalance = subCategory.get('targetBalance');
         const currencyElement = $('.budget-table-cell-available .user-data.currency', element);
 
-        if (available !== targetBalance && !currencyElement.hasClass('cautious')) {
+        if (available < targetBalance && !currencyElement.hasClass('cautious')) {
           currencyElement.addClass('cautious');
         }
       }
@@ -30,6 +30,7 @@ export default class TargetBalanceWarning extends Feature {
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
+
     if (changedNodes.has('budget-table-cell-available-div user-data')) {
       this.invoke();
     }
