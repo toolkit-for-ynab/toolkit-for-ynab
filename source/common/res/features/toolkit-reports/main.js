@@ -12,6 +12,9 @@
     name: 'Spending By Payee',
     toolkitId: 'spendingByPayee'
   }, {
+    name: 'Spending By Account',
+    toolkitId: 'spendingByAccount'
+  }, {
     name: 'Income vs. Expense',
     toolkitId: 'incomeVsExpense'
   }];
