@@ -37,9 +37,7 @@ export default class CustomFlagNames extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (changedNodes.has('ynab-flag-red') || changedNodes.has('ynab-flag-blue')
-      || changedNodes.has('ynab-flag-orange') || changedNodes.has('ynab-flag-yellow')
-      || changedNodes.has('ynab-flag-green') || changedNodes.has('ynab-flag-purple')) {
+    if (changedNodes.has('layout user-logged-in') || changedNodes.has('ynab-grid-body')) {
       this.invoke();
     }
 
@@ -55,7 +53,7 @@ export default class CustomFlagNames extends Feature {
         $('<div>', { id: 'account-flags-actions' }).css({ padding: '0 .3em' }).append(
           $('<button>', { id: 'flags-edit', class: 'button button-primary' }).append(
             'Edit '
-          ).append($('<i>', { class: 'flaticon stroke compose-3' }).append('<!---->'))
+          ).append($('<i>', { class: 'flaticon stroke compose-3' }))
         )
       );
 
@@ -89,7 +87,7 @@ export default class CustomFlagNames extends Feature {
       $('#account-flags-actions').append(
         $('<button>', { id: 'flags-close', class: 'button button-primary' }).append(
           'Ok '
-        ).append($('<i>', { class: 'flaticon stroke checkmark-2' }).append('<!---->'))
+        ).append($('<i>', { class: 'flaticon stroke checkmark-2' }))
       );
 
       $('input.flag-input').focus(function () {
