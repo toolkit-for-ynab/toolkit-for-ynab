@@ -36,23 +36,30 @@ export default class DisplayTargetGoalAmount extends Feature {
       const targetBalance = subCategory.get('targetBalance');
       const targetBalanceDate = monthlySubCategoryBudgetCalculation.get('goalTarget');
       const budgetedAmount = monthlySubCategoryBudget.get('budgeted');
+      const activity = Math.abs(monthlySubCategoryBudgetCalculation.get('budgetedCashOutflows'));
       if (goalType === 'MF') {
         $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(monthlyFunding));
-        if (budgetedAmount <= monthlyFunding) {
+        if (activity === monthlyFunding && activity === budgetedAmount) {
+          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#00b300' });
+        } else if (activity < monthlyFunding) {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: 'grey' });
         } else {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
         }
       } else if (goalType === 'TB') {
         $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(targetBalance));
-        if (budgetedAmount <= targetBalance) {
+        if (activity === targetBalance && activity === budgetedAmount) {
+          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#00b300' });
+        } else if (activity < targetBalance) {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: 'grey' });
         } else {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
         }
       } else if (goalType === 'TBD') {
         $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(targetBalanceDate));
-        if (budgetedAmount <= targetBalanceDate) {
+        if (activity === targetBalanceDate && activity === budgetedAmount) {
+          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#00b300' });
+        } else if (activity < targetBalanceDate) {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: 'grey' });
         } else {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
@@ -67,8 +74,9 @@ export default class DisplayTargetGoalAmount extends Feature {
       $('.budget-table-cell-goal').remove();
       this.invoke();
     }
-
-    if (changedNodes.has('budget-table-row is-sub-category') || changedNodes.has('budget-table-row is-sub-category is-checked') || changedNodes.has('budget-table-cell-goal')) {
+    console.log(changedNodes);
+    if (changedNodes.has('budget-table-row is-sub-category') || changedNodes.has('budget-table-row is-sub-category is-checked') || changedNodes.has('budget-table-cell-goal currency')) {
+      console.log('yes');
       $('.budget-table-row.is-sub-category li.budget-table-cell-name .budget-table-cell-goal').css({
         background: '-webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 10%,rgba(255,255,255,1) 100%)' });
       $('.budget-table-row.is-checked li.budget-table-cell-name .budget-table-cell-goal').css({ background: '#005a6e' });
