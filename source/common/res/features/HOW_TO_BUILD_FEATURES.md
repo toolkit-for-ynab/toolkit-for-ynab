@@ -137,7 +137,7 @@ It's also possible to have your single feature expose multiple settings, just pu
 
 How does this Magic Work?
 -------------------------
-There's a [python script](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/populateFeaturesFiles.py) that's invoked as part of the build process. It scans for these files and pulls them all into a single Javascript file, which is included in the extension. This saves us lots of time avoiding merge conflicts and makes building these features much easier as there's less code to write by hand.
+There's a [python script](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/generateFeedChanges.py) that's invoked as part of the build process. It scans for these files and pulls them all into a single Javascript file, which is included in the extension. This saves us lots of time avoiding merge conflicts and makes building these features much easier as there's less code to write by hand.
 
 
 What If I Can't Get My Setting to Work?
