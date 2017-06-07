@@ -15,6 +15,8 @@ export default class Feature {
     throw Error(`Feature: ${this.constructor.name} does not implement required invoke() method.`);
   }
 
+  injectCSS() { /* stubbed, default to no injected CSS */ }
+
   observe() { /* stubbed listener function */ }
 
   onRouteChanged() { /* stubbed listener function */ }
