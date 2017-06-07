@@ -1,11 +1,12 @@
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true && typeof ynab.utilities.TransactionImportUtilities !== 'undefined') {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.importNotification = function () {
       $('.import-notification').remove();
       $('.nav-account-row').each(function (index, row) {
         var account = ynabToolKit.shared.getEmberView($(row).attr('id')).get('data');
         if (account.getDirectConnectEnabled()) {
-          var transactions = ynab.utilities.TransactionImportUtilities.getImportTransactionsForAccount(account);
+          var t = new ynab.managers.DirectImportManager(ynab.YNABSharedLib.defaultInstance.entityManager, account);
+          var transactions = t.getImportTransactionsForAccount(account);
           if (transactions.length >= 1) {
             $(row).find('.nav-account-notification').append('<a class="notification import-notification">' + transactions.length + '</a>');
           }
