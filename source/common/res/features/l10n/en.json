@@ -1,6 +1,7 @@
 {
   "toolkit.selectedTotal": "Selected Transactions Total",
   "toolkit.balanceToZero": "Balance to 0.00:",
+  "toolkit.balanceToGoal": "Balance to Goal:",
   "toolkit.collapse": "Collapse",
   "toolkit.DoB": "Days of Buffering",
   "toolkit.search": "Search:",
