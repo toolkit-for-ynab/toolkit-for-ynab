@@ -8,7 +8,9 @@ export default class Feature {
   }
 
   shouldInvoke() {
-    throw Error(`Feature: ${this.constructor.name} does not implement required shouldInvoke() method.`);
+    // Default to no action. Unless you're implementing a CSS only feature,
+    // you MUST override this to specify when your invoke() function should run!
+    return false;
   }
 
   invoke() {

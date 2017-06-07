@@ -38,6 +38,7 @@ module.exports = {
         "consistent-return": "off",
         "default-case": "off",
         "guard-for-in": "off",
+        "global-require": "off",
         "max-len": "off",
         "func-names": "off",
         "vars-on-top": "off",

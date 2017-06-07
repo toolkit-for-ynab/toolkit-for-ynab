@@ -27,6 +27,12 @@ module.exports = {
       use: [{
         loader: 'babel-loader?presets[]=es2016'
       }]
+    }, {
+      test: /\.css$/,
+      include: [
+        path.resolve(__dirname, 'sauce')
+      ],
+      use: ['to-string-loader', 'css-loader']
     }]
   },
 
