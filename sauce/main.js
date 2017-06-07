@@ -8,9 +8,10 @@ const featureInstances = features.map(Feature => new Feature());
     typeof $ !== 'undefined' && $('.ember-view.layout').length &&
     typeof ynabToolKit !== 'undefined') {
     featureInstances.forEach((feature) => {
-      if (feature.settings.enabled && feature.shouldInvoke()) {
+      if (feature.settings.enabled) {
         feature.applyListeners();
-        feature.invoke();
+
+        if (feature.shouldInvoke()) feature.invoke();
       }
     });
   } else {
