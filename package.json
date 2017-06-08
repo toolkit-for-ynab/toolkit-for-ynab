@@ -9,12 +9,14 @@
     "babel-preset-es2016": "^6.22.0",
     "chokidar": "^1.6.0",
     "colors": "^1.1.2",
+    "css-loader": "^0.28.4",
     "eslint": "^2.13.1",
     "eslint-config-airbnb-base": "^3.0.1",
     "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-loader": "^1.6.1",
     "eslint-plugin-import": "^1.16.0",
     "glob": "^7.1.1",
+    "to-string-loader": "^1.1.5",
     "webpack": "^2.2.1"
   },
   "scripts": {
