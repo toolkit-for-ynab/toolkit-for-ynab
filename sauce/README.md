@@ -31,17 +31,13 @@ It is extremely easy to get started with your first feature. In order to do so,
 follow these stpes:
 
 1. Determine where your feature belongs in YNAB (budget/accounts/all pages)
-2. Create a sub-directorry in the proper `features/` sub-directory.
+2. Create a sub-directory in the proper `features/` sub-directory.
 3. Create an index.js file which has the following:
   <!-- spacing is intentionally weird here because of markdown -->
   ```javascript
   import Feature from 'core/feature';
 
   export default class MyCoolFeature extends Feature {
-     constructor() {
-       super();
-     }
-
      shouldInvoke() {
        return true;
      }
@@ -59,21 +55,23 @@ that you get for free when extending `Feature`.
 
 ### The `Feature` Class
 
-#### The following functions must be declared inside your Feature Class.
+#### The following functions can be declared inside your Feature Class.
 
 #### `constructor()`
+**optional function, not required to be declared**
 
 Your feature's constructor is invoked as soon as the Toolkit is injected onto
-the page. You should not attempt an DOM manipulation or access to Ember/YNAB
+the page. You should not attempt a DOM manipulation or access to Ember/YNAB
 as it is not guaranteed or likely to be ready when your constructor is invoked.
 The job of the base `Feature` constructor is to simply fetch the user settings
 of your feature. If `enabled` is set to false for your Feature's settings,
 then invoke will not be called.
 
-You must call `super()` inside of your Feature class in order to have access
-to settings inside the runtime of your Feature class.
+You must call `super()` inside of your Feature's constructor if you've defined
+one in order to have access to settings inside the runtime of your Feature class.
 
 #### `shouldInvoke()`
+**required function, must be implemented**
 
 shouldInvoke is called immediately once the page and YNAB is ready. This function
 should perform a synchronous operation to determine whether or not your feature
@@ -89,14 +87,43 @@ shouldInvoke() {
 ```
 
 #### `invoke()`
+**optional function, not required to be declared**
 
 Invoke is called immediately once the page and YNAB is ready and shouldInvoke()
 returns true. This is the entrypoint of your feature. You can be certain that
 at this point, the page is ready for manipulation and YNAB is loaded.
 
-#### The following functions may optionally be declared inside your Feature Class.
+#### `injectCSS()`
+**optional function, not required to be declared**
+
+injectCSS is called only once when the feature is instantiated, and its job is to
+return any global CSS styles you'd like to have placed in a `<style>` tag in the 
+`<head>` of the page.
+
+For example, a CSS based feature to hide the referral program banner would look like this:
+
+**index.js**
+```javascript
+import Feature from 'core/feature';
+
+export default class HideReferralBanner extends Feature {
+  injectCSS() { return require('./index.css'); }
+}
+```
+
+**index.css**
+```css
+div.referral-program {
+    display: none;
+}
+```
+
+You can get ahold of the css string you need however you like at runtime, just
+be aware that YNAB itself isn't loaded yet. This feature is designed to be used
+statically for styles that don't change that your feature requires on the page.
 
 #### `observe(changedNodes<Set>)`
+**optional function, not required to be declared**
 
 Observe will be called every time there's a change to the DOM. The underlying
 code of observe uses a [Mutation Observer][mutation-observer]. Once a change is
@@ -125,6 +152,7 @@ Note: The first line of your `observe()` function should call `this.shouldInvoke
 and return immediately if the result is false.
 
 #### `onRouteChanged(currentRoute<String>)`
+**optional function, not required to be declared**
 
 OnRouteChanged is designed to be called every time the user navigates to a new
 page. In order to do this, we've implemented an Ember Observer which watches for
