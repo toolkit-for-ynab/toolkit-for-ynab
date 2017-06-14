@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'colourBlindMode',
+  name: 'ColourBlindMode',
   type: 'checkbox',
   default: false,
   section: 'general',

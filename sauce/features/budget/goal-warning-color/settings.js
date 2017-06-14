@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'goalIndicatorWarningColor',
+  name: 'GoalWarningColor',
   type: 'checkbox',
   default: false,
   section: 'budget',

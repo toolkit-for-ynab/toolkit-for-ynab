@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'accountsStripedRows',
+  name: 'AccountsStripedRows',
   type: 'checkbox',
   default: false,
   section: 'accounts',

@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'hideAOM',
+  name: 'HideAgeOfMoney',
   type: 'checkbox',
   default: false,
   section: 'general',
