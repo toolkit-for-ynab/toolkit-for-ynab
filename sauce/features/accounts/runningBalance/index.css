@@ -1,0 +1,9 @@
+.ynab-toolkit-grid-cell-running-balance {
+	text-align: right;
+	width: 10%;
+}
+
+.ynab-toolkit-grid-cell-running-balance span.negative {
+	color: #d33c2d;
+	font-weight: bold;
+}
