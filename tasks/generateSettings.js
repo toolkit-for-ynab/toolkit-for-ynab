@@ -9,6 +9,10 @@ const NEW_SETTINGS_PROJECT_DIR = 'sauce/features';
 const ALL_SETTINGS_OUTPUT = 'source/common/res/features/allSettings.js';
 const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
+const legacySettingMap = {
+  AutoCloseReconcile: 'closeReconcileWindow'
+};
+
 let previousSettings;
 
 function run(callback) {
@@ -212,6 +216,8 @@ function generateAllSettingsFile(allSettings) {
 
 if (typeof window.ynabToolKit === 'undefined') { window.ynabToolKit = {}; }
 
+const legacySettingMap = ${JSON.stringify(legacySettingMap)};
+
 function getKangoSetting(settingName) {
   return new Promise(function (resolve) {
     kango.invokeAsync('kango.storage.getItem', settingName, function (data) {
@@ -247,7 +253,14 @@ function ensureDefaultsAreSet() {
 
       ynabToolKit.settings.forEach(function (setting) {
         if (storedKeys.indexOf(setting.name) < 0) {
-          promises.push(setKangoSetting(setting.name, setting.default));
+          const legacySetting = legacySettingMap[setting.name];
+          if (legacySetting && storedKeys.indexOf(legacySetting)) {
+            promises.push(getKangoSetting(legacySetting).then((data) => {
+              return setKangoSetting(setting.name, data);
+            }));
+          } else {
+            promises.push(setKangoSetting(setting.name, setting.default));
+          }
         }
       });
 
