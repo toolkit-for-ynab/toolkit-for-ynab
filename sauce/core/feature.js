@@ -13,6 +13,11 @@ export default class Feature {
     return false;
   }
 
+  willInvoke() {
+    /* stubbed optional hook for logic that must happen for a feature
+    to work but doesn't need to happen on every invoke */
+  }
+
   invoke() {
     throw Error(`Feature: ${this.constructor.name} does not implement required invoke() method.`);
   }

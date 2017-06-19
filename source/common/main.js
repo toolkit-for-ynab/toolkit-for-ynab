@@ -4,7 +4,6 @@
 // @include https://*.youneedabudget.com/*
 // @require res/features/allSettings.js
 // ==/UserScript==
-
 function injectCSS(path) {
   var link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
@@ -72,7 +71,6 @@ function applySettingsToDom() {
 
 /* Init ynabToolKit object and import options from Kango  */
 var options = {};
-
 function pushOption(setting) {
   return getKangoSetting(setting.name).then(function (data) {
     options[setting.name] = data;
@@ -80,7 +78,6 @@ function pushOption(setting) {
 }
 
 var optionsPromises = [];
-
 ynabToolKit.settings.forEach(function (setting) {
   optionsPromises.push(pushOption(setting));
 });
@@ -88,7 +85,12 @@ ynabToolKit.settings.forEach(function (setting) {
 Promise.all(optionsPromises).then(function () {
   let version = getKangoExtensionInfo().version;
 
-  injectJSString('window.ynabToolKit = { version: \'' + version + '\'}; ynabToolKit.options = ' + JSON.stringify(options) + '; Object.freeze(ynabToolKit.options); Object.seal(ynabToolKit.options);');
+  injectJSString(`
+    window.ynabToolKit = { version: '${version}'};
+    ynabToolKit.options = ${JSON.stringify(options)};
+    Object.freeze(ynabToolKit.options);
+    Object.seal(ynabToolKit.options);
+  `);
 
   /* Load this to setup shared utility functions */
   injectScript('res/features/shared/main.js');

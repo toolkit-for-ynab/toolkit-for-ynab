@@ -18,17 +18,28 @@ const featureInstances = features.map(Feature => new Feature());
 
     // Inject it into the head so it's left alone
     $('head').append(
-      $('<style>', { id: 'toolkit-injected-styles', type: 'text/css' }).text(
-        globalCSS
-      )
+      $('<style>', { id: 'toolkit-injected-styles', type: 'text/css' })
+        .text(globalCSS)
     );
 
-    // And invoke any features that are ready to go.
+    // Hook up listeners and then invoke any features that are ready to go.
     featureInstances.forEach((feature) => {
       if (feature.settings.enabled) {
         feature.applyListeners();
 
-        if (feature.shouldInvoke()) feature.invoke();
+        const willInvokeRetValue = feature.willInvoke();
+
+        if (willInvokeRetValue && typeof willInvokeRetValue.then === 'function') {
+          willInvokeRetValue.then(() => {
+            if (feature.shouldInvoke()) {
+              feature.invoke();
+            }
+          });
+        } else {
+          if (feature.shouldInvoke()) {
+            feature.invoke();
+          }
+        }
       }
     });
   } else {
