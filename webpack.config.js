@@ -34,7 +34,5 @@ module.exports = {
       ],
       use: ['to-string-loader', 'css-loader']
     }]
-  },
-
-  devtool: 'source-map'
+  }
 };
