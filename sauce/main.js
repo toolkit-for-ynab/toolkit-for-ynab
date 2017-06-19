@@ -28,14 +28,16 @@ const featureInstances = features.map(Feature => new Feature());
       if (feature.settings.enabled) {
         feature.applyListeners();
 
-        if (feature.shouldInvoke()) {
-          const willInvokeRetValue = feature.willInvoke();
+        const willInvokeRetValue = feature.willInvoke();
 
-          if (willInvokeRetValue && typeof willInvokeRetValue.then === 'function') {
-            willInvokeRetValue.then(() => {
+        if (willInvokeRetValue && typeof willInvokeRetValue.then === 'function') {
+          willInvokeRetValue.then(() => {
+            if (feature.shouldInvoke()) {
               feature.invoke();
-            });
-          } else {
+            }
+          });
+        } else {
+          if (feature.shouldInvoke()) {
             feature.invoke();
           }
         }
