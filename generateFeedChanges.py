@@ -9,9 +9,7 @@ try:
 except ImportError:
     from urllib import pathname2url
 
-allSettings = []
 allFeedChangesContent = set()
-previousNames = set()
 
 print('[   INFO] Building feed changes files...')
 
