@@ -12,8 +12,15 @@ const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 const legacySettingMap = {
   AccountsDisplayDensity: 'accountsDisplayDensity',
   AccountsEmphasizedOutflows: 'accountsEmphasizedOutflows',
+  AccountsStripedRows: 'accountsStripedRows',
   AutoCloseReconcile: 'closeReconcileWindow',
-  RunningBalance: 'runningBalance'
+  ColourBlindMode: 'colourBlindMode',
+  GoalWarningColor: 'goalWarningColor',
+  HideAgeOfMoney: 'hideAgeOfMoney',
+  PrintingImprovements: 'printingImprovements',
+  RemovePositiveHighlight: 'removePositiveHighlight',
+  RunningBalance: 'runningBalance',
+  SquareNegativeMode: 'squareNegativeMode'
 };
 
 let previousSettings;
