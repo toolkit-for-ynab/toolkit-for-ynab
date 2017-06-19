@@ -7,14 +7,18 @@ export default class RunningBalanceNew extends Feature {
   }
 
   willInvoke() {
+    this.addWillInsertRunningBalanceRow('register/grid-sub');
+    this.addWillInsertRunningBalanceRow('register/grid-row');
+    this.addWillInsertRunningBalanceRow('register/grid-scheduled');
+
     return initializeRunningBalances();
   }
 
   // we always want to invoke this feature if it's enabled because we want
   // to at least initialize running balance on all of the accounts
   shouldInvoke() {
-    const selectedAccountId = toolkitHelper.controllerLookup('application');
-    return selectedAccountId !== null;
+    const applicationController = toolkitHelper.controllerLookup('application');
+    return applicationController.get('selectedAccountId') !== null;
   }
 
   addWillInsertRunningBalanceRow(componentName) {
@@ -64,10 +68,6 @@ export default class RunningBalanceNew extends Feature {
   invoke() {
     insertHeader();
 
-    this.addWillInsertRunningBalanceRow('register/grid-sub');
-    this.addWillInsertRunningBalanceRow('register/grid-row');
-    this.addWillInsertRunningBalanceRow('register/grid-scheduled');
-
     if ($('.ynab-grid-body-row.is-editing', '.ynab-grid-body').length) {
       this.addDeadColumnOnInsert('register/grid-edit');
     }
@@ -82,7 +82,10 @@ export default class RunningBalanceNew extends Feature {
   }
 
   observe(changedNodes) {
-    if (!this.shouldInvoke()) return;
+    if (!this.shouldInvoke()) {
+      $('.ynab-toolkit-grid-cell-running-balance').remove();
+      return;
+    }
 
     if (
       changedNodes.has('ynab-grid-body') ||
