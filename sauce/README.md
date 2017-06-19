@@ -74,7 +74,21 @@ The job of the base `Feature` constructor is to simply fetch the user settings
 of your feature. If `enabled` is set to false for your Feature's settings,
 then invoke will not be called.
 
-#### `shouldInvoke()`
+#### `willInvoke(): <void|Promise>`
+
+willInvoke() is an optional hook that you can define in your class that allows
+you to run synchronous or asynchronous code before your feature is invoked. If
+you choose to run asynchronous code, just return a promise from `willInvoke()`.
+
+Note that `willInvoke()` runs before `shouldInvoke()` runs and does not care
+about the return value of `shouldInvoke()`.
+
+Running Balance is an example of why you would want to use this. Running Balance
+runs over all transactions in every account to initalize the running balance
+calculation. If this weren't done before we invoked, there's a chance users would
+not see any data in the running balance column.
+
+#### `shouldInvoke(): boolean`
 
 shouldInvoke is called immediately once the page and YNAB is ready. This function
 should perform a synchronous operation to determine whether or not your feature
@@ -89,18 +103,7 @@ shouldInvoke() {
 }
 ```
 
-#### `willInvoke()`
-
-willInvoke() is an optional hook that you can define in your class that allows
-you to run synchronous or asynchronous code before your feature is invoked. If
-you choose to run asynchronous code, just return a promise from `willInvoke()`.
-
-Running Balance is an example of why you would want to use this. Running Balance
-runs over all transactions in every account to initalize the running balance
-calculation. If this weren't done before we invoked, there's a chance users would
-not see any data in the running balance column.
-
-#### `invoke()`
+#### `invoke(): void`
 
 Invoke is called immediately once the page and YNAB is ready and shouldInvoke()
 returns true. This is the entrypoint of your feature. You can be certain that
@@ -108,7 +111,7 @@ at this point, the page is ready for manipulation and YNAB is loaded.
 
 #### The following functions may optionally be declared inside your Feature Class.
 
-#### `observe(changedNodes<Set>)`
+#### `observe(changedNodes: Set): void`
 
 Observe will be called every time there's a change to the DOM. The underlying
 code of observe uses a [Mutation Observer][mutation-observer]. Once a change is
@@ -136,7 +139,7 @@ observe(changedNodes) {
 Note: The first line of your `observe()` function should call `this.shouldInvoke()`
 and return immediately if the result is false.
 
-#### `onRouteChanged(currentRoute<String>)`
+#### `onRouteChanged(currentRoute: string): void`
 
 OnRouteChanged is designed to be called every time the user navigates to a new
 page. In order to do this, we've implemented an Ember Observer which watches for
