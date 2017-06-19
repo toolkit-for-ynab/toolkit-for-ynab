@@ -28,7 +28,17 @@ const featureInstances = features.map(Feature => new Feature());
       if (feature.settings.enabled) {
         feature.applyListeners();
 
-        if (feature.shouldInvoke()) feature.invoke();
+        if (feature.shouldInvoke()) {
+          const willInvokeRetValue = feature.willInvoke();
+
+          if (willInvokeRetValue && typeof willInvokeRetValue.then === 'function') {
+            willInvokeRetValue.then(() => {
+              feature.invoke();
+            });
+          } else {
+            feature.invoke();
+          }
+        }
       }
     });
   } else {

@@ -40,6 +40,10 @@ follow these stpes:
   export default class MyCoolFeature extends Feature {
      constructor() {
        super();
+
+       // There is no need for the constructor unless you plan on doing
+       // additional logic inside of it. If you are just calling super() you
+       // can ommit the constructor entirely.
      }
 
      shouldInvoke() {
@@ -70,9 +74,6 @@ The job of the base `Feature` constructor is to simply fetch the user settings
 of your feature. If `enabled` is set to false for your Feature's settings,
 then invoke will not be called.
 
-You must call `super()` inside of your Feature class in order to have access
-to settings inside the runtime of your Feature class.
-
 #### `shouldInvoke()`
 
 shouldInvoke is called immediately once the page and YNAB is ready. This function
@@ -87,6 +88,17 @@ shouldInvoke() {
   return toolkitHelper.getCurrentRoute().indexOf('accounts') !== -1;
 }
 ```
+
+#### `willInvoke()`
+
+willInvoke() is an optional hook that you can define in your class that allows
+you to run synchronous or asynchronous code before your feature is invoked. If
+you choose to run asynchronous code, just return a promise from `willInvoke()`.
+
+Running Balance is an example of why you would want to use this. Running Balance
+runs over all transactions in every account to initalize the running balance
+calculation. If this weren't done before we invoked, there's a chance users would
+not see any data in the running balance column.
 
 #### `invoke()`
 
