@@ -163,7 +163,6 @@ observe(changedNodes) {
 Note: The first line of your `observe()` function should call `this.shouldInvoke()`
 and return immediately if the result is false.
 
-
 #### `onRouteChanged(currentRoute: string): void`
 **optional function, not required to be declared**
 
