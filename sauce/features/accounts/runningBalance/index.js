@@ -1,7 +1,7 @@
 import Feature from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
-export default class RunningBalanceNew extends Feature {
+export default class RunningBalance extends Feature {
   injectCSS() {
     return require('./index.css');
   }

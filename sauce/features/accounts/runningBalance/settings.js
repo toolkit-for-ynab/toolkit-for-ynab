@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'RunningBalanceNew',
+  name: 'RunningBalance',
   type: 'checkbox',
   default: false,
   section: 'accounts',
