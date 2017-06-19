@@ -2,116 +2,95 @@ import Feature from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
 export default class RunningBalanceNew extends Feature {
-  constructor() {
-    super();
-    this.sortedContent = [];
-  }
-
   injectCSS() {
     return require('./index.css');
   }
 
+  willInvoke() {
+    return initializeRunningBalances();
+  }
+
+  // we always want to invoke this feature if it's enabled because we want
+  // to at least initialize running balance on all of the accounts
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
+    const selectedAccountId = toolkitHelper.controllerLookup('application');
+    return selectedAccountId !== null;
+  }
+
+  addWillInsertRunningBalanceRow(componentName) {
+    const _this = this;
+    const GridComponent = toolkitHelper.componentLookup(componentName);
+
+    if (GridComponent.__toolkitInitialized) { return; }
+
+    GridComponent.constructor.reopen({
+      willInsertElement: function () {
+        if (!_this.shouldInvoke()) { return; }
+        willInsertRunningBalanceRow.call(this);
+      }
+    });
+
+    GridComponent.__toolkitInitialized = true;
+  }
+
+  addDeadColumnOnInsert(componentName) {
+    const _this = this;
+    const GridComponent = toolkitHelper.componentLookup(componentName);
+
+    if (GridComponent.__toolkitInitialized) { return; }
+
+    GridComponent.reopen({
+      willInsertElement: function () {
+        if (!_this.shouldInvoke()) { return; }
+        $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">').
+          insertAfter($('.ynab-grid-cell-inflow', this.get('element')));
+      }
+    });
+
+    // we only need to do this for the grid-add rows because all the other rows
+    // double render (don't ask me why...but they do lol).
+    if (componentName === 'register/grid-add') {
+      const $addRows = $('.ynab-grid-add-rows .ynab-grid-body-row.is-editing');
+
+      if ($('.ynab-toolkit-grid-cell-running-balance', $addRows).length === 0) {
+        $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">')
+          .insertAfter($('.ynab-grid-cell-inflow', $addRows));
+      }
+    }
+
+    GridComponent.__toolkitInitialized = true;
   }
 
   invoke() {
-    initializeRunningBalances();
     insertHeader();
 
-    const GridSubComponent = toolkitHelper.componentLookup('register/grid-sub');
-    GridSubComponent.constructor.reopen({
-      willInsertElement: function () {
-        willInsertRunningBalanceRow.call(this);
-        return this;
-      }
-    });
+    this.addWillInsertRunningBalanceRow('register/grid-sub');
+    this.addWillInsertRunningBalanceRow('register/grid-row');
+    this.addWillInsertRunningBalanceRow('register/grid-scheduled');
 
-    const GridRowComponent = toolkitHelper.componentLookup('register/grid-row');
-    GridRowComponent.constructor.reopen({
-      willInsertElement: function () {
-        willInsertRunningBalanceRow.call(this);
-        return this;
-      }
-    });
+    if ($('.ynab-grid-body-row.is-editing', '.ynab-grid-body').length) {
+      this.addDeadColumnOnInsert('register/grid-edit');
+    }
 
-    const GridScheduledComponent = toolkitHelper.componentLookup('register/grid-scheduled');
-    GridScheduledComponent.constructor.reopen({
-      willInsertElement: function () {
-        willInsertRunningBalanceRow.call(this);
-        return this;
-      }
-    });
+    if ($('.ynab-grid-add-rows', '.ynab-grid').length) {
+      this.addDeadColumnOnInsert('register/grid-add');
+    }
 
-    // const GridAddRow = toolkitHelper.componentLookup('register/grid-add');
-    // debugger; // eslint-disable-line
-    // GridAddRow.constructor.reopen({
-    //   willInsertElement: function () {
-    //     debugger; // eslint-disable-line
-    //     $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">').
-    //       insertAfter($('.ynab-grid-cell-inflow', this.get('element')));
-    //   }
-    // });
-    //
-    // const GridSubEdit = toolkitHelper.componentLookup('register/grid-sub-edit');
-    // GridSubEdit.constructor.reopen({
-    //   willInsertElement: function () {
-    //     debugger; // eslint-disable-line
-    //     $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">').
-    //       insertAfter($('.ynab-grid-cell-inflow', this.get('element')));
-    //   }
-    // });
+    if ($('.ynab-grid-body-split.is-editing', '.ynab-grid').length) {
+      this.addDeadColumnOnInsert('register/grid-sub-edit');
+    }
   }
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    const applicationController = toolkitHelper.controllerLookup('application');
-    calculateRunningBalance(applicationController.get('selectedAccountId'));
-
     if (
       changedNodes.has('ynab-grid-body') ||
       changedNodes.has('ynab-grid')
     ) {
-      if ($('.ynab-grid-body-row.is-editing', '.ynab-grid-body').length) {
-        addDeadColumnOnInsert('register/grid-edit');
-      }
-
-      if ($('.ynab-grid-add-rows', '.ynab-grid').length) {
-        addDeadColumnOnInsert('register/grid-add');
-      }
-
-      if ($('.ynab-grid-body-split.is-editing', '.ynab-grid').length) {
-        addDeadColumnOnInsert('register/grid-sub-edit');
-      }
+      this.invoke();
     }
   }
-}
-
-function addDeadColumnOnInsert(componentName) {
-  const GridComponent = toolkitHelper.componentLookup(componentName);
-
-  if (GridComponent.__toolkitInitialized) { return; }
-
-  GridComponent.reopen({
-    willInsertElement: function () {
-      $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">').
-        insertAfter($('.ynab-grid-cell-inflow', this.get('element')));
-    }
-  });
-
-  // we only need to do this for the grid-add rows because all the other rows
-  // double render (don't ask me why...but they do lol).
-  if (componentName === 'register/grid-add') {
-    const $addRows = $('.ynab-grid-add-rows .ynab-grid-body-row.is-editing');
-
-    if ($('.ynab-toolkit-grid-cell-running-balance', $addRows).length === 0) {
-      $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">')
-        .insertAfter($('.ynab-grid-cell-inflow', $addRows));
-    }
-  }
-
-  GridComponent.__toolkitInitialized = true;
 }
 
 // Using ._result here bcause we can guarantee that we've already invoked the
@@ -161,28 +140,34 @@ function calculateRunningBalance(accountId) {
 }
 
 function initializeRunningBalances() {
-  ynab.YNABSharedLib.defaultInstance.entityManager.accountsCollection.forEach((account) => {
-    ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(account.entityId).
-      then(() => {
+  return ynab.YNABSharedLib.defaultInstance.entityManager.accountsCollection.forEach((account) => {
+    return ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(account.entityId).
+      then((accountViewModel) => {
         calculateRunningBalance(account.entityId);
+
+        // can you believe it? YNAB has this really interestingly name field
+        // on visibleTransactionDisplayItems that sounds exactly like what I need
+        // if something changes in that list, you tell me about it, and I'll update
+        // the running balance for the account make sure our users always see the fancy
+        accountViewModel.get('visibleTransactionDisplayItems')
+          .addObserver('anyItemChangedCounter', function () {
+            calculateRunningBalance(account.entityId);
+          });
       });
   });
 }
 
 function willInsertRunningBalanceRow() {
+  const selectedAccountId = toolkitHelper.controllerLookup('application');
+  if (!selectedAccountId) { return; }
+
   const $currentRow = $(this.element);
   const currentRowRunningBalance = $('.ynab-grid-cell-inflow', $currentRow).clone();
   currentRowRunningBalance.removeClass('ynab-grid-cell-inflow');
   currentRowRunningBalance.addClass('ynab-toolkit-grid-cell-running-balance');
 
   const transaction = this.get('content');
-  let runningBalance = transaction.__ynabToolKitRunningBalance;
-
-  if (runningBalance === undefined) {
-    const applicationController = toolkitHelper.controllerLookup('application');
-    calculateRunningBalance(applicationController.get('selectedAccountId'));
-    runningBalance = transaction.__ynabToolKitRunningBalance;
-  }
+  const runningBalance = transaction.__ynabToolKitRunningBalance;
 
   const currencySpan = $('.user-data', currentRowRunningBalance);
 
