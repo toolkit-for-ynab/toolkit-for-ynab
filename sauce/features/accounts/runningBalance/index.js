@@ -51,15 +51,23 @@ export default class RunningBalance extends Feature {
       }
     });
 
-    // we only need to do this for the grid-add rows because all the other rows
-    // double render (don't ask me why...but they do lol).
-    if (componentName === 'register/grid-add') {
-      const $addRows = $('.ynab-grid-add-rows .ynab-grid-body-row.is-editing');
+    // this is really hacky but I'm not sure what else to do, most of these components
+    // double render so the `willInsertElement` works for those but the add rows
+    // and footer are weird. add-rows doesn't double render and will work every time
+    // after the component has been cached but footer is _always_ a new component WutFace
+    let $appendToRow;
+    switch (componentName) {
+      case 'register/grid-add':
+        $appendToRow = $('.ynab-grid-add-rows .ynab-grid-body-row.is-editing');
+        break;
+      case 'register/grid-footer':
+        $appendToRow = $('.ynab-grid-body-row.ynab-grid-footer');
+        break;
+    }
 
-      if ($('.ynab-toolkit-grid-cell-running-balance', $addRows).length === 0) {
-        $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">')
-          .insertAfter($('.ynab-grid-cell-inflow', $addRows));
-      }
+    if ($('.ynab-toolkit-grid-cell-running-balance', $appendToRow).length === 0) {
+      $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">')
+        .insertAfter($('.ynab-grid-cell-inflow', $appendToRow));
     }
 
     GridComponent.__toolkitInitialized = true;
@@ -78,6 +86,10 @@ export default class RunningBalance extends Feature {
 
     if ($('.ynab-grid-body-split.is-editing', '.ynab-grid').length) {
       this.addDeadColumnOnInsert('register/grid-sub-edit');
+    }
+
+    if ($('.ynab-grid-body-row.ynab-grid-footer', '.ynab-grid').length) {
+      this.addDeadColumnOnInsert('register/grid-footer');
     }
   }
 
@@ -170,10 +182,14 @@ function willInsertRunningBalanceRow() {
   currentRowRunningBalance.addClass('ynab-toolkit-grid-cell-running-balance');
 
   const transaction = this.get('content');
-  const runningBalance = transaction.__ynabToolKitRunningBalance;
+
+  let runningBalance = transaction.__ynabToolKitRunningBalance;
+  if (typeof runningBalance === 'undefined') {
+    calculateRunningBalance(selectedAccountId);
+    runningBalance = transaction.__ynabToolKitRunningBalance;
+  }
 
   const currencySpan = $('.user-data', currentRowRunningBalance);
-
   if (runningBalance < 0) {
     currencySpan.addClass('user-data currency negative');
   } else if (runningBalance > 0) {
