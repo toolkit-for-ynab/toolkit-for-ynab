@@ -4,6 +4,9 @@
       $('.import-notification').remove();
       $('.nav-account-row').each(function (index, row) {
         var account = ynabToolKit.shared.getEmberView($(row).attr('id')).get('data');
+
+        // Check for both functions should be temporary until all users have been switched to new bank data
+        // provider but of course we have no good way of knowing when that has occurred.
         if (typeof account.getDirectConnectEnabled === 'function' && account.getDirectConnectEnabled() ||
             typeof account.getIsDirectImportActive === 'function' && account.getIsDirectImportActive()) {
           var t = new ynab.managers.DirectImportManager(ynab.YNABSharedLib.defaultInstance.entityManager, account);
