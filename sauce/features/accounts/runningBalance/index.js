@@ -173,7 +173,8 @@ function initializeRunningBalances() {
 }
 
 function willInsertRunningBalanceRow() {
-  const selectedAccountId = toolkitHelper.controllerLookup('application');
+  const applicationController = toolkitHelper.controllerLookup('application');
+  const selectedAccountId = applicationController.get('selectedAccountId');
   if (!selectedAccountId) { return; }
 
   const $currentRow = $(this.element);
