@@ -42,7 +42,7 @@
             "value": "finnish"
         }, 
         {
-            "name": "French (52%)", 
+            "name": "French (55%)", 
             "value": "french"
         }, 
         {
@@ -94,7 +94,7 @@
             "value": "russian"
         }, 
         {
-            "name": "Slovenian (1%)", 
+            "name": "Slovenian (2%)", 
             "value": "slovenian"
         }, 
         {
@@ -104,6 +104,10 @@
         {
             "name": "Swedish (63%)", 
             "value": "swedish"
+        }, 
+        {
+            "name": "Turkish (5%)", 
+            "value": "turkish"
         }, 
         {
             "name": "Ukrainian (3%)", 
@@ -157,9 +161,9 @@
             "injectScript", 
             "main.js"
         ], 
-        "vietnamese": [
+        "turkish": [
             "injectScript", 
-            "locales/Vietnamese.json", 
+            "locales/Turkish.json", 
             "injectScript", 
             "main.js"
         ], 
@@ -256,6 +260,12 @@
         "chinese traditional": [
             "injectScript", 
             "locales/Chinese Traditional.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "vietnamese": [
+            "injectScript", 
+            "locales/Vietnamese.json", 
             "injectScript", 
             "main.js"
         ], 
