@@ -170,10 +170,14 @@ function willInsertRunningBalanceRow() {
   currentRowRunningBalance.addClass('ynab-toolkit-grid-cell-running-balance');
 
   const transaction = this.get('content');
-  const runningBalance = transaction.__ynabToolKitRunningBalance;
+
+  let runningBalance = transaction.__ynabToolKitRunningBalance;
+  if (typeof runningBalance === 'undefined') {
+    calculateRunningBalance(selectedAccountId);
+    runningBalance = transaction.__ynabToolKitRunningBalance;
+  }
 
   const currencySpan = $('.user-data', currentRowRunningBalance);
-
   if (runningBalance < 0) {
     currencySpan.addClass('user-data currency negative');
   } else if (runningBalance > 0) {
