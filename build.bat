@@ -1,5 +1,7 @@
 @ECHO OFF
 
+echo [   INFO] Build starting at %TIME% %DATE%
+
 rem Populate feature files like feed changes by reading through the code and hooking up
 rem all the calls we need, as well as processing settings files
 python generateFeedChanges.py
@@ -38,3 +40,4 @@ goto :exit
 echo Build errors encountered
 
 :exit
+echo [   INFO] Build finished at %TIME% %DATE%

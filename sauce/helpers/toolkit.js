@@ -63,6 +63,11 @@ export function setToolkitStorageKey(key, value) {
   return localStorage.setItem(storageKeyPrefix + key, value);
 }
 
+export function transitionTo() {
+  const router = containerLookup('router:main');
+  router.transitionTo(...arguments);
+}
+
 /* Private Functions */
 function getViewRegistry() {
   return Ember.Component.create().get('_viewRegistry');

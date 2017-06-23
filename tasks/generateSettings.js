@@ -11,7 +11,8 @@ const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
 const legacySettingMap = {
   AutoCloseReconcile: 'closeReconcileWindow',
-  RunningBalance: 'runningBalance'
+  RunningBalance: 'runningBalance',
+  StealingFromFuture: 'stealingFromNextMonth'
 };
 
 let previousSettings;
