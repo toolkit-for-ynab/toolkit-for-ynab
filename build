@@ -2,7 +2,7 @@
 
 set -e
 
-echo [   INFO] Build starting at %TIME% %DATE%
+echo "[   INFO] Build starting at $(date)"
 
 # Always start from a clean slate
 ./clean
@@ -53,4 +53,4 @@ popd > /dev/null
 # Clean up.
 rm -rf src
 
-echo [   INFO] Build finished at %TIME% %DATE%
+echo "[   INFO] Build finished at $(date)"
