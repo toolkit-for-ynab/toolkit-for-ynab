@@ -63,16 +63,29 @@ export function setToolkitStorageKey(key, value) {
   return localStorage.setItem(storageKeyPrefix + key, value);
 }
 
+export function transitionTo() {
+  const router = containerLookup('router:main');
+  router.transitionTo(...arguments);
+}
+
 /* Private Functions */
 function getViewRegistry() {
   return Ember.Component.create().get('_viewRegistry');
 }
 
 function containerLookup(containerName) {
-  let viewRegistry = getViewRegistry();
-  let viewId = Ember.keys(viewRegistry)[0];
-  let view = viewRegistry[viewId];
-  return view.container.lookup(containerName);
+  const viewRegistry = getViewRegistry();
+  const viewId = Ember.keys(viewRegistry)[0];
+  const view = viewRegistry[viewId];
+
+  let container;
+  try {
+    container = view.container.lookup(containerName);
+  } catch (e) {
+    container = view.container.factoryCache[containerName];
+  }
+
+  return container;
 }
 
 function ynabDate(format) {
