@@ -1,7 +1,7 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
-export default class DisplayTargetGoalAmount extends Feature {
+export class DisplayTargetGoalAmount extends Feature {
   shouldInvoke() {
     return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1;
   }
