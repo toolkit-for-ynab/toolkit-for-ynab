@@ -63,7 +63,7 @@ export default class DisplayTargetGoalAmount extends Feature {
       $('.budget-table-cell-goal').remove();
       this.invoke();
     }
-    if (changedNodes.has('budget-table-row is-sub-category') || changedNodes.has('budget-table-row is-sub-category is-checked') || changedNodes.has('budget-table-cell-goal currency')) {
+    if (changedNodes.has('ynab-checkbox-button is-checked')) {
       $('.budget-table-row.is-sub-category li.budget-table-cell-name .budget-table-cell-goal').css({
         background: '-webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 10%,rgba(255,255,255,1) 100%)' });
       $('.budget-table-row.is-checked li.budget-table-cell-name .budget-table-cell-goal').css({ background: '#005a6e' });
