@@ -14,8 +14,8 @@ const RESIZABLES = [
   'ynab-grid-cell-subCategoryName',
   'ynab-grid-cell-memo',
   'ynab-grid-cell-outflow',
-  'ynab-grid-cell-inflow'
-  // 'ynab-grid-cell-toolkit-running-balance'
+  'ynab-grid-cell-inflow',
+  'ynab-grid-cell-toolkit-running-balance'
 ];
 
 export class AdjustableColumnWidths extends Feature {
@@ -58,8 +58,8 @@ export class AdjustableColumnWidths extends Feature {
       const newNeighborWidth = neighborWidth - difference;
 
       const $elementsOfTypeCurrentResizable = $(`.${this.currentResizableClass}`);
-      const currrentResizableWidth = $elementsOfTypeCurrentResizable.width();
-      const newCurrentResizableWidth = currrentResizableWidth + difference;
+      const currentResizableWidth = $elementsOfTypeCurrentResizable.width();
+      const newCurrentResizableWidth = currentResizableWidth + difference;
 
       if (newNeighborWidth < 50 || newCurrentResizableWidth < 50) {
         this.offTarget = true;
@@ -87,6 +87,11 @@ export class AdjustableColumnWidths extends Feature {
 
   getNeighborOf(neighborOf) {
     const $rightNeighbor = $(`.${neighborOf}`, '.ynab-grid-header').next();
+
+    if (!$rightNeighbor.length) {
+      return { isNeighborResizable: false };
+    }
+
     const neighborCellName = $rightNeighbor.prop('class').match(/ynab-grid-cell.*/)[0];
     return {
       neighborCellName,
