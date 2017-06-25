@@ -2,9 +2,7 @@ import { Feature } from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
 export class RunningBalance extends Feature {
-  injectCSS() {
-    return require('./index.css');
-  }
+  injectCSS() { return require('./index.css'); }
 
   willInvoke() {
     this.addWillInsertRunningBalanceRow('register/grid-sub');
@@ -46,7 +44,7 @@ export class RunningBalance extends Feature {
     GridComponent.reopen({
       willInsertElement: function () {
         if (!_this.shouldInvoke()) { return; }
-        $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">').
+        $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">').
           insertAfter($('.ynab-grid-cell-inflow', this.get('element')));
       }
     });
@@ -65,8 +63,8 @@ export class RunningBalance extends Feature {
         break;
     }
 
-    if ($('.ynab-toolkit-grid-cell-running-balance', $appendToRow).length === 0) {
-      $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">')
+    if ($('.ynab-grid-cell-toolkit-running-balance', $appendToRow).length === 0) {
+      $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">')
         .insertAfter($('.ynab-grid-cell-inflow', $appendToRow));
     }
 
@@ -91,11 +89,13 @@ export class RunningBalance extends Feature {
     if ($('.ynab-grid-body-row.ynab-grid-footer', '.ynab-grid').length) {
       this.addDeadColumnOnInsert('register/grid-footer');
     }
+
+    ynabToolKit.invokeFeature('AdjustableColumnWidths');
   }
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) {
-      $('.ynab-toolkit-grid-cell-running-balance').remove();
+      $('.ynab-grid-cell-toolkit-running-balance').remove();
       return;
     }
 
@@ -180,7 +180,7 @@ function willInsertRunningBalanceRow() {
   const $currentRow = $(this.element);
   const currentRowRunningBalance = $('.ynab-grid-cell-inflow', $currentRow).clone();
   currentRowRunningBalance.removeClass('ynab-grid-cell-inflow');
-  currentRowRunningBalance.addClass('ynab-toolkit-grid-cell-running-balance');
+  currentRowRunningBalance.addClass('ynab-grid-cell-toolkit-running-balance');
 
   const transaction = this.get('content');
 
@@ -209,19 +209,19 @@ function willInsertRunningBalanceRow() {
 }
 
 function insertHeader() {
-  if ($('.ynab-grid-header .ynab-toolkit-grid-cell-running-balance').length) return;
+  if ($('.ynab-grid-header .ynab-grid-cell-toolkit-running-balance').length) return;
 
   var $headerRow = $('.ynab-grid-header');
   var runningBalanceHeader = $('.ynab-grid-cell-inflow', $headerRow).clone();
   runningBalanceHeader.removeClass('ynab-grid-cell-inflow');
-  runningBalanceHeader.addClass('ynab-toolkit-grid-cell-running-balance');
+  runningBalanceHeader.addClass('ynab-grid-cell-toolkit-running-balance');
   runningBalanceHeader.text('RUNNING BALANCE');
   runningBalanceHeader.insertAfter($('.ynab-grid-cell-inflow', $headerRow));
 
-  if ($('.ynab-grid-body .ynab-grid-body-row-top .ynab-toolkit-grid-cell-running-balance').length) return;
+  if ($('.ynab-grid-body .ynab-grid-body-row-top .ynab-grid-cell-toolkit-running-balance').length) return;
   var $topRow = $('.ynab-grid-body-row-top');
   var topRowRunningBalance = $('.ynab-grid-cell-inflow', $topRow).clone();
   topRowRunningBalance.removeClass('ynab-grid-cell-inflow');
-  topRowRunningBalance.addClass('ynab-toolkit-grid-cell-running-balance');
+  topRowRunningBalance.addClass('ynab-grid-cell-toolkit-running-balance');
   topRowRunningBalance.insertAfter($('.ynab-grid-cell-inflow', $topRow));
 }
