@@ -1,8 +1,7 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
-export default class AutoCloseReconcile extends Feature {
-
+export class AutoCloseReconcile extends Feature {
   observe(changedNodes) {
     const hasClickedYesModal = changedNodes.has('modal-account-reconcile-current') &&
                                changedNodes.has('flaticon stroke checkmark-2');

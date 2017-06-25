@@ -1,6 +1,6 @@
 import { ObserveListener, RouteChangeListener } from 'core/listeners';
 
-export default class Feature {
+export class Feature {
   constructor() {
     this.settings = {
       enabled: ynabToolKit.options[this.constructor.name]

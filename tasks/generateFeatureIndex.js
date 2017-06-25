@@ -23,7 +23,7 @@ function run(callback) {
       // features/index will source from the features folder, so remove
       // `sauce/features` from the path here.
       const featureIndexPath = filePathSplit.slice(2, filePathSplit.length - 1).join('/');
-      const importLine = `import ${featureSetting.name} from './${featureIndexPath}';\n`;
+      const importLine = `import { ${featureSetting.name} } from './${featureIndexPath}';\n`;
       imports.push(importLine);
       featureNames.push(featureSetting.name);
     });
