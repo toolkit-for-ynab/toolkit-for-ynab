@@ -11,17 +11,18 @@ const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
 const legacySettingMap = {
   AccountsDisplayDensity: 'accountsDisplayDensity',
-  AccountsEmphasizedOutflows: 'accountsEmphasizedOutflows',
-  AccountsStripedRows: 'accountsStripedRows',
   AutoCloseReconcile: 'closeReconcileWindow',
   ColourBlindMode: 'colourBlindMode',
+  EmphasizedOutflows: 'accountsEmphasizedOutflows',
   GoalWarningColor: 'goalWarningColor',
   HideAgeOfMoney: 'hideAgeOfMoney',
   PrintingImprovements: 'printingImprovements',
   RemovePositiveHighlight: 'removePositiveHighlight',
+  RowHeight: 'accountsRowHeight',
   RunningBalance: 'runningBalance',
   SquareNegativeMode: 'squareNegativeMode',
-  StealingFromFuture: 'stealingFromNextMonth'
+  StealingFromFuture: 'stealingFromNextMonth',
+  StripedRows: 'accountsStripedRows',
 };
 
 let previousSettings;

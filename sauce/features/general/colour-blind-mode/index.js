@@ -1,5 +1,5 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 
-export default class ColourBlindMode extends Feature {
+export class ColourBlindMode extends Feature {
   injectCSS() { return require('./index.css'); }
 }

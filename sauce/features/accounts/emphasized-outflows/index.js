@@ -1,5 +1,5 @@
 import { Feature } from 'core/feature';
 
-export class SquareNegativeMode extends Feature {
+export class AccountsEmphasizedOutflows extends Feature {
   injectCSS() { return require('./index.css'); }
 }

@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'AccountsRowHeight',
+  name: 'RowHeight',
   type: 'select',
   default: '0',
   section: 'accounts',

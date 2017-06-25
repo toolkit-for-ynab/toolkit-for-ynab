@@ -1,9 +1,9 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 
 const compactHeight = 27;
 const slimHeight = 22;
 
-export default class AccountsRowHeight extends Feature {
+export class RowHeight extends Feature {
   injectCSS() {
     let css = require('./index.css');
 

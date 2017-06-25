@@ -1,5 +1,5 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 
-export default class HideAgeOfMoney extends Feature {
+export class HideAgeOfMoney extends Feature {
   injectCSS() { return require('./index.css'); }
 }

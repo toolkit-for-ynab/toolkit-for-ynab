@@ -1,6 +1,6 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 
-export default class AccountsDisplayDensity extends Feature {
+export class AccountsDisplayDensity extends Feature {
   injectCSS() {
     if (this.settings.enabled === '1') {
       return require('./compact.css');
