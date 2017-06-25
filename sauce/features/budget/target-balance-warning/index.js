@@ -1,7 +1,7 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
-export default class TargetBalanceWarning extends Feature {
+export class TargetBalanceWarning extends Feature {
   constructor() {
     super();
   }
@@ -22,6 +22,10 @@ export default class TargetBalanceWarning extends Feature {
         const currencyElement = $('.budget-table-cell-available .user-data.currency', element);
 
         if (available < targetBalance && !currencyElement.hasClass('cautious')) {
+          if (currencyElement.hasClass('positive')) {
+            currencyElement.removeClass('positive');
+          }
+
           currencyElement.addClass('cautious');
         }
       }

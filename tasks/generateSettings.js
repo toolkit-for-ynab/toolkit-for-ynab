@@ -20,7 +20,8 @@ const legacySettingMap = {
   PrintingImprovements: 'printingImprovements',
   RemovePositiveHighlight: 'removePositiveHighlight',
   RunningBalance: 'runningBalance',
-  SquareNegativeMode: 'squareNegativeMode'
+  SquareNegativeMode: 'squareNegativeMode',
+  StealingFromFuture: 'stealingFromNextMonth'
 };
 
 let previousSettings;

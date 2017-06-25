@@ -1,7 +1,7 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
-export default class ShowCategoryBalance extends Feature {
+export class ShowCategoryBalance extends Feature {
   shouldInvoke() {
     return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
   }

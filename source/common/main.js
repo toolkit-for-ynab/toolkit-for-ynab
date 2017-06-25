@@ -104,8 +104,8 @@ Promise.all(optionsPromises).then(function () {
   /* Load this to setup behaviors when the DOM updates and shared functions */
   injectScript('res/features/act-on-change/main.js');
 
-  /* Load the ynabToolKit bundle */
-  injectScript('res/features/ynabToolKit.js');
+  /* Load the ynabToolkit bundle */
+  injectScript('res/features/ynabToolkit.js');
 
   ensureDefaultsAreSet().then(applySettingsToDom);
 });

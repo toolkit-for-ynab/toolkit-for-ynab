@@ -1,10 +1,8 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
-export default class RunningBalance extends Feature {
-  injectCSS() {
-    return require('./index.css');
-  }
+export class RunningBalance extends Feature {
+  injectCSS() { return require('./index.css'); }
 
   willInvoke() {
     this.addWillInsertRunningBalanceRow('register/grid-sub');
@@ -46,20 +44,28 @@ export default class RunningBalance extends Feature {
     GridComponent.reopen({
       willInsertElement: function () {
         if (!_this.shouldInvoke()) { return; }
-        $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">').
+        $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">').
           insertAfter($('.ynab-grid-cell-inflow', this.get('element')));
       }
     });
 
-    // we only need to do this for the grid-add rows because all the other rows
-    // double render (don't ask me why...but they do lol).
-    if (componentName === 'register/grid-add') {
-      const $addRows = $('.ynab-grid-add-rows .ynab-grid-body-row.is-editing');
+    // this is really hacky but I'm not sure what else to do, most of these components
+    // double render so the `willInsertElement` works for those but the add rows
+    // and footer are weird. add-rows doesn't double render and will work every time
+    // after the component has been cached but footer is _always_ a new component WutFace
+    let $appendToRow;
+    switch (componentName) {
+      case 'register/grid-add':
+        $appendToRow = $('.ynab-grid-add-rows .ynab-grid-body-row.is-editing');
+        break;
+      case 'register/grid-footer':
+        $appendToRow = $('.ynab-grid-body-row.ynab-grid-footer');
+        break;
+    }
 
-      if ($('.ynab-toolkit-grid-cell-running-balance', $addRows).length === 0) {
-        $('<div class="ynab-grid-cell ynab-toolkit-grid-cell-running-balance">')
-          .insertAfter($('.ynab-grid-cell-inflow', $addRows));
-      }
+    if ($('.ynab-grid-cell-toolkit-running-balance', $appendToRow).length === 0) {
+      $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">')
+        .insertAfter($('.ynab-grid-cell-inflow', $appendToRow));
     }
 
     GridComponent.__toolkitInitialized = true;
@@ -79,11 +85,17 @@ export default class RunningBalance extends Feature {
     if ($('.ynab-grid-body-split.is-editing', '.ynab-grid').length) {
       this.addDeadColumnOnInsert('register/grid-sub-edit');
     }
+
+    if ($('.ynab-grid-body-row.ynab-grid-footer', '.ynab-grid').length) {
+      this.addDeadColumnOnInsert('register/grid-footer');
+    }
+
+    ynabToolKit.invokeFeature('AdjustableColumnWidths');
   }
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) {
-      $('.ynab-toolkit-grid-cell-running-balance').remove();
+      $('.ynab-grid-cell-toolkit-running-balance').remove();
       return;
     }
 
@@ -161,19 +173,24 @@ function initializeRunningBalances() {
 }
 
 function willInsertRunningBalanceRow() {
-  const selectedAccountId = toolkitHelper.controllerLookup('application');
+  const applicationController = toolkitHelper.controllerLookup('application');
+  const selectedAccountId = applicationController.get('selectedAccountId');
   if (!selectedAccountId) { return; }
 
   const $currentRow = $(this.element);
   const currentRowRunningBalance = $('.ynab-grid-cell-inflow', $currentRow).clone();
   currentRowRunningBalance.removeClass('ynab-grid-cell-inflow');
-  currentRowRunningBalance.addClass('ynab-toolkit-grid-cell-running-balance');
+  currentRowRunningBalance.addClass('ynab-grid-cell-toolkit-running-balance');
 
   const transaction = this.get('content');
-  const runningBalance = transaction.__ynabToolKitRunningBalance;
+
+  let runningBalance = transaction.__ynabToolKitRunningBalance;
+  if (typeof runningBalance === 'undefined') {
+    calculateRunningBalance(selectedAccountId);
+    runningBalance = transaction.__ynabToolKitRunningBalance;
+  }
 
   const currencySpan = $('.user-data', currentRowRunningBalance);
-
   if (runningBalance < 0) {
     currencySpan.addClass('user-data currency negative');
   } else if (runningBalance > 0) {
@@ -192,19 +209,19 @@ function willInsertRunningBalanceRow() {
 }
 
 function insertHeader() {
-  if ($('.ynab-grid-header .ynab-toolkit-grid-cell-running-balance').length) return;
+  if ($('.ynab-grid-header .ynab-grid-cell-toolkit-running-balance').length) return;
 
   var $headerRow = $('.ynab-grid-header');
   var runningBalanceHeader = $('.ynab-grid-cell-inflow', $headerRow).clone();
   runningBalanceHeader.removeClass('ynab-grid-cell-inflow');
-  runningBalanceHeader.addClass('ynab-toolkit-grid-cell-running-balance');
+  runningBalanceHeader.addClass('ynab-grid-cell-toolkit-running-balance');
   runningBalanceHeader.text('RUNNING BALANCE');
   runningBalanceHeader.insertAfter($('.ynab-grid-cell-inflow', $headerRow));
 
-  if ($('.ynab-grid-body .ynab-grid-body-row-top .ynab-toolkit-grid-cell-running-balance').length) return;
+  if ($('.ynab-grid-body .ynab-grid-body-row-top .ynab-grid-cell-toolkit-running-balance').length) return;
   var $topRow = $('.ynab-grid-body-row-top');
   var topRowRunningBalance = $('.ynab-grid-cell-inflow', $topRow).clone();
   topRowRunningBalance.removeClass('ynab-grid-cell-inflow');
-  topRowRunningBalance.addClass('ynab-toolkit-grid-cell-running-balance');
+  topRowRunningBalance.addClass('ynab-grid-cell-toolkit-running-balance');
   topRowRunningBalance.insertAfter($('.ynab-grid-cell-inflow', $topRow));
 }
