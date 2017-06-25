@@ -47,6 +47,7 @@ This is what the extension can do for you:
 - Change the default green "To Be Budgeted" indicator to yellow if there is still unallocated money waiting to be budgeted.
 - Autofill inflow/outflow values with the remaining total when entering split transactions.
 - Hide and show the help (?) button.
+- Display target goal amount and overbudget warning on the budget page.
 
 All of these are configurable with options in the extension options page.
 
