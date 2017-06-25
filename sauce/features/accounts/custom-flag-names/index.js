@@ -1,4 +1,4 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
 let flags;
@@ -9,7 +9,7 @@ let yellowFlagLabel;
 let greenFlagLabel;
 let purpleFlagLabel;
 
-export default class CustomFlagNames extends Feature {
+export class CustomFlagNames extends Feature {
   constructor() {
     super();
     if (!toolkitHelper.getToolkitStorageKey('flags')) {

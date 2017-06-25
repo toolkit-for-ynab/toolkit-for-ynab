@@ -1,6 +1,6 @@
 let instance = null;
 
-export default class ObserveListener {
+export class ObserveListener {
   constructor() {
     if (instance) {
       return instance;

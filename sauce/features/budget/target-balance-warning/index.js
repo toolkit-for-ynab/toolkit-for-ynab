@@ -1,7 +1,7 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
-export default class TargetBalanceWarning extends Feature {
+export class TargetBalanceWarning extends Feature {
   constructor() {
     super();
   }
