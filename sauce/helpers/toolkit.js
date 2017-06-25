@@ -63,6 +63,10 @@ export function setToolkitStorageKey(key, value) {
   return localStorage.setItem(storageKeyPrefix + key, value);
 }
 
+export function removeToolkitStorageKey(key) {
+  return localStorage.removeItem(storageKeyPrefix + key);
+}
+
 export function transitionTo() {
   const router = containerLookup('router:main');
   router.transitionTo(...arguments);

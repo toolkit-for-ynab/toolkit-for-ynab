@@ -2,9 +2,7 @@ import { Feature } from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
 export class RunningBalance extends Feature {
-  injectCSS() {
-    return require('./index.css');
-  }
+  injectCSS() { return require('./index.css'); }
 
   willInvoke() {
     this.addWillInsertRunningBalanceRow('register/grid-sub');
