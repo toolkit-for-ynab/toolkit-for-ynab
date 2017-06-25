@@ -1,4 +1,5 @@
 import { Feature } from 'core/feature';
+import { getEmberView } from 'helpers/toolkit';
 
 const compactHeight = 27;
 const slimHeight = 22;
@@ -23,7 +24,7 @@ export class RowHeight extends Feature {
     // because it uses the value to scroll the "selected transaction" to the top of the
     // register.
     if (ynabToolKit.options.activityTransactionLink) {
-      let ynabGridContainer = ynabToolKit.shared.getEmberView($('.ynab-grid-container').attr('id'));
+      let ynabGridContainer = getEmberView($('.ynab-grid-container').attr('id'));
 
       // Will be undefined when YNAB is loaded going directly to the budget screen.
       if (typeof ynabGridContainer !== 'undefined') {
