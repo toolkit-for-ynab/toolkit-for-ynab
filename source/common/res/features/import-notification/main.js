@@ -1,11 +1,16 @@
 (function poll() {
-  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true && typeof ynab.utilities.TransactionImportUtilities !== 'undefined') {
+  if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.importNotification = function () {
       $('.import-notification').remove();
       $('.nav-account-row').each(function (index, row) {
         var account = ynabToolKit.shared.getEmberView($(row).attr('id')).get('data');
-        if (account.getDirectConnectEnabled()) {
-          var transactions = ynab.utilities.TransactionImportUtilities.getImportTransactionsForAccount(account);
+
+        // Check for both functions should be temporary until all users have been switched to new bank data
+        // provider but of course we have no good way of knowing when that has occurred.
+        if (typeof account.getDirectConnectEnabled === 'function' && account.getDirectConnectEnabled() ||
+            typeof account.getIsDirectImportActive === 'function' && account.getIsDirectImportActive()) {
+          var t = new ynab.managers.DirectImportManager(ynab.YNABSharedLib.defaultInstance.entityManager, account);
+          var transactions = t.getImportTransactionsForAccount(account);
           if (transactions.length >= 1) {
             $(row).find('.nav-account-notification').append('<a class="notification import-notification">' + transactions.length + '</a>');
           }
@@ -21,4 +26,3 @@
     setTimeout(poll, 250);
   }
 }());
-

@@ -47,7 +47,7 @@
                 // jscs:enable disallowMultipleLineStrings
               );
               $('.budget-header-totals-details-names').prepend(
-                '<div class="income-from-last-month" style="padding-left: .3em; text-align:left"></div>'
+                '<div class="budget-header-totals-cell-name income-from-last-month" style="padding-left: .3em; text-align:left"></div>'
               );
             }
 

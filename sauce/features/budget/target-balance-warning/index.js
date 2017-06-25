@@ -22,6 +22,10 @@ export default class TargetBalanceWarning extends Feature {
         const currencyElement = $('.budget-table-cell-available .user-data.currency', element);
 
         if (available < targetBalance && !currencyElement.hasClass('cautious')) {
+          if (currencyElement.hasClass('positive')) {
+            currencyElement.removeClass('positive');
+          }
+
           currencyElement.addClass('cautious');
         }
       }

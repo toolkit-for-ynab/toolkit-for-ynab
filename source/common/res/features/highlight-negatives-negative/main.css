@@ -1,9 +1,9 @@
 /* row */
 .budget-table-row.toolkit-row-availablenegative .budget-table-cell-available .cautious {
-	background: #d33c2d;
+	background: #d33c2d !important;
 }
 .budget-table-row.toolkit-row-availablenegative .budget-table-cell-available .cautious:hover {
-	background: #b43326;
+	background: #b43326 !important;
 }
 
 /* inspector */
