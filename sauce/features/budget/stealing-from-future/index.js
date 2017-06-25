@@ -1,11 +1,11 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
 // TODO: move income-from-last-month to the new framework and just export this
 // variable from that feature
 const INCOME_FROM_LAST_MONTH_CLASSNAME = 'income-from-last-month';
 
-export default class TargetBalanceWarning extends Feature {
+export class StealingFromFuture extends Feature {
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() {

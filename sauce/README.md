@@ -35,9 +35,9 @@ follow these stpes:
 3. Create an index.js file which has the following:
   <!-- spacing is intentionally weird here because of markdown -->
   ```javascript
-  import Feature from 'core/feature';
+  import { Feature } from 'core/feature';
 
-  export default class MyCoolFeature extends Feature {
+  export class MyCoolFeature extends Feature {
      shouldInvoke() {
        return true;
      }
@@ -116,9 +116,9 @@ For example, a CSS based feature to hide the referral program banner would look 
 
 **index.js**
 ```javascript
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 
-export default class HideReferralBanner extends Feature {
+export class HideReferralBanner extends Feature {
   injectCSS() { return require('./index.css'); }
 }
 ```

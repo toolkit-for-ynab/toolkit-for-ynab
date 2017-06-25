@@ -16,6 +16,14 @@ const featureInstances = features.map(Feature => new Feature());
       }
     });
 
+    ynabToolKit.invokeFeature = (featureName) => {
+      featureInstances.forEach((feature) => {
+        if (feature.constructor.name === featureName && feature.shouldInvoke()) {
+          feature.invoke();
+        }
+      });
+    };
+
     // Inject it into the head so it's left alone
     $('head').append(
       $('<style>', { id: 'toolkit-injected-styles', type: 'text/css' })
