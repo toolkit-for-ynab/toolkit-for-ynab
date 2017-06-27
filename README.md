@@ -82,34 +82,41 @@ This extension uses three main things in its build process:
 **Mac / Linux**
 
 1. Clone the repository.
-1. Install Node/npm (tested with Node 5.3.0 and npm 3.3.12). You can manage different versions of Node with [nvm](https://github.com/creationix/nvm).
-1. Install Python 2.7 (Kango requires 2.7 specifically) and put it in your path so it's accessible with either `python` or `python2`. You can manage different Python versions with [pyenv](https://github.com/yyuu/pyenv).
-1. Run `npm install` within the folder you cloned. This installs ESLint and Babel for you. You only need to do this once.
-1. Run `./build` from within the folder you cloned. This will run all the tools.
-1. Finished extensions for each platform are available in the `output` directory.
-1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file, or load it into Safari using the extension builder (Mac only).
+2. Install `node` and `yarn` (both are available through `brew`, tested with node-v6.9.1 and yarn-v0.24.6). You can manage different versions of Node with [nvm](https://github.com/creationix/nvm).
+3. Install Python 2.7 (Kango requires 2.7 specifically) and put it in your path so it's accessible with either `python` or `python2`. You can manage different Python versions with [pyenv](https://github.com/yyuu/pyenv).
+4. Run `yarn install` within the folder you cloned. This will install all the dependencies needed for the project.
+5. Run `./build` from within the folder you cloned which will build the toolkit.
+6. Finished extensions for each platform are available in the `output` directory.
+7. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file, or load it into Safari using the extension builder (Mac only).
 
 **Windows**
 
 1. Clone the repository.
-1. Install Node/npm (tested with Node 5.3.0 and npm 3.3.12).
-1. Install Python 2.7 (Kango requires 2.7 specifically) in your path so it's accessible with just plain `python`.
-1. Run `npm install` within the folder you cloned. This installs ESLint and Babel for you. You only need to do this once.
-1. Run `build.bat` from within the folder you cloned. This will run all the tools.
-1. Finished extensions for each platform are available in the `output` directory.
-1. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file.
+2. Install [node](https://nodejs.org/en/download/) and [yarn](https://yarnpkg.com/en/docs/install#windows-tab) (tested with node-v6.9.1 and yarn-v0.24.6). You can manage different versions of Node with [nvm](https://github.com/creationix/nvm).
+3. Install Python 2.7 (Kango requires 2.7 specifically) in your path so it's accessible with just plain `python`.
+4. Run `yarn install` within the folder you cloned. This will install all the dependencies needed for the project.
+5. Run `./build` from within the folder you cloned which will build the toolkit.
+6. Finished extensions for each platform are available in the `output` directory.
+7. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file.
 
-Development Methodology
------------------------
+# Development Methodology
 
-**ES2015? What's that?**
+#### ES2015? What's that?
 We've decided that it's better to use the latest and greatest than to wait for browsers to support all the nice new syntax of ES2015. If you're uncomfortable with the new syntax, feel free to use standard Javascript syntax from days of yore. It still works.
 
-**Your ESLint style checker is annoying as heck! I don't code that way!**
+#### Your ESLint style checker is annoying as heck! I don't code that way!
 We have a large number of contributors who each bring their own style to the code base. It was getting a bit hard to navigate all the features, as they each had their own way of indenting, etc etc. We held a team vote to unify our styles, and decided to follow the AirBNB style guide. It's a pretty good way to go, so give it a shot before you get too upset about having to change your style.
 
-**How do I build a feature?**
-[Here's some documentation.](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/res/features/HOW_TO_BUILD_FEATURES.md) If you are still struggling to get up to speed let us know (email's fine!) and we'll make sure we help out.
+#### How do I build a feature?
+We actually have two feature code bases now. Unless you are fixing a legacy feature or you have some inherant need to use the legacy framework, please opt for the new framework:
+
+##### New Framework [Documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/tree/adjustable-column-widths/sauce#ynab-toolkit-development)
+The new framework was built because the old one required you to include a lot of boilerplate code in every feature. The new one makes heavier use of ES6 features and allows us to remove the burden of boilerplate from new contributions.
+
+The source code for this lives in the `sauce` directory.
+
+##### Old Framework [Documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/res/features/HOW_TO_BUILD_FEATURES.md)
+The old framework lives in the `source` directory and makes use of `babel` to transpile the javascript before getting built into extensions with Kango.
 
 **Important note about line feeds!!!**
 You must ensure that your code editor is configued to use Unix style line feeds (LFs) or the build will fail. This will primarily affect contributors using Windows as the LFs are different on that platform.

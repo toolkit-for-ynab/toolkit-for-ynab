@@ -2,7 +2,7 @@ import { controllerLookup } from 'helpers/toolkit';
 
 let instance = null;
 
-export default class RouteChangeListener {
+export class RouteChangeListener {
   constructor() {
     if (instance) {
       return instance;

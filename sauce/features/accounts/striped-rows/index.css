@@ -1,0 +1,4 @@
+/* Maybe this should play better with reconciled rows that don't have a background-color */
+.ynab-grid .ynab-grid-body-row:nth-of-type(even):not(.is-scheduled):not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty) {
+	background-color: #fafafa;
+}

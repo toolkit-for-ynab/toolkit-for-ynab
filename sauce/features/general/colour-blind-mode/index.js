@@ -1,5 +1,5 @@
 import { Feature } from 'core/feature';
 
-export class HideReferralBanner extends Feature {
+export class ColourBlindMode extends Feature {
   injectCSS() { return require('./index.css'); }
 }

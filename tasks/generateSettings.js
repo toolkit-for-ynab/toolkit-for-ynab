@@ -10,9 +10,19 @@ const ALL_SETTINGS_OUTPUT = 'source/common/res/features/allSettings.js';
 const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
 const legacySettingMap = {
+  AccountsDisplayDensity: 'accountsDisplayDensity',
   AutoCloseReconcile: 'closeReconcileWindow',
+  ColourBlindMode: 'colourBlindMode',
+  EmphasizedOutflows: 'accountsEmphasizedOutflows',
+  GoalWarningColor: 'goalWarningColor',
+  HideAgeOfMoney: 'hideAgeOfMoney',
+  PrintingImprovements: 'printingImprovements',
+  RemovePositiveHighlight: 'removePositiveHighlight',
+  RowHeight: 'accountsRowHeight',
   RunningBalance: 'runningBalance',
-  StealingFromFuture: 'stealingFromNextMonth'
+  SquareNegativeMode: 'squareNegativeMode',
+  StealingFromFuture: 'stealingFromNextMonth',
+  StripedRows: 'accountsStripedRows',
 };
 
 let previousSettings;

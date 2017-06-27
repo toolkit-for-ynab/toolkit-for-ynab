@@ -1,2 +1,2 @@
-export { default as ObserveListener } from './observeListener';
-export { default as RouteChangeListener } from './routeChangeListener';
+export { ObserveListener } from './observeListener';
+export { RouteChangeListener } from './routeChangeListener';
