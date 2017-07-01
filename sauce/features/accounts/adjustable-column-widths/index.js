@@ -123,6 +123,10 @@ export class AdjustableColumnWidths extends Feature {
         return;
       }
 
+      if ($(`.${resizableClass} .toolkit-draggable`, '.ynab-grid-header').length) {
+        return;
+      }
+
       $(`.${resizableClass}`, '.ynab-grid-header')
         .click((event) => {
           if (this.elementWasDragged) {
@@ -136,7 +140,6 @@ export class AdjustableColumnWidths extends Feature {
           $('<div class="toolkit-draggable"></div>')
             .click((event) => event.stopPropagation())
             .mousedown((event) => {
-              console.log('mousedown', resizableClass);
               this.isMouseDown = true;
               this.currentX = event.clientX;
               this.currentResizableClass = resizableClass;
