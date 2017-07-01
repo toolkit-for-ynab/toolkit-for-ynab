@@ -62,7 +62,7 @@ If you don't want to build the extension from the source yourself, you can get i
 Roadmap
 -------
 
-Features under consideration and the general status of the project and roadmap is on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel free to vote and comment. To suggest new features, please [visit the YNAB Forum for Extensions](https://forum.youneedabudget.com/categories/ynab-extensions) and create a new thread. Forum user @bluebird8203 is managing the features there and will make sure it ends up in Trello.
+Features under consideration and the general status of the project and roadmap is on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel free to vote and comment. To suggest a new feature, please [visit the YNAB Forum for Extensions](https://forum.youneedabudget.com/categories/ynab-extensions) and create a new thread titled "Toolkit Feature Request: [a short description of the feature]". Forum user @bluebird8203 is managing the features there and will make sure it ends up in Trello.
 
 Contributions
 -------------
