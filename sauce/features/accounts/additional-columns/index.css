@@ -7,3 +7,8 @@
 	color: #d33c2d;
 	font-weight: bold;
 }
+
+.ynab-grid-cell-toolkit-check-number {
+	text-align: right;
+	width: 10%;
+}

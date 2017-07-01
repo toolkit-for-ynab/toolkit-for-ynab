@@ -6,13 +6,13 @@ import {
   setToolkitStorageKey
 } from 'helpers/toolkit';
 
-// these must be in the order that they appear on the page
 const RESIZABLES = [
   'ynab-grid-cell-date',
   'ynab-grid-cell-accountName',
   'ynab-grid-cell-payeeName',
   'ynab-grid-cell-subCategoryName',
   'ynab-grid-cell-memo',
+  'ynab-grid-cell-toolkit-check-number',
   'ynab-grid-cell-outflow',
   'ynab-grid-cell-inflow',
   'ynab-grid-cell-toolkit-running-balance'

@@ -13,6 +13,7 @@ const legacySettingMap = {
   AccountsDisplayDensity: 'accountsDisplayDensity',
   AutoCloseReconcile: 'closeReconcileWindow',
   ChangeEnterBehavior: 'changeEnterBehavior',
+  CheckNumbers: 'checkNumbers',
   ColourBlindMode: 'colourBlindMode',
   EmphasizedOutflows: 'accountsEmphasizedOutflows',
   GoalWarningColor: 'goalWarningColor',
@@ -112,6 +113,10 @@ function gatherNewSettings() {
 function validateSetting(settingObj) {
   const featureSettings = settingObj.setting;
   const settingFilename = settingObj.file;
+
+  if (featureSettings.section === 'system') {
+    return featureSettings;
+  }
 
   REQUIRED_SETTINGS.forEach(requiredSetting => {
     if (typeof featureSettings[requiredSetting] === 'undefined' || featureSettings[requiredSetting] === null) {
