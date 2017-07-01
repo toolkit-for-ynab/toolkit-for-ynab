@@ -1,0 +1,38 @@
+import { Feature } from 'core/feature';
+import * as toolkitHelper from 'helpers/toolkit';
+
+export class ChangeEnterBehavior extends Feature {
+  shouldInvoke() {
+    return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1 &&
+           $('.ynab-grid-body-row.is-adding').length;
+  }
+
+  invoke() {
+    const $addRow = $('.ynab-grid-body-row.is-adding');
+    const $memoInput = $('.ynab-grid-cell-memo > input', $addRow);
+    const $outflowInput = $('.ynab-grid-cell-memo > input', $addRow);
+    const $inflowInput = $('.ynab-grid-cell-memo > input', $addRow);
+
+    $memoInput.keydown(this.applyNewEnterBehavior);
+    $outflowInput.keydown(this.applyNewEnterBehavior);
+    $inflowInput.keydown(this.applyNewEnterBehavior);
+  }
+
+  applyNewEnterBehavior(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const $saveButton = $('.button.button-primary:not(.button-another)');
+      $saveButton.click();
+    }
+  }
+
+  observe(changedNodes) {
+    if (!changedNodes.has('ynab-grid-body')) return;
+
+    if (this.shouldInvoke()) {
+      this.invoke();
+    }
+  }
+}

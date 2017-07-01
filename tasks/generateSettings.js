@@ -12,6 +12,7 @@ const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 const legacySettingMap = {
   AccountsDisplayDensity: 'accountsDisplayDensity',
   AutoCloseReconcile: 'closeReconcileWindow',
+  ChangeEnterBehavior: 'changeEnterBehavior',
   ColourBlindMode: 'colourBlindMode',
   EmphasizedOutflows: 'accountsEmphasizedOutflows',
   GoalWarningColor: 'goalWarningColor',
@@ -22,7 +23,7 @@ const legacySettingMap = {
   RunningBalance: 'runningBalance',
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',
-  StripedRows: 'accountsStripedRows',
+  StripedRows: 'accountsStripedRows'
 };
 
 let previousSettings;
