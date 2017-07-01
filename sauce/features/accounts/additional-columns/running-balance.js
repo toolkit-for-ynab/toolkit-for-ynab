@@ -21,8 +21,13 @@ export class RunningBalance {
     var runningBalanceHeader = $('.ynab-grid-cell-inflow', $headerRow).clone();
     runningBalanceHeader.removeClass('ynab-grid-cell-inflow');
     runningBalanceHeader.addClass('ynab-grid-cell-toolkit-running-balance');
-    runningBalanceHeader.text('RUNNING BALANCE');
+    runningBalanceHeader.text('RUNNING BALANCE').css('font-weight', 'normal');
     runningBalanceHeader.insertAfter($('.ynab-grid-cell-inflow', $headerRow));
+    runningBalanceHeader.click((event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      $('.ynab-grid-cell-date', $headerRow).click();
+    });
 
     if ($('.ynab-grid-body .ynab-grid-body-row-top .ynab-grid-cell-toolkit-running-balance').length) return;
     var $topRow = $('.ynab-grid-body-row-top');

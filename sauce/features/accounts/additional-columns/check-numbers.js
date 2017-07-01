@@ -8,8 +8,12 @@ export class CheckNumbers {
     var checkNumberHeader = $('.ynab-grid-cell-inflow', $headerRow).clone();
     checkNumberHeader.removeClass('ynab-grid-cell-inflow');
     checkNumberHeader.addClass('ynab-grid-cell-toolkit-check-number');
-    checkNumberHeader.text('CHECK NUMBER');
+    checkNumberHeader.text('CHECK NUMBER').css('font-weight', 'normal');
     checkNumberHeader.insertAfter($('.ynab-grid-cell-memo', $headerRow));
+    checkNumberHeader.click((event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
 
     if ($('.ynab-grid-body .ynab-grid-body-row-top .ynab-grid-cell-toolkit-check-number').length) return;
     var $topRow = $('.ynab-grid-body-row-top');

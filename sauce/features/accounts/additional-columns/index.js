@@ -95,8 +95,13 @@ export class AdditionalColumns extends Feature {
   }
 
   invoke() {
-    this.checkNumbers.insertHeader();
-    this.runningBalance.insertHeader();
+    if (this.checkNumbers.shouldInvoke()) {
+      this.checkNumbers.insertHeader();
+    }
+
+    if (this.runningBalance.shouldInvoke()) {
+      this.runningBalance.insertHeader();
+    }
 
     if ($('.ynab-grid-body-row.is-editing', '.ynab-grid-body').length) {
       this.attachWillInsertHandler('register/grid-edit');
