@@ -1,4 +1,4 @@
-Thank you for submitting a bug report! Please take the time to fill out every section of this form. Failure to complete any of these sections will result in us not being able to debug your issue and may result in us to closing the report entirely.
+Thank you for submitting a bug report! Please take the time to fill out every section of this form. Failure to complete any of these sections will result in us not being able to debug your issue and may result in us closing the report entirely.
 
 # Name of Defective Feature
 
