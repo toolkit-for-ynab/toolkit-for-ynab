@@ -12,6 +12,8 @@ const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 const legacySettingMap = {
   AccountsDisplayDensity: 'accountsDisplayDensity',
   AutoCloseReconcile: 'closeReconcileWindow',
+  ChangeEnterBehavior: 'changeEnterBehavior',
+  CheckNumbers: 'checkNumbers',
   ColourBlindMode: 'colourBlindMode',
   EmphasizedOutflows: 'accountsEmphasizedOutflows',
   GoalWarningColor: 'goalWarningColor',
@@ -22,7 +24,7 @@ const legacySettingMap = {
   RunningBalance: 'runningBalance',
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',
-  StripedRows: 'accountsStripedRows',
+  StripedRows: 'accountsStripedRows'
 };
 
 let previousSettings;
@@ -111,6 +113,10 @@ function gatherNewSettings() {
 function validateSetting(settingObj) {
   const featureSettings = settingObj.setting;
   const settingFilename = settingObj.file;
+
+  if (featureSettings.section === 'system') {
+    return featureSettings;
+  }
 
   REQUIRED_SETTINGS.forEach(requiredSetting => {
     if (typeof featureSettings[requiredSetting] === 'undefined' || featureSettings[requiredSetting] === null) {
