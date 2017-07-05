@@ -1,7 +1,7 @@
 module.exports = {
   name: 'AccountsDisplayDensity',
   type: 'select',
-  default: false,
+  default: '0',
   section: 'general',
   title: 'Account Name Height',
   description: 'Makes the account names smaller so that you can see more of the account names and fit more on the screen.',
