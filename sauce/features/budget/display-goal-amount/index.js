@@ -3,7 +3,7 @@ import * as toolkitHelper from 'helpers/toolkit';
 
 export class DisplayTargetGoalAmount extends Feature {
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1;
+    return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1 && this.settings.enabled !== '0';
   }
 
   invoke() {
@@ -34,23 +34,23 @@ export class DisplayTargetGoalAmount extends Feature {
       const budgetedAmount = monthlySubCategoryBudget.get('budgeted');
       if (goalType === 'MF') {
         $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(monthlyFunding));
-        if (budgetedAmount > monthlyFunding) {
+        if (budgetedAmount > monthlyFunding && this.settings.enabled === '1') {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
-        } else if (budgetedAmount === monthlyFunding) {
+        } else if (budgetedAmount >= monthlyFunding) {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#00b300' });
         }
       } else if (goalType === 'TB') {
         $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(targetBalance));
-        if (budgetedAmount > targetBalance) {
+        if (budgetedAmount > targetBalance && this.settings.enabled === '1') {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
-        } else if (budgetedAmount === targetBalance) {
+        } else if (budgetedAmount >= targetBalance) {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#00b300' });
         }
       } else if (goalType === 'TBD') {
         $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(targetBalanceDate));
-        if (budgetedAmount > targetBalanceDate) {
+        if (budgetedAmount > targetBalanceDate && this.settings.enabled === '1') {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
-        } else if (budgetedAmount === targetBalanceDate) {
+        } else if (budgetedAmount >= targetBalanceDate) {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#00b300' });
         }
       }
