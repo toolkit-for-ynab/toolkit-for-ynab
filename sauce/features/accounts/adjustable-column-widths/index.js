@@ -6,13 +6,13 @@ import {
   setToolkitStorageKey
 } from 'helpers/toolkit';
 
-// these must be in the order that they appear on the page
 const RESIZABLES = [
   'ynab-grid-cell-date',
   'ynab-grid-cell-accountName',
   'ynab-grid-cell-payeeName',
   'ynab-grid-cell-subCategoryName',
   'ynab-grid-cell-memo',
+  'ynab-grid-cell-toolkit-check-number',
   'ynab-grid-cell-outflow',
   'ynab-grid-cell-inflow',
   'ynab-grid-cell-toolkit-running-balance'
@@ -123,6 +123,10 @@ export class AdjustableColumnWidths extends Feature {
         return;
       }
 
+      if ($(`.${resizableClass} .toolkit-draggable`, '.ynab-grid-header').length) {
+        return;
+      }
+
       $(`.${resizableClass}`, '.ynab-grid-header')
         .click((event) => {
           if (this.elementWasDragged) {
@@ -136,7 +140,6 @@ export class AdjustableColumnWidths extends Feature {
           $('<div class="toolkit-draggable"></div>')
             .click((event) => event.stopPropagation())
             .mousedown((event) => {
-              console.log('mousedown', resizableClass);
               this.isMouseDown = true;
               this.currentX = event.clientX;
               this.currentResizableClass = resizableClass;

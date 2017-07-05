@@ -18,7 +18,11 @@ function run(callback) {
       const projectFeaturePath = filePathSplit.slice(0, filePathSplit.length - 1).join(path.sep);
 
       // up one directory to use the project path
-      const featureSetting = require(path.join('..', projectFeaturePath, 'settings.js')); // eslint-disable-line global-require
+      let featureSetting = require(path.join('..', projectFeaturePath, 'settings.js')); // eslint-disable-line global-require
+
+      if (Array.isArray(featureSetting)) {
+        featureSetting = featureSetting[0];
+      }
 
       // features/index will source from the features folder, so remove
       // `sauce/features` from the path here.
