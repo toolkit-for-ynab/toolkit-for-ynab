@@ -159,6 +159,8 @@ function buildOptionsPage() {
   });
 
   settings.forEach(function (setting) {
+    if (setting.section === 'system') return;
+
     let markDown = marked(setting.description);
 
     if (setting.type === 'checkbox') {
