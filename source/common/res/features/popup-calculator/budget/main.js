@@ -16,7 +16,7 @@
         ynabToolKit.popupCalculator.setSetValueCallback(setValue);
         ynabToolKit.popupCalculator.setGetValueCallback(getValue);
         ynabToolKit.popupCalculator.setDeleteOnDismiss(true);
-        ynabToolKit.popupCalculator.showCalculator(false);
+        ynabToolKit.popupCalculator.showCalculator(true);
       }
 
       function clickSubCatCheckBox() {
@@ -97,8 +97,8 @@
           }
 
           if ($('div.budget-table').length && !$('.budget-table-row > li.toolkit-popup-calc-button').length) {
-            $('link[rel="stylesheet"][href$="/res/features/popup-calculator/budget/main.css"]').prop('disabled', false);
-            $('link[rel="stylesheet"][href$="/res/features/popup-calculator/account/main.css"]').prop('disabled', true);
+            $('link[rel="stylesheet"][href$="budget_calc.css"]').prop('disabled', false);
+            $('link[rel="stylesheet"][href$="account_calc.css"]').prop('disabled', true);
 
             $('div.budget-table').on('click.toolkitPopupCalcSubCatChk', '.budget-table-row.is-sub-category > li > div > button.ynab-checkbox-button', clickSubCatCheckBox);
             $('div.budget-table').on('click.toolkitPopupCalcSubCat', 'ul.budget-table-row.is-sub-category', clickSubCatHandler);
@@ -127,20 +127,20 @@
 
             switch (ynabToolKit.options.budgetRowsHeight) {
               case '0':
-                ynabToolKit.budgetPopupCalculator.buttonBottom = -247;
-                ynabToolKit.budgetPopupCalculator.buttonRight = 20;
+                ynabToolKit.budgetPopupCalculator.buttonBottom = -242;
+                ynabToolKit.budgetPopupCalculator.buttonRight = 14;
                 break;
               case '1':
-                ynabToolKit.budgetPopupCalculator.buttonBottom = -244;
-                ynabToolKit.budgetPopupCalculator.buttonRight = 18;
+                ynabToolKit.budgetPopupCalculator.buttonBottom = -239;
+                ynabToolKit.budgetPopupCalculator.buttonRight = 14;
                 break;
               case '2':
-                ynabToolKit.budgetPopupCalculator.buttonBottom = -242;
-                ynabToolKit.budgetPopupCalculator.buttonRight = 16;
+                ynabToolKit.budgetPopupCalculator.buttonBottom = -238;
+                ynabToolKit.budgetPopupCalculator.buttonRight = 14;
                 break;
               case '3':
-                ynabToolKit.budgetPopupCalculator.buttonBottom = -217;
-                ynabToolKit.budgetPopupCalculator.buttonRight = 16;
+                ynabToolKit.budgetPopupCalculator.buttonBottom = -212;
+                ynabToolKit.budgetPopupCalculator.buttonRight = 14;
                 break;
             }
           }

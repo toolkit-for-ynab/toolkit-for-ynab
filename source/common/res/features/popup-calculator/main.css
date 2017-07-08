@@ -1,4 +1,4 @@
-#toolkitPopupCalc {
+#xtoolkitPopupCalc {
 	padding-right: .3em;
 }
 
@@ -6,8 +6,9 @@
     visibility: hidden;
 }
 
-.toolkit-popup-calc-show {
+.toolkit-popup-calc-button-show {
     visibility: visible;
+    overflow: visible !important;
 }
 
 .toolkit-popup-calc-hide {
@@ -30,16 +31,8 @@
     background-color: #009cc2;
 }
 
-#toolkitPopupCalcInput  {
-    margin-top: .3em;
-    margin-bottom: .3em;
-    width: 176px;
-		text-align: right;
-}
-
 .xtoolkit-button-primary {
     padding: .1em .1em;
-    /*margin-right: .4em;*/
     border-radius: .1em;
     border: 1px solid transparent;
     color: #fff;

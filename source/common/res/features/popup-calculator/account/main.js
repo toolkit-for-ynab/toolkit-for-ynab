@@ -3,15 +3,14 @@
     ynabToolKit.accountPopupCalculator = (function () {
       function focusHandler() {
         if ($(this).prop('placeholder') === 'outflow' || $(this).prop('placeholder') === 'inflow') {
-          ynabToolKit.popupCalculator.setButtonBottom(-242);
+          ynabToolKit.popupCalculator.setButtonBottom(-200);
           ynabToolKit.popupCalculator.setEntryField($('#' + $(this).attr('id')));
-          ynabToolKit.popupCalculator.setInsertAfterElement('div.is-editing div.ynab-grid-actions');
+          ynabToolKit.popupCalculator.setAppendToElement('div.buttons-container');
           ynabToolKit.popupCalculator.setSetValueCallback(setValue);
           ynabToolKit.popupCalculator.setGetValueCallback(getValue);
 
           if (!$('#toolkit-popup-calc-button').length) {
-            let $grid = '#' + $('div.ynab-grid-actions').attr('id');
-            ynabToolKit.accountPopupCalculator.$calcBtn.prependTo($($grid));
+            ynabToolKit.accountPopupCalculator.$calcBtn.prependTo($('.ynab-grid-actions-buttons'));
 
             $('#toolkit-popup-calc-button').prop('disabled', false);
             $('#toolkit-popup-calc-button').removeClass('toolkit-popup-calc-button-hide  toolkit-button-primary');
@@ -45,19 +44,19 @@
       }
 
       return {
-        $calcBtn: $('<button>', { id: 'toolkit-popup-calc-button', class: 'ember-view button button-primary' })
+        $calcBtn: $('<button>', { id: 'toolkit-popup-calc-button', class: 'toolkit-popup-calc-button button button-primary' })
                   .append($('<i>', { class: 'ember-view flaticon stroke calculator' }))
                   .click(function () {
-                    ynabToolKit.popupCalculator.setButtonRight(parseFloat($('.ynab-grid-actions').position().left) * -1);
-                    ynabToolKit.popupCalculator.showCalculator(true);
+                    ynabToolKit.popupCalculator.setButtonRight(parseFloat($('.ynab-grid-actions-buttons').css('width')) - 2);
+                    ynabToolKit.popupCalculator.showCalculator(false);
                   }),
         invoke: function invoke() {
           if ($('div.ynab-grid-actions').length) {
             // Add the focus event high enough up the DOM to catch new input fields that are added
             // when a new split is added to a split transaction.
             $('.ynab-grid').on('focus.toolkitPopupCalc', '.is-editing input', focusHandler);
-            $('link[rel="stylesheet"][href$="/res/features/popup-calculator/account/main.css"]').prop('disabled', false);
-            $('link[rel="stylesheet"][href$="/res/features/popup-calculator/budget/main.css"]').prop('disabled', true);
+            $('link[rel="stylesheet"][href$="account_calc.css"]').prop('disabled', false);
+            $('link[rel="stylesheet"][href$="budget_calc.css"]').prop('disabled', true);
           }
         },
 

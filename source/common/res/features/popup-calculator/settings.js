@@ -14,8 +14,8 @@ Provides the same calculator capability that YNAB4 had.
       'injectCSS', 'main.css',
       'injectScript', 'main.js',
       'injectScript', 'account/main.js',
-      'injectCSS', 'account/main.css',
-      'injectCSS', 'budget/main.css',
+      'injectCSS', 'account/account_calc.css',
+      'injectCSS', 'budget/budget_calc.css',
       'injectScript', 'budget/main.js'
     ]
   }
