@@ -8,10 +8,10 @@ export class ImportNotification extends Feature {
     super();
     this.isActive = false;
     this.importClass = 'import-notification';
+    this.invoke = this.invoke.bind(this);
   }
 
   willInvoke() {
-    // console.log('importNotification::willInvoke isActive:' + this.isActive);
     if (this.settings.enabled !== '0') {
       if (this.settings.enabled === '2') {
         this.importClass += '-red';
@@ -27,16 +27,12 @@ export class ImportNotification extends Feature {
   }
 
   invoke() {
-    // console.log('importNotification::invoke #1 isActive:' + this.isActive);
-    if (!ImportNotification.isActive) {
+    if (!this.isActive) {
       this.checkImportTransactions();
     }
-    // console.log('importNotification::invoke #2 isActive:' + this.isActive);
   }
 
   observe(changedNodes) {
-    // console.log('importNotification::observe isActive:' + this.isActive);
-
     if (!this.shouldInvoke()) return;
 
     // Don't call invoke() if the changed node is a result of us adding or removing
@@ -48,7 +44,7 @@ export class ImportNotification extends Feature {
 
   checkImportTransactions() {
     this.isActive = true;
-    // console.log('checkImportTransactions::enter isActive:' + this.isActive);
+
     // The following local var is needed because "this" is seen as the currently selected element after the
     // first $('') type statement.
     let importClass = this.importClass;
@@ -72,6 +68,5 @@ export class ImportNotification extends Feature {
     });
 
     this.isActive = false;
-    // console.log('checkImportTransactions::exit isActive:' + this.isActive);
   }
 }
