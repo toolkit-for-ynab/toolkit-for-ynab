@@ -1,5 +1,4 @@
 import { Feature } from 'core/feature';
-// import * as toolkitHelper from 'helpers/toolkit';
 
 export class ImportNotification extends Feature {
   injectCSS() { return require('./index.css'); }
@@ -45,12 +44,8 @@ export class ImportNotification extends Feature {
   checkImportTransactions() {
     this.isActive = true;
 
-    // The following local var is needed because "this" is seen as the currently selected element after the
-    // first $('') type statement.
-    let importClass = this.importClass;
-
-    $('.' + importClass).remove();
-    $('.nav-account-row').each(function (index, row) {
+    $('.' + this.importClass).remove();
+    $('.nav-account-row').each((index, row) => {
       let account = ynabToolKit.shared.getEmberView($(row).attr('id')).get('data');
 
       // Check for both functions should be temporary until all users have been switched to new bank data
@@ -62,7 +57,7 @@ export class ImportNotification extends Feature {
         if (transactions.length >= 1) {
           $(row)
             .find('.nav-account-notification')
-            .append('<a class="notification ' + importClass + '">' + transactions.length + '</a>');
+            .append('<a class="notification ' + this.importClass + '">' + transactions.length + '</a>');
         }
       }
     });
