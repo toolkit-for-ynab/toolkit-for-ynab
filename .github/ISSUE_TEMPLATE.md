@@ -16,7 +16,7 @@ Other Extensions:
 ```
 
 # Steps to Reproduce the Behavior
-Please write down the steps necessary to reproduce teh behavior you're seeing. Please be as thorough as possible.
+Please write down the steps necessary to reproduce the behavior you're seeing. Please be as thorough as possible.
 
 1. ​
 2. ​
