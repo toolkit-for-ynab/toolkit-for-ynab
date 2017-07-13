@@ -1,7 +1,7 @@
 module.exports = {
   name: 'BetterScrollbars',
   type: 'select',
-  default: 'small',
+  default: '0',
   section: 'general',
   title: 'Better scrollbars',
   description: 'Provides smaller and cleaner scrollbars across the application.',
