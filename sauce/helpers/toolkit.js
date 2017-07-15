@@ -29,6 +29,10 @@ export function getCurrentDate(format) {
   return ynabDate(format, false);
 }
 
+export function getI10Text(key, altText) {
+  return ynabToolKit.l10nData && ynabToolKit.l10nData[key] || altText;
+}
+
 export function formatCurrency(value) {
   let userCurrency = ynab.YNABSharedLib.currencyFormatter.getCurrency();
   let currencyFormatter = new ynab.formatters.CurrencyFormatter;
