@@ -12,6 +12,7 @@ const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 const legacySettingMap = {
   AccountsDisplayDensity: 'accountsDisplayDensity',
   AutoCloseReconcile: 'closeReconcileWindow',
+  BetterScrollbars: 'betterScrollbars',
   ChangeEnterBehavior: 'changeEnterBehavior',
   CheckNumbers: 'checkNumbers',
   ColourBlindMode: 'colourBlindMode',
@@ -21,6 +22,7 @@ const legacySettingMap = {
   PrintingImprovements: 'printingImprovements',
   RemovePositiveHighlight: 'removePositiveHighlight',
   RowHeight: 'accountsRowHeight',
+  RowsHeight: 'budgetRowsHeight',
   RunningBalance: 'runningBalance',
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',
