@@ -5,6 +5,7 @@ certificates/*
 src/*
 *.pyc
 /.project
+package-lock.json
 save-commands.json
 source/common/res/features/act-on-change/feedChanges.js
 source/common/res/features/allInits.js
