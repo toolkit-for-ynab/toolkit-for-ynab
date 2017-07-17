@@ -29,6 +29,7 @@ export class AdjustableColumnWidths extends Feature {
   }
 
   shouldInvoke() {
+    // don't say we should be invoked unless the feature is also active
     return getCurrentRouteName().indexOf('account') !== -1 && this.settings.enabled;
   }
 
