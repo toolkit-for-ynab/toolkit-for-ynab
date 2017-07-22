@@ -151,8 +151,6 @@
                   const showDays = ynabToolKit.options.pacing === '2';
                   const showIndicator = ynabToolKit.options.pacing === '3';
 
-                  var temperature = (pace > 1) ? 'cautious' : 'positive';
-
                   var deemphasized = masterCategory.get('isDebtPaymentCategory') || $.inArray(masterCategoryDisplayName + '_' + subCategoryDisplayName, deemphasizedCategories) >= 0;
                   var display = Math.round((budgeted * timeSpent() - activity) * 1000);
                   const displayInDays = getDaysAheadOfSchedule(display, budgeted, activity);
@@ -162,12 +160,20 @@
                     : ynabToolKit.shared.formatCurrency(display, true);
 
                   const tooltip = getTooltip(display, displayInDays, transactionCount, deemphasized);
-
-                  $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="' + tooltip +
-                               '" class="budget-table-cell-pacing-display currency ' + temperature +
-                               (deemphasized ? ' deemphasized' : '') + (showIndicator ? ' indicator' : '') +
-                               '" data-name="' + masterCategoryDisplayName + '_' + subCategoryDisplayName + '">' +
-                               formattedDisplay + '</span></li>');
+                  const deemphasizedClass = deemphasized ? 'deemphasized' : '';
+                  const indicatorClass = showIndicator ? 'indicator' : '';
+                  const temperatureClass = (pace > 1) ? 'cautious' : 'positive';
+                  $(this).append(`
+                    <li class="budget-table-cell-available budget-table-cell-pacing">
+                      <span
+                        title="${tooltip}"
+                        class="budget-table-cell-pacing-display currency ${temperatureClass} ${deemphasizedClass} ${indicatorClass}"
+                        data-name="${masterCategoryDisplayName}_${subCategoryDisplayName}"
+                      >
+                        ${formattedDisplay}
+                      </span>
+                    </li>
+                  `);
                 });
 
               $('.budget-table-cell-pacing-display').click(function (e) {
