@@ -83,7 +83,7 @@
         const formattedDisplayInDays = Math.abs(displayInDays);
         const transactions = 'transaction' + (transactionCount !== 1 ? 's' : '');
         const percentOfMonth = Math.round(timeSpent() * 100);
-        const trimWords = (paragraph) => paragraph.split(/\s+/).filter(word => word !== '').join(' ');
+        const trimWords = (paragraph) => paragraph.replace(/\s+/g, ' ').trim();
 
         return trimWords(`
           In ${transactionCount} ${transactions}, you have spent ${formattedDisplay} ${moreOrLess} than
