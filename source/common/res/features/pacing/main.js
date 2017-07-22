@@ -81,14 +81,15 @@
         const hideOrUnhide = deemphasized ? 'unhide' : 'hide';
         const formattedDisplay = ynabToolKit.shared.formatCurrency(Math.abs(display), false);
         const formattedDisplayInDays = Math.abs(displayInDays);
-        const transactions = 'transaction' + (transactionCount !== 1 ? 's' : '');
+        const days = formattedDisplayInDays === 1 ? 'day' : 'days';
+        const transactions = transactionCount === 1 ? 'transaction' : 'transactions';
         const percentOfMonth = Math.round(timeSpent() * 100);
         const trimWords = (paragraph) => paragraph.replace(/\s+/g, ' ').trim();
 
         return trimWords(`
           In ${transactionCount} ${transactions}, you have spent ${formattedDisplay} ${moreOrLess} than
           your available budget for this category ${percentOfMonth}% of the way through the month.
-          You are ${formattedDisplayInDays} days ${aheadOrBehind} schedule.
+          You are ${formattedDisplayInDays} ${days} ${aheadOrBehind} schedule.
           &#13;&#13;
           Click to ${hideOrUnhide}.
         `);
@@ -157,7 +158,8 @@
                   var display = Math.round((budgeted * timeSpent() - activity) * 1000);
                   const displayInDays = getDaysAheadOfSchedule(display, budgeted, activity);
 
-                  const formattedDisplay = showDays ? displayInDays + ' days'
+                  const days = Math.abs(displayInDays) === 1 ? 'day' : 'days';
+                  const formattedDisplay = showDays ? `${displayInDays} ${days}`
                     : ynabToolKit.shared.formatCurrency(display, true);
 
                   const tooltip = getTooltip(display, displayInDays, transactionCount, deemphasized);
