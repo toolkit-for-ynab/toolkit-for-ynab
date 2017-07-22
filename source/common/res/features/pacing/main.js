@@ -90,8 +90,7 @@
           In ${transactionCount} ${transactions}, you have spent ${formattedDisplay} ${moreOrLess} than
           your available budget for this category ${percentOfMonth}% of the way through the month.
           You are ${formattedDisplayInDays} ${days} ${aheadOrBehind} schedule.
-          &#13;&#13;
-          Click to ${hideOrUnhide}.
+          &#13;&#13;Click to ${hideOrUnhide}.
         `);
       }
 
