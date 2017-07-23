@@ -1,3 +1,4 @@
+
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.insertPacingColumns = (function () {
@@ -148,8 +149,8 @@
                       el.subCategoryId === subCategoryId;
                   }).length;
 
-                  const showDays = ynabToolKit.options.pacing === '2';
-                  const showIndicator = ynabToolKit.options.pacing === '3';
+                  const showIndicator = ynabToolKit.options.pacing === '2';
+                  const showDays = ynabToolKit.options.pacing === '3';
 
                   var deemphasized = masterCategory.get('isDebtPaymentCategory') || $.inArray(masterCategoryDisplayName + '_' + subCategoryDisplayName, deemphasizedCategories) >= 0;
                   var display = Math.round((budgeted * timeSpent() - activity) * 1000);
