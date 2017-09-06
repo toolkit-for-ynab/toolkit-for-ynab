@@ -1,3 +1,7 @@
+.nav-main .ynabtk-navlink-reports {
+  cursor: pointer;
+}
+
 .nav-main .ynabtk-navlink-reports.active a .flaticon {
 	color: #fed168;
 }

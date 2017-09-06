@@ -1,4 +1,6 @@
 /* eslint-disable no-multi-str */
+const YNAB_CONTENT_CONTAINER_SELECTOR = 'div.ynab-u.content';
+const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
 
 (function poll() {
   let allReportsReady = true;
@@ -40,7 +42,7 @@
         $('.nav-main > li:eq(1)').after(
           $('<li>').append(
             $('<li>', { class: 'ember-view ynabtk-navlink-reports' }).append(
-              $('<a>', { href: '#' }).append(
+              $('<a>', { class: 'ynabtk-navlink-reports-link' }).append(
                 $('<span>', { class: 'ember-view flaticon stroke document-4' })
               ).append(
                 (ynabToolKit.l10nData && ynabToolKit.l10nData['sidebar.reports']) || 'Toolkit Reports'
@@ -48,6 +50,10 @@
             )
           )
         );
+
+        $('.ynabtk-navlink-reports-link').click((event) => {
+          event.preventDefault();
+        });
 
         $('.ynabtk-navlink-reports').on('click', showReports);
       }
@@ -482,10 +488,10 @@
             });
 
             // clear out the content and put ours in there instead.
-            buildReportsPage($('div.scroll-wrap').closest('.ember-view'), transactionsViewModel);
+            buildReportsPage($(YNAB_CONTENT_CONTAINER_SELECTOR), transactionsViewModel);
 
             // The budget header is absolute positioned
-            $('.budget-header, .scroll-wrap').hide();
+            $(YNAB_NATIVE_CONTENT_SELECTOR).hide();
 
             // grab the value of the current-report inside localStorage
             let storedCurrentReport = ynabToolKit.shared.getToolkitStorageKey('current-report');
@@ -530,7 +536,7 @@
             $('.ynabtk-reports').remove();
 
             // And restore the YNAB stuff we hid earlier
-            $('.budget-header, .scroll-wrap').show();
+            $(YNAB_NATIVE_CONTENT_SELECTOR).show();
           }
 
           // if YNAB overwrites the sidebar-contents just make sure the report button
