@@ -111,7 +111,7 @@ We have a large number of contributors who each bring their own style to the cod
 #### How do I build a feature?
 We actually have two feature code bases now. Unless you are fixing a legacy feature or you have some inherant need to use the legacy framework, please opt for the new framework:
 
-##### New Framework [Documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/tree/adjustable-column-widths/sauce#ynab-toolkit-development)
+##### New Framework [Documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/sauce/README.md)
 The new framework was built because the old one required you to include a lot of boilerplate code in every feature. The new one makes heavier use of ES6 features and allows us to remove the burden of boilerplate from new contributions.
 
 The source code for this lives in the `sauce` directory.
