@@ -11,6 +11,8 @@
           return !el.isTombstone &&
           el.transferAccountId === null &&
           el.amount < 0 &&
+          el.payeeId !== null &&
+          el.getPayee().internalName !== 'StartingBalancePayee' &&
         el.getAccount().onBudget; });
 
         // Filter outflow transactions by Date for history lookup option.
