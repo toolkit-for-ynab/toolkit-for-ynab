@@ -91,8 +91,8 @@
             $('#toolkitPopupCalcInput').val(origValue);
             $('#toolkitPopupCalc').removeClass('toolkit-popup-calc-hide');
           } else {
-            let actionsClass = (budgetScreen) ? 'ynab-grid-actions' : 'toolkit-calc-actions';
-            let $calc = $('<div>', { id: 'toolkitPopupCalc', class: 'ember-view ' + actionsClass, style: 'right: ' + btnRight + 'px; bottom: ' + btnBottom + 'px;' })
+            let okClass = (budgetScreen) ? 'toolkit-popup-calc-button-spacer' : '';
+            let $calc = $('<div>', { id: 'toolkitPopupCalc', class: 'ember-view toolkit-calc-actions', style: 'right: ' + btnRight + 'px; bottom: ' + btnBottom + 'px;' })
               .append($('<input>', { id: 'toolkitPopupCalcInput', readonly: 'readonly', class: 'ember-view ember-text-field' })
                 .val(origValue))
               .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
@@ -219,18 +219,21 @@
                   .append('%')
                   .click(() => {
                     doCalculation('%');
-                  }))))
-              .append($('<button>', { id: 'toolkitBtnOk', class: 'ember-view button button-primary toolkit-popup-calc-button2' })
-                .append('OK')
-                .click(() => {
-                  doCalculation('OK');
-                  dismissCalculator();
-                }))
-              .append($('<button>', { id: 'toolkitBtnCan', class: 'ember-view button button-primary toolkit-popup-calc-button2' })
-                .append('Cancel')
-                .click(() => {
-                  dismissCalculator();
-                }));
+                  })))) // </ul>
+              .append($('<ul>', { class: 'toolkit-popup-calc-btnrow' })
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtnOk', class: 'ember-view button button-primary toolkit-popup-calc-button2 ' + okClass })
+                  .append('OK')
+                  .click(() => {
+                    doCalculation('OK');
+                    dismissCalculator();
+                  })))
+                .append($('<li>', { class: 'toolkit-popup-calc-btnrow' })
+                  .append($('<button>', { id: 'toolkitBtnCan', class: 'ember-view button button-primary toolkit-popup-calc-button2' })
+                  .append('Cancel')
+                  .click(() => {
+                    dismissCalculator();
+                  })))); // </ul>
 
             if (afterElement !== '') {
               $calc.insertAfter(afterElement);

@@ -1,10 +1,12 @@
-.budget-table-cell-activity {
-  width: 17% !important;
+#toolkitPopupCalcInput  {
+    margin-top: .3em;
+    margin-bottom: .3em;
+    width: 176px;
+		text-align: right;
 }
 
-.toolkit-popup-calc-button {
-  width: 1.75% !important;
-  overflow: visible !important;
+.budget-table-cell-activity {
+  width: 17% !important;
 }
 
 .toolkit-popup-calc-overflow {
@@ -50,9 +52,8 @@
 .toolkit-calc-actions {
     position: absolute;
     background-color: #005a6e;
-    border-bottom-left-radius: .4em;
-    border-bottom-right-radius: .4em;
-    padding: .3125em .05em .3125em .3125em;
+    border-radius: .4em;
+    padding: .3125em .3em .3125em .3125em;
     right: 0;
     bottom: 0;
     text-align: center;
@@ -63,4 +64,8 @@
 .toolkit-popup-calc-postition {
   position: relative;
   overflow: visible;
+}
+
+.toolkit-popup-calc-button-spacer {
+    margin-left: 3em;
 }
