@@ -1,3 +1,4 @@
+
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.insertPacingColumns = (function () {
@@ -5,16 +6,20 @@
       // or variables, etc
       var storePacingLocally = true;
 
-      // Calculate the proportion of the month that has been spent -- only works for the current month
-      function timeSpent() {
-        var today = new Date();
-
+      function getDaysInMonth() {
         var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
         var lastDayOfThisMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 0);
-        var daysInMonth = lastDayOfThisMonth.getDate(); // The date of the last day in the month is the number of days in the month
-        var day = Math.max(today.getDate(), 1);
+        return lastDayOfThisMonth.getDate(); // The date of the last day in the month is the number of days in the month
+      }
 
-        return day / daysInMonth;
+      function getCurrentDayOfMonth() {
+        var today = new Date();
+        return Math.max(today.getDate(), 1);
+      }
+
+      // Calculate the proportion of the month that has been spent -- only works for the current month
+      function timeSpent() {
+        return getCurrentDayOfMonth() / getDaysInMonth();
       }
 
       // Determine whether the selected month is the current month
@@ -62,6 +67,34 @@
         }
       }
 
+      function getDaysAheadOfSchedule(display, budgeted, activity) {
+        if (budgeted === 0) {
+          return 0;
+        }
+        const target = getCurrentDayOfMonth();
+        const actual = (activity / budgeted) * getDaysInMonth();
+        return Math.round((target - actual) * 10) / 10;
+      }
+
+      function getTooltip(display, displayInDays, transactionCount, deemphasized) {
+        const moreOrLess = display >= 0 ? 'less' : 'more';
+        const aheadOrBehind = display >= 0 ? 'ahead of' : 'behind';
+        const hideOrUnhide = deemphasized ? 'unhide' : 'hide';
+        const formattedDisplay = ynabToolKit.shared.formatCurrency(Math.abs(display), false);
+        const formattedDisplayInDays = Math.abs(displayInDays);
+        const days = formattedDisplayInDays === 1 ? 'day' : 'days';
+        const transactions = transactionCount === 1 ? 'transaction' : 'transactions';
+        const percentOfMonth = Math.round(timeSpent() * 100);
+        const trimWords = (paragraph) => paragraph.replace(/\s+/g, ' ').trim();
+
+        return trimWords(`
+          In ${transactionCount} ${transactions}, you have spent ${formattedDisplay} ${moreOrLess} than
+          your available budget for this category ${percentOfMonth}% of the way through the month.
+          You are ${formattedDisplayInDays} ${days} ${aheadOrBehind} schedule.
+          &#13;&#13;Click to ${hideOrUnhide}.
+        `);
+      }
+
       return {
         invoke() {
           var tv = ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel()._result.getAllAccountTransactionsViewModel();
@@ -88,13 +121,6 @@
                 ((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.pacing']) || 'PACING') + '</li>');
 
               var deemphasizedCategories = getDeemphasizedCategories();
-
-              var showIndicator = ynabToolKit.options.pacing;
-              if (showIndicator === '2') {
-                showIndicator = true;
-              } else {
-                showIndicator = false;
-              }
 
               // Select all budget table rows but not the uncategorized category and not master categories.
               $('.budget-table-row')
@@ -123,34 +149,32 @@
                       el.subCategoryId === subCategoryId;
                   }).length;
 
-                  var temperature;
-                  if (pace > 1) {
-                    temperature = 'cautious';
-                  } else {
-                    temperature = 'positive';
-                  }
+                  const showIndicator = ynabToolKit.options.pacing === '2';
+                  const showDays = ynabToolKit.options.pacing === '3';
 
                   var deemphasized = masterCategory.get('isDebtPaymentCategory') || $.inArray(masterCategoryDisplayName + '_' + subCategoryDisplayName, deemphasizedCategories) >= 0;
                   var display = Math.round((budgeted * timeSpent() - activity) * 1000);
-                  var tooltip;
+                  const displayInDays = getDaysAheadOfSchedule(display, budgeted, activity);
 
-                  if (display >= 0) {
-                    tooltip = 'In ' + transactionCount + ' transaction' + (transactionCount !== 1 ? 's' : '') +
-                      ' you have spent ' + ynabToolKit.shared.formatCurrency(display, false) +
-                      ' less than your available budget for this category ' + Math.round(timeSpent() * 100) +
-                      '% of the way through the month.&#13;&#13;' + (deemphasized ? 'Click to unhide.' : 'Click to hide.');
-                  } else if (display < 0) {
-                    tooltip = 'In ' + transactionCount + ' transaction' + (transactionCount !== 1 ? 's' : '') +
-                      ' you have spent ' + ynabToolKit.shared.formatCurrency(-display, false) +
-                      ' more than your available budget for this category ' + Math.round(timeSpent() * 100) +
-                      '% of the way through the month.&#13;&#13;' + (deemphasized ? 'Click to unhide.' : 'Click to hide.');
-                  }
+                  const days = Math.abs(displayInDays) === 1 ? 'day' : 'days';
+                  const formattedDisplay = showDays ? `${displayInDays} ${days}`
+                    : ynabToolKit.shared.formatCurrency(display, true);
 
-                  $(this).append('<li class="budget-table-cell-available budget-table-cell-pacing"><span title="' + tooltip +
-                               '" class="budget-table-cell-pacing-display currency ' + temperature +
-                               (deemphasized ? ' deemphasized' : '') + (showIndicator ? ' indicator' : '') +
-                               '" data-name="' + masterCategoryDisplayName + '_' + subCategoryDisplayName + '">' +
-                               ynabToolKit.shared.formatCurrency(display, true) + '</span></li>');
+                  const tooltip = getTooltip(display, displayInDays, transactionCount, deemphasized);
+                  const deemphasizedClass = deemphasized ? 'deemphasized' : '';
+                  const indicatorClass = showIndicator ? 'indicator' : '';
+                  const temperatureClass = (pace > 1) ? 'cautious' : 'positive';
+                  $(this).append(`
+                    <li class="budget-table-cell-available budget-table-cell-pacing">
+                      <span
+                        title="${tooltip}"
+                        class="budget-table-cell-pacing-display currency ${temperatureClass} ${deemphasizedClass} ${indicatorClass}"
+                        data-name="${masterCategoryDisplayName}_${subCategoryDisplayName}"
+                      >
+                        ${formattedDisplay}
+                      </span>
+                    </li>
+                  `);
                 });
 
               $('.budget-table-cell-pacing-display').click(function (e) {
