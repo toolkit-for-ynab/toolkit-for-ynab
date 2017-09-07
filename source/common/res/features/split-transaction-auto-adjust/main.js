@@ -73,7 +73,7 @@
 
       return {
         observe(changedNodes) {
-          var addTransactionSplit = changedNodes.has('button button-primary modal-account-categories-split-transaction ');
+          var addTransactionSplit = changedNodes.has('button button-primary modal-account-categories-split-transaction');
           var editSplitTransaction = changedNodes.has('ynab-grid-body-row ynab-grid-body-split is-editing');
           var splitTransactionNodeChanged = addTransactionSplit && !editSplitTransaction;
           var splitTransactionButton = $('.ynab-grid-split-add-sub-transaction').length !== 0;
