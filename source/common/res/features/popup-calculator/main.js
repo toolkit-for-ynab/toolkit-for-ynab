@@ -265,7 +265,7 @@
           // Handle mouse clicks outside the drop-down modal. Namespace the
           // click event so we can remove our specific instance.
           $(document).on('click.toolkitPopupCalc', (e) => {
-            if (e.target.id !== '' && e.target.id !== 'toolkitPopupCalc') {
+            if (e.target.id !== '' && e.target.id.slice(0, 16) !== 'toolkitPopupCalc') {
               dismissCalculator();
             }
           });
