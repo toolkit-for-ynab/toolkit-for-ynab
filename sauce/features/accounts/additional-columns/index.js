@@ -11,7 +11,15 @@ export class AdditionalColumns extends Feature {
     this.runningBalance = ynabToolKit.options.RunningBalance ? new RunningBalance() : new AdditionalColumnStub();
   }
 
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    let css = require('./index.css');
+
+    if (ynabToolKit.options.RunningBalance === '1') {
+      css += require('./highlight-negatives.css');
+    }
+
+    return css;
+  }
 
   willInvoke() {
     // any of the components added here must be loaded when YNAB loads. if they
