@@ -1,41 +1,48 @@
 #!/usr/bin/env node
 
-const execSync = require('child_process').execSync;
-var building = false;
-var rebuild = false;
+const spawn = require('child_process').spawn;
+let buildProcesses = [];
 
-var watcher = require('chokidar').watch('source/**',
-{
+var watcher = require('chokidar').watch([
+  'source/**',
+  'sauce/**'
+], {
   persistent: true,
   ignoreInitial: true,
-  ignored: ['**/allSettings.js', '**/feedChanges.js']
+  ignored: [
+    // all generated files need to be ignored
+    'sauce/features/index.js',
+    'source/**/allSettings.js',
+    'source/**/feedChanges.js',
+    'source/**/ynabToolkit.js',
+    'source/**/ynabToolkit.js.map',
+    'src/**/*'
+  ]
 });
 
 watcher.on('all', function (event, path) {
+  console.log(`Changes detected (${path}), rebuilding...`);
 
-  if (building) {
-    rebuild = true;
-    return;
+  if (buildProcesses.length) {
+    buildProcesses.forEach(proc => proc.kill());
   }
 
-  console.log('Changes detected, rebuilding...');
-
-  building = true;
-
-  execSync('./build', { stdio: [0, 1, 2] });
-
-  // In case we had a change while we were building.
-  while (rebuild) {
-    rebuild = false;
-
-    console.log('Changes detected, rebuilding...');
-
-    execSync('./build', { stdio: [0, 1, 2] });
-  }
-
-  building = false;
-
-  console.log('Watching for changes...');
+  spawnBuildProcess();
 });
 
-console.log('Watching for changes...');
+function spawnBuildProcess() {
+  const buildProcess = spawn('./build', {
+    stdio: [0, 1, 2]
+  });
+
+  buildProcess.on('close', (data) => {
+    if (data !== 0 && data !== null) {
+      console.log('Process exited with non-zero, retrying...');
+      spawnBuildProcess();
+    }
+
+    buildProcesses.splice(buildProcesses.indexOf(buildProcess), 1);
+  });
+
+  buildProcesses.push(buildProcess);
+}

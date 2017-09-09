@@ -58,7 +58,7 @@ Here's a full explanation of all the fields:
 | default     | This field tells the settings system what the default value for this setting should be. |
 | section     | This field tells the settings system which tab in the options page your setting should show up on. Acceptable values are "general", "budget" or "accounts". |
 | title       | This is the heading displayed to the user to describe your setting / feature. |
-| description | This is the help text that is shown underneath the setting. Please stay light on HTML here so if we decide to restyle the page we don't have to edit your settings file. |
+| description | This is the help text that is shown underneath the setting. While HTML is not allowed in this setting for security reasons (to prevent XSS attacks) markdown is supported. Markdown can be entered in this field but if it gets very complicated, consider creating a file in the feature directory named description.md put the markdown in it. If you enter your markdown in this field, use `\n` to indicate newlines and enter it all on one line. The text from that file will override anything in this field when the extension is built. If images are to be displayed, place them in the feature directory and reference them in the markdown with a path similar to this `/res/features/cool-feature/cool-feature-screenshot.png` Please use images sparingly and keep the image size as small as possible!  Checkout [Markdown Syntax](http://daringfireball.net/projects/markdown/syntax) for help on creating your markdown. |
 | actions     | This object defines what action to take whenever it finds a settings value. Values are converted to strings for this operation, so "true" and "false", or "0" etc for selects are the correct choice here. Possible values for actions are "injectCSS", "injectScript", and "injectJSString". Any files need to be referenced relative to the current directory. |
 
 Here's an example for a select setting. The only difference is the ```options``` key, which tells the settings system what options to show in the drop down, and then the actions and default use these values instead of "true" or "false":
@@ -137,7 +137,7 @@ It's also possible to have your single feature expose multiple settings, just pu
 
 How does this Magic Work?
 -------------------------
-There's a [python script](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/populateFeaturesFiles.py) that's invoked as part of the build process. It scans for these files and pulls them all into a single Javascript file, which is included in the extension. This saves us lots of time avoiding merge conflicts and makes building these features much easier as there's less code to write by hand.
+There's a [python script](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/generateFeedChanges.py) that's invoked as part of the build process. It scans for these files and pulls them all into a single Javascript file, which is included in the extension. This saves us lots of time avoiding merge conflicts and makes building these features much easier as there's less code to write by hand.
 
 
 What If I Can't Get My Setting to Work?

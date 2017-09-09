@@ -4,7 +4,6 @@
 // @include https://*.youneedabudget.com/*
 // @require res/features/allSettings.js
 // ==/UserScript==
-
 function injectCSS(path) {
   var link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
@@ -48,7 +47,7 @@ function applySettingsToDom() {
         data = '1';
       }
 
-      if (data in setting.actions) {
+      if (setting.actions && data in setting.actions) {
         var selectedActions = setting.actions[data.toString()];
         for (var i = 0; i < selectedActions.length; i += 2) {
           var action = selectedActions[i];
@@ -72,7 +71,6 @@ function applySettingsToDom() {
 
 /* Init ynabToolKit object and import options from Kango  */
 var options = {};
-
 function pushOption(setting) {
   return getKangoSetting(setting.name).then(function (data) {
     options[setting.name] = data;
@@ -80,7 +78,6 @@ function pushOption(setting) {
 }
 
 var optionsPromises = [];
-
 ynabToolKit.settings.forEach(function (setting) {
   optionsPromises.push(pushOption(setting));
 });
@@ -88,7 +85,12 @@ ynabToolKit.settings.forEach(function (setting) {
 Promise.all(optionsPromises).then(function () {
   let version = getKangoExtensionInfo().version;
 
-  injectJSString('window.ynabToolKit = { version: \'' + version + '\'}; ynabToolKit.options = ' + JSON.stringify(options) + '; Object.freeze(ynabToolKit.options); Object.seal(ynabToolKit.options);');
+  injectJSString(`
+    window.ynabToolKit = { version: '${version}'};
+    ynabToolKit.options = ${JSON.stringify(options)};
+    Object.freeze(ynabToolKit.options);
+    Object.seal(ynabToolKit.options);
+  `);
 
   /* Load this to setup shared utility functions */
   injectScript('res/features/shared/main.js');
@@ -101,6 +103,9 @@ Promise.all(optionsPromises).then(function () {
 
   /* Load this to setup behaviors when the DOM updates and shared functions */
   injectScript('res/features/act-on-change/main.js');
+
+  /* Load the ynabToolkit bundle */
+  injectScript('res/features/ynabToolkit.js');
 
   ensureDefaultsAreSet().then(applySettingsToDom);
 });

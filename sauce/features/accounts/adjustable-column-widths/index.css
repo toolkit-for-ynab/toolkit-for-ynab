@@ -1,0 +1,13 @@
+.toolkit-draggable {
+  display: inline-block;
+  right: 0;
+  position: absolute;
+  background: transparent;
+  width: 4px;
+  height: inherit;
+  cursor: col-resize;
+}
+
+.toolkit-reset-widths {
+  padding-top: .4em;
+}

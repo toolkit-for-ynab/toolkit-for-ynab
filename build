@@ -2,18 +2,32 @@
 
 set -e
 
-# Populate feature files like feed changes by reading thorugh the code and hooking up
-# all the calls we need, as well as processing settings files
-python populateFeaturesFiles.py
+echo "[   INFO] Build starting at $(date)"
 
-# Check our code style with jscs.
-echo "[   INFO] Checking code style with ESLint..."
-npm run eslint --silent || exit
+# Always start from a clean slate
+./clean
+
+# Generate the feedChanges file using all the legacy feature folders
+python generateFeedChanges.py
+
+# Generate legacy and new settings
+npm run gen-settings --silent || exit
+
+# Generate features/index.js for the new features
+npm run gen-featureIndex --silent || exit
+
+# Check legacy code with eslint
+echo "[   INFO] Checking legacy code style with ESLint..."
+npm run legacy-eslint --silent || exit
+
+# Run webpack to grab all new framework features
+echo "[   INFO] Webpacking new framework..."
+npm run webpack --silent || exit
 
 # Transpile the source/ directory, putting the files in src/ which is where Kango expects to see them.
-echo "[   INFO] Transpiling code with Babel on ES2015 preset..."
+echo "[   INFO] Transpiling legacy code with Babel on ES2015 preset..."
 rm -rf src
-npm run babel --silent || exit
+npm run legacy-babel --silent || exit
 
 # Copy any non JS files across that babel didn't bring with it. Ignore existing files we just transpiled.
 rsync -r --ignore-existing source/* src/
@@ -38,3 +52,5 @@ popd > /dev/null
 
 # Clean up.
 rm -rf src
+
+echo "[   INFO] Build finished at $(date)"

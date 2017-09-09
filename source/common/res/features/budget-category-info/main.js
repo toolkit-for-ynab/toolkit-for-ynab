@@ -66,7 +66,26 @@
 
       return {
         invoke() {
-          var categories = $('.budget-table ul');
+          var uncategorized = $('.budget-table-uncategorized-transactions');
+          $(uncategorized).each(function () {
+            var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
+            var classes = [];
+
+            // add available balance
+            var available = $(this).find('.budget-table-cell-available .currency').text();
+            if (ynab.unformat(available) < 0) {
+              classes.push('availablenegative');
+            } else if (ynab.unformat(available) > 0) {
+              classes.push('availablepositive');
+            } else {
+              classes.push('availablezero');
+            }
+
+            // set classes
+            setClasses(this, subCategoryName, classes);
+          });
+
+          var categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions');
           var masterCategoryName = '';
 
           if (subCats === null || subCats.length === 0 || loadCategories) {
@@ -92,11 +111,6 @@
             if ($(this).hasClass('is-sub-category')) {
               var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
               var classes = [];
-
-              // skip uncategorized
-              if (subCategoryName === 'Uncategorized Transactions') {
-                return;
-              }
 
               // add budgeted
               var budgeted = $(this).find('.budget-table-cell-budgeted .currency').text();
@@ -161,12 +175,24 @@
              */
             loadCategories = true;
           }
+        },
+
+        addBudgetVersionIdObserver() {
+          let applicationController = ynabToolKit.shared.containerLookup('controller:application');
+          applicationController.addObserver('budgetVersionId', function () {
+            Ember.run.scheduleOnce('afterRender', this, resetBudgetViewBudgetCategoryInfo);
+          });
+
+          function resetBudgetViewBudgetCategoryInfo() {
+            loadCategories = true;
+          }
         }
       };
     }()); // Keep feature functions contained within this object
 
     // Run once and activate setTimeOut()
     ynabToolKit.budgetCategoryInfo.invoke();
+    ynabToolKit.budgetCategoryInfo.addBudgetVersionIdObserver();
   } else {
     setTimeout(poll, 250);
   }

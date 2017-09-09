@@ -3,17 +3,15 @@
     ynabToolKit.resizeInspector = (function () {
       // Supporting functions,
       // or variables, etc
+
       return {
-        sectionWidth: '',
-        sectionWidthCollapsed: '',
+        asideWidth: '',
 
         invoke() {
-          let sectionWidth = ynabToolKit.shared.getToolkitStorageKey('budget-resize-inspector');
-          let sectionWidthCollapsed = parseInt(ynabToolKit.shared.getToolkitStorageKey('budget-resize-inspector')) + 220;
+          let asideWidth = ynabToolKit.shared.getToolkitStorageKey('budget-resize-inspector');
 
-          if (typeof sectionWidth !== 'undefined' && sectionWidth !== null) {
-            ynabToolKit.resizeInspector.sectionWidth = sectionWidth;
-            ynabToolKit.resizeInspector.sectionWidthCollapsed = parseInt(sectionWidth) + 220;
+          if (typeof asideWidth !== 'undefined' && asideWidth !== null) {
+            ynabToolKit.resizeInspector.asideWidth = asideWidth;
           }
 
           if ($('.ember-view.content .budget-inspector').length > 0) {
@@ -26,28 +24,23 @@
                 resizeHeight: false,
                 maxWidth: 1400,
                 onDragEnd: () => {
-                  let width = $('section').css('width').match(/.[^px]*/);
+                  asideWidth = parseInt($('aside').width());
 
-                  if (!$('.layout.collapsed').length) {
-                    // save values based on non-collapsed layout
-                    ynabToolKit.shared.setToolkitStorageKey('budget-resize-inspector', width);
-                    ynabToolKit.resizeInspector.sectionWidth = width;
-                    ynabToolKit.resizeInspector.sectionWidthCollapsed = parseInt(width) + 220;
-                  } else {
-                    // save values based on collapsed layout
-                    ynabToolKit.shared.setToolkitStorageKey('budget-resize-inspector', parseInt(width) - 220);
-                    ynabToolKit.resizeInspector.sectionWidth = parseInt(width) - 220;
-                    ynabToolKit.resizeInspector.sectionWidthCollapsed = width;
-                  }
+                  ynabToolKit.shared.setToolkitStorageKey('budget-resize-inspector', asideWidth);
+                  ynabToolKit.resizeInspector.asideWidth = asideWidth;
                 }
               });
 
-              if (sectionWidth !== '') {
-                if (ynabToolKit.options.collapseSideMenu && $('.layout.collapsed').length) {
-                  $('section').css('width', sectionWidthCollapsed);
-                } else {
-                  $('section').css('width', sectionWidth);
-                }
+              if (asideWidth !== '') {
+                $('section').css('width', ynabToolKit.resizeInspector.getContentSize(false));
+                // react to changed window size
+                $(window).resize(function () {
+                  if ($('.layout.collapsed').length) {
+                    $('section').css('width', ynabToolKit.resizeInspector.getContentSizeCollapsed());
+                  } else {
+                    $('section').css('width', ynabToolKit.resizeInspector.getContentSize(false));
+                  }
+                });
               }
             }
           } else {
@@ -55,12 +48,21 @@
           }
         },
 
-        getContentSize() {
-          return ynabToolKit.resizeInspector.sectionWidth;
+        getContentSize(externalCall) {
+          var headerWidth = parseInt($('header').css('width').match(/.[^px]*/));
+          var resizeHandleWidth = 13;
+          var sectionWidth = parseInt(headerWidth) - parseInt(resizeHandleWidth) - ynabToolKit.resizeInspector.asideWidth - 21.2; // don't know why 21.2, but it works
+
+          // Only subtract the 220 if this function was called externally.
+          if ($('.layout.collapsed').length & externalCall) {
+            // calculate non-collapsed layout
+            sectionWidth -= 220;
+          }
+          return sectionWidth;
         },
 
         getContentSizeCollapsed() {
-          return ynabToolKit.resizeInspector.sectionWidthCollapsed;
+          return ynabToolKit.resizeInspector.getContentSize(false) + 220;
         },
 
         observe(changedNodes) {

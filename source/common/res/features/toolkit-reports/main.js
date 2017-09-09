@@ -1,4 +1,6 @@
 /* eslint-disable no-multi-str */
+const YNAB_CONTENT_CONTAINER_SELECTOR = 'div.ynab-u.content';
+const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
 
 (function poll() {
   let allReportsReady = true;
@@ -40,7 +42,7 @@
         $('.nav-main > li:eq(1)').after(
           $('<li>').append(
             $('<li>', { class: 'ember-view ynabtk-navlink-reports' }).append(
-              $('<a>', { href: '#' }).append(
+              $('<a>', { class: 'ynabtk-navlink-reports-link' }).append(
                 $('<span>', { class: 'ember-view flaticon stroke document-4' })
               ).append(
                 (ynabToolKit.l10nData && ynabToolKit.l10nData['sidebar.reports']) || 'Toolkit Reports'
@@ -49,10 +51,14 @@
           )
         );
 
+        $('.ynabtk-navlink-reports-link').click((event) => {
+          event.preventDefault();
+        });
+
         $('.ynabtk-navlink-reports').on('click', showReports);
       }
 
-      function buildReportsPage($pane) {
+      function buildReportsPage($pane, transactionsViewModel) {
         if ($('.ynabtk-reports').length) return;
 
         updateNavigation();
@@ -93,7 +99,7 @@
             .append('<div class="ynabtk-reports-data"></div>')
         );
 
-        generateDateSlider();
+        generateDateSlider(transactionsViewModel);
         generateQuickDateFilters();
       }
 
@@ -144,7 +150,7 @@
       }
 
       function generateDateSlider() {
-        monthLabels = ynabToolKit.reports.generateMonthLabelsFromFirstTransaction(allTransactions);
+        monthLabels = ynabToolKit.reports.generateMonthLabelsFromFirstOfTransactions(allTransactions);
 
         // if we only have one or no months of data that we should just hide the slider
         // return early so we don't even try to initialize the slider
@@ -482,10 +488,10 @@
             });
 
             // clear out the content and put ours in there instead.
-            buildReportsPage($('div.scroll-wrap').closest('.ember-view'));
+            buildReportsPage($(YNAB_CONTENT_CONTAINER_SELECTOR), transactionsViewModel);
 
             // The budget header is absolute positioned
-            $('.budget-header, .scroll-wrap').hide();
+            $(YNAB_NATIVE_CONTENT_SELECTOR).hide();
 
             // grab the value of the current-report inside localStorage
             let storedCurrentReport = ynabToolKit.shared.getToolkitStorageKey('current-report');
@@ -530,7 +536,7 @@
             $('.ynabtk-reports').remove();
 
             // And restore the YNAB stuff we hid earlier
-            $('.budget-header, .scroll-wrap').show();
+            $(YNAB_NATIVE_CONTENT_SELECTOR).show();
           }
 
           // if YNAB overwrites the sidebar-contents just make sure the report button
@@ -541,47 +547,38 @@
         },
 
         formatTransactionDatel8n(transaction) {
-          let nativeDate = transaction.get('date').toNativeDate();
-          return this.formatDatel8n(nativeDate);
+          return this.formatDatel8n(transaction.get('date'));
         },
 
         formatDatel8n(date) {
-          let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date, 'MMM YYYY');
+          // Ensure we're always dealing with moment objects.
+          date = typeof date.format === 'function' ? date : moment(date);
+
+          // Get the English name for the date.
+          let formattedDate = date.format('MMM YYYY');
 
           // now split it with year and month so that we can get the localized version of the month
           let year = formattedDate.split(' ')[1];
           let month = formattedDate.split(' ')[0];
           month = (ynabToolKit.l10nData && ynabToolKit.l10nData['months.' + month]) || month;
-          formattedDate = month + ' ' + year;
 
           // finally, return the l8n date.
-          return formattedDate;
+          return `${month} ${year}`;
         },
 
-        generateMonthLabelsFromFirstTransaction(transactions, endWithLastTransaction) {
+        generateMonthLabelsFromFirstOfTransactions(transactions, endWithLastTransaction) {
           let monthLabelsForTransaction = [];
           // grab the current month, this is the last label of our slider
           let endMonth = new Date().getMonth();
           let endYear = new Date().getFullYear();
 
           if (endWithLastTransaction) {
-            let lastTransaction;
-            for (var i = transactions.length - 1; i >= 0; i--) {
-              lastTransaction = transactions[i];
-              if (!lastTransaction.get('isTombstone') && !lastTransaction.get('isScheduledTransaction')) break;
-            }
-
-            let lastTransactionDate = lastTransaction ? lastTransaction.get('date') : undefined;
+            let lastTransactionDate = transactions[transactions.length - 1].get('date');
             endMonth = lastTransactionDate ? lastTransactionDate.getMonth() : endMonth;
             endYear = lastTransactionDate ? lastTransactionDate.getYear() : endYear;
           }
 
-          // find the first non-tombstoned, non scheduled transaction.
-          let firstTransaction = transactions.find((transaction) =>
-            !transaction.get('isTombstone') && !transaction.get('isScheduledTransaction'));
-
-          // grab the date from that transaction
-          let firstTransactionDate = firstTransaction ? firstTransaction.get('date') : undefined;
+          let firstTransactionDate = transactions[0].get('date');
           let currentLabelMonth = firstTransactionDate ? firstTransactionDate.getMonth() : endMonth;
           let currentLabelYear = firstTransactionDate ? firstTransactionDate.getYear() : endYear;
 
