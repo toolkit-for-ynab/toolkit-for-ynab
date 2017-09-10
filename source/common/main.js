@@ -107,5 +107,10 @@ Promise.all(optionsPromises).then(function () {
   /* Load the ynabToolkit bundle */
   injectScript('res/features/ynabToolkit.js');
 
+  /* Putting this code here temporarily. Once the resize-inspector feature
+     is refactored to be saucy, the call should be moved to the
+     resize-insptector willInvoke() function. */
+  injectJSString('window.resizeInspectorAsset = "' + kango.io.getResourceUrl('assets/vsizegrip.png') + '";');
+
   ensureDefaultsAreSet().then(applySettingsToDom);
 });

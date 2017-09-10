@@ -1,8 +1,19 @@
+:root {
+  --tlkt-btc-width: 0px; /* budget-table-container */
+}
+
 .budget-table {
   position: static !important;
   overflow: scroll;
-  height: calc(100% - 24.5px); /* The header is now 24.5px high, which pushes the bottom row below
+  height: 100%;
+  /*height: calc(100% - 24.5px);*/ /* The header is now 24.5px high, which pushes the bottom row below
                                   the bottom of the resizable parent unless we pull it back out. */
+}
+
+.budget-table-containerx {
+  top: 9.5rem;
+  /* width: calc(100% - 290px); */
+  width: calc(100% - var(--tlkt-btc-width));
 }
 
 .budget-content {
@@ -10,7 +21,7 @@
   padding-top: 8em;
   position: static !important;
   flex: 0 0 auto;
-  width: 67%;
+  bottom: 0;
   overflow: hidden;
 }
 
@@ -37,6 +48,7 @@
   min-width: 13px;
   background: #e5f5f9 no-repeat center center;
   cursor: col-resize;
+  z-index: 999;
 }
 
 .inspector-resize-handle:hover {
