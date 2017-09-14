@@ -1,8 +1,7 @@
-import Feature from 'core/feature';
+import { Feature } from 'core/feature';
 import * as toolkitHelper from 'helpers/toolkit';
 
-export default class CategoryActivityCopy extends Feature {
-
+export class CategoryActivityCopy extends Feature {
   shouldInvoke() {
     return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1;
   }
