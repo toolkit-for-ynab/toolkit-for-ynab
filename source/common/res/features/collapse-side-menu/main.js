@@ -8,8 +8,8 @@
 
       return {
         collapseBtn:
-        $('<li>', { class: 'ember-view navlink-collapse' }).append(
-          $('<a>', { href: '#' }).append(
+        $('<li>', { class: 'ember-view ynabtk-navlink-collapse' }).append(
+          $('<a>', { class: 'ynabtk-collapse-link' }).append(
             $('<span>', { class: 'ember-view flaticon stroke left-circle-4' })
           ).append(
             (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.collapse']) || 'Collapse'
@@ -54,11 +54,11 @@
           if (changedNodes.has('nav-main')) {
             var numNavLinks = $('.nav-main').children().length;
             var collapseIndex = $('.nav-main').children()
-              .index($('.navlink-collapse'));
+              .index($('.ynabtk-navlink-collapse'));
             var numCollapsedLinks = $('.collapsed-buttons').children().length;
 
             if (numNavLinks > (collapseIndex + 1) || numNavLinks > numCollapsedLinks) {
-              $('.navlink-collapse').remove();
+              $('.ynabtk-navlink-collapse').remove();
 
               ynabToolKit.collapseSideMenu.setUpCollapseBtn();
               ynabToolKit.collapseSideMenu.setUpCollapsedButtons();
@@ -69,7 +69,7 @@
         // Add buttons and handlers to screen
         setupBtns() {
           // Don't proceed if buttons already exist
-          if ($('.navlink-collapse').is(':visible') ||
+          if ($('.ynabtk-navlink-collapse').is(':visible') ||
               $('.navbar-expand').is(':visible')) {
             return;
           }
@@ -80,7 +80,7 @@
 
         setUpCollapseBtn() {
           $('.nav-main').append(ynabToolKit.collapseSideMenu.collapseBtn);
-          $('body').on('click', '.navlink-collapse', function () {
+          $('body').on('click', '.ynabtk-navlink-collapse', function () {
             ynabToolKit.collapseSideMenu.collapseMenu();
           });
         },
@@ -117,7 +117,7 @@
             var child = navChildren[i];
 
             // If this is the collapse button, skip
-            if (child.className.indexOf('navlink-collapse') > -1) {
+            if (child.className.indexOf('ynabtk-navlink-collapse') > -1) {
               continue;
             }
 
@@ -177,7 +177,7 @@
         expandMenu(originalSizes) {
           $('.collapsed-buttons').hide();
           $('.sidebar > .ember-view').fadeIn();
-          $('.navlink-collapse').show();
+          $('.ynabtk-navlink-collapse').show();
 
           $('.sidebar').animate({ width: originalSizes.sidebarWidth });
           $('.content').animate({ left: originalSizes.contentLeft }, function () {
@@ -188,13 +188,13 @@
           if ($('.budget-content').is(':visible')) {
             if (ynabToolKit.options.resizeInspector) {
               $('.budget-content').animate({ width: ynabToolKit.resizeInspector.getContentSize(true) }, 400, 'swing', function () {
-                $('.navlink-collapse').removeClass('collapsed').addClass('expanded');
+                $('.ynabtk-navlink-collapse').removeClass('collapsed').addClass('expanded');
               });
             } else {
               // if resize-inspector feature not on
               $('.budget-content').animate({ width: originalSizes.contentWidth }, 400, 'swing', function () {
                 $('.budget-content').removeAttr('style');
-                $('.navlink-collapse').removeClass('collapsed').addClass('expanded');
+                $('.ynabtk-navlink-collapse').removeClass('collapsed').addClass('expanded');
               });
               $('.budget-inspector').animate({ width: originalSizes.inspectorWidth });
             }
@@ -206,7 +206,7 @@
           // resize-inspector feature could have changed these so fetch current sizes.
           ynabToolKit.collapseSideMenu.setOriginalSizes();
           ynabToolKit.collapseSideMenu.setActiveButton($('.nav-main li.active').attr('class'));
-          $('.navlink-collapse').hide();
+          $('.ynabtk-navlink-collapse').hide();
           $('.sidebar > .ember-view').hide();
           $('.collapsed-buttons').fadeIn();
 
@@ -218,7 +218,7 @@
             // We don't use these in our CSS, it's mostly so other features can observe
             // for collapse/expand and update sizes / do whatever. E.g. reports needs
             // to resize its canvas when this happens.
-            $('.navlink-collapse').removeClass('expanded').addClass('collapsed');
+            $('.ynabtk-navlink-collapse').removeClass('expanded').addClass('collapsed');
             $('.layout').addClass('collapsed');
           });
 

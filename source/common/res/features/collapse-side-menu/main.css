@@ -1,3 +1,7 @@
+.ynabtk-navlink-collapse {
+  cursor: pointer;
+}
+
 .layout.collapsed .content,
 .layout.collapsed .budget-header {
 	left: 40px;
