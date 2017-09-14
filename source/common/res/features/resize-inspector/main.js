@@ -14,9 +14,9 @@
             ynabToolKit.resizeInspector.asideWidth = asideWidth;
           }
 
-          if ($('.ember-view.content .budget-inspector').length > 0) {
+          if ($('.ember-view .budget-inspector').length > 0) {
             if ($('.resize-inspector').length === 0) {
-              $('.ember-view.content .scroll-wrap').addClass('resize-inspector');
+              $('.ember-view .scroll-wrap').addClass('resize-inspector');
               $('aside').before('<div class="inspector-resize-handle">&nbsp;</div>');
               $('.inspector-resize-handle').css('background-image', 'url(' + window.resizeInspectorAsset + ')');
               $('section').resizable({
@@ -28,6 +28,9 @@
 
                   ynabToolKit.shared.setToolkitStorageKey('budget-resize-inspector', asideWidth);
                   ynabToolKit.resizeInspector.asideWidth = asideWidth;
+
+                  let wdth = $('.budget-content').css('width');
+                  $('.budget-table-container').css({ width: wdth, top: '9.5rem' });
                 }
               });
 
@@ -41,6 +44,9 @@
                     $('section').css('width', ynabToolKit.resizeInspector.getContentSize(false));
                   }
                 });
+
+                let wdth = $('.budget-content').css('width');
+                $('.budget-table-container').css({ width: wdth, top: '9.5rem' });
               }
             }
           } else {
