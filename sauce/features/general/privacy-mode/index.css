@@ -1,0 +1,65 @@
+.toolkit-privacyMode .currency,
+.toolkit-privacyMode .button-prefs-user,
+
+.toolkit-privacyMode .reports-inspector .currency,
+
+.toolkit-privacyMode .ynabtk-category-entry-amount,
+.toolkit-privacyMode .ynabtk-payee-entry-amount,
+.toolkit-privacyMode .ynabtk-tbody .col-data,
+.toolkit-privacyMode .net-income .ynabtk-header-row .col-data,
+.toolkit-privacyMode .ynabtk-footer-row .col-data {
+  filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="3" /></filter></svg>#filter');
+  -webkit-filter: blur(10px);
+  filter: blur(10px);
+}
+
+.toolkit-privacyMode .button-prefs-user:hover,
+.toolkit-privacyMode *:hover > .currency,
+.toolkit-privacyMode *:hover > * > .currency,
+.toolkit-privacyMode .currency:hover,
+
+.toolkit-privacyMode .c3-tooltip-container .currency,
+
+.toolkit-privacyMode .ynabtk-category-entry:hover .ynabtk-category-entry-amount,
+.toolkit-privacyMode .ynabtk-payee-entry:hover .ynabtk-payee-entry-amount,
+.toolkit-privacyMode .ynabtk-tbody .col-data:hover,
+.toolkit-privacyMode .net-income .ynabtk-header-row .col-data:hover,
+.toolkit-privacyMode .ynabtk-footer-row .col-data:hover {
+  -webkit-filter: initial;
+  filter: initial;
+}
+
+/* YNAB Reports: Spending */
+.toolkit-privacyMode .c3-chart-arcs .c3-chart-arcs-title tspan:last-child,
+.toolkit-privacyMode .c3-axis-y text tspan {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+.toolkit-privacyMode .c3-chart-arcs .c3-chart-arcs-title:hover tspan:last-child,
+.toolkit-privacyMode .c3-axis-y:hover text tspan {
+    color: #0d233a !important;
+    fill: #0d233a !important;
+}
+
+/* Toolkit Reports: Net Worth */
+.toolkit-privacyMode .highcharts-yaxis-labels text tspan {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+.toolkit-privacyMode .highcharts-yaxis-labels:hover text tspan {
+    fill: #606060 !important;
+    color: #606060 !important;
+}
+
+/* Toolkit Reports: Spending by category, payee */
+.toolkit-privacyMode .highcharts-title tspan:last-child,
+.toolkit-privacyMode .highcharts-data-labels text tspan:last-child {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.toolkit-privacyMode .highcharts-title:hover tspan:last-child,
+.toolkit-privacyMode .highcharts-data-labels text:hover tspan:last-child {
+    color: #0d233a !important;
+    fill: #0d233a !important;
+}
