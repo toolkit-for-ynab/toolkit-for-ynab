@@ -11,20 +11,24 @@ Browser Version:
 Other Extensions:
 
 # Export of Toolkit Settings (Bottom Left of Settings Page)
+<details>
+<summary>Settings Export</summary>
+
 ```
 [paste settings here]
 ```
+</details>
 
 # Steps to Reproduce the Behavior
-Please write down the steps necessary to reproduce the behavior you're seeing. Please be as thorough as possible.
+<!-- Please write down the steps necessary to reproduce the behavior you're seeing. Please be as thorough as possible. -->
 
 1. ​
 2. ​
 3. ​
 
 # Expected Behavior
-What did you expect would happen after completing the steps?
+<!-- What did you expect would happen after completing the steps? -->
 
 
 # Actual Behavior
-What actually happened after you completed the steps.
+<!-- What actually happened after you completed the steps. -->
