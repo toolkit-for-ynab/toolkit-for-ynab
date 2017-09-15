@@ -15,6 +15,7 @@ const legacySettingMap = {
   BetterScrollbars: 'betterScrollbars',
   ChangeEnterBehavior: 'changeEnterBehavior',
   CheckNumbers: 'checkNumbers',
+  ClearSelection: 'accountsClearSelection',
   ColourBlindMode: 'colourBlindMode',
   EmphasizedOutflows: 'accountsEmphasizedOutflows',
   GoalWarningColor: 'goalWarningColor',
