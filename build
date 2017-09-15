@@ -11,23 +11,23 @@ echo "[   INFO] Build starting at $(date)"
 python generateFeedChanges.py
 
 # Generate legacy and new settings
-npm run gen-settings --silent || exit
+yarn gen-settings || exit
 
 # Generate features/index.js for the new features
-npm run gen-featureIndex --silent || exit
+yarn gen-featureIndex || exit
 
 # Check legacy code with eslint
 echo "[   INFO] Checking legacy code style with ESLint..."
-npm run legacy-eslint --silent || exit
+yarn legacy-eslint || exit
 
 # Run webpack to grab all new framework features
 echo "[   INFO] Webpacking new framework..."
-npm run webpack --silent || exit
+yarn webpack || exit
 
 # Transpile the source/ directory, putting the files in src/ which is where Kango expects to see them.
 echo "[   INFO] Transpiling legacy code with Babel on ES2015 preset..."
 rm -rf src
-npm run legacy-babel --silent || exit
+yarn legacy-babel || exit
 
 # Copy any non JS files across that babel didn't bring with it. Ignore existing files we just transpiled.
 rsync -r --ignore-existing source/* src/
