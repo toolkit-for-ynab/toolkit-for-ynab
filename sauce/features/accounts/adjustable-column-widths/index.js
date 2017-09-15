@@ -21,16 +21,12 @@ const RESIZABLES = [
 export class AdjustableColumnWidths extends Feature {
   injectCSS() { return require('./index.css'); }
 
-  constructor() {
-    super();
-    this.elementWasDragged = false;
-    this.isMouseDown = false;
-    this.currentX = null;
-  }
+  elementWasDragged = false;
+  isMouseDown = false;
+  currentX = null;
 
   shouldInvoke() {
-    // don't say we should be invoked unless the feature is also active
-    return getCurrentRouteName().indexOf('account') !== -1 && this.settings.enabled;
+    return getCurrentRouteName().indexOf('account') !== -1;
   }
 
   onMouseMove(event) {
