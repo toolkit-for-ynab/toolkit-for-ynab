@@ -21,11 +21,15 @@ module.exports = {
       }]
     }, {
       test: /\.js$/,
+      exclude: /(node_modules|bower_components)/,
       include: [
         path.resolve(__dirname, 'sauce')
       ],
       use: [{
-        loader: 'babel-loader?presets[]=es2016'
+        loader: 'babel-loader',
+        options: {
+          presets: ['env']
+        }
       }]
     }, {
       test: /\.css$/,
