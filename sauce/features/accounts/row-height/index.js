@@ -23,7 +23,7 @@ export class RowHeight extends Feature {
     // activity-transaction-link feature is active we do need to set the record height
     // because it uses the value to scroll the "selected transaction" to the top of the
     // register.
-    if (ynabToolKit.options.activityTransactionLink) {
+    if (ynabToolKit.options.ActivityTransactionLink) {
       let ynabGridContainer = getEmberView($('.ynab-grid-container').attr('id'));
 
       // Will be undefined when YNAB is loaded going directly to the budget screen.
