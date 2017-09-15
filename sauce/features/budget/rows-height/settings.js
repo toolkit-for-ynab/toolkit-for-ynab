@@ -10,5 +10,5 @@ module.exports = {
     { name: 'Compact', value: '1' },
     { name: 'Slim', value: '2' },
     { name: 'Slim with smaller font', value: '3' }
-  ],
+  ]
 };

@@ -9,11 +9,12 @@
         var transactions = entityManager.getAllTransactions();
         var outflowTransactions = transactions.filter(function (el) {
           return !el.isTombstone &&
-          el.transferAccountId === null &&
-          el.amount < 0 &&
-          el.payeeId !== null &&
-          el.getPayee().internalName !== 'StartingBalancePayee' &&
-        el.getAccount().onBudget; });
+            el.transferAccountId === null &&
+            el.amount < 0 &&
+            el.payeeId !== null &&
+            el.getPayee().internalName !== 'StartingBalancePayee' &&
+            el.getAccount().onBudget;
+        });
 
         // Filter outflow transactions by Date for history lookup option.
         if (ynabToolKit.options.daysOfBufferingHistoryLookup > 0) {
@@ -60,14 +61,14 @@
             // Create an element for DoB in the header if doesn't exist.
             if (typeof elementForDoB === 'undefined') {
               elementForDoB = document.getElementsByClassName('budget-header-days')[0]
-                                      .cloneNode(true);
+                .cloneNode(true);
 
               elementForDoB.className = elementForDoB.className + ' days-of-buffering';
               elementForDoB.children[1].textContent = (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.DoB']) || 'Days of Buffering';
               elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
 
               document.getElementsByClassName('budget-header-flexbox')[0]
-                      .appendChild(elementForDoB);
+                .appendChild(elementForDoB);
             }
 
             // Calculate and set DoB.
@@ -89,9 +90,9 @@
               // }
               elementForDoB.children[0].textContent = calculation.DoB + ' ' + dayText;
               elementForDoB.children[0].title = 'Total outflow: ' + ynab.YNABSharedLib.currencyFormatter.format(calculation.totalOutflow) +
-                  '\nTotal days of budgeting: ' + calculation.totalDays +
-                  '\nAverage daily outflow: ~' + ynab.YNABSharedLib.currencyFormatter.format(calculation.averageDailyOutflow) +
-                  '\nAverage daily transactions: ' + calculation.averageDailyTransactions.toFixed(1);
+                '\nTotal days of budgeting: ' + calculation.totalDays +
+                '\nAverage daily outflow: ~' + ynab.YNABSharedLib.currencyFormatter.format(calculation.averageDailyOutflow) +
+                '\nAverage daily transactions: ' + calculation.averageDailyTransactions.toFixed(1);
             }
           }
         },
@@ -100,8 +101,8 @@
           // User has returned back to the budget screen
           // User switch budget month
           if (changedNodes.has('budget-header-flexbox') ||
-              changedNodes.has('budget-table') ||
-              changedNodes.has('layout user-logged-in')) {
+            changedNodes.has('budget-table') ||
+            changedNodes.has('layout user-logged-in')) {
             ynabToolKit.daysOfBuffering.invoke();
           }
         }

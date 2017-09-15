@@ -88,14 +88,14 @@ ynabToolKit.shared = (function () {
         transactionDateUTC = transactionDate.getUTCTime();
         shouldFilter = transactionIsTombstone ? false :
           (startDateUTC && startDateUTC > transactionDateUTC || endDateUTC && transactionDateUTC >= endDateUTC ? false :
-          accountShowReconciled === false && transactionCleared === ynab.constants.TransactionState.Reconciled ? false :
-          accountShowWithNotifications === 'needsApproval' && !transactionNeedsApproval ||
-          accountShowWithNotifications === 'needsCategory' && (!transactionNeedsCategory || transactionNeedsApproval) ? false :
-          transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.ScheduledTransaction ? (accountShowScheduled && (singleOccurranceTransactions.push(transaction),
-          scheduledTransactions[transactionEntityId] = transaction), false) :
-          transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.SubTransaction || transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction ? (parentEntityId = transaction.get('parentEntityId'),
-          Array.isArray(subTransactions[parentEntityId]) || (subTransactions[parentEntityId] = []), subTransactions[parentEntityId].push(transaction), false) :
-          (transactionIsSplit && (scheduledTransactions[transactionEntityId] = transaction), true));
+            accountShowReconciled === false && transactionCleared === ynab.constants.TransactionState.Reconciled ? false :
+              accountShowWithNotifications === 'needsApproval' && !transactionNeedsApproval ||
+                accountShowWithNotifications === 'needsCategory' && (!transactionNeedsCategory || transactionNeedsApproval) ? false :
+                transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.ScheduledTransaction ? (accountShowScheduled && (singleOccurranceTransactions.push(transaction),
+                  scheduledTransactions[transactionEntityId] = transaction), false) :
+                  transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.SubTransaction || transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction ? (parentEntityId = transaction.get('parentEntityId'),
+                    Array.isArray(subTransactions[parentEntityId]) || (subTransactions[parentEntityId] = []), subTransactions[parentEntityId].push(transaction), false) :
+                    (transactionIsSplit && (scheduledTransactions[transactionEntityId] = transaction), true));
 
         return shouldFilter;
       });
@@ -124,7 +124,7 @@ ynabToolKit.shared = (function () {
 
               // eslint-disable-next-line no-unused-expressions
               subTransaction.get('isTombstone') || (subTransactionsAdded++,
-              addSubTransactionToVisibleTransactions(subTransactionsAdded + transactionPosition, subTransaction));
+                addSubTransactionToVisibleTransactions(subTransactionsAdded + transactionPosition, subTransaction));
             }
           }
         }
@@ -167,10 +167,10 @@ ynabToolKit.shared = (function () {
         }
 
         jQueryElement.append($('<bdi>', { text: currency.currency_symbol }))
-                     .append(formatted);
+          .append(formatted);
       } else {
         jQueryElement.append(formatted)
-                     .append($('<bdi>', { text: currency.currency_symbol }));
+          .append($('<bdi>', { text: currency.currency_symbol }));
       }
 
       return jQueryElement;
@@ -352,7 +352,7 @@ ynabToolKit.shared = (function () {
         '=': '&#x3D;'
       };
 
-      return String(htmlString).replace(/[&<>"'`=\/]/g, function fromEntityMap(s) {
+      return String(htmlString).replace(/[&<>"'`=/]/g, function fromEntityMap(s) {
         return entityMap[s];
       });
     },
@@ -363,11 +363,11 @@ ynabToolKit.shared = (function () {
     },
 
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-       ],
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ],
     monthsFull: ['January', 'February', 'March', 'April', 'May', 'June',
-         'July', 'August', 'September', 'October', 'November', 'December'
-       ]
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ]
   };
 }()); // Keep feature functions contained within this object
 
@@ -375,8 +375,8 @@ ynabToolKit.shared = (function () {
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' &&
-      typeof $ !== 'undefined' && $('.ember-view.layout').length &&
-      typeof ynabToolKit !== 'undefined') {
+    typeof $ !== 'undefined' && $('.ember-view.layout').length &&
+    typeof ynabToolKit !== 'undefined') {
     ynabToolKit.pageReady = true;
 
     let latestVersion = ynabToolKit.shared.getToolkitStorageKey('latest-version');

@@ -5,12 +5,13 @@
   "devDependencies": {
     "babel-cli": "^6.7.7",
     "babel-core": "^6.22.1",
+    "babel-eslint": "7",
     "babel-loader": "^6.2.10",
-    "babel-preset-es2016": "^6.22.0",
+    "babel-preset-env": "^1.6.0",
     "chokidar": "^1.6.0",
     "colors": "^1.1.2",
     "css-loader": "^0.28.4",
-    "eslint": "^2.13.1",
+    "eslint": "3.x",
     "eslint-config-airbnb-base": "^3.0.1",
     "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-loader": "^1.6.1",
@@ -22,8 +23,8 @@
   "scripts": {
     "develop": "./watch",
     "webpack": "webpack",
-    "legacy-eslint": "eslint -c .eslintrc.js --ignore-path .eslintignore ./source",
-    "legacy-eslint-fix": "eslint -c .eslintrc.js --ignore-path .eslintignore ./ --fix",
+    "legacy-eslint": "eslint --ignore-path .eslintignore ./source",
+    "legacy-eslint-fix": "eslint --ignore-path .eslintignore ./ --fix",
     "legacy-babel": "babel source --compact false --quiet --ignore source/common/res/features/lib/*,source/common/assets/*,*.min.js --out-dir src",
     "gen-settings": "node tasks/generateSettings",
     "gen-featureIndex": "node tasks/generateFeatureIndex",
@@ -31,7 +32,16 @@
   },
   "babel": {
     "presets": [
-      "es2016"
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "last 2 versions"
+            ]
+          }
+        }
+      ]
     ]
   },
   "defaultFeatures": [
