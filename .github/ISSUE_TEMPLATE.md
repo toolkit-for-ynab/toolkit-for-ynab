@@ -15,7 +15,9 @@ Other Extensions:
 <summary>Settings Export</summary>
 
 ```
+
 [paste settings here]
+
 ```
 </details>
 
