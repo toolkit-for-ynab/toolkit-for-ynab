@@ -11,6 +11,7 @@ const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
 const legacySettingMap = {
   AccountsDisplayDensity: 'accountsDisplayDensity',
+  ActivityTransactionLink: 'activityTransactionLink',
   AutoCloseReconcile: 'closeReconcileWindow',
   BetterScrollbars: 'betterScrollbars',
   ChangeEnterBehavior: 'changeEnterBehavior',
