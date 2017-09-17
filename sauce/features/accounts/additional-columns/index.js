@@ -8,7 +8,7 @@ export class AdditionalColumns extends Feature {
   constructor() {
     super();
     this.checkNumbers = ynabToolKit.options.CheckNumbers ? new CheckNumbers() : new AdditionalColumnStub();
-    this.runningBalance = ynabToolKit.options.RunningBalance ? new RunningBalance() : new AdditionalColumnStub();
+    this.runningBalance = ynabToolKit.options.RunningBalance !== '0' ? new RunningBalance() : new AdditionalColumnStub();
   }
 
   injectCSS() {
