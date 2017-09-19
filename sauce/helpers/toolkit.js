@@ -29,6 +29,10 @@ export function getCurrentDate(format) {
   return ynabDate(format, false);
 }
 
+export function getRouter() {
+  return containerLookup('router:main');
+}
+
 export function formatCurrency(value) {
   const { currencyFormatter } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
   const userCurrency = currencyFormatter.getCurrency();
@@ -45,6 +49,10 @@ export function formatCurrency(value) {
   }
 
   return formattedCurrency;
+}
+
+export function getEntityManager() {
+  return ynab.YNABSharedLib.defaultInstance.entityManager;
 }
 
 export function getToolkitStorageKey(key, type) {
