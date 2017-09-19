@@ -1,4 +1,56 @@
 /*Global toolkit css.*/
 .hidden {
-    display: none;
+  display: none;
+}
+.modal-overlay {
+  background-color: rgba(0,0,0,0.5) !important;
+}
+.modal {
+  height: auto;
+  width: 47em !important;
+  padding: 2em !important;
+  top: 20% !important;
+  left: 35% !important;
+}
+.modal a {
+  color: #009cc2;
+}
+.modal-header {
+  padding: 0 0 1.25em 0 !important;
+}
+.modal-header div {
+  text-align: center;
+}
+.modal-header div img {
+  width: 200px;
+}
+.modal-content {
+  padding: 0.5em 2em 0.5em !important;
+}
+.modal-content h1 {
+  font-size: 1.65em;
+  text-align: center;
+  margin: 30px 0 7px;
+}
+.modal-content span.version {
+  display: block;
+  text-align: center;
+  color: #555;
+}
+/*.modal-content span.version a {
+  color: #009cc2;
+}*/
+.modal-content div.message {
+  padding: 2em 0 0 0;
+  line-height: 2em;
+}
+.modal-content strong {
+  color: #000;
+}
+.modal-actions {
+  text-align: center;
+}
+
+.modal-actions button {
+  float: none !important;
 }

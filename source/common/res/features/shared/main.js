@@ -281,7 +281,7 @@ ynabToolKit.shared = (function () {
       }
     },
 
-    showModal(title, message, actionType) {
+    showModal(logo, title, version, message, actionType) {
       let actions;
       switch (actionType) {
         case 'reload':
@@ -290,15 +290,22 @@ ynabToolKit.shared = (function () {
         case 'close':
           actions = '<button class="button button-primary toolkit-modal-action-close">Close</button>';
           break;
+        case 'continue':
+          actions = '<button class="button button-primary toolkit-modal-action-close">Continue</button>';
+          break;
       }
 
       let $modal = $(`<div class="ynab-u modal-overlay modal-generic modal-error active toolkit-modal">
-                        <div class="modal" style="height: auto">
+                        <div class="modal">
                           <div class="modal-header">
-                            ${title}
+                            <div>${logo}</div>
                           </div>
                           <div class="modal-content">
-                            ${message}
+                            <h1>${title}</h1>
+                            <span class="version">${version}</span>
+                            <div class="message">
+                              ${message}
+                            </div>
                           </div>
                           <div class="modal-actions">
                             ${actions}
@@ -321,8 +328,9 @@ ynabToolKit.shared = (function () {
 
     showFeatureErrorModal(featureName) {
       let title = 'Toolkit for YNAB Error!';
+      let version = 'You are now using version ' + ynabToolKit.version + '. View the <a href="#">release notes</a>.';
       let message = `The toolkit is having an issue with the "${featureName}" feature. Please submit an issue <a href='https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/new' target='_blank'>here</a> if there isn't one already.`;
-      this.showModal(title, message, 'close');
+      this.showModal(title, version, message, 'close');
     },
 
     getToolkitStorageKey(key, type) {
@@ -382,9 +390,14 @@ ynabToolKit.shared = (function () {
     let latestVersion = ynabToolKit.shared.getToolkitStorageKey('latest-version');
     if (latestVersion) {
       if (latestVersion !== ynabToolKit.version) {
-        let title = 'New Toolkit for YNAB Features!';
-        let message = 'The Toolkit for YNAB has been updated! Take a gander <a href="http://forum.youneedabudget.com/categories/ynab-extensions" target="_blank">over here</a> to see what new goodies are in store!';
-        ynabToolKit.shared.showModal(title, message, 'close');
+        let logo = '<img src="https://camo.githubusercontent.com/d57a1d819550e8ccbfdfa2552df2cfb5c5ec28e7/687474703a2f2f692e696d6775722e636f6d2f534a68774270552e706e67" />';
+        let title = 'The Toolkit for YNAB extension has been updated!';
+        let version = 'You are now using version ' + ynabToolKit.version + '. View the <a href="https://forum.youneedabudget.com/categories/ynab-extensions" target="_blank">release notes</a>.';
+        let message = '<strong>It is important to note that the Toolkit for YNAB extension is completely separate, and in no way affiliated with YNAB itself.</strong> ' +
+        'If you discover a bug, please first disable the <em>Toolkit</em> to identify whether the issue is with the extension, or with <em>YNAB</em> itself.<br /><br />' +
+        '<em>Toolkit for YNAB</em> extension issues can be reported to the <em>Toolkit for YNAB</em> extension team on <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues" target="_blank">Github</a>. Please ensure the issue has not already been reported.<br /><br />' +
+        'If you have the time and the ability, new contributors to the <em>Toolkit</em> are always welcome!';
+        ynabToolKit.shared.showModal(logo, title, version, message, 'continue');
         ynabToolKit.shared.setToolkitStorageKey('latest-version', ynabToolKit.version);
       }
     } else {
