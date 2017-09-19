@@ -29,8 +29,8 @@
                   ynabToolKit.shared.setToolkitStorageKey('budget-resize-inspector', asideWidth);
                   ynabToolKit.resizeInspector.asideWidth = asideWidth;
 
-                  let wdth = $('.budget-content').css('width');
-                  $('.budget-table-container').css({ width: wdth, top: '9.5rem' });
+                  let bcWidth = $('.budget-content').css('width');
+                  $('.budget-table-container').css({ width: bcWidth, top: '9.5rem' });
                 }
               });
 
@@ -45,8 +45,8 @@
                   }
                 });
 
-                let wdth = $('.budget-content').css('width');
-                $('.budget-table-container').css({ width: wdth, top: '9.5rem' });
+                let bcWidth = $('.budget-content').css('width');
+                $('.budget-table-container').css({ width: bcWidth, top: '9.5rem' });
               }
             }
           } else {

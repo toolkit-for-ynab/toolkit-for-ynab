@@ -187,9 +187,11 @@
           $('.budget-header').animate({ left: originalSizes.headerLeft });
           if ($('.budget-content').is(':visible')) {
             if (ynabToolKit.options.resizeInspector) {
-              $('.budget-content').animate({ width: ynabToolKit.resizeInspector.getContentSize(true) }, 400, 'swing', function () {
+              let bcWidth = ynabToolKit.resizeInspector.getContentSize(true);
+              $('.budget-content').animate({ width: bcWidth }, 400, 'swing', function () {
                 $('.ynabtk-navlink-collapse').removeClass('collapsed').addClass('expanded');
               });
+              $('.budget-table-container').animate({ width: bcWidth });
             } else {
               // if resize-inspector feature not on
               $('.budget-content').animate({ width: originalSizes.contentWidth }, 400, 'swing', function () {
@@ -225,7 +227,9 @@
           $('.budget-header').animate({ left: '40px' });
           if ($('.budget-content').is(':visible')) {
             if (ynabToolKit.options.resizeInspector) {
-              $('.budget-content').animate({ width: ynabToolKit.resizeInspector.getContentSizeCollapsed() });
+              let bcWidth = ynabToolKit.resizeInspector.getContentSizeCollapsed();
+              $('.budget-content').animate({ width: bcWidth });
+              $('.budget-table-container').animate({ width: bcWidth });
             } else {
               $('.budget-content').animate({ width: '73%' });
               $('.budget-inspector').animate({ width: '27%' });
