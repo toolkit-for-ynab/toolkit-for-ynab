@@ -8,6 +8,6 @@ module.exports = {
   options: [
     { name: 'Default', value: '0' },
     { name: 'Left of name', value: '1' },
-    { name: 'Hidden', value: '2' }
+    { name: 'Hidden (Right-click to edit)', value: '2' }
   ]
 };
