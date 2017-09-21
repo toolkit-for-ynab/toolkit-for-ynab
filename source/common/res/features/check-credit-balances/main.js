@@ -8,13 +8,17 @@
           if (ynabToolKit.checkCreditBalances.inMonth()) {
             var debtAccounts = ynabToolKit.checkCreditBalances.getDebtAccounts();
             ynabToolKit.checkCreditBalances.processDebtAccounts(debtAccounts);
+          } else {
+            $('.toolkit-rectify-difference').remove();
           }
         },
 
         observe(changedNodes) {
           if (changedNodes.has('navlink-budget active') ||
               changedNodes.has('budget-table-cell-available-div user-data') ||
-              changedNodes.has('budget-inspector')) {
+              changedNodes.has('budget-inspector') ||
+              changedNodes.has('budget-table-row is-sub-category is-debt-payment-category is-checked') ||
+              changedNodes.has('budget-header-totals-cell-value user-data')) {
             ynabToolKit.checkCreditBalances.invoke();
           }
         },
@@ -61,6 +65,7 @@
         },
 
         processDebtAccounts(debtAccounts) {
+          let foundButton = false;
           debtAccounts.forEach(function (a) {
             // Not sure why but sometimes on a reload (F5 or CTRL-R) of YNAB, the accountId field is null which if not handled
             // throws an error and kills the feature.
@@ -92,7 +97,7 @@
                   difference = ((available + balance) * -1);
                 }
 
-                ynabToolKit.checkCreditBalances.updateInspectorButton(a.name, difference);
+                foundButton |= ynabToolKit.checkCreditBalances.updateInspectorButton(a.name, difference);
 
                 if (available !== (balance * -1)) {
                   ynabToolKit.checkCreditBalances.updateRow(a.name);
@@ -101,6 +106,10 @@
               }
             }
           });
+
+          if (!foundButton) {
+            $('.toolkit-rectify-difference').remove();
+          }
         },
 
         updateRow(name) {
@@ -135,37 +144,45 @@
           var inspectorName = $('.inspector-category-name.user-data').text().trim();
 
           if (name && name === inspectorName) {
-            if ($('.toolkit-toolkit-rectify-difference').length || difference === '-0') {
-              return;
+            if (difference === '-0') {
+              return true;
             }
-
             var fDifference = ynabToolKit.shared.formatCurrency(difference);
             var positive = '';
             if (ynab.unformat(difference) >= 0) {
               positive = '+';
             }
 
-            var button = $('<a>', {
-              class: 'budget-inspector-button toolkit-rectify-difference'
-            })
-              .css({
-                'text-align': 'center',
-                'line-height': '30px',
-                display: 'block',
-                cursor: 'pointer'
+            let button = $('.toolkit-rectify-difference');
+            if (!button.length) {
+              button = $('<a>', {
+                class: 'budget-inspector-button toolkit-rectify-difference'
               })
+                .css({
+                  'text-align': 'center',
+                  'line-height': '30px',
+                  display: 'block',
+                  cursor: 'pointer'
+                })
+                .click(function () {
+                  ynabToolKit.checkCreditBalances.updateCreditBalances($(this).data('name'), $(this).data('difference'));
+                });
+
+              $('.inspector-quick-budget').append(button);
+            }
+
+            button
               .data('name', name)
               .data('difference', difference)
-              .click(function () {
-                ynabToolKit.checkCreditBalances.updateCreditBalances($(this).data('name'), $(this).data('difference'));
-              })
+              .empty()
               .append(((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.checkCreditBalances']) || 'Rectify Available for PIF CC:'))
               .append(' ' + positive)
               .append($('<strong>', { class: 'user-data', title: fDifference })
                 .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), difference)));
 
-            $('.inspector-quick-budget').append(button);
+            return true;
           }
+          return false;
         },
 
         updateCreditBalances(name, difference) {
