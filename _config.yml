@@ -1,10 +1,9 @@
 # Site settings
-title: Toolkit for YNAB
+title: Toolkit for YNAB | Unofficial Browser Extension for You Need a Budget
 email: kevinbrowntech@gmail.com
 description: >
-  Toolkit for YNAB is a community contributed open-source set of tools to use with
-  You Need a Budget. It extends the base functionality to add additional features
-  and functionality.
+  A free, open source Chrome browser extension for You Need a Budget, adding 
+  tweaks and additional features for a more customizable experience.
 baseurl: "" # the subpath of your site, e.g. /blog/
 url: "http://toolkitforynab.com" # the base hostname & protocol for your site
 twitter_username: kevinbrowntech
