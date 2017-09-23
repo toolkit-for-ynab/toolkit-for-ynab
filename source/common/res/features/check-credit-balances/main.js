@@ -144,9 +144,6 @@
           var inspectorName = $('.inspector-category-name.user-data').text().trim();
 
           if (name && name === inspectorName) {
-            if (difference === '-0') {
-              return true;
-            }
             var fDifference = ynabToolKit.shared.formatCurrency(difference);
             var positive = '';
             if (ynab.unformat(difference) >= 0) {
@@ -179,6 +176,12 @@
               .append(' ' + positive)
               .append($('<strong>', { class: 'user-data', title: fDifference })
                 .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), difference)));
+
+            if (difference !== 0) {
+              button.removeAttr('disabled');
+            } else {
+              button.attr('disabled', true);
+            }
 
             return true;
           }
