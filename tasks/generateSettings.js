@@ -14,6 +14,7 @@ const legacySettingMap = {
   ActivityTransactionLink: 'activityTransactionLink',
   AutoCloseReconcile: 'closeReconcileWindow',
   BetterScrollbars: 'betterScrollbars',
+  BudgetQuickSwitch: 'budgetQuickSwitch',
   ChangeEnterBehavior: 'changeEnterBehavior',
   CheckNumbers: 'checkNumbers',
   ClearSelection: 'accountsClearSelection',
