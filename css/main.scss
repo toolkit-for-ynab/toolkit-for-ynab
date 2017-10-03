@@ -3,57 +3,262 @@
 ---
 @charset "utf-8";
 
-/* apply a natural box layout model to all elements, but allowing components to change */
-html {
-  box-sizing: border-box;
+/*
+    Toolkit for YNAB
+    Design & Development by Ben Falk, Falken Creative
+*/
+
+
+
+/* variables */
+$c-text: #333;
+$c-black: #000;
+$c-gray: #999;
+$c-white: #fff;
+$c-border: #e0e0e0;
+
+$c-link: #249231; // green
+$c-link-hover: #156d20;
+$c-btn: #ff9600; // orange
+$c-btn-hover: #ff7e00;
+$c-gradient-l:	#3ab049;
+$c-gradient-r:	#22902f;
+
+$mq-xxsmall:    500px;
+$mq-xsmall:    	600px;
+$mq-small:     	768px; 
+$mq-medium:    	1024px;
+$mq-large:     	1179px; 
+$mq-xlarge:    	1400px; 
+
+
+
+/* layout */
+body {
+	position: relative;
+    font-family: 'Open Sans';
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 400;
+    color: #333333;
+    @media (min-width: $mq-xsmall) {
+    	font-size: 16px;
+    	line-height: 28px;
+    }
 }
-*, *:before, *:after {
-  box-sizing: inherit;
+
+.bg {
+	position: absolute;
+	top: 0;
+	right: 0;
+	left: 0;
+    height: 143px;
+    z-index: 1;
+
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#3ab049+0,22902f+100 */
+	background: $c-gradient-l;
+	background: -moz-linear-gradient(left, $c-gradient-l 0%, $c-gradient-r 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left, $c-gradient-l 0%,$c-gradient-r 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, $c-gradient-l 0%,$c-gradient-r 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$c-gradient-l', endColorstr='$c-gradient-r',GradientType=1 ); /* IE6-9 */
+
+	@media (min-width: $mq-xsmall) {
+		height: 140px;
+	}
 }
 
+.wrapper {
+	margin: 0 20px;
+}
 
-// Our variables
-$base-font-family: Helvetica, Arial, sans-serif;
-$base-font-size:   16px;
-$small-font-size:  $base-font-size * 0.875;
-$base-line-height: 1.5;
+#page {
+	position: relative;
+	max-width: 960px;
+	margin: 0 auto;
+	z-index: 2;
 
-$spacing-unit:     30px;
+    header {
+    	@media (min-width: $mq-xsmall) {
+			padding-top: 10px;
+		}
+    }
 
-$text-color:       #111;
-$background-color: #fdfdfd;
-$brand-color:      #2a7ae2;
+    main {
+    	background: $c-white;
+    	padding: 30px;
 
-$grey-color:       #828282;
-$grey-color-light: lighten($grey-color, 40%);
-$grey-color-dark:  darken($grey-color, 25%);
+    	@media (min-width: $mq-xxsmall) {
+    		padding: 40px;
+    	}
+    	@media (min-width: $mq-xsmall) {
+    		padding: 60px;
+    	}
+    	@media (min-width: $mq-small) {
+    		padding: 80px;
+    	}
+    }
 
-$on-palm:          600px;
-$on-laptop:        800px;
+    footer {
+    	border-top: 1px solid $c-border;
+    	margin: 60px 30px 0;
+    	padding: 20px 0;
 
-
-
-// Using media queries with like this:
-// @include media-query($palm) {
-//     .wrapper {
-//         padding-right: $spacing-unit / 2;
-//         padding-left: $spacing-unit / 2;
-//     }
-// }
-@mixin media-query($device) {
-    @media screen and (max-width: $device) {
-        @content;
+    	@media (min-width: $mq-xxsmall) {
+    		margin: 60px 40px 0;
+    	}
+    	@media (min-width: $mq-xsmall) {
+    		margin: 60px 60px 0;
+    	}
+    	@media (min-width: $mq-small) {
+    		margin: 80px 80px 0;
+    	}
     }
 }
 
 
 
-// Import partials from `sass_dir` (defaults to `_sass`)
-@import
-        "base",
-        "layout",
-        "footer",
-        "header",
-        "home",
-        "syntax-highlighting"
-;
+/* content */
+a {
+	color: $c-link;
+
+	&:hover, &:focus {
+		color: $c-link-hover;
+	}   
+}
+
+img {
+	max-width: 100%;
+	vertical-align: middle;
+}
+
+.logo {
+	text-align: center;
+    margin: 0 auto 30px;
+
+    @media (min-width: $mq-xxsmall) {
+		margin: 0 0 40px;
+	}
+	@media (min-width: $mq-xsmall) {
+		margin: 0 0 60px;
+    	text-align: left;
+	}
+	@media (min-width: $mq-small) {
+		margin: 0 0 80px;
+	}
+
+	img {
+		@media (max-width: $mq-xxsmall) {
+			width: 140px;
+		}
+	}
+}
+
+h1 {
+	max-width: 850px;
+    margin: 0;
+    font-size: 17px;
+    line-height: 30px;
+    font-weight: 400;
+    color: $c-black;
+
+    @media (min-width: $mq-xsmall) {
+    	font-size: 18px;
+    	line-height: 34px;
+    }
+    @media (min-width: $mq-small) {
+    	font-size: 22px;
+    	line-height: 40px;
+    	letter-spacing: .5px;
+    }
+
+    b {
+    	font-weight: 700;
+    }
+
+    a {
+    	color: $c-black;
+    	font-weight: 700;
+    	text-decoration: none;
+    	&:hover, &:focus {
+    		color: #000;
+    		border-bottom: 1px solid #333;
+    	}
+    }
+}
+
+ul {
+    margin: 25px 0 30px;
+    padding: 0;
+    list-style: none;
+
+    @media (min-width: $mq-xsmall) {
+    	margin: 35px 0 40px;
+    }
+
+    li {
+    	margin-bottom: 10px;
+    	@media (min-width: $mq-xsmall) {
+    		margin-bottom: 4px;
+    	}
+    	&:last-child {
+    		margin-bottom: 0;
+    	}
+    }
+}
+    
+.btn {
+	display: inline-block;
+	padding: 12px 30px;
+	background: $c-btn;
+	font-size: 15px;
+	line-height: 25px;
+	letter-spacing: 1px;
+	font-weight: 600;
+	text-transform: uppercase;
+	text-shadow: 1px 1px 2px rgba(204, 102, 0, 1);
+	text-decoration: none;
+	text-align: center;
+	color: $c-white;
+
+	-webkit-transition: background-color .3s linear;
+	-moz-transition: background-color .3s linear;
+	-o-transition: background-color .3s linear;
+	transition: background-color .3s linear;
+
+	@media (min-width: $mq-xsmall) {
+		display: inline-block;
+		padding: 15px 40px;
+		font-size: 16px;
+		line-height: 26px;
+	}
+
+	i {
+		text-transform: lowercase;
+	}
+
+    &:hover, &:focus {
+    	color: $c-white;
+    	background: $c-btn-hover;
+    }
+}
+
+footer {
+	br {
+		@media (max-width: $mq-xsmall) {
+			display: none;
+		}
+	}
+
+	p {
+	    font-size: 12px;
+	    line-height: 20px;
+	    color: $c-gray;
+	    font-style: italic;
+
+	    @media (min-width: $mq-small) {
+	    	font-size: 13px;
+	    	line-height: 24px;
+	    }
+	}
+}   
+    
