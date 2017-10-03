@@ -7,13 +7,26 @@
         // Get outflow transactions.
         var entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
         var transactions = entityManager.getAllTransactions();
+
+        let isPayeeOk = function (payee) {
+          if (payee === null) {
+            return true;
+          }
+
+          return payee.internalName !== 'StartingBalancePayee';
+        };
+
         var outflowTransactions = transactions.filter(function (el) {
+          let masterCategoryId = el.get('masterCategoryId');
+          let subCategoryId = el.get('subCategoryId');
+          let isTransfer = masterCategoryId === null || subCategoryId === null;
+
           return !el.isTombstone &&
             el.transferAccountId === null &&
             el.amount < 0 &&
-            el.payeeId !== null &&
-            el.getPayee().internalName !== 'StartingBalancePayee' &&
-            el.getAccount().onBudget;
+            isPayeeOk(el.getPayee()) &&
+            el.getAccount().onBudget &&
+            !isTransfer;
         });
 
         // Filter outflow transactions by Date for history lookup option.
