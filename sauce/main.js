@@ -32,7 +32,8 @@ const featureInstances = features.map(Feature => new Feature());
 
     // Hook up listeners and then invoke any features that are ready to go.
     featureInstances.forEach((feature) => {
-      if (feature.settings.enabled) {
+      if ((typeof feature.settings.enabled === 'boolean' && feature.settings.enabled) ||
+          feature.settings.enabled !== '0') { // assumes '0' means disabled
         feature.applyListeners();
 
         const willInvokeRetValue = feature.willInvoke();
