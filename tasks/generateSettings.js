@@ -19,6 +19,7 @@ const legacySettingMap = {
   CheckNumbers: 'checkNumbers',
   ClearSelection: 'accountsClearSelection',
   ColourBlindMode: 'colourBlindMode',
+  EditAccountButton: 'editButtonPosition',
   EmphasizedOutflows: 'accountsEmphasizedOutflows',
   GoalWarningColor: 'goalWarningColor',
   HideAgeOfMoney: 'hideAgeOfMoney',

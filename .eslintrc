@@ -29,7 +29,8 @@
         "setKangoSetting": true,
         "windowReload": true,
         "ynab": true,
-        "ynabToolKit": true
+        "ynabToolKit": true,
+        "YNABFEATURES": true
     },
     "rules": {
         "consistent-return": "off",
