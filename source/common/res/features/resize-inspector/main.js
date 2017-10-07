@@ -45,8 +45,8 @@
                   }
                 });
 
-                let bcWidth = $('.budget-content').css('width');
-                $('.budget-table-container').css({ width: bcWidth, top: '9.5rem' });
+                const width = $('.budget-content').css('width');
+                $('.budget-table-container').css({ width, top: '9.5rem' });
               }
             }
           } else {
