@@ -156,13 +156,13 @@ img {
 h1 {
 	max-width: 850px;
     margin: 0;
-    font-size: 17px;
-    line-height: 30px;
+    font-size: 18px;
+    line-height: 31px;
     font-weight: 400;
     color: $c-black;
 
     @media (min-width: $mq-xsmall) {
-    	font-size: 18px;
+    	font-size: 19px;
     	line-height: 34px;
     }
     @media (min-width: $mq-small) {
@@ -207,8 +207,9 @@ ul {
 }
     
 .btn {
-	display: inline-block;
+	display: block;
 	padding: 12px 30px;
+	margin-bottom: 20px;
 	background: $c-btn;
 	font-size: 15px;
 	line-height: 25px;
@@ -226,10 +227,14 @@ ul {
 	transition: background-color .3s linear;
 
 	@media (min-width: $mq-xsmall) {
-		display: inline-block;
+	    display: inline-block;
+	    min-width: 225px;
 		padding: 15px 40px;
 		font-size: 16px;
 		line-height: 26px;
+	}
+	@media (min-width: 810px) {
+	    margin: 0 12px 15px 0;
 	}
 
 	i {
