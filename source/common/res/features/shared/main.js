@@ -326,12 +326,12 @@ ynabToolKit.shared = (function () {
     },
 
     showNewReleaseModal(version) {
-      let $modal = $(`<div class="ynab-u modal-overlay modal-generic modal-error active toolkit-modal">
-                        <div class="modal">
-                          <div class="modal-header">
-                            <div><img src="https://camo.githubusercontent.com/d57a1d819550e8ccbfdfa2552df2cfb5c5ec28e7/687474703a2f2f692e696d6775722e636f6d2f534a68774270552e706e67" /></div>
+      let $modal = $(`<div class="toolkit-modal-overlay">
+                        <div class="toolkit-modal">
+                          <div class="toolkit-modal-header">
+                            <img src="https://camo.githubusercontent.com/d57a1d819550e8ccbfdfa2552df2cfb5c5ec28e7/687474703a2f2f692e696d6775722e636f6d2f534a68774270552e706e67" />
                           </div>
-                          <div class="modal-content">
+                          <div class="toolkit-modal-content">
                             <h1>The Toolkit for YNAB extension has been updated!</h1>
                             <span class="version">You are now using version ${version}. View the <a href="https://forum.youneedabudget.com/categories/ynab-extensions" target="_blank">release notes</a>.</span>
                             <div class="message">
@@ -342,8 +342,8 @@ ynabToolKit.shared = (function () {
                               If you have the time and the ability, new contributors to the <em>Toolkit</em> are always welcome!
                             </div>
                           </div>
-                          <div class="modal-actions">
-                            <button class="button button-primary toolkit-modal-action-close">Continue</button>
+                          <div class="toolkit-modal-actions">
+                            <button class="toolkit-modal-action-close">Continue</button>
                           </div>
                         </div>
                       </div>`);
