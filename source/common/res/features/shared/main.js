@@ -325,6 +325,38 @@ ynabToolKit.shared = (function () {
       this.showModal(title, message, 'close');
     },
 
+    showNewReleaseModal(version) {
+      let $modal = $(`<div class="toolkit-modal-overlay">
+                        <div class="toolkit-modal">
+                          <div class="toolkit-modal-header">
+                            <img src="https://camo.githubusercontent.com/d57a1d819550e8ccbfdfa2552df2cfb5c5ec28e7/687474703a2f2f692e696d6775722e636f6d2f534a68774270552e706e67" />
+                          </div>
+                          <div class="toolkit-modal-content">
+                            <h1>The Toolkit for YNAB extension has been updated!</h1>
+                            <span class="version">You are now using version ${version}. View the <a href="https://forum.youneedabudget.com/categories/ynab-extensions" target="_blank">release notes</a>.</span>
+                            <div class="message">
+                              <strong>It is important to note that the Toolkit for YNAB extension is completely separate, and in no way affiliated with YNAB itself.</strong>
+                              If you discover a bug, please first disable the <em>Toolkit</em> to identify whether the issue is with the extension, or with <em>YNAB</em> itself.<br /><br />
+                              <em>Toolkit for YNAB</em> extension issues can be reported to the <em>Toolkit for YNAB</em> extension team on <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues" target="_blank">Github</a>.
+                              Please ensure the issue has not already been reported.<br /><br />
+                              If you have the time and the ability, new contributors to the <em>Toolkit</em> are always welcome!
+                            </div>
+                          </div>
+                          <div class="toolkit-modal-actions">
+                            <button class="toolkit-modal-action-close">Continue</button>
+                          </div>
+                        </div>
+                      </div>`);
+
+      $modal.find('.toolkit-modal-action-close').on('click', () => {
+        return $('.layout .toolkit-modal-overlay').remove();
+      });
+
+      if (!$('.modal-error').length) {
+        $('.layout').append($modal);
+      }
+    },
+
     getToolkitStorageKey(key, type) {
       let value = localStorage.getItem(storageKeyPrefix + key);
 
@@ -382,9 +414,7 @@ ynabToolKit.shared = (function () {
     let latestVersion = ynabToolKit.shared.getToolkitStorageKey('latest-version');
     if (latestVersion) {
       if (latestVersion !== ynabToolKit.version) {
-        let title = 'New Toolkit for YNAB Features!';
-        let message = 'The Toolkit for YNAB has been updated! Take a gander <a href="http://forum.youneedabudget.com/categories/ynab-extensions" target="_blank">over here</a> to see what new goodies are in store!';
-        ynabToolKit.shared.showModal(title, message, 'close');
+        ynabToolKit.shared.showNewReleaseModal(ynabToolKit.version);
         ynabToolKit.shared.setToolkitStorageKey('latest-version', ynabToolKit.version);
       }
     } else {

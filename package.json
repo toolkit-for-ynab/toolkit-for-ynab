@@ -47,7 +47,7 @@
   },
   "defaultFeatures": [
     "ActivityTransactionLink",
-    "budgetBalanceToZero",
+    "BudgetBalanceToZero",
     "enlargeCategoriesDropdown",
     "PrintingImprovements",
     "rightClickToEdit",
