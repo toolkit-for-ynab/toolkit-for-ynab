@@ -26,7 +26,7 @@ export class AdjustableColumnWidths extends Feature {
   currentX = null;
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('account') !== -1;
+    return getCurrentRouteName().indexOf('account') !== -1 && this.settings.enabled;
   }
 
   onMouseMove(event) {
