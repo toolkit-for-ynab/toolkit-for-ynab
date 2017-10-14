@@ -40,7 +40,7 @@ export class ObserveListener {
       attributeFilter: ['class']
     });
 
-    return instance;
+    instance = this;
   }
 
   addFeature(feature) {

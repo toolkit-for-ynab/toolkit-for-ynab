@@ -157,10 +157,15 @@
         },
 
         observe(changedNodes) {
+          // when this is moved to the webpack codebase, hopefully we can just listen to onRouteChanged
+          // but until then we'll just have to keep adding stuff to this check that should trigger
+          // budget-category related features to update
           if (changedNodes.has('navlink-budget active') ||
             changedNodes.has('budget-inspector') ||
             changedNodes.has('budget-table-cell-available-div user-data') ||
-            changedNodes.has('budget-inspector-goals')) {
+            changedNodes.has('budget-inspector-goals') ||
+            changedNodes.has('budget-header-item budget-header-calendar toolkit-highlight-current-month')
+          ) {
             ynabToolKit.budgetCategoryInfo.invoke();
           } else if (
             changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-edit-category active') ||

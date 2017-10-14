@@ -3,18 +3,25 @@
     ynabToolKit.toggleSplits = (function () {
       let isToggling = false;
       let accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
+      let ynabContentResults = accountsController.contentResults;
       accountsController.reopen({
         toolkitShowSubTransactions: false,
-        contentResults: Ember.computed({
-          get: function () { return []; },
-          set: function (key, val) {
+        contentResults: Ember.computed(...ynabContentResults._dependentKeys, {
+          get: function () {
+            let contentResults = ynabContentResults._getter.apply(this);
             if (!this.get('toolkitShowSubTransactions')) {
-              val = val.filter((transaction) => {
+              contentResults = contentResults.filter((transaction) => {
                 let displayItemType = transaction.get('displayItemType');
                 return displayItemType !== ynab.constants.TransactionDisplayItemType.SubTransaction &&
                        displayItemType !== ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction;
               });
             }
+
+            return contentResults;
+          },
+          set: function (_key, val) {
+            // ynab shouldn't be calling set on contentResults but if they ever do
+            // we'll just pass that through as normal
             return val;
           }
         })
@@ -24,14 +31,18 @@
         isToggling = true;
         ynabToolKit.toggleSplits.setting = 'hide';
         accountsController.set('toolkitShowSubTransactions', false);
-        Ember.run.debounce(accountsController, accountsController._filterContent, 25);
+        Ember.run.debounce(accountsController, () => {
+          accountsController.notifyPropertyChange('contentResults');
+        }, 25);
       }
 
       function showSubTransactions() {
         isToggling = true;
         ynabToolKit.toggleSplits.setting = 'show';
         accountsController.set('toolkitShowSubTransactions', true);
-        Ember.run.debounce(accountsController, accountsController._filterContent, 25);
+        Ember.run.debounce(accountsController, () => {
+          accountsController.notifyPropertyChange('contentResults');
+        }, 25);
       }
 
       return {

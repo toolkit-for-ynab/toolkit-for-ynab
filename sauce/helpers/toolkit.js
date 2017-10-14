@@ -1,4 +1,4 @@
-const storageKeyPrefix = 'ynab-toolkit-';
+const STORAGE_KEY_PREFIX = 'ynab-toolkit-';
 
 export function controllerLookup(controllerName) {
   return containerLookup(`controller:${controllerName}`);
@@ -29,6 +29,10 @@ export function getCurrentDate(format) {
   return ynabDate(format, false);
 }
 
+export function getRouter() {
+  return containerLookup('router:main');
+}
+
 export function formatCurrency(value) {
   const { currencyFormatter } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
   const userCurrency = currencyFormatter.getCurrency();
@@ -47,8 +51,12 @@ export function formatCurrency(value) {
   return formattedCurrency;
 }
 
+export function getEntityManager() {
+  return ynab.YNABSharedLib.defaultInstance.entityManager;
+}
+
 export function getToolkitStorageKey(key, type) {
-  let value = localStorage.getItem(storageKeyPrefix + key);
+  let value = localStorage.getItem(STORAGE_KEY_PREFIX + key);
 
   switch (type) {
     case 'boolean': return value === 'true';
@@ -58,11 +66,11 @@ export function getToolkitStorageKey(key, type) {
 }
 
 export function setToolkitStorageKey(key, value) {
-  return localStorage.setItem(storageKeyPrefix + key, value);
+  return localStorage.setItem(STORAGE_KEY_PREFIX + key, value);
 }
 
 export function removeToolkitStorageKey(key) {
-  return localStorage.removeItem(storageKeyPrefix + key);
+  return localStorage.removeItem(STORAGE_KEY_PREFIX + key);
 }
 
 export function transitionTo() {
