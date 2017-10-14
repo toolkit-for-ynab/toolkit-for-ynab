@@ -349,7 +349,7 @@ ynabToolKit.shared = (function () {
                       </div>`);
 
       $modal.find('.toolkit-modal-action-close').on('click', () => {
-        return $('.layout .toolkit-modal').remove();
+        return $('.layout .toolkit-modal-overlay').remove();
       });
 
       if (!$('.modal-error').length) {
