@@ -66,6 +66,10 @@
             "value": "korean"
         }, 
         {
+            "name": "Latvian (15%)", 
+            "value": "latvian"
+        }, 
+        {
             "name": "Lithuanian (1%)", 
             "value": "lithuanian"
         }, 
@@ -98,11 +102,11 @@
             "value": "slovenian"
         }, 
         {
-            "name": "Spanish (76%)", 
+            "name": "Spanish (77%)", 
             "value": "spanish"
         }, 
         {
-            "name": "Swedish (67%)", 
+            "name": "Swedish (68%)", 
             "value": "swedish"
         }, 
         {
@@ -272,6 +276,12 @@
         "chinese simplified": [
             "injectScript", 
             "locales/Chinese Simplified.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "latvian": [
+            "injectScript", 
+            "locales/Latvian.json", 
             "injectScript", 
             "main.js"
         ], 
