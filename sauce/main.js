@@ -18,7 +18,11 @@ const featureInstances = features.map(Feature => new Feature());
 
     ynabToolKit.invokeFeature = (featureName) => {
       featureInstances.forEach((feature) => {
-        if (feature.constructor.name === featureName && feature.shouldInvoke()) {
+        if (
+          feature.constructor.name === featureName &&
+          isFeatureEnabled(feature) &&
+          feature.shouldInvoke()
+        ) {
           feature.invoke();
         }
       });
@@ -32,8 +36,9 @@ const featureInstances = features.map(Feature => new Feature());
 
     // Hook up listeners and then invoke any features that are ready to go.
     featureInstances.forEach((feature) => {
-      if ((typeof feature.settings.enabled === 'boolean' && feature.settings.enabled) ||
-          feature.settings.enabled !== '0') { // assumes '0' means disabled
+      if (isFeatureEnabled(feature)) { // assumes '0' means disabled
+      // if ((typeof feature.settings.enabled === 'boolean' && feature.settings.enabled) ||
+      //     feature.settings.enabled !== '0') { // assumes '0' means disabled
         feature.applyListeners();
 
         const willInvokeRetValue = feature.willInvoke();
@@ -53,5 +58,12 @@ const featureInstances = features.map(Feature => new Feature());
     });
   } else {
     setTimeout(poll, 250);
+  }
+  // Check if the passed feature is enabled.
+  function isFeatureEnabled(feature) {
+    return (
+      (typeof feature.settings.enabled === 'boolean' && feature.settings.enabled) ||
+      (typeof feature.settings.enabled === 'string' && feature.settings.enabled !== '0') // assumes '0' means disabled
+    );
   }
 }());
