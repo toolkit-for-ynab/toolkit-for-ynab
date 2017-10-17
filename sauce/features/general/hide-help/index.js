@@ -5,7 +5,9 @@ export class hideHelp extends Feature {
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() {
-    return true;
+    if (this.settings.enabled === true) {
+      return true;
+    }
   }
 
   observe(changedNodes) {
@@ -17,14 +19,14 @@ export class hideHelp extends Feature {
   }
 
   invoke() {
-    let hide = ynabToolKit.shared.getToolkitStorageKey('hide-help');
+    let hide = ynabToolKit.shared.getToolkitStorageKey('hide-help', 'boolean');
 
     if (hide === null) {
       ynabToolKit.shared.setToolkitStorageKey('hide-help', 'true');
       hide = 'true';
     }
 
-    if (hide === 'true') {
+    if (hide === true) {
       $('body').addClass('toolkit-hide-help');
     }
 
@@ -47,8 +49,7 @@ export class hideHelp extends Feature {
       </button>
      </li>
     `).click(() => {
-      let hide = ynabToolKit.shared.getToolkitStorageKey('hide-help');
-      if (hide === 'false') { hide = true; } else { hide = false; }
+      let hide = !ynabToolKit.shared.getToolkitStorageKey('hide-help', 'boolean');
       ynabToolKit.shared.setToolkitStorageKey('hide-help', hide);
       $('body').toggleClass('toolkit-hide-help');
       let accountController = ynabToolKit.shared.containerLookup('controller:accounts');
