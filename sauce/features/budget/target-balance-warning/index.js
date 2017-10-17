@@ -7,7 +7,9 @@ export class TargetBalanceWarning extends Feature {
   }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1;
+    if (this.settings.enabled === true && toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1) {
+      return true;
+    }
   }
 
   invoke() {
