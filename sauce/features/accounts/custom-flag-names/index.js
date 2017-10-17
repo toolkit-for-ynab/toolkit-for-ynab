@@ -22,7 +22,9 @@ export class CustomFlagNames extends Feature {
   }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
+    if (this.settings.enabled === true && toolkitHelper.getCurrentRouteName().indexOf('account') !== -1) {
+      return true;
+    }
   }
 
   invoke() {
