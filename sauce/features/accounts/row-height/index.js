@@ -1,5 +1,5 @@
-import { Feature } from 'core/feature';
-import { getEmberView } from 'helpers/toolkit';
+import { Feature } from 'toolkit/core/feature';
+import { getEmberView } from 'toolkit/helpers/toolkit';
 
 const compactHeight = 27;
 const slimHeight = 22;

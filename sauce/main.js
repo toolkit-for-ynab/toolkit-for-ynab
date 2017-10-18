@@ -1,4 +1,4 @@
-import features from 'features';
+import features from 'toolkit/features';
 
 const featureInstances = features.map(Feature => new Feature());
 
