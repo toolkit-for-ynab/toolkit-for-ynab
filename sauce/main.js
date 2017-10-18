@@ -2,6 +2,14 @@ import features from 'features';
 
 const featureInstances = features.map(Feature => new Feature());
 
+// Check if the passed feature is enabled.
+function isFeatureEnabled(feature) {
+  return (
+    (typeof feature.settings.enabled === 'boolean' && feature.settings.enabled) ||
+    (typeof feature.settings.enabled === 'string' && feature.settings.enabled !== '0') // assumes '0' means disabled
+  );
+}
+
 // This poll() function will only need to run until we find that the DOM is ready
 (function poll() {
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' &&
@@ -11,7 +19,7 @@ const featureInstances = features.map(Feature => new Feature());
     let globalCSS = '';
 
     featureInstances.forEach(feature => {
-      if (feature.settings.enabled && feature.injectCSS()) {
+      if (isFeatureEnabled(feature) && feature.injectCSS()) {
         globalCSS += `/* == Injected CSS from feature: ${feature.constructor.name} == */\n\n${feature.injectCSS()}\n`;
       }
     });
@@ -36,9 +44,7 @@ const featureInstances = features.map(Feature => new Feature());
 
     // Hook up listeners and then invoke any features that are ready to go.
     featureInstances.forEach((feature) => {
-      if (isFeatureEnabled(feature)) { // assumes '0' means disabled
-      // if ((typeof feature.settings.enabled === 'boolean' && feature.settings.enabled) ||
-      //     feature.settings.enabled !== '0') { // assumes '0' means disabled
+      if (isFeatureEnabled(feature)) {
         feature.applyListeners();
 
         const willInvokeRetValue = feature.willInvoke();
@@ -58,12 +64,5 @@ const featureInstances = features.map(Feature => new Feature());
     });
   } else {
     setTimeout(poll, 250);
-  }
-  // Check if the passed feature is enabled.
-  function isFeatureEnabled(feature) {
-    return (
-      (typeof feature.settings.enabled === 'boolean' && feature.settings.enabled) ||
-      (typeof feature.settings.enabled === 'string' && feature.settings.enabled !== '0') // assumes '0' means disabled
-    );
   }
 }());
