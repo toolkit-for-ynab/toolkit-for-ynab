@@ -2,6 +2,16 @@ import features from 'features';
 
 const featureInstances = features.map(Feature => new Feature());
 
+function isYNABReady() {
+  return (
+    typeof Em !== 'undefined' &&
+    typeof Ember !== 'undefined' &&
+    typeof $ !== 'undefined' &&
+    $('.ember-view.layout').length &&
+    typeof ynabToolKit !== 'undefined'
+  );
+}
+
 // Check if the passed feature is enabled.
 function isFeatureEnabled(feature) {
   return (
@@ -12,9 +22,7 @@ function isFeatureEnabled(feature) {
 
 // This poll() function will only need to run until we find that the DOM is ready
 (function poll() {
-  if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' &&
-    typeof $ !== 'undefined' && $('.ember-view.layout').length &&
-    typeof ynabToolKit !== 'undefined') {
+  if (isYNABReady()) {
     // Gather any desired global CSS from features
     let globalCSS = '';
 
@@ -25,15 +33,10 @@ function isFeatureEnabled(feature) {
     });
 
     ynabToolKit.invokeFeature = (featureName) => {
-      featureInstances.forEach((feature) => {
-        if (
-          feature.constructor.name === featureName &&
-          isFeatureEnabled(feature) &&
-          feature.shouldInvoke()
-        ) {
-          feature.invoke();
-        }
-      });
+      const feature = featureInstances.find((f) => f.constructor.name === featureName);
+      if (isFeatureEnabled(feature) && feature.shouldInvoke()) {
+        feature.invoke();
+      }
     };
 
     // Inject it into the head so it's left alone
