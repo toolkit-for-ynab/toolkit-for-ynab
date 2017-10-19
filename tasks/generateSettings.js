@@ -24,6 +24,7 @@ const legacySettingMap = {
   EmphasizedOutflows: 'accountsEmphasizedOutflows',
   GoalWarningColor: 'goalWarningColor',
   HideAgeOfMoney: 'hideAgeOfMoney',
+  HideHelp: 'hideHelp',
   ImportNotification: 'importNotification',
   PrintingImprovements: 'printingImprovements',
   RemovePositiveHighlight: 'removePositiveHighlight',

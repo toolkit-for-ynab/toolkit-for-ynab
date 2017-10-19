@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'hideHelp',
+  name: 'HideHelp',
   type: 'checkbox',
   default: false,
   section: 'general',

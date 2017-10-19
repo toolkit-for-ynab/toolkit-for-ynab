@@ -1,32 +1,29 @@
 import { Feature } from 'core/feature';
+import * as toolkitHelper from 'helpers/toolkit';
 
-export class hideHelp extends Feature {
+export class HideHelp extends Feature {
 
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() {
-    if (this.settings.enabled === true) {
-      return true;
-    }
+    return true;
   }
 
   observe(changedNodes) {
-    if (!this.shouldInvoke()) return;
-
     if (changedNodes.has('ynab-u modal-popup modal-user-prefs ember-view modal-overlay active')) {
       this.invoke();
     }
   }
 
   invoke() {
-    let hide = ynabToolKit.shared.getToolkitStorageKey('hide-help', 'boolean');
+    let hide = toolkitHelper.getToolkitStorageKey('hide-help');
 
     if (hide === null) {
-      ynabToolKit.shared.setToolkitStorageKey('hide-help', 'true');
+      toolkitHelper.setToolkitStorageKey('hide-help', 'true');
       hide = 'true';
     }
 
-    if (hide === true) {
+    if (hide === 'true') {
       $('body').addClass('toolkit-hide-help');
     }
 
@@ -49,8 +46,8 @@ export class hideHelp extends Feature {
       </button>
      </li>
     `).click(() => {
-      let hide = !ynabToolKit.shared.getToolkitStorageKey('hide-help', 'boolean');
-      ynabToolKit.shared.setToolkitStorageKey('hide-help', hide);
+      let hide = !toolkitHelper.getToolkitStorageKey('hide-help', 'boolean');
+      toolkitHelper.setToolkitStorageKey('hide-help', hide);
       $('body').toggleClass('toolkit-hide-help');
       let accountController = ynabToolKit.shared.containerLookup('controller:accounts');
       accountController.send('closeModal');
