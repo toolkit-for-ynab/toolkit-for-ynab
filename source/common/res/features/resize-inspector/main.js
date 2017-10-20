@@ -30,7 +30,7 @@
                   ynabToolKit.resizeInspector.asideWidth = asideWidth;
 
                   let bcWidth = $('.budget-content').css('width');
-                  $('.budget-table-container').css({ width: bcWidth, top: '9.5rem' });
+                  $('.budget-table-container').css({ width: bcWidth });
                 }
               });
 
@@ -46,7 +46,7 @@
                 });
 
                 const width = $('.budget-content').css('width');
-                $('.budget-table-container').css({ width, top: '9.5rem' });
+                $('.budget-table-container').css({ width });
               }
             }
           } else {
