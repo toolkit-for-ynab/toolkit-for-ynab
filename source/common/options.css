@@ -79,6 +79,7 @@ div.options span {
 
 div.options .darkMode {
   display: flex;
+  margin-left: 1em;
 }
 
 /* Make all icons green to match the logo */
