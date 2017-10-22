@@ -82,6 +82,10 @@ div.options .darkMode {
   margin-left: 1em;
 }
 
+#options-save {
+  display: none;
+}
+
 /* Make all icons green to match the logo */
 i {
   color: #3CB54A;

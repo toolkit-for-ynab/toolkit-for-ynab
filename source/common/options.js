@@ -185,10 +185,12 @@ function buildOptionsPage() {
   });
 }
 
-function loadPanel(panel, animated) {
+function loadPanel(panel, showOptionSave = true, animated) {
   if (typeof animated === 'undefined') {
     animated = true;
   }
+
+  jq('#options-save').toggle(showOptionSave === true);
 
   // Do we need to do anything?
   var element = jq('#' + panel + 'MenuItem');
@@ -266,7 +268,7 @@ KangoAPI.onReady(function () {
   restoreOptions().then(function () {
     jq('input:checkbox').bootstrapSwitch();
 
-    loadPanel('general', false);
+    loadPanel('general', true, false);
 
     jq('#wrapper').fadeIn();
   });
@@ -285,23 +287,18 @@ KangoAPI.onReady(function () {
 
   jq('#generalMenuItem').click(function (e) {
     loadPanel('general'); e.preventDefault();
-    jq('#footer-buttons').show();
   });
   jq('#accountsMenuItem').click(function (e) {
     loadPanel('accounts'); e.preventDefault();
-    jq('#footer-buttons').show();
   });
   jq('#budgetMenuItem').click(function (e) {
     loadPanel('budget'); e.preventDefault();
-    jq('#footer-buttons').show();
   });
   jq('#reportsMenuItem').click(function (e) {
     loadPanel('reports'); e.preventDefault();
-    jq('#footer-buttons').show();
   });
   jq('#supportMenuItem').click(function (e) {
-    loadPanel('support'); e.preventDefault();
-    jq('#footer-buttons').hide();
+    loadPanel('support', false); e.preventDefault();
   });
 
   jq('.import-export-button').click(importExportModal);
