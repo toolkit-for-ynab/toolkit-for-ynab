@@ -25,15 +25,20 @@ const legacySettingMap = {
   GoalWarningColor: 'goalWarningColor',
   HideAgeOfMoney: 'hideAgeOfMoney',
   ImportNotification: 'importNotification',
+  LargerClickableIcons: 'largerClickableIcons',
+  MonthlyNotesPopupWidth: 'monthlyNotesPopupWidth',
+  NavDisplayDensity: 'navDisplayDensity',
   PrintingImprovements: 'printingImprovements',
   RemovePositiveHighlight: 'removePositiveHighlight',
   RowHeight: 'accountsRowHeight',
   RowsHeight: 'budgetRowsHeight',
   RunningBalance: 'runningBalance',
+  SeamlessBudgetHeader: 'seamlessBudgetHeader',
   SplitKeyboardShortcut: 'splitKeyboardShortcut',
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',
-  StripedRows: 'accountsStripedRows'
+  StripedRows: 'accountsStripedRows',
+  ToBeBudgetedWarning: 'toBeBudgetedWarning'
 };
 
 let previousSettings;
