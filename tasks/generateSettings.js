@@ -33,7 +33,9 @@ const legacySettingMap = {
   SplitKeyboardShortcut: 'splitKeyboardShortcut',
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',
-  StripedRows: 'accountsStripedRows'
+  StripedRows: 'accountsStripedRows',
+  DaysOfBufferingHistoryLookup: 'daysOfBufferingHistoryLookup',
+  DaysOfBuffering: 'daysOfBuffering'
 };
 
 let previousSettings;
