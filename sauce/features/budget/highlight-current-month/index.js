@@ -27,9 +27,13 @@ export class CurrentMonthIndicator extends Feature {
     if (!this.shouldInvoke()) return;
 
     if (changedNodes.has('budget-header-item budget-header-calendar') ||
-        changedNodes.has('budget-header-totals-cell-value user-data') ||
-        changedNodes.has('layout user-logged-in')) {
+        changedNodes.has('budget-header-totals-cell-value user-data')) {
       this.invoke();
     }
+  }
+  
+  onRouteChanged() {
+    if (!this.shouldInvoke()) return;
+    this.invoke();
   }
 }
