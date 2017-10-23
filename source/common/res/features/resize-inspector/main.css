@@ -1,32 +1,19 @@
-:root {
-  --tlkt-btc-width: 0px; /* budget-table-container */
-}
-
-.budget-table {
-  position: static !important;
-  overflow: scroll;
+.resize-inspector {
   height: 100%;
-  /*height: calc(100% - 24.5px);*/ /* The header is now 24.5px high, which pushes the bottom row below
-                                  the bottom of the resizable parent unless we pull it back out. */
-}
-
-.budget-table-containerx {
-  top: 9.5rem;
-  /* width: calc(100% - 290px); */
-  width: calc(100% - var(--tlkt-btc-width));
+  display: flex;
 }
 
 .budget-content {
-  height: 100%;
-  padding-top: 8em;
-  position: static !important;
   flex: 0 0 auto;
+  position: static !important;
+  height: 100%;
   bottom: 0;
-  overflow: hidden;
+  padding-top: 8em;
+  background: #fff;
 }
 
-.budget-table-header {
-  position: static !important;
+.budget-separator {
+    background: #efeff4;
 }
 
 .budget-inspector {
@@ -35,22 +22,20 @@
   width: auto !important;
   margin-top: 9.7em;
   overflow-x: hidden;
-  padding: 1em 1em 1em .5em !important;
-}
-
-.resize-inspector {
-  height: 100%;
-  display: flex;
+  padding: 1em 14px 1em 2px !important;
+  border-left: 0;
 }
 
 .inspector-resize-handle {
-  margin-top: 7.8em;
+  margin-top: 8em;
   min-width: 13px;
   background: #e5f5f9 no-repeat center center;
+  border-left: 1px solid #e1e1e1;
+  border-top: 1px solid #dfe4e9;
   cursor: col-resize;
   z-index: 999;
 }
 
 .inspector-resize-handle:hover {
-  background-color: #227e99;
+  background-color: #d0ecf4;
 }
