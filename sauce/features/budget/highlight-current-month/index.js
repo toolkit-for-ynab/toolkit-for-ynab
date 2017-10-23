@@ -31,7 +31,7 @@ export class CurrentMonthIndicator extends Feature {
       this.invoke();
     }
   }
-  
+
   onRouteChanged() {
     if (!this.shouldInvoke()) return;
     this.invoke();
