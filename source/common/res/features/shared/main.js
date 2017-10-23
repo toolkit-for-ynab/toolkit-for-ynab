@@ -326,30 +326,32 @@ ynabToolKit.shared = (function () {
     },
 
     showNewReleaseModal(version) {
-      let $modal = $(`<div class="toolkit-modal-overlay">
-                        <div class="toolkit-modal">
-                          <div class="toolkit-modal-header">
-                            <img src="https://camo.githubusercontent.com/d57a1d819550e8ccbfdfa2552df2cfb5c5ec28e7/687474703a2f2f692e696d6775722e636f6d2f534a68774270552e706e67" />
-                          </div>
-                          <div class="toolkit-modal-content">
+      let $modal = $(`<div class="toolkit-modal">
+                        <div class="toolkit-modal-outer"><div class="toolkit-modal-inner"><div class="toolkit-modal-content">
+
+                          <header class="toolkit-modal-header">
+                            <img src="` + window.versionPopupAsset + `" id="toolkit-modal-logo" />
+                          </header>
+
+                          <div class="toolkit-modal-message">
                             <h1>The Toolkit for YNAB extension has been updated!</h1>
                             <span class="version">You are now using version ${version}. View the <a href="https://forum.youneedabudget.com/categories/ynab-extensions" target="_blank">release notes</a>.</span>
                             <div class="message">
-                              <strong>It is important to note that the Toolkit for YNAB extension is completely separate, and in no way affiliated with YNAB itself.</strong>
-                              If you discover a bug, please first disable the <em>Toolkit</em> to identify whether the issue is with the extension, or with <em>YNAB</em> itself.<br /><br />
-                              <em>Toolkit for YNAB</em> extension issues can be reported to the <em>Toolkit for YNAB</em> extension team on <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues" target="_blank">Github</a>.
-                              Please ensure the issue has not already been reported.<br /><br />
-                              If you have the time and the ability, new contributors to the <em>Toolkit</em> are always welcome!
+                              <p><strong>It is important to note that the Toolkit for YNAB extension is completely separate, and in no way affiliated with YNAB itself.</strong> If you discover a bug, please first disable the <em>Toolkit</em> to identify whether the issue is with the extension, or with <em>YNAB</em> itself.</p>
+                              <p><em>Toolkit for YNAB</em> extension issues can be reported to the <em>Toolkit for YNAB</em> extension team on <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues" target="_blank">Github</a>. Please ensure the issue has not already been reported.</p>
+                              <p>If you have the time and the ability, new contributors to the <em>Toolkit</em> are always welcome!</p>
                             </div>
                           </div>
-                          <div class="toolkit-modal-actions">
+                            
+                          <footer class="toolkit-modal-actions">
                             <button class="toolkit-modal-action-close">Continue</button>
-                          </div>
-                        </div>
+                          </footer>
+
+                        </div></div></div>        
                       </div>`);
 
-      $modal.find('.toolkit-modal-action-close').on('click', () => {
-        return $('.layout .toolkit-modal-overlay').remove();
+      $modal.find('.toolkit-modal-inner, .toolkit-modal-action-close').on('click', () => {
+        return $('.layout .toolkit-modal').remove();
       });
 
       if (!$('.modal-error').length) {
