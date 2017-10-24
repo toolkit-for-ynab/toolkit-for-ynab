@@ -22,6 +22,8 @@ const legacySettingMap = {
   ClearSelection: 'accountsClearSelection',
   ColourBlindMode: 'colourBlindMode',
   CurrentMonthIndicator: 'currentMonthIndicator',
+  DaysOfBuffering: 'daysOfBuffering',
+  DaysOfBufferingHistoryLookup: 'daysOfBufferingHistoryLookup',
   EditAccountButton: 'editButtonPosition',
   EmphasizedOutflows: 'accountsEmphasizedOutflows',
   GoalWarningColor: 'goalWarningColor',
@@ -30,19 +32,22 @@ const legacySettingMap = {
   HideAgeOfMoney: 'hideAgeOfMoney',
   HideHelp: 'hideHelp',
   ImportNotification: 'importNotification',
+  LargerClickableIcons: 'largerClickableIcons',
+  MonthlyNotesPopupWidth: 'monthlyNotesPopupWidth',
+  NavDisplayDensity: 'navDisplayDensity',
   PrintingImprovements: 'printingImprovements',
   QuickBudgetWarning: 'warnOnQuickBudget',
   RemovePositiveHighlight: 'removePositiveHighlight',
   RowHeight: 'accountsRowHeight',
   RowsHeight: 'budgetRowsHeight',
   RunningBalance: 'runningBalance',
+  SeamlessBudgetHeader: 'seamlessBudgetHeader',
   ShowIntercom: 'showIntercom',
   SplitKeyboardShortcut: 'splitKeyboardShortcut',
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',
   StripedRows: 'accountsStripedRows',
-  DaysOfBufferingHistoryLookup: 'daysOfBufferingHistoryLookup',
-  DaysOfBuffering: 'daysOfBuffering'
+  ToBeBudgetedWarning: 'toBeBudgetedWarning'
 };
 
 let previousSettings;
