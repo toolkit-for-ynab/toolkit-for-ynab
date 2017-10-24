@@ -208,6 +208,12 @@
             // The user has returned back to the budget screen
             ynabToolKit.insertPacingColumns.invoke();
           }
+        },
+
+        onRouteChanged(currentRoute) {
+          if (currentRoute.indexOf('budget') !== -1) {
+            ynabToolKit.insertPacingColumns.invoke();
+          }
         }
       };
     }()); // Keep feature functions contained within this object
