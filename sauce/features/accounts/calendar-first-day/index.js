@@ -1,5 +1,4 @@
 import { Feature } from 'core/feature';
-import * as toolkitHelper from 'helpers/toolkit';
 
 export class CalendarFirstDay extends Feature {
   constructor() {
@@ -10,7 +9,7 @@ export class CalendarFirstDay extends Feature {
   }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
+    return false;
   }
 
   invoke() {
