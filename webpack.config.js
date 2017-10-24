@@ -8,7 +8,10 @@ module.exports = {
   },
 
   resolve: {
-    modules: [path.resolve(__dirname, 'sauce'), 'node_modules']
+    alias: {
+      toolkit: path.resolve(__dirname, 'sauce')
+    },
+    modules: ['node_modules']
   },
 
   module: {

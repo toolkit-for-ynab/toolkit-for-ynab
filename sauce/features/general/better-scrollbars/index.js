@@ -1,4 +1,4 @@
-import { Feature } from 'core/feature';
+import { Feature } from 'toolkit/core/feature';
 
 export class BetterScrollbars extends Feature {
   injectCSS() {
