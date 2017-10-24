@@ -28,7 +28,6 @@ const legacySettingMap = {
   ImportNotification: 'importNotification',
   PrintingImprovements: 'printingImprovements',
   RemovePositiveHighlight: 'removePositiveHighlight',
-  ResizeInspector: 'resizeInspector',
   RowHeight: 'accountsRowHeight',
   RowsHeight: 'budgetRowsHeight',
   RunningBalance: 'runningBalance',
