@@ -1,5 +1,5 @@
-import { Feature } from 'core/feature';
-import { getEntityManager } from '../../../helpers/toolkit';
+import { Feature } from 'toolkit/core/feature';
+import { getEntityManager } from 'toolkit/helpers/toolkit';
 
 import outflowTransactionsFilter from './outflowTransactionsFilter';
 import generateReport from './generateReport';
