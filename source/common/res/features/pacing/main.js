@@ -125,6 +125,7 @@
               // Select all budget table rows but not the uncategorized category and not master categories.
               $('.budget-table-row')
                 .not('.budget-table-uncategorized-transactions')
+                .not('.is-debt-payment-category')
                 .not('.is-master-category')
                 .each(function () {
                   var available = ynab.YNABSharedLib.defaultInstance.currencyFormatter.unformat($(this).find('.budget-table-cell-available').text());
@@ -206,6 +207,12 @@
         observe(changedNodes) {
           if (changedNodes.has('budget-inspector')) {
             // The user has returned back to the budget screen
+            ynabToolKit.insertPacingColumns.invoke();
+          }
+        },
+
+        onRouteChanged(currentRoute) {
+          if (currentRoute.indexOf('budget') !== -1) {
             ynabToolKit.insertPacingColumns.invoke();
           }
         }

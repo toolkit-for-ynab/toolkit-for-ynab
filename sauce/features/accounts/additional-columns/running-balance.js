@@ -1,4 +1,4 @@
-import * as toolkitHelper from 'helpers/toolkit';
+import * as toolkitHelper from 'toolkit/helpers/toolkit';
 
 export class RunningBalance {
   willInvoke() {

@@ -78,6 +78,10 @@ export function transitionTo() {
   router.transitionTo(...arguments);
 }
 
+export function i10n(key, defaultValue) {
+  return ynabToolKit.l10nData && ynabToolKit.l10nData[key] || defaultValue;
+}
+
 /* Private Functions */
 function getViewRegistry() {
   return Ember.Component.create().get('_viewRegistry');
