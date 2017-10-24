@@ -27,6 +27,7 @@ const legacySettingMap = {
   HideHelp: 'hideHelp',
   ImportNotification: 'importNotification',
   PrintingImprovements: 'printingImprovements',
+  QuickBudgetWarning: 'warnOnQuickBudget',
   RemovePositiveHighlight: 'removePositiveHighlight',
   RowHeight: 'accountsRowHeight',
   RowsHeight: 'budgetRowsHeight',
