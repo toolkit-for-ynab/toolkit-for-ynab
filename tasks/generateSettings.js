@@ -31,6 +31,7 @@ const legacySettingMap = {
   RowHeight: 'accountsRowHeight',
   RowsHeight: 'budgetRowsHeight',
   RunningBalance: 'runningBalance',
+  ShowIntercom: 'showIntercom',
   SplitKeyboardShortcut: 'splitKeyboardShortcut',
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',

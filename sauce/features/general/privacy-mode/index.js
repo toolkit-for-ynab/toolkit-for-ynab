@@ -4,8 +4,6 @@ export class PrivacyMode extends Feature {
 
   shouldInvoke() {
     return true;
-    // console.log(this.settings.enabled);
-    // return this.settings.enabled !== '0';
   }
 
   invoke() {
