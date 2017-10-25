@@ -84,6 +84,11 @@ div.options .darkMode {
 
 #options-save {
   display: none;
+  margin-bottom: 1em;
+}
+
+#options-save button.btn {
+  margin-top: 0;
 }
 
 /* Make all icons green to match the logo */
