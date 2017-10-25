@@ -186,18 +186,8 @@
 
           $('.budget-header').animate({ left: originalSizes.headerLeft });
           if ($('.budget-content').is(':visible')) {
-            if (ynabToolKit.options.resizeInspector) {
-              let bcWidth = ynabToolKit.resizeInspector.getContentSize(true);
-              $('.budget-content, .budget-table-container').animate({ width: bcWidth }, 400, 'swing', function () {
-                $('.ynabtk-navlink-collapse').removeClass('collapsed').addClass('expanded');
-              });
-            } else {
-              // if resize-inspector feature not on
-              $('.budget-content').animate({ width: originalSizes.contentWidth }, 400, 'swing', function () {
-                $('.budget-content').removeAttr('style');
-                $('.ynabtk-navlink-collapse').removeClass('collapsed').addClass('expanded');
-              });
-              $('.budget-inspector').animate({ width: originalSizes.inspectorWidth });
+            if (ynabToolKit.options.InspectorWidth !== '0') {
+              $('.budget-inspector')[0].style.setProperty('--toolkit-inspector-minwidth', 'inherit');
             }
           }
         },
@@ -225,12 +215,8 @@
 
           $('.budget-header').animate({ left: '40px' });
           if ($('.budget-content').is(':visible')) {
-            if (ynabToolKit.options.resizeInspector) {
-              let bcWidth = ynabToolKit.resizeInspector.getContentSizeCollapsed();
-              $('.budget-content, .budget-table-container').animate({ width: bcWidth });
-            } else {
-              $('.budget-content').animate({ width: '73%' });
-              $('.budget-inspector').animate({ width: '27%' });
+            if (ynabToolKit.options.InspectorWidth !== '0') {
+              $('.budget-inspector')[0].style.setProperty('--toolkit-inspector-minwidth', '276 px');
             }
           }
         },
