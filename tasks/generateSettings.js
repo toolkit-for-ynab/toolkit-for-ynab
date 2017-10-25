@@ -18,6 +18,7 @@ const legacySettingMap = {
   BudgetQuickSwitch: 'budgetQuickSwitch',
   CategoryActivityPopupWidth: 'categoryActivityPopupWidth',
   ChangeEnterBehavior: 'changeEnterBehavior',
+  CalendarFirstDay: 'calendarFirstDay',
   CheckNumbers: 'checkNumbers',
   ClearSelection: 'accountsClearSelection',
   ColourBlindMode: 'colourBlindMode',
