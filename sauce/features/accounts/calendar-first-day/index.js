@@ -1,12 +1,9 @@
 import { Feature } from 'toolkit/core/feature';
 
 export class CalendarFirstDay extends Feature {
-  constructor() {
-    super();
-    // Variables for tracking specific states
-    this.isCalendarOpen = false;
-    this.isReRendering = false;
-  }
+  // Variables for tracking specific states
+  isCalendarOpen = false
+  isReRendering = false
 
   shouldInvoke() {
     return false;
