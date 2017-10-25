@@ -35,7 +35,7 @@ follow these stpes:
 3. Create an index.js file which has the following:
   <!-- spacing is intentionally weird here because of markdown -->
   ```javascript
-  import { Feature } from 'core/feature';
+  import { Feature } from 'toolkit/core/feature';
 
   export class MyCoolFeature extends Feature {
      shouldInvoke() {
@@ -109,14 +109,14 @@ at this point, the page is ready for manipulation and YNAB is loaded.
 **optional function, not required to be declared**
 
 injectCSS is called only once when the feature is instantiated, and its job is to
-return any global CSS styles you'd like to have placed in a `<style>` tag in the 
+return any global CSS styles you'd like to have placed in a `<style>` tag in the
 `<head>` of the page.
 
 For example, a CSS based feature to hide the referral program banner would look like this:
 
 **index.js**
 ```javascript
-import { Feature } from 'core/feature';
+import { Feature } from 'toolkit/core/feature';
 
 export class HideReferralBanner extends Feature {
   injectCSS() { return require('./index.css'); }

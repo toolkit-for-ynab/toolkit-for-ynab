@@ -1,8 +1,8 @@
-import { Feature } from 'core/feature';
+import { Feature } from 'toolkit/core/feature';
 import { AdditionalColumnStub } from './additional-column-stub';
 import { RunningBalance } from './running-balance';
 import { CheckNumbers } from './check-numbers';
-import * as toolkitHelper from 'helpers/toolkit';
+import * as toolkitHelper from 'toolkit/helpers/toolkit';
 
 export class AdditionalColumns extends Feature {
   constructor() {

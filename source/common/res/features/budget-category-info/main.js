@@ -86,7 +86,7 @@
           });
 
           var categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions');
-          var masterCategoryName = '';
+          var masterCategoryName = 'Credit Card Payments';
 
           if (subCats === null || subCats.length === 0 || loadCategories) {
             subCats = ynabToolKit.shared.getMergedCategories();

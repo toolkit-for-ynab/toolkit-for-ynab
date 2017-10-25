@@ -75,7 +75,7 @@ div.options {
   width: 260px;
   font-size: 1.2em;
   padding-top: 15px;
-  border-top: 1px solid #F4F4F4;
+  border-top: 1px solid #f4f4f4;
 }
 
 div.options span {
@@ -98,7 +98,7 @@ div.options .darkMode {
 
 /* Make all icons green to match the logo */
 i {
-  color: #3CB54A;
+  color: #3cb54a;
 }
 
 .option-row {
@@ -110,7 +110,9 @@ i {
   width: 70%;
 }
 
-.option-row > label, .option-row > select, .option-row > span {
+.option-row > label,
+.option-row > select,
+.option-row > span {
   margin-left: 143px;
 }
 
@@ -125,12 +127,12 @@ i {
 
 /* All switches should be green when they're on too */
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
-  background: #3CB54A;
+  background: #3cb54a;
 }
 
 .btn {
   margin: 18px 10px 0 0;
-  background: ##D6D6D6;
+  background: ##d6d6d6;
 }
 
 .btn:hover {
@@ -141,13 +143,14 @@ i {
   outline: 0 !important;
 }
 
-.btn-primary, .btn-primary:focus {
-  background: #3CB54A;
+.btn-primary,
+.btn-primary:focus {
+  background: #3cb54a;
   color: #ffffff;
 }
 
 .btn-primary:hover {
-  background: #66CC72;
+  background: #66cc72;
 }
 
 .page-header {
@@ -190,4 +193,9 @@ i {
 
 #importExportModal .modal-footer {
   text-align: center;
+}
+
+#supportSettingsPage > h2 > span.version {
+  color: #3cb54a;
+  float: right;
 }

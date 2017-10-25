@@ -304,4 +304,7 @@ KangoAPI.onReady(function () {
   jq('.import-export-button').click(importExportModal);
   jq('.save-button').click(saveOptions);
   jq('.cancel-button').click(KangoAPI.closeWindow);
+
+  // set version number
+  jq('h2 span.version').text('v ' + kango.getExtensionInfo().version);
 });

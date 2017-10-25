@@ -107,10 +107,12 @@ Promise.all(optionsPromises).then(function () {
   /* Load the ynabToolkit bundle */
   injectScript('res/features/ynabToolkit.js');
 
-  /* Putting this code here temporarily. Once the resize-inspector feature
-     is refactored to be saucy, the call should be moved to the
-     resize-insptector willInvoke() function. */
+  /* Putting this code here temporarily. Once the resize-inspector feature is refactored to be
+  saucy, the call should be moved to the resize-inspector willInvoke() function. */
   injectJSString('window.resizeInspectorAsset = "' + kango.io.getResourceUrl('assets/vsizegrip.png') + '";');
+
+  /* Used by the new version notification popup */
+  injectJSString('window.versionPopupAsset = "' + kango.io.getResourceUrl('assets/logos/toolkitforynab-logo-400.png') + '";');
 
   ensureDefaultsAreSet().then(applySettingsToDom);
 });
