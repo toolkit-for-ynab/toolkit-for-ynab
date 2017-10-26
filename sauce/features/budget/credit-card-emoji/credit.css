@@ -1,0 +1,3 @@
+[title="Credit Card Payments"] .user-entered-text::before {
+    content: "💳 ";
+}
