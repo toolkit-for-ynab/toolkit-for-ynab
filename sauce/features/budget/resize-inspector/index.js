@@ -1,5 +1,5 @@
-import { Feature } from 'core/feature';
-import * as toolkitHelper from 'helpers/toolkit';
+import { Feature } from 'toolkit/core/feature';
+import * as toolkitHelper from 'toolkit/helpers/toolkit';
 
 const HIDEIMAGE = 'toolkit-modal-item-hide-image';
 const BUTTONDISABLED = 'button-disabled';
