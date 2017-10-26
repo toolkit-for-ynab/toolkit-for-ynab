@@ -28,27 +28,43 @@ Ember views or normalizing currency values.
 ## Writing Your First Feature
 
 It is extremely easy to get started with your first feature. In order to do so,
-follow these stpes:
+follow these steps:
 
-1. Determine where your feature belongs in YNAB (budget/accounts/all pages)
-2. Create a sub-directory in the proper `features/` sub-directory.
-3. Create an index.js file which has the following:
+1. Determine where your feature belongs in YNAB (accounts/budget/general)
+2. Create a sub-directory in the proper sub-directory e.g. `account/`, `budget/`, `general/`
+3. Create an `index.js` file which has the following:
   <!-- spacing is intentionally weird here because of markdown -->
   ```javascript
   import { Feature } from 'toolkit/core/feature';
 
   export class MyCoolFeature extends Feature {
-     shouldInvoke() {
-       return true;
-     }
+    shouldInvoke() {
+      return true;
+    }
 
-     invoke() {
-       console.log('MyCoolFeature is working!')
-     }
+    invoke() {
+      console.log('MyCoolFeature is working!');
+    }
   }
   ```
-4. Run `npm develop`, refresh YNAB and you should see you feature log to the
-console!
+4. Create a `settings.js` file which has the following:
+  <!-- spacing is intentionally weird here because of markdown -->
+  ```javascript
+  module.exports = {
+    name: 'MyCoolFeature',
+    type: 'checkbox',
+    default: false,
+    section: 'budget',
+    title: 'My Cool Feature!',
+    description: 'This is my brand new feature.'
+  };
+
+  ```
+
+5. Run `./build` to build the extension for all the browswers.
+6. *chrome:* go to `chrome://extensions` and turn on "Developer mode". Then "Load
+unpacked extension". Select `/output/chrome/` and it will load into chrome.
+7. Reload YNAB!
 
 In order to help you develop cool features, we've created a few API functions
 that you get for free when extending `Feature`.
