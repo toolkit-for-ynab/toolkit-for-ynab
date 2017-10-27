@@ -288,7 +288,7 @@ function deleteAllKangoSettings(keepDefaults) {
         resolve('success');
       });
     } else {
-      // todo: handle keeping defaults
+      // speed: handle keeping defaults
     }    
   });  
 }

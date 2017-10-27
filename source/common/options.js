@@ -256,7 +256,7 @@ function importExportModal() {
 }
 
 function resetSettings() {
-  // todo: show confirmation modal
+  // speed: show confirmation modal
   // have confirmation modal ask if we should keepDefaults
 
   let keepDefaults = false;
@@ -264,7 +264,7 @@ function resetSettings() {
   deleteAllKangoSettings(keepDefaults).then(function (data) {
     console.log('call successful: ', data);
 
-    // todo: update view w/o full page refresh
+    // speed: update view w/o full page refresh
     window.location.reload();
   });
 }
