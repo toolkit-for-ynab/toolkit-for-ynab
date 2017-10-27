@@ -39,6 +39,7 @@ const legacySettingMap = {
   PrintingImprovements: 'printingImprovements',
   QuickBudgetWarning: 'warnOnQuickBudget',
   RemovePositiveHighlight: 'removePositiveHighlight',
+  ResizeInspector: 'resizeInspector',
   RowHeight: 'accountsRowHeight',
   RowsHeight: 'budgetRowsHeight',
   RunningBalance: 'runningBalance',

@@ -1,0 +1,22 @@
+.budget-content {
+  width: var(--toolkit-content-width, 75%) !important; /* default to our widest width */
+}
+
+.budget-inspector {
+  min-width: var(--toolkit-inspector-minwidth, inherit) !important;
+  width: var(--toolkit-inspector-width, 25%) !important; /* default to our widest width */
+}
+
+.toolkit-modal-item-hide-image {
+  visibility: hidden;
+}
+
+.modal-resize-inspector {
+  background-color: transparent;
+}
+
+.modal-resize-inspector .modal {
+  padding: .3em 0;
+  width: 7em;
+  font-size: .9em;
+}
