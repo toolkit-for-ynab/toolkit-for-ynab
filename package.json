@@ -22,7 +22,8 @@
     "webpack": "3"
   },
   "scripts": {
-    "develop": "./watch",
+    "build": "./build",
+    "watch": "./watch",
     "webpack": "webpack",
     "legacy-eslint": "eslint --ignore-path .eslintignore ./source",
     "legacy-eslint-fix": "eslint --ignore-path .eslintignore ./ --fix",
