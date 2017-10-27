@@ -255,6 +255,20 @@ function importExportModal() {
   }
 }
 
+function resetSettings() {
+  // todo: show confirmation modal
+  // have confirmation modal ask if we should keepDefaults
+
+  let keepDefaults = false;
+
+  deleteAllKangoSettings(keepDefaults).then(function (data) {
+    console.log('call successful: ', data);
+
+    // todo: update view w/o full page refresh
+    window.location.reload();
+  });
+}
+
 KangoAPI.onReady(function () {
   // Set the logo.
   kango.invokeAsync('kango.io.getResourceUrl', 'assets/logos/toolkitforynab-logo-200.png', function (data) {
@@ -307,6 +321,9 @@ KangoAPI.onReady(function () {
   jq('.import-export-button').click(importExportModal);
   jq('.save-button').click(saveOptions);
   jq('.cancel-button').click(KangoAPI.closeWindow);
+  jq('.cancel-button').click(KangoAPI.closeWindow);
+
+  jq('.reset-settings-button').click(resetSettings);
 
   // set version number
   jq('h2 span.version').text('v ' + kango.getExtensionInfo().version);
