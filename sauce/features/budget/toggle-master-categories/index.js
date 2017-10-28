@@ -1,4 +1,5 @@
 import { Feature } from 'toolkit/core/feature';
+import { getCurrentRouteName } from 'toolkit/helpers/toolkit';
 
 export class ToggleMasterCategories extends Feature {
   injectCSS() {
@@ -6,26 +7,29 @@ export class ToggleMasterCategories extends Feature {
   }
 
   shouldInvoke() {
-    return true; // Always invoke at least once.
+    return getCurrentRouteName().indexOf('budget') !== -1;
   }
 
   invoke() {
-    $(document).on('click.toolkit-toggle-master-cats', '.undo-redo-container', function (e) {
-      var container = $('.undo-redo-container');
-      var min = container.offset().left + container.outerWidth() - 2;
-      var max = min + 28;
+    $(document).on(
+      'click.toolkit-toggle-master-cats',
+      '.undo-redo-container',
+      this.toggleMasterCategories
+    );
+  }
 
-      if (e.pageX >= min && e.pageX <= max) {
-        // if some sections are already hidden, expand all
-        if ($('.is-master-category .budget-table-cell-name-static-width button.right').length) {
-          $('.is-master-category .budget-table-cell-name-static-width button.right').click();
-        } else {
-          $('.is-master-category .budget-table-cell-name-static-width button.down').click();
-        }
+  toggleMasterCategories = (event) => {
+    const container = $('.undo-redo-container');
+    const min = container.offset().left + container.outerWidth() - 2;
+    const max = min + 28;
+
+    if (event.pageX >= min && event.pageX <= max) {
+      // if some sections are already hidden, expand all
+      if ($('.is-master-category .budget-table-cell-name-static-width button.right').length) {
+        $('.is-master-category .budget-table-cell-name-static-width button.right').click();
+      } else {
+        $('.is-master-category .budget-table-cell-name-static-width button.down').click();
       }
-    });
-
-    // Turn ourself off to prevent adding multiple click handlers!
-    this.settings.enabled = false;
+    }
   }
 }
