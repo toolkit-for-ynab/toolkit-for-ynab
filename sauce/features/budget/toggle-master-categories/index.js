@@ -1,5 +1,4 @@
 import { Feature } from 'toolkit/core/feature';
-import { getCurrentRouteName } from 'toolkit/helpers/toolkit';
 
 export class ToggleMasterCategories extends Feature {
   injectCSS() {
@@ -7,7 +6,9 @@ export class ToggleMasterCategories extends Feature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') !== -1;
+    // since we are adding the listener to the entire document,
+    // we should invoke on page load.
+    return true;
   }
 
   invoke() {
