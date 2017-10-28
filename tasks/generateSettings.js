@@ -49,7 +49,8 @@ const legacySettingMap = {
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',
   StripedRows: 'accountsStripedRows',
-  ToBeBudgetedWarning: 'toBeBudgetedWarning'
+  ToBeBudgetedWarning: 'toBeBudgetedWarning',
+  ToggleMasterCategories: 'collapseExpandBudgetGroups'
 };
 
 let previousSettings;
