@@ -26,6 +26,7 @@ const legacySettingMap = {
   DaysOfBuffering: 'daysOfBuffering',
   DaysOfBufferingHistoryLookup: 'daysOfBufferingHistoryLookup',
   EditAccountButton: 'editButtonPosition',
+  EnableRetroCalculator: 'enableRetroCalculator',
   EmphasizedOutflows: 'accountsEmphasizedOutflows',
   GoalWarningColor: 'goalWarningColor',
   GoogleFontsSelector: 'googleFontsSelector',
