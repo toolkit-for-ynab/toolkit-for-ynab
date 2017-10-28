@@ -29,8 +29,8 @@ export class ResizeInspector extends Feature {
     if (!$('#toolkitResizeInspector').length) {
       let buttonText = ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.InspectorWidth'] || 'Inspector Width';
       $('<button>', { id: 'toolkitResizeInspector', class: 'ember-view button', style: 'float: right' })
-        .append(buttonText + ' ')
-        .append($('<i>', { class: 'ember-view flaticon stroke down' }))
+        .append($('<i>', { class: 'ember-view flaticon stroke gear-1' }))
+        .append(' ' + buttonText)
         .click(() => {
           this.showResizeModal();
         })
@@ -40,7 +40,7 @@ export class ResizeInspector extends Feature {
 
   showResizeModal() {
     let _this = this;
-    let btnLeft = $('.budget-toolbar').outerWidth() + $('#toolkitResizeInspector').outerWidth() + 24;
+    let btnLeft = $('.budget-toolbar').outerWidth() + $('#toolkitResizeInspector').outerWidth() + 29;
     let btnTop = $('.budget-toolbar').outerHeight() + $('.budget-header-flexbox').outerHeight() + 8;
     let $modal = $('<div>', { id: 'toolkitInspectorODiv', class: 'ember-view' })
       .append($('<div>', { id: 'toolkitInspectorModal', class: 'ynab-u modal-popup modal-resize-inspector ember-view modal-overlay active' })
@@ -105,21 +105,21 @@ export class ResizeInspector extends Feature {
   }
 
   setProperties(width) {
-    let contentWidth = '67%';
-    let inspectorWidth = '33%';
+    if ($('.budget-content').length) {
+      let contentWidth = '67%';
+      let inspectorWidth = '33%';
 
-    if (width === 1) {
-      contentWidth = '75%';
-      inspectorWidth = '25%';
-    } else if (width === 2) {
-      contentWidth = '80%';
-      inspectorWidth = '20%';
-    } else if (width === 3) {
-      contentWidth = '85%';
-      inspectorWidth = '15%';
-    }
+      if (width === 1) {
+        contentWidth = '75%';
+        inspectorWidth = '25%';
+      } else if (width === 2) {
+        contentWidth = '80%';
+        inspectorWidth = '20%';
+      } else if (width === 3) {
+        contentWidth = '85%';
+        inspectorWidth = '15%';
+      }
 
-    try {
       $('.budget-content')[0].style.setProperty('--toolkit-content-width', contentWidth);
       $('.budget-inspector')[0].style.setProperty('--toolkit-inspector-width', inspectorWidth);
 
@@ -129,9 +129,12 @@ export class ResizeInspector extends Feature {
       // Remove our click event handler and the modal div.
       $(document).off('click.toolkitInspector');
       $('#toolkitInspectorODiv').remove();
-    } catch (e) {
-      console.log('InspectorWidth::setProperties: Failed to set property!');
     }
+  }
+
+  onBudgetChanged() {
+    if (!this.shouldInvoke()) return;
+    this.invoke();
   }
 
   onRouteChanged() {
