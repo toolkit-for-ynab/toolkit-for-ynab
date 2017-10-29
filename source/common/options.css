@@ -48,11 +48,6 @@ body {
   background-color: white;
 }
 
-.sidebar-collapse {
-  position: fixed;
-  width: 21%;
-}
-
 #logo {
   display: block;
   margin: 10px auto 0;
