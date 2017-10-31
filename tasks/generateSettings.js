@@ -22,6 +22,7 @@ const legacySettingMap = {
   CheckNumbers: 'checkNumbers',
   ClearSelection: 'accountsClearSelection',
   ColourBlindMode: 'colourBlindMode',
+  CollapseSideMenu: 'collapseSideMenu',
   CurrentMonthIndicator: 'currentMonthIndicator',
   DaysOfBuffering: 'daysOfBuffering',
   DaysOfBufferingHistoryLookup: 'daysOfBufferingHistoryLookup',
