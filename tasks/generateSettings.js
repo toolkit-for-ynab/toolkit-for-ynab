@@ -280,6 +280,14 @@ function setKangoSetting(settingName, data) {
   });
 }
 
+function deleteAllKangoSettings() {
+  return new Promise(function (resolve) {
+    kango.invokeAsync('kango.storage.clear', function () {
+      resolve('success');
+    });
+  });  
+}
+
 function getKangoStorageKeys() {
   return new Promise(function (resolve) {
     kango.invokeAsync('kango.storage.getKeys', function (keys) {
