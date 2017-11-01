@@ -24,6 +24,7 @@
   "scripts": {
     "build": "./build",
     "watch": "./watch",
+    "dev": "npm run build && npm run watch",
     "webpack": "webpack",
     "legacy-eslint": "eslint --ignore-path .eslintignore ./source",
     "legacy-eslint-fix": "eslint --ignore-path .eslintignore ./ --fix",
