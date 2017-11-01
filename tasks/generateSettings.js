@@ -277,19 +277,11 @@ function setKangoSetting(settingName, data) {
   });
 }
 
-function deleteAllKangoSettings(keepDefaults) {
-  console.log('deleteAllKangoSettings(' + arguments + ')');
-
+function deleteAllKangoSettings() {
   return new Promise(function (resolve) {
-    if (!keepDefaults) {
-      kango.invokeAsync('kango.storage.clear', function () {
-        console.log('kango.storage.clear: was successful');
-
-        resolve('success');
-      });
-    } else {
-      // speed: handle keeping defaults
-    }    
+    kango.invokeAsync('kango.storage.clear', function () {
+      resolve('success');
+    });
   });  
 }
 
