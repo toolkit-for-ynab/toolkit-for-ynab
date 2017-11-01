@@ -1,4 +1,4 @@
-.budget-toolbar > .undo-redo-container:after {
+.budget-toolbar > .undo-redo-container::after {
   content: '\e592';
   font-family: 'Flaticons Stroke';
   -webkit-font-smoothing: antialiased;
