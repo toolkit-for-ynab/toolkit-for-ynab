@@ -203,34 +203,7 @@
     </div>
   </div>
 
-  <!-- resetSettingsModal -->
-  <div id="resetSettingsModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title" id="resetSettingsTitle">Reset Settings</h4>
-        </div>
-        <div class="modal-body">
-          <p>
-            This will
-            <span class="warning">DELETE</span> all settings and revert back to the defaults.
-          </p>
-          <p>
-            Are you sure you want to continue?
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button id="resetSettingsApply" type="button" class="btn btn-danger">Yes</button>
-          <button data-dismiss="modal" type="button" class="btn btn-default">No</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- simpleModal -->
+  <!-- confirmationModal -->
   <div id="confirmationModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -248,6 +221,16 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div id="resetSettingsModalContent" class="hidden">
+    <p>
+      This will
+      <span class="warning">DELETE</span> all settings and revert back to the defaults.
+    </p>
+    <p>
+      Are you sure you want to continue?
+    </p>
   </div>
 
   <!-- JS Scripts-->

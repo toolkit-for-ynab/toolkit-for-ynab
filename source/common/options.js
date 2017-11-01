@@ -262,7 +262,7 @@ function openModal(title, content, fn) {
   const modalSelector = '#confirmationModal';
 
   jq(`${modalSelector} .modal-title`).text(title);
-  jq(`${modalSelector} .modal-body`).text(content);
+  jq(`${modalSelector} .modal-body`).html(content);
 
   jq(modalSelector).modal();
   jq(modalSelector).one('shown.bs.modal', function () {
@@ -331,7 +331,7 @@ KangoAPI.onReady(function () {
   jq('.cancel-button').click(KangoAPI.closeWindow);
 
   jq('.reset-settings-button').click(() => {
-    return openModal('Reset Settings', 'CONTENT', resetSettings);
+    return openModal('Reset Settings', document.querySelector('#resetSettingsModalContent').innerHTML, resetSettings);
   });
 
   // set version number
