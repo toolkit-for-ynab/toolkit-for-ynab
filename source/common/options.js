@@ -324,6 +324,10 @@ KangoAPI.onReady(function () {
     loadPanel('support'); e.preventDefault();
     jq('#footer-buttons').hide();
   });
+  jq('#advancedMenuItem').click(function (e) {
+    loadPanel('advanced'); e.preventDefault();
+    jq('#footer-buttons').hide();
+  });
 
   jq('.import-export-button').click(importExportModal);
   jq('.save-button').click(saveOptions);

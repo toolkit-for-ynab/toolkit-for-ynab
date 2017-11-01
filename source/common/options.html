@@ -51,6 +51,10 @@
             <a href="#" id="supportMenuItem">
               <i class="fa fa-support"></i> Support</a>
           </li>
+          <li>
+            <a href="#" id="advancedMenuItem">
+              <i class="fa fa-wrench"></i> Advanced Settings</a>
+          </li>
         </ul>
 
         <div class="options">
@@ -59,12 +63,6 @@
             <span>Dark Mode</span>
           </div>
           <button class="btn btn-xs import-export-button">Import/Export Settings</button>
-
-          <!-- 
-            speed: Don't leave this as a button here. It's too crowded. 
-            Maybe start another settings page just for 'Advanced' features. 
-          -->
-          <button class="btn btn-xs reset-settings-button">Reset Settings</button>
         </div>
       </div>
 
@@ -160,6 +158,18 @@
               <a href="https://trello.com/b/EzOvXlil/toolkit-for-ynab-roadmap">Trello Board</a>!
               <br>
               <br> Thanks again for installing the ToolKit and Happy YNABing!
+            </div>
+
+            <!-- ======= ADVANCE ======= -->
+            <div id="advancedSettingsPage" class="settingsPage">
+              <h2 class="page-header">
+                <i class="fa fa-wrench"></i> Advanced Settings
+              </h2>
+
+              <div class="reset-settings advanced-row">
+                <button class="btn btn-danger reset-settings-button">Reset Settings</button>
+                <label>Do you want to reset Settings back to default?</label>
+              </div>
             </div>
 
             <div id="settingsSaved" class="col-xs-11 alert alert-success" style="display:none">
