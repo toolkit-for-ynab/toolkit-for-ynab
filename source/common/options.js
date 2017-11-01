@@ -255,16 +255,23 @@ function importExportModal() {
   }
 }
 
+function openModal(title, content, fn) {
+  console.log('openModal: ', arguments);
+  console.log('openModal: fn', fn);
+
+  const modalSelector = '#confirmationModal';
+
+  jq(`${modalSelector} .modal-title`).text(title);
+  jq(`${modalSelector} .modal-body`).text(content);
+
+  jq(modalSelector).modal();
+  jq(modalSelector).one('shown.bs.modal', function () {
+    jq(`${modalSelector} .confirmationButton`).click(fn);
+  });
+}
+
 function resetSettings() {
-  // speed: show confirmation modal
-  // have confirmation modal ask if we should keepDefaults
-
-  let keepDefaults = false;
-
-  deleteAllKangoSettings(keepDefaults).then(function (data) {
-    console.log('call successful: ', data);
-
-    // speed: update view w/o full page refresh
+  return deleteAllKangoSettings().then(function () {
     window.location.reload();
   });
 }
@@ -323,7 +330,9 @@ KangoAPI.onReady(function () {
   jq('.cancel-button').click(KangoAPI.closeWindow);
   jq('.cancel-button').click(KangoAPI.closeWindow);
 
-  jq('.reset-settings-button').click(resetSettings);
+  jq('.reset-settings-button').click(() => {
+    return openModal('Reset Settings', 'CONTENT', resetSettings);
+  });
 
   // set version number
   jq('h2 span.version').text('v ' + kango.getExtensionInfo().version);

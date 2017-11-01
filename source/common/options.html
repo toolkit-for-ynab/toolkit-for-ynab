@@ -59,6 +59,11 @@
             <span>Dark Mode</span>
           </div>
           <button class="btn btn-xs import-export-button">Import/Export Settings</button>
+
+          <!-- 
+            speed: Don't leave this as a button here. It's too crowded. 
+            Maybe start another settings page just for 'Advanced' features. 
+          -->
           <button class="btn btn-xs reset-settings-button">Reset Settings</button>
         </div>
       </div>
@@ -193,6 +198,53 @@
             and must be done on every new device.</p>
 
           <button id="importExportApply" type="button" class="btn btn-primary apply-settings">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- resetSettingsModal -->
+  <div id="resetSettingsModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="resetSettingsTitle">Reset Settings</h4>
+        </div>
+        <div class="modal-body">
+          <p>
+            This will
+            <span class="warning">DELETE</span> all settings and revert back to the defaults.
+          </p>
+          <p>
+            Are you sure you want to continue?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button id="resetSettingsApply" type="button" class="btn btn-danger">Yes</button>
+          <button data-dismiss="modal" type="button" class="btn btn-default">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- simpleModal -->
+  <div id="confirmationModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger confirmationButton">Yes</button>
+          <button data-dismiss="modal" type="button" class="btn btn-default">No</button>
         </div>
       </div>
     </div>

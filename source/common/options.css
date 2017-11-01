@@ -176,11 +176,20 @@ i {
   width: 100%;
 }
 
-#importExportModal .modal-footer {
+/* #importExportModal .modal-footer {
   text-align: center;
-}
+} */
 
 #supportSettingsPage > h2 > span.version {
   color: #3cb54a;
   float: right;
+}
+
+.modal .modal-body, .modal .modal-footer{ 
+  text-align: center;
+}
+
+span.warning {
+  font-weight: bold;
+  text-decoration: underline;
 }
