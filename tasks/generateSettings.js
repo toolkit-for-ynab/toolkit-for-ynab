@@ -22,10 +22,12 @@ const legacySettingMap = {
   CheckNumbers: 'checkNumbers',
   ClearSelection: 'accountsClearSelection',
   ColourBlindMode: 'colourBlindMode',
+  CollapseSideMenu: 'collapseSideMenu',
   CurrentMonthIndicator: 'currentMonthIndicator',
   DaysOfBuffering: 'daysOfBuffering',
   DaysOfBufferingHistoryLookup: 'daysOfBufferingHistoryLookup',
   EditAccountButton: 'editButtonPosition',
+  EnableRetroCalculator: 'enableRetroCalculator',
   EmphasizedOutflows: 'accountsEmphasizedOutflows',
   GoalWarningColor: 'goalWarningColor',
   GoogleFontsSelector: 'googleFontsSelector',
@@ -49,7 +51,8 @@ const legacySettingMap = {
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',
   StripedRows: 'accountsStripedRows',
-  ToBeBudgetedWarning: 'toBeBudgetedWarning'
+  ToBeBudgetedWarning: 'toBeBudgetedWarning',
+  ToggleMasterCategories: 'collapseExpandBudgetGroups'
 };
 
 let previousSettings;
@@ -275,6 +278,14 @@ function setKangoSetting(settingName, data) {
       resolve('success');
     });
   });
+}
+
+function deleteAllKangoSettings() {
+  return new Promise(function (resolve) {
+    kango.invokeAsync('kango.storage.clear', function () {
+      resolve('success');
+    });
+  });  
 }
 
 function getKangoStorageKeys() {

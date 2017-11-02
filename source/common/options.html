@@ -51,6 +51,10 @@
             <a href="#" id="supportMenuItem">
               <i class="fa fa-support"></i> Support</a>
           </li>
+          <li>
+            <a href="#" id="advancedMenuItem">
+              <i class="fa fa-wrench"></i> Advanced Settings</a>
+          </li>
         </ul>
 
         <div class="options">
@@ -74,13 +78,16 @@
               <div class="page-header row">
                 <div class="col-md-8 title">
                   <h2>
-                    <i class="fa fa-cogs"></i> General Settings</h2>
+                    <i class="fa fa-cogs"></i> General Settings
+                  </h2>
                 </div>
 
                 <div class="col-md-4 actions">
                   <button class="btn btn-lg btn-primary save-button">Save</button>
                   <button class="btn btn-lg btn cancel-button">Cancel</button>
                 </div>
+
+                <div class="content"></div>
               </div>
             </div>
 
@@ -90,12 +97,15 @@
                 <div class="col-md-8 title">
                   <h2>
                     <i class="fa fa-university"></i> Accounts Screen Settings
+                  </h2>
                 </div>
 
                 <div class="col-md-4 actions">
                   <button class="btn btn-lg btn-primary save-button">Save</button>
                   <button class="btn btn-lg btn cancel-button">Cancel</button>
                 </div>
+
+                <div class="content"></div>
               </div>
             </div>
 
@@ -105,12 +115,15 @@
                 <div class="col-md-8 title">
                   <h2>
                     <i class="fa fa-envelope-o"></i> Budget Screen Settings
+                  </h2>
                 </div>
 
                 <div class="col-md-4 actions">
                   <button class="btn btn-lg btn-primary save-button">Save</button>
                   <button class="btn btn-lg btn cancel-button">Cancel</button>
                 </div>
+
+                <div class="content"></div>
               </div>
             </div>
 
@@ -120,50 +133,74 @@
                 <div class="col-md-8 title">
                   <h2>
                     <i class="fa fa-bar-chart"></i> Reports Screen Settings
+                  </h2>
                 </div>
 
                 <div class="col-md-4 actions">
                   <button class="btn btn-lg btn-primary save-button">Save</button>
                   <button class="btn btn-lg btn cancel-button">Cancel</button>
                 </div>
+
+                <div class="content"></div>
               </div>
             </div>
 
             <!-- ======= SUPPORT ======= -->
             <div id="supportSettingsPage" class="settingsPage">
-              <h2 class="page-header">
-                <i class="fa fa-support"></i> Support The Toolkit!
-                <span class="version"></span>
-              </h2>
-              <br>
-              <h3>Thank you for installing Toolkit For YNAB!</h3>
-              <br> This toolkit is completely free and is brought to you by the
-              <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab">Open Source community</a>
-              <br>
-              <br>
-              <h3>Issues or Feature Requests?</h3>
-              <br> We ask that any issues whether they are bugs or feature request get posted either as an issue
-              <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues">on github</a> or as a thread on the
-              <a href="http://forum.youneedabudget.com/categories/ynab-extensions">YNAB Forums</a>.
-              <br>
-              <br>
-              <h3>Want to track our progress?</h3>
-              <br> Our complete road map is visible on our public
-              <a href="https://trello.com/b/EzOvXlil/toolkit-for-ynab-roadmap">Trello Board</a>. Note that not all bugs will get posted here but most of the feature requests will be tracked
-              here.
-              <br>
-              <br>
-              <h3>How To Help</h3>
-              <br> If you're a developer, hop on our
-              <a href="https://trello.com/b/EzOvXlil/toolkit-for-ynab-roadmap">Trello Board</a> or look at our
-              <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues">issue list on GitHub</a>, find something that interests you and start coding away! Make a pull request when
-              you've completed your feature and we'll get it into the next release as soon as everything looks good!
-              <br>
-              <br> If you're not a developer, you can still help us
-              <i>tremendously</i> by voting on cards listed in our
-              <a href="https://trello.com/b/EzOvXlil/toolkit-for-ynab-roadmap">Trello Board</a>!
-              <br>
-              <br> Thanks again for installing the ToolKit and Happy YNABing!
+              <div class="page-header row">
+                <h2>
+                  <i class="fa fa-support"></i> Support The Toolkit!
+                  <span class="version"></span>
+                </h2>
+              </div>
+
+              <div class="content">
+                <br>
+                <h3>Thank you for installing Toolkit For YNAB!</h3>
+                <br> This toolkit is completely free and is brought to you by the
+                <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab">Open Source community</a>
+                <br>
+                <br>
+                <h3>Issues or Feature Requests?</h3>
+                <br> We ask that any issues whether they are bugs or feature request get posted either as an issue
+                <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues">on github</a> or as a thread on the
+                <a href="http://forum.youneedabudget.com/categories/ynab-extensions">YNAB Forums</a>.
+                <br>
+                <br>
+                <h3>Want to track our progress?</h3>
+                <br> Our complete road map is visible on our public
+                <a href="https://trello.com/b/EzOvXlil/toolkit-for-ynab-roadmap">Trello Board</a>. Note that not all bugs will get posted here but most of the feature requests will be tracked
+                here.
+                <br>
+                <br>
+                <h3>How To Help</h3>
+                <br> If you're a developer, hop on our
+                <a href="https://trello.com/b/EzOvXlil/toolkit-for-ynab-roadmap">Trello Board</a> or look at our
+                <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues">issue list on GitHub</a>, find something that interests you and start coding away! Make a pull request when
+                you've completed your feature and we'll get it into the next release as soon as everything looks good!
+                <br>
+                <br> If you're not a developer, you can still help us
+                <i>tremendously</i> by voting on cards listed in our
+                <a href="https://trello.com/b/EzOvXlil/toolkit-for-ynab-roadmap">Trello Board</a>!
+                <br>
+                <br> Thanks again for installing the ToolKit and Happy YNABing!
+              </div>
+            </div>
+
+            <!-- ======= ADVANCED ======= -->
+            <div id="advancedSettingsPage" class="settingsPage">
+              <div class="page-header row">
+                <h2>
+                  <i class="fa fa-wrench"></i> Advanced Settings
+                </h2>
+              </div>
+
+              <div class="content">
+                <div class="reset-settings advanced-row">
+                  <button class="btn btn-danger reset-settings-button">Reset Settings</button>
+                  <label>Do you want to reset Settings back to default?</label>
+                </div>
+              </div>
             </div>
 
             <div id="settingsSaved" class="col-xs-11 alert alert-success" style="display:none">
@@ -200,6 +237,36 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- confirmationModal -->
+  <div id="confirmationModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger confirmationButton">Yes</button>
+          <button data-dismiss="modal" type="button" class="btn btn-default">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="resetSettingsModalContent" class="hidden">
+    <p>
+      This will
+      <span class="warning">DELETE</span> all settings and revert back to the defaults.
+    </p>
+    <p>
+      Are you sure you want to continue?
+    </p>
   </div>
 
   <!-- JS Scripts-->

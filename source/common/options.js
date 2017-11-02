@@ -255,6 +255,27 @@ function importExportModal() {
   }
 }
 
+function openModal(title, content, fn) {
+  console.log('openModal: ', arguments);
+  console.log('openModal: fn', fn);
+
+  const modalSelector = '#confirmationModal';
+
+  jq(`${modalSelector} .modal-title`).text(title);
+  jq(`${modalSelector} .modal-body`).html(content);
+
+  jq(modalSelector).modal();
+  jq(modalSelector).one('shown.bs.modal', function () {
+    jq(`${modalSelector} .confirmationButton`).click(fn);
+  });
+}
+
+function resetSettings() {
+  return deleteAllKangoSettings().then(function () {
+    window.location.reload();
+  });
+}
+
 function watchScrollForPageHeader() {
   const pageHeaderSelector = '.page-header';
   const topHeaderHeight = jq('nav.top-navbar').height();
@@ -314,10 +335,19 @@ KangoAPI.onReady(function () {
   jq('#supportMenuItem').click(function (e) {
     loadPanel('support', false); e.preventDefault();
   });
+  jq('#advancedMenuItem').click(function (e) {
+    loadPanel('advanced'); e.preventDefault();
+    jq('#footer-buttons').hide();
+  });
 
   jq('.import-export-button').click(importExportModal);
   jq('.save-button').click(saveOptions);
   jq('.cancel-button').click(KangoAPI.closeWindow);
+  jq('.cancel-button').click(KangoAPI.closeWindow);
+
+  jq('.reset-settings-button').click(() => {
+    return openModal('Reset Settings', document.querySelector('#resetSettingsModalContent').innerHTML, resetSettings);
+  });
 
   // set version number
   jq('h2 span.version').text('v ' + kango.getExtensionInfo().version);

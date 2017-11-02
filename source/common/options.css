@@ -164,6 +164,10 @@ i {
   transition: padding-top 0.25s linear;  
 }
 
+.page-header > .title {
+  margin-bottom: 1me;
+}
+
 .page-header > .actions > .btn {
   margin-top: 0;
 }
@@ -202,11 +206,40 @@ i {
   width: 100%;
 }
 
-#importExportModal .modal-footer {
+/* #importExportModal .modal-footer {
+  text-align: center;
+} */
+
+#supportSettingsPage span.version {
+  color: #3cb54a;
+  float: right;
+}
+
+.modal .modal-body, .modal .modal-footer{ 
   text-align: center;
 }
 
-#supportSettingsPage > h2 > span.version {
-  color: #3cb54a;
-  float: right;
+span.warning {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.reset-settings > .btn {
+  margin-top: 0;
+}
+
+#advancedSettingsPage > .advanced-row {
+  margin-top: 25px;
+}
+
+.btn-danger {
+  color: rgb(255, 255, 255);
+  background-color: rgb(217, 83, 79);
+  border-color: rgb(212, 63, 58);
+}
+
+.btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger {
+  color: #fff;
+  background-color: #d2322d;
+  border-color: #ac2925;
 }
