@@ -257,6 +257,20 @@ function importExportModal() {
   }
 }
 
+function watchScrollForPageHeader() {
+  const pageHeaderSelector = '.page-header';
+  const topHeaderHeight = jq('nav.top-navbar').height();
+  const preferredClass = 'fixed-header';
+
+  jq(window).scroll(function () {
+    if (jq(window).scrollTop() >= topHeaderHeight) {
+      jq(pageHeaderSelector).addClass(preferredClass);
+    } else {
+      jq(pageHeaderSelector).removeClass(preferredClass);
+    }
+  });
+}
+
 KangoAPI.onReady(function () {
   // Set the logo.
   kango.invokeAsync('kango.io.getResourceUrl', 'assets/logos/toolkitforynab-logo-200.png', function (data) {
@@ -264,6 +278,8 @@ KangoAPI.onReady(function () {
   });
 
   buildOptionsPage();
+
+  watchScrollForPageHeader();
 
   restoreOptions().then(function () {
     jq('input:checkbox').bootstrapSwitch();

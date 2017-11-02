@@ -152,6 +152,18 @@ i {
   margin: 10px 0;
 }
 
+.fixed-header {
+  position: fixed;
+  top:0;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100%;
+  z-index: 5;
+  padding-top: 1em;
+  background: #F4F4F4;
+  transition: padding-top 0.25s linear;  
+}
+
 .page-header-buttons {
   position: relative;
   top: -6em;
