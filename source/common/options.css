@@ -157,11 +157,15 @@ i {
   top:0;
   margin-top: 0;
   margin-bottom: 0;
-  width: 100%;
+  width: 77%;
   z-index: 5;
   padding-top: 1em;
   background: #F4F4F4;
   transition: padding-top 0.25s linear;  
+}
+
+.page-header > .actions > .btn {
+  margin-top: 0;
 }
 
 .page-header-buttons {

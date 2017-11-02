@@ -185,12 +185,10 @@ function buildOptionsPage() {
   });
 }
 
-function loadPanel(panel, showOptionSave = true, animated) {
+function loadPanel(panel, animated) {
   if (typeof animated === 'undefined') {
     animated = true;
   }
-
-  jq('#options-save').toggle(showOptionSave === true);
 
   // Do we need to do anything?
   var element = jq('#' + panel + 'MenuItem');
@@ -284,7 +282,7 @@ KangoAPI.onReady(function () {
   restoreOptions().then(function () {
     jq('input:checkbox').bootstrapSwitch();
 
-    loadPanel('general', true, false);
+    loadPanel('general', false);
 
     jq('#wrapper').fadeIn();
   });
