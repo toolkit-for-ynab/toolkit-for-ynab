@@ -165,7 +165,7 @@ i {
 }
 
 .page-header > .title {
-  margin-bottom: 1me;
+  margin-bottom: 1em;
 }
 
 .page-header > .actions > .btn {
@@ -228,7 +228,7 @@ span.warning {
   margin-top: 0;
 }
 
-#advancedSettingsPage > .advanced-row {
+#advancedSettingsPage .advanced-row {
   margin-top: 25px;
 }
 

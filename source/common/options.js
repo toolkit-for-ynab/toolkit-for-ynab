@@ -142,7 +142,61 @@ function restoreOptions() {
   });
 }
 
+function initializeSetttingPages() {
+  const templateSelector = '#genericSettingsPage';
+  const selectors = {
+    pageContent: templateSelector,
+    icon: templateSelector + ' .fa',
+    title: templateSelector + ' .page-header-title',
+    actions: templateSelector + ' .actions'
+  };
+  const pages = [
+    {
+      id: 'generalSettingsPage',
+      iconClass: 'fa-cogs',
+      title: 'General Settings',
+      showActions: true
+    },
+    {
+      id: 'accountsSettingsPage',
+      iconClass: 'fa-university',
+      title: 'Accounts Screen Settings',
+      showActions: true
+    },
+    {
+      id: 'budgetSettingsPage',
+      iconClass: 'fa-envelope-o',
+      title: 'Budget Screen Settings',
+      showActions: true
+    },
+    {
+      id: 'reportsSettingsPage',
+      iconClass: 'fa-bar-chart',
+      title: 'Reports Screen Settings',
+      showActions: true
+    }
+  ];
+
+  pages.forEach(page => {
+    const genericSettingsPage = document.querySelector(selectors.pageContent).cloneNode(true);
+
+    genericSettingsPage.querySelector(selectors.icon).classList.add(page.iconClass);
+    genericSettingsPage.querySelector(selectors.title).textContent = page.title;
+
+    const classList = genericSettingsPage.querySelector(selectors.actions).classList;
+    if (page.showActions) {
+      classList.remove('hidden');
+    } else {
+      classList.add('hidden');
+    }
+
+    document.querySelector('#' + page.id).innerHTML = genericSettingsPage.innerHTML;
+  });
+}
+
 function buildOptionsPage() {
+  initializeSetttingPages();
+
   // Order by section, then type, then name.
   var settings = ynabToolKit.settings.slice();
 
