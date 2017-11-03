@@ -17,7 +17,7 @@ export class DaysOfBuffering extends Feature {
   }
 
   invoke() {
-    if (!shouldRender(this.lastRenderTime)) return;
+    if (!shouldRender(this.lastRenderTime) || !this.shouldInvoke()) return;
 
     const transactions = this.entityManager.getAllTransactions().filter(this.transactionFilter);
     const report = generateReport(transactions, this.accountBalance);
@@ -26,7 +26,7 @@ export class DaysOfBuffering extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return !(document.getElementsByClassName('budget-header-days')[0].classList.contains('budget-header-no-days'));
   }
 
   render(report) {
