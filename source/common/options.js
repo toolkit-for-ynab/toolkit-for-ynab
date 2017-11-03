@@ -332,14 +332,18 @@ function resetSettings() {
 
 function watchScrollForPageHeader() {
   const pageHeaderSelector = '.page-header';
+  const successSelector = '#settingsSaved';
+
   const topHeaderHeight = jq('nav.top-navbar').height();
-  const preferredClass = 'fixed-header';
+  const preferredClass = 'sticky-header';
 
   jq(window).scroll(function () {
     if (jq(window).scrollTop() >= topHeaderHeight) {
       jq(pageHeaderSelector).addClass(preferredClass);
+      jq(successSelector).addClass(preferredClass);
     } else {
       jq(pageHeaderSelector).removeClass(preferredClass);
+      jq(successSelector).removeClass(preferredClass);
     }
   });
 }
