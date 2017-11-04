@@ -26,7 +26,7 @@ export class DaysOfBuffering extends Feature {
   }
 
   shouldInvoke() {
-    return !(document.getElementsByClassName('budget-header-days')[0].classList.contains('budget-header-no-days'));
+    return true;
   }
 
   render(report) {
