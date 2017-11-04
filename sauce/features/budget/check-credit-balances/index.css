@@ -1,15 +1,15 @@
 /* row */
 body .budget-table .budget-table-row.is-sub-category.is-debt-payment-category .budget-table-cell-available .toolkit-pif-cautious {
-	background-color: #e59100;
+  background-color: #e59100;
 }
 body .budget-table .budget-table-row.is-sub-category.is-debt-payment-category .budget-table-cell-available .toolkit-pif-cautious:hover {
-	background-color: #c37b00;
+  background-color: #c37b00;
 }
 
 /* inspector */
 body .budget-inspector .budget-inspector-category-overview .inspector-overview-available.toolkit-row-debt-category dt.toolkit-pif-cautious {
-	color: #e59100 !important;
+  color: #e59100 !important;
 }
 body .budget-inspector .budget-inspector-category-overview .inspector-overview-available.toolkit-row-debt-category dd .toolkit-pif-cautious {
-	background: #e59100 !important;
+  background: #e59100 !important;
 }
