@@ -184,12 +184,10 @@
 
                 if ($.inArray(name, latestDemphasizedCategories) >= 0) {
                   latestDemphasizedCategories.splice($.inArray(name, latestDemphasizedCategories), 1);
-                  ynab.utilities.ConsoleUtilities.logWithColor(ynab.constants.LogLevels.Debug, 'Re-emphasizing category ' + name + ', new hide list ' + JSON.stringify(latestDemphasizedCategories));
                   setDeemphasizedCategories(latestDemphasizedCategories);
                   $(this).removeClass('deemphasized');
                 } else {
                   latestDemphasizedCategories.push(name);
-                  ynab.utilities.ConsoleUtilities.logWithColor(ynab.constants.LogLevels.Debug, 'De-emphasizing category ' + name + ', new hide list ' + JSON.stringify(latestDemphasizedCategories));
                   setDeemphasizedCategories(latestDemphasizedCategories);
                   $(this).addClass('deemphasized');
                 }
