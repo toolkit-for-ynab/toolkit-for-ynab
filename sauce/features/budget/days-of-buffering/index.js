@@ -17,7 +17,7 @@ export class DaysOfBuffering extends Feature {
   }
 
   invoke() {
-    if (!shouldRender(this.lastRenderTime) || !this.shouldInvoke()) return;
+    if (!shouldRender(this.lastRenderTime)) return;
 
     const transactions = this.entityManager.getAllTransactions().filter(this.transactionFilter);
     const report = generateReport(transactions, this.accountBalance);
