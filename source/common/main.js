@@ -42,8 +42,8 @@ function applySettingsToDom() {
       // that should map to '1' in select land.
       // eslint-disable-next-line eqeqeq
       if (data == 'true' &&
-          '1' in setting.actions &&
-          !('true' in setting.actions)) {
+        '1' in setting.actions &&
+        !('true' in setting.actions)) {
         data = '1';
       }
 
@@ -77,42 +77,48 @@ function pushOption(setting) {
   });
 }
 
-var optionsPromises = [];
-ynabToolKit.settings.forEach(function (setting) {
-  optionsPromises.push(pushOption(setting));
-});
+// speed: get this from localStorage
+const masterToggleIsOff = false;
 
-Promise.all(optionsPromises).then(function () {
-  let version = getKangoExtensionInfo().version;
+if (masterToggleIsOff) {
+  var optionsPromises = [];
 
-  injectJSString(`
-    window.ynabToolKit = { version: '${version}'};
-    ynabToolKit.options = ${JSON.stringify(options)};
-    Object.freeze(ynabToolKit.options);
-    Object.seal(ynabToolKit.options);
-  `);
+  ynabToolKit.settings.forEach(function (setting) {
+    optionsPromises.push(pushOption(setting));
+  });
 
-  /* Load this to setup shared utility functions */
-  injectScript('res/features/shared/main.js');
+  Promise.all(optionsPromises).then(function () {
+    let version = getKangoExtensionInfo().version;
 
-  /* Global toolkit css. */
-  injectCSS('res/features/shared/main.css');
+    injectJSString(`
+      window.ynabToolKit = { version: '${version}'};
+      ynabToolKit.options = ${JSON.stringify(options)};
+      Object.freeze(ynabToolKit.options);
+      Object.seal(ynabToolKit.options);
+    `);
 
-  /* This script to be built automatically by the python script */
-  injectScript('res/features/act-on-change/feedChanges.js');
+    /* Load this to setup shared utility functions */
+    injectScript('res/features/shared/main.js');
 
-  /* Load this to setup behaviors when the DOM updates and shared functions */
-  injectScript('res/features/act-on-change/main.js');
+    /* Global toolkit css. */
+    injectCSS('res/features/shared/main.css');
 
-  /* Load the ynabToolkit bundle */
-  injectScript('res/features/ynabToolkit.js');
+    /* This script to be built automatically by the python script */
+    injectScript('res/features/act-on-change/feedChanges.js');
 
-  /* Putting this code here temporarily. Once the resize-inspector feature is refactored to be
-  saucy, the call should be moved to the resize-inspector willInvoke() function. */
-  injectJSString('window.resizeInspectorAsset = "' + kango.io.getResourceUrl('assets/vsizegrip.png') + '";');
+    /* Load this to setup behaviors when the DOM updates and shared functions */
+    injectScript('res/features/act-on-change/main.js');
 
-  /* Used by the new version notification popup */
-  injectJSString('window.versionPopupAsset = "' + kango.io.getResourceUrl('assets/logos/toolkitforynab-logo-400.png') + '";');
+    /* Load the ynabToolkit bundle */
+    injectScript('res/features/ynabToolkit.js');
 
-  ensureDefaultsAreSet().then(applySettingsToDom);
-});
+    /* Putting this code here temporarily. Once the resize-inspector feature is refactored to be
+    saucy, the call should be moved to the resize-inspector willInvoke() function. */
+    injectJSString('window.resizeInspectorAsset = "' + kango.io.getResourceUrl('assets/vsizegrip.png') + '";');
+
+    /* Used by the new version notification popup */
+    injectJSString('window.versionPopupAsset = "' + kango.io.getResourceUrl('assets/logos/toolkitforynab-logo-400.png') + '";');
+
+    ensureDefaultsAreSet().then(applySettingsToDom);
+  });
+}
