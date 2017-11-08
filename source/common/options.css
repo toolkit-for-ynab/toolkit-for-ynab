@@ -79,6 +79,16 @@ div.options span {
 
 div.options .darkMode {
   display: flex;
+  margin-left: 1em;
+}
+
+#options-save {
+  display: none;
+  margin-bottom: 1em;
+}
+
+#options-save button.btn {
+  margin-top: 0;
 }
 
 /* Make all icons green to match the logo */
@@ -117,7 +127,7 @@ i {
 
 .btn {
   margin: 18px 10px 0 0;
-  background: ##d6d6d6;
+  background: #d6d6d6;
 }
 
 .btn:hover {
@@ -140,6 +150,34 @@ i {
 
 .page-header {
   margin: 10px 0;
+}
+
+.page-header.sticky-header {
+  position: fixed;
+  top:0;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 77%;
+  z-index: 5;
+  padding-top: 1em;
+  background: #F4F4F4;
+  transition: padding-top 0.25s linear;  
+}
+
+#settingsSaved.sticky-header {
+  height: 6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: height 0.25s linear;
+}
+
+.page-header > .title {
+  margin-bottom: 1em;
+}
+
+.page-header > .actions > .btn {
+  margin-top: 0;
 }
 
 .page-header-buttons {
@@ -180,7 +218,7 @@ i {
   text-align: center;
 } */
 
-#supportSettingsPage > h2 > span.version {
+#supportSettingsPage span.version {
   color: #3cb54a;
   float: right;
 }
@@ -198,8 +236,14 @@ span.warning {
   margin-top: 0;
 }
 
-#advancedSettingsPage > .advanced-row {
+#advancedSettingsPage .advanced-row {
   margin-top: 25px;
+}
+
+.btn-danger {
+  color: rgb(255, 255, 255);
+  background-color: rgb(217, 83, 79);
+  border-color: rgb(212, 63, 58);
 }
 
 .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger {
