@@ -401,7 +401,6 @@ KangoAPI.onReady(function () {
   jq('.import-export-button').click(importExportModal);
   jq('.save-button').click(saveOptions);
   jq('.cancel-button').click(KangoAPI.closeWindow);
-  jq('.cancel-button').click(KangoAPI.closeWindow);
 
   jq('.reset-settings-button').click(() => {
     return openModal('Reset Settings', document.querySelector('#resetSettingsModalContent').innerHTML, resetSettings);
