@@ -5,12 +5,9 @@ const format = (...args) => (ynab.YNABSharedLib.currencyFormatter.format(...args
 const getDobEl = () => document.getElementsByClassName('days-of-buffering')[0];
 
 const createDobEl = () => {
-  const elementForDoB = document.getElementsByClassName('budget-header-days')[0]
-                                .cloneNode(true);
-
-  elementForDoB.className = elementForDoB.className + ' days-of-buffering';
-  elementForDoB.children[1].textContent = i10n('budget.ageOfMoneyDays.DoB', 'Days of Buffering');
-  elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
+  const elementForDoB = $('<div>', { class: 'budget-header-item budget-header-days days-of-buffering' }).
+    append($('<div>', { class: 'budget-header-days-age' })).
+    append($('<div>', { class: 'budget-header-days-label' }).text(i10n('budget.ageOfMoneyDays.DoB', 'Days of Buffering')).prop('title', 'Don\'t like AoM? Try this out instead!'))[0];
 
   document.getElementsByClassName('budget-header-flexbox')[0]
           .appendChild(elementForDoB);

@@ -1,3 +1,5 @@
+import * as toolkitHelper from 'toolkit/helpers/toolkit';
+
 import { Feature } from 'toolkit/core/feature';
 import { getEntityManager } from 'toolkit/helpers/toolkit';
 
@@ -17,7 +19,7 @@ export class DaysOfBuffering extends Feature {
   }
 
   invoke() {
-    if (!shouldRender(this.lastRenderTime)) return;
+    if (!this.shouldInvoke() || !shouldRender(this.lastRenderTime)) return;
 
     const transactions = this.entityManager.getAllTransactions().filter(this.transactionFilter);
     const report = generateReport(transactions, this.accountBalance);
@@ -26,7 +28,7 @@ export class DaysOfBuffering extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return toolkitHelper.getCurrentRouteName().indexOf('budget') > -1;
   }
 
   render(report) {
