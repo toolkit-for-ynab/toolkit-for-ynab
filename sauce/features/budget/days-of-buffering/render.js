@@ -5,9 +5,11 @@ const format = (...args) => (ynab.YNABSharedLib.currencyFormatter.format(...args
 const getDobEl = () => document.getElementsByClassName('days-of-buffering')[0];
 
 const createDobEl = () => {
+  const label = i10n('budget.dob.title', 'Days of Buffering');
+  const tooltip = i10n('budget.dob.tooltip', 'Don\'t like AoM? Try this out instead!');
   const elementForDoB = $('<div>', { class: 'budget-header-item budget-header-days days-of-buffering' }).
     append($('<div>', { class: 'budget-header-days-age' })).
-    append($('<div>', { class: 'budget-header-days-label' }).text(i10n('budget.ageOfMoneyDays.DoB', 'Days of Buffering')).prop('title', 'Don\'t like AoM? Try this out instead!'))[0];
+    append($('<div>', { class: 'budget-header-days-label' }).text(label).prop('title', tooltip))[0];
 
   document.getElementsByClassName('budget-header-flexbox')[0]
           .appendChild(elementForDoB);
@@ -27,13 +29,13 @@ const render = (
                     i10n('budget.ageOfMoneyDays.other', 'days');
 
     dobEl.children[0].textContent = daysOfBuffering + ' ' + dayText;
-    dobEl.children[0].title = `Total outflow: ${format(totalOutflow)}
-Total days of budgeting: ${totalDays}
-Average daily outflow: ~${format(avgDailyOutflow)}
-Average daily transactions: ${avgDailyTransactions.toFixed(1)}`;
+    dobEl.children[0].title = `${i10n('budget.dob.outflow', 'Total outflow')}: ${format(totalOutflow)}
+${i10n('budget.dob.days', 'Total days of budgeting')}: ${totalDays}
+${i10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${format(avgDailyOutflow)}
+${i10n('budget.dob.avgTransactions', 'Average daily transactions')}: ${avgDailyTransactions.toFixed(1)}`;
   } else {
-    dobEl.children[0].textContent = '???';
-    dobEl.children[0].title = 'Your budget history is less than 15 days. Go on with YNAB a while.';
+    dobEl.children[0].textContent = i10n('budget.ageOfMoneyNotAvailable', '???');
+    dobEl.children[0].title = i10n('budget.dob.noHistory', 'Your budget history is less than 15 days. Go on with YNAB a while.');
   }
 };
 
