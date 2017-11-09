@@ -70,7 +70,7 @@ div.options {
   width: 260px;
   font-size: 1.2em;
   padding-top: 15px;
-  border-top: 1px solid #F4F4F4;
+  border-top: 1px solid #f4f4f4;
 }
 
 div.options span {
@@ -79,11 +79,21 @@ div.options span {
 
 div.options .darkMode {
   display: flex;
+  margin-left: 1em;
+}
+
+#options-save {
+  display: none;
+  margin-bottom: 1em;
+}
+
+#options-save button.btn {
+  margin-top: 0;
 }
 
 /* Make all icons green to match the logo */
 i {
-  color: #3CB54A;
+  color: #3cb54a;
 }
 
 .option-row {
@@ -95,7 +105,9 @@ i {
   width: 70%;
 }
 
-.option-row > label, .option-row > select, .option-row > span {
+.option-row > label,
+.option-row > select,
+.option-row > span {
   margin-left: 143px;
 }
 
@@ -110,12 +122,12 @@ i {
 
 /* All switches should be green when they're on too */
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-primary {
-  background: #3CB54A;
+  background: #3cb54a;
 }
 
 .btn {
   margin: 18px 10px 0 0;
-  background: ##D6D6D6;
+  background: #d6d6d6;
 }
 
 .btn:hover {
@@ -126,17 +138,46 @@ i {
   outline: 0 !important;
 }
 
-.btn-primary, .btn-primary:focus {
-  background: #3CB54A;
+.btn-primary,
+.btn-primary:focus {
+  background: #3cb54a;
   color: #ffffff;
 }
 
 .btn-primary:hover {
-  background: #66CC72;
+  background: #66cc72;
 }
 
 .page-header {
   margin: 10px 0;
+}
+
+.page-header.sticky-header {
+  position: fixed;
+  top:0;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 77%;
+  z-index: 5;
+  padding-top: 1em;
+  background: #F4F4F4;
+  transition: padding-top 0.25s linear;  
+}
+
+#settingsSaved.sticky-header {
+  height: 6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: height 0.25s linear;
+}
+
+.page-header > .title {
+  margin-bottom: 1em;
+}
+
+.page-header > .actions > .btn {
+  margin-top: 0;
 }
 
 .page-header-buttons {
@@ -154,6 +195,9 @@ i {
 
 .help-block {
   color: #292929;
+  /* adjustments for markdown adding <p> */
+  font-size: 16px;
+  margin-top: -15px;
 }
 
 #settingsSaved {
@@ -170,6 +214,40 @@ i {
   width: 100%;
 }
 
-#importExportModal .modal-footer {
+/* #importExportModal .modal-footer {
   text-align: center;
+} */
+
+#supportSettingsPage span.version {
+  color: #3cb54a;
+  float: right;
+}
+
+.modal .modal-body, .modal .modal-footer{ 
+  text-align: center;
+}
+
+span.warning {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.reset-settings > .btn {
+  margin-top: 0;
+}
+
+#advancedSettingsPage .advanced-row {
+  margin-top: 25px;
+}
+
+.btn-danger {
+  color: rgb(255, 255, 255);
+  background-color: rgb(217, 83, 79);
+  border-color: rgb(212, 63, 58);
+}
+
+.btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger {
+  color: #fff;
+  background-color: #d2322d;
+  border-color: #ac2925;
 }

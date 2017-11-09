@@ -66,8 +66,27 @@
 
       return {
         invoke() {
-          var categories = $('.budget-table ul');
-          var masterCategoryName = '';
+          var uncategorized = $('.budget-table-uncategorized-transactions');
+          $(uncategorized).each(function () {
+            var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
+            var classes = [];
+
+            // add available balance
+            var available = $(this).find('.budget-table-cell-available .currency').text();
+            if (ynab.unformat(available) < 0) {
+              classes.push('availablenegative');
+            } else if (ynab.unformat(available) > 0) {
+              classes.push('availablepositive');
+            } else {
+              classes.push('availablezero');
+            }
+
+            // set classes
+            setClasses(this, subCategoryName, classes);
+          });
+
+          var categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions');
+          var masterCategoryName = 'Credit Card Payments';
 
           if (subCats === null || subCats.length === 0 || loadCategories) {
             subCats = ynabToolKit.shared.getMergedCategories();
@@ -90,13 +109,8 @@
             }
 
             if ($(this).hasClass('is-sub-category')) {
-              var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title;
+              var subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
               var classes = [];
-
-              // skip uncategorized
-              if (subCategoryName === 'Uncategorized Transactions') {
-                return;
-              }
 
               // add budgeted
               var budgeted = $(this).find('.budget-table-cell-budgeted .currency').text();
@@ -143,10 +157,15 @@
         },
 
         observe(changedNodes) {
+          // when this is moved to the webpack codebase, hopefully we can just listen to onRouteChanged
+          // but until then we'll just have to keep adding stuff to this check that should trigger
+          // budget-category related features to update
           if (changedNodes.has('navlink-budget active') ||
             changedNodes.has('budget-inspector') ||
             changedNodes.has('budget-table-cell-available-div user-data') ||
-            changedNodes.has('budget-inspector-goals')) {
+            changedNodes.has('budget-inspector-goals') ||
+            changedNodes.has('budget-header-item budget-header-calendar toolkit-highlight-current-month')
+          ) {
             ynabToolKit.budgetCategoryInfo.invoke();
           } else if (
             changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-edit-category active') ||
@@ -161,12 +180,24 @@
              */
             loadCategories = true;
           }
+        },
+
+        addBudgetVersionIdObserver() {
+          let applicationController = ynabToolKit.shared.containerLookup('controller:application');
+          applicationController.addObserver('budgetVersionId', function () {
+            Ember.run.scheduleOnce('afterRender', this, resetBudgetViewBudgetCategoryInfo);
+          });
+
+          function resetBudgetViewBudgetCategoryInfo() {
+            loadCategories = true;
+          }
         }
       };
     }()); // Keep feature functions contained within this object
 
     // Run once and activate setTimeOut()
     ynabToolKit.budgetCategoryInfo.invoke();
+    ynabToolKit.budgetCategoryInfo.addBudgetVersionIdObserver();
   } else {
     setTimeout(poll, 250);
   }

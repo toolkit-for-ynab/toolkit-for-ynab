@@ -1,7 +1,8 @@
 /* eslint-disable no-nested-ternary, one-var-declaration-per-line, one-var */
 
 ynabToolKit.shared = (function () {
-  var subCategories = []; // defined here for scope reasons but populated and returned in getCategories()
+  let storageKeyPrefix = 'ynab-toolkit-';
+  let subCategories = []; // defined here for scope reasons but populated and returned in getCategories()
   return {
     //
     // Get all master and sub categories and combine them into one array. This is needed because it's
@@ -87,14 +88,14 @@ ynabToolKit.shared = (function () {
         transactionDateUTC = transactionDate.getUTCTime();
         shouldFilter = transactionIsTombstone ? false :
           (startDateUTC && startDateUTC > transactionDateUTC || endDateUTC && transactionDateUTC >= endDateUTC ? false :
-          accountShowReconciled === false && transactionCleared === ynab.constants.TransactionState.Reconciled ? false :
-          accountShowWithNotifications === 'needsApproval' && !transactionNeedsApproval ||
-          accountShowWithNotifications === 'needsCategory' && (!transactionNeedsCategory || transactionNeedsApproval) ? false :
-          transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.ScheduledTransaction ? (accountShowScheduled && (singleOccurranceTransactions.push(transaction),
-          scheduledTransactions[transactionEntityId] = transaction), false) :
-          transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.SubTransaction || transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction ? (parentEntityId = transaction.get('parentEntityId'),
-          Array.isArray(subTransactions[parentEntityId]) || (subTransactions[parentEntityId] = []), subTransactions[parentEntityId].push(transaction), false) :
-          (transactionIsSplit && (scheduledTransactions[transactionEntityId] = transaction), true));
+            accountShowReconciled === false && transactionCleared === ynab.constants.TransactionState.Reconciled ? false :
+              accountShowWithNotifications === 'needsApproval' && !transactionNeedsApproval ||
+                accountShowWithNotifications === 'needsCategory' && (!transactionNeedsCategory || transactionNeedsApproval) ? false :
+                transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.ScheduledTransaction ? (accountShowScheduled && (singleOccurranceTransactions.push(transaction),
+                  scheduledTransactions[transactionEntityId] = transaction), false) :
+                  transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.SubTransaction || transactionDisplayItemType === ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction ? (parentEntityId = transaction.get('parentEntityId'),
+                    Array.isArray(subTransactions[parentEntityId]) || (subTransactions[parentEntityId] = []), subTransactions[parentEntityId].push(transaction), false) :
+                    (transactionIsSplit && (scheduledTransactions[transactionEntityId] = transaction), true));
 
         return shouldFilter;
       });
@@ -123,7 +124,7 @@ ynabToolKit.shared = (function () {
 
               // eslint-disable-next-line no-unused-expressions
               subTransaction.get('isTombstone') || (subTransactionsAdded++,
-              addSubTransactionToVisibleTransactions(subTransactionsAdded + transactionPosition, subTransaction));
+                addSubTransactionToVisibleTransactions(subTransactionsAdded + transactionPosition, subTransaction));
             }
           }
         }
@@ -166,29 +167,13 @@ ynabToolKit.shared = (function () {
         }
 
         jQueryElement.append($('<bdi>', { text: currency.currency_symbol }))
-                     .append(formatted);
+          .append(formatted);
       } else {
         jQueryElement.append(formatted)
-                     .append($('<bdi>', { text: currency.currency_symbol }));
+          .append($('<bdi>', { text: currency.currency_symbol }));
       }
 
       return jQueryElement;
-    },
-
-    toLocalDate(date) {
-      var result = date.toNativeDate();
-      var offset = new Date().getTimezoneOffset();
-
-      result.setMinutes(result.getMinutes() + offset);
-
-      // Sometimes we don't end up exactly where we need to be because of floating point
-      // accuracy issues. If we're in PM, we should round up to the next day.
-      if (result.getHours() > 0) {
-        // Bumps us to the first hour of the next day.
-        result.setHours(24, 0, 0, 0);
-      }
-
-      return result;
     },
 
     parseSelectedMonth() {
@@ -296,12 +281,127 @@ ynabToolKit.shared = (function () {
       }
     },
 
+    showModal(title, message, actionType) {
+      let actions;
+      switch (actionType) {
+        case 'reload':
+          actions = '<button class="button button-primary toolkit-modal-action-reload">Reload</button>';
+          break;
+        case 'close':
+          actions = '<button class="button button-primary toolkit-modal-action-close">Close</button>';
+          break;
+      }
+
+      let $modal = $(`<div class="ynab-u modal-overlay modal-generic modal-error active toolkit-modal">
+                        <div class="modal" style="height: auto">
+                          <div class="modal-header">
+                            ${title}
+                          </div>
+                          <div class="modal-content">
+                            ${message}
+                          </div>
+                          <div class="modal-actions">
+                            ${actions}
+                          </div>
+                        </div>
+                      </div>`);
+
+      $modal.find('.toolkit-modal-action-reload').on('click', () => {
+        return windowReload();
+      });
+
+      $modal.find('.toolkit-modal-action-close').on('click', () => {
+        return $('.layout .toolkit-modal').remove();
+      });
+
+      if (!$('.modal-error').length) {
+        $('.layout').append($modal);
+      }
+    },
+
+    showFeatureErrorModal(featureName) {
+      let title = 'Toolkit for YNAB Error!';
+      let message = `The toolkit is having an issue with the "${featureName}" feature. Please submit an issue <a href='https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/new' target='_blank'>here</a> if there isn't one already.`;
+      this.showModal(title, message, 'close');
+    },
+
+    showNewReleaseModal(version) {
+      let $modal = $(`<div class="toolkit-modal">
+                        <div class="toolkit-modal-outer"><div class="toolkit-modal-inner"><div class="toolkit-modal-content">
+
+                          <header class="toolkit-modal-header">
+                            <img src="` + window.versionPopupAsset + `" id="toolkit-modal-logo" />
+                          </header>
+
+                          <div class="toolkit-modal-message">
+                            <h1>The Toolkit for YNAB extension has been updated!</h1>
+                            <span class="version">You are now using version ${version}. View the <a href="https://forum.youneedabudget.com/categories/ynab-extensions" target="_blank">release notes</a>.</span>
+                            <div class="message">
+                              <p><strong>It is important to note that the Toolkit for YNAB extension is completely separate, and in no way affiliated with YNAB itself.</strong> If you discover a bug, please first disable the <em>Toolkit</em> to identify whether the issue is with the extension, or with <em>YNAB</em> itself.</p>
+                              <p><em>Toolkit for YNAB</em> extension issues can be reported to the <em>Toolkit for YNAB</em> extension team on <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues" target="_blank">Github</a>. Please ensure the issue has not already been reported.</p>
+                              <p>If you have the time and the ability, new contributors to the <em>Toolkit</em> are always welcome!</p>
+                            </div>
+                          </div>
+                            
+                          <footer class="toolkit-modal-actions">
+                            <button class="toolkit-modal-action-close">Continue</button>
+                          </footer>
+
+                        </div></div></div>        
+                      </div>`);
+
+      $modal.find('.toolkit-modal-inner, .toolkit-modal-action-close').on('click', () => {
+        return $('.layout .toolkit-modal').remove();
+      });
+
+      if (!$('.modal-error').length) {
+        $('.layout').append($modal);
+      }
+    },
+
+    getToolkitStorageKey(key, type) {
+      let value = localStorage.getItem(storageKeyPrefix + key);
+
+      switch (type) {
+        case 'boolean': return value === 'true';
+        case 'number': return Number(value);
+        default: return value;
+      }
+    },
+
+    setToolkitStorageKey(key, value) {
+      return localStorage.setItem(storageKeyPrefix + key, value);
+    },
+
+    // https://github.com/janl/mustache.js/blob/master/mustache.js#L60
+    escapeHtml(htmlString) {
+      let entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+        '/': '&#x2F;',
+        '`': '&#x60;',
+        '=': '&#x3D;'
+      };
+
+      return String(htmlString).replace(/[&<>"'`=/]/g, function fromEntityMap(s) {
+        return entityMap[s];
+      });
+    },
+
+    getCurrentRoute: function () {
+      let applicationController = this.containerLookup('controller:application');
+      return applicationController.get('currentRouteName');
+    },
+
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-       ],
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ],
     monthsFull: ['January', 'February', 'March', 'April', 'May', 'June',
-         'July', 'August', 'September', 'October', 'November', 'December'
-       ]
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ]
   };
 }()); // Keep feature functions contained within this object
 
@@ -309,9 +409,19 @@ ynabToolKit.shared = (function () {
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
   if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' &&
-        typeof $ !== 'undefined' && $('.ember-view.layout').length &&
-        typeof ynabToolKit !== 'undefined') {
+    typeof $ !== 'undefined' && $('.ember-view.layout').length &&
+    typeof ynabToolKit !== 'undefined') {
     ynabToolKit.pageReady = true;
+
+    let latestVersion = ynabToolKit.shared.getToolkitStorageKey('latest-version');
+    if (latestVersion) {
+      if (latestVersion !== ynabToolKit.version) {
+        ynabToolKit.shared.showNewReleaseModal(ynabToolKit.version);
+        ynabToolKit.shared.setToolkitStorageKey('latest-version', ynabToolKit.version);
+      }
+    } else {
+      ynabToolKit.shared.setToolkitStorageKey('latest-version', ynabToolKit.version);
+    }
   } else {
     setTimeout(poll, 250);
   }

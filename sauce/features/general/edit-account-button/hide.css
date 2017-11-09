@@ -1,0 +1,11 @@
+.nav-account-row:hover .nav-account-name .edit-account-icon {
+	display: none;
+}
+
+.nav-account-row:hover .nav-account-notification .edit-account-icon {
+	display: none;
+}
+
+.nav-account-row .nav-account-name:hover button {
+	max-width: 100%;
+}

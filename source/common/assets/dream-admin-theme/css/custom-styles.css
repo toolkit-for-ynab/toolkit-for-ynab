@@ -25,9 +25,9 @@ body {
 }
 #page-inner {
     width:100%;
-    margin:10px 20px 10px 0px;
+    /* margin:10px 20px 10px 0px; */
     background-color:transparent;
-    padding:10px;
+    /* padding:10px; */
 }
 
 .text-center {
@@ -407,7 +407,7 @@ line-height: 1.428571429;
 
     .navbar-side {
         z-index: 1;
-        position: absolute;
+        position: fixed;
         width: 260px;
     }
 

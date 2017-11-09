@@ -8,7 +8,8 @@
       "options": [
                     { "name": "Disabled", "value": "0" },
                     { "name": "Show Full Amount", "value": "1" },
-                    { "name": "Show Simple Indicator", "value": "2" }                    
+                    { "name": "Show Simple Indicator", "value": "2" },
+                    { "name": "Show Days Ahead/Behind Schedule", "value": "3" }
                  ],
       "actions": {
                     "1": [
@@ -16,6 +17,10 @@
                       "injectScript", "main.js"
                     ],
                     "2": [
+                      "injectCSS", "main.css",
+                      "injectScript", "main.js"
+                    ],
+                    "3": [
                       "injectCSS", "main.css",
                       "injectScript", "main.js"
                     ]

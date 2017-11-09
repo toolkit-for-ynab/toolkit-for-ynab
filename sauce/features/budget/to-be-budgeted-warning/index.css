@@ -1,0 +1,6 @@
+body .budget-header-totals-amount.toolkit-cautious {
+	background-color: #e59100;
+}
+body .budget-header-totals-amount-arrow.toolkit-cautious .arrow {
+	border-left: 1em solid #e59100;
+}

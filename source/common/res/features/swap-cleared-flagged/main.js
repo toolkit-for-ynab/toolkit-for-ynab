@@ -23,28 +23,9 @@
 
           for (var i = 0; i < flags.length; i += 1) {
             // If not swapped
-            if (getChildNumber(cleared[i]) - getChildNumber(flags[i]) === 16) {
+            if (getChildNumber(cleared[i]) - getChildNumber(flags[i]) > 0) {
               swapElements(flags[i], cleared[i]);
             }
-          }
-        },
-
-        swapYnabGridActions() {
-          $('.ember-view.ynab-grid-body-row.is-editing .ember-view.ynab-grid-actions').css({
-            right: 36,
-            bottom: -35
-          });
-
-          var ynabGridActions = $('.ember-view.ynab-grid-actions').detach();
-          var splitTransaction = $('.button.button-primary.ynab-grid-split-add-sub-transaction');
-
-          if (splitTransaction.length) {
-            splitTransaction.parent().parent()
-            .find('.ynab-grid-cell.ynab-grid-cell-flag')
-            .append(ynabGridActions);
-          } else {
-            $('.ember-view.ynab-grid-body-row.is-editing .ynab-grid-cell.ynab-grid-cell-flag')
-            .append(ynabGridActions);
           }
         },
 
@@ -52,10 +33,6 @@
           if (changedNodes.has('ynab-grid-body')) {
             // We found Account transactions rows
             ynabToolKit.swapClearedFlagged.invoke();
-
-            if ($('.ember-view.ynab-grid-actions')) {
-              ynabToolKit.swapClearedFlagged.swapYnabGridActions();
-            }
           }
         }
       };

@@ -2,5 +2,8 @@ language: node_js
 node_js:
   - "6"
 script:
-- python populateFeaturesFiles.py
-- npm run eslint
+  - python generateFeedChanges.py
+  - npm run gen-settings
+  - npm run gen-featureIndex
+  - npm run legacy-eslint
+  - npm run webpack

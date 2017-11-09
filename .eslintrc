@@ -1,0 +1,54 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "parser": "babel-eslint",
+    "plugins": ["import"],
+    "settings": {
+      "import/resolver": "webpack"
+    },
+    "extends": "airbnb-base/legacy",
+    "globals": {
+        "$": true,
+        "Chart": true,
+        "Ember": true,
+        "Highcharts": true,
+        "Intercom": true,
+        "KangoAPI": true,
+        "chrome": true,
+        "ensureDefaultsAreSet": true,
+        "getKangoExtensionInfo": true,
+        "getKangoStorageKeys": true,
+        "getKangoSetting": true,
+        "jQuery": true,
+        "kango": true,
+        "moment": true,
+        "noUiSlider": true,
+        "safari": true,
+        "setKangoSetting": true,
+        "windowReload": true,
+        "ynab": true,
+        "ynabToolKit": true,
+        "YNABFEATURES": true
+    },
+    "rules": {
+        "consistent-return": "off",
+        "default-case": "off",
+        "func-names": "off",
+        "global-require": "off",
+        "guard-for-in": "off",
+        "max-len": "off",
+        "no-console": "off",
+        "no-extend-native": "off",
+        "no-nested-ternary": "off",
+        "no-param-reassign": "off",
+        "no-restricted-syntax": "off",
+        "no-shadow": ["error", { "allow": ["resolve", "reject", "error"] }],
+        "no-underscore-dangle": "off",
+        "no-use-before-define": "off",
+        "radix": "off",
+        "strict": "off",
+        "vars-on-top": "off"
+    }
+}

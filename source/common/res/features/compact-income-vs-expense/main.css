@@ -1,0 +1,16 @@
+.income-expense-column:first-child {
+	min-width: 200px;
+}
+
+.income-expense-column.income-expense-column-header,
+.income-expense-column.income-expense-number {
+	min-width: 115px;
+}
+
+.income-expense-column {
+	padding: 2px;
+}
+
+.income-expense-level2 .income-expense-column:first-child {
+	font-weight: 500
+}
