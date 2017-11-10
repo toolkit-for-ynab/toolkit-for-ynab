@@ -161,7 +161,7 @@ i {
   z-index: 5;
   padding-top: 1em;
   background: #F4F4F4;
-  transition: padding-top 0.25s linear;  
+  transition: padding-top 0.15s linear;  
 }
 
 #settingsSaved.sticky-header {
