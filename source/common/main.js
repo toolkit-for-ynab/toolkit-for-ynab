@@ -77,10 +77,13 @@ function pushOption(setting) {
   });
 }
 
-// speed: get this from localStorage
-const masterToggleIsOff = false;
+getKangoSetting('DisableToolkit').then(shouldDisableToolkit => {
+  if (shouldDisableToolkit) {
+    // we don't need to do anything else
+    console.log('Toolkit-for-YNAB is disabled!');
+    return;
+  }
 
-if (masterToggleIsOff) {
   var optionsPromises = [];
 
   ynabToolKit.settings.forEach(function (setting) {
@@ -121,4 +124,4 @@ if (masterToggleIsOff) {
 
     ensureDefaultsAreSet().then(applySettingsToDom);
   });
-}
+});
