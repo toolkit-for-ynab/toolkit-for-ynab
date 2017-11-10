@@ -119,6 +119,8 @@ function saveOptions() {
       .fadeIn()
       .delay(1500)
       .fadeOut();
+
+    checkIfToolkitDisabled();
   });
 }
 
@@ -348,6 +350,16 @@ function watchScrollForPageHeader() {
   });
 }
 
+function checkIfToolkitDisabled() {
+  const isToolkitDisabled = window.localStorage.getItem('DisableToolkit') === 'true';
+  const classList = document.querySelector('.toolkit-disabled-indicator').classList;
+  if (isToolkitDisabled) {
+    classList.remove('hidden');
+  } else {
+    classList.add('hidden');
+  }
+}
+
 KangoAPI.onReady(function () {
   // Set the logo.
   kango.invokeAsync('kango.io.getResourceUrl', 'assets/logos/toolkitforynab-logo-200.png', function (data) {
@@ -355,6 +367,7 @@ KangoAPI.onReady(function () {
   });
 
   buildOptionsPage();
+  checkIfToolkitDisabled();
 
   watchScrollForPageHeader();
 
