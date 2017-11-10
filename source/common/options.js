@@ -407,5 +407,5 @@ KangoAPI.onReady(function () {
   });
 
   // set version number
-  jq('h2 span.version').text('v ' + kango.getExtensionInfo().version);
+  jq('.toolkit-version').text('v ' + kango.getExtensionInfo().version);
 });
