@@ -358,14 +358,11 @@ const APP_STATES = {
 
 function checkIfToolkitDisabled() {
   const isToolkitDisabled = window.localStorage.getItem('DisableToolkit') === 'true';
-  const versionClassList = document.querySelector('.navbar-header .toolkit-version').classList;
 
   if (isToolkitDisabled) {
     setLogo(APP_STATES.disabled);
-    versionClassList.add('disabled');
   } else {
     setLogo(APP_STATES.normal);
-    versionClassList.remove('disabled');
   }
 }
 
