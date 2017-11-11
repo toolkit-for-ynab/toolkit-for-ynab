@@ -42,35 +42,32 @@ KangoAPI.onReady(function () {
 
   $('#versionNumber').text(kango.getExtensionInfo().version);
 
-  checkIfToolKitEnabled(function (isEnabled) {
-    isToolkitEnabled = isEnabled;
-
-    setLogo(isToolkitEnabled);
-    $('#logo').click(function () {
-      toggleToolkit();
-    });
+  isToolkitEnabled = checkIfToolKitEnabled();
+  console.log('isToolkitEnabled: ', isToolkitEnabled);
+  setLogo(isToolkitEnabled);
+  $('#logo').click(function () {
+    toggleToolkit();
   });
 
   $('#openSettings').focus();
 });
 
-function checkIfToolKitEnabled(cb) {
-  return kango.invokeAsync('kango.storage.getItem', 'DisableToolkit', function (isToolkitDisabled) {
-    cb(isToolkitDisabled !== 'true');
-  });
+function checkIfToolKitEnabled() {
+  var isDisabled = window.localStorage.getItem('DisableToolkit') === 'true';
+  return !isDisabled;
 }
 
-function setLogo(isDisabled) {
+function setLogo(isEnabled = true) {
   const logos = {
-    true: 'assets/logos/toolkitforynab-logo-200-disabled.png',
-    false: 'assets/logos/toolkitforynab-logo-200.png'
+    true: 'assets/logos/toolkitforynab-logo-200.png',
+    false: 'assets/logos/toolkitforynab-logo-200-disabled.png'
   };
 
-  $('#logo').attr('src', kango.io.getResourceUrl(logos[isDisabled || false]));
+  $('#logo').attr('src', kango.io.getResourceUrl(logos[isEnabled]));
 }
 
 function toggleToolkit() {
   isToolkitEnabled = !isToolkitEnabled;
   setLogo(isToolkitEnabled);
-  kango.invokeAsync('kango.storage.setItem', 'DisableToolkit', isToolkitEnabled, function () { });
+  window.localStorage.setItem('DisableToolkit', isToolkitEnabled);
 }
