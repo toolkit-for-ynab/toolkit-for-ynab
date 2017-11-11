@@ -43,7 +43,6 @@ KangoAPI.onReady(function () {
   $('#versionNumber').text(kango.getExtensionInfo().version);
 
   isToolkitEnabled = checkIfToolKitEnabled();
-  console.log('isToolkitEnabled: ', isToolkitEnabled);
   setLogo(isToolkitEnabled);
   $('#logo').click(function () {
     toggleToolkit();
