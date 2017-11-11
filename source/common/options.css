@@ -70,6 +70,10 @@ body {
   height: 91px;
 }
 
+#logo.btn {
+  background-color: white;
+}
+
 label {
   font-size: 1.3em;
 }

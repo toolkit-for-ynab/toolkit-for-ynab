@@ -356,14 +356,20 @@ const APP_STATES = {
   disabled: 'disabled'
 };
 
-function checkIfToolkitDisabled() {
-  const isToolkitDisabled = window.localStorage.getItem('DisableToolkit') === 'true';
+function checkIfToolkitDisabled(isDisabled) {
+  const isToolkitDisabled = isDisabled === undefined ? window.localStorage.getItem('DisableToolkit') === 'true' : isDisabled;
 
   if (isToolkitDisabled) {
     setLogo(APP_STATES.disabled);
   } else {
     setLogo(APP_STATES.normal);
   }
+}
+
+function toggleToolkit() {
+  const isToolkitDisabled = window.localStorage.getItem('DisableToolkit') === 'true';
+  window.localStorage.setItem('DisableToolkit', !isToolkitDisabled);
+  checkIfToolkitDisabled(!isToolkitDisabled);
 }
 
 function setLogo(status = APP_STATES.normal) {
@@ -437,4 +443,7 @@ KangoAPI.onReady(function () {
 
   // set version number
   jq('.toolkit-version').text('v ' + kango.getExtensionInfo().version);
+
+  // add Toolkit toggle
+  jq('#logo').click(toggleToolkit);
 });
