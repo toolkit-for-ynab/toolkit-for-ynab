@@ -69,5 +69,5 @@ function setLogo(isEnabled = true) {
 function toggleToolkit() {
   isToolkitEnabled = !isToolkitEnabled;
   setLogo(isToolkitEnabled);
-  window.localStorage.setItem('DisableToolkit', isToolkitEnabled);
+  window.localStorage.setItem('DisableToolkit', !isToolkitEnabled);
 }
