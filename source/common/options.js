@@ -350,21 +350,40 @@ function watchScrollForPageHeader() {
   });
 }
 
+const APP_STATES = {
+  normal: 'normal',
+  warning: 'warning',
+  disabled: 'disabled'
+};
+
 function checkIfToolkitDisabled() {
   const isToolkitDisabled = window.localStorage.getItem('DisableToolkit') === 'true';
-  const classList = document.querySelector('.toolkit-disabled-indicator').classList;
+  const versionClassList = document.querySelector('.navbar-header .toolkit-version').classList;
+
   if (isToolkitDisabled) {
-    classList.remove('hidden');
+    setLogo(APP_STATES.disabled);
+    versionClassList.add('disabled');
   } else {
-    classList.add('hidden');
+    setLogo(APP_STATES.normal);
+    versionClassList.remove('disabled');
   }
+}
+
+function setLogo(status = APP_STATES.normal) {
+  const logos = {
+    normal: 'assets/logos/toolkitforynab-logo-200.png',
+    warning: 'assets/logos/toolkitforynab-logo-200-warning.png',
+    disabled: 'assets/logos/toolkitforynab-logo-200-disabled.png'
+  };
+
+  kango.invokeAsync('kango.io.getResourceUrl', logos[status], function (data) {
+    jq('#logo').attr('src', data);
+  });
 }
 
 KangoAPI.onReady(function () {
   // Set the logo.
-  kango.invokeAsync('kango.io.getResourceUrl', 'assets/logos/toolkitforynab-logo-200.png', function (data) {
-    jq('#logo').attr('src', data);
-  });
+  setLogo();
 
   buildOptionsPage();
   checkIfToolkitDisabled();

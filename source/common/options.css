@@ -40,24 +40,14 @@ body {
   width: 100%;
 }
 
-.navbar-header > .left-side, .navbar-header > .right-side {
+.navbar-header > .right-side {
   position: relative;
   min-height: 7em;
 }
 
-.navbar-header > .left-side > .content, .navbar-header > .right-side > .content {
+.navbar-header > .right-side > .content {
   position: absolute;
   bottom: 0;
-}
-
-.navbar-header > .left-side > .content {  
-  right: -9em;
-  border-width: thick;
-  border-style: dashed;
-  font-size: 0.75em;
-}
-
-.navbar-header > .right-side > .content {
   left: 0;
 }
 
@@ -242,6 +232,10 @@ i {
 
 .toolkit-version {
   color: #3cb54a;
+}
+
+.toolkit-version.disabled {
+  color: #a94442;
 }
 
 #supportSettingsPage span.toolkit-version {
