@@ -41,8 +41,6 @@ export class CheckCreditBalances extends Feature {
   }
 
   onBudgetChanged() {
-    if (!this.shouldInvoke()) return;
-
     this.budgetView = null;
   }
 
