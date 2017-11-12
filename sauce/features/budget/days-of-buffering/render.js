@@ -5,12 +5,11 @@ const format = (...args) => (ynab.YNABSharedLib.currencyFormatter.format(...args
 const getDobEl = () => document.getElementsByClassName('days-of-buffering')[0];
 
 const createDobEl = () => {
-  const elementForDoB = document.getElementsByClassName('budget-header-days')[0]
-                                .cloneNode(true);
-
-  elementForDoB.className = elementForDoB.className + ' days-of-buffering';
-  elementForDoB.children[1].textContent = i10n('budget.ageOfMoneyDays.DoB', 'Days of Buffering');
-  elementForDoB.children[1].title = "Don't like AoM? Try this out instead!";
+  const label = i10n('budget.dob.title', 'Days of Buffering');
+  const labelTooltip = i10n('budget.dob.tooltip', 'Don\'t like AoM? Try this out instead!');
+  const elementForDoB = $('<div>', { class: 'budget-header-item budget-header-days days-of-buffering' }).
+    append($('<div>', { class: 'budget-header-days-age' })).
+    append($('<div>', { class: 'budget-header-days-label' }).text(label).prop('title', labelTooltip))[0];
 
   document.getElementsByClassName('budget-header-flexbox')[0]
           .appendChild(elementForDoB);
@@ -30,13 +29,13 @@ const render = (
                     i10n('budget.ageOfMoneyDays.other', 'days');
 
     dobEl.children[0].textContent = daysOfBuffering + ' ' + dayText;
-    dobEl.children[0].title = `Total outflow: ${format(totalOutflow)}
-Total days of budgeting: ${totalDays}
-Average daily outflow: ~${format(avgDailyOutflow)}
-Average daily transactions: ${avgDailyTransactions.toFixed(1)}`;
+    dobEl.children[0].title = `${i10n('budget.dob.outflow', 'Total outflow')}: ${format(totalOutflow)}
+${i10n('budget.dob.days', 'Total days of budgeting')}: ${totalDays}
+${i10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${format(avgDailyOutflow)}
+${i10n('budget.dob.avgTransactions', 'Average daily transactions')}: ${avgDailyTransactions.toFixed(1)}`;
   } else {
-    dobEl.children[0].textContent = '???';
-    dobEl.children[0].title = 'Your budget history is less than 15 days. Go on with YNAB a while.';
+    dobEl.children[0].textContent = i10n('budget.ageOfMoneyNotAvailable', '???');
+    dobEl.children[0].title = i10n('budget.dob.noHistory', 'Your budget history is less than 15 days. Go on with YNAB a while.');
   }
 };
 

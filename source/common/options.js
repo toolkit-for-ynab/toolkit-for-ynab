@@ -142,7 +142,61 @@ function restoreOptions() {
   });
 }
 
+function initializeSetttingPages() {
+  const templateSelector = '#genericSettingsPage';
+  const selectors = {
+    pageContent: templateSelector,
+    icon: templateSelector + ' .fa',
+    title: templateSelector + ' .page-header-title',
+    actions: templateSelector + ' .actions'
+  };
+  const pages = [
+    {
+      id: 'generalSettingsPage',
+      iconClass: 'fa-cogs',
+      title: 'General Settings',
+      showActions: true
+    },
+    {
+      id: 'accountsSettingsPage',
+      iconClass: 'fa-university',
+      title: 'Accounts Screen Settings',
+      showActions: true
+    },
+    {
+      id: 'budgetSettingsPage',
+      iconClass: 'fa-envelope-o',
+      title: 'Budget Screen Settings',
+      showActions: true
+    },
+    {
+      id: 'reportsSettingsPage',
+      iconClass: 'fa-bar-chart',
+      title: 'Reports Screen Settings',
+      showActions: true
+    }
+  ];
+
+  pages.forEach(page => {
+    const genericSettingsPage = document.querySelector(selectors.pageContent).cloneNode(true);
+
+    genericSettingsPage.querySelector(selectors.icon).classList.add(page.iconClass);
+    genericSettingsPage.querySelector(selectors.title).textContent = page.title;
+
+    const classList = genericSettingsPage.querySelector(selectors.actions).classList;
+    if (page.showActions) {
+      classList.remove('hidden');
+    } else {
+      classList.add('hidden');
+    }
+
+    document.querySelector('#' + page.id).innerHTML = genericSettingsPage.innerHTML;
+  });
+}
+
 function buildOptionsPage() {
+  initializeSetttingPages();
+
   // Order by section, then type, then name.
   var settings = ynabToolKit.settings.slice();
 
@@ -164,7 +218,7 @@ function buildOptionsPage() {
     let markDown = marked(setting.description);
 
     if (setting.type === 'checkbox') {
-      jq('#' + setting.section + 'SettingsPage')
+      jq('#' + setting.section + 'SettingsPage > .content')
         .append(jq('<div>', { class: 'row option-row' })
           .append(jq('<input>', { type: 'checkbox', id: setting.name, name: setting.name, 'aria-describedby': setting.name + 'HelpBlock' }))
           .append(jq('<div>', { class: 'option-description' })
@@ -172,7 +226,7 @@ function buildOptionsPage() {
             .append(jq('<span>', { id: setting.name + 'HelpBlock', class: 'help-block' }))));
       jq('#' + setting.name + 'HelpBlock').html(markDown);
     } else if (setting.type === 'select') {
-      jq('#' + setting.section + 'SettingsPage')
+      jq('#' + setting.section + 'SettingsPage > .content')
         .append(jq('<div>', { class: 'row option-row' })
           .append(jq('<label>', { for: setting.name, text: setting.title }))
           .append(jq('<select>', { name: setting.name, id: setting.name, class: 'form-control', 'aria-describedby': setting.name + 'HelpBlock' })
@@ -276,6 +330,24 @@ function resetSettings() {
   });
 }
 
+function watchScrollForPageHeader() {
+  const pageHeaderSelector = '.page-header';
+  const successSelector = '#settingsSaved';
+
+  const topHeaderHeight = jq('nav.top-navbar').height();
+  const preferredClass = 'sticky-header';
+
+  jq(window).scroll(function () {
+    if (jq(window).scrollTop() >= topHeaderHeight) {
+      jq(pageHeaderSelector).addClass(preferredClass);
+      jq(successSelector).addClass(preferredClass);
+    } else {
+      jq(pageHeaderSelector).removeClass(preferredClass);
+      jq(successSelector).removeClass(preferredClass);
+    }
+  });
+}
+
 KangoAPI.onReady(function () {
   // Set the logo.
   kango.invokeAsync('kango.io.getResourceUrl', 'assets/logos/toolkitforynab-logo-200.png', function (data) {
@@ -283,6 +355,8 @@ KangoAPI.onReady(function () {
   });
 
   buildOptionsPage();
+
+  watchScrollForPageHeader();
 
   restoreOptions().then(function () {
     jq('input:checkbox').bootstrapSwitch();
@@ -306,23 +380,18 @@ KangoAPI.onReady(function () {
 
   jq('#generalMenuItem').click(function (e) {
     loadPanel('general'); e.preventDefault();
-    jq('#footer-buttons').show();
   });
   jq('#accountsMenuItem').click(function (e) {
     loadPanel('accounts'); e.preventDefault();
-    jq('#footer-buttons').show();
   });
   jq('#budgetMenuItem').click(function (e) {
     loadPanel('budget'); e.preventDefault();
-    jq('#footer-buttons').show();
   });
   jq('#reportsMenuItem').click(function (e) {
     loadPanel('reports'); e.preventDefault();
-    jq('#footer-buttons').show();
   });
   jq('#supportMenuItem').click(function (e) {
-    loadPanel('support'); e.preventDefault();
-    jq('#footer-buttons').hide();
+    loadPanel('support', false); e.preventDefault();
   });
   jq('#advancedMenuItem').click(function (e) {
     loadPanel('advanced'); e.preventDefault();
