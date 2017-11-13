@@ -17,12 +17,22 @@ export function getCurrentRouteName() {
   return applicationController.get('currentRouteName');
 }
 
+export function getCurrentBudgetDate() {
+  let applicationController = controllerLookup('application');
+  let date = applicationController.get('monthString');
+  return { year: date.slice(0, 4), month: date.slice(4, 6) };
+}
+
 export function getCategoriesViewModel() {
   return ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel();
 }
 
 export function getAllBudgetMonthsViewModel() {
   return ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel();
+}
+
+export function getAllBudgetMonthsViewModelResult() {
+  return getAllBudgetMonthsViewModel()._result;
 }
 
 export function getCurrentDate(format) {

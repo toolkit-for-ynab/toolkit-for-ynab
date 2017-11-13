@@ -19,6 +19,7 @@ const legacySettingMap = {
   CategoryActivityPopupWidth: 'categoryActivityPopupWidth',
   ChangeEnterBehavior: 'changeEnterBehavior',
   CalendarFirstDay: 'calendarFirstDay',
+  CheckCreditBalances: 'checkCreditBalances',
   CheckNumbers: 'checkNumbers',
   ClearSelection: 'accountsClearSelection',
   ColourBlindMode: 'colourBlindMode',
