@@ -119,6 +119,8 @@ function saveOptions() {
       .fadeIn()
       .delay(1500)
       .fadeOut();
+
+    checkIfToolkitDisabled();
   });
 }
 
@@ -348,13 +350,46 @@ function watchScrollForPageHeader() {
   });
 }
 
-KangoAPI.onReady(function () {
-  // Set the logo.
-  kango.invokeAsync('kango.io.getResourceUrl', 'assets/logos/toolkitforynab-logo-200.png', function (data) {
+const APP_STATES = {
+  normal: 'normal',
+  warning: 'warning',
+  disabled: 'disabled'
+};
+
+function checkIfToolkitDisabled(isDisabled) {
+  const isToolkitDisabled = isDisabled === undefined ? window.localStorage.getItem('DisableToolkit') === 'true' : isDisabled;
+
+  if (isToolkitDisabled) {
+    setLogo(APP_STATES.disabled);
+  } else {
+    setLogo(APP_STATES.normal);
+  }
+}
+
+function toggleToolkit() {
+  const isToolkitDisabled = window.localStorage.getItem('DisableToolkit') === 'true';
+  window.localStorage.setItem('DisableToolkit', !isToolkitDisabled);
+  checkIfToolkitDisabled(!isToolkitDisabled);
+}
+
+function setLogo(status = APP_STATES.normal) {
+  const logos = {
+    normal: 'assets/logos/toolkitforynab-logo-200.png',
+    warning: 'assets/logos/toolkitforynab-logo-200-warning.png',
+    disabled: 'assets/logos/toolkitforynab-logo-200-disabled.png'
+  };
+
+  kango.invokeAsync('kango.io.getResourceUrl', logos[status], function (data) {
     jq('#logo').attr('src', data);
   });
+}
+
+KangoAPI.onReady(function () {
+  // Set the logo.
+  setLogo();
 
   buildOptionsPage();
+  checkIfToolkitDisabled();
 
   watchScrollForPageHeader();
 
@@ -401,12 +436,14 @@ KangoAPI.onReady(function () {
   jq('.import-export-button').click(importExportModal);
   jq('.save-button').click(saveOptions);
   jq('.cancel-button').click(KangoAPI.closeWindow);
-  jq('.cancel-button').click(KangoAPI.closeWindow);
 
   jq('.reset-settings-button').click(() => {
     return openModal('Reset Settings', document.querySelector('#resetSettingsModalContent').innerHTML, resetSettings);
   });
 
   // set version number
-  jq('h2 span.version').text('v ' + kango.getExtensionInfo().version);
+  jq('.toolkit-version').text('v ' + kango.getExtensionInfo().version);
+
+  // add Toolkit toggle
+  jq('#logo').click(toggleToolkit);
 });

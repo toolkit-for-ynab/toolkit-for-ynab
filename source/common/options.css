@@ -40,6 +40,22 @@ body {
   width: 100%;
 }
 
+.navbar-header > .right-side {
+  position: relative;
+  min-height: 7em;
+}
+
+.navbar-header > .right-side > .content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.toolkit-disabled-indicator {
+  color: red;
+  font-weight: bolder;
+}
+
 .top-navbar {
   height: 120px;
 }
@@ -52,6 +68,10 @@ body {
   display: block;
   margin: 10px auto 0;
   height: 91px;
+}
+
+#logo.btn {
+  background-color: white;
 }
 
 label {
@@ -161,7 +181,7 @@ i {
   z-index: 5;
   padding-top: 1em;
   background: #F4F4F4;
-  transition: padding-top 0.25s linear;  
+  transition: padding-top 0.15s linear;  
 }
 
 #settingsSaved.sticky-header {
@@ -214,12 +234,15 @@ i {
   width: 100%;
 }
 
-/* #importExportModal .modal-footer {
-  text-align: center;
-} */
-
-#supportSettingsPage span.version {
+.toolkit-version {
   color: #3cb54a;
+}
+
+.toolkit-version.disabled {
+  color: #a94442;
+}
+
+#supportSettingsPage span.toolkit-version {
   float: right;
 }
 
