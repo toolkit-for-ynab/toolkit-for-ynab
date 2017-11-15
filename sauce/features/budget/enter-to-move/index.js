@@ -5,14 +5,11 @@ const MOVE_POPUP =
   'ynab-u modal-popup modal-budget modal-budget-move-money ember-view modal-overlay active';
 const CATEGORY_DROPDOWN = 'dropdown-container categories-dropdown-container';
 const BUTTON_PRIMARY = 'button button-primary ';
+const BUTTON_CANCEL = 'button button-cancel';
+const MODAL_CONTENT = 'modal-content';
 
 export class EnterToMove extends Feature {
   modalIsOpen = false;
-
-  constructor() {
-    super();
-    this.onKeyDownHandler = this.onKeyDown.bind(this);
-  }
 
   shouldInvoke() {
     return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1;
@@ -20,16 +17,15 @@ export class EnterToMove extends Feature {
 
   invoke() {}
 
-  onKeyDown(e) {
+  onKeyDown = e => {
     const keycode = e.keycode || e.which;
     if (keycode === 13) {
       const OK = $(
         '.modal-budget-move-money .modal-actions button:first-child'
       );
       OK.click();
-      document.removeEventListener('keydown', this.onKeyDownHandler, false);
     }
-  }
+  };
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
@@ -43,7 +39,19 @@ export class EnterToMove extends Feature {
       changedNodes.has(CATEGORY_DROPDOWN) &&
       changedNodes.has(BUTTON_PRIMARY)
     ) {
-      document.addEventListener('keydown', this.onKeyDownHandler, false);
+      // Ready to click button
+      document.addEventListener('keydown', this.onKeyDown, false);
+    }
+
+    if (
+      this.modalIsOpen &&
+      changedNodes.has(BUTTON_PRIMARY) &&
+      changedNodes.has(BUTTON_CANCEL) &&
+      changedNodes.has(MODAL_CONTENT)
+    ) {
+      // Modal has closed
+      this.modalIsOpen = false;
+      document.removeEventListener('keydown', this.onKeyDown, false);
     }
   }
 }
