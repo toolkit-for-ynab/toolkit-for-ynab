@@ -88,15 +88,6 @@ export class CollapseSideMenu extends Feature {
     }
   }
 
-  clickFunction(event) {
-    let _this = event.data;
-    // _this.originalButtons[this.className].click();
-    _this.originalButtons[this.className.replace(' active', '').trim()].click();
-    _this.deactivateCollapsedActive();
-    $(this).addClass('active');
-    console.log('x: <' + this + '>');
-  }
-
   getUnCollapseBtnGroup() {
     let navChildren = $('.nav-main').children();
     let navChildrenLength = navChildren.length;
@@ -108,6 +99,15 @@ export class CollapseSideMenu extends Feature {
     } else {
       collapsedBtnContainer = $('<div>', { class: 'collapsed-buttons', style: 'display: none' });
     }
+
+    var clickFunction = function (event) {
+      const _this = event.data; // the feature
+      let linkClass = this.className.replace(' active', '').trim();
+
+      $(_this.originalButtons[linkClass]).click();
+      _this.deactivateCollapsedActive();
+      $(this).addClass('active');
+    };
 
     for (let i = 0; i < navChildrenLength; i++) {
       let child = navChildren[i];
@@ -130,17 +130,15 @@ export class CollapseSideMenu extends Feature {
       button.addClass('button button-prefs');
 
       let listItem = $(child).find('li')[0] || child;
-      // let linkClasses = listItem.className;
-      let linkClasses = listItem.className.replace(' active', '').trim();
+      let linkClass = listItem.className.replace(' active', '').trim();
 
       let link = $('<a>');
       link.attr('href', '#');
-      link.addClass(linkClasses);
+      link.addClass(linkClass);
       link.html(button);
-      link.click(this, this.clickFunction);
+      link.click(this, clickFunction);
 
-      this.originalButtons[linkClasses] = $(child).find('a');
-      // this.originalButtons[linkClasses.replace(' active', '')] = $(child).find('a');
+      this.originalButtons[linkClass] = 'ul.nav-main li.' + linkClass + ' a';
 
       // Set proper class so the active styling can be applied
       if (btnClasses.indexOf('mail-1') > -1) {
