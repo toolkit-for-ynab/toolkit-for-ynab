@@ -5,6 +5,7 @@ import { CheckNumbers } from './check-numbers';
 import * as toolkitHelper from 'toolkit/helpers/toolkit';
 
 export class AdditionalColumns extends Feature {
+
   constructor() {
     super();
     this.checkNumbers = ynabToolKit.options.CheckNumbers ? new CheckNumbers() : new AdditionalColumnStub();
@@ -31,6 +32,9 @@ export class AdditionalColumns extends Feature {
     this.attachWillInsertHandler('register/grid-scheduled-sub');
     this.attachWillInsertHandler('register/grid-actions');
     this.attachWillInsertHandler('register/grid-split');
+
+    let accountsController = toolkitHelper.controllerLookup('accounts');
+    accountsController.notifyPropertyChange('contentResults');
 
     return Promise.all([
       this.checkNumbers.willInvoke(),
