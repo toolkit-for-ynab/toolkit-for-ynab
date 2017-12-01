@@ -93,7 +93,7 @@ export class AutoDistributeSplits extends Feature {
     subCells.forEach((cell, i) => {
       $(cell).val(
         actualNumber(newSubValues[i])
-          ? String(Math.round(newSubValues[i] * 100) / 100)
+          ? (Math.round(newSubValues[i] * 100) / 100).toFixed(2)
           : ''
       );
       $(cell).trigger('change');
