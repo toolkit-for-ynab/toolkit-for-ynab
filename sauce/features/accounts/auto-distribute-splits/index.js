@@ -34,7 +34,7 @@ export class AutoDistributeSplits extends Feature {
   }
 
   addButton() {
-    $('.ynab-grid-actions .ynab-grid-cell-subCategoryName').append(this.button);
+    $('.ynab-grid-actions-buttons .button-cancel').after(this.button);
   }
 
   distribute() {
