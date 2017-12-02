@@ -66,7 +66,7 @@
 
         $(input).val(val);
 
-        if (!ynabToolKit.options.warnOnQuickBudget) {
+        if (!ynabToolKit.options.QuickBudgetWarning) {
           // only seems to work if the confirmation doesn't pop up?
           // haven't figured out a way to properly blur otherwise
           input.blur();
@@ -77,7 +77,7 @@
         let input = $('#' + field).click().find('input');
         let val = $(input).val();
 
-        if (!ynabToolKit.options.warnOnQuickBudget) {
+        if (!ynabToolKit.options.QuickBudgetWarning) {
           // only seems to work if the confirmation doesn't pop up?
           // haven't figured out a way to properly blur otherwise
           input.blur();

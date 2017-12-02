@@ -116,9 +116,13 @@ export class BudgetBalanceToZero extends Feature {
   }
 
   updateBudgetedBalance = (name, difference) => {
-    // eslint-disable-next-line no-alert
-    if (ynabToolKit.options.warnOnQuickBudget && !confirm('Are you sure you want to do this?')) {
-      return;
+    if (ynabToolKit.options.QuickBudgetWarning) {
+      // no need to confirm quick budget if zero budgeted
+      if (! $('div.budget-table ul.budget-table-row.is-checked li.budget-table-cell-budgeted .currency').hasClass('zero')) {
+        if (!confirm('Are you sure you want to budget this amount?')) { // eslint-disable-line no-alert
+          return;
+        }
+      }
     }
 
     const categories = $('.is-sub-category.is-checked');
@@ -141,7 +145,7 @@ export class BudgetBalanceToZero extends Feature {
 
         $(input).val(ynab.YNABSharedLib.currencyFormatter.format(ynab.convertToMilliDollars(newValue)));
 
-        if (!ynabToolKit.options.warnOnQuickBudget) {
+        if (!ynabToolKit.options.QuickBudgetWarning) {
           // only seems to work if the confirmation doesn't pop up?
           // haven't figured out a way to properly blur otherwise
           input.blur();
