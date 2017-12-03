@@ -1,0 +1,8 @@
+.is-reconciled-row {
+	color: #8e9fb0;
+	background-color: #e7faeb !important;
+}
+.is-reconciled-row .ynab-grid-cell-payeeName svg path,
+.is-reconciled-row .ynab-grid-cell-payeeName svg rect {
+	fill: #8e9fb0;
+}

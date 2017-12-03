@@ -41,6 +41,7 @@ const legacySettingMap = {
   NavDisplayDensity: 'navDisplayDensity',
   PrintingImprovements: 'printingImprovements',
   QuickBudgetWarning: 'warnOnQuickBudget',
+  ReconciledTextColor: 'reconciledTextColor',
   RemovePositiveHighlight: 'removePositiveHighlight',
   ResizeInspector: 'resizeInspector',
   RowHeight: 'accountsRowHeight',
