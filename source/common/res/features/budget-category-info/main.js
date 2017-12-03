@@ -161,7 +161,6 @@
           // but until then we'll just have to keep adding stuff to this check that should trigger
           // budget-category related features to update
           if (changedNodes.has('navlink-budget active') ||
-            changedNodes.has('budget-table-header') ||
             changedNodes.has('budget-inspector') ||
             changedNodes.has('budget-table-cell-available-div user-data') ||
             changedNodes.has('budget-inspector-goals') ||
