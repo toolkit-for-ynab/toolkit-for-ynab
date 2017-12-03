@@ -66,7 +66,7 @@
         var spareChangeDiv = $('.ynab-toolkit-accounts-header-balances-spare-change');
         var selectedTotalDiv = $('.accounts-header-selected-total');
         var flexGrowSpacer = $('.ynab-toolkit-spare-change-flex-grow-spacer');
-        var separator = $('.accounts-header-balances > i:contains("***")');
+        var separator = $('.accounts-header-balances i:contains("***")');
         var isSelectedTotalVisible = selectedTotalDiv.length > 0;
 
         spareChangeDiv.remove();
