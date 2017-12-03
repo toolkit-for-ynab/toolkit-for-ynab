@@ -123,7 +123,7 @@
               }
 
               // add available balance
-              var available = $(this).find('.budget-table-cell-available .currency').text();
+              var available = $(this).find('.budget-table-cell-available:first .currency').text();
               if (ynab.unformat(available) < 0) {
                 classes.push('availablenegative');
               } else if (ynab.unformat(available) > 0) {
@@ -161,6 +161,7 @@
           // but until then we'll just have to keep adding stuff to this check that should trigger
           // budget-category related features to update
           if (changedNodes.has('navlink-budget active') ||
+            changedNodes.has('budget-table-header') ||
             changedNodes.has('budget-inspector') ||
             changedNodes.has('budget-table-cell-available-div user-data') ||
             changedNodes.has('budget-inspector-goals') ||
