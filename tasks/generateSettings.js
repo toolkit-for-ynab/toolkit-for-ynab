@@ -53,7 +53,8 @@ const legacySettingMap = {
   StealingFromFuture: 'stealingFromNextMonth',
   StripedRows: 'accountsStripedRows',
   ToBeBudgetedWarning: 'toBeBudgetedWarning',
-  ToggleMasterCategories: 'collapseExpandBudgetGroups'
+  ToggleMasterCategories: 'collapseExpandBudgetGroups',
+  ToggleSplits: 'toggleSplits'
 };
 
 let previousSettings;
