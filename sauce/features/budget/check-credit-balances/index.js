@@ -176,9 +176,7 @@ export class CheckCreditBalances extends Feature {
             display: 'block',
             cursor: 'pointer'
           })
-          .click(function () {
-            this.updateCreditBalances($(this).data('name'), $(this).data('difference'));
-          });
+          .click(this.updateCreditBalances);
 
         $('.inspector-quick-budget').append(button);
       }
@@ -203,12 +201,14 @@ export class CheckCreditBalances extends Feature {
     return false;
   }
 
-  updateCreditBalances(name, difference) {
+  updateCreditBalances() {
     // eslint-disable-next-line no-alert
     if (ynabToolKit.options.QuickBudgetWarning && (!confirm('Are you sure you want to do this?'))) {
       return;
     }
 
+    let name = $(this).data('name');
+    let difference = $(this).data('difference');
     let debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
 
     $(debtPaymentCategories).each(function () {
