@@ -3,9 +3,7 @@ import * as toolkitHelper from 'toolkit/helpers/toolkit';
 
 export class CollapseSideMenu extends Feature {
   collapseBtn = '';
-
   originalButtons = {}
-
   originalSizes = {
     sidebarWidth: 0,
     contentLeft: 0,
@@ -19,7 +17,7 @@ export class CollapseSideMenu extends Feature {
   }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1;
+    return true;
   }
 
   invoke() {
@@ -33,24 +31,22 @@ export class CollapseSideMenu extends Feature {
   }
 
   observe(changedNodes) {
-    if (this.shouldInvoke()) {
-      if (changedNodes.has('layout user-logged-in')) {
-        if ($('.nav-main').length) {
-          this.setupBtns();
-        }
+    if (changedNodes.has('layout user-logged-in')) {
+      if ($('.nav-main').length) {
+        this.setupBtns();
       }
+    }
 
-      if (changedNodes.has('nav-main')) {
-        let numNavLinks = $('.nav-main').children().length;
-        let collapseIndex = $('.nav-main').children().index($('.ynabtk-navlink-collapse'));
-        let numCollapsedLinks = $('.collapsed-buttons').children().length;
+    if (changedNodes.has('nav-main')) {
+      let numNavLinks = $('.nav-main').children().length;
+      let collapseIndex = $('.nav-main').children().index($('.ynabtk-navlink-collapse'));
+      let numCollapsedLinks = $('.collapsed-buttons').children().length;
 
-        if (numNavLinks > (collapseIndex + 1) || numNavLinks > numCollapsedLinks) {
-          $('.ynabtk-navlink-collapse').remove();
+      if (numNavLinks > (collapseIndex + 1) || numNavLinks > numCollapsedLinks) {
+        $('.ynabtk-navlink-collapse').remove();
 
-          this.setUpCollapseBtn();
-          this.setUpCollapsedButtons();
-        }
+        this.setUpCollapseBtn();
+        this.setUpCollapsedButtons();
       }
     }
   }
@@ -92,12 +88,6 @@ export class CollapseSideMenu extends Feature {
     }
   }
 
-  clickFunction() {
-    this.originalButtons[this.className.replace(' active', '')].click();
-    this.deactivateCollapsedActive();
-    $(this).addClass('active');
-  }
-
   getUnCollapseBtnGroup() {
     let navChildren = $('.nav-main').children();
     let navChildrenLength = navChildren.length;
@@ -109,6 +99,15 @@ export class CollapseSideMenu extends Feature {
     } else {
       collapsedBtnContainer = $('<div>', { class: 'collapsed-buttons', style: 'display: none' });
     }
+
+    var clickFunction = function (event) {
+      const _this = event.data; // the feature
+      let linkClass = this.className.replace(' active', '').trim();
+
+      $(_this.originalButtons[linkClass]).click();
+      _this.deactivateCollapsedActive();
+      $(this).addClass('active');
+    };
 
     for (let i = 0; i < navChildrenLength; i++) {
       let child = navChildren[i];
@@ -131,15 +130,15 @@ export class CollapseSideMenu extends Feature {
       button.addClass('button button-prefs');
 
       let listItem = $(child).find('li')[0] || child;
-      let linkClasses = listItem.className.replace(' active', '');
+      let linkClass = listItem.className.replace(' active', '').trim();
 
       let link = $('<a>');
       link.attr('href', '#');
-      link.addClass(linkClasses);
+      link.addClass(linkClass);
       link.html(button);
-      link.click(this.clickFunction);
+      link.click(this, clickFunction);
 
-      this.originalButtons[linkClasses.replace(' active', '')] = $(child).find('a');
+      this.originalButtons[linkClass] = 'ul.nav-main li.' + linkClass + ' a';
 
       // Set proper class so the active styling can be applied
       if (btnClasses.indexOf('mail-1') > -1) {
