@@ -1,4 +1,5 @@
 import { Feature } from 'toolkit/core/feature';
+import * as toolkitHelper from 'toolkit/helpers/toolkit';
 
 export class ActivityTransactionLink extends Feature {
   injectCSS() { return require('./index.css'); }
@@ -14,10 +15,42 @@ export class ActivityTransactionLink extends Feature {
         var selectedTransEmberId = $(row).attr('id');
         var emberView = ynabToolKit.shared.getEmberView(selectedTransEmberId);
         this.selectedTransaction = emberView.get('transaction');
-        $('.nav-account-name[title="' + this.selectedTransaction.get('accountName') + '"]').trigger('click');
-        this.waitingForAccountsPage = true;
+
+        let acctName = this.selectedTransaction.get('accountName');
+        let txnAccount = this.findTransactionAccount(acctName);
+
+        if ($(txnAccount).length) {
+          $(txnAccount).trigger('click');
+          this.waitingForAccountsPage = true;
+        }
       });
     });
+  }
+
+  // find the account associated with the selected transaction.
+  findTransactionAccount = (accountName) => {
+    let txnAccount = $(`.nav-account-name[title="${accountName}"]`);
+    if (!$(txnAccount).length) {
+      if ($('.nav-account.onBudget').children().length === 1) {
+        $('button[aria-label="open BUDGET"]').click();
+        txnAccount = $(`.nav-account-name[title="${accountName}"]`);
+        if (!$(txnAccount).length) {
+          $('button[aria-label="collapse BUDGET"]').click();
+        }
+      }
+
+      if (!$(txnAccount).length) {
+        if ($('.nav-account.closed').children().length === 1) {
+          $('button[aria-label="open CLOSED"]').click();
+          txnAccount = $(`.nav-account-name[title="${accountName}"]`);
+          if (!$(txnAccount).length) {
+            $('button[aria-label="collapse CLOSED"]').click();
+          }
+        }
+      }
+    }
+
+    return txnAccount;
   }
 
   // find the parent entity if the selectedTransaction has one.
@@ -102,8 +135,16 @@ export class ActivityTransactionLink extends Feature {
     if (changedNodes.has('ynab-u modal-popup modal-budget-activity ember-view modal-overlay active')) {
       this.invoke();
     }
+  }
 
-    if (this.waitingForAccountsPage && changedNodes.has('ynab-grid-body')) {
+  shouldInvoke() {
+    return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
+  }
+
+  onRouteChanged() {
+    if (!this.shouldInvoke()) return;
+
+    if (this.waitingForAccountsPage) {
       this.waitingForAccountsPage = false;
       Ember.run.later(this.findSelectedTransaction, 250);
     }
