@@ -201,7 +201,7 @@ export class CheckCreditBalances extends Feature {
     return false;
   }
 
-  updateCreditBalances(name, difference) {
+  updateCreditBalances() {
     if (ynabToolKit.options.QuickBudgetWarning) {
       // no need to confirm quick budget if zero budgeted
       if (! $('div.budget-table ul.budget-table-row.is-checked li.budget-table-cell-budgeted .currency').hasClass('zero')) {
