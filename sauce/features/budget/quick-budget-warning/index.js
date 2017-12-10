@@ -15,7 +15,18 @@ export class QuickBudgetWarning extends Feature {
   }
 
   confirmClick(event) {
-    if (!confirm('Are you sure you want to do this?')) { // eslint-disable-line no-alert
+    // if nothing is budgeted, skip the confirmation
+    let allZero = true;
+    $('div.budget-table ul.budget-table-row.is-checked li.budget-table-cell-budgeted .currency').each(function () {
+      if (! $(this).hasClass('zero')) {
+        allZero = false;
+      }
+    });
+    if (allZero === true) {
+      return;
+    }
+
+    if (!confirm('Are you sure you want to budget this amount?')) { // eslint-disable-line no-alert
       event.preventDefault();
       event.stopPropagation();
     }
