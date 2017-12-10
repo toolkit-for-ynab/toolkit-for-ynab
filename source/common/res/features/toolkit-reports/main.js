@@ -40,15 +40,16 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
         if ($('li.ynabtk-navlink-reports').length > 0) return;
 
         $('.nav-main > li:eq(1)').after(
-          $('<li>').append(
-            $('<li>', { class: 'ember-view ynabtk-navlink-reports' }).append(
+          // $('<li>').append(
+            // $('<li>', { class: 'ember-view ynabtk-navlink-reports' }).append(
+            $('<li>', { class: 'ynabtk-navlink-reports' }).append(
               $('<a>', { class: 'ynabtk-navlink-reports-link' }).append(
                 $('<span>', { class: 'ember-view flaticon stroke document-4' })
               ).append(
                 (ynabToolKit.l10nData && ynabToolKit.l10nData['sidebar.reports']) || 'Toolkit Reports'
               )
             )
-          )
+          // )
         );
 
         $('.ynabtk-navlink-reports-link').click((event) => {
@@ -540,8 +541,14 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
           }
 
           // if YNAB overwrites the sidebar-contents just make sure the report button
-          // doesn't get deleted
-          if (changedNodes.has('sidebar-contents')) {
+          // doesn't get deleted. The second through the fourth checks are required
+          // because the Toolkit reports <li> gets removed when the <li> for the native
+          // YNAB links are updated. The CollapseSideMenu Toolkit feature relies on the
+          // <li> so it needs to be added back if it's gone missing.
+          if (changedNodes.has('sidebar-contents') ||
+              changedNodes.has('navlink-budget active') ||
+              changedNodes.has('navlink-reports active') ||
+              changedNodes.has('navlink-accounts active')) {
             setUpReportsButton();
           }
         },

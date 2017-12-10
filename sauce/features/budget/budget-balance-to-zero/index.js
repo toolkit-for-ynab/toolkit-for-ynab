@@ -65,6 +65,10 @@ export class BudgetBalanceToZero extends Feature {
       }
     }
 
+    if (this.budgetView.categoriesViewModel === null) {
+      return;
+    }
+
     const categories = [];
     const masterCats = this.budgetView.categoriesViewModel.masterCategoriesCollection._internalDataArray;
     const masterCategories = masterCats.filter(category => category.internalName === null);

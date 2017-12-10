@@ -160,7 +160,8 @@
           // when this is moved to the webpack codebase, hopefully we can just listen to onRouteChanged
           // but until then we'll just have to keep adding stuff to this check that should trigger
           // budget-category related features to update
-          if (changedNodes.has('navlink-budget active') ||
+          if ((changedNodes.has('nav-main') && ynabToolKit.shared.getCurrentRoute().includes('budget')) ||
+            changedNodes.has('budget-table-row is-sub-category') ||
             changedNodes.has('budget-inspector') ||
             changedNodes.has('budget-table-cell-available-div user-data') ||
             changedNodes.has('budget-inspector-goals') ||

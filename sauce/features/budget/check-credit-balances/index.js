@@ -176,9 +176,7 @@ export class CheckCreditBalances extends Feature {
             display: 'block',
             cursor: 'pointer'
           })
-          .click(function () {
-            this.updateCreditBalances($(this).data('name'), $(this).data('difference'));
-          });
+          .click(this.updateCreditBalances);
 
         $('.inspector-quick-budget').append(button);
       }
@@ -213,6 +211,8 @@ export class CheckCreditBalances extends Feature {
       }
     }
 
+    let name = $(this).data('name');
+    let difference = $(this).data('difference');
     let debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
 
     $(debtPaymentCategories).each(function () {

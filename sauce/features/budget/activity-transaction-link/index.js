@@ -67,7 +67,7 @@ export class ActivityTransactionLink extends Feature {
     var recordHeight = ynabGridContainer.get('recordHeight');
 
     Ember.run.later(() => {
-      var skipSplits = ynabToolKit.options.toggleSplits && ynabToolKit.toggleSplits.setting === 'hide';
+      var skipSplits = ynabToolKit.options.ToggleSplits && !accountsController.get('toolkitShowSubTransactions');
       var transactionScrollTo = recordHeight * transactionIndex;
 
       $(ynabGridContainer.element).scrollTop(transactionScrollTo);
