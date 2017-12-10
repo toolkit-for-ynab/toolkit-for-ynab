@@ -37,3 +37,7 @@
 	top: 0 !important;
 	padding-top: 0.1em !important;
 }
+
+.ynab-grid-actions {
+	height: 2.2rem !important;
+}
