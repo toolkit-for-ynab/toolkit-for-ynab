@@ -123,7 +123,7 @@
               }
 
               // add available balance
-              var available = $(this).find('.budget-table-cell-available .currency').text();
+              var available = $(this).find('.budget-table-cell-available:first .currency').text();
               if (ynab.unformat(available) < 0) {
                 classes.push('availablenegative');
               } else if (ynab.unformat(available) > 0) {
