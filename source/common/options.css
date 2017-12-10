@@ -217,7 +217,10 @@ i {
   color: #292929;
   /* adjustments for markdown adding <p> */
   font-size: 16px;
-  margin-top: -15px;
+}
+
+.help-block p:first-child {
+  padding-top: 0;
 }
 
 #settingsSaved {
