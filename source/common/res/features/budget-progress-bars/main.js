@@ -28,7 +28,7 @@
 
       function getCalculation(subCategoryName) {
         var subCat = subCats.find(getSubCategoryByName);
-        var calculation;
+        var calculation = null;
         if (subCat) {
           var crazyInternalId = internalIdBase + subCat.entityId;
           calculation = entityManager.getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
@@ -60,39 +60,21 @@
         var status = 0;
         var hasGoal = false;
 
-        switch (calculation.goalType) {
-          case 'TB' :
-          case 'TBD' :
-            hasGoal = true;
+        if (calculation !== null) {
+          switch (calculation.goalType) {
+            case 'TB' :
+            case 'TBD' :
+            case 'MF' :
+              hasGoal = true;
+              status = calculation.goalPercentageComplete;
 
-            if (calculation.balance >= calculation.targetBalance) {
-              status = 100;
-            } else {
-              status = calculation.balance / (calculation.balance + calculation.goalOverallLeft);
-            }
-
-            break;
-          case 'MF' :
-            hasGoal = true;
-
-            if (calculation.balance >= calculation.goalTarget) {
-              status = 100;
-            } else {
-              status = 1 - calculation.goalUnderFunded / calculation.goalTarget;
-            }
-
-            break;
-          default:
-            if (calculation.upcomingTransactions < 0) {
-              // hasGoal = true;
-              // status = 0 - calculation.balance / calculation.upcomingTransactions;
-            }
+              break;
+            default:
+          }
         }
 
         if (hasGoal) {
-          status = status > 1 ? 1 : status;
-          status = status < 0 ? 0 : status;
-          var percent = Math.round(parseFloat(status) * 100);
+          var percent = Math.round(parseFloat(status));
           target.style.background = 'linear-gradient(to right, rgba(22, 163, 54, 0.3) ' + percent + '%, white ' + percent + '%)';
         } else {
           target.style.removeProperty('linear-gradient'); // only remove the style property we added!
@@ -136,7 +118,8 @@
       }
       return {
         invoke() {
-          var categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions');
+          console.log('invoked');
+          var categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions').not('.is-debt-payment-category');
           var masterCategoryName = '';
 
           if (subCats === null || subCats.length === 0 || loadCategories) {
@@ -212,7 +195,7 @@
           }
 
           // Set {"budget-table-row is-sub-category goal-progress", "nav-main", "budget-header-item budget-header-calendar toolkit-highlight-current-month", "budget-header-flexbox"}
-          if (changedNodes.has('budget-table-row') || changedNodes.has('navlink-budget active') || changedNodes.has('budget-inspector')) {
+          if (changedNodes.has('budget-table-row') || changedNodes.has('budget-table-cell-available-div user-data') || changedNodes.has('navlink-budget active') || changedNodes.has('budget-inspector')) {
             ynabToolKit.budgetProgressBars.invoke();
           } else if (changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-edit-category active') ||
                       changedNodes.has('modal-overlay ynab-u modal-popup modal-add-master-category active') ||
