@@ -6,8 +6,14 @@
     -webkit-flex: 0 1 auto;
     -ms-flex: 0 1 auto;
     flex: 0 1 auto;
+
+    height: 3.75em;
+    padding-top: .75em;
+    padding-right: 1rem;
+    margin-right: 1rem;
+    border-right: 1px solid #0e414c;
     overflow: hidden;
-    margin-top: .75em;
+
     text-align: center;
     color: #5bbe72;
 }
