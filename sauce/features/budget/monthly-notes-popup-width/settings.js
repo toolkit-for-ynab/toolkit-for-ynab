@@ -3,8 +3,8 @@ module.exports = {
   type: 'select',
   default: '0',
   section: 'budget',
-  title: 'Larger Clickable Area for Icons',
-  description: 'Makes the uncleared, cleared and reconciled icons easier to select.',
+  title: 'Width of Monthly Notes Popup',
+  description: "Makes the screen that pops up when you click on 'Enter a note...' below the month name wider so you can add more text.",
   options: [
     { name: 'Default', value: '0' },
     { name: 'Medium', value: '1' },
