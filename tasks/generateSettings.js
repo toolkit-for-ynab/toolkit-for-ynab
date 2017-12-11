@@ -11,7 +11,6 @@ const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
 const legacySettingMap = {
   AccountsDisplayDensity: 'accountsDisplayDensity',
-  ActivityTransactionLink: 'activityTransactionLink',
   AutoCloseReconcile: 'closeReconcileWindow',
   BetterScrollbars: 'betterScrollbars',
   BudgetBalanceToZero: 'budgetBalanceToZero',
@@ -41,6 +40,7 @@ const legacySettingMap = {
   NavDisplayDensity: 'navDisplayDensity',
   PrintingImprovements: 'printingImprovements',
   QuickBudgetWarning: 'warnOnQuickBudget',
+  ReconciledTextColor: 'reconciledTextColor',
   RemovePositiveHighlight: 'removePositiveHighlight',
   ResizeInspector: 'resizeInspector',
   RowHeight: 'accountsRowHeight',

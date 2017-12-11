@@ -61,53 +61,30 @@
       }
 
       function insertHeader() {
-        var balancesHeader = $('.accounts-header-balances');
+        // remove existing
+        $('.ynab-toolkit-accounts-header-balances-spare-change').remove();
 
-        var spareChangeDiv = $('.ynab-toolkit-accounts-header-balances-spare-change');
-        var selectedTotalDiv = $('.accounts-header-selected-total');
-        var flexGrowSpacer = $('.ynab-toolkit-spare-change-flex-grow-spacer');
-        var separator = $('.accounts-header-balances > i:contains("***")');
-        var isSelectedTotalVisible = selectedTotalDiv.length > 0;
-
-        spareChangeDiv.remove();
-        flexGrowSpacer.remove();
-        separator.remove();
-
-        spareChangeDiv = $('<div />')
+        // build spare change div
+        var spareChangeDiv = $('<div />')
           .addClass('ynab-toolkit-accounts-header-balances-spare-change');
-
         var spareChangeAmount = $('<span />').addClass('user-data');
         var spareChangeTitle =
           $('<div />')
             .addClass('accounts-header-balances-label')
             .attr('title', 'The selected items "spare change" when rounded up to the nearest dollar.')
             .text('Spare Change');
-
         var currencySpan = $('<span />').addClass('user-data currency');
 
         spareChangeAmount.append(currencySpan);
         spareChangeDiv.append(spareChangeTitle);
         spareChangeDiv.append(spareChangeAmount);
 
-        if (isSelectedTotalVisible) {
-          spareChangeDiv.insertBefore(selectedTotalDiv);
-          separator = $('<i />').text('***');
-          separator.insertAfter(spareChangeDiv);
-        } else {
-          spareChangeDiv.css('margin-right', '32px');
-          balancesHeader.append(spareChangeDiv);
-        }
-
-        flexGrowSpacer = $('<div />')
-          .addClass('ynab-toolkit-spare-change-flex-grow-spacer')
-          .css('flex-grow', '1');
-        flexGrowSpacer.insertBefore(spareChangeDiv);
+        // insert
+        $('.accounts-header-balances-right').prepend(spareChangeDiv);
       }
 
       function removeHeader() {
         $('.ynab-toolkit-accounts-header-balances-spare-change').remove();
-        $('.accounts-header-balances > i:contains("***")').remove();
-        $('.ynab-toolkit-spare-change-flex-grow-spacer').remove();
       }
 
       function updateValue() {
