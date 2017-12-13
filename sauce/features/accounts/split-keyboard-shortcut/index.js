@@ -4,6 +4,10 @@ import { getCurrentRouteName } from 'toolkit/helpers/toolkit';
 const BUDGET_CATEGORIES_DROPDOWN_NODE = 'ynab-u modal-popup modal-account-dropdown modal-account-categories ember-view modal-overlay active';
 
 export class SplitKeyboardShortcut extends Feature {
+  injectCSS() {
+    return require('./index.css');
+  }
+
   observe(changedNodes) {
     if (getCurrentRouteName().indexOf('account') !== -1) {
       if (changedNodes.has(BUDGET_CATEGORIES_DROPDOWN_NODE)) {
@@ -36,11 +40,13 @@ export class SplitKeyboardShortcut extends Feature {
           }
         }).on('keyup', function () {
           const categoryInputString = new RegExp('^' + $(this).val());
-          if (categoryInputString.test('split') && categoryList.find('.no-button').length === 1) {
+          if (categoryInputString.test('split') && categoryList.find('li').length === 3) {
             // highlight new split button if input contains part of
             // 'split' and there are no other categories available
+            categoryList.addClass('toolkit-hide-firstchild');
             liElement.find('.button-list').addClass('is-highlighted');
           } else {
+            categoryList.removeClass('toolkit-hide-firstchild');
             liElement.find('.button-list').removeClass('is-highlighted');
           }
         });
