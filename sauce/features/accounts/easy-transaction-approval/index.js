@@ -39,7 +39,6 @@ export class EasyTransactionApproval extends Feature {
       Ember.run.scheduleOnce('afterRender', this, function () {
         parent.initKeyLoop = true;
         parent.initClickLoop = true;
-        console.log('reset');
       });
     });
   }
@@ -85,7 +84,6 @@ export class EasyTransactionApproval extends Feature {
   }
 
   watchForRightClick() {
-    console.log('watchForRightClick()');
     var parent = this;
 
     // call approveTransactions if the notification 'i' icon is right clicked on
