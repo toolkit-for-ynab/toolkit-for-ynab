@@ -32,13 +32,13 @@ export class EasyTransactionApproval extends Feature {
   }
 
   addBudgetVersionIdObserver() {
-    var parent = this;
+    var _this = this;
 
     var applicationController = ynabToolKit.shared.containerLookup('controller:application');
     applicationController.addObserver('budgetVersionId', function () {
       Ember.run.scheduleOnce('afterRender', this, function () {
-        parent.initKeyLoop = true;
-        parent.initClickLoop = true;
+        _this.initKeyLoop = true;
+        _this.initClickLoop = true;
       });
     });
   }
@@ -67,15 +67,15 @@ export class EasyTransactionApproval extends Feature {
   }
 
   watchForKeyInput() {
-    var parent = this;
+    var _this = this;
 
     $('body').on('keydown', function (e) {
-      if ((e.which === 13 || e.which === 65) && parent.watchForKeys) {
+      if ((e.which === 13 || e.which === 65) && _this.watchForKeys) {
         // approve selected transactions when 'a' or 'enter is pressed'
-        parent.approveTransactions();
+        _this.approveTransactions();
 
         // disable keydown watch until selection is changed again
-        parent.watchForKeys = false;
+        _this.watchForKeys = false;
       }
     });
 
@@ -84,7 +84,7 @@ export class EasyTransactionApproval extends Feature {
   }
 
   watchForRightClick() {
-    var parent = this;
+    var _this = this;
 
     // call approveTransactions if the notification 'i' icon is right clicked on
     Ember.run.next(function () {
@@ -102,7 +102,7 @@ export class EasyTransactionApproval extends Feature {
               .click();
 
             // approve transactions
-            parent.approveTransactions();
+            _this.approveTransactions();
           });
       $('.ynab-grid').on(
           'contextmenu',
@@ -118,7 +118,7 @@ export class EasyTransactionApproval extends Feature {
               .click();
 
             // approve transactions
-            parent.approveTransactions();
+            _this.approveTransactions();
           });
     });
 
