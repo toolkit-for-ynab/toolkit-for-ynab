@@ -14,112 +14,112 @@
             "value": "arabic"
         }, 
         {
-            "name": "Catalan (1%)", 
-            "value": "catalan"
-        }, 
-        {
-            "name": "Chinese Simplified (2%)", 
-            "value": "chinese simplified"
-        }, 
-        {
-            "name": "Chinese Traditional (82%)", 
-            "value": "chinese traditional"
-        }, 
-        {
-            "name": "Czech (100%)", 
-            "value": "czech"
-        }, 
-        {
-            "name": "Danish (100%)", 
-            "value": "danish"
-        }, 
-        {
-            "name": "Dutch (96%)", 
-            "value": "dutch"
-        }, 
-        {
-            "name": "Finnish (71%)", 
-            "value": "finnish"
-        }, 
-        {
-            "name": "French (97%)", 
-            "value": "french"
-        }, 
-        {
-            "name": "German (100%)", 
-            "value": "german"
-        }, 
-        {
-            "name": "Hungarian (68%)", 
+            "name": "Hungarian (83%)", 
             "value": "hungarian"
         }, 
         {
-            "name": "Icelandic (9%)", 
-            "value": "icelandic"
-        }, 
-        {
-            "name": "Italian (29%)", 
-            "value": "italian"
-        }, 
-        {
-            "name": "Korean (1%)", 
-            "value": "korean"
-        }, 
-        {
-            "name": "Latvian (19%)", 
-            "value": "latvian"
-        }, 
-        {
-            "name": "Lithuanian (1%)", 
-            "value": "lithuanian"
-        }, 
-        {
-            "name": "Norwegian (100%)", 
-            "value": "norwegian"
+            "name": "French (98%)", 
+            "value": "french"
         }, 
         {
             "name": "Polish (50%)", 
             "value": "polish"
         }, 
         {
+            "name": "Lithuanian (1%)", 
+            "value": "lithuanian"
+        }, 
+        {
             "name": "Portuguese, Brazilian (92%)", 
             "value": "portuguese, brazilian"
         }, 
         {
-            "name": "Portuguese (42%)", 
-            "value": "portuguese"
-        }, 
-        {
-            "name": "Romanian (4%)", 
-            "value": "romanian"
-        }, 
-        {
-            "name": "Russian (100%)", 
-            "value": "russian"
-        }, 
-        {
-            "name": "Slovenian (2%)", 
-            "value": "slovenian"
-        }, 
-        {
-            "name": "Spanish (80%)", 
-            "value": "spanish"
-        }, 
-        {
-            "name": "Swedish (68%)", 
-            "value": "swedish"
+            "name": "Finnish (90%)", 
+            "value": "finnish"
         }, 
         {
             "name": "Turkish (5%)", 
             "value": "turkish"
         }, 
         {
-            "name": "Ukrainian (3%)", 
-            "value": "ukrainian"
+            "name": "Slovenian (2%)", 
+            "value": "slovenian"
+        }, 
+        {
+            "name": "Latvian (19%)", 
+            "value": "latvian"
+        }, 
+        {
+            "name": "German (100%)", 
+            "value": "german"
         }, 
         {
             "name": "Vietnamese (12%)", 
             "value": "vietnamese"
+        }, 
+        {
+            "name": "Spanish (80%)", 
+            "value": "spanish"
+        }, 
+        {
+            "name": "Portuguese (42%)", 
+            "value": "portuguese"
+        }, 
+        {
+            "name": "Norwegian (100%)", 
+            "value": "norwegian"
+        }, 
+        {
+            "name": "Korean (1%)", 
+            "value": "korean"
+        }, 
+        {
+            "name": "Romanian (4%)", 
+            "value": "romanian"
+        }, 
+        {
+            "name": "Chinese Traditional (82%)", 
+            "value": "chinese traditional"
+        }, 
+        {
+            "name": "Chinese Simplified (2%)", 
+            "value": "chinese simplified"
+        }, 
+        {
+            "name": "Russian (100%)", 
+            "value": "russian"
+        }, 
+        {
+            "name": "Ukrainian (10%)", 
+            "value": "ukrainian"
+        }, 
+        {
+            "name": "Swedish (68%)", 
+            "value": "swedish"
+        }, 
+        {
+            "name": "Catalan (1%)", 
+            "value": "catalan"
+        }, 
+        {
+            "name": "Icelandic (9%)", 
+            "value": "icelandic"
+        }, 
+        {
+            "name": "Dutch (97%)", 
+            "value": "dutch"
+        }, 
+        {
+            "name": "Czech (100%)", 
+            "value": "czech"
+        }, 
+        {
+            "name": "Italian (29%)", 
+            "value": "italian"
+        }, 
+        {
+            "name": "Danish (100%)", 
+            "value": "danish"
         }
     ], 
     "actions": {
@@ -129,9 +129,9 @@
             "injectScript", 
             "main.js"
         ], 
-        "czech": [
+        "german": [
             "injectScript", 
-            "locales/Czech.json", 
+            "locales/German.json", 
             "injectScript", 
             "main.js"
         ], 
@@ -183,9 +183,9 @@
             "injectScript", 
             "main.js"
         ], 
-        "german": [
+        "czech": [
             "injectScript", 
-            "locales/German.json", 
+            "locales/Czech.json", 
             "injectScript", 
             "main.js"
         ], 
@@ -195,9 +195,9 @@
             "injectScript", 
             "main.js"
         ], 
-        "portuguese, brazilian": [
+        "korean": [
             "injectScript", 
-            "locales/Portuguese, Brazilian.json", 
+            "locales/Korean.json", 
             "injectScript", 
             "main.js"
         ], 
@@ -243,9 +243,9 @@
             "injectScript", 
             "main.js"
         ], 
-        "korean": [
+        "portuguese, brazilian": [
             "injectScript", 
-            "locales/Korean.json", 
+            "locales/Portuguese, Brazilian.json", 
             "injectScript", 
             "main.js"
         ], 
