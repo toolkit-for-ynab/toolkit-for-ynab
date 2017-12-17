@@ -93,24 +93,26 @@
         if (deEmphasizedCategories.indexOf(subCategoryName) === -1) {
           var calculation = getCalculation(subCategoryName);
 
-          var budgeted = calculation.balance - calculation.budgetedCashOutflows - calculation.budgetedCreditOutflows;
-          var available = calculation.balance;
+          if (calculation !== null) {
+            var budgeted = calculation.balance - calculation.budgetedCashOutflows - calculation.budgetedCreditOutflows;
+            var available = calculation.balance;
 
-          if (budgeted > 0) {
-            var pacing = (budgeted - available) / budgeted;
-            if (monthProgress > pacing) {
-              target.style.background = generateProgressBarStyle(
-                ['#c0e2e9', 'white', '#CFD5D8', 'white'],
-                [pacing, monthProgress - s, monthProgress]);
+            if (budgeted > 0) {
+              var pacing = (budgeted - available) / budgeted;
+              if (monthProgress > pacing) {
+                target.style.background = generateProgressBarStyle(
+                  ['#c0e2e9', 'white', '#CFD5D8', 'white'],
+                  [pacing, monthProgress - s, monthProgress]);
+              } else {
+                target.style.background = generateProgressBarStyle(
+                  ['#c0e2e9', '#CFD5D8', '#c0e2e9', 'white'],
+                  [monthProgress - s, monthProgress, pacing]);
+              }
             } else {
               target.style.background = generateProgressBarStyle(
-                ['#c0e2e9', '#CFD5D8', '#c0e2e9', 'white'],
-                [monthProgress - s, monthProgress, pacing]);
+                ['white', '#CFD5D8', 'white'],
+                [monthProgress - s, monthProgress]);
             }
-          } else {
-            target.style.background = generateProgressBarStyle(
-              ['white', '#CFD5D8', 'white'],
-              [monthProgress - s, monthProgress]);
           }
         } else {
           target.style.background = '';
@@ -118,7 +120,6 @@
       }
       return {
         invoke() {
-          console.log('invoked');
           var categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions').not('.is-debt-payment-category');
           var masterCategoryName = '';
 
@@ -214,6 +215,7 @@
         onRouteChanged(currentRoute) {
           if (currentRoute.indexOf('budget') !== -1) {
             loadCategories = true;
+            ynabToolKit.budgetProgressBars.invoke();
           }
         },
 
