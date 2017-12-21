@@ -2,8 +2,6 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
 const DISTRIBUTE_BUTTON_ID = 'auto-distribute-splits-button';
-const SPLIT_BUTTON_CLASS =
-  'button button-primary modal-account-categories-split-transaction';
 
 function actualNumber(n) {
   return typeof n === 'number' && !Number.isNaN(n);
@@ -24,17 +22,24 @@ export class AutoDistributeSplits extends Feature {
   }
 
   observe(changedNodes) {
-    if (changedNodes.has(SPLIT_BUTTON_CLASS) && !this.buttonPresent()) {
-      this.addButton();
+    if (!changedNodes.has('ynab-grid-actions-buttons')) {
+      if (
+        $('.ynab-grid-cell-subCategoryName input').val() ===
+        'Split (Multiple Categories)...'
+      ) {
+        this.ensureButtonPresent();
+      }
+    }
+  }
+
+  ensureButtonPresent() {
+    if (!this.buttonPresent()) {
+      $('.ynab-grid-actions-buttons .button-cancel').after(this.button);
     }
   }
 
   buttonPresent() {
-    return !!document.getElementById(DISTRIBUTE_BUTTON_ID);
-  }
-
-  addButton() {
-    $('.ynab-grid-actions-buttons .button-cancel').after(this.button);
+    return $('.ynab-grid-actions-buttons .' + DISTRIBUTE_BUTTON_ID).length > 0;
   }
 
   distribute() {
