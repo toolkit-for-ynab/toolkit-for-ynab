@@ -98,6 +98,8 @@ export class AutoDistributeSplits extends Feature {
       $(cell).trigger('change');
     });
 
-    getEmberView($('.ynab-grid-add-rows')[0].id).calculateSplitRemaining();
+    getEmberView(
+      $('.ynab-grid-body-row.is-editing')[0].id
+    ).calculateSplitRemaining();
   }
 }
