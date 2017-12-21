@@ -72,8 +72,9 @@ export class AutoDistributeSplits extends Feature {
 
   alertCannotDistribute() {
     // eslint-disable-next-line no-alert
-    alert('Must fill in at least the total and one sub-transaction ' +
-        'in order to auto-distribute');
+    alert('Please fill in the transaction total and at least one ' +
+        'sub-transaction in order to auto-distribute the ' +
+        'remaining amount between sub-transactions');
   }
 
   getRemainingValue(total, subValues) {
@@ -98,8 +99,6 @@ export class AutoDistributeSplits extends Feature {
       $(cell).trigger('change');
     });
 
-    getEmberView(
-      $('.ynab-grid-body-row.is-editing')[0].id
-    ).calculateSplitRemaining();
+    getEmberView($('.ynab-grid-body-row.is-editing')[0].id).calculateSplitRemaining();
   }
 }
