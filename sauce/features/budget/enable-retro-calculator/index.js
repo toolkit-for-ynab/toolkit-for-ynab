@@ -2,7 +2,7 @@ import { Feature } from 'toolkit/core/feature';
 import { getCurrentRouteName } from 'toolkit/helpers/toolkit';
 
 export class EnableRetroCalculator extends Feature {
-  onRouteChanged(route) {
+  onRouteChanged() {
     // Remove our handler no matter what, because if they move between
     // months, we'll end up attaching multiple, which would be bad.
     // Let's always remove and then reattach if needed.
@@ -12,7 +12,7 @@ export class EnableRetroCalculator extends Feature {
 
     $(document).off('keypress', selector, this.handleKeypress);
 
-    if (route === 'budget.select') {
+    if (this.shouldInvoke()) {
       $(document).on('keypress', selector, this.handleKeypress);
     }
   }
@@ -21,11 +21,13 @@ export class EnableRetroCalculator extends Feature {
     // If we're loading up on the budget page, then we should trigger
     // our listener on startup. Let's pretend we switched routes
     // so that the normal handling happens.
-    return getCurrentRouteName() === 'budget.select';
+    return getCurrentRouteName().indexOf('budget') !== -1;
   }
 
   invoke() {
-    this.onRouteChanged(getCurrentRouteName());
+    if (this.shouldInvoke()) {
+      this.onRouteChanged();
+    }
   }
 
   handleKeypress(e) {
