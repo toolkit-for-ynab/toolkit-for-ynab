@@ -3,7 +3,6 @@ import * as toolkitHelper from 'toolkit/helpers/toolkit';
 
 export class SwapClearedFlagged extends Feature {
   injectCSS() {
-    // inject our CSS
     return require('./index.css');
   }
 
