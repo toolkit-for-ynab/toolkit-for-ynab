@@ -53,6 +53,7 @@ const legacySettingMap = {
   StripedRows: 'accountsStripedRows',
   ToBeBudgetedWarning: 'toBeBudgetedWarning',
   ToggleMasterCategories: 'collapseExpandBudgetGroups',
+  ToggleTransactionFilters: 'toggleTransactionFilters',
   ToggleSplits: 'toggleSplits'
 };
 
@@ -286,7 +287,7 @@ function deleteAllKangoSettings() {
     kango.invokeAsync('kango.storage.clear', function () {
       resolve('success');
     });
-  });  
+  });
 }
 
 function getKangoStorageKeys() {
