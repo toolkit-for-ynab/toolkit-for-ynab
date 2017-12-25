@@ -41,6 +41,7 @@ const legacySettingMap = {
   QuickBudgetWarning: 'warnOnQuickBudget',
   ReconciledTextColor: 'reconciledTextColor',
   RemovePositiveHighlight: 'removePositiveHighlight',
+  RemoveZeroCategories: 'removeZeroCategories',
   ResizeInspector: 'resizeInspector',
   RowHeight: 'accountsRowHeight',
   RowsHeight: 'budgetRowsHeight',
@@ -286,7 +287,7 @@ function deleteAllKangoSettings() {
     kango.invokeAsync('kango.storage.clear', function () {
       resolve('success');
     });
-  });  
+  });
 }
 
 function getKangoStorageKeys() {
