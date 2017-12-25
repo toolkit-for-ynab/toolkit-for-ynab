@@ -48,7 +48,7 @@
   },
   "defaultFeatures": [
     "BudgetBalanceToZero",
-    "enlargeCategoriesDropdown",
+    "EnlargeCategoriesDropdown",
     "PrintingImprovements",
     "rightClickToEdit",
     "ShowIntercom",
