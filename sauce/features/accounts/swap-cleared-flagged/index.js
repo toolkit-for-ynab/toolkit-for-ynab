@@ -2,6 +2,10 @@ import { Feature } from 'toolkit/core/feature';
 import * as toolkitHelper from 'toolkit/helpers/toolkit';
 
 export class SwapClearedFlagged extends Feature {
+  injectCSS() {
+    return require('./index.css');
+  }
+
   shouldInvoke() {
     return toolkitHelper.getCurrentRouteName().indexOf('account') > -1;
   }
