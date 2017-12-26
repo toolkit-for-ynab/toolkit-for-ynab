@@ -34,6 +34,7 @@ const legacySettingMap = {
   HideAgeOfMoney: 'hideAgeOfMoney',
   HideHelp: 'hideHelp',
   ImportNotification: 'importNotification',
+  IncomeFromLastMonth: 'incomeFromLastMonth',
   LargerClickableIcons: 'largerClickableIcons',
   MonthlyNotesPopupWidth: 'monthlyNotesPopupWidth',
   NavDisplayDensity: 'navDisplayDensity',
@@ -286,7 +287,7 @@ function deleteAllKangoSettings() {
     kango.invokeAsync('kango.storage.clear', function () {
       resolve('success');
     });
-  });  
+  });
 }
 
 function getKangoStorageKeys() {
