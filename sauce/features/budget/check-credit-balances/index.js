@@ -17,7 +17,7 @@ export class CheckCreditBalances extends Feature {
       this.onMonthChanged(toolkitHelper.getCurrentBudgetMonth());
     }
 
-    if (this.inCurrentMonth()) {
+    if (toolkitHelper.inCurrentMonth()) {
       let debtAccounts = this.getDebtAccounts();
 
       if (debtAccounts !== null) {
@@ -48,15 +48,6 @@ export class CheckCreditBalances extends Feature {
     if (!this.shouldInvoke()) return;
 
     this.invoke();
-  }
-
-  inCurrentMonth() { // check for current month or future month
-    let today = new Date();
-    let budgetDate = toolkitHelper.getCurrentBudgetDate();
-
-    // check for current month or future month
-    // must subtract 1 from budget month because the Date object is zero based.
-    return budgetDate.month - 1 >= today.getMonth() && budgetDate.year >= today.getYear();
   }
 
   getDebtAccounts() {
