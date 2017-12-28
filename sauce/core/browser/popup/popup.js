@@ -10,7 +10,7 @@ function updateToolkitLogo(isToolkitDisabled) {
     true: 'assets/images/logos/toolkitforynab-logo-200-disabled.png'
   };
 
-  $('#logo').attr('src', chrome.runtime.getURL(logos[isToolkitDisabled]));
+  $('#logo').attr('src', browser.runtime.getURL(logos[isToolkitDisabled]));
 }
 
 function toggleToolkit() {
@@ -29,9 +29,9 @@ function applyDarkMode(activate) {
 
 storage.onFeatureSettingChanged('DisableToolkit', updateToolkitLogo);
 
-$('#openSettings').click(browser.runtime.openOptionsPage);
-$('#reportBug').click(window.close);
-$('#logo').click(toggleToolkit);
+$('#openSettings').click(() => browser.runtime.openOptionsPage());
+$('#reportBug').click(() => window.close());
+$('#logo').click(() => toggleToolkit());
 
 $('#versionNumber').text(manifest.version);
 
