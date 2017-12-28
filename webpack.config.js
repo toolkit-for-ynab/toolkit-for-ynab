@@ -10,6 +10,7 @@ module.exports = {
     background: path.resolve(`${CODE_SOURCE_DIR}/core/browser/background/background.js`),
     options: path.resolve(`${CODE_SOURCE_DIR}/core/browser/options/options.js`),
     popup: path.resolve(`${CODE_SOURCE_DIR}/core/browser/popup/popup.js`),
+    init: path.resolve(`${CODE_SOURCE_DIR}/core/extension/init.js`),
     toolkit: path.resolve(`${CODE_SOURCE_DIR}/extension/toolkit.js`)
   },
 
