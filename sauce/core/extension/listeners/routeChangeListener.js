@@ -1,4 +1,4 @@
-import { controllerLookup } from 'toolkit/helpers/toolkit';
+import { controllerLookup } from 'toolkit/extension/helpers/toolkit';
 
 let instance = null;
 
