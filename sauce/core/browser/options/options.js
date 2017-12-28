@@ -251,17 +251,14 @@ jq(() => {
   }
 
   function importExportModal() {
-    getToolkitStorageKeys().then(function (keys) {
-      var promises = [];
-      keys.forEach(function (settingKey) {
-        promises.push(new Promise(function (resolve) {
-          getToolkitSetting(settingKey).then(function (settingValue) {
-            resolve({ key: settingKey, value: settingValue });
-          });
-        }));
+    storage.getStoredFeatureSettings().then(function (keys) {
+      const promises = keys.map((settingKey) => {
+        return storage.getFeatureSetting(settingKey).then((settingValue) => {
+          return { key: settingKey, value: settingValue };
+        });
       });
 
-      Promise.all(promises).then(function (allSettings) {
+      Promise.all(promises).then((allSettings) => {
         jq('#importExportContent').val(JSON.stringify(allSettings));
 
         jq('#importExportModal').modal();
@@ -278,9 +275,9 @@ jq(() => {
     });
 
     function applySettings() {
-      var newSettings = JSON.parse(jq('#importExportContent').val());
-      var promises = newSettings.map(function (setting) {
-        return setToolkitSetting(setting.key, setting.value);
+      const newSettings = JSON.parse(jq('#importExportContent').val());
+      const promises = newSettings.map(function (setting) {
+        return storage.setFeatureSetting(setting.key, setting.value);
       });
 
       Promise.all(promises).then(function () {
@@ -338,8 +335,8 @@ jq(() => {
   }
 
   function toggleToolkit() {
-    storage.getToolkitSetting('DisableToolkit').then((isDisabled) => {
-      storage.setToolkitSetting('DisableToolkit', !isDisabled);
+    storage.getFeatureSetting('DisableToolkit').then((isDisabled) => {
+      storage.setFeatureSetting('DisableToolkit', !isDisabled);
     });
   }
 
@@ -361,7 +358,7 @@ jq(() => {
     });
 
     jq('#darkMode').on('switchChange.bootstrapSwitch', function (event, state) {
-      setToolkitSetting('options.dark-mode', state).then(function () {
+      storage.setFeatureSetting('options.dark-mode', state).then(function () {
         applyDarkMode(state);
       });
     });
