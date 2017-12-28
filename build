@@ -10,15 +10,15 @@ echo "[   INFO] Build starting at $(date)"
 # Generate the feedChanges file using all the legacy feature folders
 python generateFeedChanges.py
 
-# Generate legacy and new settings
-yarn --silent gen-settings || exit
+# Check legacy code with eslint
+echo "[   INFO] Checking legacy code style with ESLint..."
+yarn --silent legacy-eslint || exit
 
 # Generate features/index.js for the new features
 yarn --silent gen-featureIndex || exit
 
-# Check legacy code with eslint
-echo "[   INFO] Checking legacy code style with ESLint..."
-yarn --silent legacy-eslint || exit
+# Generate legacy and new settings
+yarn --silent gen-settings || exit
 
 # Run webpack to grab all new framework features
 echo "[   INFO] Webpacking new framework..."
@@ -26,31 +26,8 @@ yarn --silent webpack || exit
 
 # Transpile the source/ directory, putting the files in src/ which is where Kango expects to see them.
 echo "[   INFO] Transpiling legacy code with Babel on ES2015 preset..."
-rm -rf src
 yarn --silent legacy-babel || exit
 
-# Copy any non JS files across that babel didn't bring with it. Ignore existing files we just transpiled.
-rsync -r --ignore-existing source/* src/
-
-# Run the Kango build.
-if hash python2 2>/dev/null; then
-  python2 lib/kango-framework-latest/kango.py build .
-elif hash python2.7 2>/dev/null; then
-  python2.7 lib/kango-framework-latest/kango.py build .
-else
-  python lib/kango-framework-latest/kango.py build .
-fi
-
-# The safari icon needs to be different than the other browsers. Move it into place.
-echo "[   INFO] Moving Safari extension icons into place..."
-pushd output/safari/*.safariextension/icons > /dev/null
-  rm -f button.png
-  mv button-safari.png button.png
-  cp ../../../../src/common/icons/button-safari@2x.png button@2x.png
-  rm button-safari@2x.png
-popd > /dev/null
-
-# Clean up.
-rm -rf src
+rsync -r --ignore-existing sauce/extension/legacy* dist/toolkit
 
 echo "[   INFO] Build finished at $(date)"
