@@ -54,11 +54,9 @@ ${importLines.join('\n')}
 
 ${errorCheckingLines.join('\n')}
 
-const features = [
+export const features = [
   ${featureNames.join(',\n  ')}
 ];
-
-export default features;
 `;
 
   const featureIndexPath = path.join(__dirname, '..', FEATURES_INDEX_PROJECT_PATH);
