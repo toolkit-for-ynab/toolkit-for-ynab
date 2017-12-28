@@ -1,6 +1,5 @@
 .DS_Store
 node_modules/
-output/
 dist/
 certificates/
 *.pyc
@@ -12,3 +11,4 @@ save-commands.json
 # new framework ingores
 sauce/extension/features/index.js
 sauce/extension/settings.js
+sauce/extension/legacy/features/act-on-change/feedChanges.js
