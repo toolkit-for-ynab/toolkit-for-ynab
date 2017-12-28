@@ -3,7 +3,7 @@ const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
 
-const FEATURES_PROJECT_DIR = path.join('sauce', 'features');
+const FEATURES_PROJECT_DIR = path.join('sauce', 'extension', 'features');
 const FEATURES_INDEX_PROJECT_PATH = path.join(FEATURES_PROJECT_DIR, 'index.js');
 
 function run(callback) {
@@ -26,8 +26,8 @@ function run(callback) {
       }
 
       // features/index will source from the features folder, so remove
-      // `sauce/features` from the path here.
-      const featureIndexPath = filePathSplit.slice(2, filePathSplit.length - 1).join('/');
+      // `sauce/extension/features` from the path here.
+      const featureIndexPath = filePathSplit.slice(3, filePathSplit.length - 1).join('/');
       const importLine = `import { ${featureSetting.name} } from './${featureIndexPath}';`;
       imports.push(importLine);
 

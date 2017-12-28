@@ -4,18 +4,15 @@ const spawn = require('child_process').spawn;
 let buildProcesses = [];
 
 var watcher = require('chokidar').watch([
-  'source/**',
   'sauce/**'
 ], {
   persistent: true,
   ignoreInitial: true,
   ignored: [
     // all generated files need to be ignored
-    'sauce/features/index.js',
-    'source/**/allSettings.js',
-    'source/**/feedChanges.js',
-    'source/**/ynabToolkit.js',
-    'source/**/ynabToolkit.js.map',
+    'sauce/extension/features/index.js',
+    'sauce/core/settings/settings.js',
+    'sauce/**/feedChanges.js',
     'src/**/*'
   ]
 });
