@@ -40,17 +40,20 @@ function applySettingsToDom(userSettings) {
     // changed to a select. Previous value will be 'true' but
     // that should map to '1' in select land.
     // eslint-disable-next-line eqeqeq
-    if (userSettingValue == 'true' &&
+    if (
+      setting.actions &&
+      userSettingValue === true &&
       '1' in setting.actions &&
-      !('true' in setting.actions)) {
+      !('true' in setting.actions)
+    ) {
       userSettingValue = '1';
     }
 
     if (setting.actions && userSettingValue in setting.actions) {
-      var selectedActions = setting.actions[userSettingValue.toString()];
-      for (var i = 0; i < selectedActions.length; i += 2) {
-        var action = selectedActions[i];
-        var target = selectedActions[i + 1];
+      const selectedActions = setting.actions[userSettingValue.toString()];
+      for (let i = 0; i < selectedActions.length; i += 2) {
+        const action = selectedActions[i];
+        const target = selectedActions[i + 1];
 
         if (action === 'injectCSS') {
           injectCSS(target);
@@ -59,7 +62,7 @@ function applySettingsToDom(userSettings) {
         } else if (action === 'injectJSString') {
           injectJSString(target);
         } else {
-          var error = "Invalid action '" + action + "'. Only injectCSS, injectScript and injectJSString are currently supported.";
+          const error = `Invalid Action: "${action}". Only injectCSS, injectScript and injectJSString are currently supported.`;
           throw error;
         }
       }

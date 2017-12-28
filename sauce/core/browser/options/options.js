@@ -64,7 +64,7 @@ jq(() => {
     const select = document.getElementById(elementId);
 
     if (select) {
-      let data = currentSetting || 0;
+      let data = currentSetting || '0';
 
       // Is the value in the select list?
       if (data === true && !valueIsInSelect(select, data) && valueIsInSelect(select, '1')) {

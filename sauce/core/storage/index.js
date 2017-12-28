@@ -10,8 +10,16 @@ export class ToolkitStorage {
     browser.storage.onChanged.addListener(this._listenForChanges);
   }
 
+  // many features have been built with the assumption that settings come back
+  // as strings and it's just easier to maintain that assumption rather than update
+  // those features. so override options with parse: false when getting feature settings
   getFeatureSetting(settingName, options = {}) {
-    return this.getStorageItem(`${FEATURE_SETTING_PREFIX}${settingName}`, options);
+    const getFeatureSettingOptions = {
+      parse: false,
+      ...options
+    };
+
+    return this.getStorageItem(`${FEATURE_SETTING_PREFIX}${settingName}`, getFeatureSettingOptions);
   }
 
   setFeatureSetting(settingName, value, options = {}) {
@@ -85,18 +93,26 @@ export class ToolkitStorage {
   }
 
   _get(key, options) {
-    const storageArea = options.storageArea || this._storageArea;
+    const getOptions = {
+      parse: true,
+      storageArea: this._storageArea,
+      ...options
+    };
 
     return new Promise((resolve, reject) => {
       try {
-        browser.storage[storageArea].get(key, (data) => {
+        browser.storage[getOptions.storageArea].get(key, (data) => {
           // if we're fetching everything -- don't try parsing it
           if (key === null) {
             return resolve(data);
           }
 
           try {
-            resolve(JSON.parse(data[key]));
+            if (getOptions.parse) {
+              resolve(JSON.parse(data[key]));
+            } else {
+              resolve(data[key]);
+            }
           } catch (_ignore) {
             resolve(data[key]);
           }
