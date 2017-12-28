@@ -41,7 +41,7 @@ export class ToolkitStorage {
       const storedSettings = [];
       for (const [key] of Object.entries(allStorage)) {
         if (key.startsWith(FEATURE_SETTING_PREFIX)) {
-          storedSettings.push(key);
+          storedSettings.push(key.replace(FEATURE_SETTING_PREFIX, ''));
         }
       }
 

@@ -8,7 +8,7 @@
       "all_frames": true,
       "run_at": "document_end",
       "js": [
-        "background/background.js"
+        "init/init.js"
       ]
     }
   ],
