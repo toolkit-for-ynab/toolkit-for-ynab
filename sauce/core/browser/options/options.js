@@ -34,7 +34,7 @@ jq(() => {
     var select = document.getElementById(elementId);
 
     if (select) {
-      return setFeatureSetting(elementId, select.options[select.selectedIndex].value);
+      return storage.setFeatureSetting(elementId, select.options[select.selectedIndex].value);
     }
 
     console.log("WARNING: Tried to saveSelectOption but couldn't find element " + elementId + ' on the page.');
