@@ -2,7 +2,7 @@ const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
 
-const LEGACY_FEATURES_DIR = path.join('sauce', 'extension', 'legacy', 'features');
+const LEGACY_FEATURES_DIR = path.join('src', 'extension', 'legacy', 'features');
 const FEED_CHANGES_PATH = path.join(LEGACY_FEATURES_DIR, 'act-on-change', 'feedChanges.js');
 
 glob(`${LEGACY_FEATURES_DIR}/*/**/main.js`, (error, files) => {

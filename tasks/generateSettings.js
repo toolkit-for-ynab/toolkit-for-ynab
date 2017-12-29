@@ -4,9 +4,9 @@ const fs = require('fs');
 const path = require('path');
 const defaultFeatures = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'))).defaultFeatures;
 
-const LEAGACY_SETTINGS_PROJECT_DIR = 'sauce/extension/legacy/features';
-const NEW_SETTINGS_PROJECT_DIR = 'sauce/extension/features';
-const ALL_SETTINGS_OUTPUT = 'sauce/core/settings/settings.js';
+const LEAGACY_SETTINGS_PROJECT_DIR = 'src/extension/legacy/features';
+const NEW_SETTINGS_PROJECT_DIR = 'src/extension/features';
+const ALL_SETTINGS_OUTPUT = 'src/core/settings/settings.js';
 const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
 const legacySettingMap = {
@@ -230,7 +230,7 @@ function validateActions(settingObj) {
 
       if (currentAction === 'injectCSS' || currentAction === 'injectScript') {
         let fullPath = path.join(featureDir, featureSettings.actions[actionKey][i + 1]);
-        fullPath = path.join('toolkit', path.relative('sauce/extension', fullPath));
+        fullPath = path.join('toolkit', path.relative('src/extension', fullPath));
         featureSettings.actions[actionKey][i + 1] = fullPath;
       }
 

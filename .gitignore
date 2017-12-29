@@ -20,10 +20,10 @@ package-lock.json
 dist/
 
 # created at build time with tasks/generateSettings.js
-sauce/core/settings/settings.js
+src/core/settings/settings.js
 
 # created at build time with tasks/generateFeatureIndex.js
-sauce/extension/features/index.js
+src/extension/features/index.js
 
 # created at build time with tasks/generateFeedChanges.js
-sauce/extension/legacy/features/act-on-change/feedChanges.js
+src/extension/legacy/features/act-on-change/feedChanges.js

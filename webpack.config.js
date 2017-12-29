@@ -3,7 +3,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const BUILD_PATH = './dist';
-const CODE_SOURCE_DIR = './sauce';
+const CODE_SOURCE_DIR = './src';
 
 module.exports = {
   entry: {

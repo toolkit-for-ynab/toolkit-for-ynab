@@ -25,7 +25,7 @@ call yarn legacy-babel || goto :errexit
 
 rem Copy any non JS files across that babel didn't bring with it. Ignore existing files we just transpiled.
 echo [   INFO] Copying non JS files...
-robocopy sauce/extension/legacy dist/toolkit/legacy /E /XC /XN /XO /NFL /NDL /NJH /NJS
+robocopy src/extension/legacy dist/toolkit/legacy /E /XC /XN /XO /NFL /NDL /NJH /NJS
 
 goto :exit
 

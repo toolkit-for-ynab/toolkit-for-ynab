@@ -111,10 +111,10 @@ We have a large number of contributors who each bring their own style to the cod
 #### How do I build a feature?
 We actually have two feature code bases now. Unless you are fixing a legacy feature or you have some inherant need to use the legacy framework, please opt for the new framework:
 
-##### New Framework [Documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/tree/master/sauce#ynab-toolkit-development)
+##### New Framework [Documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/tree/master/src#ynab-toolkit-development)
 The new framework was built because the old one required you to include a lot of boilerplate code in every feature. The new one makes heavier use of ES6 features and allows us to remove the burden of boilerplate from new contributions.
 
-The source code for this lives in the `sauce` directory.
+The source code for this lives in the `src` directory.
 
 ##### Old Framework [Documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/res/features/HOW_TO_BUILD_FEATURES.md)
 The old framework lives in the `source` directory and makes use of `babel` to transpile the javascript before getting built into extensions with Kango.

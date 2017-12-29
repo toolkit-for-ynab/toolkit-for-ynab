@@ -28,8 +28,8 @@
     "build": "./build",
     "watch": "./watch",
     "webpack": "webpack",
-    "lint": "eslint --ignore-path .eslintignore ./sauce ./tasks",
-    "legacy-babel": "babel sauce/extension/legacy --compact false --quiet --out-dir dist/toolkit/legacy",
+    "lint": "eslint --ignore-path .eslintignore ./src ./tasks",
+    "legacy-babel": "babel src/extension/legacy --compact false --quiet --out-dir dist/toolkit/legacy",
     "gen-settings": "node tasks/generateSettings",
     "gen-featureIndex": "node tasks/generateFeatureIndex",
     "gen-feedChanges": "node tasks/generateFeedChanges"
