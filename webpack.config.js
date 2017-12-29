@@ -16,7 +16,7 @@ module.exports = {
 
   output: {
     path: path.join(__dirname, BUILD_PATH),
-    filename: 'ynab-toolkit/[name]/[name].js'
+    filename: '[name]/[name].js'
   },
 
   resolve: {

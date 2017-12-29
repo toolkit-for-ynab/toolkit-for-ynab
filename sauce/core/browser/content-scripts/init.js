@@ -1,41 +1,11 @@
 import { getBrowser } from 'toolkit/core/common/web-extensions';
+import { ToolkitStorage } from 'toolkit/core/common/storage';
 import { allToolkitSettings, getUserSettings } from 'toolkit/core/settings';
+import { injectCSS, injectScript } from './dom-injectors';
 
-let receivedToolkitLoaded = false;
-let sentToolkitBootstrap = false;
-const previouslyInjectedScripts = [];
-
-function injectCSS(path) {
-  var link = document.createElement('link');
-  link.setAttribute('rel', 'stylesheet');
-  link.setAttribute('type', 'text/css');
-  link.setAttribute('href', getBrowser().runtime.getURL(path));
-
-  document.getElementsByTagName('head')[0].appendChild(link);
-}
-
-function injectScript(path) {
-  if (previouslyInjectedScripts.indexOf(path) < 0) {
-    previouslyInjectedScripts.push(path);
-
-    var script = document.createElement('script');
-    script.setAttribute('type', 'text/javascript');
-    script.setAttribute('src', getBrowser().runtime.getURL(path));
-
-    document.getElementsByTagName('head')[0].appendChild(script);
-  }
-}
-
-function injectJSString(js) {
-  var script = document.createElement('script');
-  script.text = js;
-
-  document.getElementsByTagName('head')[0].appendChild(script);
-}
+const storage = new ToolkitStorage();
 
 function applySettingsToDom(userSettings) {
-  console.log(userSettings);
-
   allToolkitSettings.forEach((setting) => {
     let userSettingValue = userSettings[setting.name];
     // Check for specific upgrade path where a boolean setting gets
@@ -61,10 +31,8 @@ function applySettingsToDom(userSettings) {
           injectCSS(target);
         } else if (action === 'injectScript') {
           injectScript(target);
-        } else if (action === 'injectJSString') {
-          injectJSString(target);
         } else {
-          const error = `Invalid Action: "${action}". Only injectCSS, injectScript and injectJSString are currently supported.`;
+          const error = `Invalid Action: "${action}". Only injectCSS and injectScript are currently supported.`;
           throw error;
         }
       }
@@ -72,20 +40,7 @@ function applySettingsToDom(userSettings) {
   });
 }
 
-function handleMessage(event) {
-  if (event.data !== 'ynab-toolkit-loaded') {
-    return;
-  }
-
-  receivedToolkitLoaded = true;
-  if (!sentToolkitBootstrap) {
-    getUserSettings().then(sendToolkitBootstrap);
-  }
-}
-
 function sendToolkitBootstrap(userSettings) {
-  if (sentToolkitBootstrap) return;
-
   window.postMessage({
     type: 'ynab-toolkit-bootstrap',
     ynabToolKit: {
@@ -95,47 +50,42 @@ function sendToolkitBootstrap(userSettings) {
   }, '*');
 }
 
-window.addEventListener('message', handleMessage);
+function messageHandler(event) {
+  if (event.data !== 'ynab-toolkit-loaded') return;
 
-getUserSettings().then((userSettings) => {
-  if (userSettings.DisableToolkit) {
+  initializeYNABToolkit();
+  window.removeEventListener('message', messageHandler);
+}
+
+function initializeYNABToolkit() {
+  getUserSettings().then((userSettings) => {
+    sendToolkitBootstrap(userSettings);
+
+    /* Load this to setup shared utility functions */
+    injectScript('toolkit/legacy/features/shared/main.js');
+
+    /* Global toolkit css. */
+    injectCSS('toolkit/legacy/features/shared/main.css');
+
+    /* This script to be built automatically by the python script */
+    injectScript('toolkit/legacy/features/act-on-change/feedChanges.js');
+
+    /* Load this to setup behaviors when the DOM updates and shared functions */
+    injectScript('toolkit/legacy/features/act-on-change/main.js');
+
+    applySettingsToDom(userSettings);
+  });
+}
+
+storage.getFeatureSetting('DisableToolkit').then((isToolkitDisabled) => {
+  if (isToolkitDisabled) {
     console.log('Toolkit-for-YNAB is disabled!');
     return;
   }
 
-  if (receivedToolkitLoaded) {
-    sendToolkitBootstrap(userSettings);
-  }
-
-  // const toolkitVersion = getBrowser().runtime.getManifest().version;
-  // injectJSString(`
-  //   window.ynabToolKit = { version: '${toolkitVersion}'};
-  //   ynabToolKit.options = ${JSON.stringify(userSettings)};
-  //   Object.freeze(ynabToolKit.options);
-  //   Object.seal(ynabToolKit.options);
-  // `);
-
-  /* Load this to setup shared utility functions */
-  injectScript('toolkit/legacy/features/shared/main.js');
-
-  /* Global toolkit css. */
-  injectCSS('toolkit/legacy/features/shared/main.css');
-
-  /* This script to be built automatically by the python script */
-  injectScript('toolkit/legacy/features/act-on-change/feedChanges.js');
-
-  /* Load this to setup behaviors when the DOM updates and shared functions */
-  injectScript('toolkit/legacy/features/act-on-change/main.js');
-
-  /* Load the ynabToolkit bundle */
+  // Load the toolkit bundle onto the YNAB dom
   injectScript('toolkit/toolkit.js');
 
-  /* Putting this code here temporarily. Once the resize-inspector feature is refactored to be
-  saucy, the call should be moved to the resize-inspector willInvoke() function. */
-  // injectJSString('window.resizeInspectorAsset = "' + getBrowser().runtime.getURL('assets/vsizegrip.png') + '";');
-
-  /* Used by the new version notification popup */
-  // injectJSString('window.versionPopupAsset = "' + getBrowser().runtime.getURL('assets/logos/toolkitforynab-logo-400.png') + '";');
-
-  applySettingsToDom(userSettings);
+  // wait for the bundle to tell us it's loaded
+  window.addEventListener('message', messageHandler);
 });
