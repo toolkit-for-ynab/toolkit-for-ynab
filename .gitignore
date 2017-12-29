@@ -1,15 +1,29 @@
+# OSX is a troll
 .DS_Store
-node_modules/
-dist/
-certificates/
-*.pyc
-/.project
-package-lock.json
-save-commands.json
-.python-version
+.project
 
-# new framework ingores
+# don't want to push node_modules :O
+node_modules/
+
+# extension deploy stuff
+certificates/
+save-commands.json
+
+# python files
+.python-version
+*.pyc
+
+# we use yarn -- ignore package-lock in case someone npm installed
+package-lock.json
+
+# build directory
+dist/
+
+# created at build time with tasks/generateSettings.js
 sauce/core/settings/settings.js
+
+# created at build time with tasks/generateFeatureIndex.js
 sauce/extension/features/index.js
-sauce/extension/settings.js
+
+# created at build time with tasks/generateFeedChanges.js
 sauce/extension/legacy/features/act-on-change/feedChanges.js
