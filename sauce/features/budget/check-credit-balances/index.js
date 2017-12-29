@@ -270,7 +270,7 @@ export class CheckCreditBalances extends Feature {
         }
 
         if (submitValue) {
-          // After entering the value, simulate the user pressing enter in order to get the value to go through. 
+          // After entering the value, simulate the user pressing enter in order to get the value to go through.
 
           // Disabling the lint warning "A function with a name starting with an uppercase letter should only be used as a constructor  new-cap"
           // Justifiction: The lint appears confused and thinks that we declared this function rather than it coming from JQuery
