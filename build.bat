@@ -7,7 +7,7 @@ rem all the calls we need, as well as processing settings files
 call yarn gen-feedChanges || goto :errexit
 
 echo [   INFO] Checking code style with ESLint...
-call yarn legacy-eslint || goto :errexit
+call yarn lint || goto :errexit
 
 rem Generate features/index.js for the new features
 call yarn gen-featureIndex || goto :errexit

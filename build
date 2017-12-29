@@ -8,8 +8,8 @@ echo "[   INFO] Build starting at $(date)"
 yarn --silent gen-feedChanges || exit
 
 # Check legacy code with eslint
-echo "[   INFO] Checking legacy code style with ESLint..."
-yarn --silent legacy-eslint || exit
+echo "[   INFO] Checking code style with ESLint..."
+yarn --silent lint || exit
 
 # Generate features/index.js for the new features
 yarn --silent gen-featureIndex || exit
