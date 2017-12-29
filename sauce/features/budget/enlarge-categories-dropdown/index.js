@@ -1,8 +1,8 @@
 import { Feature } from 'toolkit/core/feature';
 import * as toolkitHelper from 'toolkit/helpers/toolkit';
 
-const DEFAULTADDITIONALHEIGHT = 100; // 4 pixels of padding
-const BOTTOMOFPAGEPADDING = 4;
+const DEFAULT_ADDITIONAL_HEIGHT = 100; // 4 pixels of padding
+const BOTTOM_OF_PAGE_PADDING = 4;
 
 export class EnlargeCategoriesDropdown extends Feature {
   shouldInvoke() {
@@ -12,7 +12,7 @@ export class EnlargeCategoriesDropdown extends Feature {
   invoke() {
     let modal = $('.categories-dropdown-container .dropdown-modal');
     if (modal.length) {
-      let totalAdditionalHeight = DEFAULTADDITIONALHEIGHT + BOTTOMOFPAGEPADDING;
+      let totalAdditionalHeight = DEFAULT_ADDITIONAL_HEIGHT + BOTTOM_OF_PAGE_PADDING;
       let currentTop = parseInt(modal.css('top'));
       let spaceAvailableAboveModal = $(window).height() - (modal.offset().top - modal.outerHeight());
       let spaceAvailableBelowModal = $(window).height() - (modal.offset().top + modal.outerHeight());
@@ -22,20 +22,20 @@ export class EnlargeCategoriesDropdown extends Feature {
         if (spaceAvailableAboveModal < totalAdditionalHeight) {
           // pad the bottom of the screen with 4 pixels here.
           modal.css({
-            height: '+=' + (spaceAvailableAboveModal - BOTTOMOFPAGEPADDING),
-            top: '-=' + (spaceAvailableAboveModal - BOTTOMOFPAGEPADDING)
+            height: '+=' + (spaceAvailableAboveModal - BOTTOM_OF_PAGE_PADDING),
+            top: '-=' + (spaceAvailableAboveModal - BOTTOM_OF_PAGE_PADDING)
           });
         } else if (spaceAvailableAboveModal >= totalAdditionalHeight) {
           modal.css({
-            height: '+=' + DEFAULTADDITIONALHEIGHT,
-            top: '-=' + DEFAULTADDITIONALHEIGHT
+            height: '+=' + DEFAULT_ADDITIONAL_HEIGHT,
+            top: '-=' + DEFAULT_ADDITIONAL_HEIGHT
           });
         }
       } else { // modal is shown below autocomplete
         if (spaceAvailableBelowModal < totalAdditionalHeight) {
-          modal.css({ height: '+=' + (spaceAvailableBelowModal - BOTTOMOFPAGEPADDING) });
+          modal.css({ height: '+=' + (spaceAvailableBelowModal - BOTTOM_OF_PAGE_PADDING) });
         } else if (spaceAvailableBelowModal >= totalAdditionalHeight) {
-          modal.css({ height: '+=' + DEFAULTADDITIONALHEIGHT });
+          modal.css({ height: '+=' + DEFAULT_ADDITIONAL_HEIGHT });
         }
       }
     }
