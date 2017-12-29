@@ -1,9 +1,9 @@
 import { Feature } from 'toolkit/core/feature';
-import * as toolkitHelper from 'toolkit/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/helpers/toolkit';
 
 export class RemoveZeroCategories extends Feature {
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') > -1;
+    return getCurrentRouteName().indexOf('budget') > -1;
   }
 
   invoke() {
