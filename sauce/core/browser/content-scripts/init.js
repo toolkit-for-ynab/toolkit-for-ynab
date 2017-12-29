@@ -1,13 +1,15 @@
-import { browser } from 'toolkit/core/common/web-extensions';
+import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { allToolkitSettings, getUserSettings } from 'toolkit/core/settings';
 
+let receivedToolkitLoaded = false;
+let sentToolkitBootstrap = false;
 const previouslyInjectedScripts = [];
 
 function injectCSS(path) {
   var link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
   link.setAttribute('type', 'text/css');
-  link.setAttribute('href', browser.runtime.getURL(path));
+  link.setAttribute('href', getBrowser().runtime.getURL(path));
 
   document.getElementsByTagName('head')[0].appendChild(link);
 }
@@ -18,7 +20,7 @@ function injectScript(path) {
 
     var script = document.createElement('script');
     script.setAttribute('type', 'text/javascript');
-    script.setAttribute('src', browser.runtime.getURL(path));
+    script.setAttribute('src', getBrowser().runtime.getURL(path));
 
     document.getElementsByTagName('head')[0].appendChild(script);
   }
@@ -70,19 +72,48 @@ function applySettingsToDom(userSettings) {
   });
 }
 
+function handleMessage(event) {
+  if (event.data !== 'ynab-toolkit-loaded') {
+    return;
+  }
+
+  receivedToolkitLoaded = true;
+  if (!sentToolkitBootstrap) {
+    getUserSettings().then(sendToolkitBootstrap);
+  }
+}
+
+function sendToolkitBootstrap(userSettings) {
+  if (sentToolkitBootstrap) return;
+
+  window.postMessage({
+    type: 'ynab-toolkit-bootstrap',
+    ynabToolKit: {
+      version: getBrowser().runtime.getManifest().version,
+      options: userSettings
+    }
+  }, '*');
+}
+
+window.addEventListener('message', handleMessage);
+
 getUserSettings().then((userSettings) => {
   if (userSettings.DisableToolkit) {
     console.log('Toolkit-for-YNAB is disabled!');
     return;
   }
 
-  const toolkitVersion = browser.runtime.getManifest().version;
-  injectJSString(`
-    window.ynabToolKit = { version: '${toolkitVersion}'};
-    ynabToolKit.options = ${JSON.stringify(userSettings)};
-    Object.freeze(ynabToolKit.options);
-    Object.seal(ynabToolKit.options);
-  `);
+  if (receivedToolkitLoaded) {
+    sendToolkitBootstrap(userSettings);
+  }
+
+  // const toolkitVersion = getBrowser().runtime.getManifest().version;
+  // injectJSString(`
+  //   window.ynabToolKit = { version: '${toolkitVersion}'};
+  //   ynabToolKit.options = ${JSON.stringify(userSettings)};
+  //   Object.freeze(ynabToolKit.options);
+  //   Object.seal(ynabToolKit.options);
+  // `);
 
   /* Load this to setup shared utility functions */
   injectScript('toolkit/legacy/features/shared/main.js');
@@ -101,10 +132,10 @@ getUserSettings().then((userSettings) => {
 
   /* Putting this code here temporarily. Once the resize-inspector feature is refactored to be
   saucy, the call should be moved to the resize-inspector willInvoke() function. */
-  injectJSString('window.resizeInspectorAsset = "' + browser.runtime.getURL('assets/vsizegrip.png') + '";');
+  // injectJSString('window.resizeInspectorAsset = "' + getBrowser().runtime.getURL('assets/vsizegrip.png') + '";');
 
   /* Used by the new version notification popup */
-  injectJSString('window.versionPopupAsset = "' + browser.runtime.getURL('assets/logos/toolkitforynab-logo-400.png') + '";');
+  // injectJSString('window.versionPopupAsset = "' + getBrowser().runtime.getURL('assets/logos/toolkitforynab-logo-400.png') + '";');
 
   applySettingsToDom(userSettings);
 });

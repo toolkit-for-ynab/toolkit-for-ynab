@@ -1,4 +1,4 @@
-import { Feature } from 'toolkit/core/extension/feature';
+import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup, getRouter } from 'toolkit/extension/helpers/toolkit';
 
 export class BudgetQuickSwitch extends Feature {

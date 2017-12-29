@@ -1,4 +1,4 @@
-import { Feature } from 'toolkit/core/extension/feature';
+import { Feature } from 'toolkit/extension/features/feature';
 import {
   getCurrentRouteName,
   getToolkitStorageKey,

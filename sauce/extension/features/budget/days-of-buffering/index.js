@@ -1,6 +1,6 @@
 import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
 
-import { Feature } from 'toolkit/core/extension/feature';
+import { Feature } from 'toolkit/extension/features/feature';
 import { getEntityManager } from 'toolkit/extension/helpers/toolkit';
 
 import outflowTransactionsFilter from './outflowTransactionsFilter';

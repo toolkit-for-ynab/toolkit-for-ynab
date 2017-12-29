@@ -1,6 +1,6 @@
-﻿import { browser } from 'toolkit/core/common/web-extensions';
+﻿import { getBrowser } from 'toolkit/core/common/web-extensions';
 
-browser.runtime.onMessage.addListener(handleMessage);
+getBrowser().runtime.onMessage.addListener(handleMessage);
 
 function handleMessage(message, sender, sendResponse) {
   switch (message.type) {

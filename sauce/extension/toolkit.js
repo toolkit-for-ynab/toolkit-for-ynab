@@ -1,6 +1,6 @@
 import { features } from 'toolkit/extension/features';
 
-const featureInstances = features.map(Feature => new Feature());
+let featureInstances;
 
 function isYNABReady() {
   return (
@@ -19,6 +19,17 @@ function isFeatureEnabled(feature) {
     (typeof feature.settings.enabled === 'string' && feature.settings.enabled !== '0') // assumes '0' means disabled
   );
 }
+
+window.postMessage('ynab-toolkit-loaded', '*');
+window.addEventListener('message', (event) => {
+  if (
+    event.source === window &&
+    event.data.type === 'ynab-toolkit-bootstrap'
+  ) {
+    window.ynabToolKit = event.data.ynabToolKit;
+    featureInstances = features.map(Feature => new Feature());
+  }
+});
 
 // This poll() function will only need to run until we find that the DOM is ready
 (function poll() {

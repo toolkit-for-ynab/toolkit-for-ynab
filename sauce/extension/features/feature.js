@@ -1,4 +1,4 @@
-import { ObserveListener, RouteChangeListener } from 'toolkit/core/extension/listeners';
+import { ObserveListener, RouteChangeListener } from 'toolkit/extension/listeners';
 
 export class Feature {
   constructor() {

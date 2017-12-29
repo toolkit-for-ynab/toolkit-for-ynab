@@ -28,7 +28,9 @@
   },
   "homepage_url": "https://github.com/toolkit-for-ynab/toolkit-for-ynab/",
   "version": "1.6.0",
-  "options_page": "options/index.html",
+  "options_ui": {
+    "page": "options/index.html"
+  },
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "browser_action": {

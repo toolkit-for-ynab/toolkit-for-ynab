@@ -1,6 +1,6 @@
-import { browser } from 'toolkit/core/common/web-extensions';
+import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { allToolkitSettings, getUserSettings } from 'toolkit/core/settings';
-import { ToolkitStorage } from 'toolkit/core/storage';
+import { ToolkitStorage } from 'toolkit/core/common/storage';
 
 // Other extensions (e.g. ebates) can load other versions of jQuery. We need to use ours in noconflict mode
 // or we lose bootstrapSwitch() which then breaks the options page.
@@ -331,7 +331,7 @@ jq(() => {
       true: 'assets/images/logos/toolkitforynab-logo-200-disabled.png'
     };
 
-    jq('#logo').attr('src', browser.runtime.getURL(logos[isToolkitDisabled]));
+    jq('#logo').attr('src', getBrowser().runtime.getURL(logos[isToolkitDisabled]));
   }
 
   function toggleToolkit() {
@@ -392,6 +392,6 @@ jq(() => {
     });
 
     // set version number
-    jq('.toolkit-version').text('v ' + browser.runtime.getManifest().version);
+    jq('.toolkit-version').text('v ' + getBrowser().runtime.getManifest().version);
   });
 });

@@ -1,4 +1,4 @@
-import { browser } from 'toolkit/core/common/web-extensions';
+import { getBrowser } from 'toolkit/core/common/web-extensions';
 
 const FEATURE_SETTING_PREFIX = 'toolkit-feature:';
 
@@ -7,7 +7,7 @@ export class ToolkitStorage {
   _storageListeners = new Map();
 
   constructor() {
-    browser.storage.onChanged.addListener(this._listenForChanges);
+    getBrowser().storage.onChanged.addListener(this._listenForChanges);
   }
 
   // many features have been built with the assumption that settings come back
@@ -101,7 +101,7 @@ export class ToolkitStorage {
 
     return new Promise((resolve, reject) => {
       try {
-        browser.storage[getOptions.storageArea].get(key, (data) => {
+        getBrowser().storage[getOptions.storageArea].get(key, (data) => {
           // if we're fetching everything -- don't try parsing it
           if (key === null) {
             return resolve(data);
@@ -128,7 +128,7 @@ export class ToolkitStorage {
 
     return new Promise((resolve, reject) => {
       try {
-        browser.storage[storageArea].remove(key, resolve);
+        getBrowser().storage[storageArea].remove(key, resolve);
       } catch (e) {
         reject(e);
       }
@@ -141,7 +141,7 @@ export class ToolkitStorage {
     return new Promise((resolve, reject) => {
       try {
         const update = { [key]: value };
-        browser.storage[storageArea].set(update, resolve);
+        getBrowser().storage[storageArea].set(update, resolve);
       } catch (e) {
         reject(e);
       }

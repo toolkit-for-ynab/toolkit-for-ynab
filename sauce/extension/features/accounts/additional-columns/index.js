@@ -1,4 +1,4 @@
-import { Feature } from 'toolkit/core/extension/feature';
+import { Feature } from 'toolkit/extension/features/feature';
 import { AdditionalColumnStub } from './additional-column-stub';
 import { RunningBalance } from './running-balance';
 import { CheckNumbers } from './check-numbers';

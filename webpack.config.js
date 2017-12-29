@@ -10,13 +10,13 @@ module.exports = {
     background: path.resolve(`${CODE_SOURCE_DIR}/core/browser/background/background.js`),
     options: path.resolve(`${CODE_SOURCE_DIR}/core/browser/options/options.js`),
     popup: path.resolve(`${CODE_SOURCE_DIR}/core/browser/popup/popup.js`),
-    init: path.resolve(`${CODE_SOURCE_DIR}/core/extension/init.js`),
+    init: path.resolve(`${CODE_SOURCE_DIR}/core/browser/content-scripts/init.js`),
     toolkit: path.resolve(`${CODE_SOURCE_DIR}/extension/toolkit.js`)
   },
 
   output: {
     path: path.join(__dirname, BUILD_PATH),
-    filename: '[name]/[name].js'
+    filename: 'ynab-toolkit/[name]/[name].js'
   },
 
   resolve: {

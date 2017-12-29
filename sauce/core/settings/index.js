@@ -1,13 +1,13 @@
 export * from './settings';
-import { browser } from 'toolkit/core/common/web-extensions';
+import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { allToolkitSettings, legacySettingMap } from './settings';
-import { ToolkitStorage } from 'toolkit/core/storage';
+import { ToolkitStorage } from 'toolkit/core/common/storage';
 
 const storage = new ToolkitStorage();
 
 function getKangoKeys() {
   return new Promise((resolve) => {
-    browser.runtime.sendMessage({ type: 'storage', content: { type: 'keys' } }, (response) => {
+    getBrowser().runtime.sendMessage({ type: 'storage', content: { type: 'keys' } }, (response) => {
       resolve(response);
     });
   });
@@ -17,7 +17,7 @@ function persistKangoStorageSetting(setting, persistAs) {
   const settingName = persistAs || setting;
 
   return new Promise((resolve) => {
-    browser.runtime.sendMessage({ type: 'storage', content: { type: 'get', itemName: setting } }, (response) => {
+    getBrowser().runtime.sendMessage({ type: 'storage', content: { type: 'get', itemName: setting } }, (response) => {
       storage.setFeatureSetting(settingName, response).then(resolve);
     });
   });

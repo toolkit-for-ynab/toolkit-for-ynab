@@ -1,8 +1,8 @@
-import { ToolkitStorage } from 'toolkit/core/storage';
-import { browser } from 'toolkit/core/common/web-extensions';
+import { ToolkitStorage } from 'toolkit/core/common/storage';
+import { getBrowser } from 'toolkit/core/common/web-extensions';
 
 const storage = new ToolkitStorage();
-const manifest = browser.runtime.getManifest();
+const manifest = getBrowser().runtime.getManifest();
 
 function updateToolkitLogo(isToolkitDisabled) {
   const logos = {
@@ -10,7 +10,7 @@ function updateToolkitLogo(isToolkitDisabled) {
     true: 'assets/images/logos/toolkitforynab-logo-200-disabled.png'
   };
 
-  $('#logo').attr('src', browser.runtime.getURL(logos[isToolkitDisabled]));
+  $('#logo').attr('src', getBrowser().runtime.getURL(logos[isToolkitDisabled]));
 }
 
 function toggleToolkit() {
@@ -29,7 +29,7 @@ function applyDarkMode(activate) {
 
 storage.onFeatureSettingChanged('DisableToolkit', updateToolkitLogo);
 
-$('#openSettings').click(() => browser.runtime.openOptionsPage());
+$('#openSettings').click(() => getBrowser().runtime.openOptionsPage());
 $('#reportBug').click(() => window.close());
 $('#logo').click(() => toggleToolkit());
 
