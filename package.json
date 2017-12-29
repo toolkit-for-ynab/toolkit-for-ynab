@@ -33,7 +33,7 @@
     "legacy-babel": "babel sauce/extension/legacy --compact false --quiet --out-dir dist/toolkit/legacy",
     "gen-settings": "node tasks/generateSettings",
     "gen-featureIndex": "node tasks/generateFeatureIndex",
-    "gen-feedChanges": "python generateFeedChanges.py"
+    "gen-feedChanges": "node tasks/generateFeedChanges"
   },
   "babel": {
     "presets": [

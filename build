@@ -5,7 +5,7 @@ set -e
 echo "[   INFO] Build starting at $(date)"
 
 # Generate the feedChanges file using all the legacy feature folders
-python generateFeedChanges.py
+yarn --silent gen-feedChanges || exit
 
 # Check legacy code with eslint
 echo "[   INFO] Checking legacy code style with ESLint..."

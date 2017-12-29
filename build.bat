@@ -4,7 +4,7 @@ echo [   INFO] Build starting at %TIME% %DATE%
 
 rem Populate feature files like feed changes by reading through the code and hooking up
 rem all the calls we need, as well as processing settings files
-python generateFeedChanges.py
+call yarn gen-feedChanges || goto :errexit
 
 echo [   INFO] Checking code style with ESLint...
 call yarn legacy-eslint || goto :errexit
