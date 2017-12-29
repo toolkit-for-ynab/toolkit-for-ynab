@@ -1,12 +1,12 @@
 import { Feature } from 'toolkit/core/feature';
-import * as toolkitHelper from 'toolkit/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/helpers/toolkit';
 
 const DEFAULT_ADDITIONAL_HEIGHT = 100; // 4 pixels of padding
 const BOTTOM_OF_PAGE_PADDING = 4;
 
 export class EnlargeCategoriesDropdown extends Feature {
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') > -1;
+    return getCurrentRouteName().indexOf('budget') > -1;
   }
 
   invoke() {
