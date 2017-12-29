@@ -4,9 +4,6 @@ set -e
 
 echo "[   INFO] Build starting at $(date)"
 
-# Always start from a clean slate
-./clean
-
 # Generate the feedChanges file using all the legacy feature folders
 python generateFeedChanges.py
 
