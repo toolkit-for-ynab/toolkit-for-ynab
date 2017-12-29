@@ -9,6 +9,7 @@ save-commands.json
 .python-version
 
 # new framework ingores
+sauce/core/settings/settings.js
 sauce/extension/features/index.js
 sauce/extension/settings.js
 sauce/extension/legacy/features/act-on-change/feedChanges.js
