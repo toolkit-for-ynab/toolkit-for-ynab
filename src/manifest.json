@@ -29,6 +29,7 @@
   "homepage_url": "https://github.com/toolkit-for-ynab/toolkit-for-ynab/",
   "version": "1.6.0",
   "options_ui": {
+    "open_in_tab": true,
     "page": "options/index.html"
   },
   "manifest_version": 2,
