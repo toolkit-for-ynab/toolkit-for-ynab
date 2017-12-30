@@ -230,7 +230,7 @@ function validateActions(settingObj) {
 
       if (currentAction === 'injectCSS' || currentAction === 'injectScript') {
         let fullPath = path.join(featureDir, featureSettings.actions[actionKey][i + 1]);
-        fullPath = path.join('toolkit', path.relative('src/extension', fullPath));
+        fullPath = path.relative('src/extension', fullPath);
         featureSettings.actions[actionKey][i + 1] = fullPath;
       }
 

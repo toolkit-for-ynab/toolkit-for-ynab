@@ -28,9 +28,9 @@ function applySettingsToDom(userSettings) {
         const target = selectedActions[i + 1];
 
         if (action === 'injectCSS') {
-          injectCSS(target);
+          injectCSS(`web-accessibles/${target}`);
         } else if (action === 'injectScript') {
-          injectScript(target);
+          injectScript(`web-accessibles/${target}`);
         } else {
           const error = `Invalid Action: "${action}". Only injectCSS and injectScript are currently supported.`;
           throw error;
@@ -62,16 +62,16 @@ function initializeYNABToolkit() {
     sendToolkitBootstrap(userSettings);
 
     /* Load this to setup shared utility functions */
-    injectScript('toolkit/legacy/features/shared/main.js');
+    injectScript('web-accessibles/legacy/features/shared/main.js');
 
     /* Global toolkit css. */
-    injectCSS('toolkit/legacy/features/shared/main.css');
+    injectCSS('web-accessibles/legacy/features/shared/main.css');
 
     /* This script to be built automatically by the python script */
-    injectScript('toolkit/legacy/features/act-on-change/feedChanges.js');
+    injectScript('web-accessibles/legacy/features/act-on-change/feedChanges.js');
 
     /* Load this to setup behaviors when the DOM updates and shared functions */
-    injectScript('toolkit/legacy/features/act-on-change/main.js');
+    injectScript('web-accessibles/legacy/features/act-on-change/main.js');
 
     applySettingsToDom(userSettings);
   });
@@ -84,7 +84,7 @@ storage.getFeatureSetting('DisableToolkit').then((isToolkitDisabled) => {
   }
 
   // Load the toolkit bundle onto the YNAB dom
-  injectScript('toolkit/toolkit.js');
+  injectScript('web-accessibles/ynab-toolkit.js');
 
   // wait for the bundle to tell us it's loaded
   window.addEventListener('message', messageHandler);

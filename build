@@ -25,6 +25,6 @@ yarn --silent webpack || exit
 echo "[   INFO] Transpiling legacy code with Babel on ES2015 preset..."
 yarn --silent legacy-babel || exit
 
-rsync -r --ignore-existing src/extension/legacy* dist/toolkit
+rsync -r --ignore-existing src/extension/legacy* dist/web-accessibles
 
 echo "[   INFO] Build finished at $(date)"

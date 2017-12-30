@@ -29,7 +29,7 @@
     "watch": "./watch",
     "webpack": "webpack",
     "lint": "eslint --ignore-path .eslintignore ./src ./tasks",
-    "legacy-babel": "babel src/extension/legacy --compact false --quiet --out-dir dist/toolkit/legacy",
+    "legacy-babel": "babel src/extension/legacy --compact false --quiet --out-dir dist/web-accessibles/legacy",
     "gen-settings": "node tasks/generateSettings",
     "gen-featureIndex": "node tasks/generateFeatureIndex",
     "gen-feedChanges": "node tasks/generateFeedChanges"
