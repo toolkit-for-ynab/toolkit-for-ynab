@@ -79,7 +79,7 @@ export class CheckCreditBalances extends Feature {
   }
 
   getCheckCardbalancesMode() {
-    switch (ynabToolKit.options.CheckCreditBalances) {
+    switch (this.settings.enabled) {
       case 'highlight':
         return this.enumRectifyModes.HIGHLIGHT;
       case 'rectify':
@@ -284,6 +284,13 @@ export class CheckCreditBalances extends Feature {
           $(this).find('.budget-table-cell-checkbox div.ynab-checkbox').click();
 
           // TODO: Is there a way that the currency-input is no longer selected?
+
+          // TODO: Fix flashes when you are editing the credit card budget to the wrong thing:
+          //       This piece of code acts strange little wierd if you are changingin the credit card category
+          //       becuase it will loop through a couple times before it successfully. There is nothing broken about the result
+          //       but it check and unchecks the category a couple times and enters the value a couple times becuase it doesn't "stick"
+          //       the first time. Its noticable and not smooth: It would be nice to fix this.
+          //       (This should be an edge case anyway--people using credit card pay in full shouldn't need to touch the credit card budget manually)
         }
       }
     });
