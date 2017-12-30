@@ -1,5 +1,5 @@
 import { ToolkitStorage } from 'toolkit/core/common/storage';
-import { getBrowser } from 'toolkit/core/common/web-extensions';
+import { getBrowser, getBrowserName } from 'toolkit/core/common/web-extensions';
 
 const storage = new ToolkitStorage();
 const manifest = getBrowser().runtime.getManifest();
@@ -29,7 +29,16 @@ function applyDarkMode(activate) {
 
 storage.onFeatureSettingChanged('DisableToolkit', updateToolkitLogo);
 
-$('#openSettings').click(() => getBrowser().runtime.openOptionsPage());
+$('#openSettings').click(() => {
+  const _browser = getBrowser();
+
+  if (getBrowserName() === 'edge') {
+    _browser.tabs.create({ url: _browser.runtime.getURL('options/index.html') });
+  } else {
+    _browser.runtime.openOptionsPage();
+  }
+});
+
 $('#reportBug').click(() => window.close());
 $('#logo').click(() => toggleToolkit());
 

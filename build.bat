@@ -6,14 +6,14 @@ rem Populate feature files like feed changes by reading through the code and hoo
 rem all the calls we need, as well as processing settings files
 call yarn gen-feedChanges || goto :errexit
 
-echo [   INFO] Checking code style with ESLint...
-call yarn lint || goto :errexit
-
 rem Generate features/index.js for the new features
 call yarn gen-featureIndex || goto :errexit
 
 rem Generate legacy and new settings
 call yarn gen-settings || goto :errexit
+
+echo [   INFO] Checking code style with ESLint...
+call yarn lint || goto :errexit
 
 rem Run webpack to grab all new framework features
 echo [   INFO] Webpacking new framework...
