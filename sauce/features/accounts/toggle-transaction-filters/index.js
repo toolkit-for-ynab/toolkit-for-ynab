@@ -1,7 +1,5 @@
 import { Feature } from 'toolkit/core/feature';
-// import * as toolkitHelper from 'toolkit/helpers/toolkit';
-import { getCurrentRouteName } from 'toolkit/helpers/toolkit';
-import { controllerLookup } from 'toolkit/helpers/toolkit';
+import { controllerLookup, getCurrentRouteName } from 'toolkit/helpers/toolkit';
 
 export class ToggleTransactionFilters extends Feature {
   injectCSS() {
