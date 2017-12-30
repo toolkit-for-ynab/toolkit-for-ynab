@@ -5,7 +5,7 @@ if [ "$1" == "" ]; then
   exit 1
 fi
 
-cd source/common/res/features/l10n/
+cd src/extension/legacy/features/l10n/
 
 echo "Loading actual localisation strings from app.youneedabudget.com."
 phantomjs get_ember_strings.js > actual.json
