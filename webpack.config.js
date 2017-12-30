@@ -14,6 +14,8 @@ module.exports = {
     'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/ynab-toolkit.js`)
   },
 
+  devtool: 'source-map',
+
   output: {
     path: path.join(__dirname, BUILD_ROOT),
     filename: '[name].js'
