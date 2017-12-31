@@ -7,7 +7,7 @@ const CODE_SOURCE_DIR = './src';
 
 module.exports = {
   entry: {
-    'background/background': path.resolve(`${CODE_SOURCE_DIR}/core/browser/background/background.js`),
+    'background/background': path.resolve(`${CODE_SOURCE_DIR}/core/browser/background/index.js`),
     'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/browser/options/options.js`),
     'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/browser/popup/popup.js`),
     'content-scripts/init': path.resolve(`${CODE_SOURCE_DIR}/core/browser/content-scripts/init.js`),
