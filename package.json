@@ -15,12 +15,12 @@
     "colors": "^1.1.2",
     "copy-webpack-plugin": "^4.3.1",
     "css-loader": "^0.28.4",
-    "eslint": "3",
+    "eslint": "^4.14.0",
     "eslint-config-airbnb-base": "^3.0.1",
-    "eslint-import-resolver-webpack": "^0.8.1",
-    "eslint-loader": "^1.6.1",
     "eslint-plugin-import": "^1.16.0",
+    "eslint-plugin-jest": "^21.5.0",
     "glob": "^7.1.1",
+    "jest": "^22.0.4",
     "to-string-loader": "^1.1.5",
     "webpack": "3"
   },
@@ -28,6 +28,7 @@
     "build": "./build",
     "watch": "./watch",
     "webpack": "webpack",
+    "test": "jest",
     "lint": "eslint --ignore-path .eslintignore ./src ./tasks",
     "legacy-babel": "babel src/extension/legacy --compact false --quiet --out-dir dist/web-accessibles/legacy",
     "gen-settings": "node tasks/generateSettings",
@@ -47,6 +48,15 @@
         }
       ]
     ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "toolkit/(.*)": "<rootDir>/src/$1"
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/src/test/mocks/web-extensions/setup.js"
   },
   "defaultFeatures": [
     "BudgetBalanceToZero",

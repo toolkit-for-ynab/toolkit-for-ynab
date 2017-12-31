@@ -1,8 +1,8 @@
 export const getBrowser = () => {
   if (typeof browser !== 'undefined') {
     return browser;
-  } else if (typeof window.chrome !== 'undefined') {
-    return window.chrome;
+  } else if (typeof chrome !== 'undefined') {
+    return chrome;
   }
 };
 

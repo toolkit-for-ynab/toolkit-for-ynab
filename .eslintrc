@@ -1,10 +1,11 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "jest/globals": true
     },
     "parser": "babel-eslint",
-    "plugins": ["import"],
+    "plugins": ["import", "jest"],
     "settings": {
       "import/resolver": "webpack"
     },
