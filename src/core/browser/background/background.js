@@ -1,9 +1,16 @@
 ﻿import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { ToolkitStorage } from 'toolkit/core/common/storage';
 
+const TOOLKIT_DISABLED_FEATURE_SETTING = 'DisableToolkit';
+
 export class Background {
   _browser = getBrowser();
   _storage = new ToolkitStorage();
+
+  constructor() {
+    this._storage.getFeatureSetting(TOOLKIT_DISABLED_FEATURE_SETTING)
+      .then(this._updatePopupIcon);
+  }
 
   initListeners() {
     this._browser.runtime.onMessage.addListener(this.handleMessage);
