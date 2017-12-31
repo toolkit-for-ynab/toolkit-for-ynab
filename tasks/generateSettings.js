@@ -48,6 +48,7 @@ const legacySettingMap = {
   SeamlessBudgetHeader: 'seamlessBudgetHeader',
   ShowIntercom: 'showIntercom',
   SplitKeyboardShortcut: 'splitKeyboardShortcut',
+  SplitTransactionAutoAdjust: 'splitTransactionAutoAdjust',
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',
   StripedRows: 'accountsStripedRows',
@@ -286,7 +287,7 @@ function deleteAllKangoSettings() {
     kango.invokeAsync('kango.storage.clear', function () {
       resolve('success');
     });
-  });  
+  });
 }
 
 function getKangoStorageKeys() {
