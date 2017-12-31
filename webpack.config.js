@@ -9,7 +9,7 @@ module.exports = {
   entry: {
     'background/background': path.resolve(`${CODE_SOURCE_DIR}/core/browser/background/index.js`),
     'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/browser/options/options.js`),
-    'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/browser/popup/popup.js`),
+    'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/browser/popup/index.js`),
     'content-scripts/init': path.resolve(`${CODE_SOURCE_DIR}/core/browser/content-scripts/init.js`),
     'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/ynab-toolkit.js`)
   },

@@ -1,53 +1,62 @@
 import { ToolkitStorage } from 'toolkit/core/common/storage';
 import { getBrowser, getBrowserName } from 'toolkit/core/common/web-extensions';
 
-const storage = new ToolkitStorage();
-const manifest = getBrowser().runtime.getManifest();
+const TOOLKIT_DISABLED_FEATURE_SETTING = 'DisableToolkit';
 
-function updateToolkitLogo(isToolkitDisabled) {
-  const logos = {
-    false: 'assets/images/logos/toolkitforynab-logo-200.png',
-    true: 'assets/images/logos/toolkitforynab-logo-200-disabled.png'
-  };
+export class Popup {
+  _storage = new ToolkitStorage();
+  _browser = getBrowser();
 
-  $('#logo').attr('src', getBrowser().runtime.getURL(logos[isToolkitDisabled]));
-}
+  constructor() {
+    $('#versionNumber').text(this._browser.runtime.getManifest().version);
 
-function toggleToolkit() {
-  storage.getFeatureSetting('DisableToolkit').then((value) => {
-    storage.setFeatureSetting('DisableToolkit', !value);
-  });
-}
+    Promise.all([
+      this._storage.getStorageItem('options.dark-mode', { default: false }),
+      this._storage.getFeatureSetting(TOOLKIT_DISABLED_FEATURE_SETTING, { default: false })
+    ]).then(([isDarkMode, isToolkitDisabled]) => {
+      this._applyDarkMode(isDarkMode);
+      this._toggleToolkitDisabledUI(isToolkitDisabled);
+    });
+  }
 
-function applyDarkMode(activate) {
-  if (activate) {
-    $('body').addClass('inverted');
-  } else {
-    $('body').removeClass('inverted');
+  initListeners() {
+    $('#reportBug').click(() => window.close());
+    $('#openSettings').click(this._openOptionsPage);
+    $('#logo').click(this._toggleToolkitDisabledSetting);
+    $('#toggleToolkit').click(this._toggleToolkitDisabledSetting);
+
+    this._storage.onFeatureSettingChanged(TOOLKIT_DISABLED_FEATURE_SETTING, this._toggleToolkitDisabledUI);
+  }
+
+  _applyDarkMode = (isDarkMode) => {
+    if (isDarkMode) {
+      $('body').addClass('inverted');
+    } else {
+      $('body').removeClass('inverted');
+    }
+  }
+
+  _openOptionsPage = () => {
+    if (getBrowserName() === 'edge') {
+      this._browser.tabs.create({ url: this._browser.runtime.getURL('options/index.html') });
+    } else {
+      this._browser.runtime.openOptionsPage();
+    }
+  }
+
+  _toggleToolkitDisabledUI = (isToolkitDisabled) => {
+    const logoPath = `assets/images/logos/toolkitforynab-logo-200${isToolkitDisabled ? '-disabled' : ''}.png`;
+    const logoURL = this._browser.runtime.getURL(logoPath);
+    $('#logo').attr('src', logoURL);
+    $('#toggleToolkit > i')
+      .addClass(isToolkitDisabled ? 'fa-toggle-off' : 'fa-toggle-on')
+      .removeClass(isToolkitDisabled ? 'fa-toggle-on' : 'fa-toggle-off');
+  }
+
+  _toggleToolkitDisabledSetting = () => {
+    this._storage.getFeatureSetting(TOOLKIT_DISABLED_FEATURE_SETTING, { default: false })
+      .then((isDisabled) => {
+        this._storage.setFeatureSetting(TOOLKIT_DISABLED_FEATURE_SETTING, !isDisabled);
+      });
   }
 }
-
-storage.onFeatureSettingChanged('DisableToolkit', updateToolkitLogo);
-
-$('#openSettings').click(() => {
-  const _browser = getBrowser();
-
-  if (getBrowserName() === 'edge') {
-    _browser.tabs.create({ url: _browser.runtime.getURL('options/index.html') });
-  } else {
-    _browser.runtime.openOptionsPage();
-  }
-});
-
-$('#reportBug').click(() => window.close());
-$('#logo').click(() => toggleToolkit());
-
-$('#versionNumber').text(manifest.version);
-
-Promise.all([
-  storage.getStorageItem('options.dark-mode', { default: false }),
-  storage.getFeatureSetting('DisableToolkit', { default: false })
-]).then(([isDarkMode, isToolkitDisabled]) => {
-  applyDarkMode(isDarkMode);
-  updateToolkitLogo(isToolkitDisabled);
-});

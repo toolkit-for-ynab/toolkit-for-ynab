@@ -36,6 +36,7 @@ body {
   justify-content: space-between;
   width: 90%;
   margin-left: 5%;
+  margin-bottom: 5%;
 }
 
 .btn:focus {
@@ -49,4 +50,16 @@ body {
 
 .btn-primary:hover {
   background: #66CC72;
+}
+
+.text-small {
+  font-size: .8rem;
+}
+
+.fa-toggle-on {
+  color: #3cb64a;
+}
+
+.fa-toggle-off {
+  color: #b53c3e;
 }

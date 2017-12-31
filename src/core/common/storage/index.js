@@ -22,6 +22,17 @@ export class ToolkitStorage {
     return this.getStorageItem(`${FEATURE_SETTING_PREFIX}${settingName}`, getFeatureSettingOptions);
   }
 
+  getFeatureSettings(settingNames, options = {}) {
+    const getFeatureSettingOptions = {
+      parse: false,
+      ...options
+    };
+
+    return Promise.all(settingNames.map((settingName) => {
+      return this.getStorageItem(`${FEATURE_SETTING_PREFIX}${settingName}`, getFeatureSettingOptions);
+    }));
+  }
+
   setFeatureSetting(settingName, value, options = {}) {
     return this.setStorageItem(`${FEATURE_SETTING_PREFIX}${settingName}`, value, options);
   }
