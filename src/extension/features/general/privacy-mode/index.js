@@ -1,7 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 
 export class PrivacyMode extends Feature {
-
   shouldInvoke() {
     return true;
   }
@@ -57,5 +56,4 @@ export class PrivacyMode extends Feature {
       $('#toolkit-togglePrivacy i').removeClass('lock-1').addClass('unlock-1');
     }
   }
-
 }

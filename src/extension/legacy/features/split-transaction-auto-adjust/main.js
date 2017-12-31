@@ -31,7 +31,7 @@
         var outflowValue = ynab.unformat($('.ynab-grid-cell-outflow .ember-text-field', firstRow).val());
         var inflowValue = ynab.unformat($('.ynab-grid-cell-inflow .ember-text-field', firstRow).val());
         return outflowValue > 0 ? '.ynab-grid-cell-outflow' :
-               inflowValue > 0 ? '.ynab-grid-cell-inflow' : false;
+          inflowValue > 0 ? '.ynab-grid-cell-inflow' : false;
       }
 
       function onAddAnotherSplit() {

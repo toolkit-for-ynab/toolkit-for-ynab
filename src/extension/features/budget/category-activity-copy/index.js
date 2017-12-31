@@ -8,8 +8,8 @@ export class CategoryActivityCopy extends Feature {
 
   invoke() {
     $('.modal-actions > .button-primary').clone().attr('id', 'toolkit-copy-button')
-        .insertAfter('.modal-actions > .button-primary')
-        .on('click', this.categoryActivityCopy);
+      .insertAfter('.modal-actions > .button-primary')
+      .on('click', this.categoryActivityCopy);
 
     var childCache = $('#toolkit-copy-button').children();
     $('#toolkit-copy-button').text('Copy Transactions').append(childCache);
@@ -52,5 +52,4 @@ export class CategoryActivityCopy extends Feature {
     if (!this.shouldInvoke()) return;
     this.invoke();
   }
-
 }

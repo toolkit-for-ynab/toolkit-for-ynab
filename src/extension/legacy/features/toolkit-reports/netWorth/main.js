@@ -186,7 +186,7 @@
           $reportsData.css({
             display: 'inline-flex'
           }).html($(
-              '<div id="report-chart" style="flex-grow: 1; position: relative; width: 100%"></div>'
+            '<div id="report-chart" style="flex-grow: 1; position: relative; width: 100%"></div>'
           ));
 
           let startIndex = ynabToolKit.reports.allowedDateStart;

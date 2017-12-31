@@ -7,7 +7,7 @@
 
       function autoCompleteApply() {
         var selectLabel = document
-            .getElementsByClassName('ynab-select-label')[0];
+          .getElementsByClassName('ynab-select-label')[0];
         if ($(selectLabel).hasClass('autocomplete-override')) {
           return;
         }
@@ -24,7 +24,7 @@
         var dropdown = document.getElementsByClassName('options-shown')[0];
 
         var list = document
-            .getElementsByClassName('ynab-select-options');
+          .getElementsByClassName('ynab-select-options');
         var options = document.getElementsByClassName('is-selectable');
         var o = options.length;
         var onkeydownFunc = function (event) {
@@ -61,7 +61,7 @@
             var e = event || window.event;
             if (e.keyCode === 40) {
               document.getElementsByClassName('is-selectable')[0]
-                  .focus();
+                .focus();
             }
 
             var curTxt = txt[0].value;
@@ -76,11 +76,11 @@
               e.stopPropagation();
               e.preventDefault();
               document.getElementsByClassName('is-selectable')[0]
-                  .click();
+                .click();
               document
-                  .getElementsByClassName('modal-budget-move-money')[0]
-                  .getElementsByClassName('button-primary')[0]
-                  .click();
+                .getElementsByClassName('modal-budget-move-money')[0]
+                .getElementsByClassName('button-primary')[0]
+                .click();
             }
 
             return true;
@@ -92,7 +92,7 @@
 
       function autoCompleteHandleKeyPress(oldVal, newVal) {
         var components = document
-            .getElementsByClassName('ynab-select-options');
+          .getElementsByClassName('ynab-select-options');
         var select = components[0];
 
         if (originalentries === null) {
@@ -138,10 +138,10 @@
 
       function autoCompleteRemoved() {
         var autocomplete = document
-            .getElementsByClassName('autocomplete-move-money');
+          .getElementsByClassName('autocomplete-move-money');
         if (autocomplete.length === 0) {
           var selectLabel = document
-              .getElementsByClassName('ynab-select-label')[0];
+            .getElementsByClassName('ynab-select-label')[0];
           if (selectLabel !== undefined) {
             $(selectLabel).removeClass('autocomplete-override');
           }

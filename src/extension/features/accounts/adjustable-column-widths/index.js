@@ -146,7 +146,7 @@ export class AdjustableColumnWidths extends Feature {
               $('body').on('mousemove', this.bindOnMouseMove);
               $('body').on('mouseup', this.bindOnMouseUp);
             })
-          );
+        );
     });
   }
 

@@ -119,9 +119,9 @@
                 .after($('<li>', { class: 'toolkit-popup-calc-button toolkit-popup-calc-button-hide' })
                   .append($('<button>', { id: 'toolkit-popup-calc-button-' + id, class: 'ember-view button button-primary toolkit-button-primary' })
                     .append($('<i>', { class: 'ember-view flaticon stroke calculator' }))
-                      .click(function (event) {
-                        clickCalcHandler(event, $(this));
-                      }))
+                    .click(function (event) {
+                      clickCalcHandler(event, $(this));
+                    }))
                   .append($('<div>', { id: 'toolkit-popup-calc-' + id, class: 'toolkit-popup-calc-postition' })));
             });
 

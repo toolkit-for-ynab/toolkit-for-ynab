@@ -45,11 +45,11 @@
 
       return {
         $calcBtn: $('<button>', { id: 'toolkit-popup-calc-button', class: 'toolkit-popup-calc-button button button-primary' })
-                  .append($('<i>', { class: 'ember-view flaticon stroke calculator' }))
-                  .click(function () {
-                    ynabToolKit.popupCalculator.setButtonRight(parseFloat($('.ynab-grid-actions-buttons').css('width')) - 2);
-                    ynabToolKit.popupCalculator.showCalculator(false);
-                  }),
+          .append($('<i>', { class: 'ember-view flaticon stroke calculator' }))
+          .click(function () {
+            ynabToolKit.popupCalculator.setButtonRight(parseFloat($('.ynab-grid-actions-buttons').css('width')) - 2);
+            ynabToolKit.popupCalculator.showCalculator(false);
+          }),
         invoke: function invoke() {
           if ($('div.ynab-grid-actions').length) {
             // Add the focus event high enough up the DOM to catch new input fields that are added

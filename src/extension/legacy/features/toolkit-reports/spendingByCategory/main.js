@@ -80,12 +80,12 @@
                 })
               ).append(document.createTextNode(legendData[i].name))
             )
-            .append(
-              $('<div>', {
-                class: 'ynabtk-category-entry-amount',
-                text: ynabToolKit.shared.formatCurrency(legendData[i].y)
-              })
-            )
+              .append(
+                $('<div>', {
+                  class: 'ynabtk-category-entry-amount',
+                  text: ynabToolKit.shared.formatCurrency(legendData[i].y)
+                })
+              )
           );
         }
 
@@ -97,11 +97,11 @@
             class: 'ynabtk-category-entry-name total',
             text: legendName
           }))
-          .append($('<div>', {
-            class: 'ynabtk-category-entry-amount total',
-            text: ynabToolKit.shared.formatCurrency(legendTotal)
-          }))
-        );
+            .append($('<div>', {
+              class: 'ynabtk-category-entry-amount total',
+              text: ynabToolKit.shared.formatCurrency(legendTotal)
+            }))
+          );
       }
 
       function showCategoryTransactions(category, transactions) {
@@ -264,7 +264,7 @@
 
             masterCategoryData.subCategoryArray.forEach((subCategoryData, subCatIndex) => {
               let categoryName = subCategoryData.internalData.isImmediateIncomeCategory() ? 'Negative Starting Balances' :
-                                 subCategoryData.internalData.get('name');
+                subCategoryData.internalData.get('name');
 
               masterCategoryDrillDown.data.unshift({
                 name: categoryName,

@@ -12,7 +12,7 @@ const createDobEl = () => {
     append($('<div>', { class: 'budget-header-days-label' }).text(label).prop('title', labelTooltip))[0];
 
   document.getElementsByClassName('budget-header-flexbox')[0]
-          .appendChild(elementForDoB);
+    .appendChild(elementForDoB);
 
   return elementForDoB;
 };
@@ -25,8 +25,8 @@ const render = (
 
   if (ableToGenerate) {
     const dayText = daysOfBuffering === 1.0 ?
-                    i10n('budget.ageOfMoneyDays.one', 'day') :
-                    i10n('budget.ageOfMoneyDays.other', 'days');
+      i10n('budget.ageOfMoneyDays.one', 'day') :
+      i10n('budget.ageOfMoneyDays.other', 'days');
 
     dobEl.children[0].textContent = daysOfBuffering + ' ' + dayText;
     dobEl.children[0].title = `${i10n('budget.dob.outflow', 'Total outflow')}: ${format(totalOutflow)}

@@ -17,12 +17,13 @@
     "css-loader": "^0.28.4",
     "eslint": "^4.14.0",
     "eslint-config-airbnb-base": "^3.0.1",
-    "eslint-plugin-import": "^1.16.0",
+    "eslint-import-resolver-webpack": "^0.8.3",
+    "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jest": "^21.5.0",
     "glob": "^7.1.1",
     "jest": "^22.0.4",
     "to-string-loader": "^1.1.5",
-    "webpack": "3"
+    "webpack": "^3.10.0"
   },
   "scripts": {
     "build": "./build",
@@ -56,7 +57,10 @@
     "testPathIgnorePatterns": [
       "/node_modules/"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>/src/test/mocks/web-extensions/setup.js"
+    "setupTestFrameworkScriptFile": "<rootDir>/src/test/mocks/web-extensions/setup.js",
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
   },
   "defaultFeatures": [
     "BudgetBalanceToZero",

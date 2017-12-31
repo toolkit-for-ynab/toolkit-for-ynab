@@ -2,7 +2,6 @@ import { Feature } from 'toolkit/extension/features/feature';
 import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
 
 export class HideHelp extends Feature {
-
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() {

@@ -131,8 +131,8 @@ export class CheckCreditBalances extends Feature {
     let rows = $('.is-sub-category.is-debt-payment-category');
     rows.each(function () {
       let accountName = $(this).find('.budget-table-cell-name div.button-truncate')
-                               .prop('title')
-                               .match(/.[^\n]*/)[0]; // strip the Note string
+        .prop('title')
+        .match(/.[^\n]*/)[0]; // strip the Note string
 
       if (name === accountName) {
         let categoryBalance = $(this).find('.budget-table-cell-available-div .user-data.currency');
@@ -217,11 +217,11 @@ export class CheckCreditBalances extends Feature {
 
     $(debtPaymentCategories).each(function () {
       let accountName = $(this).find('.budget-table-cell-name div.button-truncate')
-                               .prop('title')
-                               .match(/.[^\n]*/)[0];
+        .prop('title')
+        .match(/.[^\n]*/)[0];
       if (accountName === name) {
         let input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
-                           .find('input');
+          .find('input');
 
         let oldValue = input.val();
 

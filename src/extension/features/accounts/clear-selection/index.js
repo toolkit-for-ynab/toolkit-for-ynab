@@ -38,8 +38,8 @@ export class ClearSelection extends Feature {
             </button>
           </li>
           <li><hr /><li>`).click(() => {
-            this.uncheckTransactions();
-          })
+          this.uncheckTransactions();
+        })
       );
   }
 }

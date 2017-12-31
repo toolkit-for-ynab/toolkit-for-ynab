@@ -45,11 +45,11 @@ function writeFeedChanges(features) {
   if (typeof ynabToolKit.shared !== 'undefined') {
     ynabToolKit.shared.feedChanges = function (changes) {
       ${features.map((feature, index) => (
-      `${index > 0 ? '      ' : ''}try {
+    `${index > 0 ? '      ' : ''}try {
         if (changes.changedNodes) ${feature}.observe(changes.changedNodes);
         if (changes.routeChanged) ${feature}.onRouteChanged(changes.routeChanged);
       } catch (err) { /* ignore */ }`
-      )).join('\n\n')}
+  )).join('\n\n')}
     };
   } else {
     setTimeout(poll, 100);

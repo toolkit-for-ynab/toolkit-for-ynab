@@ -41,14 +41,14 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
 
         $('.nav-main > li:eq(1)').after(
           // $('<li>').append(
-            // $('<li>', { class: 'ember-view ynabtk-navlink-reports' }).append(
-            $('<li>', { class: 'ynabtk-navlink-reports' }).append(
-              $('<a>', { class: 'ynabtk-navlink-reports-link' }).append(
-                $('<span>', { class: 'ember-view flaticon stroke document-4' })
-              ).append(
-                (ynabToolKit.l10nData && ynabToolKit.l10nData['sidebar.reports']) || 'Toolkit Reports'
-              )
+          // $('<li>', { class: 'ember-view ynabtk-navlink-reports' }).append(
+          $('<li>', { class: 'ynabtk-navlink-reports' }).append(
+            $('<a>', { class: 'ynabtk-navlink-reports-link' }).append(
+              $('<span>', { class: 'ember-view flaticon stroke document-4' })
+            ).append(
+              (ynabToolKit.l10nData && ynabToolKit.l10nData['sidebar.reports']) || 'Toolkit Reports'
             )
+          )
           // )
         );
 
@@ -246,7 +246,7 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
               value: index,
               disabled: disabled
             })
-            .text(quickFilter.name));
+              .text(quickFilter.name));
         });
 
         $('.ynabtk-quick-date-filters').change(function () {
@@ -340,12 +340,12 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
                   title: accountData.get('accountName'),
                   text: accountData.get('accountName')
                 })
-                .click(() => {
-                  let index = selectedAccounts.indexOf(accountId);
-                  selectedAccounts.splice(index, 1);
-                  updateAccountList();
-                  filterTransactionsAndBuildChart();
-                })
+                  .click(() => {
+                    let index = selectedAccounts.indexOf(accountId);
+                    selectedAccounts.splice(index, 1);
+                    updateAccountList();
+                    filterTransactionsAndBuildChart();
+                  })
               );
           });
         }

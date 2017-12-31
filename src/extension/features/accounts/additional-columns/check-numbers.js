@@ -49,11 +49,11 @@ export class CheckNumbers {
       const $editingRow = $(this.element);
       const editingTransaction = this.get('content');
       const $inputBox = $('<input placeholder="check number">')
-                        .addClass('accounts-text-field')
-                        .addClass('ynab-grid-cell-toolkit-check-number-input')
-                        .blur(function () {
-                          editingTransaction.set('checkNumber', $(this).val());
-                        });
+        .addClass('accounts-text-field')
+        .addClass('ynab-grid-cell-toolkit-check-number-input')
+        .blur(function () {
+          editingTransaction.set('checkNumber', $(this).val());
+        });
 
       $inputBox.val(editingTransaction.get('checkNumber'));
       $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-check-number"><div>')
@@ -88,11 +88,11 @@ export class CheckNumbers {
       const accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
       const editingTransaction = accountsController.get('editingTransaction');
       const $inputBox = $('<input placeholder="check number">')
-                        .addClass('accounts-text-field')
-                        .addClass('ynab-grid-cell-toolkit-check-number-input')
-                        .blur(function () {
-                          editingTransaction.set('checkNumber', $(this).val());
-                        });
+        .addClass('accounts-text-field')
+        .addClass('ynab-grid-cell-toolkit-check-number-input')
+        .blur(function () {
+          editingTransaction.set('checkNumber', $(this).val());
+        });
 
       $inputBox.val(editingTransaction.get('checkNumber'));
       $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-check-number"><div>')

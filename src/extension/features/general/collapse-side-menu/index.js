@@ -25,7 +25,7 @@ export class CollapseSideMenu extends Feature {
       $('<li>', { class: 'ember-view ynabtk-navlink-collapse' }).append(
         $('<a>', { class: 'ynabtk-collapse-link' }).append(
           $('<span>', { class: 'ember-view flaticon stroke left-circle-4' })).append(
-            toolkitHelper.i10n('toolkit.collapse', 'Collapse')));
+          toolkitHelper.i10n('toolkit.collapse', 'Collapse')));
 
     this.setupBtns();
   }

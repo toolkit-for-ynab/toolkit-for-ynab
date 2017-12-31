@@ -146,12 +146,12 @@
                   })
                 ).append(document.createTextNode(payeeName))
               )
-              .append(
-                $('<div>', {
-                  class: 'ynabtk-payee-entry-amount',
-                  text: ynabToolKit.shared.formatCurrency(payeeTotal)
-                })
-              )
+                .append(
+                  $('<div>', {
+                    class: 'ynabtk-payee-entry-amount',
+                    text: ynabToolKit.shared.formatCurrency(payeeTotal)
+                  })
+                )
             );
           });
 
@@ -169,11 +169,11 @@
               class: 'ynabtk-payee-entry-name total',
               text: 'Total'
             }))
-            .append($('<div>', {
-              class: 'ynabtk-payee-entry-amount total',
-              text: ynabToolKit.shared.formatCurrency(totalSpending)
-            }))
-          );
+              .append($('<div>', {
+                class: 'ynabtk-payee-entry-amount total',
+                text: ynabToolKit.shared.formatCurrency(totalSpending)
+              }))
+            );
 
           // make that chart!
           ynabToolKit.spendingByPayee.chart = new Highcharts.Chart({

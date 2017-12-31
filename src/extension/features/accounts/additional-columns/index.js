@@ -5,7 +5,6 @@ import { CheckNumbers } from './check-numbers';
 import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
 
 export class AdditionalColumns extends Feature {
-
   constructor() {
     super();
     this.checkNumbers = ynabToolKit.options.CheckNumbers ? new CheckNumbers() : new AdditionalColumnStub();
