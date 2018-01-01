@@ -13,11 +13,11 @@ export class Background {
   }
 
   initListeners() {
-    this._browser.runtime.onMessage.addListener(this.handleMessage);
+    this._browser.runtime.onMessage.addListener(this._handleMessage);
     this._storage.onFeatureSettingChanged('DisableToolkit', this._updatePopupIcon);
   }
 
-  handleMessage = (message, sender, sendResponse) => {
+  _handleMessage = (message, sender, sendResponse) => {
     switch (message.type) {
       case 'storage':
         this._handleStorageMessage(message.content, sendResponse);

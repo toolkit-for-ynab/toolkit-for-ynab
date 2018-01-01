@@ -2,6 +2,8 @@ import { getBrowser } from 'toolkit/core/common/web-extensions';
 
 const FEATURE_SETTING_PREFIX = 'toolkit-feature:';
 
+export const featureSettingKey = (featureName) => `${FEATURE_SETTING_PREFIX}${featureName}`;
+
 export class ToolkitStorage {
   _storageArea = 'local';
   _storageListeners = new Map();
@@ -19,7 +21,7 @@ export class ToolkitStorage {
       ...options
     };
 
-    return this.getStorageItem(`${FEATURE_SETTING_PREFIX}${settingName}`, getFeatureSettingOptions);
+    return this.getStorageItem(featureSettingKey(settingName), getFeatureSettingOptions);
   }
 
   getFeatureSettings(settingNames, options = {}) {
@@ -29,12 +31,12 @@ export class ToolkitStorage {
     };
 
     return Promise.all(settingNames.map((settingName) => {
-      return this.getStorageItem(`${FEATURE_SETTING_PREFIX}${settingName}`, getFeatureSettingOptions);
+      return this.getStorageItem(featureSettingKey(settingName), getFeatureSettingOptions);
     }));
   }
 
   setFeatureSetting(settingName, value, options = {}) {
-    return this.setStorageItem(`${FEATURE_SETTING_PREFIX}${settingName}`, value, options);
+    return this.setStorageItem(featureSettingKey(settingName), value, options);
   }
 
   getStorageItem(itemKey, options = {}) {
@@ -78,7 +80,7 @@ export class ToolkitStorage {
   }
 
   onFeatureSettingChanged(settingName, callback) {
-    this.on(`${FEATURE_SETTING_PREFIX}${settingName}`, callback);
+    this.on(featureSettingKey(settingName), callback);
   }
 
   off(storageKey, callback) {
@@ -89,7 +91,7 @@ export class ToolkitStorage {
   }
 
   offFeatureSettingChanged(settingName, callback) {
-    this.off(`${FEATURE_SETTING_PREFIX}${settingName}`, callback);
+    this.off(featureSettingKey(settingName), callback);
   }
 
   _listenForChanges = (changes, areaName) => {
