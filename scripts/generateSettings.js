@@ -7,6 +7,7 @@ const defaultFeatures = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'p
 const LEAGACY_SETTINGS_PROJECT_DIR = 'src/extension/legacy/features';
 const NEW_SETTINGS_PROJECT_DIR = 'src/extension/features';
 const ALL_SETTINGS_OUTPUT = 'src/core/settings/settings.js';
+const SETTINGS_JSON = 'scripts/settings.json';
 const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
 const legacySettingMap = {
@@ -89,7 +90,9 @@ function run(callback) {
     });
 
     let allSettingsFile = generateAllSettingsFile(validatedSettings);
-    fs.writeFile(ALL_SETTINGS_OUTPUT, allSettingsFile, callback);
+    fs.writeFile(ALL_SETTINGS_OUTPUT, allSettingsFile, () => {
+      fs.writeFile(SETTINGS_JSON, JSON.stringify(validatedSettings), callback);
+    });
   }, reason => {
     callback(reason);
   }).catch(exception => {

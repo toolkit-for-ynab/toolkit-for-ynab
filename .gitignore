@@ -21,6 +21,7 @@ dist/
 
 # created at build time with tasks/generateSettings.js
 src/core/settings/settings.js
+scripts/settings.json
 
 # created at build time with tasks/generateFeatureIndex.js
 src/extension/features/index.js
