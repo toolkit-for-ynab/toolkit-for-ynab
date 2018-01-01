@@ -8,6 +8,13 @@ const settingsMap = allToolkitSettings.reduce((map, setting) => {
   if (map.has(setting.section)) {
     const sectionSettings = map.get(setting.section);
     sectionSettings.push(setting);
+    sectionSettings.sort((a, b) => {
+      if (a.title > b.title) {
+        return 1;
+      }
+
+      return -1;
+    });
   } else {
     map.set(setting.section, [setting]);
   }
