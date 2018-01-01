@@ -12,7 +12,7 @@ export function getBrowserName() {
 
   if (URL.startsWith('chrome-extension://')) {
     return 'chrome';
-  } else if (URL.startsWith('moz--extension://')) {
+  } else if (URL.startsWith('moz-extension://')) {
     return 'firefox';
   } else if (URL.startsWith('ms-browser-extension://')) {
     return 'edge';
