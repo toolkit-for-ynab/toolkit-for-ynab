@@ -6,4 +6,5 @@ script:
   - yarn gen-featureIndex
   - yarn gen-feedChanges
   - yarn lint
+  - yarn test
   - yarn webpack
