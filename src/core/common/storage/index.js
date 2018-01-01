@@ -5,11 +5,12 @@ const FEATURE_SETTING_PREFIX = 'toolkit-feature:';
 export const featureSettingKey = (featureName) => `${FEATURE_SETTING_PREFIX}${featureName}`;
 
 export class ToolkitStorage {
+  _browser = getBrowser();
   _storageArea = 'local';
   _storageListeners = new Map();
 
   constructor() {
-    getBrowser().storage.onChanged.addListener(this._listenForChanges);
+    this._browser.storage.onChanged.addListener(this._listenForChanges);
   }
 
   // many features have been built with the assumption that settings come back
@@ -70,7 +71,7 @@ export class ToolkitStorage {
     });
   }
 
-  on(storageKey, callback) {
+  onStorageItemChanged(storageKey, callback) {
     if (this._storageListeners.has(storageKey)) {
       const listeners = this._storageListeners.get(storageKey);
       this._storageListeners.set(storageKey, [...listeners, callback]);
@@ -79,19 +80,19 @@ export class ToolkitStorage {
     }
   }
 
-  onFeatureSettingChanged(settingName, callback) {
-    this.on(featureSettingKey(settingName), callback);
-  }
-
-  off(storageKey, callback) {
+  offStorageItemChanged(storageKey, callback) {
     if (this._storageListeners.has(storageKey)) {
       const listeners = this._storageListeners.get(storageKey);
       this._storageListeners.set(storageKey, listeners.filter((listener) => listener !== callback));
     }
   }
 
+  onFeatureSettingChanged(settingName, callback) {
+    this.onStorageItemChanged(featureSettingKey(settingName), callback);
+  }
+
   offFeatureSettingChanged(settingName, callback) {
-    this.off(featureSettingKey(settingName), callback);
+    this.offStorageItemChanged(featureSettingKey(settingName), callback);
   }
 
   _listenForChanges = (changes, areaName) => {
@@ -114,7 +115,7 @@ export class ToolkitStorage {
 
     return new Promise((resolve, reject) => {
       try {
-        getBrowser().storage[getOptions.storageArea].get(key, (data) => {
+        this._browser.storage[getOptions.storageArea].get(key, (data) => {
           // if we're fetching everything -- don't try parsing it
           if (key === null) {
             return resolve(data);
@@ -141,7 +142,7 @@ export class ToolkitStorage {
 
     return new Promise((resolve, reject) => {
       try {
-        getBrowser().storage[storageArea].remove(key, resolve);
+        this._browser.storage[storageArea].remove(key, resolve);
       } catch (e) {
         reject(e);
       }
@@ -154,7 +155,7 @@ export class ToolkitStorage {
     return new Promise((resolve, reject) => {
       try {
         const update = { [key]: value };
-        getBrowser().storage[storageArea].set(update, resolve);
+        this._browser.storage[storageArea].set(update, resolve);
       } catch (e) {
         reject(e);
       }
