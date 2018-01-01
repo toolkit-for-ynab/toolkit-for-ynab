@@ -28,15 +28,19 @@
     "webpack": "^3.10.0"
   },
   "scripts": {
-    "build": "./build",
-    "watch": "./watch",
+    "build": "yarn && yarn gen && yarn webpack && yarn build:legacy",
+    "build:legacy": "babel src/extension/legacy --compact false --quiet --out-dir dist/web-accessibles/legacy",
+    "build:desktop": "scripts/publish_for_desktop",
+    "lint": "yarn && eslint --ignore-path .eslintignore ./src ./tasks",
+    "test": "yarn && yarn gen && jest",
+    "watch": "yarn && node tasks/watch.js",
     "webpack": "webpack",
-    "test": "jest",
-    "lint": "eslint --ignore-path .eslintignore ./src ./tasks",
-    "legacy-babel": "babel src/extension/legacy --compact false --quiet --out-dir dist/web-accessibles/legacy",
-    "gen-settings": "node tasks/generateSettings",
-    "gen-featureIndex": "node tasks/generateFeatureIndex",
-    "gen-feedChanges": "node tasks/generateFeedChanges"
+    "gen": "yarn gen-settings && yarn gen-featureIndex && yarn gen-feedChanges",
+    "gen:settings": "node tasks/generateSettings",
+    "gen:featureIndex": "node tasks/generateFeatureIndex",
+    "gen:feedChanges": "node tasks/generateFeedChanges",
+    "l10n:push": "scripts/update_l10n_strings",
+    "l10n:pull": "scripts/get_l10ns"
   },
   "babel": {
     "presets": [

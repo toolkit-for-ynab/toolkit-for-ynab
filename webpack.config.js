@@ -54,7 +54,8 @@ module.exports = {
       { from: path.join(__dirname, `${CODE_SOURCE_DIR}/manifest.json`), to: path.join(__dirname, `${BUILD_ROOT}`) },
       { from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/background`), to: path.join(__dirname, `${BUILD_ROOT}/background`), ignore: '**/*.js' },
       { from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/options`), to: path.join(__dirname, `${BUILD_ROOT}/options`), ignore: '**/*.js' },
-      { from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/popup`), to: path.join(__dirname, `${BUILD_ROOT}/popup`), ignore: '**/*.js' }
+      { from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/popup`), to: path.join(__dirname, `${BUILD_ROOT}/popup`), ignore: '**/*.js' },
+      { from: path.join(__dirname, `${CODE_SOURCE_DIR}/extension/legacy/**/*.css`), to: path.join(__dirname, `${BUILD_ROOT}/web-accessibles`), context: 'src/extension' }
     ])
   ]
 };

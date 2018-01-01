@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const spawn = require('child_process').spawn;
 let buildProcesses = [];
 
@@ -27,7 +25,7 @@ watcher.on('all', function (event, path) {
 });
 
 function spawnBuildProcess() {
-  const buildProcess = spawn('./build', {
+  const buildProcess = spawn('yarn build', {
     stdio: [0, 1, 2]
   });
 
