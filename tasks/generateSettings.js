@@ -22,6 +22,7 @@ const legacySettingMap = {
   ClearSelection: 'accountsClearSelection',
   ColourBlindMode: 'colourBlindMode',
   CollapseSideMenu: 'collapseSideMenu',
+  CompactIncomeVsExpense: 'compactIncomeVsExpense',
   CurrentMonthIndicator: 'currentMonthIndicator',
   DaysOfBuffering: 'daysOfBuffering',
   DaysOfBufferingHistoryLookup: 'daysOfBufferingHistoryLookup',
@@ -286,7 +287,7 @@ function deleteAllKangoSettings() {
     kango.invokeAsync('kango.storage.clear', function () {
       resolve('success');
     });
-  });  
+  });
 }
 
 function getKangoStorageKeys() {
