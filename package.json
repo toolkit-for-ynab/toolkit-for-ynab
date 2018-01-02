@@ -24,14 +24,15 @@
     "jest": "^22.0.4",
     "jest-dot-reporter": "^1.0.3",
     "jest-localstorage-mock": "^2.1.0",
+    "terminate": "^2.1.0",
     "to-string-loader": "^1.1.5",
     "webpack": "^3.10.0"
   },
   "scripts": {
-    "build": "yarn && yarn gen && yarn webpack && yarn build:legacy",
+    "build": "yarn && yarn gen && yarn lint && yarn webpack && yarn build:legacy",
     "build:legacy": "babel src/extension/legacy --compact false --quiet --out-dir dist/web-accessibles/legacy",
     "build:desktop": "scripts/publish_for_desktop",
-    "lint": "yarn && eslint --ignore-path .eslintignore ./src ./scripts",
+    "lint": "eslint --ignore-path .eslintignore ./src ./scripts",
     "test": "yarn && yarn gen && jest",
     "watch": "yarn && node scripts/watch.js",
     "webpack": "webpack",
