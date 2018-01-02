@@ -25,7 +25,8 @@ watcher.on('all', function (event, path) {
 });
 
 function spawnBuildProcess() {
-  const buildProcess = spawn('yarn build', {
+  const yarnCLI = /^win/.test(process.platform) ? 'yarn.cmd' : 'yarn';
+  const buildProcess = spawn(yarnCLI, ['build'], {
     stdio: [0, 1, 2]
   });
 
@@ -40,3 +41,5 @@ function spawnBuildProcess() {
 
   buildProcesses.push(buildProcess);
 }
+
+spawnBuildProcess();
