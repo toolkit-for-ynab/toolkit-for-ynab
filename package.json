@@ -35,7 +35,7 @@
     "test": "yarn && yarn gen && jest",
     "watch": "yarn && node scripts/watch.js",
     "webpack": "webpack",
-    "gen": "yarn gen-settings && yarn gen-featureIndex && yarn gen-feedChanges",
+    "gen": "yarn gen:settings && yarn gen:featureIndex && yarn gen:feedChanges",
     "gen:featureIndex": "node scripts/generateFeatureIndex",
     "gen:feedChanges": "node scripts/generateFeedChanges",
     "gen:settings": "node scripts/generateSettings",
