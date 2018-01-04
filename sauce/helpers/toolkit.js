@@ -29,7 +29,7 @@ export function inCurrentMonth() {
 
   // check for current month or future month
   // must subtract 1 from budget month because the Date object is zero based.
-  return budgetDate.month - 1 >= today.getMonth() && budgetDate.year >= today.getYear();
+  return budgetDate.month - 1 >= today.getMonth() && budgetDate.year >= today.getFullYear();
 }
 
 export function getCategoriesViewModel() {
