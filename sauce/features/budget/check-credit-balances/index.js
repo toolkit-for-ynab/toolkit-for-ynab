@@ -78,24 +78,16 @@ export class CheckCreditBalances extends Feature {
     return debtAccounts || [];
   }
 
-  getCheckCardbalancesMode() {
-    switch (this.settings.enabled) {
-      case 'highlight':
-        return this.enumRectifyModes.HIGHLIGHT;
-      case 'rectify':
-        return this.enumRectifyModes.RECTIFY;
-      case 'rectifyPIF':
-        return this.enumRectifyModes.RECTIFY_PIF_ONLY;
-      default:
-        return this.enumRectifyModes.NONE;
-    }
+  getCheckCardBalancesMode() {
+    // The enum is an int and .enabled is a string. The enforced style doesn't allow type independent comparisons
+    return parseInt(this.settings.enabled);
   }
 
   processDebtAccounts(debtAccounts) {
     let foundButton = false;
     let _this = this;
 
-    let rectifyMode = this.getCheckCardbalancesMode();
+    let rectifyMode = this.getCheckCardBalancesMode();
 
     debtAccounts.forEach(function (a) {
       // Not sure why but sometimes on a reload (F5 or CTRL-R) of YNAB, the accountId field is null which if not handled
