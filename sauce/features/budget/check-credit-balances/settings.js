@@ -1,7 +1,7 @@
 module.exports = {
   name: 'CheckCreditBalances',
   type: 'select',
-  default: 0,
+  default: false,
   section: 'budget',
   title: 'Paid in Full Credit Card Assist',
   description: 'This keeps track of Credit Card Payments that aren\'t fully budgeted by either highlighting and providing a rectify button or automatically rectifying.',
