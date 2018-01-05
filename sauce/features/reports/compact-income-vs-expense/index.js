@@ -9,8 +9,6 @@ export class CompactIncomeVsExpense extends Feature {
   }
 
   invoke() {
-    // if (!this.shouldInvoke()) return;
-
     let viewWidth = $('.reports-content').width();
     let columnCount = $('.income-expense-column.income-expense-column-header').length;
     let tableWidth = columnCount * 115 + 200 + 32;
