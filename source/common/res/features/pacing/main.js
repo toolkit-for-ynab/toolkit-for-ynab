@@ -1,4 +1,6 @@
 
+import * as toolkitHelper from 'toolkit/helpers/toolkit';
+
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && ynabToolKit.actOnChangeInit === true) {
     ynabToolKit.insertPacingColumns = (function () {
@@ -20,13 +22,6 @@
       // Calculate the proportion of the month that has been spent -- only works for the current month
       function timeSpent() {
         return getCurrentDayOfMonth() / getDaysInMonth();
-      }
-
-      // Determine whether the selected month is the current month
-      function inCurrentMonth() {
-        var today = new Date();
-        var selectedMonth = ynabToolKit.shared.parseSelectedMonth();
-        return (selectedMonth === null) ? false : selectedMonth.getMonth() === today.getMonth() && selectedMonth.getYear() === today.getYear();
       }
 
       function getDeemphasizedCategoriesSetting() {
@@ -102,7 +97,7 @@
           var allTransactions = tv.getVisibleTransactionDisplayItemsForMonth(month);
 
           if ($('.ember-view .budget-header').length) {
-            let currentMonth = inCurrentMonth();
+            let currentMonth = toolkitHelper.inCurrentMonth();
 
             if (currentMonth) { // Make room for the column
               $('#ynab-toolkit-pacing-style').remove();

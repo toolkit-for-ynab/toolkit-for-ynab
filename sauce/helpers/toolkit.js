@@ -23,6 +23,15 @@ export function getCurrentBudgetDate() {
   return { year: date.slice(0, 4), month: date.slice(4, 6) };
 }
 
+export function inCurrentMonth() {
+  let today = new Date();
+  let budgetDate = getCurrentBudgetDate();
+
+  // check for current month or future month
+  // must subtract 1 from budget month because the Date object is zero based.
+  return budgetDate.month - 1 >= today.getMonth() && budgetDate.year >= today.getFullYear();
+}
+
 export function getCategoriesViewModel() {
   return ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel();
 }

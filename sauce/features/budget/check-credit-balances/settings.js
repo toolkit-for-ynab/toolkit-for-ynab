@@ -1,8 +1,14 @@
 module.exports = {
   name: 'CheckCreditBalances',
-  type: 'checkbox',
+  type: 'select',
   default: false,
   section: 'budget',
   title: 'Paid in Full Credit Card Assist',
-  description: 'Highlights credit card category balances with a yellow warning if the balance of the category does not match the account balance. Adds a button to the Inspector to rectify the difference.'
+  description: 'This keeps track of Credit Card Payments that aren\'t fully budgeted by either highlighting and providing a rectify button or automatically rectifying.',
+  options: [
+    { name: "Disabled", value: 0 },
+    { name: "Highlight mismatch In yellow and add rectify button to the inspector.", value: 1 },
+    { name: "Automatically rectify all accounts.", value: 2 },
+    { name: "Automatically rectify accounts with '#PIF' in the name only.", value: 3 },
+  ]
 };

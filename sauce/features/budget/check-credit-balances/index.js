@@ -4,6 +4,13 @@ import * as toolkitHelper from 'toolkit/helpers/toolkit';
 export class CheckCreditBalances extends Feature {
   budgetView = null;
 
+  enumRectifyModes = {
+    NONE: 0,
+    HIGHLIGHT: 1,
+    RECTIFY: 2,
+    RECTIFY_PIF_ONLY: 3
+  }
+
   injectCSS() {
     return require('./index.css');
   }
@@ -17,7 +24,7 @@ export class CheckCreditBalances extends Feature {
       this.onMonthChanged(toolkitHelper.getCurrentBudgetMonth());
     }
 
-    if (this.inCurrentMonth()) {
+    if (toolkitHelper.inCurrentMonth()) {
       let debtAccounts = this.getDebtAccounts();
 
       if (debtAccounts !== null) {
@@ -50,15 +57,6 @@ export class CheckCreditBalances extends Feature {
     this.invoke();
   }
 
-  inCurrentMonth() { // check for current month or future month
-    let today = new Date();
-    let budgetDate = toolkitHelper.getCurrentBudgetDate();
-
-    // check for current month or future month
-    // must subtract 1 from budget month because the Date object is zero based.
-    return budgetDate.month - 1 >= today.getMonth() && budgetDate.year >= today.getYear();
-  }
-
   getDebtAccounts() {
     // After using Budget Quick Switch, budgetView needs to be reset to the new budget. The try catch construct is necessary
     // because this function can be called several times during the budget switch process.
@@ -80,9 +78,17 @@ export class CheckCreditBalances extends Feature {
     return debtAccounts || [];
   }
 
+  getCheckCardBalancesMode() {
+    // The enum is an int and .enabled is a string. The enforced style doesn't allow type independent comparisons
+    return parseInt(this.settings.enabled);
+  }
+
   processDebtAccounts(debtAccounts) {
     let foundButton = false;
     let _this = this;
+
+    let rectifyMode = this.getCheckCardBalancesMode();
+
     debtAccounts.forEach(function (a) {
       // Not sure why but sometimes on a reload (F5 or CTRL-R) of YNAB, the accountId field is null which if not handled
       // throws an error and kills the feature.
@@ -96,27 +102,60 @@ export class CheckCreditBalances extends Feature {
           .monthlySubCategoryBudgetCalculationsCollection
           .findItemByEntityId('mcbc/' + currentMonth + '/' + a.entityId);
 
+        let currentOutflows = 0;
         let available = 0;
+        let carryoverBalance = 0;
         if (monthlyBudget) {
           available = monthlyBudget.balance;
+          currentOutflows = monthlyBudget.cashOutflows;
+          carryoverBalance = monthlyBudget.balancePreviousMonth;
         }
 
-        // ensure that available is >= zero, otherwise don't update
-        if (available >= 0) {
+        // ensure that available is >= zero if we are highlighting
+        let mightNeedToHighlight = available >= 0 && rectifyMode === _this.enumRectifyModes.HIGHLIGHT;
+
+        // Check for the string for #PIP in order to emnable automatic rectification only on those accounts in the PIF only mode
+        let nameContainsPIP = a.name.search(/#pif/i) !== -1;
+
+        // We alwasy rectify to get things exact, we rectify any time the difference isn't zero
+        let mightNeedToRectify = (rectifyMode === _this.enumRectifyModes.RECTIFY) ||
+                                 (rectifyMode === _this.enumRectifyModes.RECTIFY_PIF_ONLY && nameContainsPIP);
+
+        if (mightNeedToHighlight || mightNeedToRectify) {
           // If cleared balance is positive, bring available to 0, otherwise
           // offset by the correct amount
           let difference = 0;
+
+          // Calculate the balance now so it isn't dependent on reading the budget later and applying the difference
+          // which can lead to some wierd beahvior with auto rectify becuase that value can potentially change somehow
+          let toBeBudgeted = 0;
+
           if (balance > 0) {
             difference = (available * -1);
+            toBeBudgeted = (currentOutflows + carryoverBalance) * -1;
           } else {
-            difference = ((available + balance) * -1);
+            difference = ((available + balance));
+            toBeBudgeted = (currentOutflows + balance + carryoverBalance) * -1;
           }
 
-          foundButton |= _this.updateInspectorButton(a.name, difference);
+          switch (rectifyMode) {
+            case (_this.enumRectifyModes.HIGHLIGHT):
+              foundButton |= _this.updateInspectorButton(a.name, difference, toBeBudgeted);
 
-          if (available !== (balance * -1)) {
-            _this.updateRow(a.name);
-            _this.updateInspectorStyle(a.name);
+              if (available !== (balance * -1)) {
+                _this.updateRow(a.name);
+                _this.updateInspectorStyle(a.name);
+              }
+              break;
+            case (_this.enumRectifyModes.RECTIFY):
+            case (_this.enumRectifyModes.RECTIFY_PIF_ONLY):
+              if (difference !== 0) {
+                // If rectifying automatically, just submit the value.
+                // This ignores the quick budget option since it isn't a quick budget button
+                _this.updateCreditBalances(a.name, toBeBudgeted, true, false);
+              }
+
+              break;
           }
         }
       }
@@ -155,7 +194,7 @@ export class CheckCreditBalances extends Feature {
     }
   }
 
-  updateInspectorButton(name, difference) {
+  updateInspectorButton(name, difference, toBeBudgeted) {
     let inspectorName = $('.inspector-category-name.user-data').text().trim();
 
     if (name && name === inspectorName) {
@@ -176,14 +215,14 @@ export class CheckCreditBalances extends Feature {
             display: 'block',
             cursor: 'pointer'
           })
-          .click(this.updateCreditBalances);
+          .click(this.updateCreditBalancesWithButton);
 
         $('.inspector-quick-budget').append(button);
       }
 
       button
         .data('name', name)
-        .data('difference', difference)
+        .data('toBeBudgeted', toBeBudgeted)
         .empty()
         .append(((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.checkCreditBalances']) || 'Rectify Difference:'))
         .append(' ' + positive)
@@ -201,46 +240,70 @@ export class CheckCreditBalances extends Feature {
     return false;
   }
 
-  updateCreditBalances() {
-    if (ynabToolKit.options.QuickBudgetWarning) {
-      // no need to confirm quick budget if zero budgeted
-      if (! $('div.budget-table ul.budget-table-row.is-checked li.budget-table-cell-budgeted .currency').hasClass('zero')) {
-        if (!confirm('Are you sure you want to budget this amount?')) { // eslint-disable-line no-alert
-          return;
-        }
-      }
-    }
-
-    let name = $(this).data('name');
-    let difference = $(this).data('difference');
+  updateCreditBalances(name, toBeBudgeted, submitValue, quickBudgetWarningShown) {
     let debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
 
     $(debtPaymentCategories).each(function () {
       let accountName = $(this).find('.budget-table-cell-name div.button-truncate')
                                .prop('title')
                                .match(/.[^\n]*/)[0];
+
       if (accountName === name) {
-        let input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
-                           .find('input');
-
-        let oldValue = input.val();
-
-        // If nothing is budgeted, the input will be empty
-        oldValue = oldValue || 0;
-
-        // YNAB stores values *1000 for decimal places, so just
-        // multiple by 1000 to get the actual amount.
-        let newValue = (ynab.unformat(oldValue) * 1000 + difference);
+        let currencyBox = $(this).find('.budget-table-cell-budgeted div.currency-input').click();
+        let input = currencyBox.find('input');
 
         // format the calculated value back to selected number format
-        input.val(ynab.formatCurrency(newValue));
+        input.val(ynab.formatCurrency(toBeBudgeted));
 
-        if (ynabToolKit.options.QuickBudgetWarning === 0) {
+        if (!quickBudgetWarningShown) {
           // only seems to work if the confirmation doesn't pop up?
           // haven't figured out a way to properly blur otherwise
           input.blur();
         }
+
+        if (submitValue) {
+          // After entering the value, simulate the user pressing enter in order to get the value to go through.
+
+          // Disabling the lint warning "A function with a name starting with an uppercase letter should only be used as a constructor  new-cap"
+          // Justifiction: The lint appears confused and thinks that we declared this function rather than it coming from JQuery
+          // eslint-disable-next-line new-cap
+          let enterKeyPress = $.Event('keypress');
+          enterKeyPress.which = 13; // ENTER key
+
+          currencyBox.trigger(enterKeyPress);
+
+          // Uncheck the credit card so it isn't checked since it probably wasn't befor the change
+          $(this).find('.budget-table-cell-checkbox div.ynab-checkbox').click();
+
+          // TODO: Is there a way that the currency-input is no longer selected?
+
+          // TODO: Fix flashes when you are editing the credit card budget to the wrong thing:
+          //       This piece of code acts strange little wierd if you are changingin the credit card category
+          //       becuase it will loop through a couple times before it successfully. There is nothing broken about the result
+          //       but it check and unchecks the category a couple times and enters the value a couple times becuase it doesn't "stick"
+          //       the first time. Its noticable and not smooth: It would be nice to fix this.
+          //       (This should be an edge case anyway--people using credit card pay in full shouldn't need to touch the credit card budget manually)
+        }
       }
     });
+  }
+
+  updateCreditBalancesWithButton() {
+    let quickBudgetWarningShown = false;
+
+    if (ynabToolKit.options.QuickBudgetWarning) {
+      // no need to confirm quick budget if zero budgeted
+      if (! $('div.budget-table ul.budget-table-row.is-checked li.budget-table-cell-budgeted .currency').hasClass('zero')) {
+        if (!confirm('Are you sure you want to budget this amount?')) { // eslint-disable-line no-alert
+          return;
+        }
+        quickBudgetWarningShown = true;
+      }
+    }
+
+    let name = $(this).data('name');
+    let toBeBudgeted = $(this).data('toBeBudgeted');
+
+    this.updateCreditBalances(name, toBeBudgeted, false, quickBudgetWarningShown);
   }
 }
