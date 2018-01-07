@@ -56,6 +56,7 @@ const legacySettingMap = {
   SwapClearedFlagged: 'swapClearedFlagged',
   ToBeBudgetedWarning: 'toBeBudgetedWarning',
   ToggleMasterCategories: 'collapseExpandBudgetGroups',
+  ToggleTransactionFilters: 'toggleTransactionFilters',
   ToggleSplits: 'toggleSplits'
 };
 
