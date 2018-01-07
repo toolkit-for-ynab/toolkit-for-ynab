@@ -89,7 +89,10 @@ export class StealingFromFuture extends Feature {
     const currentMonth = parseInt(moment().format('MM'));
     const entityDate = entityId.match(/mbc\/(.*)\/.*/)[1];
     const [entityYear, entityMonth] = entityDate.split('-').map((val) => parseInt(val));
-    if (entityYear >= currentYear && entityMonth > currentMonth) {
+
+    const isNextYear = entityYear > currentYear;
+    const isCurrentYearFutureMonth = entityYear === currentYear && entityMonth > currentMonth;
+    if (isNextYear || isCurrentYearFutureMonth) {
       return true;
     }
 

@@ -46,3 +46,5 @@ function spawnBuildProcess() {
 
   buildProcesses.push(buildProcess);
 }
+
+spawnBuildProcess();
