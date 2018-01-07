@@ -96,21 +96,21 @@ export class RunningBalance {
 
   initializeRunningBalances() {
     return ynab.YNABSharedLib.defaultInstance.entityManager.accountsCollection.forEach((account) => {
+      // we call this now so it's guaranteed to be resolved later
       return ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(account.entityId).
-        then((accountViewModel) => {
+        then(() => {
           calculateRunningBalance(account.entityId);
-
-          // can you believe it? YNAB has this really interestingly name field
-          // on visibleTransactionDisplayItems that sounds exactly like what I need
-          // if something changes in that list, you tell me about it, and I'll update
-          // the running balance for the account make sure our users always see the fancy
-          accountViewModel.get('visibleTransactionDisplayItems')
-            .addObserver('anyItemChangedCounter', function () {
-              calculateRunningBalance(account.entityId);
-            });
         });
     });
   }
+}
+
+function attachAnyItemChangedListener(accountId, accountViewModel) {
+  accountViewModel.__ynabToolKitAnyItemChangedListener = true;
+  accountViewModel.get('visibleTransactionDisplayItems')
+    .addObserver('anyItemChangedCounter', function () {
+      calculateRunningBalance(accountId);
+    });
 }
 
 // Using ._result here bcause we can guarantee that we've already invoked the
@@ -119,6 +119,10 @@ function calculateRunningBalance(accountId) {
   const accountsController = toolkitHelper.controllerLookup('accounts');
   const accountViewModel = ynab.YNABSharedLib.defaultInstance.
     getBudgetViewModel_AccountTransactionsViewModel(accountId)._result;
+
+  if (!accountViewModel.__ynabToolKitAnyItemChangedListener) {
+    attachAnyItemChangedListener(accountId, accountViewModel);
+  }
 
   const transactions = accountViewModel.get('visibleTransactionDisplayItems');
   const sorted = transactions.slice().sort((a, b) => {
