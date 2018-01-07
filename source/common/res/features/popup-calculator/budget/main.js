@@ -125,7 +125,7 @@
                   .append($('<div>', { id: 'toolkit-popup-calc-' + id, class: 'toolkit-popup-calc-postition' })));
             });
 
-            switch (ynabToolKit.options.budgetRowsHeight) {
+            switch (ynabToolKit.options.RowsHeight) {
               case '0':
                 ynabToolKit.budgetPopupCalculator.buttonBottom = -242;
                 ynabToolKit.budgetPopupCalculator.buttonRight = 14;
@@ -150,6 +150,12 @@
           if (changedNodes.has('budget-content  resizable') ||
               changedNodes.has('budget-table-header') ||
               changedNodes.has('inspector-quick-budget')) {
+            ynabToolKit.budgetPopupCalculator.invoke();
+          }
+        },
+
+        onRouteChanged(currentRoute) {
+          if (currentRoute.indexOf('budget') !== -1) {
             ynabToolKit.budgetPopupCalculator.invoke();
           }
         }
