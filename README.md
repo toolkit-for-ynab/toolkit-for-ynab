@@ -65,8 +65,7 @@ content scripts) into single files and manages most of the build process.
     directory for changes and build automatically.
 6. The built extension will be available in the `dist` folder and is the folder you should
   select when loading the extension into the browser.
-8. Load it into Chrome as an unpacked extension, load it into Firefox via the .xpi file,
-  or load it into Safari using the extension builder (Mac only).
+7. Load it into Chrome as an unpacked extension or load it into Firefox via the `manifest.json` file.
 
 # Development Methodology
 
