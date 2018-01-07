@@ -2,7 +2,7 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const BUILD_ROOT = './dist';
+const BUILD_ROOT = './dist/extension';
 const CODE_SOURCE_DIR = './src';
 
 module.exports = {

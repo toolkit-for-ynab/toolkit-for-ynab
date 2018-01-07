@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-yarn && yarn build
-rm -rf ../toolkit-for-ynab-gh-pages/desktop-updates
-mkdir ../toolkit-for-ynab-gh-pages/desktop-updates
-cp dist/manifest.json ../toolkit-for-ynab-gh-pages/desktop-updates/
-echo "Hi Kevin, I'm not sure what to do for the zip file..."
-#cp output/toolkitforynab_*_chrome_webstore.zip ../toolkit-for-ynab-gh-pages/desktop-updates/toolkitforynab_desktop.zip
