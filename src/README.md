@@ -82,9 +82,8 @@ that you get for free when extending `Feature`.
 Your feature's constructor is invoked as soon as the Toolkit is injected onto
 the page. You should not attempt a DOM manipulation or access to Ember/YNAB
 as it is not guaranteed or likely to be ready when your constructor is invoked.
-The job of the base `Feature` constructor is to simply fetch the user settings
-of your feature. If `enabled` is set to false for your Feature's settings,
-then invoke will not be called.
+The job of the base `Feature` constructor is to do any initialisation that your
+feature requires. Most features do not need a constructor at all.
 
 #### `willInvoke(): <void|Promise>`
 **optional function, not required to be declared**
