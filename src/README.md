@@ -61,9 +61,12 @@ follow these steps:
 
   ```
 
-5. Run `./build` to build the extension for all the browswers.
+5. Run `yarn build` to build the extension into the `dist` directory.
 6. *chrome:* go to `chrome://extensions` and turn on "Developer mode". Then "Load
-unpacked extension". Select `/output/chrome/` and it will load into chrome.
+unpacked extension". Select `dist/` and it will load into Chrome.
+   *firefox:* go to `about:addons`, select Extensions on the left, click the cog
+button, then "Install Add-on from File". Select `/dist/manifest.json` and it will
+load into Firefox.
 7. Reload YNAB!
 
 In order to help you develop cool features, we've created a few API functions
