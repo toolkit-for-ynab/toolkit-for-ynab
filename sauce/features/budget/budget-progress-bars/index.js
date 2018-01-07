@@ -1,6 +1,8 @@
 import { Feature } from 'toolkit/core/feature';
 import { getCurrentRouteName, getEntityManager } from 'toolkit/helpers/toolkit';
 
+const progressIndicatorWidth = 0.005; // Current month progress indicator width
+
 export class BudgetProgressBars extends Feature {
   // Supporting functions, or variables, etc
   loadCategories = true;
@@ -8,7 +10,6 @@ export class BudgetProgressBars extends Feature {
   subCats = [];
   internalIdBase;
   monthProgress;
-  progressIndicatorWidth = 0.005; // Current month progress indicator width
 
   injectCSS() {
     return require('./index.css');
@@ -99,18 +100,18 @@ export class BudgetProgressBars extends Feature {
         if (this.monthProgress > pacing) {
           $(target).css('background', this.generateProgressBarStyle(
               ['#c0e2e9', 'white', '#CFD5D8', 'white'],
-              [pacing, this.monthProgress - this.progressIndicatorWidth, this.monthProgress])
+              [pacing, this.monthProgress - progressIndicatorWidth, this.monthProgress])
           );
         } else {
           $(target).css('background', this.generateProgressBarStyle(
               ['#c0e2e9', '#CFD5D8', '#c0e2e9', 'white'],
-              [this.monthProgress - this.progressIndicatorWidth, this.monthProgress, pacing])
+              [this.monthProgress - progressIndicatorWidth, this.monthProgress, pacing])
           );
         }
       } else {
         $(target).css('background', this.generateProgressBarStyle(
             ['white', '#CFD5D8', 'white'],
-            [this.monthProgress - this.progressIndicatorWidth, this.monthProgress])
+            [this.monthProgress - progressIndicatorWidth, this.monthProgress])
         );
       }
     } else {
@@ -176,14 +177,14 @@ export class BudgetProgressBars extends Feature {
           case 'pacing':
             $(this).css('background', _this.generateProgressBarStyle(
               ['#E5F5F9', '#CFD5D8', '#E5F5F9'],
-              [_this.monthProgress - _this.progressIndicatorWidth, _this.monthProgress])
+              [_this.monthProgress - progressIndicatorWidth, _this.monthProgress])
             );
             break;
           case 'both':
             nameCell = $(this).find('li.budget-table-cell-name');// [0];
             $(nameCell).css('background', _this.generateProgressBarStyle(
               ['#E5F5F9', '#CFD5D8', '#E5F5F9'],
-              [_this.monthProgress - _this.progressIndicatorWidth, _this.monthProgress])
+              [_this.monthProgress - progressIndicatorWidth, _this.monthProgress])
             );
             break;
         }
