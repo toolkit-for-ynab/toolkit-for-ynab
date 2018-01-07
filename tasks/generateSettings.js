@@ -51,6 +51,7 @@ const legacySettingMap = {
   SeamlessBudgetHeader: 'seamlessBudgetHeader',
   ShowIntercom: 'showIntercom',
   SplitKeyboardShortcut: 'splitKeyboardShortcut',
+  SplitTransactionAutoAdjust: 'splitTransactionAutoAdjust',
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',
   StripedRows: 'accountsStripedRows',
