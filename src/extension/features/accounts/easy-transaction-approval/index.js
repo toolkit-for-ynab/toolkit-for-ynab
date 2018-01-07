@@ -103,7 +103,8 @@ export class EasyTransactionApproval extends Feature {
 
           // approve transactions
           _this.approveTransactions();
-        });
+        }
+      );
       $('.ynab-grid').on(
         'contextmenu',
         '.ynab-grid-body-row .ynab-grid-cell-notification button.transaction-notification-info',
@@ -119,7 +120,8 @@ export class EasyTransactionApproval extends Feature {
 
           // approve transactions
           _this.approveTransactions();
-        });
+        }
+      );
     });
 
     // ensure that watchForRightClick() is only called once

@@ -133,20 +133,18 @@ export class AdjustableColumnWidths extends Feature {
           }
         })
         .css({ position: 'relative' })
-        .append(
-          $('<div class="toolkit-draggable"></div>')
-            .click((event) => event.stopPropagation())
-            .mousedown((event) => {
-              this.isMouseDown = true;
-              this.currentX = event.clientX;
-              this.currentResizableClass = resizableClass;
+        .append($('<div class="toolkit-draggable"></div>')
+          .click((event) => event.stopPropagation())
+          .mousedown((event) => {
+            this.isMouseDown = true;
+            this.currentX = event.clientX;
+            this.currentResizableClass = resizableClass;
 
-              this.bindOnMouseMove = this.onMouseMove.bind(this);
-              this.bindOnMouseUp = this.onMouseUp.bind(this);
-              $('body').on('mousemove', this.bindOnMouseMove);
-              $('body').on('mouseup', this.bindOnMouseUp);
-            })
-        );
+            this.bindOnMouseMove = this.onMouseMove.bind(this);
+            this.bindOnMouseUp = this.onMouseUp.bind(this);
+            $('body').on('mousemove', this.bindOnMouseMove);
+            $('body').on('mouseup', this.bindOnMouseUp);
+          }));
     });
   }
 

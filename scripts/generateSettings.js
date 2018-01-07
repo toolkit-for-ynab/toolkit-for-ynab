@@ -152,7 +152,8 @@ function validateSetting(settingObj) {
 
   REQUIRED_SETTINGS.forEach(requiredSetting => {
     if (typeof featureSettings[requiredSetting] === 'undefined' || featureSettings[requiredSetting] === null) {
-      logFatal(settingFilename,
+      logFatal(
+        settingFilename,
         `"${requiredSetting}" is a required setting for all features.`
       );
     }
@@ -173,26 +174,30 @@ function validateSetting(settingObj) {
   switch (featureSettings.type) {
     case 'checkbox':
       if (featureSettings.default === true && !defaultFeatures.includes(featureSettings.name)) {
-        logWarning(settingFilename,
+        logWarning(
+          settingFilename,
           `${featureSettings.name} is not expected to be defaulted to on. If this default was intentional, add the feature name to the defaultFeatures array found in package.json`
         );
       }
 
       if (settingObj.legacy && typeof featureSettings.actions.true === 'undefined' && typeof featureSettings.actions.false === 'undefined') {
-        logFatal(settingFilename,
+        logFatal(
+          settingFilename,
           'Checkbox settings must declare an action for "true" or "false" to have any effect.'
         );
       }
       break;
     case 'select':
       if (settingObj.legacy && featureSettings.length < 2) {
-        logFatal(settingFilename,
+        logFatal(
+          settingFilename,
           'Select settings must have more than one action associated with them.'
         );
       }
       break;
     default:
-      logFatal(settingFilename,
+      logFatal(
+        settingFilename,
         `type "${featureSettings.type}" is invalid. Allowed types are: "select" and "checkbox"`
       );
   }
@@ -205,7 +210,8 @@ function validateActions(settingObj) {
   const settingFilename = settingObj.file;
 
   if (typeof featureSettings.actions === 'undefined') {
-    logFatal(settingFilename,
+    logFatal(
+      settingFilename,
       'Setting "actions" is required'
     );
   }
@@ -213,13 +219,15 @@ function validateActions(settingObj) {
   for (const actionKey in featureSettings.actions) {
     const action = featureSettings.actions[actionKey];
     if (!Array.isArray(action)) {
-      logFatal(settingFilename,
+      logFatal(
+        settingFilename,
         'Actions must be declared as an array, for example ["injectCSS", "main.css"].'
       );
     }
 
     if (action.length % 2 !== 0) {
-      logFatal(settingFilename,
+      logFatal(
+        settingFilename,
         'Actions must have an even number of elements, for example ["injectCSS", "main.css"].'
       );
     }

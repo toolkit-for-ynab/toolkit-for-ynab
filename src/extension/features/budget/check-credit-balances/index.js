@@ -112,7 +112,9 @@ export class CheckCreditBalances extends Feature {
             difference = ((available + balance) * -1);
           }
 
-          foundButton |= _this.updateInspectorButton(a.name, difference);
+          if (!foundButton) {
+            foundButton = _this.updateInspectorButton(a.name, difference);
+          }
 
           if (available !== (balance * -1)) {
             _this.updateRow(a.name);
@@ -204,8 +206,8 @@ export class CheckCreditBalances extends Feature {
   updateCreditBalances() {
     if (ynabToolKit.options.QuickBudgetWarning) {
       // no need to confirm quick budget if zero budgeted
-      if (! $('div.budget-table ul.budget-table-row.is-checked li.budget-table-cell-budgeted .currency').hasClass('zero')) {
-        if (!confirm('Are you sure you want to budget this amount?')) { // eslint-disable-line no-alert
+      if (!$('div.budget-table ul.budget-table-row.is-checked li.budget-table-cell-budgeted .currency').hasClass('zero')) {
+        if (!window.confirm('Are you sure you want to budget this amount?')) { // eslint-disable-line no-alert
           return;
         }
       }

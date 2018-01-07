@@ -86,17 +86,15 @@ export class SpareChange extends Feature {
         transaction = this.selectedTransactions[i];
 
         if (transaction.get('parentEntityId') !== null) {
-          continue;
-        }
+          if (transaction.get('outflow')) {
+            let amount = ynab.convertFromMilliDollars(transaction.get('outflow'));
+            let nextDollar = Math.ceil(amount);
+            let spareChangeForThisRow = nextDollar - amount;
+            runningSpareChange += ynab.convertToMilliDollars(spareChangeForThisRow);
+          }
 
-        if (transaction.get('outflow')) {
-          let amount = ynab.convertFromMilliDollars(transaction.get('outflow'));
-          let nextDollar = Math.ceil(amount);
-          let spareChangeForThisRow = nextDollar - amount;
-          runningSpareChange += ynab.convertToMilliDollars(spareChangeForThisRow);
+          selectedAccount.__ynabToolKitSpareChange = runningSpareChange;
         }
-
-        selectedAccount.__ynabToolKitSpareChange = runningSpareChange;
       }
     }
   }

@@ -206,8 +206,7 @@
           $reportsData.css({
             overflow: 'scroll',
             'overflow-y': 'scroll'
-          }).html(
-            `<div class="income-vs-expense-report">
+          }).html(`<div class="income-vs-expense-report">
               <i id="expand-collapse-all" title="Expand/Collapse All" class="flaticon stroke expand-vertically"></i>
               <table class="ynabtk-table inflows">
                 <thead>
@@ -246,16 +245,14 @@
                   </tr>
                 </thead>
               </table>
-            </div>`
-          );
+            </div>`);
 
           let $inflowTable = $('.ynabtk-table.inflows');
           let $outflowTable = $('.ynabtk-table.outflows');
           let $netIncomeTable = $('.ynabtk-table.net-income');
 
           // create the "toggle" row
-          let allPayeesToggleRow = $(
-            `<tr class="expandable-toggle" id="all-payees">
+          let allPayeesToggleRow = $(`<tr class="expandable-toggle" id="all-payees">
               <td class="col-title master-category" title="All Income Sources">
                 <i class="flaticon stroke up"></i>
                 All Income Sources
@@ -264,8 +261,7 @@
           `);
 
           // create the "summary" row which will show only when expanded
-          let allPayeesTotalRow = $(
-            `<tr class="expandable-row summary-row" data-expand-for="all-payees">
+          let allPayeesTotalRow = $(`<tr class="expandable-row summary-row" data-expand-for="all-payees">
               <td class="col-title master-category">Total All Income Resources</td>
             </tr>
           `);
@@ -306,32 +302,23 @@
           for (let payeeId in reportData.inflowsByPayee) {
             if (payeeId === 'null') {
               hasUnkownPayee = true;
-              continue;
+            } else {
+              let payeeData = reportData.inflowsByPayee[payeeId];
+              let payeeName = payeeData.internalData.get('name');
+              let payeeRow = $($('<tr>', { class: 'expandable-row', 'data-expand-for': 'all-payees' }).append($('<td>', { class: 'col-title payee-name', title: payeeName, text: payeeName })));
+
+              payeeData.totalByDate.forEach((total) => {
+                let payeeDateTotal = ynabToolKit.shared.formatCurrency(total);
+                payeeRow.append($('<td>', { class: 'col-data', text: payeeDateTotal }));
+              });
+
+              $('.ynabtk-tbody', $inflowTable).append(payeeRow);
             }
-
-            let payeeData = reportData.inflowsByPayee[payeeId];
-            let payeeName = payeeData.internalData.get('name');
-            let payeeRow = $(
-              $('<tr>', { class: 'expandable-row', 'data-expand-for': 'all-payees' }).append(
-                $('<td>', { class: 'col-title payee-name', title: payeeName, text: payeeName })
-              )
-            );
-
-            payeeData.totalByDate.forEach((total) => {
-              let payeeDateTotal = ynabToolKit.shared.formatCurrency(total);
-              payeeRow.append($('<td>', { class: 'col-data', text: payeeDateTotal }));
-            });
-
-            $('.ynabtk-tbody', $inflowTable).append(payeeRow);
           }
 
           if (hasUnkownPayee) {
             let payeeData = reportData.inflowsByPayee.null;
-            let payeeRow = $(
-              $('<tr>', { class: 'expandable-row', 'data-expand-for': 'all-payees' }).append(
-                $('<td>', { class: 'col-title payee-name', title: 'Unknown payee. Make sure all inflow transactions have a payee.', text: 'Unknown' })
-              )
-            );
+            let payeeRow = $($('<tr>', { class: 'expandable-row', 'data-expand-for': 'all-payees' }).append($('<td>', { class: 'col-title payee-name', title: 'Unknown payee. Make sure all inflow transactions have a payee.', text: 'Unknown' })));
 
             payeeData.totalByDate.forEach((total) => {
               let payeeDateTotal = ynabToolKit.shared.formatCurrency(total);
@@ -380,20 +367,10 @@
             let masterCategoryName = masterCategoryData.internalData.get('name');
 
             // create the "toggle" row
-            let masterCategoryToggleRow = $(
-              $('<tr>', { class: 'expandable-toggle', id: masterCategoryId }).append(
-                $('<td>', { class: 'col-title master-category', title: masterCategoryName }).append(
-                  $('<i>', { class: 'flaticon stroke up' })
-                ).append(document.createTextNode(masterCategoryName))
-              )
-            );
+            let masterCategoryToggleRow = $($('<tr>', { class: 'expandable-toggle', id: masterCategoryId }).append($('<td>', { class: 'col-title master-category', title: masterCategoryName }).append($('<i>', { class: 'flaticon stroke up' })).append(document.createTextNode(masterCategoryName))));
 
             // create the "summary" row which will show only when expanded
-            let masterCategoryTotalRow = $(
-              $('<tr>', { class: 'expandable-row summary-row', 'data-expand-for': masterCategoryId }).append(
-                $('<td>', { class: 'col-title master-category', text: 'Total ' + masterCategoryName })
-              )
-            );
+            let masterCategoryTotalRow = $($('<tr>', { class: 'expandable-row summary-row', 'data-expand-for': masterCategoryId }).append($('<td>', { class: 'col-title master-category', text: 'Total ' + masterCategoryName })));
 
             // add the totals to both the toggle and the total row
             masterCategoryData.totalByDate.forEach((total) => {
@@ -409,13 +386,11 @@
             masterCategoryData.subCategoriesArray.forEach((subCategoryData) => {
               let isImmediateIncome = subCategoryData.internalData.isImmediateIncomeCategory();
               let subCategoryName = isImmediateIncome ? 'Negative Starting Balances' : subCategoryData.internalData.get('name');
-              let subCategoryRow = $(
-                // default the subcategory row as display: none
-                $('<tr>', { class: 'expandable-row', 'data-expand-for': masterCategoryId }).append(
-                  $('<td>', { class: 'col-title sub-category' })
-                    .append(document.createTextNode(subCategoryName))
-                )
-              );
+
+              // default the subcategory row as display: none
+              let subCategoryRow = $($('<tr>', { class: 'expandable-row', 'data-expand-for': masterCategoryId })
+                .append($('<td>', { class: 'col-title sub-category' })
+                  .append(document.createTextNode(subCategoryName))));
 
               subCategoryData.totalByDate.forEach((total) => {
                 let subCategoryDateTotal = ynabToolKit.shared.formatCurrency(-total);

@@ -53,10 +53,8 @@ function beginPolling() {
       };
 
       // Inject it into the head so it's left alone
-      $('head').append(
-        $('<style>', { id: 'toolkit-injected-styles', type: 'text/css' })
-          .text(globalCSS)
-      );
+      $('head').append($('<style>', { id: 'toolkit-injected-styles', type: 'text/css' })
+        .text(globalCSS));
 
       // Hook up listeners and then invoke any features that are ready to go.
       featureInstances.forEach((feature) => {
@@ -71,10 +69,8 @@ function beginPolling() {
                 feature.invoke();
               }
             });
-          } else {
-            if (feature.shouldInvoke()) {
-              feature.invoke();
-            }
+          } else if (feature.shouldInvoke()) {
+            feature.invoke();
           }
         }
       });

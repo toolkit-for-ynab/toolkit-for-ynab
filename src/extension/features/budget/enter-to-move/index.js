@@ -20,9 +20,7 @@ export class EnterToMove extends Feature {
   onKeyDown = e => {
     const keycode = e.keycode || e.which;
     if (keycode === 13) {
-      const OK = $(
-        '.modal-budget-move-money .modal-actions button:first-child'
-      );
+      const OK = $('.modal-budget-move-money .modal-actions button:first-child');
       OK.click();
     }
   };

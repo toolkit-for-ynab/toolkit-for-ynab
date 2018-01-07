@@ -7,7 +7,7 @@
   "description": "Adds a button to the side bar to access reports. Net Worth, Spending By Category, and Income vs. Expense are all available reports.",
       "actions": {
                     "true": [
-                      "injectScript", "../lib/highcharts-4.2.6/highcharts.js",
+                      "injectScript", "../lib/highcharts-6.0.4/highcharts.js",
                       "injectCSS", "../lib/noUiSlider.8.2.1/nouislider.min.css",
                       "injectScript", "../lib/noUiSlider.8.2.1/nouislider.min.js",
                       "injectCSS", "main.css",

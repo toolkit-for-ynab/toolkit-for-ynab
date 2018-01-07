@@ -1,7 +1,7 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && typeof Highcharts !== 'undefined') {
     ynabToolKit.spendingByCategory = (function () {
-      let colors = ['#ea5439', '#f3ad51', '#ebe598', '#74a9e6', '#c8df68', '#8ba157', '#91c5b4', '#009dae', '#cbdb3c', '#e4d354', '#8085e9', '#f7a35c', '#434348', '#7cb5ec', '#c7f6be'];
+      let colors = ['#ea5439', '#f3ad51', '#ebe598', '#74a9e6', '#c8df68', '#8ba157', '#91c5b4', '#009dae', '#cbdb3c', '#e4d354', '#8085e9', '#f7a35c', '#a4c0d0', '#7cb5ec', '#c7f6be'];
       let reportData = {
         masterCategories: {}
       };
@@ -67,26 +67,18 @@
         for (var i = legendData.length - 1; i >= 0; i--) {
           legendTotal += legendData[i].y;
 
-          $('.ynabtk-category-panel').append(
-            $('<div>', {
-              class: 'ynabtk-category-entry'
-            }).append(
-              $('<div>', {
-                class: 'ynabtk-category-entry-name'
-              }).append(
-                $('<div>', {
-                  class: 'ynabtk-reports-legend-square category-color',
-                  css: { 'background-color': legendData[i].color }
-                })
-              ).append(document.createTextNode(legendData[i].name))
-            )
-              .append(
-                $('<div>', {
-                  class: 'ynabtk-category-entry-amount',
-                  text: ynabToolKit.shared.formatCurrency(legendData[i].y)
-                })
-              )
-          );
+          $('.ynabtk-category-panel').append($('<div>', {
+            class: 'ynabtk-category-entry'
+          }).append($('<div>', {
+            class: 'ynabtk-category-entry-name'
+          }).append($('<div>', {
+            class: 'ynabtk-reports-legend-square category-color',
+            css: { 'background-color': legendData[i].color }
+          })).append(document.createTextNode(legendData[i].name)))
+            .append($('<div>', {
+              class: 'ynabtk-category-entry-amount',
+              text: ynabToolKit.shared.formatCurrency(legendData[i].y)
+            })));
         }
 
         $('.ynabtk-category-panel')
@@ -100,11 +92,10 @@
             .append($('<div>', {
               class: 'ynabtk-category-entry-amount total',
               text: ynabToolKit.shared.formatCurrency(legendTotal)
-            }))
-          );
+            })));
       }
 
-      function showCategoryTransactions(category, transactions) {
+      function showCategoryTransactions(event, category, transactions) {
         let budgetController = ynabToolKit.shared.containerLookup('controller:budget');
         let budgetViewModel = ynab.YNABSharedLib.getBudgetViewModel_BudgetMonthViewModel(transactions[0].get('date'))._result;
         let displayItemsCollection = budgetViewModel.getBudgetMonthDisplayItemsCollection();
@@ -115,18 +106,16 @@
           selectedActivityTransactions: transactions
         });
 
-        budgetController.send('openModal', 'modals/budget/activity', {
-          triggerElement: $(event.currentTarget),
+        const modalOptions = {
+          triggerElement: $('#report-chart'),
           controller: 'budget',
-          arrow: 'up',
           offset: {
             y: event.chartY,
-            x: event.chartX - $(event.currentTarget).width() / 2
-          },
-          arrowOffset: {
-            x: event.chartX - $(event.currentTarget).width() / 2
+            x: event.chartX
           }
-        });
+        };
+
+        budgetController.send('openModal', 'modals/budget/activity', modalOptions);
       }
 
       return {
@@ -179,17 +168,13 @@
           // set up the container for our graph and for our side-panel (the legend)
           $reportsData.css({
             display: 'inline-flex'
-          }).html($('<div>', {
-            class: 'ynabtk-spending-by-cat-chart-container'
-          }).append(
-            $('<div>', { id: 'report-chart', css: { position: 'relative', height: '100%' } })
-          )).append(
-            $('<div>', { class: 'ynabtk-category-panel' })
+          })
+            .html($('<div>', { class: 'ynabtk-spending-by-cat-chart-container' })
+              .append($('<div>', { id: 'report-chart', css: { position: 'relative', height: '100%' } })))
+            .append($('<div>', { class: 'ynabtk-category-panel' })
               .append($('<div>', { class: 'ynabtk-category-entry' })
                 .append($('<div>', { class: 'ynabtk-category-entry-name' }).append('Category'))
-                .append($('<div>', { class: 'ynabtk-category-entry-amount' }).append('Spending'))
-              )
-          );
+                .append($('<div>', { class: 'ynabtk-category-entry-amount' }).append('Spending'))));
 
           // store all the categories into an array so we can sort it!
           let masterCategoriesArray = [];
@@ -236,8 +221,8 @@
             let color = colors[index];
             totalSpending += masterCategoryData.total;
 
-            // the 10th data element will get grouped into "all other transactions"
-            if (chartData.length < 9) {
+            // the 15th data element will get grouped into "all other transactions"
+            if (chartData.length < 14) {
               chartData.unshift({
                 name: masterCategoryName,
                 y: masterCategoryTotal,
@@ -253,12 +238,6 @@
               id: masterCategoryId,
               size: '80%',
               innerSize: '50%',
-              dataLabels: {
-                formatter: function () {
-                  let formattedNumber = ynabToolKit.shared.formatCurrency(this.y);
-                  return this.point.name + '<br>' + formattedNumber + ' (' + Math.round(this.percentage) + '%)';
-                }
-              },
               data: []
             };
 
@@ -272,8 +251,8 @@
                 color: colors[subCatIndex % colors.length],
                 transactions: subCategoryData.transactions,
                 events: {
-                  click: function () {
-                    showCategoryTransactions(subCategoryData.internalData, this.transactions);
+                  click: function (event) {
+                    showCategoryTransactions(event, subCategoryData.internalData, this.transactions);
                   }
                 }
               });
@@ -288,11 +267,10 @@
           }
 
           // make that chart!
-          ynabToolKit.spendingByCategory.chart = new Highcharts.Chart({
+          const chart = {
             credits: false,
             chart: {
               type: 'pie',
-              renderTo: 'report-chart',
               events: {
                 drilldown: function (e) {
                   this.setTitle({
@@ -323,6 +301,14 @@
             plotOptions: {
               pie: {
                 startAngle: 90
+              },
+              series: {
+                dataLabels: {
+                  formatter: function () {
+                    let formattedNumber = ynabToolKit.shared.formatCurrency(this.y);
+                    return this.point.name + '<br>' + formattedNumber + ' (' + Math.round(this.percentage) + '%)';
+                  }
+                }
               }
             },
             tooltip: {
@@ -337,18 +323,14 @@
               name: 'Total Spending',
               data: chartData,
               size: '80%',
-              innerSize: '50%',
-              dataLabels: {
-                formatter: function () {
-                  let formattedNumber = ynabToolKit.shared.formatCurrency(this.y);
-                  return this.point.name + '<br>' + formattedNumber + ' (' + Math.round(this.percentage) + '%)';
-                }
-              }
+              innerSize: '50%'
             }],
             drilldown: {
               series: drilldownData
             }
-          });
+          };
+
+          ynabToolKit.spendingByCategory.chart = new Highcharts.Chart('report-chart', chart);
         }
       };
     }());

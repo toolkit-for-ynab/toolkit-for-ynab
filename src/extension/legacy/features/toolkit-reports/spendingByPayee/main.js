@@ -1,7 +1,7 @@
 (function poll() {
   if (typeof ynabToolKit !== 'undefined' && typeof Highcharts !== 'undefined') {
     ynabToolKit.spendingByPayee = (function () {
-      let colors = ['#ea5439', '#f3ad51', '#ebe598', '#74a9e6', '#c8df68', '#8ba157', '#91c5b4', '#009dae', '#cbdb3c'];
+      let colors = ['#ea5439', '#f3ad51', '#ebe598', '#74a9e6', '#c8df68', '#8ba157', '#91c5b4', '#009dae', '#cbdb3c', '#e4d354', '#8085e9', '#f7a35c', '#a4c0d0', '#7cb5ec', '#c7f6be'];
       let reportData = {
         payees: {}
       };
@@ -82,15 +82,10 @@
             display: 'inline-flex'
           }).html($('<div>', {
             class: 'ynabtk-spending-by-payee-chart-container'
-          }).append(
-            $('<div>', { id: 'report-chart', css: { position: 'relative', height: '100%' } })
-          )).append(
-            $('<div>', { class: 'ynabtk-payee-panel' })
-              .append($('<div>', { class: 'ynabtk-payee-entry' })
-                .append($('<div>', { class: 'ynabtk-payee-entry-name' }).append('Category'))
-                .append($('<div>', { class: 'ynabtk-payee-entry-amount' }).append('Spending'))
-              )
-          );
+          }).append($('<div>', { id: 'report-chart', css: { position: 'relative', height: '100%' } }))).append($('<div>', { class: 'ynabtk-payee-panel' })
+            .append($('<div>', { class: 'ynabtk-payee-entry' })
+              .append($('<div>', { class: 'ynabtk-payee-entry-name' }).append('Category'))
+              .append($('<div>', { class: 'ynabtk-payee-entry-amount' }).append('Spending'))));
 
           // store all the categories into an array so we can sort it!
           let payeeArray = [];
@@ -121,8 +116,8 @@
             let color = colors[index] || otherPayees.color;
             totalSpending += payeeTotal;
 
-            // the 10th data element will get grouped into "all other payees"
-            if (chartData.length < 9) {
+            // the 15th data element will get grouped into "all other payees"
+            if (chartData.length < 14) {
               chartData.unshift({
                 name: payeeName,
                 y: payeeTotal,
@@ -133,26 +128,18 @@
             }
 
             // also add the payee to the legend so users can still see all the data
-            $('.ynabtk-payee-panel').append(
-              $('<div>', {
-                class: 'ynabtk-payee-entry'
-              }).append(
-                $('<div>', {
-                  class: 'ynabtk-payee-entry-name'
-                }).append(
-                  $('<div>', {
-                    class: 'ynabtk-reports-legend-square payee-color',
-                    css: { 'background-color': color }
-                  })
-                ).append(document.createTextNode(payeeName))
-              )
-                .append(
-                  $('<div>', {
-                    class: 'ynabtk-payee-entry-amount',
-                    text: ynabToolKit.shared.formatCurrency(payeeTotal)
-                  })
-                )
-            );
+            $('.ynabtk-payee-panel').append($('<div>', {
+              class: 'ynabtk-payee-entry'
+            }).append($('<div>', {
+              class: 'ynabtk-payee-entry-name'
+            }).append($('<div>', {
+              class: 'ynabtk-reports-legend-square payee-color',
+              css: { 'background-color': color }
+            })).append(document.createTextNode(payeeName)))
+              .append($('<div>', {
+                class: 'ynabtk-payee-entry-amount',
+                text: ynabToolKit.shared.formatCurrency(payeeTotal)
+              })));
           });
 
           // if we had enough data for otherPayees, make sure we put it in the chart!
@@ -172,8 +159,7 @@
               .append($('<div>', {
                 class: 'ynabtk-payee-entry-amount total',
                 text: ynabToolKit.shared.formatCurrency(totalSpending)
-              }))
-            );
+              })));
 
           // make that chart!
           ynabToolKit.spendingByPayee.chart = new Highcharts.Chart({

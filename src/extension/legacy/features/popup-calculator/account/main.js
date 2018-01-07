@@ -15,13 +15,11 @@
             $('#toolkit-popup-calc-button').prop('disabled', false);
             $('#toolkit-popup-calc-button').removeClass('toolkit-popup-calc-button-hide  toolkit-button-primary');
           }
-        } else {
-          if ($('#toolkit-popup-calc-button').length) {
-            $('#toolkit-popup-calc-button').addClass('toolkit-popup-calc-button-hide');
-            $('#toolkit-popup-calc-button').prop('disabled', true);
+        } else if ($('#toolkit-popup-calc-button').length) {
+          $('#toolkit-popup-calc-button').addClass('toolkit-popup-calc-button-hide');
+          $('#toolkit-popup-calc-button').prop('disabled', true);
 
-            ynabToolKit.accountPopupCalculator.$calcBtn.detach();
-          }
+          ynabToolKit.accountPopupCalculator.$calcBtn.detach();
         }
       }
 

@@ -49,13 +49,7 @@ export class CustomFlagNames extends Feature {
       $('.ynab-flag-green .label, .ynab-flag-green .label-bg').text(greenFlagLabel);
       $('.ynab-flag-purple .label, .ynab-flag-purple .label-bg').text(purpleFlagLabel);
 
-      $('.modal-account-flags .modal').css({ height: '22em' }).append(
-        $('<div>', { id: 'account-flags-actions' }).css({ padding: '0 .3em' }).append(
-          $('<button>', { id: 'flags-edit', class: 'button button-primary' }).append(
-            'Edit '
-          ).append($('<i>', { class: 'flaticon stroke compose-3' }))
-        )
-      );
+      $('.modal-account-flags .modal').css({ height: '22em' }).append($('<div>', { id: 'account-flags-actions' }).css({ padding: '0 .3em' }).append($('<button>', { id: 'flags-edit', class: 'button button-primary' }).append('Edit ').append($('<i>', { class: 'flaticon stroke compose-3' }))));
 
       this.addEventListeners();
     }
@@ -75,20 +69,16 @@ export class CustomFlagNames extends Feature {
       for (let key in flags) {
         let flag = flags[key];
 
-        $('.modal-account-flags .modal-list').append(
-          $('<li>').append(
-            $('<input>', { id: key, type: 'text', class: 'flag-input', value: flag.label, placeholder: flag.label }).css({ color: '#fff', fill: flag.color, 'background-color': flag.color, height: 30, padding: '0 .7em', 'margin-bottom': '.3em', border: 'none' })
-          )
-        );
+        $('.modal-account-flags .modal-list').append($('<li>').append($('<input>', {
+          id: key, type: 'text', class: 'flag-input', value: flag.label, placeholder: flag.label
+        }).css({
+          color: '#fff', fill: flag.color, 'background-color': flag.color, height: 30, padding: '0 .7em', 'margin-bottom': '.3em', border: 'none'
+        })));
       }
 
       $('#account-flags-actions').empty();
 
-      $('#account-flags-actions').append(
-        $('<button>', { id: 'flags-close', class: 'button button-primary' }).append(
-          'Ok '
-        ).append($('<i>', { class: 'flaticon stroke checkmark-2' }))
-      );
+      $('#account-flags-actions').append($('<button>', { id: 'flags-close', class: 'button button-primary' }).append('Ok ').append($('<i>', { class: 'flaticon stroke checkmark-2' })));
 
       $('input.flag-input').focus(function () {
         $(this).css({

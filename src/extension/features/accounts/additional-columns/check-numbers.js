@@ -29,7 +29,7 @@ export class CheckNumbers {
 
   // Don't need to do any pre-processing for check-numbers...carry on now.
   willInvoke() {
-    return;
+
   }
 
   // Should return a boolean that informs AdditionalColumns feature that it

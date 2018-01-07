@@ -47,9 +47,7 @@ export class IncomeFromLastMonth extends Feature {
         <div class="budget-header-totals-cell-value income-from-last-month user-data">
           <span class="user-data currency positive"></span>
         </div>`);
-      $('.budget-header-totals-details-names').prepend(
-        '<div class="budget-header-totals-cell-name income-from-last-month" style="padding-left: .3em; text-align:left"></div>'
-      );
+      $('.budget-header-totals-details-names').prepend('<div class="budget-header-totals-cell-name income-from-last-month" style="padding-left: .3em; text-align:left"></div>');
     }
 
     $('.budget-header-totals-cell-value.income-from-last-month span').html((total < 0 ? '-' : '+') + ynabToolKit.shared.formatCurrency(total, true));

@@ -24,7 +24,8 @@ export class RouteChangeListener {
           } else {
             Ember.run.scheduleOnce('afterRender', controller, 'emitSameBudgetRouteChange');
           }
-        }),
+        }
+      ),
 
       emitSameBudgetRouteChange: function () {
         let currentRoute = applicationController.get('currentRouteName');

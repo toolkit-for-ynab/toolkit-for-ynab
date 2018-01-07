@@ -39,18 +39,11 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
       function setUpReportsButton() {
         if ($('li.ynabtk-navlink-reports').length > 0) return;
 
-        $('.nav-main > li:eq(1)').after(
-          // $('<li>').append(
-          // $('<li>', { class: 'ember-view ynabtk-navlink-reports' }).append(
-          $('<li>', { class: 'ynabtk-navlink-reports' }).append(
-            $('<a>', { class: 'ynabtk-navlink-reports-link' }).append(
-              $('<span>', { class: 'ember-view flaticon stroke document-4' })
-            ).append(
-              (ynabToolKit.l10nData && ynabToolKit.l10nData['sidebar.reports']) || 'Toolkit Reports'
-            )
-          )
-          // )
-        );
+        $('.nav-main > li:eq(1)')
+          .after($('<li>', { class: 'ynabtk-navlink-reports' })
+            .append($('<a>', { class: 'ynabtk-navlink-reports-link' })
+              .append($('<span>', { class: 'ember-view flaticon stroke document-4' }))
+              .append((ynabToolKit.l10nData && ynabToolKit.l10nData['sidebar.reports']) || 'Toolkit Reports')));
 
         $('.ynabtk-navlink-reports-link').click((event) => {
           event.preventDefault();
@@ -65,15 +58,12 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
         updateNavigation();
 
         // append the entire page to the .scroll-wrap pane in YNAB (called by showReports)
-        $pane.append(
-          $('<div class="ynabtk-reports"></div>')
-            // append the navigation (list of supportedReports)
-            .append(generateReportNavigation())
-            // append the filters and containers for report headers/report data
-            .append(
-              $('<div class="ynabtk-reports-filters"></div>')
-                .append(
-                  `<h3>
+        $pane.append($('<div class="ynabtk-reports"></div>')
+          // append the navigation (list of supportedReports)
+          .append(generateReportNavigation())
+          // append the filters and containers for report headers/report data
+          .append($('<div class="ynabtk-reports-filters"></div>')
+            .append(`<h3>
                     ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.filters']) || 'Filters')}
                   </h3>
                   <div class="ynabtk-filter-group date-filter">
@@ -93,12 +83,9 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
                       <option value="all">All Budget Accounts</option>
                     </select>
                     <div id="selected-account-list" class="ynabtk-account-chips"></div>
-                  </div>`
-                )
-            )
-            .append('<div class="ynabtk-reports-headers"></div>')
-            .append('<div class="ynabtk-reports-data"></div>')
-        );
+                  </div>`))
+          .append('<div class="ynabtk-reports-headers"></div>')
+          .append('<div class="ynabtk-reports-data"></div>'));
 
         generateDateSlider(transactionsViewModel);
         generateQuickDateFilters();
@@ -126,8 +113,7 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
 
       function generateReportNavigation() {
         // create the reports header
-        let $reportsHeader = $(
-          `<div class="ynabtk-reports-nav">
+        let $reportsHeader = $(`<div class="ynabtk-reports-nav">
             <h2>
               <span><i class="flaticon stroke document-4"></i></span>
             </h2>
@@ -136,15 +122,9 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
 
         // now populate the reports header!
         supportedReports.forEach((report) => {
-          $('.nav-reports', $reportsHeader).append(
-            $('<li>', { class: 'nav-reports-navlink' }).append(
-              $('<a>', { id: report.toolkitId, href: '#' }).text(
-                report.name
-              ).click(() => {
-                onReportSelected(report.toolkitId);
-              })
-            )
-          );
+          $('.nav-reports', $reportsHeader).append($('<li>', { class: 'nav-reports-navlink' }).append($('<a>', { id: report.toolkitId, href: '#' }).text(report.name).click(() => {
+            onReportSelected(report.toolkitId);
+          })));
         });
 
         return $reportsHeader;
@@ -334,19 +314,17 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
             let accountData = onBudgetAccounts.find((account) => accountId === account.get('entityId')) ||
                               offBudgetAccounts.find((account) => accountId === account.get('entityId'));
             $accountList
-              .append(
-                $('<div>', {
-                  class: 'ynabtk-chip',
-                  title: accountData.get('accountName'),
-                  text: accountData.get('accountName')
-                })
-                  .click(() => {
-                    let index = selectedAccounts.indexOf(accountId);
-                    selectedAccounts.splice(index, 1);
-                    updateAccountList();
-                    filterTransactionsAndBuildChart();
-                  })
-              );
+              .append($('<div>', {
+                class: 'ynabtk-chip',
+                title: accountData.get('accountName'),
+                text: accountData.get('accountName')
+              })
+                .click(() => {
+                  let index = selectedAccounts.indexOf(accountId);
+                  selectedAccounts.splice(index, 1);
+                  updateAccountList();
+                  filterTransactionsAndBuildChart();
+                }));
           });
         }
 

@@ -22,10 +22,7 @@ export class CollapseSideMenu extends Feature {
 
   invoke() {
     this.collapseBtn =
-      $('<li>', { class: 'ember-view ynabtk-navlink-collapse' }).append(
-        $('<a>', { class: 'ynabtk-collapse-link' }).append(
-          $('<span>', { class: 'ember-view flaticon stroke left-circle-4' })).append(
-          toolkitHelper.i10n('toolkit.collapse', 'Collapse')));
+      $('<li>', { class: 'ember-view ynabtk-navlink-collapse' }).append($('<a>', { class: 'ynabtk-collapse-link' }).append($('<span>', { class: 'ember-view flaticon stroke left-circle-4' })).append(toolkitHelper.i10n('toolkit.collapse', 'Collapse')));
 
     this.setupBtns();
   }
@@ -111,48 +108,40 @@ export class CollapseSideMenu extends Feature {
 
     for (let i = 0; i < navChildrenLength; i++) {
       let child = navChildren[i];
-
-      // If this is the collapse button, skip
-      if (child.className.indexOf('ynabtk-navlink-collapse') > -1) {
-        continue;
-      }
-
       let span = $(child).find('span')[0];
 
-      // Don't process if not actually a button
-      if (!span) {
-        continue;
+      // If this is the collapse button, skip
+      if (span && !child.className.includes('ynabtk-navlink-collapse')) {
+        let btnClasses = span.className;
+        let button = $('<button>');
+        button.addClass(btnClasses);
+        button.addClass('button button-prefs');
+
+        let listItem = $(child).find('li')[0] || child;
+        let linkClass = listItem.className.replace(' active', '').trim();
+
+        let link = $('<a>');
+        link.attr('href', '#');
+        link.addClass(linkClass);
+        link.html(button);
+        link.click(this, clickFunction);
+
+        this.originalButtons[linkClass] = 'ul.nav-main li.' + linkClass + ' a';
+
+        // Set proper class so the active styling can be applied
+        if (btnClasses.indexOf('mail-1') > -1) {
+          button.addClass('collapsed-budget');
+        } else if (btnClasses.indexOf('graph-1') > -1) {
+          button.addClass('collapsed-reports');
+        } else if (btnClasses.indexOf('government-1') > -1) {
+          button.addClass('collapsed-account');
+        } else {
+          // Fallback if we don't know what the button is.
+          button.addClass('collapsed');
+        }
+
+        collapsedBtnContainer.append(link);
       }
-
-      let btnClasses = span.className;
-      let button = $('<button>');
-      button.addClass(btnClasses);
-      button.addClass('button button-prefs');
-
-      let listItem = $(child).find('li')[0] || child;
-      let linkClass = listItem.className.replace(' active', '').trim();
-
-      let link = $('<a>');
-      link.attr('href', '#');
-      link.addClass(linkClass);
-      link.html(button);
-      link.click(this, clickFunction);
-
-      this.originalButtons[linkClass] = 'ul.nav-main li.' + linkClass + ' a';
-
-      // Set proper class so the active styling can be applied
-      if (btnClasses.indexOf('mail-1') > -1) {
-        button.addClass('collapsed-budget');
-      } else if (btnClasses.indexOf('graph-1') > -1) {
-        button.addClass('collapsed-reports');
-      } else if (btnClasses.indexOf('government-1') > -1) {
-        button.addClass('collapsed-account');
-      } else {
-        // Fallback if we don't know what the button is.
-        button.addClass('collapsed');
-      }
-
-      collapsedBtnContainer.append(link);
     }
 
     // Add uncollapse button
