@@ -27,7 +27,7 @@ will reload all unpacked extensions when clicked.
 4. Click `Load Temporary Add-on`
 5. Select the `manifest.json` file from the `dist` folder (relative to the root of the repository).
 
-You'll see the toolkit loaded in to Chrome and it'll work as normal. Whenever you make
+You'll see the toolkit loaded in Firefox and it'll work as normal. Whenever you make
 a change to the files in `src` you'll need to run `yarn build` again. Alternatively
 you could run `yarn watch` which will rebuild for you when changes are made to the `src`
 folder.
