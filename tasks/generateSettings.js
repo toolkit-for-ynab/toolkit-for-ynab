@@ -35,6 +35,7 @@ const legacySettingMap = {
   HideAgeOfMoney: 'hideAgeOfMoney',
   HideHelp: 'hideHelp',
   ImportNotification: 'importNotification',
+  IncomeFromLastMonth: 'incomeFromLastMonth',
   LargerClickableIcons: 'largerClickableIcons',
   MonthlyNotesPopupWidth: 'monthlyNotesPopupWidth',
   NavDisplayDensity: 'navDisplayDensity',
