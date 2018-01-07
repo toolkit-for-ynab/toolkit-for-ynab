@@ -53,6 +53,7 @@ const legacySettingMap = {
   SquareNegativeMode: 'squareNegativeMode',
   StealingFromFuture: 'stealingFromNextMonth',
   StripedRows: 'accountsStripedRows',
+  SwapClearedFlagged: 'swapClearedFlagged',
   ToBeBudgetedWarning: 'toBeBudgetedWarning',
   ToggleMasterCategories: 'collapseExpandBudgetGroups',
   ToggleSplits: 'toggleSplits'
