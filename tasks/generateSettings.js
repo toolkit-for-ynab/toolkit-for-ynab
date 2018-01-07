@@ -50,6 +50,7 @@ const legacySettingMap = {
   RunningBalance: 'runningBalance',
   SeamlessBudgetHeader: 'seamlessBudgetHeader',
   ShowIntercom: 'showIntercom',
+  SpareChange: 'spareChange',
   SplitKeyboardShortcut: 'splitKeyboardShortcut',
   SplitTransactionAutoAdjust: 'splitTransactionAutoAdjust',
   SquareNegativeMode: 'squareNegativeMode',
