@@ -22,13 +22,9 @@ export class AutoDistributeSplits extends Feature {
   }
 
   observe(changedNodes) {
-    if (!changedNodes.has('ynab-grid-actions-buttons')) {
-      if (
-        $('.ynab-grid-cell-subCategoryName input').val() ===
-        'Split (Multiple Categories)...'
-      ) {
-        this.ensureButtonPresent();
-      }
+    if (changedNodes.has('button button-primary modal-account-categories-split-transaction')
+        || changedNodes.has('ynab-grid-body-row ynab-grid-body-split is-editing')) {
+      this.ensureButtonPresent();
     }
   }
 
