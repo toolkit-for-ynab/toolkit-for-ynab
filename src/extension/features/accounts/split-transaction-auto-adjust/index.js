@@ -1,6 +1,5 @@
-import { Feature } from 'toolkit/core/feature';
-import { getCurrentRouteName } from 'toolkit/helpers/toolkit';
-
+import { Feature } from 'toolkit/extension/features/feature';
+import { getCurrentRouteName } from 'toolkit/extension/helpers/toolkit';
 
 export class SplitTransactionAutoAdjust extends Feature {
   addAnotherSplit;
@@ -45,7 +44,7 @@ export class SplitTransactionAutoAdjust extends Feature {
     let outflowValue = ynab.unformat($('.ynab-grid-cell-outflow .ember-text-field', firstRow).val());
     let inflowValue = ynab.unformat($('.ynab-grid-cell-inflow .ember-text-field', firstRow).val());
     return outflowValue > 0 ? '.ynab-grid-cell-outflow' :
-           inflowValue > 0 ? '.ynab-grid-cell-inflow' : false;
+      inflowValue > 0 ? '.ynab-grid-cell-inflow' : false;
   }
 
   onAddAnotherSplit() {

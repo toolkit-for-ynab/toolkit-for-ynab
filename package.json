@@ -33,6 +33,7 @@
     "build:legacy": "babel src/extension/legacy --compact false --quiet --out-dir dist/web-accessibles/legacy",
     "build:desktop": "scripts/publish_for_desktop",
     "lint": "eslint --ignore-path .eslintignore ./src ./scripts",
+    "lint:fix": "eslint --fix --ignore-path .eslintignore ./src ./scripts",
     "test": "yarn && yarn gen && jest",
     "watch": "yarn && node scripts/watch.js",
     "webpack": "webpack",

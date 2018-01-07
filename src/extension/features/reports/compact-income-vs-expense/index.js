@@ -1,5 +1,5 @@
-import { Feature } from 'toolkit/core/feature';
-import { getCurrentRouteName } from 'toolkit/helpers/toolkit';
+import { Feature } from 'toolkit/extension/features/feature';
+import { getCurrentRouteName } from 'toolkit/extension/helpers/toolkit';
 
 export class CompactIncomeVsExpense extends Feature {
   injectCSS() { return require('./index.css'); }

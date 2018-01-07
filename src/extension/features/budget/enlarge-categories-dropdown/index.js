@@ -1,5 +1,5 @@
-import { Feature } from 'toolkit/core/feature';
-import { getCurrentRouteName } from 'toolkit/helpers/toolkit';
+import { Feature } from 'toolkit/extension/features/feature';
+import { getCurrentRouteName } from 'toolkit/extension/helpers/toolkit';
 
 const DEFAULT_ADDITIONAL_HEIGHT = 100; // 4 pixels of padding
 const BOTTOM_OF_PAGE_PADDING = 4;

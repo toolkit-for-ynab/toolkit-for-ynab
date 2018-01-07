@@ -1,5 +1,5 @@
-import { Feature } from 'toolkit/core/feature';
-import * as toolkitHelper from 'toolkit/helpers/toolkit';
+import { Feature } from 'toolkit/extension/features/feature';
+import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
 
 export class EasyTransactionApproval extends Feature {
   initBudgetVersion = true;
@@ -89,37 +89,37 @@ export class EasyTransactionApproval extends Feature {
     // call approveTransactions if the notification 'i' icon is right clicked on
     Ember.run.next(function () {
       $('.ynab-grid').off(
-          'contextmenu',
-          '.ynab-grid-body-row .ynab-grid-cell-notification button.transaction-notification-info',
-          function (event) {
-            // prevent defaults
-            event.preventDefault();
-            event.stopPropagation();
+        'contextmenu',
+        '.ynab-grid-body-row .ynab-grid-cell-notification button.transaction-notification-info',
+        function (event) {
+          // prevent defaults
+          event.preventDefault();
+          event.stopPropagation();
 
-            // select row
-            $(this).closest('.ynab-grid-body-row')
-              .find('.ynab-grid-cell-checkbox button:not(.is-checked)')
-              .click();
+          // select row
+          $(this).closest('.ynab-grid-body-row')
+            .find('.ynab-grid-cell-checkbox button:not(.is-checked)')
+            .click();
 
-            // approve transactions
-            _this.approveTransactions();
-          });
+          // approve transactions
+          _this.approveTransactions();
+        });
       $('.ynab-grid').on(
-          'contextmenu',
-          '.ynab-grid-body-row .ynab-grid-cell-notification button.transaction-notification-info',
-          function (event) {
-            // prevent defaults
-            event.preventDefault();
-            event.stopPropagation();
+        'contextmenu',
+        '.ynab-grid-body-row .ynab-grid-cell-notification button.transaction-notification-info',
+        function (event) {
+          // prevent defaults
+          event.preventDefault();
+          event.stopPropagation();
 
-            // select row
-            $(this).closest('.ynab-grid-body-row')
-              .find('.ynab-grid-cell-checkbox button:not(.is-checked)')
-              .click();
+          // select row
+          $(this).closest('.ynab-grid-body-row')
+            .find('.ynab-grid-cell-checkbox button:not(.is-checked)')
+            .click();
 
-            // approve transactions
-            _this.approveTransactions();
-          });
+          // approve transactions
+          _this.approveTransactions();
+        });
     });
 
     // ensure that watchForRightClick() is only called once

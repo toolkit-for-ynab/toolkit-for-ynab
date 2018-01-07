@@ -1,5 +1,5 @@
-import { Feature } from 'toolkit/core/feature';
-import { controllerLookup, getCurrentRouteName } from 'toolkit/helpers/toolkit';
+import { Feature } from 'toolkit/extension/features/feature';
+import { controllerLookup, getCurrentRouteName } from 'toolkit/extension/helpers/toolkit';
 
 export class ToggleTransactionFilters extends Feature {
   injectCSS() {
@@ -87,13 +87,13 @@ export class ToggleTransactionFilters extends Feature {
         .append($('<button>', { id: 'toolkit-toggleReconciled', class: 'button', title: 'Toggle Reconciled Transactions' })
           .append($('<i>', { class: 'flaticon solid lock-1 is-reconciled' })
           // show both text and icons or just the icon
-          .append(this.settings.enabled === '2' ? ' Reconciled' : '')
-          .click(() => { this.toggleReconciled(); })));
+            .append(this.settings.enabled === '2' ? ' Reconciled' : '')
+            .click(() => { this.toggleReconciled(); })));
       $('.accounts-toolbar .accounts-toolbar-right')
         .append($('<button>', { id: 'toolkit-toggleScheduled', class: 'button', title: 'Toggle Scheduled Transactions' })
           .append($('<i>', { class: 'flaticon solid clock-1 is-reconciled' })
           // show both text and icons or just the icon
-          .append(this.settings.enabled === '2' ? ' Scheduled' : '')
+            .append(this.settings.enabled === '2' ? ' Scheduled' : '')
             .click(() => { this.toggleScheduled(); })));
 
       this.updateToggleButtons(settingReconciled, settingScheduled);

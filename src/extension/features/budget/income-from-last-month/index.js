@@ -1,6 +1,5 @@
-/* eslint-disable no-multi-str */
-import { Feature } from 'toolkit/core/feature';
-import * as toolkitHelper from 'toolkit/helpers/toolkit';
+import { Feature } from 'toolkit/extension/features/feature';
+import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
 
 export class IncomeFromLastMonth extends Feature {
   injectCSS() {
@@ -44,13 +43,10 @@ export class IncomeFromLastMonth extends Feature {
 
     if ($('.income-from-last-month').length === 0) {
       // jscs:disable disallowMultipleLineStrings
-      $('.budget-header-totals-details-values').prepend(
-        '<div class="budget-header-totals-cell-value income-from-last-month user-data">\
-      <span class="user-data currency positive"></span>\
-    </div>'
-
-        // jscs:enable disallowMultipleLineStrings
-      );
+      $('.budget-header-totals-details-values').prepend(`
+        <div class="budget-header-totals-cell-value income-from-last-month user-data">
+          <span class="user-data currency positive"></span>
+        </div>`);
       $('.budget-header-totals-details-names').prepend(
         '<div class="budget-header-totals-cell-name income-from-last-month" style="padding-left: .3em; text-align:left"></div>'
       );

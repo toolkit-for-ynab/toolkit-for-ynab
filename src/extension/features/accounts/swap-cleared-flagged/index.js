@@ -1,5 +1,5 @@
-import { Feature } from 'toolkit/core/feature';
-import * as toolkitHelper from 'toolkit/helpers/toolkit';
+import { Feature } from 'toolkit/extension/features/feature';
+import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
 
 export class SwapClearedFlagged extends Feature {
   injectCSS() {

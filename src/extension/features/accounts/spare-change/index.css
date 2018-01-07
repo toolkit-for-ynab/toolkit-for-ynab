@@ -1,0 +1,19 @@
+.ynab-toolkit-accounts-header-balances-spare-change {
+	-webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    -o-box-flex: 1;
+    box-flex: 1;
+    -webkit-flex: 0 1 auto;
+    -ms-flex: 0 1 auto;
+    flex: 0 1 auto;
+
+    height: 3.75em;
+    padding-top: .75em;
+    padding-right: 1rem;
+    margin-right: 1rem;
+    border-right: 1px solid #0e414c;
+    overflow: hidden;
+
+    text-align: center;
+    color: #5bbe72;
+}

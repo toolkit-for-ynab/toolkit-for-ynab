@@ -1,8 +1,7 @@
-import { Feature } from 'toolkit/core/feature';
-import { getCurrentRouteName } from 'toolkit/helpers/toolkit';
+import { Feature } from 'toolkit/extension/features/feature';
+import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
 
 export class RightClickToEdit extends Feature {
-
   isCurrentlyRunning = false;
 
   injectCSS() {
@@ -10,7 +9,7 @@ export class RightClickToEdit extends Feature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('account') !== -1;
+    return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
   }
 
   // Supporting functions,
