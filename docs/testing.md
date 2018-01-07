@@ -34,7 +34,7 @@ folder.
 
 I've not developed much on Firefox other than to make sure the extension works properly
 but usually updates to the code are reflected in real time. If you notice this not happening
-you can click the `Reload` button on the `about:debugging` page of chrome. Note that
+you can click the `Reload` button on the `about:debugging` page. Note that
 temporary extensions are unloaded when Firefox is closed.
 
 ## Edge
