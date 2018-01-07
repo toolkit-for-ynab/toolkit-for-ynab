@@ -71,8 +71,9 @@ content scripts) into single files and manages most of the build process.
 
 #### ES2015? What's that?
 We've decided that it's better to use the latest and greatest than to wait for browsers to
-support all the nice new syntax of ES2015. If you're uncomfortable with the new syntax,
-feel free to use standard Javascript syntax from days of yore. It still works.
+support all the nice newer syntax landing in Javascript. If you have any concerns or questions
+don't hesitate to reach out to us in an issue and ask for an invite to our Slack so you can
+collaborate with the team.
 
 #### Your ESLint style checker is annoying as heck! I don't code that way!
 We have a large number of contributors who each bring their own style to the code base.
