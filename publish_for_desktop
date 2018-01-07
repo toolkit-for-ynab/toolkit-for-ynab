@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-./clean
-./build
-rm -rf ../toolkit-for-ynab-gh-pages/desktop-updates
-mkdir ../toolkit-for-ynab-gh-pages/desktop-updates
-cp output/chrome/manifest.json ../toolkit-for-ynab-gh-pages/desktop-updates/
-cp output/toolkitforynab_*_chrome_webstore.zip ../toolkit-for-ynab-gh-pages/desktop-updates/toolkitforynab_desktop.zip

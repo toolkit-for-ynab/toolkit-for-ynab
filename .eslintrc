@@ -1,10 +1,11 @@
 {
     "env": {
         "browser": true,
-        "es6": true
+        "es6": true,
+        "jest/globals": true
     },
     "parser": "babel-eslint",
-    "plugins": ["import"],
+    "plugins": ["import", "jest"],
     "settings": {
       "import/resolver": "webpack"
     },
@@ -15,22 +16,18 @@
         "Ember": true,
         "Highcharts": true,
         "Intercom": true,
-        "KangoAPI": true,
         "chrome": true,
         "ensureDefaultsAreSet": true,
-        "getKangoExtensionInfo": true,
-        "getKangoStorageKeys": true,
-        "getKangoSetting": true,
         "jQuery": true,
-        "kango": true,
         "moment": true,
         "noUiSlider": true,
         "safari": true,
-        "setKangoSetting": true,
         "windowReload": true,
         "ynab": true,
         "ynabToolKit": true,
-        "YNABFEATURES": true
+        "YNABFEATURES": true,
+        "browser": true,
+        "Components": true
     },
     "rules": {
         "consistent-return": "off",

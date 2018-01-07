@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-! (git pull | grep up-to-date) && ./clean && npm update && npm install && ./build

@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-rm -rf src
-rm -rf output

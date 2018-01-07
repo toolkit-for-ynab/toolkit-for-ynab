@@ -1,18 +1,30 @@
+# OSX is a troll
 .DS_Store
-node_modules/*
-output/*
-certificates/*
-src/*
-*.pyc
-/.project
-package-lock.json
-save-commands.json
-source/common/res/features/act-on-change/feedChanges.js
-source/common/res/features/allInits.js
-source/common/res/features/allSettings.js
-.python-version
+.project
 
-# new framework ingores
-sauce/features/index.js
-source/common/res/features/ynabToolkit.js
-source/common/res/features/ynabToolkit.js.map
+# don't want to push node_modules :O
+node_modules/
+
+# extension deploy stuff
+certificates/
+save-commands.json
+
+# python files
+.python-version
+*.pyc
+
+# we use yarn -- ignore package-lock in case someone npm installed
+package-lock.json
+
+# build directory
+dist/
+
+# created at build time with tasks/generateSettings.js
+src/core/settings/settings.js
+scripts/settings.json
+
+# created at build time with tasks/generateFeatureIndex.js
+src/extension/features/index.js
+
+# created at build time with tasks/generateFeedChanges.js
+src/extension/legacy/features/act-on-change/feedChanges.js

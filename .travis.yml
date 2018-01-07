@@ -1,9 +1,8 @@
 language: node_js
 node_js:
-  - "6"
+  - "8"
 script:
-  - python generateFeedChanges.py
-  - npm run gen-settings
-  - npm run gen-featureIndex
-  - npm run legacy-eslint
-  - npm run webpack
+  - yarn gen
+  - yarn lint
+  - yarn test
+  - yarn webpack
