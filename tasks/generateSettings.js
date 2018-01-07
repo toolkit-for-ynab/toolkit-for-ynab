@@ -27,6 +27,7 @@ const legacySettingMap = {
   DaysOfBufferingHistoryLookup: 'daysOfBufferingHistoryLookup',
   EditAccountButton: 'editButtonPosition',
   EnableRetroCalculator: 'enableRetroCalculator',
+  EnlargeCategoriesDropdown: 'enlargeCategoriesDropdown',
   EmphasizedOutflows: 'accountsEmphasizedOutflows',
   GoalWarningColor: 'goalWarningColor',
   GoogleFontsSelector: 'googleFontsSelector',
@@ -286,7 +287,7 @@ function deleteAllKangoSettings() {
     kango.invokeAsync('kango.storage.clear', function () {
       resolve('success');
     });
-  });  
+  });
 }
 
 function getKangoStorageKeys() {
