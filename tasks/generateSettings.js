@@ -22,6 +22,7 @@ const legacySettingMap = {
   ClearSelection: 'accountsClearSelection',
   ColourBlindMode: 'colourBlindMode',
   CollapseSideMenu: 'collapseSideMenu',
+  CompactIncomeVsExpense: 'compactIncomeVsExpense',
   CurrentMonthIndicator: 'currentMonthIndicator',
   DaysOfBuffering: 'daysOfBuffering',
   DaysOfBufferingHistoryLookup: 'daysOfBufferingHistoryLookup',
