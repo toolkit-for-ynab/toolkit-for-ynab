@@ -326,12 +326,8 @@ jq(() => {
   }
 
   function updateToolkitLogo(isToolkitDisabled) {
-    const logos = {
-      false: 'assets/images/logos/toolkitforynab-logo-200.png',
-      true: 'assets/images/logos/toolkitforynab-logo-200-disabled.png'
-    };
-
-    jq('#logo').attr('src', getBrowser().runtime.getURL(logos[isToolkitDisabled]));
+    const logo = `assets/images/logos/toolkitforynab-logo-200${isToolkitDisabled ? '-disabled' : ''}.png`;
+    jq('#logo').attr('src', getBrowser().runtime.getURL(logo));
   }
 
   function toggleToolkit() {
