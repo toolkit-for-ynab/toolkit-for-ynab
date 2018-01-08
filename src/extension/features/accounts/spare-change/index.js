@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class SpareChange extends Feature {
   selectedTransactions;
@@ -12,7 +13,7 @@ export class SpareChange extends Feature {
   }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('account') > -1;
+    return getCurrentRouteName().indexOf('account') > -1;
   }
 
   // invoke has potential of being pretty processing heavy (needing to sort content, then update calculation for every row)
@@ -25,17 +26,17 @@ export class SpareChange extends Feature {
     this.currentlyRunning = true;
 
     if (this.applicationController === null) {
-      this.applicationController = toolkitHelper.controllerLookup('application');
+      this.applicationController = controllerLookup('application');
     }
 
     if (this.accountsController === null) {
-      this.accountsController = toolkitHelper.controllerLookup('accounts');
+      this.accountsController = controllerLookup('accounts');
     }
 
     Ember.run.debounce(this, function () {
       this.accountsController.addObserver('areChecked', this.onYnabSelectionChanged(this));
 
-      if (toolkitHelper.getCurrentRouteName().indexOf('accounts') > -1) {
+      if (getCurrentRouteName().indexOf('accounts') > -1) {
         if (this.applicationController.get('selectedAccountId')) {
           this.onYnabGridyBodyChanged();
         } else {

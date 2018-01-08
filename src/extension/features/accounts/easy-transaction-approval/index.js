@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 export class EasyTransactionApproval extends Feature {
   initBudgetVersion = true;
@@ -9,7 +9,7 @@ export class EasyTransactionApproval extends Feature {
   selectedTransactions = undefined;
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
+    return getCurrentRouteName().indexOf('account') !== -1;
   }
 
   observe(changedNodes) {

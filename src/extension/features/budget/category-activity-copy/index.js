@@ -1,9 +1,10 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class CategoryActivityCopy extends Feature {
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1;
+    return getCurrentRouteName().indexOf('budget') !== -1;
   }
 
   invoke() {
@@ -17,7 +18,7 @@ export class CategoryActivityCopy extends Feature {
   }
 
   categoryActivityCopy() {
-    const budgetController = toolkitHelper.controllerLookup('budget');
+    const budgetController = controllerLookup('budget');
     const activityTransactions = budgetController.get('selectedActivityTransactions');
     const activities = activityTransactions.map((transaction) => {
       return {

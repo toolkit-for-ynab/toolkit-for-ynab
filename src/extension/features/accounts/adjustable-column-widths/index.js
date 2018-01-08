@@ -1,10 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import {
-  getCurrentRouteName,
-  getToolkitStorageKey,
-  removeToolkitStorageKey,
-  setToolkitStorageKey
-} from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { getToolkitStorageKey, removeToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 const RESIZABLES = [
   'ynab-grid-cell-date',

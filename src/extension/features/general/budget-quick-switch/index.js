@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { controllerLookup, getRouter } from 'toolkit/extension/helpers/toolkit';
+import { controllerLookup, getRouter } from 'toolkit/extension/utils/ember';
 
 export class BudgetQuickSwitch extends Feature {
   populateBudgetList() {

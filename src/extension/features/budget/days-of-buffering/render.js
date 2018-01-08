@@ -1,4 +1,4 @@
-import { i10n } from '../../../helpers/toolkit';
+import { i10n } from 'toolkit/extension/utils/toolkit';
 
 const format = (...args) => (ynab.YNABSharedLib.currencyFormatter.format(...args));
 

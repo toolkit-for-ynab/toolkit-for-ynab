@@ -1,5 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { i10n } from 'toolkit/extension/utils/toolkit';
 
 function isNotSubTransaction(transaction) {
   const displayItemType = transaction.get('displayItemType');
@@ -20,13 +22,13 @@ export class ToggleSplits extends Feature {
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1 && !$(`#${this.idName}`).length;
+    return getCurrentRouteName().indexOf('account') !== -1 && !$(`#${this.idName}`).length;
   }
 
   invoke() {
-    this.accountsController = toolkitHelper.controllerLookup('accounts');
+    this.accountsController = controllerLookup('accounts');
 
-    const buttonText = toolkitHelper.i10n('toolkit.toggleSplits', 'Toggle Splits');
+    const buttonText = i10n('toolkit.toggleSplits', 'Toggle Splits');
     this.$button = $('<button>', { id: this.idName, class: 'ember-view button' })
       .append($('<i>', { class: 'ember-view flaticon stroke right' }).toggle(!this.expanded))
       .append($('<i>', { class: 'ember-view flaticon stroke down' }).toggle(this.expanded))

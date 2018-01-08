@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 const BUDGET_CATEGORIES_DROPDOWN_NODE = 'ynab-u modal-popup modal-account-dropdown modal-account-categories ember-view modal-overlay active';
 

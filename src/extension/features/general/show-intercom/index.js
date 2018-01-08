@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class ShowIntercom extends Feature {
   shouldInvoke() {
@@ -21,7 +21,7 @@ export class ShowIntercom extends Feature {
         </button>
       </li>
     `).click(() => {
-      const accountController = toolkitHelper.controllerLookup('accounts');
+      const accountController = controllerLookup('accounts');
       window.Intercom('show'); // eslint-disable-line new-cap
       accountController.send('closeModal');
     }).appendTo($modalList);

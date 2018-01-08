@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName, transitionTo } from 'toolkit/extension/utils/ynab';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 // TODO: move income-from-last-month to the new framework and just export this
 // variable from that feature
@@ -9,7 +10,7 @@ export class StealingFromFuture extends Feature {
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1;
+    return getCurrentRouteName().indexOf('budget') !== -1;
   }
 
   isMonthABeforeB(a, b) {
@@ -77,9 +78,9 @@ export class StealingFromFuture extends Feature {
 
     $('.ynabtk-month-link', name).click((event) => {
       event.preventDefault();
-      const applicationController = toolkitHelper.controllerLookup('application');
+      const applicationController = controllerLookup('application');
       const budgetVersionId = applicationController.get('budgetVersionId');
-      toolkitHelper.transitionTo('budget.select', budgetVersionId, earliestEntityDate.replace('-', ''));
+      transitionTo('budget.select', budgetVersionId, earliestEntityDate.replace('-', ''));
     });
   }
 

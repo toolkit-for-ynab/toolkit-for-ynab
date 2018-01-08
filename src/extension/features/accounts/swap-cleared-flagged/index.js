@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 export class SwapClearedFlagged extends Feature {
   injectCSS() {
@@ -7,7 +7,7 @@ export class SwapClearedFlagged extends Feature {
   }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('account') > -1;
+    return getCurrentRouteName().indexOf('account') > -1;
   }
 
   invoke() {

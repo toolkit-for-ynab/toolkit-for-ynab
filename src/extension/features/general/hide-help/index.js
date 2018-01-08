@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 export class HideHelp extends Feature {
   injectCSS() { return require('./index.css'); }
@@ -15,10 +15,10 @@ export class HideHelp extends Feature {
   }
 
   invoke() {
-    let hide = toolkitHelper.getToolkitStorageKey('hide-help');
+    let hide = getToolkitStorageKey('hide-help');
 
     if (hide === null) {
-      toolkitHelper.setToolkitStorageKey('hide-help', 'true');
+      setToolkitStorageKey('hide-help', 'true');
       hide = 'true';
     }
 
@@ -45,8 +45,8 @@ export class HideHelp extends Feature {
       </button>
      </li>
     `).click(() => {
-      let hide = !toolkitHelper.getToolkitStorageKey('hide-help', 'boolean');
-      toolkitHelper.setToolkitStorageKey('hide-help', hide);
+      let hide = !getToolkitStorageKey('hide-help', 'boolean');
+      setToolkitStorageKey('hide-help', hide);
       $('body').toggleClass('toolkit-hide-help');
       let accountController = ynabToolKit.shared.containerLookup('controller:accounts');
       accountController.send('closeModal');

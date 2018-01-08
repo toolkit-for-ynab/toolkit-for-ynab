@@ -1,10 +1,7 @@
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
-
+import { getEntityManager } from 'toolkit/extension/utils/ember';
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEntityManager } from 'toolkit/extension/helpers/toolkit';
-
-import outflowTransactionsFilter from './outflowTransactionsFilter';
-import generateReport from './generateReport';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { generateReport, outflowTransactionsFilter } from './helpers';
 import { render, shouldRender } from './render';
 
 export class DaysOfBuffering extends Feature {
@@ -28,7 +25,7 @@ export class DaysOfBuffering extends Feature {
   }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') > -1;
+    return getCurrentRouteName().indexOf('budget') > -1;
   }
 
   render(report) {

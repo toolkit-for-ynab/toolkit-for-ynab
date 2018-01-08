@@ -1,4 +1,4 @@
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class RunningBalance {
   willInvoke() {
@@ -6,7 +6,7 @@ export class RunningBalance {
   }
 
   shouldInvoke() {
-    const applicationController = toolkitHelper.controllerLookup('application');
+    const applicationController = controllerLookup('application');
     return applicationController.get('selectedAccountId') !== null;
   }
 
@@ -53,7 +53,7 @@ export class RunningBalance {
     const isRunningBalance = isSub || isRow || isScheduled;
 
     if (isRunningBalance) {
-      const applicationController = toolkitHelper.controllerLookup('application');
+      const applicationController = controllerLookup('application');
       const selectedAccountId = applicationController.get('selectedAccountId');
       if (!selectedAccountId) { return; }
 
@@ -114,7 +114,7 @@ function attachAnyItemChangedListener(accountId, accountViewModel) {
 // Using ._result here bcause we can guarantee that we've already invoked the
 // getBudgetViewModel_AccountTransactionsViewModel() function when we initialized
 function calculateRunningBalance(accountId) {
-  const accountsController = toolkitHelper.controllerLookup('accounts');
+  const accountsController = controllerLookup('accounts');
   const accountViewModel = ynab.YNABSharedLib.defaultInstance
     .getBudgetViewModel_AccountTransactionsViewModel(accountId)._result;
 
