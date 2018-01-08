@@ -62,9 +62,9 @@
 
         if (calculation !== null) {
           switch (calculation.goalType) {
-            case 'TB' :
-            case 'TBD' :
-            case 'MF' :
+            case 'TB':
+            case 'TBD':
+            case 'MF':
               hasGoal = true;
               status = calculation.goalPercentageComplete;
 
@@ -102,16 +102,19 @@
               if (monthProgress > pacing) {
                 target.style.background = generateProgressBarStyle(
                   ['#c0e2e9', 'white', '#CFD5D8', 'white'],
-                  [pacing, monthProgress - s, monthProgress]);
+                  [pacing, monthProgress - s, monthProgress]
+                );
               } else {
                 target.style.background = generateProgressBarStyle(
                   ['#c0e2e9', '#CFD5D8', '#c0e2e9', 'white'],
-                  [monthProgress - s, monthProgress, pacing]);
+                  [monthProgress - s, monthProgress, pacing]
+                );
               }
             } else {
               target.style.background = generateProgressBarStyle(
                 ['white', '#CFD5D8', 'white'],
-                [monthProgress - s, monthProgress]);
+                [monthProgress - s, monthProgress]
+              );
             }
           }
         } else {
@@ -173,13 +176,15 @@
                 case 'pacing':
                   this.style.background = generateProgressBarStyle(
                     ['#E5F5F9', '#CFD5D8', '#E5F5F9'],
-                    [monthProgress - s, monthProgress]);
+                    [monthProgress - s, monthProgress]
+                  );
                   break;
                 case 'both':
                   nameCell = $(this).find('li.budget-table-cell-name')[0];
                   nameCell.style.background = generateProgressBarStyle(
                     ['#E5F5F9', '#CFD5D8', '#E5F5F9'],
-                    [monthProgress - s, monthProgress]);
+                    [monthProgress - s, monthProgress]
+                  );
                   break;
               }
             }

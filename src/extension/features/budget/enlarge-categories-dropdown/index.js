@@ -31,12 +31,10 @@ export class EnlargeCategoriesDropdown extends Feature {
             top: '-=' + DEFAULT_ADDITIONAL_HEIGHT
           });
         }
-      } else { // modal is shown below autocomplete
-        if (spaceAvailableBelowModal < totalAdditionalHeight) {
-          modal.css({ height: '+=' + (spaceAvailableBelowModal - BOTTOM_OF_PAGE_PADDING) });
-        } else if (spaceAvailableBelowModal >= totalAdditionalHeight) {
-          modal.css({ height: '+=' + DEFAULT_ADDITIONAL_HEIGHT });
-        }
+      } else if (spaceAvailableBelowModal < totalAdditionalHeight) {
+        modal.css({ height: '+=' + (spaceAvailableBelowModal - BOTTOM_OF_PAGE_PADDING) });
+      } else if (spaceAvailableBelowModal >= totalAdditionalHeight) {
+        modal.css({ height: '+=' + DEFAULT_ADDITIONAL_HEIGHT });
       }
     }
   }

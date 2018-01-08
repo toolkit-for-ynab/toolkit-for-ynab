@@ -14,13 +14,9 @@ export class BudgetQuickSwitch extends Feature {
 
         if (budgetVersionId === currentBudgetId) return;
 
-        const budgetListItem = $('<li>').append(
-          $('<button>', { text: budgetVersionName }).prepend(
-            $('<i>', {
-              class: 'flaticon stroke mail-1'
-            })
-          )
-        ).click(() => {
+        const budgetListItem = $('<li>').append($('<button>', { text: budgetVersionName }).prepend($('<i>', {
+          class: 'flaticon stroke mail-1'
+        }))).click(() => {
           const router = getRouter();
           router.send('openBudget', budgetVersionId, budgetVersionName);
         });

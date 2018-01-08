@@ -115,7 +115,7 @@
               const accountName = transaction.getAccountName();
 
               // Do we have a key for this account yet? if not, create it and set it to 0
-              if (!balanceByAccount.hasOwnProperty(accountName)) {
+              if (!Object.prototype.hasOwnProperty.call(balanceByAccount, accountName)) {
                 balanceByAccount[accountName] = 0;
               }
 
@@ -185,9 +185,7 @@
         createChart($reportsData) {
           $reportsData.css({
             display: 'inline-flex'
-          }).html($(
-            '<div id="report-chart" style="flex-grow: 1; position: relative; width: 100%"></div>'
-          ));
+          }).html($('<div id="report-chart" style="flex-grow: 1; position: relative; width: 100%"></div>'));
 
           let startIndex = ynabToolKit.reports.allowedDateStart;
           let endIndex = ynabToolKit.reports.allowedDateEnd;

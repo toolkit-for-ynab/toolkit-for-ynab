@@ -63,9 +63,8 @@ content scripts) into single files and manages most of the build process.
 5. Run `yarn build` from within the folder you cloned which will build the Toolkit.
   - Whilst developing, you may prefer to run `yarn watch` which will monitor the project
     directory for changes and build automatically.
-6. The built extension will be available in the `dist` folder and is the folder you should
-  select when loading the extension into the browser.
-7. Load it into Chrome as an unpacked extension or load it into Firefox via the `manifest.json` file.
+6. The built extension will be available in the `dist/extension` folder. Navigate to `chrome://extensions`
+  and select the `dist/extension` folder as the folder that you would like to load.
 
 # Development Methodology
 

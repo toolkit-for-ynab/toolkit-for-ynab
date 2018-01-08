@@ -86,19 +86,17 @@ export class RunningBalance {
       }
 
       currentRowRunningBalance.insertAfter($('.ynab-grid-cell-inflow', $currentRow));
-    } else {
-      if ($('.ynab-grid-cell-toolkit-running-balance', this.element).length === 0) {
-        $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">')
-          .insertAfter($('.ynab-grid-cell-inflow', this.element));
-      }
+    } else if ($('.ynab-grid-cell-toolkit-running-balance', this.element).length === 0) {
+      $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">')
+        .insertAfter($('.ynab-grid-cell-inflow', this.element));
     }
   }
 
   initializeRunningBalances() {
     return ynab.YNABSharedLib.defaultInstance.entityManager.accountsCollection.forEach((account) => {
       // we call this now so it's guaranteed to be resolved later
-      return ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(account.entityId).
-        then(() => {
+      return ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(account.entityId)
+        .then(() => {
           calculateRunningBalance(account.entityId);
         });
     });
@@ -117,8 +115,8 @@ function attachAnyItemChangedListener(accountId, accountViewModel) {
 // getBudgetViewModel_AccountTransactionsViewModel() function when we initialized
 function calculateRunningBalance(accountId) {
   const accountsController = toolkitHelper.controllerLookup('accounts');
-  const accountViewModel = ynab.YNABSharedLib.defaultInstance.
-    getBudgetViewModel_AccountTransactionsViewModel(accountId)._result;
+  const accountViewModel = ynab.YNABSharedLib.defaultInstance
+    .getBudgetViewModel_AccountTransactionsViewModel(accountId)._result;
 
   if (!accountViewModel.__ynabToolKitAnyItemChangedListener) {
     attachAnyItemChangedListener(accountId, accountViewModel);

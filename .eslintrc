@@ -46,6 +46,9 @@
         "no-use-before-define": "off",
         "radix": "off",
         "strict": "off",
-        "vars-on-top": "off"
+        "vars-on-top": "off",
+        "no-mixed-operators": "off",
+        "no-plusplus": "off",
+        "class-methods-use-this": "off"
     }
 }

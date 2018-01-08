@@ -6,7 +6,7 @@ const SPLIT_BUTTON_CLASS =
   'button button-primary modal-account-categories-split-transaction';
 
 function actualNumber(n) {
-  return typeof n === 'number' && !isNaN(n);
+  return typeof n === 'number' && !Number.isNaN(n);
 }
 
 export class AutoDistributeSplits extends Feature {
@@ -67,10 +67,8 @@ export class AutoDistributeSplits extends Feature {
 
   alertCannotDistribute() {
     // eslint-disable-next-line no-alert
-    alert(
-      'Must fill in at least the total and one sub-transaction ' +
-        'in order to auto-distribute'
-    );
+    alert('Must fill in at least the total and one sub-transaction ' +
+        'in order to auto-distribute');
   }
 
   getRemainingValue(total, subValues) {
@@ -79,10 +77,8 @@ export class AutoDistributeSplits extends Feature {
 
   confirmSubtraction() {
     // eslint-disable-next-line no-alert
-    return confirm(
-      'Sub-transactions add up to more than the total, ' +
-        'are you sure you want to subtract from them?'
-    );
+    return window.confirm('Sub-transactions add up to more than the total, ' +
+        'are you sure you want to subtract from them?');
   }
 
   proportionalValue(total, remaining) {
@@ -91,11 +87,9 @@ export class AutoDistributeSplits extends Feature {
 
   adjustValues(subCells, newSubValues) {
     subCells.forEach((cell, i) => {
-      $(cell).val(
-        actualNumber(newSubValues[i])
-          ? (Math.round(newSubValues[i] * 100) / 100).toFixed(2)
-          : ''
-      );
+      $(cell).val(actualNumber(newSubValues[i])
+        ? (Math.round(newSubValues[i] * 100) / 100).toFixed(2)
+        : '');
       $(cell).trigger('change');
     });
 

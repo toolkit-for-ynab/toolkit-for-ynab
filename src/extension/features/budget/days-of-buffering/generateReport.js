@@ -3,9 +3,7 @@ export default function reportGenerator(transactions, totalBudget) {
   const firstTransactionDate = Math.min(...transactionDates);
   const lastTransactionDate = Math.max(...transactionDates);
   const totalDays = (lastTransactionDate - firstTransactionDate) / 3600 / 24 / 1000;
-  const totalOutflow = transactions.map(t => -t.amount).reduce(
-    (outflow, amount) => outflow + amount, 0
-  );
+  const totalOutflow = transactions.map(t => -t.amount).reduce((outflow, amount) => outflow + amount, 0);
   const avgDailyOutflow = totalOutflow / totalDays;
   const avgDailyTransactions = transactions.length / totalDays;
 

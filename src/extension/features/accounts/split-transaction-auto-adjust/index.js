@@ -102,20 +102,16 @@ export class SplitTransactionAutoAdjust extends Feature {
       let lastSplitInput = $(inputClass + ' .ember-text-field', currentLastSplitRow)[0];
 
       this.autoFillNextRow(lastSplitInput);
-    } else {
-      if (this.deletingSplit) {
-        this.deletingSplit = false;
-      } else {
-        if (splitTransactionNodeChanged) {
-          if (splitTransactionButton) {
-            if (!this.isInitialized) {
-              this.isInitialized = true;
-              this.initialize();
-            }
-          } else {
-            this.isInitialized = false;
-          }
+    } else if (this.deletingSplit) {
+      this.deletingSplit = false;
+    } else if (splitTransactionNodeChanged) {
+      if (splitTransactionButton) {
+        if (!this.isInitialized) {
+          this.isInitialized = true;
+          this.initialize();
         }
+      } else {
+        this.isInitialized = false;
       }
     }
   }

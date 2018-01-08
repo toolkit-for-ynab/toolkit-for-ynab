@@ -1,4 +1,4 @@
-﻿import { getBrowser } from 'toolkit/core/common/web-extensions';
+import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { ToolkitStorage } from 'toolkit/core/common/storage';
 
 const TOOLKIT_DISABLED_FEATURE_SETTING = 'DisableToolkit';

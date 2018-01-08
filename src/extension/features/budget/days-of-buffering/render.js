@@ -7,9 +7,9 @@ const getDobEl = () => document.getElementsByClassName('days-of-buffering')[0];
 const createDobEl = () => {
   const label = i10n('budget.dob.title', 'Days of Buffering');
   const labelTooltip = i10n('budget.dob.tooltip', 'Don\'t like AoM? Try this out instead!');
-  const elementForDoB = $('<div>', { class: 'budget-header-item budget-header-days days-of-buffering' }).
-    append($('<div>', { class: 'budget-header-days-age' })).
-    append($('<div>', { class: 'budget-header-days-label' }).text(label).prop('title', labelTooltip))[0];
+  const elementForDoB = $('<div>', { class: 'budget-header-item budget-header-days days-of-buffering' })
+    .append($('<div>', { class: 'budget-header-days-age' }))
+    .append($('<div>', { class: 'budget-header-days-label' }).text(label).prop('title', labelTooltip))[0];
 
   document.getElementsByClassName('budget-header-flexbox')[0]
     .appendChild(elementForDoB);
@@ -17,10 +17,10 @@ const createDobEl = () => {
   return elementForDoB;
 };
 
-const render = (
-  { daysOfBuffering, totalOutflow, totalDays,
-    avgDailyOutflow, avgDailyTransactions, ableToGenerate }
-) => {
+const render = ({
+  daysOfBuffering, totalOutflow, totalDays,
+  avgDailyOutflow, avgDailyTransactions, ableToGenerate
+}) => {
   const dobEl = getDobEl() || createDobEl();
 
   if (ableToGenerate) {

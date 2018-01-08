@@ -89,13 +89,11 @@
           contentSetter.set(dateYearText, 1, 'calendar-date-button');
 
           contentSetter.selectorPrefix = '.budget-header-totals-cell-name';
-          contentSetter.setArray(
-            [
-              l10n['budget.fundsFor'].replace('{{currentMonth}}', dateInfo.currentMonthName),
-              l10n['budget.overspentIn'].replace('{{previousMonth}}', dateInfo.previousMonthName),
-              l10n['budget.fundedIn'].replace('{{currentMonth}}', dateInfo.currentMonthName)
-            ]
-          );
+          contentSetter.setArray([
+            l10n['budget.fundsFor'].replace('{{currentMonth}}', dateInfo.currentMonthName),
+            l10n['budget.overspentIn'].replace('{{previousMonth}}', dateInfo.previousMonthName),
+            l10n['budget.fundedIn'].replace('{{currentMonth}}', dateInfo.currentMonthName)
+          ]);
         },
 
         observe(changedNodes) {
@@ -138,9 +136,7 @@
 
           if (changedNodes.has('modal-overlay ynab-u modal-popup modal-account-dropdown modal-account-categories active')) {
             contentSetter.selectorPrefix = '.modal-account-categories ';
-            contentSetter.setSeveral(
-              [l10n['toolkit.inflow'], 0, '.modal-account-categories-section-item'], [l10n['budget.leftToBudget'], 1, '.modal-account-categories-category-name']
-            );
+            contentSetter.setSeveral([l10n['toolkit.inflow'], 0, '.modal-account-categories-section-item'], [l10n['budget.leftToBudget'], 1, '.modal-account-categories-category-name']);
           }
 
           if (changedNodes.has('modal-overlay ynab-u modal-popup modal-account-dropdown modal-account-payees active')) {
