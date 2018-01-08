@@ -40,13 +40,14 @@ export function getUserSettings() {
         const settingIsPersisted = storedFeatureSettings.includes(setting.name);
         const leagcySettingPersisted = storedFeatureSettings.includes(legacySettingName);
 
+        // this should be the case for all users once they've loaded the toolkit post web-extensions
         if (settingIsPersisted) {
-          // this should be the case for all users once they've loaded the toolkit post web-extensions
           return storage.getFeatureSetting(setting.name);
+
+        // this will be the case for any feature that has been migrated post web-extensions
         } else if (leagcySettingPersisted) {
-          // this will be the case for any feature that has been migrated post web-extensions
           return updateLegacySetting(legacySettingName, setting.name)
-            .then(storage.getFeatureSetting(setting.name));
+            .then(() => storage.getFeatureSetting(setting.name));
         }
 
         // if we've not already returned then this is either the first-load of the extension post
@@ -57,20 +58,22 @@ export function getUserSettings() {
         const isInKangoStorage = kangoKeys.includes(setting.name);
         const isLegacySettingInKangoStorage = kangoKeys.includes(legacySettingName);
 
+        // we have the setting so go ahead and persist it to storage and carry on
         if (isInKangoStorage) {
-          // we have the setting so go ahead and persist it to storage and carry on
           return persistKangoStorageSetting(setting.name)
-            .then(storage.getFeatureSetting(setting.name));
+            .then(() => storage.getFeatureSetting(setting.name));
+
+        // this is a migration feature -- need to persist the new setting name
         } else if (isLegacySettingInKangoStorage) {
-          // this is a migration feature -- need to persist the new setting name
           return persistKangoStorageSetting(legacySettingName, setting.name)
-            .then(storage.getFeatureSetting(setting.name));
+            .then(() => storage.getFeatureSetting(setting.name));
         }
 
         // if we're still here then all we have left is a new feature. persist the default.
         return storage.setFeatureSetting(setting.name, setting.default)
-          .then(storage.getFeatureSetting(setting.name));
+          .then(() => storage.getFeatureSetting(setting.name));
       });
+
 
       Promise.all(settingPromises).then((persistedSettings) => {
         const userSettings = allToolkitSettings.reduce((allSettings, currentSetting, index) => {
