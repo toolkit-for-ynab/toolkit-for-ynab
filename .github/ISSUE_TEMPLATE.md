@@ -1,4 +1,7 @@
-<!-- Thank you for submitting a bug report! Please take the time to fill out every section of this form. Failure to complete any of these sections will result in us not being able to debug your issue and may result in us closing the report entirely. -->
+<!-- Thank you for submitting a bug report! Please take the time to fill out
+every section of this form. Failure to complete any of these sections will
+result in us not being able to debug your issue and may result in us closing
+the report entirely. -->
 
 # Name of Defective Feature
 
@@ -22,7 +25,8 @@ Other Extensions:
 </details>
 
 # Steps to Reproduce the Behavior
-<!-- Please write down the steps necessary to reproduce the behavior you're seeing. Please be as thorough as possible. -->
+<!-- Please write down the steps necessary to reproduce the behavior you're
+seeing. Please be as thorough as possible. -->
 
 1. ​
 2. ​
