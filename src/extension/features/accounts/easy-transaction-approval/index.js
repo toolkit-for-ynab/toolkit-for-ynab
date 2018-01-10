@@ -13,6 +13,8 @@ export class EasyTransactionApproval extends Feature {
   }
 
   observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
     // watch for the user potentially changing the budget
     if (this.initBudgetVersion) {
       this.addBudgetVersionIdObserver();
