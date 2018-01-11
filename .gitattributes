@@ -1,1 +1,1 @@
-* text eol=lf
+*.coffee,*.conf,*.css,*.html,*.js,*.markdown,*.md,*.mdown,*.py,*.sh,*.txt,*.xml,*.yml,*.yaml text eol=lf
