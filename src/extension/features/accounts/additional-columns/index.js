@@ -2,7 +2,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { AdditionalColumnStub } from './additional-column-stub';
 import { RunningBalance } from './running-balance';
 import { CheckNumbers } from './check-numbers';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { controllerLookup, componentLookup } from 'toolkit/extension/utils/ember';
 
 export class AdditionalColumns extends Feature {
   constructor() {
@@ -32,7 +32,7 @@ export class AdditionalColumns extends Feature {
     this.attachWillInsertHandler('register/grid-actions');
     this.attachWillInsertHandler('register/grid-split');
 
-    let accountsController = toolkitHelper.controllerLookup('accounts');
+    let accountsController = controllerLookup('accounts');
     accountsController.notifyPropertyChange('contentResults');
 
     return Promise.all([
@@ -50,7 +50,7 @@ export class AdditionalColumns extends Feature {
 
   attachWillInsertHandler(componentName) {
     const _this = this;
-    const GridComponent = toolkitHelper.componentLookup(componentName);
+    const GridComponent = componentLookup(componentName);
 
     if (GridComponent.__toolkitInitialized) { return; }
 

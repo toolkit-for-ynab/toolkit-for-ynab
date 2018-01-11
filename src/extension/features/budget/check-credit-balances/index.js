@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getAllBudgetMonthsViewModelResult, getCurrentBudgetDate, getCurrentBudgetMonth, getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 export class CheckCreditBalances extends Feature {
   budgetView = null;
@@ -9,12 +9,12 @@ export class CheckCreditBalances extends Feature {
   }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1;
+    return getCurrentRouteName().indexOf('budget') !== -1;
   }
 
   invoke() {
     if (this.currentYear === 0 || this.currentMonth === 0) {
-      this.onMonthChanged(toolkitHelper.getCurrentBudgetMonth());
+      this.onMonthChanged(getCurrentBudgetMonth());
     }
 
     if (this.inCurrentMonth()) {
@@ -52,7 +52,7 @@ export class CheckCreditBalances extends Feature {
 
   inCurrentMonth() { // check for current month or future month
     let today = new Date();
-    let budgetDate = toolkitHelper.getCurrentBudgetDate();
+    let budgetDate = getCurrentBudgetDate();
 
     // check for current month or future month
     // must subtract 1 from budget month because the Date object is zero based.
@@ -64,7 +64,7 @@ export class CheckCreditBalances extends Feature {
     // because this function can be called several times during the budget switch process.
     if (this.budgetView === null || this.budgetView.categoriesViewModel === null) {
       try {
-        this.budgetView = toolkitHelper.getAllBudgetMonthsViewModelResult();
+        this.budgetView = getAllBudgetMonthsViewModelResult();
       } catch (e) {
         return null;
       }

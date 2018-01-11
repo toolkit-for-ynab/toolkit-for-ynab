@@ -1,31 +1,34 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName, getAllBudgetMonthsViewModel } from 'toolkit/extension/utils/ynab';
+import { getCurrentDate } from 'toolkit/extension/utils/date';
+import { componentLookup } from 'toolkit/extension/utils/ember';
+import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class ShowCategoryBalance extends Feature {
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
+    return getCurrentRouteName().indexOf('account') !== -1;
   }
 
   invoke() {
-    toolkitHelper.getAllBudgetMonthsViewModel().then((allBudgetMonthsViewModel) => {
+    getAllBudgetMonthsViewModel().then((allBudgetMonthsViewModel) => {
       let subCategoryCalculations = allBudgetMonthsViewModel.get('monthlySubCategoryBudgetCalculationsCollection');
-      let categoryLookupPrefix = `mcbc/${toolkitHelper.getCurrentDate('YYYY-MM')}`;
+      let categoryLookupPrefix = `mcbc/${getCurrentDate('YYYY-MM')}`;
 
-      let GridSubComponent = toolkitHelper.componentLookup('register/grid-sub');
+      let GridSubComponent = componentLookup('register/grid-sub');
       GridSubComponent.constructor.reopen({
         didRender: function () {
           didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
         }
       });
 
-      let GridRowComponent = toolkitHelper.componentLookup('register/grid-row');
+      let GridRowComponent = componentLookup('register/grid-row');
       GridRowComponent.constructor.reopen({
         didRender: function () {
           didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
         }
       });
 
-      let GridScheduledComponent = toolkitHelper.componentLookup('register/grid-scheduled');
+      let GridScheduledComponent = componentLookup('register/grid-scheduled');
       GridScheduledComponent.constructor.reopen({
         didRender: function () {
           didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
@@ -50,6 +53,6 @@ function didRender(subCategoryCalculations, categoryLookupPrefix) {
   if (!budgetData) return;
 
   let title = $('.ynab-grid-cell-subCategoryName', element).attr('title');
-  let newTitle = `${title} (Balance: ${toolkitHelper.formatCurrency(budgetData.get('balance'))})`;
+  let newTitle = `${title} (Balance: ${formatCurrency(budgetData.get('balance'))})`;
   $('.ynab-grid-cell-subCategoryName', element).attr('title', newTitle);
 }

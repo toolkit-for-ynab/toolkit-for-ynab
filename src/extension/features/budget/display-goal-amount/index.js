@@ -1,9 +1,11 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getEmberView } from 'toolkit/extension/utils/ember';
+import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 export class DisplayTargetGoalAmount extends Feature {
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1 && this.settings.enabled !== '0';
+    return getCurrentRouteName().indexOf('budget') !== -1 && this.settings.enabled !== '0';
   }
 
   invoke() {
@@ -18,7 +20,7 @@ export class DisplayTargetGoalAmount extends Feature {
 
     $('.budget-table-row.is-sub-category').each((index, element) => {
       const emberId = element.id;
-      const viewData = toolkitHelper.getEmberView(emberId).data;
+      const viewData = getEmberView(emberId).data;
       const { subCategory } = viewData;
       const { monthlySubCategoryBudget } = viewData;
       const { monthlySubCategoryBudgetCalculation } = viewData;
@@ -28,21 +30,21 @@ export class DisplayTargetGoalAmount extends Feature {
       const targetBalanceDate = monthlySubCategoryBudgetCalculation.get('goalTarget');
       const budgetedAmount = monthlySubCategoryBudget.get('budgeted');
       if (goalType === 'MF') {
-        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(monthlyFunding));
+        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(formatCurrency(monthlyFunding));
         if (budgetedAmount > monthlyFunding && this.settings.enabled === '1') {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
         } else if (budgetedAmount >= monthlyFunding) {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#00b300' });
         }
       } else if (goalType === 'TB') {
-        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(targetBalance));
+        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(formatCurrency(targetBalance));
         if (budgetedAmount > targetBalance && this.settings.enabled === '1') {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
         } else if (budgetedAmount >= targetBalance) {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#00b300' });
         }
       } else if (goalType === 'TBD') {
-        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(toolkitHelper.formatCurrency(targetBalanceDate));
+        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(formatCurrency(targetBalanceDate));
         if (budgetedAmount > targetBalanceDate && this.settings.enabled === '1') {
           $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
         } else if (budgetedAmount >= targetBalanceDate) {

@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/helpers/toolkit';
+import { getEmberView } from 'toolkit/extension/utils/ember';
 
 const DISTRIBUTE_BUTTON_ID = 'auto-distribute-splits-button';
 const SPLIT_BUTTON_CLASS =

@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { i10n } from 'toolkit/extension/utils/toolkit';
 
 export class CollapseSideMenu extends Feature {
   collapseBtn = '';
@@ -22,7 +22,7 @@ export class CollapseSideMenu extends Feature {
 
   invoke() {
     this.collapseBtn =
-      $('<li>', { class: 'ember-view ynabtk-navlink-collapse' }).append($('<a>', { class: 'ynabtk-collapse-link' }).append($('<span>', { class: 'ember-view flaticon stroke left-circle-4' })).append(toolkitHelper.i10n('toolkit.collapse', 'Collapse')));
+      $('<li>', { class: 'ember-view ynabtk-navlink-collapse' }).append($('<a>', { class: 'ynabtk-collapse-link' }).append($('<span>', { class: 'ember-view flaticon stroke left-circle-4' })).append(i10n('toolkit.collapse', 'Collapse')));
 
     this.setupBtns();
   }

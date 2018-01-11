@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 const HIDEIMAGE = 'toolkit-modal-item-hide-image';
 const BUTTONDISABLED = 'button-disabled';
@@ -11,12 +12,12 @@ export class ResizeInspector extends Feature {
   }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1 &&
+    return getCurrentRouteName().indexOf('budget') !== -1 &&
            this.settings.enabled;
   }
 
   invoke() {
-    let width = toolkitHelper.getToolkitStorageKey('inspector-width', 'number');
+    let width = getToolkitStorageKey('inspector-width', 'number');
     if (typeof width === 'undefined' || width === null) {
       width = 0;
     }
@@ -93,7 +94,7 @@ export class ResizeInspector extends Feature {
       }
     });
 
-    let width = toolkitHelper.getToolkitStorageKey('inspector-width', 'number');
+    let width = getToolkitStorageKey('inspector-width', 'number');
     let btn = $modal.find('button[data-inspector-size="' + width + '"]');
     btn.prop('disabled', true);
     btn.addClass(BUTTONDISABLED);
@@ -124,7 +125,7 @@ export class ResizeInspector extends Feature {
       $('.budget-inspector')[0].style.setProperty('--toolkit-inspector-width', inspectorWidth);
 
       // Save the users current selection for future page loads.
-      toolkitHelper.setToolkitStorageKey('inspector-width', width);
+      setToolkitStorageKey('inspector-width', width);
 
       // Remove our click event handler and the modal div.
       $(document).off('click.toolkitInspector');

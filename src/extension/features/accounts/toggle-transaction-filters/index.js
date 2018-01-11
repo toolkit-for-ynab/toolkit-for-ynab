@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { controllerLookup, getCurrentRouteName } from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class ToggleTransactionFilters extends Feature {
   injectCSS() {

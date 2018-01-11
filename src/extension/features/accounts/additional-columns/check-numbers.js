@@ -1,4 +1,4 @@
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 export class CheckNumbers {
   insertHeader() {
@@ -35,7 +35,7 @@ export class CheckNumbers {
   // Should return a boolean that informs AdditionalColumns feature that it
   // is on a page that should recevie the new column.
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
+    return getCurrentRouteName().indexOf('account') !== -1;
   }
 
   // Called when one of the grid rows is getting inserted into the dom but

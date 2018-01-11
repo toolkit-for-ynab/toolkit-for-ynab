@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 let flags;
 let redFlagLabel;
@@ -12,17 +13,17 @@ let purpleFlagLabel;
 export class CustomFlagNames extends Feature {
   constructor() {
     super();
-    if (!toolkitHelper.getToolkitStorageKey('flags')) {
+    if (!getToolkitStorageKey('flags')) {
       this.storeDefaultFlags();
     }
     if (typeof flags === 'undefined') {
-      flags = JSON.parse(toolkitHelper.getToolkitStorageKey('flags'));
+      flags = JSON.parse(getToolkitStorageKey('flags'));
       this.updateFlagLabels();
     }
   }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('account') !== -1;
+    return getCurrentRouteName().indexOf('account') !== -1;
   }
 
   invoke() {
@@ -104,7 +105,7 @@ export class CustomFlagNames extends Feature {
       let key = flag.attr('id');
 
       flags[key].label = flag.val();
-      toolkitHelper.setToolkitStorageKey('flags', JSON.stringify(flags));
+      setToolkitStorageKey('flags', JSON.stringify(flags));
 
       this.updateFlagLabels();
       this.invoke();
@@ -147,6 +148,6 @@ export class CustomFlagNames extends Feature {
         color: '#9384b7'
       }
     };
-    toolkitHelper.setToolkitStorageKey('flags', JSON.stringify(flagsJSON));
+    setToolkitStorageKey('flags', JSON.stringify(flagsJSON));
   }
 }

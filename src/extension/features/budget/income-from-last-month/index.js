@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import * as toolkitHelper from 'toolkit/extension/helpers/toolkit';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 export class IncomeFromLastMonth extends Feature {
   injectCSS() {
@@ -7,7 +7,7 @@ export class IncomeFromLastMonth extends Feature {
   }
 
   shouldInvoke() {
-    return toolkitHelper.getCurrentRouteName().indexOf('budget') !== -1;
+    return getCurrentRouteName().indexOf('budget') !== -1;
   }
 
   invoke() {
