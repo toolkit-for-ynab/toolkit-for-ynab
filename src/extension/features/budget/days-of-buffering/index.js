@@ -1,7 +1,7 @@
-import { getEntityManager } from 'toolkit/extension/utils/ember';
+import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
-import { generateReport, outflowTransactionsFilter } from './helpers';
+import { generateReport, outflowTransactionFilter } from './helpers';
 import { render, shouldRender } from './render';
 
 export class DaysOfBuffering extends Feature {
@@ -10,7 +10,7 @@ export class DaysOfBuffering extends Feature {
   constructor() {
     super();
     this.historyLookup = parseInt(ynabToolKit.options.DaysOfBufferingHistoryLookup);
-    this.transactionFilter = outflowTransactionsFilter(this.historyLookup);
+    this.transactionFilter = outflowTransactionFilter(this.historyLookup);
     this.lastRenderTime = 0;
     this.observe = this.invoke;
   }
@@ -18,8 +18,8 @@ export class DaysOfBuffering extends Feature {
   invoke() {
     if (!this.shouldInvoke() || !shouldRender(this.lastRenderTime)) return;
 
-    const transactions = this.entityManager.getAllTransactions().filter(this.transactionFilter);
-    const report = generateReport(transactions, this.accountBalance);
+    const transactions = getEntityManager().getAllTransactions().filter(this.transactionFilter);
+    const report = generateReport(transactions, this.accountBalance());
 
     this.render(report);
   }
@@ -33,11 +33,7 @@ export class DaysOfBuffering extends Feature {
     this.lastRenderTime = Date.now();
   }
 
-  get entityManager() {
-    return getEntityManager();
-  }
-
-  get accountBalance() {
+  accountBalance() {
     return ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel()._result.getOnBudgetAccountsBalance();
   }
 }
