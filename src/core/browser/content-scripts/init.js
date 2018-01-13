@@ -44,6 +44,9 @@ function sendToolkitBootstrap(userSettings) {
   window.postMessage({
     type: 'ynab-toolkit-bootstrap',
     ynabToolKit: {
+      assets: {
+        logo: getBrowser().runtime.getURL('assets/images/logos/toolkitforynab-logo-400.png')
+      },
       version: getBrowser().runtime.getManifest().version,
       options: userSettings
     }
