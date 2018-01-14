@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 
 const workspaceRoot = path.join(__dirname, '..');
@@ -23,3 +23,11 @@ fs.unlinkSync(manifestPath);
 fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 
 console.log('Beta manifest applied.');
+
+// Now let's deal with our images.
+const imagesPath = path.join(extensionDirectory, 'assets', 'images');
+const betaOverridesPath = path.join(imagesPath, 'beta-overrides');
+
+fs.copySync(betaOverridesPath, imagesPath);
+
+console.log('Beta images applied.');

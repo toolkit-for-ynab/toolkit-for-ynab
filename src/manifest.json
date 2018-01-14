@@ -17,7 +17,9 @@
   ],
   "icons": {
     "128": "assets/images/icons/icon128.png",
+    "100": "assets/images/icons/icon100.png",
     "48": "assets/images/icons/icon48.png",
+    "32": "assets/images/icons/icon32.png",
     "16": "assets/images/icons/button.png"
   },
   "web_accessible_resources": [
