@@ -14,20 +14,20 @@ const uploadToWebStore = async () => {
   }
 
   // Validate that we have all the config we need.
-  if (!process.env.EXTENSION_ID) {
-    console.error('The EXTENSION_ID env var is required.');
+  if (!process.env.CHROME_EXTENSION_ID) {
+    console.error('The CHROME_EXTENSION_ID env var is required.');
     process.exit(1);
   }
-  if (!process.env.CLIENT_ID) {
-    console.error('The CLIENT_ID env var is required.');
+  if (!process.env.CHROME_CLIENT_ID) {
+    console.error('The CHROME_CLIENT_ID env var is required.');
     process.exit(2);
   }
-  if (!process.env.CLIENT_SECRET) {
-    console.error('The CLIENT_SECRET env var is required.');
+  if (!process.env.CHROME_CLIENT_SECRET) {
+    console.error('The CHROME_CLIENT_SECRET env var is required.');
     process.exit(3);
   }
-  if (!process.env.REFRESH_TOKEN) {
-    console.error('The REFRESH_TOKEN env var is required.');
+  if (!process.env.CHROME_REFRESH_TOKEN) {
+    console.error('The CHROME_REFRESH_TOKEN env var is required.');
     process.exit(4);
   }
 
@@ -44,10 +44,10 @@ const uploadToWebStore = async () => {
 
   // Ok, it looks like we have what we need. Let's go!
   const webStore = require('chrome-webstore-upload')({
-    extensionId: process.env.EXTENSION_ID,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    refreshToken: process.env.REFRESH_TOKEN
+    extensionId: process.env.CHROME_EXTENSION_ID,
+    clientId: process.env.CHROME_CLIENT_ID,
+    clientSecret: process.env.CHROME_CLIENT_SECRET,
+    refreshToken: process.env.CHROME_REFRESH_TOKEN
   });
 
   const extension = fs.createReadStream(results[0]);
