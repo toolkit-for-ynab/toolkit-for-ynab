@@ -10,19 +10,19 @@
             "value": "0"
         }, 
         {
-            "name": "Arabic (6%)", 
+            "name": "Arabic (30%)", 
             "value": "arabic"
         }, 
         {
-            "name": "Hungarian (83%)", 
+            "name": "Hungarian (45%)", 
             "value": "hungarian"
         }, 
         {
-            "name": "French (98%)", 
+            "name": "French (52%)", 
             "value": "french"
         }, 
         {
-            "name": "Polish (50%)", 
+            "name": "Polish (94%)", 
             "value": "polish"
         }, 
         {
@@ -30,27 +30,27 @@
             "value": "lithuanian"
         }, 
         {
-            "name": "Portuguese, Brazilian (92%)", 
+            "name": "Portuguese, Brazilian (52%)", 
             "value": "portuguese, brazilian"
         }, 
         {
-            "name": "Finnish (90%)", 
+            "name": "Finnish (49%)", 
             "value": "finnish"
         }, 
         {
-            "name": "Turkish (5%)", 
+            "name": "Turkish (100%)", 
             "value": "turkish"
         }, 
         {
-            "name": "Slovenian (2%)", 
+            "name": "Slovenian (1%)", 
             "value": "slovenian"
         }, 
         {
-            "name": "Latvian (19%)", 
+            "name": "Latvian (10%)", 
             "value": "latvian"
         }, 
         {
-            "name": "German (100%)", 
+            "name": "German (52%)", 
             "value": "german"
         }, 
         {
@@ -58,15 +58,15 @@
             "value": "vietnamese"
         }, 
         {
-            "name": "Spanish (80%)", 
+            "name": "Spanish (64%)", 
             "value": "spanish"
         }, 
         {
-            "name": "Portuguese (42%)", 
+            "name": "Portuguese (23%)", 
             "value": "portuguese"
         }, 
         {
-            "name": "Norwegian (100%)", 
+            "name": "Norwegian (52%)", 
             "value": "norwegian"
         }, 
         {
@@ -74,27 +74,27 @@
             "value": "korean"
         }, 
         {
-            "name": "Romanian (4%)", 
+            "name": "Romanian (2%)", 
             "value": "romanian"
         }, 
         {
-            "name": "Chinese Traditional (82%)", 
+            "name": "Chinese Traditional (43%)", 
             "value": "chinese traditional"
         }, 
         {
-            "name": "Chinese Simplified (2%)", 
+            "name": "Chinese Simplified (15%)", 
             "value": "chinese simplified"
         }, 
         {
-            "name": "Russian (100%)", 
+            "name": "Russian (52%)", 
             "value": "russian"
         }, 
         {
-            "name": "Ukrainian (10%)", 
+            "name": "Ukrainian (5%)", 
             "value": "ukrainian"
         }, 
         {
-            "name": "Swedish (68%)", 
+            "name": "Swedish (36%)", 
             "value": "swedish"
         }, 
         {
@@ -102,23 +102,27 @@
             "value": "catalan"
         }, 
         {
-            "name": "Icelandic (9%)", 
+            "name": "Icelandic (5%)", 
             "value": "icelandic"
         }, 
         {
-            "name": "Dutch (97%)", 
+            "name": "Dutch (51%)", 
             "value": "dutch"
         }, 
         {
-            "name": "Czech (100%)", 
+            "name": "Czech (52%)", 
             "value": "czech"
         }, 
         {
-            "name": "Italian (29%)", 
+            "name": "Indonesian (100%)", 
+            "value": "indonesian"
+        }, 
+        {
+            "name": "Italian (16%)", 
             "value": "italian"
         }, 
         {
-            "name": "Danish (100%)", 
+            "name": "Danish (52%)", 
             "value": "danish"
         }
     ], 
@@ -204,6 +208,12 @@
         "danish": [
             "injectScript", 
             "locales/Danish.json", 
+            "injectScript", 
+            "main.js"
+        ], 
+        "indonesian": [
+            "injectScript", 
+            "locales/Indonesian.json", 
             "injectScript", 
             "main.js"
         ], 
