@@ -1,4 +1,5 @@
 import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class CheckNumbers {
   insertHeader() {
@@ -85,7 +86,7 @@ export class CheckNumbers {
   // after the component has been cached but footer is _always_ a new component WutFace
   handleSingleRenderColumn($appendToRows, componentName) {
     if (componentName === 'register/grid-add') {
-      const accountsController = ynabToolKit.shared.containerLookup('controller:accounts');
+      const accountsController = controllerLookup('accounts');
       const editingTransaction = accountsController.get('editingTransaction');
       const $inputBox = $('<input placeholder="check number">')
         .addClass('accounts-text-field')

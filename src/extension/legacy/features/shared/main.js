@@ -330,24 +330,24 @@ ynabToolKit.shared = (function () {
                         <div class="toolkit-modal-outer"><div class="toolkit-modal-inner"><div class="toolkit-modal-content">
 
                           <header class="toolkit-modal-header">
-                            <img src="` + window.versionPopupAsset + `" id="toolkit-modal-logo" />
+                            <img src="` + ynabToolKit.assets.logo + `" id="toolkit-modal-logo" />
                           </header>
 
                           <div class="toolkit-modal-message">
                             <h1>The Toolkit for YNAB extension has been updated!</h1>
-                            <span class="version">You are now using version ${version}. View the <a href="https://forum.youneedabudget.com/categories/ynab-extensions" target="_blank">release notes</a>.</span>
+                            <span class="version">You are now using version ${version}. View the <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/releases" target="_blank">release notes</a>.</span>
                             <div class="message">
                               <p><strong>It is important to note that the Toolkit for YNAB extension is completely separate, and in no way affiliated with YNAB itself.</strong> If you discover a bug, please first disable the <em>Toolkit</em> to identify whether the issue is with the extension, or with <em>YNAB</em> itself.</p>
                               <p><em>Toolkit for YNAB</em> extension issues can be reported to the <em>Toolkit for YNAB</em> extension team on <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues" target="_blank">Github</a>. Please ensure the issue has not already been reported.</p>
                               <p>If you have the time and the ability, new contributors to the <em>Toolkit</em> are always welcome!</p>
                             </div>
                           </div>
-                            
+
                           <footer class="toolkit-modal-actions">
                             <button class="toolkit-modal-action-close">Continue</button>
                           </footer>
 
-                        </div></div></div>        
+                        </div></div></div>
                       </div>`);
 
       $modal.find('.toolkit-modal-inner, .toolkit-modal-action-close').on('click', () => {

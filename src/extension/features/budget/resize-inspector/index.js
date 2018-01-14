@@ -12,8 +12,7 @@ export class ResizeInspector extends Feature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') !== -1 &&
-           this.settings.enabled;
+    return getCurrentRouteName().includes('budget');
   }
 
   invoke() {
