@@ -20,7 +20,7 @@ export class DaysOfBuffering extends Feature {
     if (!this.shouldInvoke() || !shouldRender(this.lastRenderTime)) return;
 
     if (this.transactionFilter === null) {
-      this.transactionFilter = outflowTransactionsFilter(this.historyLookup);
+      this.transactionFilter = outflowTransactionFilter(this.historyLookup);
     }
 
     const transactions = getEntityManager().getAllTransactions().filter(this.transactionFilter);
