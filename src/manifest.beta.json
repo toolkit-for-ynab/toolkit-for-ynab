@@ -1,0 +1,8 @@
+{
+  "name": "Toolkit for YNAB - Beta",
+  "icons": {
+    "128": "assets/images/icons/beta/icon128.png",
+    "48": "assets/images/icons/beta/icon48.png",
+    "16": "assets/images/icons/beta/button.png"
+  }
+}

@@ -31,6 +31,8 @@
   },
   "scripts": {
     "build": "yarn && yarn gen && yarn lint && yarn build:webpack && yarn build:legacy && yarn build:compress",
+    "build:beta": "yarn && yarn gen && yarn lint && yarn build:webpack && yarn build:legacy && yarn build:beta:manifest && yarn build:compress",
+    "build:beta:manifest": "node scripts/betaManifest.js",
     "build:legacy": "babel src/extension/legacy --compact false --quiet --out-dir dist/extension/web-accessibles/legacy",
     "build:compress": "node scripts/compress.js",
     "build:desktop": "node scripts/publishForDesktop.js",
