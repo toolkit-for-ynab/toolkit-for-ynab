@@ -31,3 +31,13 @@ export function getAllBudgetMonthsViewModel() {
 export function getAllBudgetMonthsViewModelResult() {
   return getAllBudgetMonthsViewModel()._result;
 }
+
+export function isYNABReady() {
+  return (
+    typeof Em !== 'undefined' &&
+    typeof Ember !== 'undefined' &&
+    typeof $ !== 'undefined' &&
+    $('.ember-view.layout').length &&
+    typeof ynabToolKit !== 'undefined'
+  );
+}

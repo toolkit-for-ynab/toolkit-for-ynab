@@ -12,7 +12,7 @@ module.exports = {
     'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/browser/options/options.js`),
     'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/browser/popup/index.js`),
     'content-scripts/init': path.resolve(`${CODE_SOURCE_DIR}/core/browser/content-scripts/init.js`),
-    'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/ynab-toolkit.js`)
+    'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`)
   },
 
   devtool: 'source-map',

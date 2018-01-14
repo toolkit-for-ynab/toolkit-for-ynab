@@ -1,84 +1,92 @@
+import 'babel-polyfill';
 import { features } from 'toolkit/extension/features';
+import { isYNABReady } from 'toolkit/extension/utils/ynab';
+import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
 
-let featureInstances;
+export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
+export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
-function isYNABReady() {
-  return (
-    typeof Em !== 'undefined' &&
-    typeof Ember !== 'undefined' &&
-    typeof $ !== 'undefined' &&
-    $('.ember-view.layout').length &&
-    typeof ynabToolKit !== 'undefined'
-  );
-}
+export class YNABToolkit {
+  _featureInstances = [];
 
-// Check if the passed feature is enabled.
-function isFeatureEnabled(feature) {
-  return (
-    (typeof feature.settings.enabled === 'boolean' && feature.settings.enabled) ||
-    (typeof feature.settings.enabled === 'string' && feature.settings.enabled !== '0') // assumes '0' means disabled
-  );
-}
-
-function messageHandler(event) {
-  if (
-    event.source === window &&
-    event.data.type === 'ynab-toolkit-bootstrap'
-  ) {
-    window.ynabToolKit = event.data.ynabToolKit;
-    featureInstances = features.map(Feature => new Feature());
-    window.removeEventListener('message', messageHandler);
-    beginPolling();
+  initializeToolkit() {
+    window.addEventListener('message', this._onBackgroundMessage);
+    window.postMessage(TOOLKIT_LOADED_MESSAGE, '*');
   }
-}
 
-function beginPolling() {
-  // This poll() function will only need to run until we find that the DOM is ready
-  (function poll() {
-    if (isYNABReady()) {
-      // Gather any desired global CSS from features
-      let globalCSS = '';
+  _removeMessageListener() {
+    window.removeEventListener('message', this._onBackgroundMessage);
+  }
 
-      featureInstances.forEach(feature => {
-        if (isFeatureEnabled(feature) && feature.injectCSS()) {
-          globalCSS += `/* == Injected CSS from feature: ${feature.constructor.name} == */\n\n${feature.injectCSS()}\n`;
-        }
-      });
+  _createFeatureInstances() {
+    features.forEach((Feature) => {
+      this._featureInstances.push(new Feature());
+    });
+  }
 
-      ynabToolKit.invokeFeature = (featureName) => {
-        const feature = featureInstances.find((f) => f.constructor.name === featureName);
-        if (isFeatureEnabled(feature) && feature.shouldInvoke()) {
+  _onBackgroundMessage = (event) => {
+    if (
+      event.source === window &&
+      event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE
+    ) {
+      window.ynabToolKit = event.data.ynabToolKit;
+      this._createFeatureInstances();
+      this._removeMessageListener();
+      this._waitForUserSettings();
+    }
+  }
+
+  _invokeFeature = (featureName) => {
+    const feature = this._featureInstances.find((f) => f.constructor.name === featureName);
+    if (isFeatureEnabled(feature) && feature.shouldInvoke()) {
+      feature.invoke();
+    }
+  }
+
+  _applyGlobalCSS() {
+    const globalCSS = this._featureInstances.reduce((css, feature) => {
+      if (isFeatureEnabled(feature) && feature.injectCSS()) {
+        css += `/* == Injected CSS from feature: ${feature.constructor.name} == */\n\n${feature.injectCSS()}\n`;
+      }
+
+      return css;
+    }, '');
+
+    $('head').append($('<style>', { id: 'toolkit-injected-styles', type: 'text/css' })
+      .text(globalCSS));
+  }
+
+  _invokeFeatureInstances = async () => {
+    this._featureInstances.forEach(async (feature) => {
+      if (isFeatureEnabled(feature)) {
+        feature.applyListeners();
+
+        await feature.willInvoke();
+        if (feature.shouldInvoke()) {
           feature.invoke();
         }
-      };
+      }
+    });
+  }
 
-      // Inject it into the head so it's left alone
-      $('head').append($('<style>', { id: 'toolkit-injected-styles', type: 'text/css' })
-        .text(globalCSS));
+  _waitForUserSettings() {
+    const self = this;
 
-      // Hook up listeners and then invoke any features that are ready to go.
-      featureInstances.forEach((feature) => {
-        if (isFeatureEnabled(feature)) {
-          feature.applyListeners();
+    (function poll() {
+      if (isYNABReady()) {
+        // add a global invokeFeature to the global ynabToolKit for legacy features
+        // once leagcy features have been removed, this should be a global exported function
+        // from this file that features can require and use
+        ynabToolKit.invokeFeature = this._invokeFeature;
 
-          const willInvokeRetValue = feature.willInvoke();
+        // inject the global css from each feature into the HEAD of the DOM
+        self._applyGlobalCSS();
 
-          if (willInvokeRetValue && typeof willInvokeRetValue.then === 'function') {
-            willInvokeRetValue.then(() => {
-              if (feature.shouldInvoke()) {
-                feature.invoke();
-              }
-            });
-          } else if (feature.shouldInvoke()) {
-            feature.invoke();
-          }
-        }
-      });
-    } else {
-      setTimeout(poll, 250);
-    }
-  }());
+        // Hook up listeners and then invoke any features that are ready to go.
+        self._invokeFeatureInstances();
+      } else {
+        setTimeout(poll, 250);
+      }
+    }());
+  }
 }
-
-window.postMessage('ynab-toolkit-loaded', '*');
-window.addEventListener('message', messageHandler);

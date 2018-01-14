@@ -10,6 +10,7 @@
     "babel-loader": "^6.2.10",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "chokidar": "^1.6.0",
     "chrome-webstore-upload": "0.2.1",
@@ -67,7 +68,6 @@
     ]
   },
   "jest": {
-    "collectCoverage": true,
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/test/"
