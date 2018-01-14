@@ -1,7 +1,7 @@
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
-import { generateReport, outflowTransactionFilter } from './helpers';
+import { generateReport, outflowTransactionsFilter } from './helpers';
 import { render, shouldRender } from './render';
 
 export class DaysOfBuffering extends Feature {
@@ -10,7 +10,7 @@ export class DaysOfBuffering extends Feature {
   constructor() {
     super();
     this.historyLookup = parseInt(ynabToolKit.options.DaysOfBufferingHistoryLookup);
-    this.transactionFilter = outflowTransactionFilter(this.historyLookup);
+    this.transactionFilter = outflowTransactionsFilter(this.historyLookup);
     this.lastRenderTime = 0;
     this.observe = this.invoke;
   }
