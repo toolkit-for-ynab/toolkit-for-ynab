@@ -70,7 +70,13 @@ const uploadToWebStore = async () => {
   // And publish!
   console.log('Publishing Extension...');
   const publishResult = await webStore.publish('trustedTesters', token);
-  console.log('Publish result: ', publishResult);
+  if (publishResult.status.indexOf('OK') < 0) {
+    console.error('Received non-success response from Google.');
+    console.error(publishResult);
+    process.exit(8);
+  }
+
+  console.log('Successfully uploaded and published extension.');
 };
 
 uploadToWebStore();
