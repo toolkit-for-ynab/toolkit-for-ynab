@@ -1,7 +1,7 @@
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
-import { generateReport, outflowTransactionsFilter } from './helpers';
+import { generateReport, outflowTransactionFilter } from './helpers';
 import { render, shouldRender } from './render';
 
 export class DaysOfBuffering extends Feature {
