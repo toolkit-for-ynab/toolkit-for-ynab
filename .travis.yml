@@ -2,7 +2,5 @@ language: node_js
 node_js:
   - "8"
 script:
-  - yarn gen
-  - yarn lint
-  - yarn test
-  - yarn webpack
+  - yarn build:beta
+  - yarn publish:chrome
