@@ -1,9 +1,16 @@
+jest.useFakeTimers();
+jest.mock('toolkit/extension/utils/ynab');
+jest.mock('toolkit/extension/listeners/observeListener');
+jest.mock('toolkit/extension/listeners/routeChangeListener');
 import { YNABToolkit, TOOLKIT_LOADED_MESSAGE, TOOLKIT_BOOTSTRAP_MESSAGE } from './ynab-toolkit';
 import { allToolkitSettings } from 'toolkit/core/settings';
+import { isYNABReady } from 'toolkit/extension/utils/ynab';
+import { readyYNAB, unreadyYNAB } from 'toolkit/test/setup';
 
 const setup = (setupOptions = {}) => {
   const options = {
     initialize: true,
+    sendBootstrap: false,
     ...setupOptions
   };
 
@@ -22,21 +29,39 @@ const setup = (setupOptions = {}) => {
     ynabToolkit.initializeToolkit();
   }
 
-  const toolkitBootStrap = { options: {} };
+  const toolkitBootstrap = { options: {} };
   allToolkitSettings.forEach((setting) => {
-    toolkitBootStrap.options[setting.name] = true;
+    toolkitBootstrap.options[setting.name] = false;
   });
+
+  if (options.sendBootstrap) {
+    callMessageListener({
+      source: window,
+      data: {
+        type: TOOLKIT_BOOTSTRAP_MESSAGE,
+        ynabToolKit: toolkitBootstrap
+      }
+    });
+  }
 
   return {
     addEventListenerSpy,
     callMessageListener,
     postMessageSpy,
-    toolkitBootStrap,
+    toolkitBootstrap,
     ynabToolkit
   };
 };
 
 describe('YNABToolkit', () => {
+  beforeEach(() => {
+    unreadyYNAB();
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+  });
+
   describe('.initializeToolkit()', () => {
     it('should attach a message listener to the window', () => {
       const { addEventListenerSpy, ynabToolkit } = setup({ initialize: false });
@@ -53,20 +78,47 @@ describe('YNABToolkit', () => {
 
   describe('once the TOOLKIT_BOOTSTRAP_MESSAGE is received', () => {
     it('should create the ynabToolKit global object', () => {
-      const { callMessageListener, toolkitBootStrap } = setup();
-      callMessageListener({
-        source: window,
-        data: {
-          type: TOOLKIT_BOOTSTRAP_MESSAGE,
-          ynabToolKit: toolkitBootStrap
-        }
-      });
+      const { toolkitBootstrap } = setup({ sendBootstrap: true });
+      expect(global.ynabToolKit).toEqual(toolkitBootstrap);
+    });
 
-      expect(global.ynabToolKit).toEqual(toolkitBootStrap);
+    it('should poll for YNAB to be ready', () => {
+      isYNABReady.mockReturnValueOnce(false);
+
+      const { toolkitBootstrap } = setup({ sendBootstrap: true });
+
+      // first poll attempt
+      jest.runOnlyPendingTimers();
+      expect(global.ynabToolKit.invokeFeature).toBeUndefined();
+
+      // second poll attempt
+      isYNABReady.mockReturnValueOnce(false);
+      jest.runOnlyPendingTimers();
+      expect(global.ynabToolKit.invokeFeature).toBeUndefined();
+
+      // third poll attempt
+      readyYNAB({ ynabToolKit: toolkitBootstrap });
+      isYNABReady.mockReturnValueOnce(true);
+      jest.runOnlyPendingTimers();
+      expect(global.ynabToolKit.invokeFeature).toEqual(expect.any(Function));
     });
 
     describe('once YNAB is ready', () => {
-      // TODO
+      it('should set invokeFeature on the global ynabToolKit object', () => {
+        readyYNAB();
+        isYNABReady.mockReturnValueOnce(true);
+        setup({ sendBootstrap: true });
+
+        expect(ynabToolKit.invokeFeature).toEqual(expect.any(Function));
+      });
+
+      it('should apply the globalCSS to the HEAD', () => {
+        readyYNAB();
+        isYNABReady.mockReturnValueOnce(true);
+        setup({ sendBootstrap: true });
+
+        expect($('head #toolkit-injected-styles').length).toEqual(1);
+      });
     });
   });
 });

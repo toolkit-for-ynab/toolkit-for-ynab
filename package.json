@@ -1,7 +1,6 @@
 {
   "name": "toolkit-for-ynab",
   "private": true,
-  "dependencies": {},
   "devDependencies": {
     "archiver": "^2.1.0",
     "babel-cli": "^6.7.7",
@@ -26,8 +25,10 @@
     "fs-extra": "5.0.0",
     "glob": "^7.1.2",
     "jest": "^22.0.4",
+    "jest-css-modules": "^1.1.0",
     "jest-dot-reporter": "^1.0.3",
     "jest-localstorage-mock": "^2.1.0",
+    "jquery": "^3.2.1",
     "terminate": "^2.1.0",
     "to-string-loader": "^1.1.5",
     "webpack": "^3.10.0"
@@ -72,24 +73,17 @@
       "/node_modules/",
       "/test/"
     ],
-    "coverageReporters": [
-      "text"
-    ],
+    "coverageReporters": ["text"],
     "moduleNameMapper": {
       "toolkit/(.*)": "<rootDir>/src/$1"
     },
     "setupTestFrameworkScriptFile": "<rootDir>/src/test/setup.js",
-    "setupFiles": [
-      "jest-localstorage-mock"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "reporters": [
-      "jest-dot-reporter"
-    ],
+    "setupFiles": ["jest-localstorage-mock"],
+    "testPathIgnorePatterns": ["/node_modules/"],
+    "reporters": ["jest-dot-reporter"],
     "transform": {
-      "^.+\\.js$": "babel-jest"
+      "^.+\\.js$": "babel-jest",
+      ".*.css": "<rootDir>/node_modules/jest-css-modules"
     }
   },
   "defaultFeatures": [
