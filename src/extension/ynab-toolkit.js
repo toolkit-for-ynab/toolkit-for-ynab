@@ -77,7 +77,7 @@ export class YNABToolkit {
         // add a global invokeFeature to the global ynabToolKit for legacy features
         // once leagcy features have been removed, this should be a global exported function
         // from this file that features can require and use
-        ynabToolKit.invokeFeature = this._invokeFeature;
+        ynabToolKit.invokeFeature = self._invokeFeature;
 
         // inject the global css from each feature into the HEAD of the DOM
         self._applyGlobalCSS();
