@@ -1,9 +1,10 @@
-# OSX is a troll
+# workspace files
 .DS_Store
 .project
 
-# don't want to push node_modules :O
+# build/generated files
 node_modules/
+coverage/
 
 # extension deploy stuff
 certificates/

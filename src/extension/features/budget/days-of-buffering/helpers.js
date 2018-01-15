@@ -16,7 +16,7 @@ const isValidDate = (transactionTime, currentTime, historyLookupMonths) => {
 };
 
 
-export function outflowTransactionsFilter(historyLookupMonths) {
+export function outflowTransactionFilter(historyLookupMonths) {
   const dateNow = Date.now();
 
   return (transaction) => (
