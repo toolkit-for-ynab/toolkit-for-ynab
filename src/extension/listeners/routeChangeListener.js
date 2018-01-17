@@ -1,4 +1,5 @@
 import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
 let instance = null;
 
@@ -30,14 +31,18 @@ export class RouteChangeListener {
       emitSameBudgetRouteChange: function () {
         let currentRoute = applicationController.get('currentRouteName');
         routeChangeListener.features.forEach((feature) => {
-          setTimeout(feature.onRouteChanged.bind(feature, currentRoute), 0);
+          const observe = feature.onRouteChanged.bind(feature, currentRoute);
+          const wrapped = withToolkitError(observe, feature);
+          Ember.run.later(wrapped, 0);
         });
       },
 
       emitBudgetRouteChange: function () {
         let currentRoute = applicationController.get('currentRouteName');
         routeChangeListener.features.forEach((feature) => {
-          setTimeout(feature.onBudgetChanged.bind(feature, currentRoute), 0);
+          const observe = feature.onBudgetChanged.bind(feature, currentRoute);
+          const wrapped = withToolkitError(observe, feature);
+          Ember.run.later(wrapped, 0);
         });
       }
     });

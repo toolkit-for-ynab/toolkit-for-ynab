@@ -1,3 +1,5 @@
+import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
+
 let instance = null;
 
 export class ObserveListener {
@@ -51,7 +53,9 @@ export class ObserveListener {
 
   emitChanges() {
     this.features.forEach((feature) => {
-      Ember.run.later(feature.observe.bind(feature, this.changedNodes), 0);
+      const observe = feature.observe.bind(feature, this.changedNodes);
+      const wrapped = withToolkitError(observe, feature);
+      Ember.run.later(wrapped, 0);
     });
   }
 }

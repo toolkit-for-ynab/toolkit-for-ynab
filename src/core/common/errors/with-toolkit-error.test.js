@@ -1,0 +1,63 @@
+import { logToolkitError, withToolkitError } from './with-toolkit-error';
+import { readyYNAB } from 'toolkit/test/setup';
+
+describe('withToolkitError', () => {
+  it('should error if the first argument is not a function', () => {
+    expect(() => {
+      withToolkitError('not a function', 'test');
+    }).toThrowErrorMatchingSnapshot();
+  });
+
+  it('should log a warning if the second argument is not a feature instance or feature name', () => {
+    const innerFunction = jest.fn();
+    const wrappedFunc = withToolkitError(innerFunction, 'doesntexist');
+    expect(console.warn).toHaveBeenCalledWith("Second argument to withToolkitError should either be Feature Class or Feature Name as found in the feature's settings.js file");
+    expect(wrappedFunc).toEqual(expect.any(Function));
+  });
+
+  describe('given valid arguments', () => {
+    beforeEach(() => {
+      readyYNAB({ ynabToolKit: { options: { mockSetting: true } } });
+    });
+
+    it('should return a wrappedFunction', () => {
+      const innerFunction = jest.fn();
+      const wrappedFunc = withToolkitError(innerFunction, 'mockSetting');
+      expect(console.warn).not.toHaveBeenCalled();
+      expect(wrappedFunc).toEqual(expect.any(Function));
+    });
+
+    describe('the wrapped function', () => {
+      it('should catch errors and log a toolkit error message', () => {
+        const innerFunction = jest.fn().mockImplementation(() => {
+          throw Error('mock error');
+        });
+
+        const wrappedFunc = withToolkitError(innerFunction, 'mockSetting');
+        expect(() => {
+          wrappedFunc();
+        }).not.toThrow();
+        expect(console.error).toHaveBeenCalled();
+      });
+
+      it('should return the return value of the wrapped function', () => {
+        const mockReturn = 'mock return';
+        const innerFunction = jest.fn().mockReturnValue(mockReturn);
+        const wrappedFunc = withToolkitError(innerFunction, 'mockSetting');
+        expect(wrappedFunc()).toEqual(mockReturn);
+      });
+    });
+  });
+});
+
+describe('logToolkitError', () => {
+  it('should log a detailed toolkit error the the console', () => {
+    const mockError = new Error('mock error');
+    logToolkitError(mockError, 'mock feature', 'observe', 'false');
+    expect(console.error).toHaveBeenCalledWith(`Toolkit Error:
+    - Feature: mock feature
+    - Location: observe
+    - User Setting: false
+    - Message: ${mockError.message}`, mockError.stack);
+  });
+});

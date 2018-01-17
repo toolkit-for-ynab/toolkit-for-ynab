@@ -2,6 +2,7 @@ import 'babel-polyfill';
 import { features } from 'toolkit/extension/features';
 import { isYNABReady } from 'toolkit/extension/utils/ynab';
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
+import { logFeatureError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
@@ -38,15 +39,20 @@ export class YNABToolkit {
 
   _invokeFeature = (featureName) => {
     const feature = this._featureInstances.find((f) => f.constructor.name === featureName);
-    if (isFeatureEnabled(feature) && feature.shouldInvoke()) {
-      feature.invoke();
+    const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
+    const wrappedInvoke = feature.invoke.bind(feature);
+    if (isFeatureEnabled(feature) && wrappedShouldInvoke()) {
+      wrappedInvoke();
     }
   }
 
   _applyGlobalCSS() {
     const globalCSS = this._featureInstances.reduce((css, feature) => {
-      if (isFeatureEnabled(feature) && feature.injectCSS()) {
-        css += `/* == Injected CSS from feature: ${feature.constructor.name} == */\n\n${feature.injectCSS()}\n`;
+      const wrappedInjectCSS = withToolkitError(feature.injectCSS.bind(feature), feature);
+      const featureCSS = wrappedInjectCSS();
+
+      if (isFeatureEnabled(feature) && featureCSS) {
+        css += `/* == Injected CSS from feature: ${feature.constructor.name} == */\n${featureCSS}\n\n`;
       }
 
       return css;
@@ -61,9 +67,18 @@ export class YNABToolkit {
       if (isFeatureEnabled(feature)) {
         feature.applyListeners();
 
-        await feature.willInvoke();
-        if (feature.shouldInvoke()) {
-          feature.invoke();
+        try {
+          await feature.willInvoke();
+        } catch (exception) {
+          const featureName = feature.constructor.name;
+          const featureSetting = ynabToolKit.options[featureName];
+          logFeatureError(exception, featureName, 'willInvoke', featureSetting);
+        }
+
+        const wrappedShouldInvoke = withToolkitError(feature.shouldInvoke.bind(feature), feature);
+        const wrappedInvoke = withToolkitError(feature.invoke.bind(feature), feature);
+        if (wrappedShouldInvoke()) {
+          wrappedInvoke();
         }
       }
     });
