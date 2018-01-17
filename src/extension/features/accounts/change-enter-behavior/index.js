@@ -13,7 +13,7 @@ export class ChangeEnterBehavior extends Feature {
     const $outflowInput = $('.ynab-grid-cell-outflow input', $addRow);
     const $inflowInput = $('.ynab-grid-cell-inflow input', $addRow);
 
-    if (!$memoInput[10].getAttribute('data-toolkit-save-behavior')) {
+    if (!$memoInput[0].getAttribute('data-toolkit-save-behavior')) {
       $memoInput[0].setAttribute('data-toolkit-save-behavior', true);
       $memoInput.keydown(this.applyNewEnterBehavior);
     }
