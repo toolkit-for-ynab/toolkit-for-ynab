@@ -22,10 +22,15 @@ export class AutoDistributeSplits extends Feature {
   }
 
   observe(changedNodes) {
-    if (changedNodes.has('button button-primary modal-account-categories-split-transaction')
-        || changedNodes.has('ynab-grid-body-row ynab-grid-body-split is-editing')) {
+    if (this.buttonShouldBePresent(changedNodes)) {
       this.ensureButtonPresent();
     }
+  }
+
+  buttonShouldBePresent(changedNodes) {
+    return (changedNodes.has('button button-primary modal-account-categories-split-transaction')
+         || changedNodes.has('ynab-grid-body-row ynab-grid-body-split is-editing'))
+      && document.getElementsByClassName('ynab-grid-split-add-sub-transaction').length > 0;
   }
 
   ensureButtonPresent() {
