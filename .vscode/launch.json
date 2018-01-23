@@ -1,6 +1,12 @@
 {
   "version": "0.2.0",
   "configurations": [
+  {
+    "type": "node",
+    "request": "launch",
+    "name": "Launch Compress Src Task",
+    "program": "${workspaceFolder}/scripts/compressSrc.js"
+  },
     {
       "name": "Debug Jest tests",
       "type": "node",
