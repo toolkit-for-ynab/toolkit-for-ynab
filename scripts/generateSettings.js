@@ -14,6 +14,7 @@ const legacySettingMap = {
   AccountsDisplayDensity: 'accountsDisplayDensity',
   AutoCloseReconcile: 'closeReconcileWindow',
   BetterScrollbars: 'betterScrollbars',
+  BudgetProgressBars: 'budgetProgressBars',
   BudgetQuickSwitch: 'budgetQuickSwitch',
   CategoryActivityPopupWidth: 'categoryActivityPopupWidth',
   ChangeEnterBehavior: 'changeEnterBehavior',
