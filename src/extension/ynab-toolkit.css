@@ -1,0 +1,30 @@
+.accounts-toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0;
+}
+
+.accounts-toolbar .accounts-toolbar-left {
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.accounts-toolbar .accounts-toolbar-right {
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  flex-shrink: 0;
+}
+
+.accounts-toolbar .accounts-toolbar-right > .button {
+  position: static;
+}
+
+.accounts-toolbar .transaction-search {
+  height: inherit;
+}
+
+.accounts-toolbar .transaction-search .transaction-search-input {
+  position: static;
+}
