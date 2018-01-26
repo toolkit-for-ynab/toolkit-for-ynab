@@ -56,7 +56,7 @@ export class YNABToolkit {
       }
 
       return css;
-    }, '');
+    }, require('./ynab-toolkit.css'));
 
     $('head').append($('<style>', { id: 'toolkit-injected-styles', type: 'text/css' })
       .text(globalCSS));
