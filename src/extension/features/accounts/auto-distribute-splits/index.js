@@ -2,8 +2,6 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
 const DISTRIBUTE_BUTTON_ID = 'auto-distribute-splits-button';
-const SPLIT_BUTTON_CLASS =
-  'button button-primary modal-account-categories-split-transaction';
 
 function actualNumber(n) {
   return typeof n === 'number' && !Number.isNaN(n);
@@ -24,17 +22,25 @@ export class AutoDistributeSplits extends Feature {
   }
 
   observe(changedNodes) {
-    if (changedNodes.has(SPLIT_BUTTON_CLASS) && !this.buttonPresent()) {
-      this.addButton();
+    if (this.buttonShouldBePresent(changedNodes)) {
+      this.ensureButtonPresent();
+    }
+  }
+
+  buttonShouldBePresent(changedNodes) {
+    return (changedNodes.has('button button-primary modal-account-categories-split-transaction')
+         || changedNodes.has('ynab-grid-body-row ynab-grid-body-split is-editing'))
+      && document.getElementsByClassName('ynab-grid-split-add-sub-transaction').length > 0;
+  }
+
+  ensureButtonPresent() {
+    if (!this.buttonPresent()) {
+      $('.ynab-grid-actions-buttons .button-cancel').after(this.button);
     }
   }
 
   buttonPresent() {
-    return !!document.getElementById(DISTRIBUTE_BUTTON_ID);
-  }
-
-  addButton() {
-    $('.ynab-grid-actions-buttons .button-cancel').after(this.button);
+    return $('.ynab-grid-actions-buttons .' + DISTRIBUTE_BUTTON_ID).length > 0;
   }
 
   distribute() {
@@ -67,8 +73,9 @@ export class AutoDistributeSplits extends Feature {
 
   alertCannotDistribute() {
     // eslint-disable-next-line no-alert
-    alert('Must fill in at least the total and one sub-transaction ' +
-        'in order to auto-distribute');
+    alert('Please fill in the transaction total and at least one ' +
+        'sub-transaction in order to auto-distribute the ' +
+        'remaining amount between sub-transactions');
   }
 
   getRemainingValue(total, subValues) {
@@ -93,6 +100,6 @@ export class AutoDistributeSplits extends Feature {
       $(cell).trigger('change');
     });
 
-    getEmberView($('.ynab-grid-add-rows')[0].id).calculateSplitRemaining();
+    getEmberView($('.ynab-grid-body-row.is-editing')[0].id).calculateSplitRemaining();
   }
 }
