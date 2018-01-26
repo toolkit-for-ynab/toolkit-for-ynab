@@ -32,7 +32,10 @@ const uploadToWebStore = async () => {
   }
 
   // Look for our zip file to upload
-  const results = glob.sync(path.join(extensionPath, '*.zip'));
+  let results = glob.sync(path.join(extensionPath, '*.zip'));
+
+  // Remove our 'source' zip.
+  results = results.filter(result => result.indexOf('source') < 0);
 
   if (results.length < 1) {
     console.error('Found no extension to upload, ensure you\'ve built first.');
