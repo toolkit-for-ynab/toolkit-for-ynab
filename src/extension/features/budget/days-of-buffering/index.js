@@ -24,7 +24,13 @@ export class DaysOfBuffering extends Feature {
     }
 
     const transactions = getEntityManager().getAllTransactions().filter(this.transactionFilter);
-    const report = generateReport(transactions, this.accountBalance());
+    let report = { ableToGenerate: true };
+
+    try {
+      report = generateReport(transactions, this.accountBalance());
+    } catch (e) {
+      report = { ableToGenerate: false };
+    }
 
     this.render(report);
   }
