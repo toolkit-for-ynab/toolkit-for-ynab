@@ -18,7 +18,12 @@ function persistKangoStorageSetting(setting, persistAs) {
 
   return new Promise((resolve) => {
     getBrowser().runtime.sendMessage({ type: 'storage', content: { type: 'get', itemName: setting } }, (response) => {
-      storage.setFeatureSetting(settingName, response).then(resolve);
+      let validValue = response;
+      if (response === 'true' || response === 'false') {
+        validValue = JSON.parse(response);
+      }
+
+      storage.setFeatureSetting(settingName, validValue).then(resolve);
     });
   });
 }
@@ -27,6 +32,16 @@ function updateLegacySetting(legacySetting, newSetting) {
   return storage.getFeatureSetting(legacySetting).then((legacyValue) => {
     return storage.setFeatureSetting(newSetting, legacyValue);
   });
+}
+
+function ensureSettingIsValid(name, value) {
+  let validValue = value;
+  if (value === 'true' || value === 'false') {
+    validValue = JSON.parse(value);
+    return storage.setFeatureSetting(name, JSON.parse(value));
+  }
+
+  return validValue;
 }
 
 export function getUserSettings() {
@@ -42,12 +57,14 @@ export function getUserSettings() {
 
         // this should be the case for all users once they've loaded the toolkit post web-extensions
         if (settingIsPersisted) {
-          return storage.getFeatureSetting(setting.name);
+          return storage.getFeatureSetting(setting.name)
+            .then((persistedValue) => ensureSettingIsValid(setting.name, persistedValue));
 
         // this will be the case for any feature that has been migrated post web-extensions
         } else if (leagcySettingPersisted) {
           return updateLegacySetting(legacySettingName, setting.name)
-            .then(() => storage.getFeatureSetting(setting.name));
+            .then(() => storage.getFeatureSetting(setting.name))
+            .then((persistedValue) => ensureSettingIsValid(setting.name, persistedValue));
         }
 
         // if we've not already returned then this is either the first-load of the extension post
