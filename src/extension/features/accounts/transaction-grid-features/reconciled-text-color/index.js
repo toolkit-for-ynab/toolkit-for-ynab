@@ -24,30 +24,36 @@ export class ReconciledTextColor extends TransactionGridFeature {
   }
 
   didUpdate() {
-    const content = this.get('content');
-    const $element = $(this.element);
-    const isChecked = $element.hasClass(YNAB_IS_CHECKED_CLASS);
-    const isReconciled = content.get('cleared') === ynab.constants.TransactionState.Reconciled;
+    const isSubGridRow = this.get('_debugContainerKey') === 'component:register/grid-sub';
+    const isGridRow = this.get('_debugContainerKey') === 'component:register/grid-row';
 
-    if (isChecked) {
-      $element.removeClass(TOOLKIT_RECONCILED_CLASS);
-    } else if (!isChecked && isReconciled) {
-      $element.addClass(TOOLKIT_RECONCILED_CLASS);
-    }
+    // We only care about transaction and sub transaction rows
+    if (isGridRow || isSubGridRow) {
+      const content = this.get('content');
+      const $element = $(this.element);
+      const isChecked = $element.hasClass(YNAB_IS_CHECKED_CLASS);
+      const isReconciled = content.get('cleared') === ynab.constants.TransactionState.Reconciled;
 
-    // I'm not sure how intensive it would be to go find the IDs of sub transactions in a
-    // split so rather than do that, just continue down the line of sub transactions after
-    // a split and update the classes accordingly
-    if (content.get('isSplit')) {
-      let $nextTransaction = $element.next();
-      while ($nextTransaction.hasClass(YNAB_GRID_BODY_SUB_CLASS)) {
-        if (isChecked) {
-          $nextTransaction.removeClass(TOOLKIT_RECONCILED_CLASS);
-        } else if (!isChecked && isReconciled) {
-          $nextTransaction.addClass(TOOLKIT_RECONCILED_CLASS);
+      if (isChecked) {
+        $element.removeClass(TOOLKIT_RECONCILED_CLASS);
+      } else if (!isChecked && isReconciled) {
+        $element.addClass(TOOLKIT_RECONCILED_CLASS);
+      }
+
+      // I'm not sure how intensive it would be to go find the IDs of sub transactions in a
+      // split so rather than do that, just continue down the line of sub transactions after
+      // a split and update the classes accordingly
+      if (content.get('isSplit')) {
+        let $nextTransaction = $element.next();
+        while ($nextTransaction.hasClass(YNAB_GRID_BODY_SUB_CLASS)) {
+          if (isChecked) {
+            $nextTransaction.removeClass(TOOLKIT_RECONCILED_CLASS);
+          } else if (!isChecked && isReconciled) {
+            $nextTransaction.addClass(TOOLKIT_RECONCILED_CLASS);
+          }
+
+          $nextTransaction = $nextTransaction.next();
         }
-
-        $nextTransaction = $nextTransaction.next();
       }
     }
   }
