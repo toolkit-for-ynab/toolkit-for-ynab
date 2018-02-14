@@ -1,7 +1,10 @@
+import { TransactionGridFeature } from '../feature';
 import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
-export class CheckNumbers {
+export class CheckNumbers extends TransactionGridFeature {
+  injectCSS() { return require('./index.css'); }
+
   insertHeader() {
     if ($('.ynab-grid-header .ynab-grid-cell-toolkit-check-number').length) return;
 
@@ -26,11 +29,6 @@ export class CheckNumbers {
 
   cleanup() {
     $('.ynab-grid-cell-toolkit-check-number').remove();
-  }
-
-  // Don't need to do any pre-processing for check-numbers...carry on now.
-  willInvoke() {
-
   }
 
   // Should return a boolean that informs AdditionalColumns feature that it

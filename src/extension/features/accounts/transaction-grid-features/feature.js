@@ -1,4 +1,9 @@
-export class AdditionalColumnStub {
+export class TransactionGridFeature {
+  // Injects css into the DOM if needed for the feature
+  injectCSS() {
+    return '';
+  }
+
   // Inserts the header for your additional column
   insertHeader() {}
 
@@ -10,8 +15,11 @@ export class AdditionalColumnStub {
   willInvoke() {}
 
   // Should return a boolean that informs AdditionalColumns feature that it
-  // is on a page that should recevie the new column.
+  // is on a page that should receive the new column.
   shouldInvoke() {}
+
+  // Called during the lifecycle event `didUpdate` in Ember for an Ember Component.
+  didUpdate() {}
 
   // Called when one of the grid rows is getting inserted into the dom but
   // before it actually makes it into the dom. This should be doing the grunt

@@ -1,6 +1,17 @@
+import { TransactionGridFeature } from '../feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
-export class RunningBalance {
+export class RunningBalance extends TransactionGridFeature {
+  injectCSS() {
+    let css = require('./index.css');
+
+    if (ynabToolKit.options.RunningBalance === '1') {
+      css += require('./highlight-negatives.css');
+    }
+
+    return css;
+  }
+
   willInvoke() {
     return this.initializeRunningBalances();
   }
