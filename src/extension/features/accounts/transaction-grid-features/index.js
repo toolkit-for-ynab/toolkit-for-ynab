@@ -136,25 +136,20 @@ export class TransactionGridFeatures extends Feature {
     ynabToolKit.invokeFeature('AdjustableColumnWidths');
   }
 
-  observe(changedNodes) {
-    let shouldAnyInvoke = false;
-    this.features.forEach((feature) => {
-      if (!feature.shouldInvoke()) {
-        feature.cleanup();
-      } else {
-        shouldAnyInvoke = true;
+  onRouteChanged(route) {
+    if (route.includes('account')) {
+      let shouldAnyInvoke = false;
+      this.features.forEach((feature) => {
+        if (!feature.shouldInvoke()) {
+          feature.cleanup();
+        } else {
+          shouldAnyInvoke = true;
+        }
+      });
+
+      if (shouldAnyInvoke) {
+        this.invoke();
       }
-    });
-
-    if (!shouldAnyInvoke) {
-      return;
-    }
-
-    if (
-      changedNodes.has('ynab-grid-body') ||
-      changedNodes.has('ynab-grid')
-    ) {
-      this.invoke();
     }
   }
 }
