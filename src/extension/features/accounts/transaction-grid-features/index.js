@@ -114,7 +114,9 @@ export class TransactionGridFeatures extends Feature {
 
   invoke() {
     this.features.forEach((feature) => {
-      feature.insertHeader();
+      if (feature.shouldInvoke()) {
+        feature.insertHeader();
+      }
     });
 
     if ($('.ynab-grid-body-row.is-editing', '.ynab-grid-body').length) {
