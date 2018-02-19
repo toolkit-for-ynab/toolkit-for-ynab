@@ -129,14 +129,16 @@
         },
 
         filterTransaction(transaction) {
-          let categoriesViewModel = ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel()._result;
-          let masterCategoryId = transaction.get('masterCategoryId');
-          let subCategoryId = transaction.get('subCategoryId');
-          let isTransfer = masterCategoryId === null || subCategoryId === null;
-          let ynabCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
-          let isInternalDebtCategory = isTransfer ? false : ynabCategory.isDebtPaymentMasterCategory();
+          const categoriesViewModel = ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel()._result;
+          const masterCategoryId = transaction.get('masterCategoryId');
+          const subCategoryId = transaction.get('subCategoryId');
+          const isTransfer = masterCategoryId === null || subCategoryId === null;
+          const ynabCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
+          const isInternalDebtCategory = isTransfer ? false : ynabCategory.isDebtPaymentMasterCategory();
+          const payee = transaction.getPayee();
+          const isStartingBalance = payee && payee.getInternalName() === ynab.constants.InternalPayees.StartingBalance;
 
-          return !transaction.get('isSplit') && !isTransfer && !isInternalDebtCategory;
+          return !transaction.get('isSplit') && !isTransfer && !isInternalDebtCategory && !isStartingBalance;
         },
 
         calculate(transactions) {
@@ -289,7 +291,13 @@
             $('.ynabtk-tfoot .ynabtk-tr', $outflowTable).append($('<th>', { class: 'col-data', text: outflowFormatted }));
 
             // net-income table
-            $('.ynabtk-header-row', $netIncomeTable).append($('<th>', { class: 'col-data', text: netIncomeFormatted }));
+            let currencyClass = '';
+            if (netIncome > 0) {
+              currencyClass = 'ynabtk-currency-positive';
+            } else if (netIncome < 0) {
+              currencyClass = 'ynabtk-currency-negative';
+            }
+            $('.ynabtk-header-row', $netIncomeTable).append($('<th>', { class: `col-data ${currencyClass}`, text: netIncomeFormatted }));
           });
 
           // add the toggle row for the payees first

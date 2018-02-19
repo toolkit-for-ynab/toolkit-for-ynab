@@ -143,6 +143,14 @@
   flex-grow: 1;
 }
 
+.ynabtk-currency-positive {
+  color: #16a336;
+}
+
+.ynabtk-currency-negative {
+  color: #d33c2d;
+}
+
 /* noUiSlider classes */
 .noUi-connect {
   background: #34aebe;
