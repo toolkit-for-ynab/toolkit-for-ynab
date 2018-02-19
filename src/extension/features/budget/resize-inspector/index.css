@@ -3,7 +3,7 @@
 }
 
 /* new categories style element name - not all users have the new categories at the time this was added! */
-.budget-table-container {
+section.budget-table-container {
   width: var(--toolkit-content-width, 75%) !important; /* default to our widest width */
 }
 
