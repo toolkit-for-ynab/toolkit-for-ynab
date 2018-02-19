@@ -40,6 +40,10 @@ export class ToolkitStorage {
     return this.setStorageItem(featureSettingKey(settingName), value, options);
   }
 
+  removeFeatureSetting(settingName, options = {}) {
+    return this.removeStorageItem(featureSettingKey(settingName), options);
+  }
+
   getStorageItem(itemKey, options = {}) {
     return this._get(itemKey, options).then((value) => {
       if (typeof value === 'undefined' && typeof options.default !== 'undefined') {
