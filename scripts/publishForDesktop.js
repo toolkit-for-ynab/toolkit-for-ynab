@@ -11,7 +11,7 @@ rimraf.sync(desktopUpdatesPath);
 fs.mkdirSync(desktopUpdatesPath);
 
 // Copy the extension over first.
-const filesToCopy = glob.sync(path.join(workspaceRoot, 'dist/*.zip'));
+const filesToCopy = glob.sync(path.join(workspaceRoot, 'dist/toolkit-for-ynab-v*.zip'));
 
 if (filesToCopy.length !== 1) {
   throw new Error(`There must be precisely one zip file to copy. Found ${filesToCopy.length}!`);
