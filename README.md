@@ -46,7 +46,7 @@ on the roadmap. If you can't find what you want to build on the roadmap, feel fr
 a note up on the github issues board to let the team know you're working on something new.
 When your code is ready, submit a pull request. You can also contact @blarg on [the YNAB forums](http://forum.youneedabudget.com).
 
-For documentation on how to build a feature, [see the documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/source/common/res/features/HOW_TO_BUILD_FEATURES.md).
+For documentation on how to build a feature, [see the documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/docs/building-features.md).
 
 ### Building the Code
 This extension uses three main things in its build process:

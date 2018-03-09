@@ -35,7 +35,7 @@ follow these steps:
 3. Create an `index.js` file which has the following:
   <!-- spacing is intentionally weird here because of markdown -->
   ```javascript
-  import { Feature } from 'toolkit/extension/features/feature';
+  import { Feature } from 'toolkit/core/feature';
 
   export class MyCoolFeature extends Feature {
     shouldInvoke() {
@@ -61,12 +61,9 @@ follow these steps:
 
   ```
 
-5. Run `yarn build` to build the extension into the `dist` directory.
+5. Run `./build` to build the extension for all the browswers.
 6. *chrome:* go to `chrome://extensions` and turn on "Developer mode". Then "Load
-unpacked extension". Select `dist/` and it will load into Chrome.
-   *firefox:* go to `about:addons`, select Extensions on the left, click the cog
-button, then "Install Add-on from File". Select `/dist/manifest.json` and it will
-load into Firefox.
+unpacked extension". Select `/output/chrome/` and it will load into chrome.
 7. Reload YNAB!
 
 In order to help you develop cool features, we've created a few API functions
@@ -82,8 +79,9 @@ that you get for free when extending `Feature`.
 Your feature's constructor is invoked as soon as the Toolkit is injected onto
 the page. You should not attempt a DOM manipulation or access to Ember/YNAB
 as it is not guaranteed or likely to be ready when your constructor is invoked.
-The job of the base `Feature` constructor is to do any initialisation that your
-feature requires. Most features do not need a constructor at all.
+The job of the base `Feature` constructor is to simply fetch the user settings
+of your feature. If `enabled` is set to false for your Feature's settings,
+then invoke will not be called.
 
 #### `willInvoke(): <void|Promise>`
 **optional function, not required to be declared**
@@ -138,7 +136,7 @@ For example, a CSS based feature to hide the referral program banner would look 
 
 **index.js**
 ```javascript
-import { Feature } from 'toolkit/extension/features/feature';
+import { Feature } from 'toolkit/core/feature';
 
 export class HideReferralBanner extends Feature {
   injectCSS() { return require('./index.css'); }
