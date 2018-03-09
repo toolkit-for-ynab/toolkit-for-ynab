@@ -34,7 +34,7 @@ export class SpareChange extends Feature {
     }
 
     Ember.run.debounce(this, function () {
-      this.accountsController.addObserver('areChecked', this.onYnabSelectionChanged(this));
+      this.accountsController.addObserver('areChecked', this, 'onYnabSelectionChanged');
 
       if (getCurrentRouteName().indexOf('accounts') > -1) {
         if (this.applicationController.get('selectedAccountId')) {
@@ -86,16 +86,14 @@ export class SpareChange extends Feature {
       for (i = 0; i < this.selectedTransactions.length; i++) {
         transaction = this.selectedTransactions[i];
 
-        if (transaction.get('parentEntityId') !== null) {
-          if (transaction.get('outflow')) {
-            let amount = ynab.convertFromMilliDollars(transaction.get('outflow'));
-            let nextDollar = Math.ceil(amount);
-            let spareChangeForThisRow = nextDollar - amount;
-            runningSpareChange += ynab.convertToMilliDollars(spareChangeForThisRow);
-          }
-
-          selectedAccount.__ynabToolKitSpareChange = runningSpareChange;
+        if (transaction.get('outflow')) {
+          let amount = ynab.convertFromMilliDollars(transaction.get('outflow'));
+          let nextDollar = Math.ceil(amount);
+          let spareChangeForThisRow = nextDollar - amount;
+          runningSpareChange += ynab.convertToMilliDollars(spareChangeForThisRow);
         }
+
+        selectedAccount.__ynabToolKitSpareChange = runningSpareChange;
       }
     }
   }
@@ -103,8 +101,8 @@ export class SpareChange extends Feature {
   updateSpareChangeHeader() {
     if (this.selectedTransactions.length > 0) {
       this.insertHeader();
-    } else {
       this.updateValue();
+    } else {
       this.removeHeader();
     }
   }
@@ -171,8 +169,8 @@ export class SpareChange extends Feature {
     }, 250);
   }
 
-  onYnabSelectionChanged(_this) {
-    _this.selectedTransactions = undefined;
-    _this.onYnabGridyBodyChanged();
+  onYnabSelectionChanged() {
+    this.selectedTransactions = undefined;
+    this.onYnabGridyBodyChanged();
   }
 }
