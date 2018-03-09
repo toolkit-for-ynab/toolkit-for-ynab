@@ -9,10 +9,6 @@ export class CalendarFirstDay extends Feature {
     return false;
   }
 
-  invoke() {
-    /* nothing to see here; move along */
-  }
-
   reRenderHeader() {
     let shiftDays = this.shiftDays();
     // Shift the header items by number of days (only needs to happen once)
@@ -46,7 +42,10 @@ export class CalendarFirstDay extends Feature {
   }
 
   observe(changedNodes) {
-    if (changedNodes.has('ynab-u modal-account-calendar ember-view modal-overlay active')) {
+    if (
+      changedNodes.has('ynab-u modal-account-calendar modal-account-dropdown ember-view modal-overlay active') ||
+      changedNodes.has('ynab-u modal-account-calendar ember-view modal-overlay active')
+    ) {
       this.isCalendarOpen = true;
       this.reRenderHeader();
     } else if (changedNodes.has('ynab-u modal-account-calendar ember-view modal-overlay active closing')) {
