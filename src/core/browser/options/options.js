@@ -306,8 +306,18 @@ jq(() => {
   }
 
   function resetSettings() {
-    return deleteAllToolkitSettings().then(function () {
-      window.location.reload();
+    // ensure there aren't any pre-web-extensions feature settings stored
+    localStorage.clear();
+
+    return storage.getStoredFeatureSettings().then((settings) => {
+      localStorage.clear();
+      const promises = settings.map((settingKey) => {
+        return storage.removeFeatureSetting(settingKey);
+      });
+
+      Promise.all(promises).then(() => {
+        window.location.reload();
+      });
     });
   }
 
