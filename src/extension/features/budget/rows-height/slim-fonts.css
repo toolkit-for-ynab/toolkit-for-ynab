@@ -44,6 +44,15 @@
   height: 1.45em !important;
 }
 
+.budget-table-cell-budgeted .js-edit-currency-input {
+  padding: 0 !important;
+}
+
+.icon-calculator {
+  max-width: 1em;
+  max-height: 1em;
+}
+
 .toolkit-goalindicator {
   line-height: 1.8em !important;
 }

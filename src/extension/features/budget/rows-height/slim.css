@@ -15,7 +15,7 @@
 }
 
 .budget-table-row.is-sub-category {
-  height: 1.42em !important;
+  height: 1.52em !important;
 }
 
 .budget-table-row.is-master-category .budget-table-cell-name {
@@ -39,8 +39,17 @@
   border-width: 1px !important;
 }
 
+.budget-table-cell-budgeted .js-edit-currency-input {
+  padding: 0 !important;
+}
+
 .budget-table-cell-budgeted .currency-input input {
   height: 1.45em !important;
+}
+
+.icon-calculator {
+  max-width: 1em;
+  max-height: 1em;
 }
 
 .toolkit-goalindicator {
