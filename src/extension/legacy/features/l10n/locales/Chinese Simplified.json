@@ -131,7 +131,7 @@ ynabToolKit.l10nData = {
   "error.shortPassword": "输入较长的密码。",
   "modal.categories": "Budget Categories",
   "modal.noCategoriesFound": "No categories found.",
-  "modal.payees": "Payees",
+  "modal.payees": "收款人",
   "modal.editPayees": "Edit Payees",
   "modal.addCategory": "添加类别",
   "modal.split": "Split (Multiple Categories)",
