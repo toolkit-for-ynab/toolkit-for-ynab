@@ -105,7 +105,13 @@ export class ResizeInspector extends Feature {
   }
 
   setProperties(width) {
-    if ($('.budget-content').length) {
+    let ele = '.budget-content';
+
+    if (YNABFEATURES.get('categories-new-style') === undefined || YNABFEATURES.get('categories-new-style') === true) {
+      ele = '.budget-table-container';
+    }
+
+    if ($(ele).length) {
       let contentWidth = '67%';
       let inspectorWidth = '33%';
 
@@ -120,7 +126,7 @@ export class ResizeInspector extends Feature {
         inspectorWidth = '15%';
       }
 
-      $('.budget-content')[0].style.setProperty('--toolkit-content-width', contentWidth);
+      $(ele)[0].style.setProperty('--toolkit-content-width', contentWidth);
       $('.budget-inspector')[0].style.setProperty('--toolkit-inspector-width', inspectorWidth);
 
       // Save the users current selection for future page loads.
