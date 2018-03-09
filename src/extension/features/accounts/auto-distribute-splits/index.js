@@ -1,7 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
-const DISTRIBUTE_BUTTON_ID = 'auto-distribute-splits-button';
+const DISTRIBUTE_BUTTON_ID = 'toolkit-auto-distribute-splits-button';
 
 function actualNumber(n) {
   return typeof n === 'number' && !Number.isNaN(n);
@@ -24,13 +24,13 @@ export class AutoDistributeSplits extends Feature {
   observe(changedNodes) {
     if (this.buttonShouldBePresent(changedNodes)) {
       this.ensureButtonPresent();
+    } else {
+      this.ensureButtonNotPresent();
     }
   }
 
-  buttonShouldBePresent(changedNodes) {
-    return (changedNodes.has('button button-primary modal-account-categories-split-transaction')
-         || changedNodes.has('ynab-grid-body-row ynab-grid-body-split is-editing'))
-      && document.getElementsByClassName('ynab-grid-split-add-sub-transaction').length > 0;
+  buttonShouldBePresent() {
+    return $('.ynab-grid-split-add-sub-transaction').length > 0;
   }
 
   ensureButtonPresent() {
@@ -39,8 +39,14 @@ export class AutoDistributeSplits extends Feature {
     }
   }
 
+  ensureButtonNotPresent() {
+    if (this.buttonPresent()) {
+      $('#' + DISTRIBUTE_BUTTON_ID).remove();
+    }
+  }
+
   buttonPresent() {
-    return $('.ynab-grid-actions-buttons .' + DISTRIBUTE_BUTTON_ID).length > 0;
+    return $('#' + DISTRIBUTE_BUTTON_ID).length > 0;
   }
 
   distribute() {
