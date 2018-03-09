@@ -25,6 +25,10 @@ function run(callback) {
         featureSetting = featureSetting[0];
       }
 
+      if (featureSetting.isSubFeature) {
+        return;
+      }
+
       // features/index will source from the features folder, so remove
       // `src/extension/features` from the path here.
       const featureIndexPath = filePathSplit.slice(3, filePathSplit.length - 1).join('/');

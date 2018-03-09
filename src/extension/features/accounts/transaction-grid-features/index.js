@@ -1,22 +1,22 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { AdditionalColumnStub } from './additional-column-stub';
+import { TransactionGridFeature } from './feature';
 import { RunningBalance } from './running-balance';
 import { CheckNumbers } from './check-numbers';
+import { ReconciledTextColor } from './reconciled-text-color';
 import { controllerLookup, componentLookup } from 'toolkit/extension/utils/ember';
 
-export class AdditionalColumns extends Feature {
-  constructor() {
-    super();
-    this.checkNumbers = ynabToolKit.options.CheckNumbers ? new CheckNumbers() : new AdditionalColumnStub();
-    this.runningBalance = ynabToolKit.options.RunningBalance !== '0' ? new RunningBalance() : new AdditionalColumnStub();
-  }
+export class TransactionGridFeatures extends Feature {
+  features = [
+    ynabToolKit.options.CheckNumbers ? new CheckNumbers() : new TransactionGridFeature(),
+    ynabToolKit.options.RunningBalance !== '0' ? new RunningBalance() : new TransactionGridFeature(),
+    ynabToolKit.options.ReconciledTextColor !== '0' ? new ReconciledTextColor() : new TransactionGridFeature()
+  ];
 
   injectCSS() {
-    let css = require('./index.css');
-
-    if (ynabToolKit.options.RunningBalance === '1') {
-      css += require('./highlight-negatives.css');
-    }
+    const css = this.features.reduce((allCSS, feature) => {
+      allCSS += feature.injectCSS();
+      return allCSS;
+    }, '');
 
     return css;
   }
@@ -35,17 +35,13 @@ export class AdditionalColumns extends Feature {
     let accountsController = controllerLookup('accounts');
     accountsController.notifyPropertyChange('contentResults');
 
-    return Promise.all([
-      this.checkNumbers.willInvoke(),
-      this.runningBalance.willInvoke()
-    ]);
+    return Promise.all(this.features.map((feature) => feature.willInvoke()));
   }
 
   // we always want to invoke this feature if it's enabled because we want
   // to at least initialize running balance on all of the accounts
   shouldInvoke() {
-    return this.runningBalance.shouldInvoke() ||
-           this.checkNumbers.shouldInvoke();
+    return this.features.some((feature) => feature.shouldInvoke());
   }
 
   attachWillInsertHandler(componentName) {
@@ -56,26 +52,36 @@ export class AdditionalColumns extends Feature {
 
     try {
       GridComponent.constructor.reopen({
+        didUpdate: function () {
+          _this.features.forEach((feature) => {
+            if (feature.shouldInvoke()) {
+              feature.didUpdate.call(this);
+            }
+          });
+        },
         willInsertElement: function () {
-          if (_this.checkNumbers.shouldInvoke()) {
-            _this.checkNumbers.willInsertColumn.call(this);
-          }
-
-          if (_this.runningBalance.shouldInvoke()) {
-            _this.runningBalance.willInsertColumn.call(this);
-          }
+          _this.features.forEach((feature) => {
+            if (feature.shouldInvoke()) {
+              feature.willInsertColumn.call(this);
+            }
+          });
         }
       });
     } catch (e) {
       GridComponent.reopen({
+        didUpdate: function () {
+          _this.features.forEach((feature) => {
+            if (feature.shouldInvoke()) {
+              feature.didUpdate.call(this);
+            }
+          });
+        },
         willInsertElement: function () {
-          if (_this.checkNumbers.shouldInvoke()) {
-            _this.checkNumbers.willInsertColumn.call(this);
-          }
-
-          if (_this.runningBalance.shouldInvoke()) {
-            _this.runningBalance.willInsertColumn.call(this);
-          }
+          _this.features.forEach((feature) => {
+            if (feature.shouldInvoke()) {
+              feature.willInsertColumn.call(this);
+            }
+          });
         }
       });
     }
@@ -98,21 +104,20 @@ export class AdditionalColumns extends Feature {
     }
 
     if ($appendToRows) {
-      this.checkNumbers.handleSingleRenderColumn($appendToRows, componentName);
-      this.runningBalance.handleSingleRenderColumn($appendToRows, componentName);
+      this.features.forEach((feature) => {
+        feature.handleSingleRenderColumn($appendToRows, componentName);
+      });
     }
 
     GridComponent.__toolkitInitialized = true;
   }
 
   invoke() {
-    if (this.checkNumbers.shouldInvoke()) {
-      this.checkNumbers.insertHeader();
-    }
-
-    if (this.runningBalance.shouldInvoke()) {
-      this.runningBalance.insertHeader();
-    }
+    this.features.forEach((feature) => {
+      if (feature.shouldInvoke()) {
+        feature.insertHeader();
+      }
+    });
 
     if ($('.ynab-grid-body-row.is-editing', '.ynab-grid-body').length) {
       this.attachWillInsertHandler('register/grid-edit');
@@ -133,24 +138,20 @@ export class AdditionalColumns extends Feature {
     ynabToolKit.invokeFeature('AdjustableColumnWidths');
   }
 
-  observe(changedNodes) {
-    if (!this.runningBalance.shouldInvoke()) {
-      this.runningBalance.cleanup();
-    }
+  onRouteChanged(route) {
+    if (route.includes('account')) {
+      let shouldAnyInvoke = false;
+      this.features.forEach((feature) => {
+        if (!feature.shouldInvoke()) {
+          feature.cleanup();
+        } else {
+          shouldAnyInvoke = true;
+        }
+      });
 
-    if (!this.checkNumbers.shouldInvoke()) {
-      this.checkNumbers.cleanup();
-    }
-
-    if (!this.runningBalance.shouldInvoke() && !this.checkNumbers.shouldInvoke()) {
-      return;
-    }
-
-    if (
-      changedNodes.has('ynab-grid-body') ||
-      changedNodes.has('ynab-grid')
-    ) {
-      this.invoke();
+      if (shouldAnyInvoke) {
+        this.invoke();
+      }
     }
   }
 }
