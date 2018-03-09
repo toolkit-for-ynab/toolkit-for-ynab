@@ -20,20 +20,20 @@
         filterTransaction(transaction) {
           // can't use a promise here and the _result *should* if there's anything to worry about,
           // it's this line but im still not worried about it.
-          let categoriesViewModel = ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel()._result;
-          let masterCategoryId = transaction.get('masterCategoryId');
-          let subCategoryId = transaction.get('subCategoryId');
-          let isTransfer = masterCategoryId === null || subCategoryId === null;
-          let ynabCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
-          let isInternalDebtCategory = isTransfer ? false : ynabCategory.isDebtPaymentMasterCategory();
-          let isInternalMasterCategory = isTransfer ? false : ynabCategory.isInternalMasterCategory();
-          let isPositiveStartingBalance = transaction.get('inflow') && isInternalMasterCategory;
+          const categoriesViewModel = ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel()._result;
+          const masterCategoryId = transaction.get('masterCategoryId');
+          const subCategoryId = transaction.get('subCategoryId');
+          const isTransfer = masterCategoryId === null || subCategoryId === null;
+          const ynabCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
+          const isInternalDebtCategory = isTransfer ? false : ynabCategory.isDebtPaymentMasterCategory();
+          const payee = transaction.getPayee();
+          const isStartingBalance = payee && payee.getInternalName() === ynab.constants.InternalPayees.StartingBalance;
 
           return transaction.getAmount() &&
                  !transaction.get('isSplit') &&
                  !isTransfer &&
                  !isInternalDebtCategory &&
-                 (!isPositiveStartingBalance || !transaction.get('inflow'));
+                (!isStartingBalance || !transaction.get('inflow'));
         },
 
         calculate(transactions) {

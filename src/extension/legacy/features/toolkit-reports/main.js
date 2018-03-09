@@ -523,7 +523,8 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
           // because the Toolkit reports <li> gets removed when the <li> for the native
           // YNAB links are updated. The CollapseSideMenu Toolkit feature relies on the
           // <li> so it needs to be added back if it's gone missing.
-          if (changedNodes.has('sidebar-contents') ||
+          if (changedNodes.has('nav-main') ||
+              changedNodes.has('sidebar-contents') ||
               changedNodes.has('navlink-budget active') ||
               changedNodes.has('navlink-reports active') ||
               changedNodes.has('navlink-accounts active')) {
