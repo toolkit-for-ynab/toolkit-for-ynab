@@ -2,10 +2,6 @@
   height: 1.6em !important;
 }
 
-.budget-table {
-  top: 1.4em !important;
-}
-
 .budget-content ul, .budget-table-row.is-dragging {
   height: 2em;
 }
