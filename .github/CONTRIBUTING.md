@@ -6,14 +6,11 @@ can't find the issue, submit a [new issue](https://github.com/toolkit-for-ynab/t
 and follow the template that is provided.
 
 ### Feature Requests
-
 Feature requests are best suited in the [forums](http://forum.youneedabudget.com/categories/ynab-extensions).
 But can also be submitted as issues. Please properly name your issue
 as `FEATURE REQUEST: [title]`.
 
-
 ### Contributing Code
-
 If you want to contribute, it's best if you can let us know what you're
 working on so we don't double up on effort.
 

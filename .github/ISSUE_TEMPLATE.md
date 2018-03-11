@@ -4,30 +4,27 @@ result in us not being able to debug your issue and may result in us closing
 the report entirely. -->
 
 # Name of Defective Feature
-
+-
 
 # System Settings (Required)
-ToolKit Version:
-Operating System (Mac/Windows/Etc):
-Browser (Chrome/Firefox/Safari):
-Browser Version:
-Other Extensions:
+- ToolKit Version:
+- Operating System (Mac/Windows/Etc):
+- Browser (Chrome/Firefox/Safari):
+- Browser Version:
+- Other Extensions:
 
 # Export of Toolkit Settings (Bottom Left of Settings Page)
 <details>
 <summary>Settings Export</summary>
 
 ```
-
-[paste settings here]
-
+PASTE SETTING EXPORT HERE
 ```
 </details>
 
 # Steps to Reproduce the Behavior
 <!-- Please write down the steps necessary to reproduce the behavior you're
 seeing. Please be as thorough as possible. -->
-
 1. ​
 2. ​
 3. ​
