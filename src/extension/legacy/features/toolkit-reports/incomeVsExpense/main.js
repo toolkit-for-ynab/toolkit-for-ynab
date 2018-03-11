@@ -12,13 +12,13 @@
       }
 
       function placeInSubCategory(transaction, masterCategoryData, categoryViewModel) {
-        let formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
-        let dateIndex = dateLabels.indexOf(formattedDate);
+        const formattedDate = ynabToolKit.reports.formatTransactionDatel8n(transaction);
+        const dateIndex = dateLabels.indexOf(formattedDate);
 
         // grab the sub category id the data for it inside of our nested object
-        let subCategoryId = transaction.get('subCategoryId');
+        const subCategoryId = transaction.get('subCategoryId');
         let subCategoryData = masterCategoryData.subCategories[subCategoryId];
-        let internalSubCategoryData = categoryViewModel.getSubCategoryById(subCategoryId);
+        const internalSubCategoryData = categoryViewModel.getSubCategoryById(subCategoryId);
 
         // if we haven't created that data yet, then default everything to 0/empty
         if (typeof subCategoryData === 'undefined') {
@@ -30,7 +30,7 @@
           subCategoryData = masterCategoryData.subCategories[subCategoryId];
         }
 
-        let amount = -(transaction.getAmount());
+        const amount = -(transaction.getAmount());
         subCategoryData.totalByDate[dateIndex] += amount;
 
         // update the master category total
@@ -138,7 +138,12 @@
           const payee = transaction.getPayee();
           const isStartingBalance = payee && payee.getInternalName() === ynab.constants.InternalPayees.StartingBalance;
 
-          return !transaction.get('isSplit') && !isTransfer && !isInternalDebtCategory && !isStartingBalance;
+          return (
+            !transaction.get('isSplit') &&
+            !isTransfer &&
+            !isInternalDebtCategory &&
+            !isStartingBalance
+          );
         },
 
         calculate(transactions) {
@@ -249,12 +254,12 @@
               </table>
             </div>`);
 
-          let $inflowTable = $('.ynabtk-table.inflows');
-          let $outflowTable = $('.ynabtk-table.outflows');
-          let $netIncomeTable = $('.ynabtk-table.net-income');
+          const $inflowTable = $('.ynabtk-table.inflows');
+          const $outflowTable = $('.ynabtk-table.outflows');
+          const $netIncomeTable = $('.ynabtk-table.net-income');
 
           // create the "toggle" row
-          let allPayeesToggleRow = $(`<tr class="expandable-toggle" id="all-payees">
+          const allPayeesToggleRow = $(`<tr class="expandable-toggle" id="all-payees">
               <td class="col-title master-category" title="All Income Sources">
                 <i class="flaticon stroke up"></i>
                 All Income Sources
@@ -263,7 +268,7 @@
           `);
 
           // create the "summary" row which will show only when expanded
-          let allPayeesTotalRow = $(`<tr class="expandable-row summary-row" data-expand-for="all-payees">
+          const allPayeesTotalRow = $(`<tr class="expandable-row summary-row" data-expand-for="all-payees">
               <td class="col-title master-category">Total All Income Resources</td>
             </tr>
           `);
@@ -271,12 +276,12 @@
           // First, fill in the "total" numbers. All payees are rolled up into one "All Income Sources" row
           // so do those while filling the header/footer.
           dateLabels.forEach((dateLabel, dateIndex) => {
-            let inflow = reportData.totalInflowsByDate[dateIndex];
-            let outflow = reportData.totalOutflowsByDate[dateIndex];
-            let netIncome = inflow - outflow;
-            let inflowFormatted = ynabToolKit.shared.formatCurrency(inflow);
-            let outflowFormatted = ynabToolKit.shared.formatCurrency(-outflow);
-            let netIncomeFormatted = ynabToolKit.shared.formatCurrency(netIncome);
+            const inflow = reportData.totalInflowsByDate[dateIndex];
+            const outflow = reportData.totalOutflowsByDate[dateIndex];
+            const netIncome = inflow - outflow;
+            const inflowFormatted = ynabToolKit.shared.formatCurrency(inflow);
+            const outflowFormatted = ynabToolKit.shared.formatCurrency(-outflow);
+            const netIncomeFormatted = ynabToolKit.shared.formatCurrency(netIncome);
 
             // inflow table header/footer
             $('.ynabtk-header-row', $inflowTable).append($('<th>', { class: 'col-data', text: dateLabel }));
@@ -304,16 +309,22 @@
           $('.ynabtk-tbody', $inflowTable).append(allPayeesToggleRow);
 
           // unknown payee? no problem, we got your back.
-          let hasUnkownPayee = false;
+          let hasUnknownPayee = false;
 
           // first, go through and get all the known payees....
           for (let payeeId in reportData.inflowsByPayee) {
             if (payeeId === 'null') {
-              hasUnkownPayee = true;
+              hasUnknownPayee = true;
             } else {
               let payeeData = reportData.inflowsByPayee[payeeId];
               let payeeName = payeeData.internalData.get('name');
-              let payeeRow = $($('<tr>', { class: 'expandable-row', 'data-expand-for': 'all-payees' }).append($('<td>', { class: 'col-title payee-name', title: payeeName, text: payeeName })));
+              let payeeRow = $($('<tr>', {
+                class: 'expandable-row', 'data-expand-for': 'all-payees'
+              }).append($('<td>', {
+                class: 'col-title payee-name',
+                title: payeeName,
+                text: payeeName
+              })));
 
               payeeData.totalByDate.forEach((total) => {
                 let payeeDateTotal = ynabToolKit.shared.formatCurrency(total);
@@ -324,12 +335,18 @@
             }
           }
 
-          if (hasUnkownPayee) {
-            let payeeData = reportData.inflowsByPayee.null;
-            let payeeRow = $($('<tr>', { class: 'expandable-row', 'data-expand-for': 'all-payees' }).append($('<td>', { class: 'col-title payee-name', title: 'Unknown payee. Make sure all inflow transactions have a payee.', text: 'Unknown' })));
+          if (hasUnknownPayee) {
+            const payeeData = reportData.inflowsByPayee.null;
+            const payeeRow = $($('<tr>', {
+              class: 'expandable-row', 'data-expand-for': 'all-payees'
+            }).append($('<td>', {
+              class: 'col-title payee-name',
+              title: 'Unknown payee. Make sure all inflow transactions have a payee.',
+              text: 'Unknown'
+            })));
 
             payeeData.totalByDate.forEach((total) => {
-              let payeeDateTotal = ynabToolKit.shared.formatCurrency(total);
+              const payeeDateTotal = ynabToolKit.shared.formatCurrency(total);
               payeeRow.append($('<td>', { class: 'col-data', text: payeeDateTotal }));
             });
 
@@ -375,10 +392,24 @@
             let masterCategoryName = masterCategoryData.internalData.get('name');
 
             // create the "toggle" row
-            let masterCategoryToggleRow = $($('<tr>', { class: 'expandable-toggle', id: masterCategoryId }).append($('<td>', { class: 'col-title master-category', title: masterCategoryName }).append($('<i>', { class: 'flaticon stroke up' })).append(document.createTextNode(masterCategoryName))));
+            let masterCategoryToggleRow = $($('<tr>', {
+              class: 'expandable-toggle',
+              id: masterCategoryId
+            }).append($('<td>', {
+              class: 'col-title master-category',
+              title: masterCategoryName
+            }).append($('<i>', {
+              class: 'flaticon stroke up'
+            })).append(document.createTextNode(masterCategoryName))));
 
             // create the "summary" row which will show only when expanded
-            let masterCategoryTotalRow = $($('<tr>', { class: 'expandable-row summary-row', 'data-expand-for': masterCategoryId }).append($('<td>', { class: 'col-title master-category', text: 'Total ' + masterCategoryName })));
+            let masterCategoryTotalRow = $($('<tr>', {
+              class: 'expandable-row summary-row',
+              'data-expand-for': masterCategoryId
+            }).append($('<td>', {
+              class: 'col-title master-category',
+              text: 'Total ' + masterCategoryName
+            })));
 
             // add the totals to both the toggle and the total row
             masterCategoryData.totalByDate.forEach((total) => {
