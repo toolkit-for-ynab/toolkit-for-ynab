@@ -2,6 +2,11 @@
   height: 1.6em !important;
 }
 
+.budget-table-row.is-master-category {
+  margin-top: 0px;
+  height: 2em !important;
+}
+
 .budget-content ul, .budget-table-row.is-dragging {
   height: 2em;
 }
@@ -10,12 +15,15 @@
   top: 0.25em;
 }
 
-.budget-table-row.is-sub-category {
-  height: 1.8em !important;
+.budget-table-row.is-master-category .budget-table-cell-name {
+  line-height: 2em !important;
+  padding-top: 0 !important;
+  font-size: 1.05em !important;
+  align-items: center !important;
 }
 
-.budget-table-row.is-master-category .budget-table-cell-name {
-  padding-top: 0;
+.budget-table-row.is-sub-category {
+  height: 1.8em !important;
 }
 
 .budget-table-row.is-sub-category > .budget-table-cell-available .positive, .budget-table-row.is-sub-category > .budget-table-cell-available .negative, .budget-table-row.is-sub-category > .budget-table-cell-available .cautious, .budget-table-row.is-sub-category > .budget-table-cell-available .zero {
@@ -33,6 +41,16 @@
 
 .budget-table-cell-budgeted .currency-input span {
   height: 1.8em;
+}
+
+.budget-table .is-debt-payment-category .budget-table-cell-available {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.budget-table .is-debt-payment-category .budget-table-cell-available .budget-table-cell-available-payment {
+  margin-right: 0.25em;
 }
 
 .toolkit-goalindicator {
