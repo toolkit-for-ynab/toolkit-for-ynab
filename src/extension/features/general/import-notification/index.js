@@ -17,7 +17,7 @@ export class ImportNotification extends Feature {
       }
 
       // Hook transaction imports so that we can run our stuff when things change. The idea is for our code to
-      // run when new imports show up while the user isn't doin ganythiing in the app. The down side is the
+      // run when new imports show up while the user isn't doing anything in the app. The down side is the
       // handler being called when the user does something like "approve a transaction". That's why this feature
       // has a blocking mechanism (the isActive flag).
       ynab.YNABSharedLib.defaultInstance.entityManager._transactionEntityPropertyChanged.addHandler(this.invoke);
@@ -25,20 +25,24 @@ export class ImportNotification extends Feature {
   }
 
   shouldInvoke() {
-    return this.settings.enabled !== '0';
+    return !this.isActive;
   }
 
   invoke() {
-    if (!this.isActive) {
-      this.checkImportTransactions();
-    }
+    this.checkImportTransactions();
   }
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
     // To minimize checking for imported transactions, only do it if the changed nodes includes ynab-grid-body
     // if we're not already actively check.
-    if (changedNodes.has('ynab-grid-body') && !this.isActive) {
+    if (changedNodes.has('ynab-grid-body') && !this.shouldInvoke()) {
+      this.invoke();
+    }
+  }
+
+  onRouteChanged() {
+    if (this.shouldInvoke()) {
       this.invoke();
     }
   }
