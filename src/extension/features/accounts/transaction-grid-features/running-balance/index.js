@@ -60,6 +60,7 @@ export class RunningBalance extends TransactionGridFeature {
   willInsertColumn() {
     const isSub = this.get('_debugContainerKey') === 'component:register/grid-sub';
     const isRow = this.get('_debugContainerKey') === 'component:register/grid-row';
+    const isActions = this.get('_debugContainerKey') === 'component:register/grid-actions';
     const isScheduled = this.get('_debugContainerKey') === 'component:register/grid-scheduled';
     const isRunningBalance = isSub || isRow || isScheduled;
 
@@ -97,7 +98,7 @@ export class RunningBalance extends TransactionGridFeature {
       }
 
       currentRowRunningBalance.insertAfter($('.ynab-grid-cell-inflow', $currentRow));
-    } else if ($('.ynab-grid-cell-toolkit-running-balance', this.element).length === 0) {
+    } else if (!isActions && !$('.ynab-grid-cell-toolkit-running-balance', this.element).length) {
       $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">')
         .insertAfter($('.ynab-grid-cell-inflow', this.element));
     }
