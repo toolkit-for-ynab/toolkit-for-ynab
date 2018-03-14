@@ -119,23 +119,40 @@ export class TransactionGridFeatures extends Feature {
       }
     });
 
-    if ($('.ynab-grid-body-row.is-editing', '.ynab-grid-body').length) {
+    ynabToolKit.invokeFeature('AdjustableColumnWidths');
+  }
+
+  // We're not querying the DOM here because we really want this observe to be as
+  // cheap as possible. The four components we look for are not guaranteed to have ever
+  // be created which means they won't be in the registry when we try to attach our listener
+  // to them. Once one of them has been created, we'll attach a listener and `__toolkitInitialized`
+  // should save us from any more processing. Once all four of them have been loaded, this
+  // will continue to be a near noop observe.
+  observe() {
+    if (!this.features.some((feature) => feature.shouldInvoke())) {
+      return;
+    }
+
+    const gridEditComponent = componentLookup('register/grid-edit');
+    const gridAddComponent = componentLookup('register/grid-add');
+    const gridSubEditComponent = componentLookup('register/grid-sub-edit');
+    const gridGridFooterComponent = componentLookup('register/grid-footer');
+
+    if (gridEditComponent && !gridEditComponent.__toolkitInitialized) {
       this.attachWillInsertHandler('register/grid-edit');
     }
 
-    if ($('.ynab-grid-add-rows', '.ynab-grid').length) {
+    if (gridAddComponent && !gridAddComponent.__toolkitInitialized) {
       this.attachWillInsertHandler('register/grid-add');
     }
 
-    if ($('.ynab-grid-body-split.is-editing', '.ynab-grid').length) {
+    if (gridSubEditComponent && !gridSubEditComponent.__toolkitInitialized) {
       this.attachWillInsertHandler('register/grid-sub-edit');
     }
 
-    if ($('.ynab-grid-body-row.ynab-grid-footer', '.ynab-grid').length) {
+    if (gridGridFooterComponent && !gridGridFooterComponent.__toolkitInitialized) {
       this.attachWillInsertHandler('register/grid-footer');
     }
-
-    ynabToolKit.invokeFeature('AdjustableColumnWidths');
   }
 
   onRouteChanged(route) {
