@@ -13,6 +13,10 @@
       function setHeaderValues(pointIndex) {
         let series = ynabToolKit.netWorthReport.chart.series;
         series.forEach((seriesData, index) => {
+          if (!seriesData.data[pointIndex]) {
+            return;
+          }
+
           let formattedCurrency = ynabToolKit.shared.formatCurrency(seriesData.data[pointIndex].y);
           if (index === 0) {
             seriesData.data[pointIndex].setState('hover');
@@ -33,6 +37,10 @@
 
       function onMouseOut(pointIndex) {
         ynabToolKit.netWorthReport.chart.series.forEach((seriesData) => {
+          if (!seriesData.data[pointIndex]) {
+            return;
+          }
+
           seriesData.data[pointIndex].setState('');
         });
       }
