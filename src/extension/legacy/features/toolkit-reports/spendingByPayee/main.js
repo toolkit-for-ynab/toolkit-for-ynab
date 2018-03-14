@@ -29,11 +29,14 @@
           const payee = transaction.getPayee();
           const isStartingBalance = payee && payee.getInternalName() === ynab.constants.InternalPayees.StartingBalance;
 
-          return transaction.getAmount() &&
-                 !transaction.get('isSplit') &&
-                 !isTransfer &&
-                 !isInternalDebtCategory &&
-                (!isStartingBalance || !transaction.get('inflow'));
+          return (
+            transaction.getAmount() &&
+            !transaction.get('isSplit') &&
+            !isTransfer &&
+            !isInternalDebtCategory &&
+            !isStartingBalance &&
+            !transaction.get('inflow')
+          );
         },
 
         calculate(transactions) {
