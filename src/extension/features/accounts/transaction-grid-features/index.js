@@ -105,7 +105,9 @@ export class TransactionGridFeatures extends Feature {
 
     if ($appendToRows) {
       this.features.forEach((feature) => {
-        feature.handleSingleRenderColumn($appendToRows, componentName);
+        if (feature.shouldInvoke()) {
+          feature.handleSingleRenderColumn($appendToRows, componentName);
+        }
       });
     }
 
@@ -129,7 +131,7 @@ export class TransactionGridFeatures extends Feature {
   // should save us from any more processing. Once all four of them have been loaded, this
   // will continue to be a near noop observe.
   observe() {
-    if (!this.features.some((feature) => feature.shouldInvoke())) {
+    if (!this.shouldInvoke()) {
       return;
     }
 
