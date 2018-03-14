@@ -1,13 +1,17 @@
 .budget-content ul, .budget-table-row.is-dragging {
-  height: 1.6em;
+  height: 1.8em;
 }
 
 .budget-table-row.is-master-category {
   margin-top: 0px;
+  height: 1.8em !important;
 }
 
-.budget-table-row.is-master-category .budget-table-cell-name .budget-table-cell-name-row-label-item {
-  padding-top: 0.1em !important;
+.budget-table-row.is-master-category .budget-table-cell-name {
+  line-height: 1.8em !important;
+  padding-top: 0 !important;
+  font-size: 1em !important;
+  align-items: center !important;
 }
 
 .budget-table-row.is-master-category .budget-table-cell-add-category .flaticon {
@@ -19,14 +23,9 @@
   font-size: 0.78em;
 }
 
-.budget-table-row.is-master-category .budget-table-cell-name {
-  padding-top: 0;
-  font-size: 1.05em;
-}
-
 .budget-table-row.is-sub-category > .budget-table-cell-available .positive, .budget-table-row.is-sub-category > .budget-table-cell-available .negative, .budget-table-row.is-sub-category > .budget-table-cell-available .cautious, .budget-table-row.is-sub-category > .budget-table-cell-available .zero {
   top: 0 !important;
-  padding: 0em 0.4em;
+  padding: 0em 0.4em !important;
   font-size: 1em !important;
 }
 
@@ -40,12 +39,22 @@
   border-width: 1px !important;
 }
 
+.budget-table-cell-budgeted .js-edit-currency-input {
+  padding: 0 !important;
+}
+
 .budget-table-cell-budgeted .currency-input input {
   height: 1.45em !important;
 }
 
-.budget-table-cell-budgeted .js-edit-currency-input {
-  padding: 0 !important;
+.budget-table .is-debt-payment-category .budget-table-cell-available {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.budget-table .is-debt-payment-category .budget-table-cell-available .budget-table-cell-available-payment {
+  margin-right: 0.25em;
 }
 
 .icon-calculator {
