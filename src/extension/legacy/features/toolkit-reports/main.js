@@ -553,6 +553,10 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
         },
 
         generateMonthLabelsFromFirstOfTransactions(transactions, endWithLastTransaction) {
+          if (!transactions.length) {
+            return [];
+          }
+
           let monthLabelsForTransaction = [];
           // grab the current month, this is the last label of our slider
           let endMonth = new Date().getMonth();
