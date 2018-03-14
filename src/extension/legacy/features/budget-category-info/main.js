@@ -183,14 +183,10 @@
           }
         },
 
-        addBudgetVersionIdObserver() {
-          let applicationController = ynabToolKit.shared.containerLookup('controller:application');
-          applicationController.addObserver('budgetVersionId', function () {
-            Ember.run.scheduleOnce('afterRender', this, resetBudgetViewBudgetCategoryInfo);
-          });
-
-          function resetBudgetViewBudgetCategoryInfo() {
+        onRouteChanged() {
+          if (ynabToolKit.shared.getCurrentRoute().includes('budget')) {
             loadCategories = true;
+            ynabToolKit.budgetCategoryInfo.invoke();
           }
         }
       };
@@ -198,7 +194,6 @@
 
     // Run once and activate setTimeOut()
     ynabToolKit.budgetCategoryInfo.invoke();
-    ynabToolKit.budgetCategoryInfo.addBudgetVersionIdObserver();
   } else {
     setTimeout(poll, 250);
   }

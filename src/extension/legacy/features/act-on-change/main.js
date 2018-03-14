@@ -71,6 +71,27 @@ Set.prototype.regex = function (regex) {
         });
       });
 
+      applicationController.addObserver('budgetVersionId', function () {
+        let currentRoute = applicationController.get('currentRouteName');
+        Ember.run.scheduleOnce('afterRender', function () {
+          ynabToolKit.shared.feedChanges({ routeChanged: currentRoute });
+        });
+      });
+
+      applicationController.addObserver('selectedAccountId', function () {
+        let currentRoute = applicationController.get('currentRouteName');
+        Ember.run.scheduleOnce('afterRender', function () {
+          ynabToolKit.shared.feedChanges({ routeChanged: currentRoute });
+        });
+      });
+
+      applicationController.addObserver('monthString', function () {
+        let currentRoute = applicationController.get('currentRouteName');
+        Ember.run.scheduleOnce('afterRender', function () {
+          ynabToolKit.shared.feedChanges({ routeChanged: currentRoute });
+        });
+      });
+
       ynabToolKit.onCurrentRouteChangedInit = true;
     };
 
