@@ -1,5 +1,6 @@
 {
   "name": "toolkit-for-ynab",
+  "version": "2.1.0",
   "private": true,
   "devDependencies": {
     "archiver": "^2.1.0",
@@ -74,14 +75,22 @@
       "/node_modules/",
       "/test/"
     ],
-    "coverageReporters": ["text"],
+    "coverageReporters": [
+      "text"
+    ],
     "moduleNameMapper": {
       "toolkit/(.*)": "<rootDir>/src/$1"
     },
     "setupTestFrameworkScriptFile": "<rootDir>/src/test/setup.js",
-    "setupFiles": ["jest-localstorage-mock"],
-    "testPathIgnorePatterns": ["/node_modules/"],
-    "reporters": ["jest-dot-reporter"],
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "reporters": [
+      "jest-dot-reporter"
+    ],
     "transform": {
       "^.+\\.js$": "babel-jest",
       ".*.css": "<rootDir>/node_modules/jest-css-modules"
