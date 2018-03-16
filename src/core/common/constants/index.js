@@ -6,8 +6,8 @@ export const Browser = {
 
 export const BrowserExtensionPrefixMap = {
   [Browser.Chrome]: 'chrome-extension://',
-  [Browser.Edge]: 'moz-extension://',
-  [Browser.Firefox]: 'ms-browser-extension://'
+  [Browser.Edge]: 'ms-browser-extension://',
+  [Browser.Firefox]: 'moz-extension://'
 };
 
 export const Environment = {
