@@ -2,6 +2,7 @@ import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { ToolkitStorage } from 'toolkit/core/common/storage';
 import { allToolkitSettings, getUserSettings } from 'toolkit/core/settings';
 import { injectCSS, injectScript } from './dom-injectors';
+import { getEnvironment } from 'toolkit/core/common/web-extensions';
 
 const storage = new ToolkitStorage();
 
@@ -40,15 +41,21 @@ function applySettingsToDom(userSettings) {
   });
 }
 
-function sendToolkitBootstrap(userSettings) {
+function sendToolkitBootstrap(options) {
+  const browser = getBrowser();
+  const environment = getEnvironment();
+  const manfiest = browser.runtime.getManifest();
+
   window.postMessage({
     type: 'ynab-toolkit-bootstrap',
     ynabToolKit: {
       assets: {
-        logo: getBrowser().runtime.getURL('assets/images/logos/toolkitforynab-logo-400.png')
+        logo: browser.runtime.getURL('assets/images/logos/toolkitforynab-logo-400.png')
       },
-      version: getBrowser().runtime.getManifest().version,
-      options: userSettings
+      environment,
+      name: manfiest.name,
+      options,
+      version: manfiest.version
     }
   }, '*');
 }
@@ -82,7 +89,7 @@ function initializeYNABToolkit() {
 
 storage.getFeatureSetting('DisableToolkit').then((isToolkitDisabled) => {
   if (isToolkitDisabled) {
-    console.log('Toolkit-for-YNAB is disabled!');
+    console.log(`${getBrowser().runtime.getManifest().name} is disabled!`);
     return;
   }
 

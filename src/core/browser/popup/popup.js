@@ -8,7 +8,9 @@ export class Popup {
   _browser = getBrowser();
 
   constructor() {
-    $('#versionNumber').text(this._browser.runtime.getManifest().version);
+    const manifest = this._browser.runtime.getManifest();
+    $('#versionNumber').text(manifest.version);
+    $('.toolkit-name').text(manifest.name);
 
     Promise.all([
       this._storage.getStorageItem('options.dark-mode', { default: false }),
