@@ -1,12 +1,19 @@
 const fs = require('fs-extra');
 const path = require('path');
 
+const validEnvironments = ['beta', 'development'];
+if (!validEnvironments.includes(process.env.ENVIRONMENT)) {
+  console.log(`Invalid ENVIRONMENT provided. Must be one of: [${validEnvironments.join('|')}]`);
+  process.exit(1);
+}
+
+const env = process.env.ENVIRONMENT;
 const workspaceRoot = path.join(__dirname, '..');
-const extensionDirectory = path.join(workspaceRoot, 'dist', 'extension');
-const manifestPath = path.join(extensionDirectory, 'manifest.json');
+const buildDirectory = path.join(workspaceRoot, 'dist', 'extension');
+const manifestPath = path.join(buildDirectory, 'manifest.json');
 
 const manifest = require(manifestPath);
-const changes = require(path.join(workspaceRoot, 'src', 'manifest.beta.json'));
+const changes = require(path.join(workspaceRoot, 'src', `manifest.${env}.json`));
 
 // Clobber any keys in the beta manifest across.
 Object.assign(manifest, changes);
@@ -22,12 +29,4 @@ fs.unlinkSync(manifestPath);
 // And write our new one.
 fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 
-console.log('Beta manifest applied.');
-
-// Now let's deal with our images.
-const imagesPath = path.join(extensionDirectory, 'assets', 'images');
-const betaOverridesPath = path.join(imagesPath, 'beta-overrides');
-
-fs.copySync(betaOverridesPath, imagesPath);
-
-console.log('Beta images applied.');
+console.log(`${env} manifest applied.`);
