@@ -29,7 +29,7 @@ watcher.on('all', function (event, path) {
 
 function spawnBuildProcess() {
   const yarnCLI = /^win/.test(process.platform) ? 'yarn.cmd' : 'yarn';
-  const buildProcess = spawn(yarnCLI, ['build'], {
+  const buildProcess = spawn(yarnCLI, ['build:development'], {
     stdio: 'inherit'
   });
 
