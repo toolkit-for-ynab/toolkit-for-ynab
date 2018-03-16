@@ -49,6 +49,7 @@
         "vars-on-top": "off",
         "no-mixed-operators": "off",
         "no-plusplus": "off",
-        "class-methods-use-this": "off"
+        "class-methods-use-this": "off",
+        "object-curly-newline": "off"
     }
 }
