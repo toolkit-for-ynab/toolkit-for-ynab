@@ -1,13 +1,14 @@
 const fs = require('fs-extra');
 const path = require('path');
+const yargs = require('yargs').argv;
 
 const validEnvironments = ['beta', 'development'];
-if (!validEnvironments.includes(process.env.ENVIRONMENT)) {
+if (!validEnvironments.includes(yargs.env)) {
   console.log(`Invalid ENVIRONMENT provided. Must be one of: [${validEnvironments.join('|')}]`);
   process.exit(1);
 }
 
-const env = process.env.ENVIRONMENT;
+const env = yargs.env;
 const workspaceRoot = path.join(__dirname, '..');
 const buildDirectory = path.join(workspaceRoot, 'dist', 'extension');
 const manifestPath = path.join(buildDirectory, 'manifest.json');

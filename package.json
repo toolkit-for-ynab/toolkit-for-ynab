@@ -32,7 +32,8 @@
     "jquery": "^3.2.1",
     "terminate": "^2.1.0",
     "to-string-loader": "^1.1.5",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "yargs": "^11.0.0"
   },
   "scripts": {
     "build:check": "yarn && yarn gen && yarn lint",
@@ -44,8 +45,8 @@
     "compress": "yarn compress:dist && yarn compress:src",
     "compress:dist": "node scripts/compressDist.js",
     "compress:src": "node scripts/compressSrc.js",
-    "manifest:beta": "ENVIRONMENT=beta node scripts/applyManifestOverrides.js",
-    "manifest:development": "ENVIRONMENT=development node scripts/applyManifestOverrides.js",
+    "manifest:beta": "node scripts/applyManifestOverrides.js --env=beta",
+    "manifest:development": "node scripts/applyManifestOverrides.js --env=development",
     "webpack:beta": "yarn build:webpack --env.buildType=beta",
     "webpack:development": "yarn build:webpack --env.buildType=development",
     "webpack:production": "yarn build:webpack --env.buildType=production",
