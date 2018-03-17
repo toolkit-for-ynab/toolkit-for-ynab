@@ -12,7 +12,7 @@ export class DisplayTargetGoalAmount extends Feature {
     $('.budget-table-header .budget-table-cell-name').css('position', 'relative');
     $('.budget-table-row.is-sub-category li.budget-table-cell-name').css('position', 'relative');
 
-    $('.budget-table-header .budget-table-cell-name').append($('<div>', { class: 'budget-table-cell-goal' }).css({ position: 'absolute', right: 0, top: '6px' }).append('GOAL'));
+    $('.budget-table-header .budget-table-cell-name').append($('<div>', { class: 'budget-table-cell-goal' }).css({ position: 'absolute', right: 0, top: 0, 'line-height': '2.56rem' }).append('GOAL'));
 
     $('.budget-table-row.is-sub-category li.budget-table-cell-name').append($('<div>', { class: 'budget-table-cell-goal currency' }).css({
       background: '-webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 10%,rgba(255,255,255,1) 100%)', position: 'absolute', 'font-size': '80%', 'padding-left': '.75em', 'padding-right': '1px', 'line-height': '2.55em'
