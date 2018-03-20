@@ -49,13 +49,13 @@ export class DisplayTotalMonthlyGoals extends Feature {
       </div>
     `);
 
+    $('.total-monthly-goals-inspector').remove();
     monthlyGoalsInspectorElement.insertBefore($('.inspector-quick-budget'));
   }
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
     if (changedNodes.has('budget-table-cell-budgeted')) {
-      $('.total-monthly-goals-inspector').remove();
       this.invoke();
     }
   }
