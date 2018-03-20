@@ -55,7 +55,8 @@ export class DisplayTotalMonthlyGoals extends Feature {
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
-    if (changedNodes.has('budget-table-cell-budgeted')) {
+    if (changedNodes.has('budget-table-row is-sub-category is-checked') ||
+        changedNodes.has('budget-table-row is-sub-category')) {
       this.invoke();
     }
   }
