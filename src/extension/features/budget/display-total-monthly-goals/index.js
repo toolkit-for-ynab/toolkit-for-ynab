@@ -8,71 +8,90 @@ export class DisplayTotalMonthlyGoals extends Feature {
     return getCurrentRouteName().indexOf('budget') !== -1 && this.settings.enabled !== '0';
   }
 
-  invoke() {
-    const monthlyGoals = {
+  extractCategoryGoalInformation(element) {
+    const emberId = element.id;
+    const viewData = getEmberView(emberId).data;
+    const {
+      subCategory,
+      monthlySubCategoryBudgetCalculation
+    } = viewData;
+
+    const goalType = subCategory.get('goalType');
+    const monthlyFunding = subCategory.get('monthlyFunding');
+    const targetBalanceDate = monthlySubCategoryBudgetCalculation.get('goalTarget');
+
+    let monthlyGoalAmount = 0;
+
+    switch (goalType) {
+      case 'MF': {
+        monthlyGoalAmount = monthlyFunding;
+        break;
+      }
+      case 'TBD': {
+        monthlyGoalAmount = targetBalanceDate;
+        break;
+      }
+    }
+
+    return {
+      monthlyGoalAmount,
+      isChecked: $(element).is('.is-checked')
+    };
+  }
+
+  calculateMonthlyGoals() {
+    const categoryGoals = {
       total: 0,
       checkedTotal: 0,
       checkedCount: 0
     };
 
     $('.budget-table-row.is-sub-category').each((index, element) => {
-      const emberId = element.id;
-      const viewData = getEmberView(emberId).data;
-      const {
-        subCategory,
-        monthlySubCategoryBudgetCalculation
-      } = viewData;
+      const categoryGoal = this.extractCategoryGoalInformation(element);
 
-      const goalType = subCategory.get('goalType');
-      const monthlyFunding = subCategory.get('monthlyFunding');
-      const targetBalanceDate = monthlySubCategoryBudgetCalculation.get('goalTarget');
-
-      let monthlyCategoryGoal = 0;
-
-      switch (goalType) {
-        case 'MF': {
-          monthlyCategoryGoal = monthlyFunding;
-          break;
-        }
-        case 'TBD': {
-          monthlyCategoryGoal = targetBalanceDate;
-          break;
-        }
-      }
-
-      monthlyGoals.total += monthlyCategoryGoal;
-      if ($(element).is('.is-checked')) {
-        monthlyGoals.checkedTotal += monthlyCategoryGoal;
-        monthlyGoals.checkedCount++;
+      categoryGoals.total += categoryGoal.monthlyGoalAmount;
+      if (categoryGoal.isChecked) {
+        categoryGoals.checkedTotal += categoryGoal.monthlyGoalAmount;
+        categoryGoals.checkedCount++;
       }
     });
 
-    const showAmount = monthlyGoals.checkedCount !== 1;
-    const amount = monthlyGoals.checkedCount > 0
-      ? monthlyGoals.checkedTotal
-      : monthlyGoals.total;
+    return {
+      amount: categoryGoals.checkedCount > 0
+        ? categoryGoals.checkedTotal
+        : categoryGoals.total,
+      checkedCategoryCount: categoryGoals.checkedCount
+    };
+  }
 
-    $('.total-monthly-goals-inspector').remove();
+  createInspectorElement(goalsAmount) {
+    const currencyClass = (goalsAmount === 0) ? 'zero' : 'positive';
 
-    if (!showAmount) {
-      return;
-    }
-
-    const currencyClass = (amount === 0) ? 'zero' : 'positive';
-
-    const monthlyGoalsInspectorElement = $(`
+    return $(`
       <div class="total-monthly-goals-inspector">
         <h3>TOTAL MONTHLY GOALS</h3>
         <h1 title>
           <span class="user-data currency ${currencyClass}">
-            ${formatCurrency(amount)}
+            ${formatCurrency(goalsAmount)}
           </span>
         </h1>
         <hr />
       </div>
     `);
+  }
 
-    monthlyGoalsInspectorElement.insertBefore($('.inspector-quick-budget'));
+  invoke() {
+    const monthlyGoals = this.calculateMonthlyGoals();
+
+    $('.total-monthly-goals-inspector').remove();
+
+    const shouldShowInspector = monthlyGoals.checkedCategoryCount !== 1;
+    if (!shouldShowInspector) {
+      return;
+    }
+
+    this.createInspectorElement(monthlyGoals.amount)
+      .insertBefore($('.inspector-quick-budget'));
   }
 
   observe(changedNodes) {
