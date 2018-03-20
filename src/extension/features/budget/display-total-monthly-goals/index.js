@@ -9,7 +9,11 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   invoke() {
-    let monthlyGoalsTotal = 0;
+    const monthlyGoals = {
+      total: 0,
+      checkedTotal: 0,
+      checkedCount: 0
+    };
 
     $('.budget-table-row.is-sub-category').each((index, element) => {
       const emberId = element.id;
@@ -23,33 +27,51 @@ export class DisplayTotalMonthlyGoals extends Feature {
       const monthlyFunding = subCategory.get('monthlyFunding');
       const targetBalanceDate = monthlySubCategoryBudgetCalculation.get('goalTarget');
 
+      let monthlyCategoryGoal = 0;
+
       switch (goalType) {
         case 'MF': {
-          monthlyGoalsTotal += monthlyFunding;
+          monthlyCategoryGoal = monthlyFunding;
           break;
         }
         case 'TBD': {
-          monthlyGoalsTotal += targetBalanceDate;
+          monthlyCategoryGoal = targetBalanceDate;
           break;
         }
       }
+
+      monthlyGoals.total += monthlyCategoryGoal;
+      if ($(element).is('.is-checked')) {
+        monthlyGoals.checkedTotal += monthlyCategoryGoal;
+        monthlyGoals.checkedCount++;
+      }
     });
 
-    const currencyClass = (monthlyGoalsTotal === 0) ? 'zero' : 'positive';
+    const showAmount = monthlyGoals.checkedCount !== 1;
+    const amount = monthlyGoals.checkedCount > 0
+      ? monthlyGoals.checkedTotal
+      : monthlyGoals.total;
+
+    $('.total-monthly-goals-inspector').remove();
+
+    if (!showAmount) {
+      return;
+    }
+
+    const currencyClass = (amount === 0) ? 'zero' : 'positive';
 
     const monthlyGoalsInspectorElement = $(`
       <div class="total-monthly-goals-inspector">
         <h3>TOTAL MONTHLY GOALS</h3>
         <h1 title>
           <span class="user-data currency ${currencyClass}">
-            ${formatCurrency(monthlyGoalsTotal)}
+            ${formatCurrency(amount)}
           </span>
         </h1>
         <hr />
       </div>
     `);
 
-    $('.total-monthly-goals-inspector').remove();
     monthlyGoalsInspectorElement.insertBefore($('.inspector-quick-budget'));
   }
 
