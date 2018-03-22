@@ -1,3 +1,6 @@
 {
-  "name": "Toolkit for YNAB (Beta)"
+  "name": "Toolkit for YNAB (Beta)",
+  "browser_action": {
+    "default_title": "Toolkit for YNAB (Beta)"
+  }
 }
