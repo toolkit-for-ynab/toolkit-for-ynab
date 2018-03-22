@@ -1,3 +1,4 @@
 [title="Credit Card Payments"] .user-entered-text::before {
-  content: "💳 ";
+  content: "💳";
+  padding-right: .25em;
 }
