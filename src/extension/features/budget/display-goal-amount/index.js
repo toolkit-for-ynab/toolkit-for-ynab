@@ -56,7 +56,8 @@ export class DisplayTargetGoalAmount extends Feature {
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
-    if (changedNodes.has('budget-table-cell-budgeted')) {
+    if (changedNodes.has('budget-table-cell-budgeted') ||
+        changedNodes.has('goal-message')) {
       $('.budget-table-cell-goal').remove();
       this.invoke();
     }
