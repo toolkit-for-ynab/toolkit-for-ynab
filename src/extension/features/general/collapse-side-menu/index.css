@@ -2,6 +2,14 @@
   cursor: pointer;
 }
 
+.ynabtk-collapse-link > span {
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  margin-right: .9rem;
+}
+
 .layout.collapsed .content,
 .layout.collapsed .budget-header {
 	left: 40px;
@@ -27,4 +35,14 @@
 
 .collapsed-buttons .active .collapsed-account {
 	color: #32dcff;
+}
+
+.ynabtk-nav-link-collapsed {
+  margin-left: 1rem !important;
+  margin-right: 1rem !important;
+}
+
+.nav-main > li > a {
+  display: -webkit-box;
+  width: 100%;
 }
