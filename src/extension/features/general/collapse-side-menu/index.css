@@ -38,6 +38,11 @@
 }
 
 .ynabtk-nav-link-collapsed {
-  margin-left: 0.9rem !important;
+  margin-left: 1rem !important;
   margin-right: 1rem !important;
+}
+
+.nav-main > li > a {
+  display: -webkit-box;
+  width: 100%;
 }

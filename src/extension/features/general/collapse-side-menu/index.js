@@ -82,7 +82,6 @@ export class CollapseSideMenu extends Feature {
       .button-prefs.button-prefs-budget,
       .nav-accounts,
       .button-sidebar.nav-add-account,
-      .nav-main div,
       .referral-program,
       .button-prefs.button-prefs-user
     `);
