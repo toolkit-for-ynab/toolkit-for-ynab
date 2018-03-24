@@ -21,7 +21,10 @@ Object.assign(manifest, changes);
 
 // If we're on Travis, we should append the build number to the version number.
 if (process.env.TRAVIS_BUILD_NUMBER) {
-  manifest.version += `.${process.env.TRAVIS_BUILD_NUMBER}`;
+  // I goofed up and didn't realize Google complained about version numbers not
+  // going up so we're going to add 1500 to the build number until we're on the
+  // next minor version :P
+  manifest.version += `.${parseInt(process.env.TRAVIS_BUILD_NUMBER) + 1500}`;
 }
 
 // Delete the old one.
