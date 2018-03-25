@@ -1,5 +1,4 @@
-<!--
-Thank you for your contribution! Please note that Pull Request titles are used
+<!--Thank you for your contribution! Please note that Pull Request titles are used
 to generate release notes. So rather than having a "technical" title, it's
 preferred that you have a title which is descriptive to a normal user.
 
@@ -21,8 +20,7 @@ Feature (ie: adding a feature that didn't already exist):
 
 Finally, after properly titling your Pull Request, please fill out the following
 information to provide context to the reviewer and more technical information
-to interested users since this Pull Request will be linked in the release notes.
--->
+to interested users since this Pull Request will be linked in the release notes.-->
 
 Github Issue (if applicable): #XXX
 
