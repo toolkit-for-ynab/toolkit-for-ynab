@@ -93,7 +93,10 @@ export class CheckNumbers extends TransactionGridFeature {
           editingTransaction.set('checkNumber', $(this).val());
         });
 
-      $inputBox.val(editingTransaction.get('checkNumber'));
+      if (typeof editingTransaction !== 'undefined') {
+        $inputBox.val(editingTransaction.get('checkNumber'));
+      }
+
       $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-check-number"><div>')
         .append($inputBox)
         .insertAfter($('.ynab-grid-cell-memo', $appendToRows));
