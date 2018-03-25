@@ -232,6 +232,8 @@ if ( typeof ynabToolKit !== "undefined"  && ynabToolKit.pageReady === true ) {
 
   ynabToolKit.awesomeFeature.invoke(); // Run your script once on page load
 
+} else if (typeof Ember !== 'undefined') {
+  Ember.run.next(poll, 250);
 } else {
   setTimeout(poll, 250);
 }

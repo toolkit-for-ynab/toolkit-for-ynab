@@ -10,13 +10,10 @@ function isNotSubTransaction(transaction) {
 }
 
 export class ToggleSplits extends Feature {
+  expanded = false;
+
   get idName() {
     return 'toggle-splits';
-  }
-
-  constructor() {
-    super();
-    this.expanded = false;
   }
 
   injectCSS() { return require('./index.css'); }

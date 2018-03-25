@@ -273,6 +273,8 @@
         }
       };
     }());
+  } else if (typeof Ember !== 'undefined') {
+    Ember.run.next(poll, 250);
   } else {
     setTimeout(poll, 250);
   }

@@ -34,6 +34,8 @@
     }()); // Keep feature functions contained within this object
 
     // feature called and invoked based on the budget-category-info shared feature
+  } else if (typeof Ember !== 'undefined') {
+    Ember.run.next(poll, 250);
   } else {
     setTimeout(poll, 250);
   }

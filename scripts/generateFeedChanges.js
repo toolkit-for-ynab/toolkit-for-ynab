@@ -51,8 +51,10 @@ function writeFeedChanges(features) {
       } catch (err) { /* ignore */ }`
   )).join('\n\n')}
     };
+  } else if (typeof Ember !== 'undefined') {
+    Ember.run.next(poll, 250);
   } else {
-    setTimeout(poll, 100);
+    setTimeout(poll, 250);
   }
 }());
 `;

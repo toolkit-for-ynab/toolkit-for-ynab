@@ -98,6 +98,8 @@ Set.prototype.regex = function (regex) {
     // Run listeners once
     ynabToolKit.actOnChange();
     ynabToolKit.onCurrentRouteChanged();
+  } else if (typeof Ember !== 'undefined') {
+    Ember.run.next(poll, 250);
   } else {
     setTimeout(poll, 250);
   }
