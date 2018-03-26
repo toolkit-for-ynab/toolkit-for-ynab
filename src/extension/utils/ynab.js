@@ -21,15 +21,33 @@ export function getCurrentRouteName() {
 }
 
 export function getCategoriesViewModel() {
-  return ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel();
+  const applicationController = controllerLookup('application');
+  return applicationController.get('categoriesViewModel');
 }
 
 export function getAllBudgetMonthsViewModel() {
-  return ynab.YNABSharedLib.getBudgetViewModel_AllBudgetMonthsViewModel();
+  const applicationController = controllerLookup('application');
+  return applicationController.get('allBudgetMonthsViewModel');
+}
+
+export function getBudgetViewModel() {
+  const applicationController = controllerLookup('application');
+  return applicationController.get('budgetViewModel');
 }
 
 export function getAllBudgetMonthsViewModelResult() {
   return getAllBudgetMonthsViewModel()._result;
+}
+
+export function isCurrentMonthSelected() {
+  const today = new ynab.utilities.DateWithoutTime();
+  const selectedMonth = getBudgetViewModel().get('month');
+
+  if (selectedMonth) {
+    return today.equalsByMonth(selectedMonth);
+  }
+
+  return false;
 }
 
 export function isYNABReady() {
