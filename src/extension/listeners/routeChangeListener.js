@@ -21,7 +21,13 @@ export class RouteChangeListener {
         'monthString', // this will handle changing which month of a budget you're looking at
         (controller, changedProperty) => {
           if (changedProperty === 'budgetVersionId') {
-            Ember.run.scheduleOnce('afterRender', controller, 'emitBudgetRouteChange');
+            (function poll() {
+              if (controller.get('budgetVersionId') === controller.get('budgetViewModel.budgetVersionId')) {
+                Ember.run.scheduleOnce('afterRender', controller, 'emitBudgetRouteChange');
+              } else {
+                Ember.run.next(poll, 250);
+              }
+            }());
           } else {
             Ember.run.scheduleOnce('afterRender', controller, 'emitSameBudgetRouteChange');
           }
