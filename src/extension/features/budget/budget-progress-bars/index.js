@@ -1,6 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getCurrentRouteName, getEntityManager } from 'toolkit/extension/utils/ynab';
-import { migrateLegacyPacingStorage } from 'toolkit/extension/utils/pacing';
+import { migrateLegacyPacingStorage, pacingForCategory } from 'toolkit/extension/utils/pacing';
+import { getEmberView } from 'toolkit/extension/utils/ember';
 
 const progressIndicatorWidth = 0.005; // Current month progress indicator width
 
@@ -90,25 +91,22 @@ export class BudgetProgressBars extends Feature {
   }
 
   addPacingProgress(subCategoryName, target) {
-    let deEmphasizedCategories = JSON.parse(localStorage.getItem('ynab_toolkit_pacing_deemphasized_categories')) || [];
+    const subCategory = getEmberView(target[0].id).data;
+    const pacingCalculation = pacingForCategory(subCategory);
+    const balancePriorToSpending = subCategory.get('balancePriorToSpending');
+    const { budgetedPace, monthPace } = pacingCalculation;
 
-    if (deEmphasizedCategories.indexOf(subCategoryName) === -1) {
-      let calculation = this.getCalculation(subCategoryName);
-
-      let budgeted = calculation.balance - calculation.budgetedCashOutflows - calculation.budgetedCreditOutflows;
-      let available = calculation.balance;
-
-      if (budgeted > 0) {
-        let pacing = (budgeted - available) / budgeted;
-        if (this.monthProgress > pacing) {
+    if (!pacingCalculation.isDeemphasized) {
+      if (balancePriorToSpending > 0) {
+        if (monthPace > budgetedPace) {
           $(target).css('background', this.generateProgressBarStyle(
             ['#c0e2e9', 'white', '#CFD5D8', 'white'],
-            [pacing, this.monthProgress - progressIndicatorWidth, this.monthProgress]
+            [budgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
           ));
         } else {
           $(target).css('background', this.generateProgressBarStyle(
             ['#c0e2e9', '#CFD5D8', '#c0e2e9', 'white'],
-            [this.monthProgress - progressIndicatorWidth, this.monthProgress, pacing]
+            [this.monthProgress - progressIndicatorWidth, this.monthProgress, budgetedPace]
           ));
         }
       } else {

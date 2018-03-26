@@ -3,6 +3,7 @@ import { getCurrentRouteName, isCurrentMonthSelected } from 'toolkit/extension/u
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { getDeemphasizedCategories, migrateLegacyPacingStorage, pacingForCategory, setDeemphasizedCategories } from 'toolkit/extension/utils/pacing';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { i10n } from 'toolkit/extension/utils/toolkit';
 
 export class Pacing extends Feature {
   injectCSS() { return require('./index.css'); }
@@ -17,7 +18,16 @@ export class Pacing extends Feature {
 
   invoke() {
     $('#ynab-toolkit-pacing-style').remove();
-    $('<style type="text/css" id="ynab-toolkit-pacing-style"> .budget-table-cell-available { width: 10% !important; } </style>').appendTo('head');
+    $('.budget-table-header .budget-table-cell-available')
+      .after(`<li class="toolkit-cell-pacing">
+        ${i10n('toolkit.pacing', 'PACING')}
+      </li>`);
+
+    $(`<style type="text/css" id="ynab-toolkit-pacing-style">
+      .budget-table-cell-available {
+        width: 10% !important;
+      }
+    </style>`).appendTo('head');
 
     $('.budget-table-row')
       .not('.budget-table-uncategorized-transactions')
@@ -41,6 +51,10 @@ export class Pacing extends Feature {
             $(event.target).addClass('deemphasized');
             deemphasizedCategories.push(subCategoryId);
             setDeemphasizedCategories(deemphasizedCategories);
+          }
+
+          if (['pacing', 'both'].indexOf(ynabToolKit.options.BudgetProgressBars) !== -1) {
+            ynabToolKit.invokeFeature('BudgetProgressBars');
           }
 
           event.stopPropagation();
