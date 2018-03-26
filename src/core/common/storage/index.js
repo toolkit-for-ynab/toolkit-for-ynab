@@ -4,12 +4,20 @@ const FEATURE_SETTING_PREFIX = 'toolkit-feature:';
 
 export const featureSettingKey = (featureName) => `${FEATURE_SETTING_PREFIX}${featureName}`;
 
+export const StorageArea = {
+  Local: 'local'
+};
+
 export class ToolkitStorage {
   _browser = getBrowser();
   _storageArea = 'local';
   _storageListeners = new Map();
 
-  constructor() {
+  constructor(storageArea) {
+    if (storageArea) {
+      this._storageArea = storageArea;
+    }
+
     this._browser.storage.onChanged.addListener(this._listenForChanges);
   }
 
@@ -26,13 +34,13 @@ export class ToolkitStorage {
   }
 
   getFeatureSettings(settingNames, options = {}) {
-    const getFeatureSettingOptions = {
+    const getFeatureSettingsOptions = {
       parse: false,
       ...options
     };
 
     return Promise.all(settingNames.map((settingName) => {
-      return this.getStorageItem(featureSettingKey(settingName), getFeatureSettingOptions);
+      return this.getStorageItem(featureSettingKey(settingName), getFeatureSettingsOptions);
     }));
   }
 

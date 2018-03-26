@@ -81,12 +81,13 @@
     ]
   },
   "jest": {
+    "collectCoverage": true,
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/test/"
     ],
     "coverageReporters": [
-      "text"
+      "lcov"
     ],
     "moduleNameMapper": {
       "toolkit/(.*)": "<rootDir>/src/$1"

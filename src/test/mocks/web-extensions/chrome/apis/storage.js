@@ -2,6 +2,10 @@ class StorageArea {
   data = {};
 
   get = jest.fn((key, callback) => {
+    if (key === null) {
+      return callback(this.data);
+    }
+
     callback({ [key]: this.data[key] });
   });
 
@@ -14,6 +18,10 @@ class StorageArea {
     callback();
   });
 
+  remove = jest.fn((key) => {
+    delete this.data[key];
+  });
+
   mock = {
     setData: (data) => {
       this.data = data;
@@ -22,10 +30,13 @@ class StorageArea {
 }
 
 export class Storage {
+  _listeners = [];
   _storageAreaNames = ['local', 'sync'];
 
   onChanged = {
-    addListener: jest.fn()
+    addListener: jest.fn((callback) => {
+      this._listeners.push(callback);
+    })
   }
 
   constructor() {
@@ -35,6 +46,12 @@ export class Storage {
   }
 
   mock = {
+    triggerOnChangedListeners: (data, areaName) => {
+      this._listeners.forEach((listener) => {
+        listener(data, areaName);
+      });
+    },
+
     setStorageData: (mockData) => {
       this._storageAreaNames.forEach((storageArea) => {
         this[storageArea].mock.setData(mockData);
