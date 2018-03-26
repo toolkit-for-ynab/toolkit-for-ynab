@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getCurrentRouteName, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { migrateLegacyPacingStorage } from 'toolkit/extension/utils/pacing';
 
 const progressIndicatorWidth = 0.005; // Current month progress indicator width
 
@@ -11,8 +12,10 @@ export class BudgetProgressBars extends Feature {
   internalIdBase;
   monthProgress;
 
-  injectCSS() {
-    return require('./index.css');
+  injectCSS() { return require('./index.css'); }
+
+  willInvoke() {
+    migrateLegacyPacingStorage();
   }
 
   shouldInvoke() {

@@ -39,6 +39,7 @@ const legacySettingMap = {
   LargerClickableIcons: 'largerClickableIcons',
   MonthlyNotesPopupWidth: 'monthlyNotesPopupWidth',
   NavDisplayDensity: 'navDisplayDensity',
+  Pacing: 'pacing',
   PrintingImprovements: 'printingImprovements',
   QuickBudgetWarning: 'warnOnQuickBudget',
   ReconciledTextColor: 'reconciledTextColor',
