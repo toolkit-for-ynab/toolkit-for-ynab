@@ -1,17 +1,17 @@
 const STORAGE_KEY_PREFIX = 'ynab-toolkit-';
 
-export function getToolkitStorageKey(key, type) {
-  let value = localStorage.getItem(STORAGE_KEY_PREFIX + key);
+export function getToolkitStorageKey(key, defaultValue) {
+  const value = localStorage.getItem(STORAGE_KEY_PREFIX + key);
 
-  switch (type) {
-    case 'boolean': return value === 'true';
-    case 'number': return Number(value);
-    default: return value;
+  try {
+    return JSON.parse(value) || defaultValue;
+  } catch (e) {
+    return value || defaultValue;
   }
 }
 
 export function setToolkitStorageKey(key, value) {
-  return localStorage.setItem(STORAGE_KEY_PREFIX + key, value);
+  return localStorage.setItem(STORAGE_KEY_PREFIX + key, JSON.stringify(value));
 }
 
 export function removeToolkitStorageKey(key) {

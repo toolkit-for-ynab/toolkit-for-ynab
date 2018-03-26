@@ -16,7 +16,7 @@ export class ResizeInspector extends Feature {
   }
 
   invoke() {
-    let width = getToolkitStorageKey('inspector-width', 'number');
+    let width = getToolkitStorageKey('inspector-width');
     if (typeof width === 'undefined' || width === null) {
       width = 0;
     }
@@ -93,7 +93,7 @@ export class ResizeInspector extends Feature {
       }
     });
 
-    let width = getToolkitStorageKey('inspector-width', 'number');
+    let width = getToolkitStorageKey('inspector-width');
     let btn = $modal.find('button[data-inspector-size="' + width + '"]');
     btn.prop('disabled', true);
     btn.addClass(BUTTONDISABLED);

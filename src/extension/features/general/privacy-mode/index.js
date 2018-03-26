@@ -6,7 +6,7 @@ export class PrivacyMode extends Feature {
   }
 
   invoke() {
-    let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode', 'boolean');
+    let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode');
     if (typeof toggle === 'undefined') {
       ynabToolKit.shared.setToolkitStorageKey('privacy-mode', false);
     }
@@ -40,13 +40,13 @@ export class PrivacyMode extends Feature {
   togglePrivacyMode() {
     $('button#toolkit-togglePrivacy').toggleClass('active');
 
-    let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode', 'boolean');
+    let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode');
     ynabToolKit.shared.setToolkitStorageKey('privacy-mode', !toggle);
     this.updatePrivacyMode();
   }
 
   updatePrivacyMode() {
-    let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode', 'boolean');
+    let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode');
 
     if (toggle) {
       $('body').addClass('toolkit-privacyMode');
