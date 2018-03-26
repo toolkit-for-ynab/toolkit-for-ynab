@@ -458,6 +458,8 @@ ynabToolKit.shared = (function () {
       ynabToolKit.shared.removeToolkitStorageKey('latest-version');
       ynabToolKit.shared.showNewReleaseModal();
     }
+  } else if (typeof Ember !== 'undefined') {
+    Ember.run.next(poll, 250);
   } else {
     setTimeout(poll, 250);
   }

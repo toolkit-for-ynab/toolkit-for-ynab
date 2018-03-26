@@ -3,10 +3,6 @@ import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
 export class TargetBalanceWarning extends Feature {
-  constructor() {
-    super();
-  }
-
   shouldInvoke() {
     return getCurrentRouteName().indexOf('budget') !== -1;
   }

@@ -99,6 +99,8 @@ export class YNABToolkit {
 
         // Hook up listeners and then invoke any features that are ready to go.
         self._invokeFeatureInstances();
+      } else if (typeof Ember !== 'undefined') {
+        Ember.run.later(poll, 250);
       } else {
         setTimeout(poll, 250);
       }

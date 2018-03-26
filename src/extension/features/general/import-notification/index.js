@@ -1,14 +1,10 @@
 import { Feature } from 'toolkit/extension/features/feature';
 
 export class ImportNotification extends Feature {
-  injectCSS() { return require('./index.css'); }
+  isActive = false;
+  importClass = 'import-notification';
 
-  constructor() {
-    super();
-    this.isActive = false;
-    this.importClass = 'import-notification';
-    this.invoke = this.invoke.bind(this);
-  }
+  injectCSS() { return require('./index.css'); }
 
   willInvoke() {
     if (this.settings.enabled !== '0') {
@@ -28,7 +24,7 @@ export class ImportNotification extends Feature {
     return !this.isActive;
   }
 
-  invoke() {
+  invoke = () => {
     this.checkImportTransactions();
   }
 
