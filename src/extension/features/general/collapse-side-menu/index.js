@@ -13,7 +13,7 @@ export class CollapseSideMenu extends Feature {
 
   observe(changedNodes) {
     if (changedNodes.has('nav-main')) {
-      if (getToolkitStorageKey('isCollapsed', 'boolean')) {
+      if (getToolkitStorageKey('isCollapsed')) {
         this.getHideElements().hide();
       }
 
@@ -22,7 +22,7 @@ export class CollapseSideMenu extends Feature {
   }
 
   onRouteChanged() {
-    if (getToolkitStorageKey('isCollapsed', 'boolean')) {
+    if (getToolkitStorageKey('isCollapsed')) {
       this.getHideElements().hide();
     }
 
@@ -41,7 +41,7 @@ export class CollapseSideMenu extends Feature {
     }).append($('<span>', {
       class: 'ember-view ynabtk-collapse-icon flaticon stroke left-circle-4'
     })).append(i10n('toolkit.collapse', 'Collapse'))).click(() => {
-      const isCollapsed = getToolkitStorageKey('isCollapsed', 'boolean');
+      const isCollapsed = getToolkitStorageKey('isCollapsed');
       setToolkitStorageKey('isCollapsed', !isCollapsed);
       this.applyState();
     });
@@ -50,7 +50,7 @@ export class CollapseSideMenu extends Feature {
   }
 
   applyState() {
-    const isCollapsed = getToolkitStorageKey('isCollapsed', 'boolean');
+    const isCollapsed = getToolkitStorageKey('isCollapsed');
 
     if (isCollapsed) {
       Promise.all([

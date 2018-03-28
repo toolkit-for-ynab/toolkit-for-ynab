@@ -107,7 +107,7 @@ export class AdjustableColumnWidths extends Feature {
     }
 
     RESIZABLES.forEach((resizableClass) => {
-      const width = getToolkitStorageKey(`column-width-${resizableClass}`, 'number');
+      const width = getToolkitStorageKey(`column-width-${resizableClass}`);
       if (width) {
         $(`.${resizableClass}`).width(width);
       }

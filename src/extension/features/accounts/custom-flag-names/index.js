@@ -17,7 +17,7 @@ export class CustomFlagNames extends Feature {
       this.storeDefaultFlags();
     }
     if (typeof flags === 'undefined') {
-      flags = JSON.parse(getToolkitStorageKey('flags'));
+      flags = getToolkitStorageKey('flags');
       this.updateFlagLabels();
     }
   }
@@ -105,7 +105,7 @@ export class CustomFlagNames extends Feature {
       let key = flag.attr('id');
 
       flags[key].label = flag.val();
-      setToolkitStorageKey('flags', JSON.stringify(flags));
+      setToolkitStorageKey('flags', flags);
 
       this.updateFlagLabels();
       this.invoke();
@@ -148,6 +148,7 @@ export class CustomFlagNames extends Feature {
         color: '#9384b7'
       }
     };
-    setToolkitStorageKey('flags', JSON.stringify(flagsJSON));
+
+    setToolkitStorageKey('flags', flagsJSON);
   }
 }

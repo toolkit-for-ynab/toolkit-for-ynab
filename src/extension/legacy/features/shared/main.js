@@ -384,13 +384,13 @@ ynabToolKit.shared = (function () {
       }
     },
 
-    getToolkitStorageKey(key, type) {
-      let value = localStorage.getItem(storageKeyPrefix + key);
+    getToolkitStorageKey(key) {
+      const value = localStorage.getItem(storageKeyPrefix + key);
 
-      switch (type) {
-        case 'boolean': return value === 'true';
-        case 'number': return Number(value);
-        default: return value;
+      try {
+        return JSON.parse(value);
+      } catch (e) {
+        return value;
       }
     },
 

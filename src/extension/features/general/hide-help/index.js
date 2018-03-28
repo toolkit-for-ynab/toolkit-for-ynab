@@ -15,14 +15,9 @@ export class HideHelp extends Feature {
   }
 
   invoke() {
-    let hide = getToolkitStorageKey('hide-help');
+    const hide = getToolkitStorageKey('hide-help', true);
 
-    if (hide === null) {
-      setToolkitStorageKey('hide-help', 'true');
-      hide = 'true';
-    }
-
-    if (hide === 'true') {
+    if (hide) {
       $('body').addClass('toolkit-hide-help');
     }
 
@@ -45,10 +40,11 @@ export class HideHelp extends Feature {
       </button>
      </li>
     `).click(() => {
-      let hide = !getToolkitStorageKey('hide-help', 'boolean');
-      setToolkitStorageKey('hide-help', hide);
+      const hide = getToolkitStorageKey('hide-help', true);
+      setToolkitStorageKey('hide-help', !hide);
+
       $('body').toggleClass('toolkit-hide-help');
-      let accountController = ynabToolKit.shared.containerLookup('controller:accounts');
+      const accountController = ynabToolKit.shared.containerLookup('controller:accounts');
       accountController.send('closeModal');
     }).appendTo($modalList);
 
