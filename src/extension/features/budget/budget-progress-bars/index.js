@@ -1,5 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getCurrentRouteName, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { migrateLegacyPacingStorage, pacingForCategory } from 'toolkit/extension/utils/pacing';
+import { getEmberView } from 'toolkit/extension/utils/ember';
 
 const progressIndicatorWidth = 0.005; // Current month progress indicator width
 
@@ -11,8 +13,10 @@ export class BudgetProgressBars extends Feature {
   internalIdBase;
   monthProgress;
 
-  injectCSS() {
-    return require('./index.css');
+  injectCSS() { return require('./index.css'); }
+
+  willInvoke() {
+    migrateLegacyPacingStorage();
   }
 
   shouldInvoke() {
@@ -86,26 +90,22 @@ export class BudgetProgressBars extends Feature {
     }
   }
 
-  addPacingProgress(subCategoryName, target) {
-    let deEmphasizedCategories = JSON.parse(localStorage.getItem('ynab_toolkit_pacing_deemphasized_categories')) || [];
+  addPacingProgress(subCategory, target) {
+    const pacingCalculation = pacingForCategory(subCategory);
+    const balancePriorToSpending = subCategory.get('balancePriorToSpending');
+    const { budgetedPace, monthPace } = pacingCalculation;
 
-    if (deEmphasizedCategories.indexOf(subCategoryName) === -1) {
-      let calculation = this.getCalculation(subCategoryName);
-
-      let budgeted = calculation.balance - calculation.budgetedCashOutflows - calculation.budgetedCreditOutflows;
-      let available = calculation.balance;
-
-      if (budgeted > 0) {
-        let pacing = (budgeted - available) / budgeted;
-        if (this.monthProgress > pacing) {
+    if (!pacingCalculation.isDeemphasized) {
+      if (balancePriorToSpending > 0) {
+        if (monthPace > budgetedPace) {
           $(target).css('background', this.generateProgressBarStyle(
             ['#c0e2e9', 'white', '#CFD5D8', 'white'],
-            [pacing, this.monthProgress - progressIndicatorWidth, this.monthProgress]
+            [budgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
           ));
         } else {
           $(target).css('background', this.generateProgressBarStyle(
             ['#c0e2e9', '#CFD5D8', '#c0e2e9', 'white'],
-            [this.monthProgress - progressIndicatorWidth, this.monthProgress, pacing]
+            [this.monthProgress - progressIndicatorWidth, this.monthProgress, budgetedPace]
           ));
         }
       } else {
@@ -120,9 +120,8 @@ export class BudgetProgressBars extends Feature {
   }
 
   invoke() {
-    let _this = this;
-    let date = new Date();
-    this.monthProgress = new Date().getDate() / new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    const today = new ynab.utilities.DateWithoutTime();
+    this.monthProgress = today.getDate() / today.daysInMonth();
 
     let categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions').not('.is-debt-payment-category');
     let masterCategoryName = '';
@@ -140,51 +139,52 @@ export class BudgetProgressBars extends Feature {
       this.internalIdBase = 'mcbc/' + this.selMonth + '/';
     }
 
-    $(categories).each(function () {
+    $(categories).each((index, element) => {
       let nameCell;
       let budgetedCell;
-      if ($(this).hasClass('is-master-category')) {
-        masterCategoryName = $(this).find('div.budget-table-cell-name-row-label-item>div>div[title]');
+      if ($(element).hasClass('is-master-category')) {
+        masterCategoryName = $(element).find('div.budget-table-cell-name-row-label-item>div>div[title]');
         masterCategoryName = (masterCategoryName !== 'undefined') ? ($(masterCategoryName).attr('title') + '_') : '';
       }
 
-      if ($(this).hasClass('is-sub-category')) {
-        let subCategoryName = $(this).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
+      if ($(element).hasClass('is-sub-category')) {
+        const subCategory = getEmberView(element.id).data;
+        let subCategoryName = $(element).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
 
         subCategoryName = masterCategoryName + subCategoryName;
 
-        switch (_this.settings.enabled) {
+        switch (this.settings.enabled) {
           case 'goals':
-            $(this).addClass('goal-progress');
-            _this.addGoalProgress(subCategoryName, $(this));
+            $(element).addClass('goal-progress');
+            this.addGoalProgress(subCategoryName, $(element));
             break;
           case 'pacing':
-            $(this).addClass('goal-progress');
-            _this.addPacingProgress(subCategoryName, $(this));
+            $(element).addClass('goal-progress');
+            this.addPacingProgress(subCategory, $(element));
             break;
           case 'both':
-            $(this).addClass('goal-progress-both');
-            budgetedCell = $(this).find('li.budget-table-cell-budgeted')[0];
-            nameCell = $(this).find('li.budget-table-cell-name')[0];
-            _this.addGoalProgress(subCategoryName, budgetedCell);
-            _this.addPacingProgress(subCategoryName, nameCell);
+            $(element).addClass('goal-progress-both');
+            budgetedCell = $(element).find('li.budget-table-cell-budgeted')[0];
+            nameCell = $(element).find('li.budget-table-cell-name')[0];
+            this.addGoalProgress(subCategoryName, budgetedCell);
+            this.addPacingProgress(subCategory, nameCell);
             break;
         }
       }
 
       if ($(this).hasClass('is-master-category')) {
-        switch (_this.settings.enabled) {
+        switch (this.settings.enabled) {
           case 'pacing':
-            $(this).css('background', _this.generateProgressBarStyle(
+            $(this).css('background', this.generateProgressBarStyle(
               ['#E5F5F9', '#CFD5D8', '#E5F5F9'],
-              [_this.monthProgress - progressIndicatorWidth, _this.monthProgress]
+              [this.monthProgress - progressIndicatorWidth, this.monthProgress]
             ));
             break;
           case 'both':
             nameCell = $(this).find('li.budget-table-cell-name');// [0];
-            $(nameCell).css('background', _this.generateProgressBarStyle(
+            $(nameCell).css('background', this.generateProgressBarStyle(
               ['#E5F5F9', '#CFD5D8', '#E5F5F9'],
-              [_this.monthProgress - progressIndicatorWidth, _this.monthProgress]
+              [this.monthProgress - progressIndicatorWidth, this.monthProgress]
             ));
             break;
         }

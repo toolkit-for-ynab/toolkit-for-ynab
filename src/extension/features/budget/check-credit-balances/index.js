@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getAllBudgetMonthsViewModelResult, getCurrentBudgetDate, getCurrentBudgetMonth, getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { getAllBudgetMonthsViewModel, getCurrentBudgetDate, getCurrentBudgetMonth, getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 export class CheckCreditBalances extends Feature {
   budgetView = null;
@@ -64,7 +64,7 @@ export class CheckCreditBalances extends Feature {
     // because this function can be called several times during the budget switch process.
     if (this.budgetView === null || this.budgetView.categoriesViewModel === null) {
       try {
-        this.budgetView = getAllBudgetMonthsViewModelResult();
+        this.budgetView = getAllBudgetMonthsViewModel();
       } catch (e) {
         return null;
       }

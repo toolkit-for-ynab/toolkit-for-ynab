@@ -1,7 +1,6 @@
 import { ToolkitStorage } from './index';
 import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { setupWithWebExtensionStorage } from 'toolkit/test/utils/setup';
-import { pause } from 'toolkit/test/utils/pause';
 
 const setup = setupWithWebExtensionStorage((overrides = {}) => {
   const options = {
