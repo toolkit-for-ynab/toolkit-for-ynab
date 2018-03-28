@@ -5,20 +5,16 @@ import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 export class DisplayTotalMonthlyGoals extends Feature {
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') !== -1 && this.settings.enabled !== '0';
+    return getCurrentRouteName().indexOf('budget') !== -1;
   }
 
   extractCategoryGoalInformation(element) {
     const emberId = element.id;
     const viewData = getEmberView(emberId).data;
-    const {
-      subCategory,
-      monthlySubCategoryBudgetCalculation
-    } = viewData;
 
-    const goalType = subCategory.get('goalType');
-    const monthlyFunding = subCategory.get('monthlyFunding');
-    const targetBalanceDate = monthlySubCategoryBudgetCalculation.get('goalTarget');
+    const goalType = viewData.get('subCategory.goalType');
+    const monthlyFunding = viewData.get('subCategory.monthlyFunding');
+    const targetBalanceDate = viewData.get('monthlySubCategoryBudgetCalculation.goalTarget');
 
     let monthlyGoalAmount = 0;
 
@@ -35,7 +31,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
 
     return {
       monthlyGoalAmount,
-      isChecked: $(element).is('.is-checked')
+      isChecked: viewData.get('isChecked')
     };
   }
 
