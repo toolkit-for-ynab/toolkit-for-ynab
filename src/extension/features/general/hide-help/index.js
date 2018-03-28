@@ -40,14 +40,9 @@ export class HideHelp extends Feature {
       </button>
      </li>
     `).click(() => {
-<<<<<<< HEAD
       const hide = getToolkitStorageKey('hide-help', true);
       setToolkitStorageKey('hide-help', !hide);
 
-=======
-      let hide = !getToolkitStorageKey('hide-help');
-      setToolkitStorageKey('hide-help', hide);
->>>>>>> Automatically JSON.parse local storage values when using toolkit helpers
       $('body').toggleClass('toolkit-hide-help');
       const accountController = ynabToolKit.shared.containerLookup('controller:accounts');
       accountController.send('closeModal');
