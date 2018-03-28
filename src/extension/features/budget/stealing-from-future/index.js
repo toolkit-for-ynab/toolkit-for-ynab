@@ -70,7 +70,7 @@ export class StealingFromFuture extends Feature {
     const availableToBudget = earliestNegativeMonthCalculation.getAvailableToBudget();
     $('#ynabtk-stealing-amount', name).remove();
     name.append('<span id="ynabtk-stealing-amount"> (' +
-        '<strong>' +
+        '<strong class="currency">' +
           `${ynab.formatCurrency(availableToBudget)} in ` +
           `<a class="ynabtk-month-link">${ynabToolKit.shared.monthsFull[earliestNegativeMonth - 1]}</a>` +
         '</strong>' +
