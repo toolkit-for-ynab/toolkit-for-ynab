@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import { features } from 'toolkit/extension/features';
 import { isYNABReady } from 'toolkit/extension/utils/ynab';
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
-import { logFeatureError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
+import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
@@ -72,7 +72,7 @@ export class YNABToolkit {
         } catch (exception) {
           const featureName = feature.constructor.name;
           const featureSetting = ynabToolKit.options[featureName];
-          logFeatureError(exception, featureName, 'willInvoke', featureSetting);
+          logToolkitError(exception, featureName, 'willInvoke', featureSetting);
         }
 
         const wrappedShouldInvoke = withToolkitError(feature.shouldInvoke.bind(feature), feature);
