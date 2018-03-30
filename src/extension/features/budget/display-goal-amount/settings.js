@@ -8,6 +8,7 @@ module.exports = {
   options: [
     { name: 'Do not display goal amount (default)', value: '0' },
     { name: 'Display goal amount and warn of overbudget with red', value: '1' },
-    { name: 'Display goal amount but show overbudget as green', value: '2' }
+    { name: 'Display goal amount but show overbudget as green', value: '2' },
+    { name: 'Display goal amount with no emphasis', value: '3' }
   ]
 };
