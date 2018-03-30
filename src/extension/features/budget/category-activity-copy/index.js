@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { getCurrentRouteName, getEntityManager } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class CategoryActivityCopy extends Feature {
@@ -18,12 +18,23 @@ export class CategoryActivityCopy extends Feature {
   }
 
   categoryActivityCopy() {
-    const budgetController = controllerLookup('budget');
-    const activityTransactions = budgetController.get('selectedActivityTransactions');
+    const activityTransactions = controllerLookup('budget').get('selectedActivityTransactions');
+    const entityManager = getEntityManager();
+
     const activities = activityTransactions.map((transaction) => {
+      const parentEntityId = transaction.get('parentEntityId');
+      let payeeId = transaction.get('payeeId');
+
+      if (parentEntityId) {
+        payeeId = entityManager.transactionsCollection.findItemByEntityId(parentEntityId).get('payeeId');
+      }
+
+      const payee = entityManager.payeesCollection.findItemByEntityId(payeeId);
+
       return {
         Account: transaction.get('accountName'),
-        Date: ynab.formatDateLong(transaction.get('date')),
+        Date: ynab.formatDateLong(transaction.get('date').toNativeDate()),
+        Payee: payee.get('name'),
         Category: transaction.get('subCategoryNameWrapped'),
         Memo: transaction.get('memo'),
         Amount: ynab.formatCurrency(transaction.get('amount'))
