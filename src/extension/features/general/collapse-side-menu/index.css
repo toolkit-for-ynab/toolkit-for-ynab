@@ -44,5 +44,6 @@
 
 .nav-main > li > a {
   display: -webkit-box;
+  height: 3rem;
   width: 100%;
 }
