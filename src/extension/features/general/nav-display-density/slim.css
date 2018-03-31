@@ -1,7 +1,35 @@
 .nav-main {
-     padding-bottom: .5em !important;
+  padding-bottom: .5em !important;
 }
-.nav-main a {
-     padding: 0 !important;
-     font-size: .85em !important;
+
+.nav-main > li > a {
+  padding: 0 !important;
+  font-size: .85em !important;
+  height: 2rem !important;
+}
+
+.nav-main .svg-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-right: 0.65rem;
+  margin-left: 0.75rem;
+  margin-top: 0.23rem;
+}
+
+.ynabtk-collapse-link > span {
+  margin-left: 1.1rem !important;
+  margin-right: 1.1rem !important;
+}
+
+.ynabtk-navlink-reports-link > span {
+  margin-left: 1.05rem !important;
+  margin-right: 1.05rem !important;
+}
+
+.ynabtk-collapse-link.collapsable > span {
+  padding-bottom: 0.3rem;
+}
+
+.ynabtk-navlink-reports-link.collapsable > span {
+  padding-bottom: 0.3rem;
 }

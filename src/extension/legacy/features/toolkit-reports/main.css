@@ -18,6 +18,11 @@
   font-family: 'Lato',Arial,'Helvetica Neue',Helvetica,sans-serif;
 }
 
+.ynabtk-navlink-reports-link {
+  display: flex;
+  align-items: center;
+}
+
 .ynabtk-navlink-reports-link > span {
   height: 2.25rem;
   display: flex;

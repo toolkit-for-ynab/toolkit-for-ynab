@@ -1,7 +1,24 @@
 .nav-main {
-     padding-bottom: .95em !important;
+  padding-bottom: .95em !important;
 }
-.nav-main a {
-     padding: 0 !important;
-     font-size: 1em !important;
+
+.nav-main > li > a {
+  padding: 0 !important;
+  font-size: 1em !important;
+  height: 2rem !important;
+  line-height: 0.9rem !important;
+}
+
+.nav-main .svg-icon {
+  width: 2rem;
+  height: 2rem;
+  margin-right: .5rem;
+}
+
+.ynabtk-collapse-link.collapsable > span {
+  padding-bottom: 0.3rem;
+}
+
+.ynabtk-navlink-reports-link.collapsable > span {
+  padding-bottom: 0.3rem;
 }
