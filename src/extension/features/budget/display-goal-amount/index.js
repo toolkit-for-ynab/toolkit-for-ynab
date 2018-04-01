@@ -3,22 +3,37 @@ import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
+const Settings = {
+  WarnBudgetOverTarget: '1',
+  GreenBudgetOverTarget: '2',
+  NoEmphasis: '3'
+};
+
+const EmphasisColor = {
+  [Settings.WarnBudgetOverTarget]: '#ff4545',
+  [Settings.GreenBudgetOverTarget]: '#00b300'
+};
+
 export class DisplayTargetGoalAmount extends Feature {
+  injectCSS() { return require('./index.css'); }
+
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') !== -1 && this.settings.enabled !== '0';
+    return getCurrentRouteName().indexOf('budget') !== -1;
   }
 
   invoke() {
-    $('.budget-table-header .budget-table-cell-name').css('position', 'relative');
-    $('.budget-table-row.is-sub-category li.budget-table-cell-name').css('position', 'relative');
+    $('.budget-table-header .budget-table-cell-name')
+      .append($('<div>', {
+        class: 'toolkit-table-cell-goal-header'
+      }).append('GOAL'));
 
-    $('.budget-table-header .budget-table-cell-name').append($('<div>', { class: 'budget-table-cell-goal' }).css({ position: 'absolute', right: 0, top: 0, 'line-height': '2.56rem' }).append('GOAL'));
-
-    $('.budget-table-row.is-sub-category li.budget-table-cell-name').append($('<div>', { class: 'budget-table-cell-goal currency' }).css({
-      background: '-webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 10%,rgba(255,255,255,1) 100%)', position: 'absolute', 'font-size': '80%', 'padding-left': '.75em', 'padding-right': '1px', 'line-height': '2.55em'
-    }));
+    $('.budget-table-row.is-sub-category li.budget-table-cell-name')
+      .append($('<div>', {
+        class: 'toolkit-table-cell-goal currency'
+      }));
 
     $('.budget-table-row.is-sub-category').each((index, element) => {
+      const userSetting = this.settings.enabled;
       const emberId = element.id;
       const viewData = getEmberView(emberId).data;
       const { subCategory } = viewData;
@@ -29,27 +44,44 @@ export class DisplayTargetGoalAmount extends Feature {
       const targetBalance = subCategory.get('targetBalance');
       const targetBalanceDate = monthlySubCategoryBudgetCalculation.get('goalTarget');
       const budgetedAmount = monthlySubCategoryBudget.get('budgeted');
-      if (goalType === 'MF') {
-        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(formatCurrency(monthlyFunding));
-        if (budgetedAmount > monthlyFunding && this.settings.enabled === '1') {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
-        } else if (budgetedAmount >= monthlyFunding) {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#00b300' });
-        }
-      } else if (goalType === 'TB') {
-        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(formatCurrency(targetBalance));
-        if (budgetedAmount > targetBalance && this.settings.enabled === '1') {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
-        } else if (budgetedAmount >= targetBalance) {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#00b300' });
-        }
-      } else if (goalType === 'TBD') {
-        $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').text(formatCurrency(targetBalanceDate));
-        if (budgetedAmount > targetBalanceDate && this.settings.enabled === '1') {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#ff4545' });
-        } else if (budgetedAmount >= targetBalanceDate) {
-          $('#' + emberId + '.budget-table-row.is-sub-category div.budget-table-cell-goal').css({ color: '#00b300' });
-        }
+
+      let goalAmount = null;
+      let applyEmphasis = false;
+      switch (goalType) {
+        case ynab.constants.SubCategoryGoalType.MonthlyFunding:
+          goalAmount = monthlyFunding;
+          if (userSetting === Settings.WarnBudgetOverTarget && budgetedAmount > monthlyFunding) {
+            applyEmphasis = true;
+          } else if (userSetting === Settings.GreenBudgetOverTarget && budgetedAmount >= monthlyFunding) {
+            applyEmphasis = true;
+          }
+          break;
+        case ynab.constants.SubCategoryGoalType.TargetBalance:
+          goalAmount = targetBalance;
+          if (userSetting === Settings.WarnBudgetOverTarget && budgetedAmount > targetBalance) {
+            applyEmphasis = true;
+          } else if (userSetting === Settings.GreenBudgetOverTarget && budgetedAmount >= targetBalance) {
+            applyEmphasis = true;
+          }
+          break;
+        case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
+          goalAmount = targetBalanceDate;
+          if (userSetting === Settings.WarnBudgetOverTarget && budgetedAmount > targetBalanceDate) {
+            applyEmphasis = true;
+          } else if (userSetting === Settings.GreenBudgetOverTarget && budgetedAmount >= targetBalanceDate) {
+            applyEmphasis = true;
+          }
+          break;
+      }
+
+      if (goalAmount !== null) {
+        $('.toolkit-table-cell-goal', element).text(formatCurrency(goalAmount));
+      }
+
+      if (applyEmphasis) {
+        $('.toolkit-table-cell-goal', element).css({
+          color: EmphasisColor[this.settings.enabled]
+        });
       }
     });
   }
@@ -58,12 +90,8 @@ export class DisplayTargetGoalAmount extends Feature {
     if (!this.shouldInvoke()) return;
     if (changedNodes.has('budget-table-cell-budgeted') ||
         changedNodes.has('goal-message')) {
-      $('.budget-table-cell-goal').remove();
+      $('.toolkit-table-cell-goal').remove();
       this.invoke();
-    }
-    if (changedNodes.has('ynab-checkbox-button is-checked') || !changedNodes.has('ynab-checkbox-button is-checked')) {
-      $('.budget-table-row.is-sub-category li.budget-table-cell-name .budget-table-cell-goal').css({ background: '-webkit-linear-gradient(left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 10%,rgba(255,255,255,1) 100%)' });
-      $('.budget-table-row.is-checked li.budget-table-cell-name .budget-table-cell-goal').css({ background: '#005a6e' });
     }
   }
 
