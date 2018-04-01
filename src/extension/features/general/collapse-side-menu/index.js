@@ -47,6 +47,7 @@ export class CollapseSideMenu extends Feature {
     });
 
     $('.nav-main').append(button);
+    $('.ynabtk-collapse-link, .ynabtk-navlink-reports-link').addClass('collapsable');
   }
 
   applyState() {

@@ -2,6 +2,11 @@
   cursor: pointer;
 }
 
+.ynabtk-collapse-link {
+  display: flex;
+  align-items: center;
+}
+
 .ynabtk-collapse-link > span {
   height: 2.25rem;
   display: flex;
@@ -44,5 +49,6 @@
 
 .nav-main > li > a {
   display: -webkit-box;
+  height: 3rem;
   width: 100%;
 }
