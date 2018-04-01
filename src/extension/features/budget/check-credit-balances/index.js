@@ -116,7 +116,7 @@ export class CheckCreditBalances extends Feature {
             foundButton = _this.updateInspectorButton(a.name, difference);
           }
 
-          if (available !== (balance * -1)) {
+          if (balance < 0 && available !== (balance * -1)) {
             _this.updateRow(a.name);
             _this.updateInspectorStyle(a.name);
           }
