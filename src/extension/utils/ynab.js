@@ -35,10 +35,6 @@ export function getBudgetViewModel() {
   return applicationController.get('budgetViewModel');
 }
 
-export function getAllBudgetMonthsViewModelResult() {
-  return getAllBudgetMonthsViewModel()._result;
-}
-
 export function isCurrentMonthSelected() {
   const today = new ynab.utilities.DateWithoutTime();
   const selectedMonth = getBudgetViewModel().get('month');

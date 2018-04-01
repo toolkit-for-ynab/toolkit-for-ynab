@@ -10,30 +10,29 @@ export class ShowCategoryBalance extends Feature {
   }
 
   invoke() {
-    getAllBudgetMonthsViewModel().then((allBudgetMonthsViewModel) => {
-      let subCategoryCalculations = allBudgetMonthsViewModel.get('monthlySubCategoryBudgetCalculationsCollection');
-      let categoryLookupPrefix = `mcbc/${getCurrentDate('YYYY-MM')}`;
+    const allBudgetMonthsViewModel = getAllBudgetMonthsViewModel();
+    const subCategoryCalculations = allBudgetMonthsViewModel.get('monthlySubCategoryBudgetCalculationsCollection');
+    const categoryLookupPrefix = `mcbc/${getCurrentDate('YYYY-MM')}`;
 
-      let GridSubComponent = componentLookup('register/grid-sub');
-      GridSubComponent.constructor.reopen({
-        didRender: function () {
-          didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
-        }
-      });
+    const GridSubComponent = componentLookup('register/grid-sub');
+    GridSubComponent.constructor.reopen({
+      didRender: function () {
+        didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
+      }
+    });
 
-      let GridRowComponent = componentLookup('register/grid-row');
-      GridRowComponent.constructor.reopen({
-        didRender: function () {
-          didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
-        }
-      });
+    const GridRowComponent = componentLookup('register/grid-row');
+    GridRowComponent.constructor.reopen({
+      didRender: function () {
+        didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
+      }
+    });
 
-      let GridScheduledComponent = componentLookup('register/grid-scheduled');
-      GridScheduledComponent.constructor.reopen({
-        didRender: function () {
-          didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
-        }
-      });
+    const GridScheduledComponent = componentLookup('register/grid-scheduled');
+    GridScheduledComponent.constructor.reopen({
+      didRender: function () {
+        didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
+      }
     });
   }
 
@@ -45,14 +44,14 @@ export class ShowCategoryBalance extends Feature {
 }
 
 function didRender(subCategoryCalculations, categoryLookupPrefix) {
-  let element = this.get('element');
-  let subCategoryId = this.get('content.subCategoryId');
-  let budgetData = subCategoryCalculations.findItemByEntityId(`${categoryLookupPrefix}/${subCategoryId}`);
+  const element = this.get('element');
+  const subCategoryId = this.get('content.subCategoryId');
+  const budgetData = subCategoryCalculations.findItemByEntityId(`${categoryLookupPrefix}/${subCategoryId}`);
 
   // if there's no budget data (could be an income/credit category) skip it.
   if (!budgetData) return;
 
-  let title = $('.ynab-grid-cell-subCategoryName', element).attr('title');
-  let newTitle = `${title} (Balance: ${formatCurrency(budgetData.get('balance'))})`;
+  const title = $('.ynab-grid-cell-subCategoryName', element).attr('title');
+  const newTitle = `${title} (Balance: ${formatCurrency(budgetData.get('balance'))})`;
   $('.ynab-grid-cell-subCategoryName', element).attr('title', newTitle);
 }
