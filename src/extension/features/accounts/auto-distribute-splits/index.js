@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 const DISTRIBUTE_BUTTON_ID = 'toolkit-auto-distribute-splits-button';
 
@@ -21,12 +21,23 @@ export class AutoDistributeSplits extends Feature {
     };
   }
 
-  observe(changedNodes) {
-    if (this.buttonShouldBePresent(changedNodes)) {
+  shouldInvoke() {
+    return getCurrentRouteName().includes('account');
+  }
+
+  invoke() {
+    if (this.buttonShouldBePresent()) {
       this.ensureButtonPresent();
     } else {
       this.ensureButtonNotPresent();
     }
+  }
+
+  // don't really care which nodes have been changed since the feature doesn't trigger off of changed nodes but the presence of nodes.
+  observe() {
+    if (!this.shouldInvoke) return;
+
+    this.invoke();
   }
 
   buttonShouldBePresent() {
@@ -105,7 +116,5 @@ export class AutoDistributeSplits extends Feature {
         : '');
       $(cell).trigger('change');
     });
-
-    getEmberView($('.ynab-grid-body-row.is-editing')[0].id).calculateSplitRemaining();
   }
 }
