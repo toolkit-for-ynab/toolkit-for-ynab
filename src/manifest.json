@@ -1,7 +1,7 @@
 {
   "name": "Toolkit for YNAB",
   "description": "UI customizations and tweaks for the web version of YNAB.",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "content_scripts": [
     {
       "matches": [
