@@ -3,8 +3,6 @@ import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/ut
 import { getEmberView, controllerLookup } from 'toolkit/extension/utils/toolkit';
 
 export class HideHelp extends Feature {
-  injectCSS() { return require('./index.css'); }
-
   shouldInvoke() { return true; }
 
   observe(changedNodes) {
