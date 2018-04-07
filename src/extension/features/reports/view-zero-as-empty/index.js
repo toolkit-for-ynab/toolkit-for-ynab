@@ -7,7 +7,7 @@ export class ViewZeroAsEmpty extends Feature {
   }
 
   invoke() {
-    $('.user-data.zero').empty();
+    $('.income-expense-level2 .user-data.zero').empty();
   }
 
   onRouteChanged() {
