@@ -454,38 +454,38 @@ const YNAB_NATIVE_CONTENT_SELECTOR = 'div.scroll-wrap';
         // grab all the transactions...
         ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then((transactionsViewModel) => {
           // then grab the sidebar so we can get all the accounts...
-          ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel().then((sideBarViewModel) => {
-            // store the accounts/transactions off on their own variables so we can use them later
-            let closedAccounts = sideBarViewModel.get('closedAccounts');
-            onBudgetAccounts = sideBarViewModel.get('onBudgetAccounts').concat(closedAccounts.filter((account) => account.get('onBudget')));
-            offBudgetAccounts = sideBarViewModel.get('offBudgetAccounts').concat(closedAccounts.filter((account) => !account.get('onBudget')));
-            allTransactions = transactionsViewModel.get('visibleTransactionDisplayItems');
+          const sideBarViewModel = ynabToolKit.shared.containerLookup('controller:application').get('sidebarViewModel');
 
-            // sort the transactions by date. They usually are already, but let's not depend on that:
-            allTransactions.sort(function (a, b) {
-              return a.get('date').toNativeDate() - b.get('date').toNativeDate();
-            });
+          // store the accounts/transactions off on their own variables so we can use them later
+          let closedAccounts = sideBarViewModel.get('closedAccounts');
+          onBudgetAccounts = sideBarViewModel.get('onBudgetAccounts').concat(closedAccounts.filter((account) => account.get('onBudget')));
+          offBudgetAccounts = sideBarViewModel.get('offBudgetAccounts').concat(closedAccounts.filter((account) => !account.get('onBudget')));
+          allTransactions = transactionsViewModel.get('visibleTransactionDisplayItems');
 
-            // clear out the content and put ours in there instead.
-            buildReportsPage($(YNAB_CONTENT_CONTAINER_SELECTOR), transactionsViewModel);
-
-            // The budget header is absolute positioned
-            $(YNAB_NATIVE_CONTENT_SELECTOR).hide();
-
-            // grab the value of the current-report inside localStorage
-            let storedCurrentReport = ynabToolKit.shared.getToolkitStorageKey('current-report');
-
-            // make sure whatever it is is actually a supported report (might be 'null' or 'undefined') because
-            // string storage of values is a cool thing, ya know?
-            let currentReport = supportedReports.find((report) => report.toolkitId === storedCurrentReport);
-
-            // if it's a valid report, then go ahead and show it, if it's not then show the first available report
-            if (currentReport) {
-              onReportSelected(currentReport.toolkitId);
-            } else {
-              onReportSelected(supportedReports[0].toolkitId);
-            }
+          // sort the transactions by date. They usually are already, but let's not depend on that:
+          allTransactions.sort(function (a, b) {
+            return a.get('date').toNativeDate() - b.get('date').toNativeDate();
           });
+
+          // clear out the content and put ours in there instead.
+          buildReportsPage($(YNAB_CONTENT_CONTAINER_SELECTOR), transactionsViewModel);
+
+          // The budget header is absolute positioned
+          $(YNAB_NATIVE_CONTENT_SELECTOR).hide();
+
+          // grab the value of the current-report inside localStorage
+          let storedCurrentReport = ynabToolKit.shared.getToolkitStorageKey('current-report');
+
+          // make sure whatever it is is actually a supported report (might be 'null' or 'undefined') because
+          // string storage of values is a cool thing, ya know?
+          let currentReport = supportedReports.find((report) => report.toolkitId === storedCurrentReport);
+
+          // if it's a valid report, then go ahead and show it, if it's not then show the first available report
+          if (currentReport) {
+            onReportSelected(currentReport.toolkitId);
+          } else {
+            onReportSelected(supportedReports[0].toolkitId);
+          }
         });
       }
 

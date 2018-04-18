@@ -115,26 +115,23 @@ export class RunningBalance extends TransactionGridFeature {
   }
 }
 
-function attachAnyItemChangedListener(accountId, accountViewModel) {
-  accountViewModel.__ynabToolKitAnyItemChangedListener = true;
-  accountViewModel.get('visibleTransactionDisplayItems')
+function attachAnyItemChangedListener(accountId, transactionViewModel) {
+  transactionViewModel.__ynabToolKitAnyItemChangedListener = true;
+  transactionViewModel.get('visibleTransactionDisplayItems')
     .addObserver('anyItemChangedCounter', function () {
       calculateRunningBalance(accountId);
     });
 }
 
-// Using ._result here bcause we can guarantee that we've already invoked the
-// getBudgetViewModel_AccountTransactionsViewModel() function when we initialized
 function calculateRunningBalance(accountId) {
   const accountsController = controllerLookup('accounts');
-  const accountViewModel = ynab.YNABSharedLib.defaultInstance
-    .getBudgetViewModel_AccountTransactionsViewModel(accountId)._result;
+  const transactionViewModel = accountsController.get('transactionViewModel');
 
-  if (!accountViewModel.__ynabToolKitAnyItemChangedListener) {
-    attachAnyItemChangedListener(accountId, accountViewModel);
+  if (!transactionViewModel.__ynabToolKitAnyItemChangedListener) {
+    attachAnyItemChangedListener(accountId, transactionViewModel);
   }
 
-  const transactions = accountViewModel.get('visibleTransactionDisplayItems');
+  const transactions = transactionViewModel.get('visibleTransactionDisplayItems');
   const sorted = transactions.slice().sort((a, b) => {
     var propA = a.get('date');
     var propB = b.get('date');

@@ -1,6 +1,6 @@
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { getCurrentRouteName, getSidebarViewModel } from 'toolkit/extension/utils/ynab';
 import { generateReport, outflowTransactionFilter } from './helpers';
 import { render, shouldRender } from './render';
 
@@ -45,6 +45,6 @@ export class DaysOfBuffering extends Feature {
   }
 
   accountBalance() {
-    return ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel()._result.getOnBudgetAccountsBalance();
+    return getSidebarViewModel().getOnBudgetAccountsBalance();
   }
 }
