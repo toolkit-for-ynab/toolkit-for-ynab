@@ -129,20 +129,24 @@ function calculateRunningBalance(accountId) {
 
     const transactions = transactionViewModel.get('visibleTransactionDisplayItems');
     const sorted = transactions.slice().sort((a, b) => {
-      var propA = a.get('date');
-      var propB = b.get('date');
+      let propA = a.get('date');
+      let propB = b.get('date');
 
       if (propA instanceof ynab.utilities.DateWithoutTime) propA = propA.getUTCTime();
       if (propB instanceof ynab.utilities.DateWithoutTime) propB = propB.getUTCTime();
 
-      var res = Ember.compare(propA, propB);
-
+      let res = Ember.compare(propA, propB);
       if (res === 0) {
         res = Ember.compare(a.getAmount(), b.getAmount());
-        if (accountsController.get('sortAscending')) {
-          return res;
+
+        if (res === 0) {
+          return Ember.compare(a.getEntityId(), b.getEntityId());
         }
 
+        return -res;
+      }
+
+      if (accountsController.get('sortAscending')) {
         return -res;
       }
 
