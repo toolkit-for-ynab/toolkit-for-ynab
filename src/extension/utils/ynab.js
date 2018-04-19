@@ -1,8 +1,7 @@
-import { containerLookup, controllerLookup } from './ember';
+import { getRouter, controllerLookup } from './ember';
 
 export function transitionTo() {
-  const router = containerLookup('router:main');
-  router.transitionTo(...arguments);
+  getRouter().transitionTo(...arguments);
 }
 
 export function getEntityManager() {
