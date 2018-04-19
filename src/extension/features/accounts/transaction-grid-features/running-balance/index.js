@@ -117,12 +117,14 @@ function attachAnyItemChangedListener(accountId, transactionViewModel) {
     .addObserver('anyItemChangedCounter', function () {
       calculateRunningBalance(accountId);
     });
+
+  controllerLookup('accounts').addObserver('sortAscending', function () {
+    calculateRunningBalance(accountId);
+  });
 }
 
 function calculateRunningBalance(accountId) {
   return ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(accountId).then((transactionViewModel) => {
-    const accountsController = controllerLookup('accounts');
-
     if (!transactionViewModel.__ynabToolKitAnyItemChangedListener) {
       attachAnyItemChangedListener(accountId, transactionViewModel);
     }
@@ -135,19 +137,20 @@ function calculateRunningBalance(accountId) {
       if (propA instanceof ynab.utilities.DateWithoutTime) propA = propA.getUTCTime();
       if (propB instanceof ynab.utilities.DateWithoutTime) propB = propB.getUTCTime();
 
+      // compare the dates
       let res = Ember.compare(propA, propB);
+
+      // if the dates are equal
       if (res === 0) {
+        // compare the amounts
         res = Ember.compare(a.getAmount(), b.getAmount());
 
+        // if the amounts are equal
         if (res === 0) {
           return Ember.compare(a.getEntityId(), b.getEntityId());
+        } else if (!controllerLookup('accounts').get('sortAscending')) {
+          return -res;
         }
-
-        return -res;
-      }
-
-      if (accountsController.get('sortAscending')) {
-        return -res;
       }
 
       return res;
