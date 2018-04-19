@@ -46,11 +46,12 @@ ynabToolKit.shared = (function () {
     // If accountId === 'null' then all transactions for all accounts are returned with the visibility
     // settings for All accounts applied.
     getVisibleTransactions(accountId) {
+      const allAccountTransactionsViewModel = ynabToolKit.shared.containerLookup('controller:application').get('allBudgetMonthsViewModel.allAccountTransactionsViewModel');
       var transactions, endDate, endDateUTC, sortBySortableIndex, accountStartMonth, accountStartYear, subTransactionsAdded, scheduledTransactions, addSubTransactionToVisibleTransactions, transactionPosition, accountShowReconciled, accountSettings, subTransaction, singleOccurranceTransactions, accountShowScheduled, startDateUTC, sortedSubTransactions, subTransactions, accountEndMonth, accountEndYear, visibleTransactions, accountShowWithNotifications, b, f;
       if (accountId === 'null') {
-        transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.visibleTransactionDisplayItems || [];
+        transactions = allAccountTransactionsViewModel.visibleTransactionDisplayItems || [];
       } else {
-        transactions = ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel()._result.transactionDisplayItemsCollection.findItemsByAccountId(accountId) || [];
+        transactions = allAccountTransactionsViewModel.transactionDisplayItemsCollection.findItemsByAccountId(accountId) || [];
       }
 
       accountSettings = jQuery.parseJSON(localStorage.getItem('.' + accountId + '_account_filter'));

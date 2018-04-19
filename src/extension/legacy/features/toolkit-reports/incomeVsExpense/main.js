@@ -129,7 +129,7 @@
         },
 
         filterTransaction(transaction) {
-          const categoriesViewModel = ynab.YNABSharedLib.getBudgetViewModel_CategoriesViewModel()._result;
+          const categoriesViewModel = ynabToolKit.shared.containerLookup('controller:application').get('categoriesViewModel');
           const masterCategoryId = transaction.get('masterCategoryId');
           const subCategoryId = transaction.get('subCategoryId');
           const isTransfer = masterCategoryId === null || subCategoryId === null;

@@ -10,29 +10,28 @@ export function getEntityManager() {
 }
 
 export function getCurrentBudgetDate() {
-  let applicationController = controllerLookup('application');
-  let date = applicationController.get('monthString');
+  const date = controllerLookup('application').get('monthString');
   return { year: date.slice(0, 4), month: date.slice(4, 6) };
 }
 
 export function getCurrentRouteName() {
-  let applicationController = controllerLookup('application');
-  return applicationController.get('currentRouteName');
+  return controllerLookup('application').get('currentRouteName');
 }
 
 export function getCategoriesViewModel() {
-  const applicationController = controllerLookup('application');
-  return applicationController.get('categoriesViewModel');
+  return controllerLookup('application').get('categoriesViewModel');
 }
 
 export function getAllBudgetMonthsViewModel() {
-  const applicationController = controllerLookup('application');
-  return applicationController.get('allBudgetMonthsViewModel');
+  return controllerLookup('application').get('allBudgetMonthsViewModel');
 }
 
 export function getBudgetViewModel() {
-  const applicationController = controllerLookup('application');
-  return applicationController.get('budgetViewModel');
+  return controllerLookup('application').get('budgetViewModel');
+}
+
+export function getSidebarViewModel() {
+  return controllerLookup('application').get('sidebarViewModel');
 }
 
 export function isCurrentMonthSelected() {
