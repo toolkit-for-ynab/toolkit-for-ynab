@@ -93,5 +93,5 @@
 
 .ynabtk-tbody tr.expandable-row:hover,
 .ynabtk-tbody tr.expandable-toggle:not(.expanded):hover {
-  background: rgb(44, 151, 173, 0.1);
+  background: aliceblue !important;
 }
