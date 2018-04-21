@@ -2,6 +2,7 @@ module.exports = {
   name: 'popupCalculator',
   type: 'checkbox',
   default: false,
+  hidden: true,
   section: 'general',
   title: 'Popup Calculator',
   description: `
