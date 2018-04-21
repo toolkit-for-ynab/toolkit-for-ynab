@@ -110,10 +110,11 @@
   "defaultFeatures": [
     "BudgetBalanceToZero",
     "EnlargeCategoriesDropdown",
+    "IncomeVsExpenseHoverHighlight",
     "PrintingImprovements",
+    "reports",
     "RightClickToEdit",
     "ShowIntercom",
-    "SplitKeyboardShortcut",
-    "reports"
+    "SplitKeyboardShortcut"
   ]
 }

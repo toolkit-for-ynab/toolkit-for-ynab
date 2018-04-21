@@ -1,0 +1,11 @@
+.income-expense-row:hover {
+  background: aliceblue !important;
+}
+
+.income-expense-row:hover .income-expense-first-column {
+  background: aliceblue !important;
+}
+
+.income-expense-row.income-expense-totals:hover .income-expense-column {
+  background: aliceblue !important;
+}
