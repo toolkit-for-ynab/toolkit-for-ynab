@@ -1,0 +1,8 @@
+{
+  "name": "Toolkit for YNAB (Beta)",
+  "browser_action": {
+    "default_icon": "assets/images/icons/button.png",
+    "default_title": "Toolkit for YNAB (Beta)",
+    "default_popup": "popup/index.html"
+  }
+}

@@ -1,36 +1,70 @@
 {
   "name": "toolkit-for-ynab",
+  "version": "2.3.2",
   "private": true,
-  "dependencies": {},
   "devDependencies": {
+    "archiver": "^2.1.0",
     "babel-cli": "^6.7.7",
     "babel-core": "^6.22.1",
     "babel-eslint": "7",
     "babel-loader": "^6.2.10",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.0",
     "chokidar": "^1.6.0",
+    "chrome-webstore-upload": "0.2.1",
+    "clean-webpack-plugin": "^0.1.17",
     "colors": "^1.1.2",
+    "copy-webpack-plugin": "^4.3.1",
     "css-loader": "^0.28.4",
-    "eslint": "3",
-    "eslint-config-airbnb-base": "^3.0.1",
-    "eslint-import-resolver-webpack": "^0.8.1",
-    "eslint-loader": "^1.6.1",
-    "eslint-plugin-import": "^1.16.0",
-    "glob": "^7.1.1",
+    "eslint": "^4.15.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-import-resolver-webpack": "^0.8.4",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.5.0",
+    "fs-extra": "5.0.0",
+    "glob": "^7.1.2",
+    "jest": "^22.0.4",
+    "jest-css-modules": "^1.1.0",
+    "jest-dot-reporter": "^1.0.3",
+    "jest-localstorage-mock": "^2.1.0",
+    "jquery": "^3.2.1",
+    "terminate": "^2.1.0",
     "to-string-loader": "^1.1.5",
-    "webpack": "3"
+    "webpack": "^3.10.0",
+    "yargs": "^11.0.0"
   },
   "scripts": {
-    "build": "./build",
-    "watch": "./watch",
-    "webpack": "webpack",
-    "legacy-eslint": "eslint --ignore-path .eslintignore ./source",
-    "legacy-eslint-fix": "eslint --ignore-path .eslintignore ./ --fix",
-    "legacy-babel": "babel source --compact false --quiet --ignore source/common/res/features/lib/*,source/common/assets/*,*.min.js --out-dir src",
-    "gen-settings": "node tasks/generateSettings",
-    "gen-featureIndex": "node tasks/generateFeatureIndex",
-    "gen-feedChanges": "python generateFeedChanges.py"
+    "build:check": "yarn && yarn gen && yarn lint",
+    "build:beta": "yarn build:check && yarn webpack:beta && yarn build:legacy && yarn manifest:beta && yarn compress",
+    "build:dev": "yarn build:development",
+    "build:development": "yarn build:check && yarn webpack:development && yarn build:legacy && yarn manifest:development && yarn compress",
+    "build:prod": "yarn build:production",
+    "build:production": "yarn build:check && yarn webpack:production && yarn build:legacy && yarn compress",
+    "build:legacy": "babel src/extension/legacy --compact false --quiet --out-dir dist/extension/web-accessibles/legacy",
+    "build:webpack": "webpack",
+    "compress": "yarn compress:dist && yarn compress:src",
+    "compress:dist": "node scripts/compressDist.js",
+    "compress:src": "node scripts/compressSrc.js",
+    "manifest:beta": "node scripts/applyManifestOverrides.js --env=beta",
+    "manifest:development": "node scripts/applyManifestOverrides.js --env=development",
+    "webpack:beta": "yarn build:webpack --env.buildType=beta",
+    "webpack:development": "yarn build:webpack --env.buildType=development",
+    "webpack:production": "yarn build:webpack --env.buildType=production",
+    "lint": "eslint --ignore-path .eslintignore ./src ./scripts ; exit 0",
+    "lint:fix": "eslint --fix --ignore-path .eslintignore ./src ./scripts",
+    "publish:chrome": "node scripts/publishForChrome.js",
+    "publish:desktop": "node scripts/publishForDesktop.js",
+    "test": "yarn && yarn gen && jest",
+    "watch": "yarn && node scripts/watch.js",
+    "gen": "yarn gen:settings && yarn gen:featureIndex && yarn gen:feedChanges",
+    "gen:featureIndex": "node scripts/generateFeatureIndex",
+    "gen:feedChanges": "node scripts/generateFeedChanges",
+    "gen:settings": "node scripts/generateSettings",
+    "gen:docs": "yarn gen:settings && node scripts/generateDocs",
+    "l10n:push": "scripts/update_l10n_strings",
+    "l10n:pull": "scripts/get_l10ns"
   },
   "babel": {
     "presets": [
@@ -46,11 +80,38 @@
       ]
     ]
   },
+  "jest": {
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/test/"
+    ],
+    "coverageReporters": [
+      "lcov"
+    ],
+    "moduleNameMapper": {
+      "toolkit/(.*)": "<rootDir>/src/$1"
+    },
+    "setupTestFrameworkScriptFile": "<rootDir>/src/test/setup.js",
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "reporters": [
+      "jest-dot-reporter"
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest",
+      ".*.css": "<rootDir>/node_modules/jest-css-modules"
+    }
+  },
   "defaultFeatures": [
     "BudgetBalanceToZero",
-    "enlargeCategoriesDropdown",
+    "EnlargeCategoriesDropdown",
     "PrintingImprovements",
-    "rightClickToEdit",
+    "RightClickToEdit",
     "ShowIntercom",
     "SplitKeyboardShortcut",
     "reports"

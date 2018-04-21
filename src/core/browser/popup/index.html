@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><span class="toolkit-name"></span> Popup</title>
+
+    <link href="../assets/lib/dream-admin-theme/css/bootstrap.css" rel="stylesheet" />
+    <link href="../assets/lib/dream-admin-theme/css/font-awesome.css" rel="stylesheet" />
+    <link href="../assets/fonts/montserrat.css" rel="stylesheet" />
+    <link href="styles.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="brandBar">
+    <img src="#" id="logo" title="Click: disable/enable Toolkit-for-YNAB. Refresh page to see update." class="btn" />
+  </div>
+
+  <div class="welcome help-block">
+    <p>Welcome to <span class="toolkit-name"></span> version <span id="versionNumber"></span>!</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="buttons">
+    <a id="reportBug" href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues" target="_blank" class="btn btn-default">
+      <i class="fa fa-2x fa-bug"></i>
+    </a>
+    <button id="toggleToolkit" type="button" class="btn btn-default">
+      <i class="fa fa-2x"></i>
+    </button>
+    <button type="button" id="openSettings" class="btn btn-primary"><i class="fa fa-cog"></i> Open Settings</button>
+  </div>
+
+  <script type="text/javascript" src="../assets/lib/dream-admin-theme/js/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="../assets/lib/dream-admin-theme/js/bootstrap.js"></script>
+  <script type="text/javascript" src="popup.js"></script>
+</body>
+</html>

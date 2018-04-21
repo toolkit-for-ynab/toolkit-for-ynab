@@ -1,0 +1,7 @@
+body.toolkit-hide-help #hs-beacon {
+  display: none !important;
+}
+
+body.toolkit-hide-help #beacon-container {
+  display: none !important;
+}

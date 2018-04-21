@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-if [ "$1" == "" ]; then
-  echo "Please supply a Crowdin API key, obtained on this page: http://translate.toolkitforynab.com/project/toolkit-for-ynab/settings#api"
-  exit 1
-fi
-
-echo "Downloading l10ns from Crowdin."
-python source/common/res/features/l10n/init.py $1
