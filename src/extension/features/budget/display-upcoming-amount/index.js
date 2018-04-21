@@ -12,13 +12,14 @@ export class DisplayUpcomingAmount extends Feature {
 
   invoke() {
     $('.budget-table-row.is-sub-category').each((_, element) => {
-      const { monthlySubCategoryBudgetCalculation } = getEmberView(element.id).data;
+      const { monthlySubCategoryBudgetCalculation, subCategory } = getEmberView(element.id).data;
 
       if (monthlySubCategoryBudgetCalculation && monthlySubCategoryBudgetCalculation.upcomingTransactions) {
         $('.budget-table-cell-activity', element)
           .addClass('toolkit-activity-upcoming')
           .prepend($('<div>', {
             class: 'toolkit-activity-upcoming-amount',
+            title: `Total upcoming transaction amount in this month for ${subCategory.get('name')}`,
             text: formatCurrency(monthlySubCategoryBudgetCalculation.upcomingTransactions)
           }));
       }
