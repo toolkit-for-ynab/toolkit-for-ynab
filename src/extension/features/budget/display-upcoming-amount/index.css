@@ -1,0 +1,12 @@
+.toolkit-activity-upcoming {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+}
+
+.toolkit-activity-upcoming-amount {
+  margin-right: 0.5rem;
+  color: darkgray;
+  font-size: 0.7rem;
+}
