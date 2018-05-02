@@ -12,7 +12,7 @@ export class DisplayUpcomingAmount extends Feature {
 
   invoke() {
     $('.budget-table-row.is-sub-category').each((_, element) => {
-      const { monthlySubCategoryBudgetCalculation, subCategory } = getEmberView(element.id).data;
+      const { monthlySubCategoryBudgetCalculation, subCategory } = getEmberView(element.id).category;
 
       if (monthlySubCategoryBudgetCalculation && monthlySubCategoryBudgetCalculation.upcomingTransactions) {
         $('.budget-table-cell-activity', element)

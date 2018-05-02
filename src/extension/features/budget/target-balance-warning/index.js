@@ -10,7 +10,7 @@ export class TargetBalanceWarning extends Feature {
   invoke() {
     $('.budget-table-row.is-sub-category').each((index, element) => {
       const emberId = element.id;
-      const viewData = getEmberView(emberId).data;
+      const viewData = getEmberView(emberId).category;
       const { subCategory } = viewData;
 
       if (subCategory.get('goalType') === ynab.constants.SubCategoryGoalType.TargetBalance) {
