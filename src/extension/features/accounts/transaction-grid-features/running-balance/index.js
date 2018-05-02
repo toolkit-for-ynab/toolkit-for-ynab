@@ -123,19 +123,23 @@ export class RunningBalance extends TransactionGridFeature {
       promises.push(viewModel.then(() => calculateRunningBalance(account.entityId)));
     });
 
-    return promises;
+    return Promise.all(promises);
   }
 }
 
 function attachAnyItemChangedListener(accountId, transactionViewModel) {
   transactionViewModel.__ynabToolKitAnyItemChangedListener = true;
   transactionViewModel.get('visibleTransactionDisplayItems')
-    .addObserver('anyItemChangedCounter', function () {
-      calculateRunningBalance(accountId);
+    .addObserver('anyItemChangedCounter', function (controller) {
+      if (controller.get('selectedAccountId')) {
+        calculateRunningBalance(controller.get('selectedAccountId'));
+      }
     });
 
-  controllerLookup('accounts').addObserver('sortAscending', function () {
-    calculateRunningBalance(accountId);
+  controllerLookup('accounts').addObserver('sortAscending', function (controller) {
+    if (controller.get('selectedAccountId')) {
+      calculateRunningBalance(controller.get('selectedAccountId'));
+    }
   });
 }
 
