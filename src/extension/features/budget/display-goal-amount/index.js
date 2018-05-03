@@ -37,7 +37,7 @@ export class DisplayTargetGoalAmount extends Feature {
     $('.budget-table-row.is-sub-category').each((index, element) => {
       const userSetting = this.settings.enabled;
       const emberId = element.id;
-      const viewData = getEmberView(emberId).data;
+      const viewData = getEmberView(emberId).category;
       const { subCategory } = viewData;
       const { monthlySubCategoryBudget } = viewData;
       const { monthlySubCategoryBudgetCalculation } = viewData;
