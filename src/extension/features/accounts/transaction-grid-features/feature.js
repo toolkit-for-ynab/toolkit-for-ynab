@@ -18,6 +18,10 @@ export class TransactionGridFeature {
   // is on a page that should receive the new column.
   shouldInvoke() {}
 
+  // Run any setup your transaction grid feature needs to operate. You want
+  // to make this function idempotant because it is likely to be called many times.
+  invoke() {}
+
   // Called during the lifecycle event `didUpdate` in Ember for an Ember Component.
   didUpdate() {}
 
