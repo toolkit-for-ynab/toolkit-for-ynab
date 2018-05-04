@@ -4,7 +4,6 @@ import { RunningBalance } from './running-balance';
 import { CheckNumbers } from './check-numbers';
 import { ReconciledTextColor } from './reconciled-text-color';
 import { controllerLookup, componentLookup } from 'toolkit/extension/utils/ember';
-import { logToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
 export class TransactionGridFeatures extends Feature {
   features = [

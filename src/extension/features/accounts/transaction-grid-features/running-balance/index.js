@@ -130,15 +130,17 @@ export class RunningBalance extends TransactionGridFeature {
 function attachAnyItemChangedListener(accountId, transactionViewModel) {
   transactionViewModel.__ynabToolKitAnyItemChangedListener = true;
   transactionViewModel.get('visibleTransactionDisplayItems')
-    .addObserver('anyItemChangedCounter', function (controller) {
-      if (controller.get('selectedAccountId')) {
-        calculateRunningBalance(controller.get('selectedAccountId'));
+    .addObserver('anyItemChangedCounter', function (displayItems) {
+      const updatedAccountId = displayItems.get('firstObject.accountId');
+      if (updatedAccountId) {
+        calculateRunningBalance(updatedAccountId);
       }
     });
 
-  controllerLookup('accounts').addObserver('sortAscending', function (controller) {
-    if (controller.get('selectedAccountId')) {
-      calculateRunningBalance(controller.get('selectedAccountId'));
+  controllerLookup('accounts').addObserver('sortAscending', function (displayItems) {
+    const updatedAccountId = displayItems.get('firstObject.accountId');
+    if (updatedAccountId) {
+      calculateRunningBalance(updatedAccountId);
     }
   });
 }
