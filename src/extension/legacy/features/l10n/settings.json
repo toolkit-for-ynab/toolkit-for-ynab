@@ -10,124 +10,124 @@
             "value": "0"
         }, 
         {
-            "name": "Arabic (30%)", 
+            "name": "Arabic (28%)", 
             "value": "arabic"
         }, 
         {
-            "name": "Catalan (1%)", 
-            "value": "catalan"
-        }, 
-        {
-            "name": "Chinese Simplified (15%)", 
-            "value": "chinese simplified"
-        }, 
-        {
-            "name": "Chinese Traditional (43%)", 
-            "value": "chinese traditional"
-        }, 
-        {
-            "name": "Czech (73%)", 
-            "value": "czech"
-        }, 
-        {
-            "name": "Danish (52%)", 
-            "value": "danish"
-        }, 
-        {
-            "name": "Dutch (51%)", 
-            "value": "dutch"
-        }, 
-        {
-            "name": "Finnish (50%)", 
-            "value": "finnish"
-        }, 
-        {
-            "name": "French (53%)", 
-            "value": "french"
-        }, 
-        {
-            "name": "German (52%)", 
-            "value": "german"
-        }, 
-        {
-            "name": "Hungarian (45%)", 
+            "name": "Hungarian (42%)", 
             "value": "hungarian"
         }, 
         {
-            "name": "Icelandic (5%)", 
-            "value": "icelandic"
-        }, 
-        {
-            "name": "Indonesian (100%)", 
-            "value": "indonesian"
-        }, 
-        {
-            "name": "Italian (16%)", 
-            "value": "italian"
-        }, 
-        {
-            "name": "Korean (1%)", 
-            "value": "korean"
-        }, 
-        {
-            "name": "Latvian (13%)", 
-            "value": "latvian"
-        }, 
-        {
-            "name": "Lithuanian (1%)", 
-            "value": "lithuanian"
-        }, 
-        {
-            "name": "Norwegian (52%)", 
-            "value": "norwegian"
-        }, 
-        {
-            "name": "Polish (100%)", 
-            "value": "polish"
-        }, 
-        {
-            "name": "Portuguese, Brazilian (52%)", 
-            "value": "portuguese, brazilian"
-        }, 
-        {
-            "name": "Portuguese (23%)", 
-            "value": "portuguese"
-        }, 
-        {
-            "name": "Romanian (2%)", 
-            "value": "romanian"
-        }, 
-        {
-            "name": "Russian (52%)", 
-            "value": "russian"
-        }, 
-        {
-            "name": "Slovenian (1%)", 
-            "value": "slovenian"
-        }, 
-        {
-            "name": "Spanish (98%)", 
-            "value": "spanish"
-        }, 
-        {
-            "name": "Swedish (36%)", 
-            "value": "swedish"
+            "name": "French (50%)", 
+            "value": "french"
         }, 
         {
             "name": "Tagalog (1%)", 
             "value": "tagalog"
         }, 
         {
-            "name": "Turkish (100%)", 
+            "name": "Polish (88%)", 
+            "value": "polish"
+        }, 
+        {
+            "name": "Lithuanian (1%)", 
+            "value": "lithuanian"
+        }, 
+        {
+            "name": "Portuguese, Brazilian (48%)", 
+            "value": "portuguese, brazilian"
+        }, 
+        {
+            "name": "Finnish (47%)", 
+            "value": "finnish"
+        }, 
+        {
+            "name": "Turkish (88%)", 
             "value": "turkish"
+        }, 
+        {
+            "name": "Slovenian (1%)", 
+            "value": "slovenian"
+        }, 
+        {
+            "name": "Latvian (12%)", 
+            "value": "latvian"
+        }, 
+        {
+            "name": "German (49%)", 
+            "value": "german"
+        }, 
+        {
+            "name": "Vietnamese (12%)", 
+            "value": "vietnamese"
+        }, 
+        {
+            "name": "Spanish (86%)", 
+            "value": "spanish"
+        }, 
+        {
+            "name": "Portuguese (21%)", 
+            "value": "portuguese"
+        }, 
+        {
+            "name": "Norwegian (49%)", 
+            "value": "norwegian"
+        }, 
+        {
+            "name": "Korean (1%)", 
+            "value": "korean"
+        }, 
+        {
+            "name": "Romanian (2%)", 
+            "value": "romanian"
+        }, 
+        {
+            "name": "Chinese Traditional (41%)", 
+            "value": "chinese traditional"
+        }, 
+        {
+            "name": "Chinese Simplified (14%)", 
+            "value": "chinese simplified"
+        }, 
+        {
+            "name": "Russian (49%)", 
+            "value": "russian"
         }, 
         {
             "name": "Ukrainian (5%)", 
             "value": "ukrainian"
         }, 
         {
-            "name": "Vietnamese (13%)", 
-            "value": "vietnamese"
+            "name": "Swedish (34%)", 
+            "value": "swedish"
+        }, 
+        {
+            "name": "Catalan (1%)", 
+            "value": "catalan"
+        }, 
+        {
+            "name": "Icelandic (5%)", 
+            "value": "icelandic"
+        }, 
+        {
+            "name": "Dutch (48%)", 
+            "value": "dutch"
+        }, 
+        {
+            "name": "Czech (66%)", 
+            "value": "czech"
+        }, 
+        {
+            "name": "Indonesian (88%)", 
+            "value": "indonesian"
+        }, 
+        {
+            "name": "Italian (15%)", 
+            "value": "italian"
+        }, 
+        {
+            "name": "Danish (49%)", 
+            "value": "danish"
         }
     ], 
     "actions": {
@@ -137,9 +137,9 @@
             "injectScript", 
             "main.js"
         ], 
-        "czech": [
+        "german": [
             "injectScript", 
-            "locales/Czech.json", 
+            "locales/German.json", 
             "injectScript", 
             "main.js"
         ], 
@@ -191,9 +191,9 @@
             "injectScript", 
             "main.js"
         ], 
-        "german": [
+        "czech": [
             "injectScript", 
-            "locales/German.json", 
+            "locales/Czech.json", 
             "injectScript", 
             "main.js"
         ], 
@@ -203,9 +203,9 @@
             "injectScript", 
             "main.js"
         ], 
-        "portuguese, brazilian": [
+        "korean": [
             "injectScript", 
-            "locales/Portuguese, Brazilian.json", 
+            "locales/Korean.json", 
             "injectScript", 
             "main.js"
         ], 
@@ -263,9 +263,9 @@
             "injectScript", 
             "main.js"
         ], 
-        "korean": [
+        "portuguese, brazilian": [
             "injectScript", 
-            "locales/Korean.json", 
+            "locales/Portuguese, Brazilian.json", 
             "injectScript", 
             "main.js"
         ], 
