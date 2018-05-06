@@ -22,7 +22,7 @@ export class DisplayTargetGoalAmount extends Feature {
   }
 
   invoke() {
-    if ($('.toolkit-table-cell-goal-header').length) {
+    if (!$('.toolkit-table-cell-goal-header').length) {
       $('.budget-table-header .budget-table-cell-name')
         .append($('<div>', {
           class: 'toolkit-table-cell-goal-header'
