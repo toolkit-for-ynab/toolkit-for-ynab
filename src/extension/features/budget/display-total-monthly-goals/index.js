@@ -10,7 +10,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
 
   extractCategoryGoalInformation(element) {
     const emberId = element.id;
-    const viewData = getEmberView(emberId).data;
+    const viewData = getEmberView(emberId).category;
 
     const goalType = viewData.get('subCategory.goalType');
     const monthlyFunding = viewData.get('subCategory.monthlyFunding');
