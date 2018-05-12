@@ -50,6 +50,7 @@ export function isYNABReady() {
     typeof Ember !== 'undefined' &&
     typeof $ !== 'undefined' &&
     $('.ember-view.layout').length &&
-    typeof ynabToolKit !== 'undefined'
+    typeof ynabToolKit !== 'undefined' &&
+    typeof YNABFEATURES !== 'undefined'
   );
 }
