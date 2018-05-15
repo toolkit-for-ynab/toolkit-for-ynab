@@ -49,7 +49,7 @@ export function isYNABReady() {
     typeof Em !== 'undefined' &&
     typeof Ember !== 'undefined' &&
     typeof $ !== 'undefined' &&
-    $('.ember-view.layout').length &&
+    !$('.ember-view.is-loading').length &&
     typeof ynabToolKit !== 'undefined' &&
     typeof YNABFEATURES !== 'undefined'
   );
