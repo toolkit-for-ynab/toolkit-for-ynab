@@ -3,11 +3,11 @@
 }
 
 #toolkit-togglePrivacy {
-    color: #bee6ef;
-    top: 2px;
-    right: 2px;
-    position: absolute;
-    padding: 10px;
+  color: #bee6ef;
+  top: 2px;
+  right: 2px;
+  position: absolute;
+  padding: 10px;
 }
 
 #toolkit-togglePrivacy.active {
