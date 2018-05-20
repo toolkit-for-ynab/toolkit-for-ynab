@@ -34,10 +34,10 @@ export class Pacing extends Feature {
       .not('.is-debt-payment-category')
       .not('.is-master-category')
       .each((index, element) => {
-        const { data } = getEmberView(element.id);
-        const pacingCalculation = pacingForCategory(data);
+        const { category } = getEmberView(element.id);
+        const pacingCalculation = pacingForCategory(category);
 
-        const $display = this.generateDisplay(data.get('subCategory.entityId'), pacingCalculation);
+        const $display = this.generateDisplay(category.get('subCategory.entityId'), pacingCalculation);
         $(element).append($display.click((event) => {
           const deemphasizedCategories = getDeemphasizedCategories();
           const subCategoryId = event.target.getAttribute('data-sub-category-id');

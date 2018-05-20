@@ -1,7 +1,10 @@
 import { TransactionGridFeature } from '../feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { getCurrentRouteName, getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export class RunningBalance extends TransactionGridFeature {
+  hasInitialized = false;
+
   injectCSS() {
     let css = require('./index.css');
 
@@ -17,8 +20,14 @@ export class RunningBalance extends TransactionGridFeature {
   }
 
   shouldInvoke() {
-    const applicationController = controllerLookup('application');
-    return applicationController.get('selectedAccountId') !== null;
+    return (
+      getCurrentRouteName().includes('account') &&
+      controllerLookup('application').get('selectedAccountId') !== null
+    );
+  }
+
+  invoke() {
+    this.initializeRunningBalances();
   }
 
   cleanup() {
@@ -101,25 +110,38 @@ export class RunningBalance extends TransactionGridFeature {
   }
 
   initializeRunningBalances() {
+    const { accountsCollection } = getEntityManager();
+    if (accountsCollection.length === 0 || this.hasInitialized) {
+      return;
+    }
+
+    this.hasInitialized = true;
+
     const promises = [];
-    ynab.YNABSharedLib.defaultInstance.entityManager.accountsCollection.forEach((account) => {
+    accountsCollection.forEach((account) => {
       const viewModel = ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(account.entityId);
       promises.push(viewModel.then(() => calculateRunningBalance(account.entityId)));
     });
 
-    return promises;
+    return Promise.all(promises);
   }
 }
 
 function attachAnyItemChangedListener(accountId, transactionViewModel) {
   transactionViewModel.__ynabToolKitAnyItemChangedListener = true;
   transactionViewModel.get('visibleTransactionDisplayItems')
-    .addObserver('anyItemChangedCounter', function () {
-      calculateRunningBalance(accountId);
+    .addObserver('anyItemChangedCounter', function (displayItems) {
+      const updatedAccountId = displayItems.get('firstObject.accountId');
+      if (updatedAccountId) {
+        calculateRunningBalance(updatedAccountId);
+      }
     });
 
-  controllerLookup('accounts').addObserver('sortAscending', function () {
-    calculateRunningBalance(accountId);
+  controllerLookup('accounts').addObserver('sortAscending', function (displayItems) {
+    const updatedAccountId = displayItems.get('firstObject.accountId');
+    if (updatedAccountId) {
+      calculateRunningBalance(updatedAccountId);
+    }
   });
 }
 

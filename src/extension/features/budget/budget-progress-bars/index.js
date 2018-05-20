@@ -148,7 +148,7 @@ export class BudgetProgressBars extends Feature {
       }
 
       if ($(element).hasClass('is-sub-category')) {
-        const subCategory = getEmberView(element.id).data;
+        const subCategory = getEmberView(element.id).category;
         let subCategoryName = $(element).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
 
         subCategoryName = masterCategoryName + subCategoryName;

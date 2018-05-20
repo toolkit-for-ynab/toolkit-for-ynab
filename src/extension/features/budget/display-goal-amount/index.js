@@ -22,10 +22,12 @@ export class DisplayTargetGoalAmount extends Feature {
   }
 
   invoke() {
-    $('.budget-table-header .budget-table-cell-name')
-      .append($('<div>', {
-        class: 'toolkit-table-cell-goal-header'
-      }).append('GOAL'));
+    if (!$('.toolkit-table-cell-goal-header').length) {
+      $('.budget-table-header .budget-table-cell-name')
+        .append($('<div>', {
+          class: 'toolkit-table-cell-goal-header'
+        }).append('GOAL'));
+    }
 
     $('.budget-table-row.is-sub-category li.budget-table-cell-name')
       .append($('<div>', {
@@ -35,7 +37,7 @@ export class DisplayTargetGoalAmount extends Feature {
     $('.budget-table-row.is-sub-category').each((index, element) => {
       const userSetting = this.settings.enabled;
       const emberId = element.id;
-      const viewData = getEmberView(emberId).data;
+      const viewData = getEmberView(emberId).category;
       const { subCategory } = viewData;
       const { monthlySubCategoryBudget } = viewData;
       const { monthlySubCategoryBudgetCalculation } = viewData;

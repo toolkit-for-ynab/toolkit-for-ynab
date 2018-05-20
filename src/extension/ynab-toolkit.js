@@ -1,11 +1,17 @@
 import 'babel-polyfill';
 import { features } from 'toolkit/extension/features';
-import { isYNABReady } from 'toolkit/extension/utils/ynab';
+import * as ynabUtils from 'toolkit/extension/utils/ynab';
+import * as emberUtils from 'toolkit/extension/utils/ember';
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
 import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
+
+window.__toolkitUtils = {
+  ...ynabUtils,
+  ...emberUtils
+};
 
 export class YNABToolkit {
   _featureInstances = [];
@@ -88,7 +94,7 @@ export class YNABToolkit {
     const self = this;
 
     (function poll() {
-      if (isYNABReady()) {
+      if (ynabUtils.isYNABReady()) {
         // add a global invokeFeature to the global ynabToolKit for legacy features
         // once leagcy features have been removed, this should be a global exported function
         // from this file that features can require and use

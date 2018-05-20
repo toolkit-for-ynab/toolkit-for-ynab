@@ -118,6 +118,7 @@ export class TransactionGridFeatures extends Feature {
     this.features.forEach((feature) => {
       if (feature.shouldInvoke()) {
         feature.insertHeader();
+        feature.invoke();
       }
     });
 

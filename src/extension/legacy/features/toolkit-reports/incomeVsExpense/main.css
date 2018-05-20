@@ -90,3 +90,8 @@
 .ynabtk-tbody .expandable-row.summary-row .col-title {
 	padding-left: 2em;
 }
+
+.ynabtk-tbody tr.expandable-row:hover,
+.ynabtk-tbody tr.expandable-toggle:not(.expanded):hover {
+  background: aliceblue !important;
+}
