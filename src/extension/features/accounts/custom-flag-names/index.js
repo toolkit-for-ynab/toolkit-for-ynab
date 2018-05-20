@@ -50,7 +50,7 @@ export class CustomFlagNames extends Feature {
       $('.ynab-flag-green .label, .ynab-flag-green .label-bg').text(greenFlagLabel);
       $('.ynab-flag-purple .label, .ynab-flag-purple .label-bg').text(purpleFlagLabel);
 
-      $('.modal-account-flags .modal').css({ height: '22em' }).append($('<div>', { id: 'account-flags-actions' }).css({ padding: '0 .3em' }).append($('<button>', { id: 'flags-edit', class: 'button button-primary' }).append('Edit ').append($('<i>', { class: 'flaticon stroke compose-3' }))));
+      $('.modal-account-flags .modal').css({ height: '22em' }).append($('<div>', { id: 'account-flags-actions' }).css({ padding: '0 .3em' }).append($('<button>', { id: 'flags-edit', class: 'button button-primary' }).append('Edit Flag Names ').append($('<i>', { class: 'flaticon stroke compose-3' }))));
 
       this.addEventListeners();
     }
