@@ -1,14 +1,13 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class ClearSelection extends Feature {
   uncheckTransactions = () => {
     let accountsController = controllerLookup('accounts');
 
     try {
+      accountsController.set('areAllTransactionsSet', false);
       accountsController.get('areChecked').setEach('isChecked', 0);
-      let gridHeader = getEmberView($('.ynab-grid-header').attr('id'));
-      gridHeader.childViews[0].set('isChecked', false);
       accountsController.send('closeModal');
     } catch (e) {
       accountsController.send('closeModal');
