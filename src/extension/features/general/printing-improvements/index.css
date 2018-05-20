@@ -1,6 +1,5 @@
 /* ======== Budget Printing Improvements ======== */
 @media print {
-
 	/* hide unneeded areas */
 	body nav.sidebar,
 	body aside.budget-inspector,
@@ -9,6 +8,9 @@
 		display: none;
 	}
 
+  body .currency {
+    background: none !important;
+  }
 
 	/* hide header, yet ensure that month is still visible */
 	body .budget-header-item,
@@ -24,8 +26,7 @@
 	}
 	body .budget-header,
 	body .accounts-header {
-		left: 0;
-		position: relative;
+		left: 0 !important;
 	}
 	body .budget-header .budget-header-item,
 	body .toolkit-highlight-current-month {
@@ -60,7 +61,6 @@
 	}
 	body div.content,
 	body section.budget-content {
-		position: relative !important;
 		width: 100%;
 		min-height: 100%;
 		min-width: 0;
@@ -181,8 +181,7 @@
 	}
 	body .budget-table-row.is-sub-category > .budget-table-cell-available .zero {
 		color: #000000;
-	}
-
+  }
 }
 
 
