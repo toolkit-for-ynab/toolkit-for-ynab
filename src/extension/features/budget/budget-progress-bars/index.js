@@ -20,7 +20,7 @@ export class BudgetProgressBars extends Feature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') > -1 && isCurrentMonthSelected();
+    return getCurrentRouteName().indexOf('budget') > -1;
   }
 
   // Takes N colors and N-1 sorted points from (0, 1) to make color1|color2|color3 bg style.
@@ -91,6 +91,11 @@ export class BudgetProgressBars extends Feature {
   }
 
   addPacingProgress(subCategory, target) {
+    if (!isCurrentMonthSelected()) {
+      $(target).css('background', '');
+      return;
+    }
+
     const pacingCalculation = pacingForCategory(subCategory);
     const balancePriorToSpending = subCategory.get('balancePriorToSpending');
     const { budgetedPace, monthPace } = pacingCalculation;
