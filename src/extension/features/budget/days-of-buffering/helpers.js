@@ -1,5 +1,3 @@
-import { isTransfer } from 'toolkit/extension/utils/transaction';
-
 const isValidPayee = (payee) => {
   if (payee === null) {
     return true;
@@ -25,7 +23,7 @@ export function outflowTransactionFilter(historyLookupMonths) {
       transaction.amount < 0 &&
       isValidPayee(transaction.getPayee()) &&
       transaction.getAccount().onBudget &&
-      !isTransfer(transaction) &&
+      !transaction.isTransferTransaction() &&
       isValidDate(transaction.getDate().getUTCTime(), dateNow, historyLookupMonths)
   );
 }
