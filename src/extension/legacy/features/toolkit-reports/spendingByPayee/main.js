@@ -18,10 +18,9 @@
         // so make sure we have them in the report here. We ignore any splits, transfers, debt categories, and
         // positive starting balances
         filterTransaction(transaction) {
+          const isTransfer = transaction.isTransferTransaction();
           const categoriesViewModel = ynabToolKit.shared.containerLookup('controller:application').get('categoriesViewModel');
           const masterCategoryId = transaction.get('masterCategoryId');
-          const subCategoryId = transaction.get('subCategoryId');
-          const isTransfer = masterCategoryId === null || subCategoryId === null;
           const ynabCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
           const isInternalDebtCategory = isTransfer ? false : ynabCategory.isDebtPaymentMasterCategory();
 
