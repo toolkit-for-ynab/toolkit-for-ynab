@@ -96,7 +96,7 @@ export class YNABToolkit {
     (function poll() {
       if (ynabUtils.isYNABReady()) {
         // add a global invokeFeature to the global ynabToolKit for legacy features
-        // once leagcy features have been removed, this should be a global exported function
+        // once legacy features have been removed, this should be a global exported function
         // from this file that features can require and use
         ynabToolKit.invokeFeature = self._invokeFeature;
 

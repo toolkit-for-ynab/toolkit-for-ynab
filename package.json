@@ -39,7 +39,7 @@
     "build:check": "yarn && yarn gen && yarn lint",
     "build:beta": "yarn build:check && yarn webpack:beta && yarn build:legacy && yarn manifest:beta && yarn compress",
     "build:dev": "yarn build:development",
-    "build:development": "yarn build:check && yarn webpack:development && yarn build:legacy && yarn manifest:development && yarn compress",
+    "build:development": "yarn build:check && yarn webpack:development && yarn build:legacy && yarn manifest:development",
     "build:prod": "yarn build:production",
     "build:production": "yarn build:check && yarn webpack:production && yarn build:legacy && yarn compress",
     "build:legacy": "babel src/extension/legacy --compact false --quiet --out-dir dist/extension/web-accessibles/legacy",

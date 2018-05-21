@@ -13,6 +13,24 @@ export function getCurrentBudgetDate() {
   return { year: date.slice(0, 4), month: date.slice(4, 6) };
 }
 
+export function currentRouteIsBudgetPage() {
+  const currentRoute = getCurrentRouteName();
+
+  return (
+    currentRoute === ynab.constants.RouteNames.BudgetSelect ||
+    currentRoute === ynab.constants.RouteNames.BudgetIndex
+  );
+}
+
+export function currentRouteIsAccountsPage() {
+  const currentRoute = getCurrentRouteName();
+
+  return (
+    currentRoute === ynab.constants.RouteNames.AccountsSelect ||
+    currentRoute === ynab.constants.RouteNames.AccountsIndex
+  );
+}
+
 export function getCurrentRouteName() {
   return controllerLookup('application').get('currentRouteName');
 }
