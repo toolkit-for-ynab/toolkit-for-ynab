@@ -438,9 +438,18 @@ ynabToolKit.shared = (function () {
 // This poll() function will only need to run until we find that the DOM is ready
 // For certain functions, we may run them once automatically on page load before 'changes' occur
 (function poll() {
-  if (typeof Em !== 'undefined' && typeof Ember !== 'undefined' &&
-    typeof $ !== 'undefined' && $('.ember-view.layout').length &&
-    typeof ynabToolKit !== 'undefined') {
+  function isYNABReady() {
+    return (
+      typeof Em !== 'undefined' &&
+      typeof Ember !== 'undefined' &&
+      typeof $ !== 'undefined' &&
+      !$('.ember-view.is-loading').length &&
+      typeof ynabToolKit !== 'undefined' &&
+      typeof YNABFEATURES !== 'undefined'
+    );
+  }
+
+  if (isYNABReady()) {
     ynabToolKit.pageReady = true;
 
     const latestVersionKey = `latest-version-${ynabToolKit.environment}`;
