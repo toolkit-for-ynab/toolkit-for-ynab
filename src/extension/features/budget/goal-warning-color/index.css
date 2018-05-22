@@ -1,27 +1,29 @@
 /* row */
-.budget-table-row.toolkit-row-goal.toolkit-row-availablepositive:not(.toolkit-row-upcoming) .budget-table-cell-available .cautious,
-.budget-table-row.toolkit-row-goal.toolkit-row-availablezero:not(.toolkit-row-upcoming) .budget-table-cell-available .cautious {
+.budget-table-row .budget-table-cell-available .toolkit-goal-underfunded .currency {
 	background-color: #009cc2;
 }
-.budget-table-row.toolkit-row-goal.toolkit-row-availablepositive:not(.toolkit-row-upcoming) .budget-table-cell-available .cautious:hover,
-.budget-table-row.toolkit-row-goal.toolkit-row-availablezero:not(.toolkit-row-upcoming) .budget-table-cell-available .cautious:hover {
+.budget-table-row .budget-table-cell-available .toolkit-goal-underfunded .currency:hover {
 	background-color: #1f8ca7;
 }
 
 /* inspector */
-.budget-inspector-category-overview .toolkit-row-goal.toolkit-row-availablepositive:not(.toolkit-row-upcoming) dt.cautious,
-.budget-inspector-category-overview .toolkit-row-goal.toolkit-row-availablezero:not(.toolkit-row-upcoming) dt.cautious {
+.budget-inspector-category-overview.toolkit-goal-underfunded .inspector-overview-available dt {
 	color: #009cc2;
 }
-.budget-inspector-category-overview .toolkit-row-goal.toolkit-row-availablepositive:not(.toolkit-row-upcoming) dd .cautious,
-.budget-inspector-category-overview .toolkit-row-goal.toolkit-row-availablezero:not(.toolkit-row-upcoming) dd .cautious {
+.budget-inspector-category-overview.toolkit-goal-underfunded .inspector-overview-available dd .currency {
 	background: #009cc2;
+}
+.budget-inspector-category-overview.toolkit-goal-underfunded .inspector-message {
+  background-color: #d0ecf5;
+}
+.budget-inspector-category-overview.toolkit-goal-underfunded .inspector-message .inspector-message-arrow {
+  border-bottom-color: #d0ecf5;
 }
 
 /* goal */
-.goal-warning .inner-circle {
-	stroke: #43aecb;	
+.toolkit-goal-underfunded .goal-progress-chart .inner-circle {
+	stroke: #43aecb;
 }
-.goal-warning .outer-circle {
+.toolkit-goal-underfunded .goal-progress-chart .outer-circle {
 	fill: #1f8ca7;
 }

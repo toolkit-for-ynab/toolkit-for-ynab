@@ -27,7 +27,8 @@
         "ynabToolKit": true,
         "YNABFEATURES": true,
         "browser": true,
-        "Components": true
+        "Components": true,
+        "__ynabapp__": true
     },
     "rules": {
         "consistent-return": "off",
