@@ -129,7 +129,7 @@
         },
 
         filterTransaction(transaction) {
-          const isTransfer = transaction.isTransferTransaction();
+          const isTransfer = !!transaction.getTransferAccountId();
           const categoriesViewModel = ynabToolKit.shared.containerLookup('controller:application').get('categoriesViewModel');
           const masterCategoryId = transaction.get('masterCategoryId');
           const ynabCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);

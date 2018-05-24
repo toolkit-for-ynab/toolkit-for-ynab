@@ -23,7 +23,7 @@ export function outflowTransactionFilter(historyLookupMonths) {
       transaction.amount < 0 &&
       isValidPayee(transaction.getPayee()) &&
       transaction.getAccount().onBudget &&
-      !transaction.isTransferTransaction() &&
+      !!transaction.getTransferAccountId() &&
       isValidDate(transaction.getDate().getUTCTime(), dateNow, historyLookupMonths)
   );
 }
