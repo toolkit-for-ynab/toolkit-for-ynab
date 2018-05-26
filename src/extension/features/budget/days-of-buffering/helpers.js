@@ -19,12 +19,11 @@ export function outflowTransactionFilter(historyLookupMonths) {
 
   return (transaction) => (
     !transaction.isTombstone &&
-      transaction.transferAccountId === null &&
-      transaction.amount < 0 &&
-      isValidPayee(transaction.getPayee()) &&
-      transaction.getAccount().onBudget &&
-      !!transaction.getTransferAccountId() &&
-      isValidDate(transaction.getDate().getUTCTime(), dateNow, historyLookupMonths)
+    transaction.amount < 0 &&
+    isValidPayee(transaction.getPayee()) &&
+    transaction.getAccount().onBudget &&
+    !!transaction.getTransferAccountId() &&
+    isValidDate(transaction.getDate().getUTCTime(), dateNow, historyLookupMonths)
   );
 }
 
