@@ -5,11 +5,12 @@ import { Settings as DisplayGoalAmountSettings } from './display-target-goal-amo
 
 export const GOAL_TABLE_CELL_CLASSNAME = 'toolkit-goal-table-cell';
 export const CategoryAttributes = {
-  OverSpent: 'toolkit-overspent',
-  GoalUnderFunded: 'toolkit-goal-underfunded',
-  GoalType: 'toolkit-goal-type',
   GoalTarget: 'toolkit-goal-target',
-  NegativeAvailable: 'toolkit-negative-available'
+  GoalType: 'toolkit-goal-type',
+  GoalUnderFunded: 'toolkit-goal-underfunded',
+  NegativeAvailable: 'toolkit-negative-available',
+  OverSpent: 'toolkit-overspent',
+  UpcomingTransactions: 'toolkit-upcoming-transactions'
 };
 
 export class BudgetCategoryFeatures extends Feature {
@@ -103,11 +104,12 @@ function getCategoryAttributes(category) {
   }
 
   return {
-    [CategoryAttributes.OverSpent]: category.get('isOverSpent'),
-    [CategoryAttributes.GoalUnderFunded]: targetBalanceUnderFunded || category.get('isGoalUnderFunded'),
-    [CategoryAttributes.GoalType]: !!goalType && goalType,
     [CategoryAttributes.GoalTarget]: !!goalType && goalTarget,
-    [CategoryAttributes.NegativeAvailable]: available < 0
+    [CategoryAttributes.GoalType]: !!goalType && goalType,
+    [CategoryAttributes.GoalUnderFunded]: targetBalanceUnderFunded || category.get('isGoalUnderFunded'),
+    [CategoryAttributes.NegativeAvailable]: available < 0,
+    [CategoryAttributes.OverSpent]: category.get('isOverSpent'),
+    [CategoryAttributes.UpcomingTransactions]: upcomingTransactionsCount > 0
   };
 }
 

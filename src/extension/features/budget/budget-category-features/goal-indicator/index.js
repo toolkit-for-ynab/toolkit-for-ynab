@@ -27,6 +27,8 @@ export class GoalIndicator extends Feature {
       const goalType = element.getAttribute(`data-${CategoryAttributes.GoalType}`);
       const hasUpcomingTransactions = element.getAttribute(`data-${CategoryAttributes.UpcomingTransactions}`) !== null;
       const goalTypeElement = element.querySelector('.toolkit-goal-indicator');
+      const upcomingElement = element.querySelector('.toolkit-upcoming-indicator');
+
       if (goalTypeElement) {
         if (!goalType) {
           goalTypeElement.remove();
@@ -40,9 +42,15 @@ export class GoalIndicator extends Feature {
           title: GoalTypeTitle[goalType],
           text: GoalTypeIndicator[goalType]
         }));
+      }
+
+      if (upcomingElement) {
+        if (!hasUpcomingTransactions) {
+          upcomingElement.remove();
+        }
       } else if (hasUpcomingTransactions) {
         $(goalContainer).append($('<div>', {
-          class: 'toolkit-goal-indicator',
+          class: 'toolkit-upcoming-indicator',
           title: 'Upcoming transactions',
           text: 'U'
         }));
