@@ -59,13 +59,24 @@ ${i10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
   }
 
   _calculateDaysOfBuffering = (balance, transactions) => {
-    const { dates, totalOutflow } = transactions.reduce((reduced, current) => {
+    const { dates, totalOutflow, uniqueDates } = transactions.reduce((reduced, current) => {
       const { amount, date } = current.getProperties('amount', 'date');
-      reduced.dates.set(date.format());
+      reduced.dates.push(date.toUTCMoment());
+      reduced.uniqueDates.set(date.format());
       reduced.totalOutflow += amount;
       return reduced;
-    }, { dates: new Map(), totalOutflow: 0 });
-    const averageDailyOutflow = Math.abs(totalOutflow / this._lookbackDays);
+    }, { dates: [], totalOutflow: 0, uniqueDates: new Map() });
+
+    const minDate = moment.min(dates);
+    const maxDate = moment.max(dates);
+    const availableDates = maxDate.diff(minDate, 'days');
+
+    let averageDailyOutflow;
+    if (this._lookbackDays !== 0) {
+      averageDailyOutflow = Math.abs(totalOutflow / this._lookbackDays);
+    } else {
+      averageDailyOutflow = Math.abs(totalOutflow / availableDates);
+    }
 
     let daysOfBuffering = balance / averageDailyOutflow;
     if (daysOfBuffering < 10) {
@@ -74,7 +85,7 @@ ${i10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
       daysOfBuffering = Math.floor(daysOfBuffering);
     }
 
-    const notEnoughDates = dates.size < 15;
+    const notEnoughDates = uniqueDates.size < 15;
     if (notEnoughDates) {
       daysOfBuffering = null;
     }
