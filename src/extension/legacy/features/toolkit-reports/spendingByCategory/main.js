@@ -129,7 +129,7 @@
         // so make sure we have them in the report here. We ignore any splits, transfers, debt categories, and
         // positive starting balances
         filterTransaction(transaction) {
-          const isTransfer = !!transaction.getTransferAccountId();
+          const isTransfer = transaction.getIsOnBudgetTransfer();
           const categoriesViewModel = ynabToolKit.shared.containerLookup('controller:application').get('categoriesViewModel');
           const masterCategoryId = transaction.get('masterCategoryId');
           const ynabCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
