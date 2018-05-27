@@ -222,7 +222,7 @@ export class CheckCreditBalances extends Feature {
         .prop('title')
         .match(/.[^\n]*/)[0];
       if (accountName === name) {
-        let input = $(this).find('.budget-table-cell-budgeted div.currency-input').click()
+        let input = $(this).find('.budget-table-cell-budgeted div.ynab-new-currency-input').click()
           .find('input');
 
         let oldValue = input.val();
