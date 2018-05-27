@@ -77,18 +77,25 @@ export class BudgetCategoryFeatures extends Feature {
   }
 
   ensureGoalContainer() {
-    if (
-      this.shouldCreateGoalContainer &&
-      document.getElementsByClassName(GOAL_TABLE_CELL_CLASSNAME).length === 0
-    ) {
-      $('.budget-table-cell-name').append($('<div>', { class: GOAL_TABLE_CELL_CLASSNAME }));
-      $('.budget-table-header .toolkit-goal-table-cell').text('GOAL');
+    if (this.shouldCreateGoalContainer) {
+      const rowsExistQuery = `.budget-table-row:not(.budget-table-hidden-row) .${GOAL_TABLE_CELL_CLASSNAME}`;
+      if (document.querySelectorAll(rowsExistQuery).length === 0) {
+        $('.budget-table-row .budget-table-cell-name')
+          .append($('<div>', { class: GOAL_TABLE_CELL_CLASSNAME }));
+      }
+
+      const headerExistsQuery = `.budget-table-header .${GOAL_TABLE_CELL_CLASSNAME}`;
+      if (!document.querySelector(headerExistsQuery)) {
+        $('.budget-table-header .budget-table-cell-name')
+          .append($('<div>', { class: GOAL_TABLE_CELL_CLASSNAME }).text('GOAL'));
+      }
     }
   }
 }
 
 function getCategoryAttributes(category) {
   const { available, goalType, goalTarget } = category.getProperties('available', 'goalTarget', 'goalType');
+  const upcomingTransactionsCount = category.get('monthlySubCategoryBudgetCalculation.upcomingTransactionsCount');
 
   let targetBalanceUnderFunded = false;
   if (ynabToolKit.options.TargetBalanceWarning && goalType === ynab.constants.SubCategoryGoalType.TargetBalance) {
