@@ -1,0 +1,29 @@
+/* row */
+.budget-table-row[data-toolkit-goal-underfunded] .budget-table-cell-available .cautious {
+	background-color: #009cc2;
+}
+.budget-table-row[data-toolkit-goal-underfunded] .budget-table-cell-available .cautious:hover {
+	background-color: #1f8ca7;
+}
+
+/* inspector */
+.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-overview-available dt {
+	color: #009cc2;
+}
+.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-overview-available dd .cautious {
+	background: #009cc2;
+}
+.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-message {
+  background-color: #d0ecf5;
+}
+.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-message .inspector-message-arrow {
+  border-bottom-color: #d0ecf5;
+}
+
+/* goal */
+.budget-inspector[data-toolkit-goal-underfunded] .goal-progress-chart .inner-circle {
+	stroke: #43aecb;
+}
+.budget-inspector[data-toolkit-goal-underfunded] .goal-progress-chart .outer-circle {
+	fill: #1f8ca7;
+}

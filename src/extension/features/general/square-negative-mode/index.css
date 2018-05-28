@@ -1,34 +1,33 @@
 /* Sidebar Numbers */
 .nav-accounts .negative {
-    border-radius: 0em !important;
-    -webkit-border-radius: 0em !important;
+  border-radius: 0em !important;
+  -webkit-border-radius: 0em !important;
 }
 
 /* Accounts Header */
 .accounts-header .accounts-header-total-inner.negative-working-balance {
-    border-radius: 0em !important;
-    -webkit-border-radius: 0em !important;
+  border-radius: 0em !important;
+  -webkit-border-radius: 0em !important;
 }
 
-/* Bugdet Header */
+/* Budget Header */
 .left-to-budget-is-negative .budget-header-totals-amount {
-    border-radius: 0em !important;
-    -webkit-border-radius: 0em !important;
+  border-radius: 0em !important;
+  -webkit-border-radius: 0em !important;
 }
 
 /* Budget Numbers, pacing */
-li.budget-table-cell-available > div.budget-table-cell-available-div > span.negative,
-li.toolkit-row-availablenegative > budget-table-cell-available-div > span.cautious,
-li.budget-table-cell-pacing span.negative,
-li.budget-table-cell-pacing span.cautious {
-    border-radius: 0em !important;
-    -webkit-border-radius: 0em !important;
+.budget-table-row[data-toolkit-negative-available] .budget-table-cell-available-div span.cautious,
+.budget-table-row .budget-table-cell-available-div span.negative,
+.budget-table-row .budget-table-cell-pacing span.negative,
+.budget-table-row .budget-table-cell-pacing span.cautious {
+  border-radius: 0em !important;
+  -webkit-border-radius: 0em !important;
 }
 
 /* Budget Inspector */
-.inspector-overview-available .currency.negative,
-.toolkit-row-availablenegative .currency.cautious {
-    border-radius: 0em !important;
-    -webkit-border-radius: 0em !important;
+.budget-inspector[data-toolkit-negative-available] span.cautious,
+.budget-inspector .inspector-overview-available span.negative {
+  border-radius: 0em !important;
+  -webkit-border-radius: 0em !important;
 }
-

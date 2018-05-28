@@ -122,7 +122,7 @@ jq(() => {
     jq('input:checkbox').bootstrapSwitch();
   }
 
-  function initializeSetttingPages() {
+  function initializeSettingPages() {
     const templateSelector = '#genericSettingsPage';
     const selectors = {
       pageContent: templateSelector,
@@ -175,10 +175,10 @@ jq(() => {
   }
 
   function buildOptionsPage() {
-    initializeSetttingPages();
+    initializeSettingPages();
 
     // Order by section, then type, then name.
-    var settings = allToolkitSettings.slice();
+    var settings = allToolkitSettings.slice().filter((setting) => setting.section !== 'system');
 
     settings.sort(function (a, b) {
       if (a.section !== b.section) {
