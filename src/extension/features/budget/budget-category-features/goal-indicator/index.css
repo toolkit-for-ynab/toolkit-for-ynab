@@ -1,5 +1,8 @@
-.toolkit-goal-indicator,
-.toolkit-upcoming-indicator {
+.toolkit-goal-indicator {
   color: gray;
   padding-left: 0.5em;
+}
+
+.toolkit-goal-indicator:last-child {
+  padding-right: 0.5em;
 }
