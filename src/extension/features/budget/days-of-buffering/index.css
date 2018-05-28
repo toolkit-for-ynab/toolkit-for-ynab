@@ -1,9 +1,3 @@
-.budget-header-days.days-of-buffering {
-  display: block;
-  border-left: 1px solid #0e414c;
-}
-
-.days-of-buffering .budget-header-days-age {
-  white-space: nowrap;
+.toolkit-days-of-buffering .budget-header-days-age {
   color: #23b2ce;
 }
