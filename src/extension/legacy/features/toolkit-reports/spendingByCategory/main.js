@@ -132,15 +132,16 @@
           const isTransfer = transaction.getIsOnBudgetTransfer();
           const categoriesViewModel = ynabToolKit.shared.containerLookup('controller:application').get('categoriesViewModel');
           const masterCategoryId = transaction.get('masterCategoryId');
-          const ynabCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
-          const isInternalDebtCategory = isTransfer ? false : ynabCategory.isDebtPaymentMasterCategory();
+          const masterCategory = categoriesViewModel.getMasterCategoryById(masterCategoryId);
+          const isInternalDebtCategory = !masterCategory ? false : masterCategory.isDebtPaymentMasterCategory();
 
           return (
+            !!masterCategory &&
             transaction.getAmount() &&
             !transaction.get('isSplit') &&
             !isTransfer &&
             !isInternalDebtCategory &&
-            !ynabCategory.isInternalMasterCategory()
+            !masterCategory.isInternalMasterCategory()
           );
         },
 
