@@ -60,9 +60,9 @@ content scripts) into single files and manages most of the build process.
 2. Install `node` and `yarn` (both are available through `brew`, test with node-v9.2.1 and yarn-1.3.2)
 3. Ensure command line developer tools are installed `xcode-select --install`.
 4. Run `yarn install` within the folder you cloned. This will install all the dependencies needed for the project.
-5. Run `yarn build` from within the folder you cloned which will build the Toolkit.
+5. Run `yarn build:development` from within the folder you cloned which will build the Toolkit.
   - Whilst developing, you may prefer to run `yarn watch` which will monitor the project
-    directory for changes and build automatically.
+    directory for changes and run `yarn build:development` automatically for you.
 6. The built extension will be available in the `dist/extension` folder. Navigate to `chrome://extensions`
   and select the `dist/extension` folder as the folder that you would like to load.
 
