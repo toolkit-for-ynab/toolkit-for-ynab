@@ -39,13 +39,6 @@ Localization of interface.
 ## Navigation Tabs Height
 Makes the navigation tabs (Budget, Reports, etc) smaller, and with less padding, so that you can see more of the sidebar on the screen.
 
-## Popup Calculator
-
-Provides the same calculator capability that YNAB4 had.
-* Account Screen - when adding or editing a transaction, a new button is added to the left of the 'Save and add another' or 'Save' buttons. Click the button to display the calculator.
-* Budget Screen - adds a new button to the right of the value in the BUDGETED column when the sub-category is selected. Click the button to display the calculator.
-
-
 ## Printing Improvements
 Changes print styles so budget and account sections can be easily printed. Due to the number of columns, the account section should be printed using landscape orientation.
 
@@ -83,6 +76,9 @@ Adds a button to the Budget Toolbar that allows resizing the Budget Inspector to
 ## Budget Rows Progress Bars
 Add progress bars and a vertical bar that shows how far you are through the month to category rows.
 
+## Credit Card Emoji
+Adds a credit card emoji 💳 to the "Credit Card Payments" category.
+
 ## Current Month Indicator
 Changes the header bar's background color to a lighter blue when viewing the current month to better differentiate between months.
 
@@ -94,6 +90,9 @@ This calculation shows how long your money would likely last if you never earned
 
 ## Display Target Goal Amount And Overbudget Warning
 Adds a 'Goal' column which displays the target goal amount for every category with a goal, and a warning in red if you have budgeted beyond your goal.
+
+## Display Total Monthly Goals
+Adds a 'Total Monthly Goals' to the budget inspector, which displays the total amount of monthly funding goals.
 
 ## Goal Indicator Warning Color
 Change the orange goal underfunded warning to blue, to better differentiate it from credit card overspending.
@@ -108,10 +107,7 @@ Hides the Age of Money calculation. Some users find it's not relevant or helpful
 Ensure all negative balances are highlighted red instead of yellow, even with credit card spending.
 
 ## Income From Last Month
-Show total of incoming transactions for last month in the header. 
-
-## Make the Calculator Work Like YNAB4
-In YNAB4, typing + or - on a budget cell meant that you didn't lose what was already in the cell. This setting restores this behaviour.
+Show total of incoming transactions for last month in the header.
 
 ## Make the Categories Dropdown Larger
 The Categories Dropdown that shows in the move money modal is quite small. Show more categories if the page real estate allows for it.
@@ -120,13 +116,18 @@ The Categories Dropdown that shows in the move money modal is quite small. Show 
 Highlights credit card category balances with a yellow warning if the balance of the category does not match the account balance. Adds a button to the Inspector to rectify the difference.
 
 ## Remove Zero and Negative Categories When Covering Over-Budgeting
+
 Default YNAB behaviour is to show these categories when covering overbudgeting, but since they've got no money in them they won't help you. Let's clean up the menu.
+
 
 ## Seamless Budget Header
 Remove the borders between selected month, funds and Age of Money in the budget header.
 
+## Show Upcoming Transaction Total
+Adds the total of upcoming transactions alongside activity for each category.
+
 ## Stealing From Future Alert
-Highlights "Budget Next Month" red you've gone negative as some point in the future
+Highlights "Budget Next Month" red when you've gone negative as some point in the future.
 
 ## To Be Budgeted Warning
 Changes the 'To Be Budgeted' background color to yellow if there is unallocated money left to be budgeted.
@@ -159,8 +160,8 @@ Adds the check number column to your account view.
 ## Add Split Transaction Keyboard Shortcut
 Instead of clicking the Split button, type 'split' in the category input to automatically create a new split transaction.
 
-## Add a Toggle Splits Button
-Clicking the toggle splits button shows or hides the sub-transactions within a split.
+## Add a Toggle Splits Button to the Account(s) toolbar
+Clicking the Toggle Splits button shows or hides all sub-transactions within all split transactions. *__Note__: you must toggle splits open before editing a split transaction!*
 
 ## Auto Adjust Split Transactions
 When entering split transactions, each additional split will be auto-filled with the current remaining amount.
@@ -170,6 +171,9 @@ When you press enter while adding transactions, the default behaviour is 'Save a
 
 ## Clear Selection
 Adds an option to the transaction edit drop-down menu to clear the current selection.
+
+## Easy Transaction Approval
+Quickly approve scheduled or linked transactions by selecting the transaction(s) and pressing 'a' or 'enter' on your keyboard. Alternately, approve single scheduled or linked transactions by right clicking on the blue 'i' or link icon.
 
 ## Emphasize Outflows
 Make values in the outflow column red and put them in parenthesis.
@@ -202,20 +206,26 @@ Right clicking on a transaction will show the contextual menu, allowing easy acc
 Adds a running balance column to the accounts page (does not appear on All Accounts View)
 
 ## Show Spare Change
-Imagine if you paid for all purchases in whole dollars. Shows a total of the spare change you would accumulate for the selected outflow transactions.
+"Imagine if you paid for all purchases in whole dollars. Shows a total of the spare change you would accumulate for the selected outflow transactions.
 
 ## Striped Transaction Rows
 Shows a light gray background on every other transaction row.
 
-## Swap cleared and flagged columns on Account screen
-
+## Swap cleared and flagged columns
+Place the Cleared column on the left and the Flagged column on the right sides of an account screen.
 
 ## Toggle Scheduled and Reconciled Transaction Buttons
 Easily show and hide scheduled and reconciled transactions with one click.</details>
 <details><summary>Reports (Click to Expand/Collapse)</summary>
 
 ## Compact Income vs. Expense
-Modifies styling of the Income vs. Expense report so it doesn't use too much white space on the page.</details>
+Modifies styling of the Income vs. Expense report so it doesn't use too much white space on the page.
+
+## Highlight Income vs Expense Row on Hover
+Provides a highlight over the currently hovered row on the native YNAB Income vs Expense report.
+
+## View Zero as Empty
+If a cell is zero, replace it with an empty cell so it is easier to focus on non-zero cells. "Total" rows are not modified.</details>
 <details><summary>Advanced (Click to Expand/Collapse)</summary>
 
 ## Disable Toolkit for YNAB
