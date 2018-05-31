@@ -138,7 +138,7 @@ function attachAnyItemChangedListener(accountId, transactionViewModel) {
     });
 
   controllerLookup('accounts').addObserver('sortAscending', function (displayItems) {
-    const updatedAccountId = displayItems.get('firstObject.accountId');
+    const updatedAccountId = displayItems.get('visibleTransactionDisplayItems.firstObject.accountId');
     if (updatedAccountId) {
       calculateRunningBalance(updatedAccountId);
     }
@@ -170,9 +170,10 @@ function calculateRunningBalance(accountId) {
         // if the amounts are equal
         if (res === 0) {
           return Ember.compare(a.getEntityId(), b.getEntityId());
-        } else if (!controllerLookup('accounts').get('sortAscending')) {
-          return -res;
         }
+
+        const sortAscending = localStorage.getItem(`.${accountId}_sortAscending`) || 'true';
+        return sortAscending === 'true' ? res : -res;
       }
 
       return res;
