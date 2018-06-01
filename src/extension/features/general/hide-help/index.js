@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { i10n, getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+import { l10n, getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class HideHelp extends Feature {
@@ -37,7 +37,7 @@ export class HideHelp extends Feature {
     // it's possible the beacon doesn't actually match the state we think it should so don't
     // set the label based on what we have in local storage so we should always use the source
     // of truth when toggling. We'll use local storage to get the initial state.
-    const label = isHidden ? i10n('app.show', 'Show') : i10n('app.hide', 'Hide');
+    const label = isHidden ? l10n('app.show', 'Show') : l10n('app.hide', 'Hide');
 
     $(`<li class="ynab-toolkit-hide-help">
       <button>

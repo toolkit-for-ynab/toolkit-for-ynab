@@ -1,4 +1,4 @@
-import { i10n } from 'toolkit/extension/utils/toolkit';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { Feature } from 'toolkit/extension/features/feature';
 import { currentRouteIsBudgetPage, getSidebarViewModel } from 'toolkit/extension/utils/ynab';
@@ -35,12 +35,12 @@ export class DaysOfBuffering extends Feature {
       $displayElement = $('<div>', { class: 'budget-header-item budget-header-days toolkit-days-of-buffering' })
         .append($('<div>', {
           class: 'budget-header-days-age',
-          title: i10n('budget.dob.tooltip', 'Don\'t like AoM? Try this out instead!')
+          title: l10n('budget.dob.tooltip', 'Don\'t like AoM? Try this out instead!')
         }))
         .append($('<div>', {
           class: 'budget-header-days-label',
-          text: i10n('budget.dob.title', 'Days of Buffering'),
-          title: i10n('budget.dob.tooltip', 'Don\'t like AoM? Try this out instead!')
+          text: l10n('budget.dob.title', 'Days of Buffering'),
+          title: l10n('budget.dob.tooltip', 'Don\'t like AoM? Try this out instead!')
         }));
 
       $('.budget-header-flexbox').append($displayElement);
@@ -48,13 +48,13 @@ export class DaysOfBuffering extends Feature {
 
     if (calculation.notEnoughDates) {
       $('.budget-header-days-age', $displayElement).text('???');
-      $('.budget-header-days-age', $displayElement).attr('title', i10n('budget.dob.noHistory', 'Your budget history is less than 15 days. Go on with YNAB a while.'));
+      $('.budget-header-days-age', $displayElement).attr('title', l10n('budget.dob.noHistory', 'Your budget history is less than 15 days. Go on with YNAB a while.'));
     } else {
-      const dayText = daysOfBuffering === 1.0 ? i10n('budget.ageOfMoneyDays.one', 'day') : i10n('budget.ageOfMoneyDays.other', 'days');
+      const dayText = daysOfBuffering === 1.0 ? l10n('budget.ageOfMoneyDays.one', 'day') : l10n('budget.ageOfMoneyDays.other', 'days');
       $('.budget-header-days-age', $displayElement).text(`${daysOfBuffering} ${dayText}`);
-      $('.budget-header-days-age', $displayElement).attr('title', `${i10n('budget.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}
-${i10n('budget.dob.days', 'Total days of budgeting')}: ${totalDays}
-${i10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(averageDailyOutflow)}`);
+      $('.budget-header-days-age', $displayElement).attr('title', `${l10n('budget.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}
+${l10n('budget.dob.days', 'Total days of budgeting')}: ${totalDays}
+${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(averageDailyOutflow)}`);
     }
   }
 

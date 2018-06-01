@@ -3,7 +3,7 @@ import { getCurrentRouteName, isCurrentMonthSelected } from 'toolkit/extension/u
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { getDeemphasizedCategories, migrateLegacyPacingStorage, pacingForCategory, setDeemphasizedCategories } from 'toolkit/extension/utils/pacing';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { i10n } from 'toolkit/extension/utils/toolkit';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class Pacing extends Feature {
   injectCSS() { return require('./index.css'); }
@@ -20,7 +20,7 @@ export class Pacing extends Feature {
     $('#ynab-toolkit-pacing-style').remove();
     $('.budget-table-header .budget-table-cell-available')
       .after(`<li class="toolkit-cell-pacing">
-        ${i10n('toolkit.pacing', 'PACING')}
+        ${l10n('toolkit.pacing', 'PACING')}
       </li>`);
 
     $(`<style type="text/css" id="ynab-toolkit-pacing-style">
