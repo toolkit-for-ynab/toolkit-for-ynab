@@ -47,13 +47,17 @@ export function getBudgetViewModel() {
   return controllerLookup('application').get('budgetViewModel');
 }
 
+export function getSelectedMonth() {
+  return getBudgetViewModel().get('month').clone();
+}
+
 export function getSidebarViewModel() {
   return controllerLookup('application').get('sidebarViewModel');
 }
 
 export function isCurrentMonthSelected() {
   const today = new ynab.utilities.DateWithoutTime();
-  const selectedMonth = getBudgetViewModel().get('month');
+  const selectedMonth = getSelectedMonth();
 
   if (selectedMonth) {
     return today.equalsByMonth(selectedMonth);
