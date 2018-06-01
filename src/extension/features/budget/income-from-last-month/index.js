@@ -1,58 +1,56 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { currentRouteIsBudgetPage, getBudgetViewModel, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class IncomeFromLastMonth extends Feature {
-  injectCSS() {
-    return require('./index.css');
-  }
+  injectCSS() { return require('./index.css'); }
 
-  shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') !== -1;
-  }
+  shouldInvoke() { return currentRouteIsBudgetPage(); }
 
   invoke() {
     // Do nothing if no header found.
     if ($('.budget-header-totals-details-values').length === 0) return;
-    let selectedMonth = ynabToolKit.shared.parseSelectedMonth().getMonth();
-    let previousMonth = selectedMonth - Number(this.settings.enabled);
-    let previousYear = ynabToolKit.shared.parseSelectedMonth().getFullYear();
-    if (previousMonth < 0) {
-      previousMonth += 12;
-      previousYear -= 1;
-    }
+    const matchMonth = getBudgetViewModel().get('month').clone().subtractMonths(this.settings.enabled);
+    const previousMonthName = ynabToolKit.shared.monthsShort[matchMonth.getMonth()];
 
-    let previousMonthName = ynabToolKit.shared.monthsShort[previousMonth];
+    const total = getEntityManager().getAllTransactions().reduce((reduced, transaction) => {
+      if (
+        !transaction.get('isTombstone') &&
+        !transaction.isTransferTransaction() &&
+        transaction.get('account.onBudget') &&
+        (transaction.get('date') && transaction.get('date').equalsByMonth(matchMonth)) &&
+        (transaction.get('subCategory') && transaction.get('subCategory').isIncomeCategory())
+      ) {
+        reduced += transaction.get('amount');
+      }
 
-    let entityManager = ynab.YNABSharedLib.defaultInstance.entityManager;
-    let transactions = entityManager.getAllTransactions();
-    let income = transactions.filter(function (el) {
-      return !el.isTombstone &&
-        el.transferAccountId === null &&
-        el.amount > 0 &&
-        el.date.getYear() === previousYear &&
-        el.date.getMonth() === previousMonth &&
-        el.getAccount().onBudget &&
-        (el.getSubCategory() && el.getSubCategory().isIncomeCategory());
-    });
-
-    let total = Array.from(income, function (i) {
-      return i.amount;
-    }).reduce(function (a, b) {
-      return a + b;
+      return reduced;
     }, 0);
 
-    if ($('.income-from-last-month').length === 0) {
-      // jscs:disable disallowMultipleLineStrings
-      $('.budget-header-totals-details-values').prepend(`
-        <div class="budget-header-totals-cell-value income-from-last-month user-data">
-          <span class="user-data currency positive"></span>
-        </div>`);
-      $('.budget-header-totals-details-names').prepend('<div class="budget-header-totals-cell-name income-from-last-month" style="padding-left: .3em; text-align:left"></div>');
+    if ($('.toolkit-income-from-last-month').length === 0) {
+      $('.budget-header-totals-details-values')
+        .prepend($('<div>', {
+          class: 'budget-header-totals-cell-value toolkit-income-from-last-month user-data'
+        }).append('<span>', {
+          class: 'user-data currency positive'
+        }));
+
+      $('.budget-header-totals-details-names')
+        .prepend($('<div>', {
+          class: 'budget-header-totals-cell-name toolkit-income-from-last-month',
+          css: {
+            'padding-left': '0.3em',
+            'text-align': 'left'
+          }
+        }));
     }
 
-    $('.budget-header-totals-cell-value.income-from-last-month span').html((total < 0 ? '-' : '+') + ynabToolKit.shared.formatCurrency(total, true));
-    $('.budget-header-totals-details-names>.income-from-last-month')[0].textContent =
-      ((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.incomeFrom']) || 'Income from') + ' ' + previousMonthName;
+    $('.budget-header-totals-cell-value.toolkit-income-from-last-month span')
+      .text(formatCurrency(total));
+
+    $('.budget-header-totals-details-names > .toolkit-income-from-last-month')
+      .text(`${l10n('toolkit.incomeIn', 'Income in')} ${previousMonthName}`);
   }
 
   observe(changedNodes) {
