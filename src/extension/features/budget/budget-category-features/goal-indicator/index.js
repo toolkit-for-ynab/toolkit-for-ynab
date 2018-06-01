@@ -26,7 +26,7 @@ export class GoalIndicator extends Feature {
       const goalContainer = element.querySelector(`.${GOAL_TABLE_CELL_CLASSNAME}`);
       const goalType = element.getAttribute(`data-${CategoryAttributes.GoalType}`);
       const hasUpcomingTransactions = element.getAttribute(`data-${CategoryAttributes.UpcomingTransactions}`) !== null;
-      const goalTypeElement = element.querySelector('.toolkit-goal-indicator');
+      const goalTypeElement = element.querySelector('.toolkit-goal-indicator:not(.toolkit-goal-indicator--upcoming)');
       const upcomingElement = element.querySelector('.toolkit-goal-indicator--upcoming');
 
       if (goalTypeElement) {
