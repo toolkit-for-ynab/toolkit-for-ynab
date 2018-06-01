@@ -15,10 +15,10 @@ export class DaysOfBuffering extends Feature {
   }
 
   invoke() {
-    const elligibleTransactions = getEntityManager().getAllTransactions().filter(this._elligibleTransactionFilter);
+    const eligibleTransactions = getEntityManager().getAllTransactions().filter(this._eligibleTransactionFilter);
     const onBudgetBalance = getSidebarViewModel().getOnBudgetAccountsBalance();
-    const calcuation = this._calculateDaysOfBuffering(onBudgetBalance, elligibleTransactions);
-    this._updateDisplay(calcuation);
+    const calculation = this._calculateDaysOfBuffering(onBudgetBalance, eligibleTransactions);
+    this._updateDisplay(calculation);
   }
 
   onRouteChanged() {
@@ -27,8 +27,8 @@ export class DaysOfBuffering extends Feature {
     }
   }
 
-  _updateDisplay(calcuation) {
-    const { averageDailyOutflow, daysOfBuffering, totalDays, totalOutflow } = calcuation;
+  _updateDisplay(calculation) {
+    const { averageDailyOutflow, daysOfBuffering, totalDays, totalOutflow } = calculation;
     const daysOfBufferingContainer = document.querySelector('.toolkit-days-of-buffering');
     let $displayElement = $(daysOfBufferingContainer);
     if (!daysOfBufferingContainer) {
@@ -46,7 +46,7 @@ export class DaysOfBuffering extends Feature {
       $('.budget-header-flexbox').append($displayElement);
     }
 
-    if (calcuation.notEnoughDates) {
+    if (calculation.notEnoughDates) {
       $('.budget-header-days-age', $displayElement).text('???');
       $('.budget-header-days-age', $displayElement).attr('title', i10n('budget.dob.noHistory', 'Your budget history is less than 15 days. Go on with YNAB a while.'));
     } else {
@@ -58,6 +58,15 @@ ${i10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
     }
   }
 
+  /**
+   * Days of buffering is calculated by taking the total outflows within the selected window and
+   * dividing it by the number of days in the selected window. The selected window comes from
+   * the DaysOfBufferingHistoryLookup option and is represented in months. We estimate days to
+   * be (number of months * 30). If the user selected "all history", the divisor is simply the
+   * number of days since the first eligible transaction. If there are not at least 15 unique
+   * days within the window that have an eligible transaction, we consider the metric unable to
+   * be calculated.
+   */
   _calculateDaysOfBuffering = (balance, transactions) => {
     const { dates, totalOutflow, uniqueDates } = transactions.reduce((reduced, current) => {
       const { amount, date } = current.getProperties('amount', 'date');
@@ -94,23 +103,23 @@ ${i10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
       averageDailyOutflow,
       daysOfBuffering,
       notEnoughDates,
-      totalDays: dates.size,
+      totalDays: uniqueDates.size,
       totalOutflow
     };
   }
 
-  _elligibleTransactionFilter = (transaction) => {
+  _eligibleTransactionFilter = (transaction) => {
     const today = new ynab.utilities.DateWithoutTime();
 
-    let isElligibleDate = false;
+    let isEligibleDate = false;
     if (this._lookbackDays === 0) {
-      isElligibleDate = true;
+      isEligibleDate = true;
     } else {
-      isElligibleDate = transaction.get('date').daysApart(today) < this._lookbackDays;
+      isEligibleDate = transaction.get('date').daysApart(today) < this._lookbackDays;
     }
 
     return (
-      isElligibleDate &&
+      isEligibleDate &&
       !transaction.get('isTombstone') &&
       !transaction.get('payee.isInternal') &&
       !transaction.isTransferTransaction() &&
