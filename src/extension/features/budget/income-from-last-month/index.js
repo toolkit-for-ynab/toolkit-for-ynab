@@ -15,7 +15,13 @@ export class IncomeFromLastMonth extends Feature {
     const previousMonthName = ynabToolKit.shared.monthsShort[matchMonth.getMonth()];
 
     const total = getEntityManager().getAllTransactions().reduce((reduced, transaction) => {
-      if (
+      if (transaction.getIsSplit()) {
+        transaction.getSubTransactions().forEach((subTransaction) => {
+          if (subTransaction.get('subCategory') && subTransaction.get('subCategory').isIncomeCategory()) {
+            reduced += subTransaction.get('amount');
+          }
+        });
+      } else if (
         !transaction.get('isTombstone') &&
         !transaction.isTransferTransaction() &&
         transaction.get('account.onBudget') &&
