@@ -65,6 +65,7 @@ content scripts) into single files and manages most of the build process.
     directory for changes and run `yarn build:development` automatically for you.
 6. The built extension will be available in the `dist/extension` folder. Navigate to `chrome://extensions`
   and select the `dist/extension` folder as the folder that you would like to load.
+7. You may need to reload the Chrome plugin if it's been already installed. Visit `chrome://extensions` and click the reload icon ![](https://camo.githubusercontent.com/4d41ad79a8241b062ea59fa332b39028c1469703/68747470733a2f2f636c2e6c792f31633167304633443142316f2f496d616765253230323031382d30362d3034253230617425323031362e32302e33342e706e67)
 
 # Development Methodology
 
