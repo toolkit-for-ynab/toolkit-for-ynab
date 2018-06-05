@@ -35,3 +35,7 @@ seeing. Please be as thorough as possible. -->
 
 # Actual Behavior
 <!-- What actually happened after you completed the steps. -->
+<!-- Check to see if there's any console errors by using these shortcuts.
+Mac:  Cmd+Opt+J
+Windows Ctrl+Shift+J
+-->
