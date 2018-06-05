@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getToolkitStorageKey, i10n, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+import { getToolkitStorageKey, l10n, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 export class CollapseSideMenu extends Feature {
   injectCSS() { return require('./index.css'); }
@@ -40,7 +40,7 @@ export class CollapseSideMenu extends Feature {
       class: 'ynabtk-collapse-link'
     }).append($('<span>', {
       class: 'ember-view ynabtk-collapse-icon flaticon stroke left-circle-4'
-    })).append(i10n('toolkit.collapse', 'Collapse'))).click(() => {
+    })).append(l10n('toolkit.collapse', 'Collapse'))).click(() => {
       const isCollapsed = getToolkitStorageKey('isCollapsed');
       setToolkitStorageKey('isCollapsed', !isCollapsed);
       this.applyState();
