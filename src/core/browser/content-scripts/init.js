@@ -61,10 +61,20 @@ function sendToolkitBootstrap(options) {
 }
 
 function messageHandler(event) {
-  if (event.data !== 'ynab-toolkit-loaded') return;
+  if (event.data && event.data.type) {
+    switch (event.data.type) {
+      case 'ynab-toolkit-loaded':
+        initializeYNABToolkit();
+        break;
+      case 'ynab-toolkit-error':
+        handleToolkitError(event.data.context);
+        break;
+    }
+  }
+}
 
-  initializeYNABToolkit();
-  window.removeEventListener('message', messageHandler);
+function handleToolkitError(context) {
+  getBrowser().runtime.sendMessage({ type: 'error', context });
 }
 
 function initializeYNABToolkit() {

@@ -18,7 +18,7 @@ export class YNABToolkit {
 
   initializeToolkit() {
     window.addEventListener('message', this._onBackgroundMessage);
-    window.postMessage(TOOLKIT_LOADED_MESSAGE, '*');
+    window.postMessage({ type: TOOLKIT_LOADED_MESSAGE }, '*');
   }
 
   _removeMessageListener() {

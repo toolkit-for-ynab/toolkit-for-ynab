@@ -116,5 +116,8 @@
     "RightClickToEdit",
     "ShowIntercom",
     "SplitKeyboardShortcut"
-  ]
+  ],
+  "dependencies": {
+    "raven-js": "^3.25.2"
+  }
 }

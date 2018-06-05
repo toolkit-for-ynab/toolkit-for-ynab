@@ -1,6 +1,10 @@
 export class Runtime {
   listeners = [];
 
+  getManifest = jest.fn(() => {
+    return {};
+  });
+
   getURL = jest.fn((path) => {
     return `chrome-extension://${path}`;
   });

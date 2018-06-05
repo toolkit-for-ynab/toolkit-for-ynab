@@ -72,7 +72,7 @@ describe('YNABToolkit', () => {
     it('should postMessage the toolkit loaded message', () => {
       const { postMessageSpy, ynabToolkit } = setup({ initialize: false });
       ynabToolkit.initializeToolkit();
-      expect(postMessageSpy).toHaveBeenCalledWith(TOOLKIT_LOADED_MESSAGE, '*');
+      expect(postMessageSpy).toHaveBeenCalledWith({ type: TOOLKIT_LOADED_MESSAGE }, '*');
     });
   });
 
