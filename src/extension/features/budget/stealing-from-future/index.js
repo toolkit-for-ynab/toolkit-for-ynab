@@ -30,7 +30,7 @@ export class StealingFromFuture extends Feature {
     let earliestNegativeMonth = null;
     let earliestNegativeMonthCalculation = null;
     budgetViewModel.get('allBudgetMonthsViewModel.monthlyBudgetCalculationsCollection').forEach((monthCalculation) => {
-      if (this.isMonthEntityIdFuture(monthCalculation.get('entityId'))) {
+      if (!this.isMonthEntityIdPast(monthCalculation.get('entityId'))) {
         const entityDate = monthCalculation.get('entityId').match(/mbc\/(.*)\/.*/)[1];
         const entityMonth = entityDate.split('-').map((val) => parseInt(val))[1];
 
@@ -69,12 +69,12 @@ export class StealingFromFuture extends Feature {
 
     const availableToBudget = earliestNegativeMonthCalculation.getAvailableToBudget();
     $('#ynabtk-stealing-amount', name).remove();
-    name.append('<span id="ynabtk-stealing-amount"> (' +
-        '<strong class="currency">' +
-          `${ynab.formatCurrency(availableToBudget)} in ` +
-          `<a class="ynabtk-month-link">${ynabToolKit.shared.monthsFull[earliestNegativeMonth - 1]}</a>` +
-        '</strong>' +
-      ')</span>');
+    name.append(`<span id="ynabtk-stealing-amount"> (
+        <strong class="currency">
+          ${ynab.formatCurrency(availableToBudget)} in
+          <a class="ynabtk-month-link">${ynabToolKit.shared.monthsFull[earliestNegativeMonth - 1]}</a>
+        </strong>
+      )</span>`);
 
     $('.ynabtk-month-link', name).click((event) => {
       event.preventDefault();
@@ -84,19 +84,19 @@ export class StealingFromFuture extends Feature {
     });
   }
 
-  isMonthEntityIdFuture(entityId) {
+  isMonthEntityIdPast(entityId) {
     const currentYear = parseInt(moment().format('YYYY'));
     const currentMonth = parseInt(moment().format('MM'));
     const entityDate = entityId.match(/mbc\/(.*)\/.*/)[1];
     const [entityYear, entityMonth] = entityDate.split('-').map((val) => parseInt(val));
 
     const isNextYear = entityYear > currentYear;
-    const isCurrentYearFutureMonth = entityYear === currentYear && entityMonth > currentMonth;
+    const isCurrentYearFutureMonth = entityYear === currentYear && entityMonth >= currentMonth;
     if (isNextYear || isCurrentYearFutureMonth) {
-      return true;
+      return false;
     }
 
-    return false;
+    return true;
   }
 
   invoke() {
