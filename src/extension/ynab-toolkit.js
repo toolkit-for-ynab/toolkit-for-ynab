@@ -37,10 +37,26 @@ export class YNABToolkit {
       event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE
     ) {
       window.ynabToolKit = event.data.ynabToolKit;
+      this._setupErrorTracking();
       this._createFeatureInstances();
       this._removeMessageListener();
       this._waitForUserSettings();
     }
+  }
+
+  _setupErrorTracking = () => {
+    window.addEventListener('error', ({ error }) => {
+      let serializedError = '';
+      if (error.stack) {
+        serializedError = error.stack.toString();
+      } else if (error.message) {
+        serializedError = error.message;
+      }
+
+      if (serializedError.includes(window.ynabToolKit.extensionId)) {
+        logToolkitError(error, 'unknown', 'global', 'unknown');
+      }
+    });
   }
 
   _invokeFeature = (featureName) => {

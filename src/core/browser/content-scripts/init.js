@@ -44,7 +44,7 @@ function applySettingsToDom(userSettings) {
 function sendToolkitBootstrap(options) {
   const browser = getBrowser();
   const environment = getEnvironment();
-  const manfiest = browser.runtime.getManifest();
+  const manifest = browser.runtime.getManifest();
 
   window.postMessage({
     type: 'ynab-toolkit-bootstrap',
@@ -53,9 +53,10 @@ function sendToolkitBootstrap(options) {
         logo: browser.runtime.getURL('assets/images/logos/toolkitforynab-logo-400.png')
       },
       environment,
-      name: manfiest.name,
+      extensionId: browser.runtime.id,
+      name: manifest.name,
       options,
-      version: manfiest.version
+      version: manifest.version
     }
   }, '*');
 }
