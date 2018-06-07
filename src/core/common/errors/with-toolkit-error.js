@@ -30,4 +30,14 @@ export function logToolkitError(exception, featureName, location, featureSetting
     - Message: ${exception.message ? exception.message : 'none'}`;
 
   console.error(message, exception.stack ? exception.stack : '');
+
+  const serializedError = exception.stack ? exception.stack.toString() : exception.message;
+  window.postMessage({
+    type: 'ynab-toolkit-error',
+    context: {
+      featureName,
+      location,
+      serializedError
+    }
+  }, '*');
 }

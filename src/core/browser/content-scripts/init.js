@@ -44,7 +44,7 @@ function applySettingsToDom(userSettings) {
 function sendToolkitBootstrap(options) {
   const browser = getBrowser();
   const environment = getEnvironment();
-  const manfiest = browser.runtime.getManifest();
+  const manifest = browser.runtime.getManifest();
 
   window.postMessage({
     type: 'ynab-toolkit-bootstrap',
@@ -53,18 +53,29 @@ function sendToolkitBootstrap(options) {
         logo: browser.runtime.getURL('assets/images/logos/toolkitforynab-logo-400.png')
       },
       environment,
-      name: manfiest.name,
+      extensionId: browser.runtime.id,
+      name: manifest.name,
       options,
-      version: manfiest.version
+      version: manifest.version
     }
   }, '*');
 }
 
 function messageHandler(event) {
-  if (event.data !== 'ynab-toolkit-loaded') return;
+  if (event.data && event.data.type) {
+    switch (event.data.type) {
+      case 'ynab-toolkit-loaded':
+        initializeYNABToolkit();
+        break;
+      case 'ynab-toolkit-error':
+        handleToolkitError(event.data.context);
+        break;
+    }
+  }
+}
 
-  initializeYNABToolkit();
-  window.removeEventListener('message', messageHandler);
+function handleToolkitError(context) {
+  getBrowser().runtime.sendMessage({ type: 'error', context });
 }
 
 function initializeYNABToolkit() {
