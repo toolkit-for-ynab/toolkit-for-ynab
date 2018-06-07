@@ -53,11 +53,13 @@ describe('withToolkitError', () => {
 describe('logToolkitError', () => {
   it('should log a detailed toolkit error the the console', () => {
     const mockError = new Error('mock error');
-    logToolkitError(mockError, 'mock feature', 'observe', 'false');
-    expect(console.error).toHaveBeenCalledWith(`Toolkit Error:
-    - Feature: mock feature
-    - Location: observe
-    - User Setting: false
-    - Message: ${mockError.message}`, mockError.stack);
+    logToolkitError({
+      exception: mockError,
+      featureName: 'mock feature',
+      featureSetting: 'false',
+      functionName: 'observe'
+    });
+
+    expect(console.error).toMatchSnapshot();
   });
 });

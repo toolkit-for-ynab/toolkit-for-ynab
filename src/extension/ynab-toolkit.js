@@ -54,7 +54,12 @@ export class YNABToolkit {
       }
 
       if (serializedError.includes(window.ynabToolKit.extensionId)) {
-        logToolkitError(error, 'unknown', 'global', 'unknown');
+        logToolkitError({
+          exception: error,
+          featureName: 'unknown',
+          featureSetting: 'unknown',
+          functionName: 'global'
+        });
       }
     });
   }
@@ -94,7 +99,12 @@ export class YNABToolkit {
         } catch (exception) {
           const featureName = feature.constructor.name;
           const featureSetting = ynabToolKit.options[featureName];
-          logToolkitError(exception, featureName, 'willInvoke', featureSetting);
+          logToolkitError({
+            exception,
+            featureName,
+            featureSetting,
+            functionName: 'willInvoke'
+          });
         }
 
         const wrappedShouldInvoke = withToolkitError(feature.shouldInvoke.bind(feature), feature);
