@@ -1,6 +1,7 @@
 import { TransactionGridFeature } from '../feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { isCurrentRouteAccountsPage, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class RunningBalance extends TransactionGridFeature {
   hasInitialized = false;
@@ -98,7 +99,7 @@ export class RunningBalance extends TransactionGridFeature {
         if (transaction.get('parentEntityId') !== null) {
           currencySpan.text('');
         } else {
-          currencySpan.text(ynabToolKit.shared.formatCurrency(runningBalance));
+          currencySpan.text(formatCurrency(runningBalance));
         }
 
         currentRowRunningBalance.insertAfter($('.ynab-grid-cell-inflow', $currentRow));

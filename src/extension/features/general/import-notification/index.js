@@ -1,4 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { getEmberView } from 'toolkit/extension/utils/ember';
 
 export class ImportNotification extends Feature {
   isActive = false;
@@ -48,7 +49,7 @@ export class ImportNotification extends Feature {
 
     $('.' + this.importClass).remove();
     $('.nav-account-row').each((index, row) => {
-      let account = ynabToolKit.shared.getEmberView($(row).attr('id')).get('data');
+      let account = getEmberView($(row).attr('id')).get('data');
 
       // Check for both functions should be temporary until all users have been switched to new bank data
       // provider but of course we have no good way of knowing when that has occurred.

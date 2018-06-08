@@ -117,7 +117,7 @@ export class Pacing extends Feature {
     const moreOrLess = paceAmount >= 0 ? 'less' : 'more';
     const aheadOrBehind = paceAmount >= 0 ? 'ahead of' : 'behind';
     const hideOrUnhide = isDeemphasized ? 'unhide' : 'hide';
-    const formattedDisplay = ynabToolKit.shared.formatCurrency(Math.abs(paceAmount), false);
+    const formattedDisplay = formatCurrency(Math.abs(paceAmount), false);
     const formattedDisplayInDays = Math.abs(daysOffTarget);
     const days = formattedDisplayInDays === 1 ? 'day' : 'days';
     const transactionsFormat = transactions.length === 1 ? 'transaction' : 'transactions';
