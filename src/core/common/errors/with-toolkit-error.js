@@ -37,7 +37,7 @@ export function withToolkitError(wrappedFunction, feature) {
  * @param input.functionName The name of the function in the feature that threw the error (if known).
  */
 export function logToolkitError({ exception, featureName, featureSetting, functionName }) {
-  const routeName = window.location.pathname.replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/, 'omitted');
+  const routeName = window.location.pathname.replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g, 'omitted');
   let message = `Toolkit Error:
   - Feature: ${featureName}
   - Feature Setting: ${featureSetting}
