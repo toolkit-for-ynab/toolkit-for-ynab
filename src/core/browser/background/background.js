@@ -35,8 +35,10 @@ export class Background {
 
   _handleException = (context) => {
     Raven.captureException(new Error(context.serializedError), {
+      tags: {
+        featureName: context.featureName
+      },
       extra: {
-        featureName: context.featureName,
         featureSetting: context.featureSetting,
         functionName: context.functionName,
         routeName: context.routeName
