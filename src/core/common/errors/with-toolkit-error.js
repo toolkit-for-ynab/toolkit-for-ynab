@@ -17,17 +17,32 @@ export function withToolkitError(wrappedFunction, feature) {
     try {
       return wrappedFunction();
     } catch (exception) {
-      logToolkitError(exception, featureName, wrappedFunction.name, featureSetting);
+      logToolkitError({
+        exception,
+        featureName,
+        featureSetting,
+        functionName: wrappedFunction.name
+      });
     }
   };
 }
 
-export function logToolkitError(exception, featureName, location, featureSetting) {
+/**
+ * Logs an error to the console with extra context around the occurrence. Also sends a message to
+ * the background script so it can inform Sentry of the error.
+ * @param input Metadata describing the error that occurred
+ * @param input.exception The exception that was thrown.
+ * @param input.featureName The name of the feature that threw the error (if known).
+ * @param input.featureSetting The user setting of the feature that threw the error (if known).
+ * @param input.functionName The name of the function in the feature that threw the error (if known).
+ */
+export function logToolkitError({ exception, featureName, featureSetting, functionName }) {
+  const routeName = window.location.pathname.replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/, 'omitted');
   let message = `Toolkit Error:
-    - Feature: ${featureName}
-    - Location: ${location || 'anonymous'}
-    - User Setting: ${featureSetting}
-    - Message: ${exception.message ? exception.message : 'none'}`;
+  - Feature: ${featureName}
+  - Feature Setting: ${featureSetting}
+  - Function: ${functionName || 'anonymous'}
+  - Message: ${exception.message ? exception.message : 'none'}`;
 
   console.error(message, exception.stack ? exception.stack : '');
 
@@ -36,7 +51,9 @@ export function logToolkitError(exception, featureName, location, featureSetting
     type: 'ynab-toolkit-error',
     context: {
       featureName,
-      location,
+      featureSetting,
+      functionName,
+      routeName,
       serializedError
     }
   }, '*');

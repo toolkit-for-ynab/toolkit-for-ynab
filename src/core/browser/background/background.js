@@ -37,8 +37,9 @@ export class Background {
     Raven.captureException(new Error(context.serializedError), {
       extra: {
         featureName: context.featureName,
-        location: context.location,
-        featureSetting: context.featureSetting
+        featureSetting: context.featureSetting,
+        functionName: context.functionName,
+        routeName: context.routeName
       }
     });
   }
