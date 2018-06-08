@@ -1,9 +1,9 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class RemoveZeroCategories extends Feature {
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') > -1;
+    return isCurrentRouteBudgetPage();
   }
 
   invoke() {

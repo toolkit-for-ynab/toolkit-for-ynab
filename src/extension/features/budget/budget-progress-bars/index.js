@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName, getEntityManager, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage, getEntityManager, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
 import { migrateLegacyPacingStorage, pacingForCategory } from 'toolkit/extension/utils/pacing';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
@@ -20,7 +20,7 @@ export class BudgetProgressBars extends Feature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') > -1;
+    return isCurrentRouteBudgetPage();
   }
 
   // Takes N colors and N-1 sorted points from (0, 1) to make color1|color2|color3 bg style.

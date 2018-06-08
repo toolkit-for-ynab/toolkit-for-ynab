@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { currentRouteIsBudgetPage } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
 import { Settings as DisplayGoalAmountSettings } from './display-target-goal-amount';
 
@@ -25,7 +25,7 @@ export class BudgetCategoryFeatures extends Feature {
     }
   }
 
-  shouldInvoke() { return currentRouteIsBudgetPage(); }
+  shouldInvoke() { return isCurrentRouteBudgetPage(); }
 
   invoke() {
     this.ensureGoalContainer();

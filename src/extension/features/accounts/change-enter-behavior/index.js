@@ -1,10 +1,9 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class ChangeEnterBehavior extends Feature {
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('account') !== -1 &&
-           $('.ynab-grid-body-row.is-adding').length;
+    return isCurrentRouteAccountsPage() && $('.ynab-grid-body-row.is-adding').length;
   }
 
   invoke() {

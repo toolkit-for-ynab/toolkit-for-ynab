@@ -1,12 +1,12 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName, getAllBudgetMonthsViewModel } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage, getAllBudgetMonthsViewModel } from 'toolkit/extension/utils/ynab';
 import { getCurrentDate } from 'toolkit/extension/utils/date';
 import { componentLookup } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class ShowCategoryBalance extends Feature {
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('account') !== -1;
+    return isCurrentRouteAccountsPage();
   }
 
   invoke() {

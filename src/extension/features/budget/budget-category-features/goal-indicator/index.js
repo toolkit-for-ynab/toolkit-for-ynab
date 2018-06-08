@@ -1,11 +1,11 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { currentRouteIsBudgetPage } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { CategoryAttributes, GOAL_TABLE_CELL_CLASSNAME } from 'toolkit/extension/features/budget/budget-category-features';
 
 export class GoalIndicator extends Feature {
   injectCSS() { return require('./index.css'); }
 
-  shouldInvoke() { return currentRouteIsBudgetPage(); }
+  shouldInvoke() { return isCurrentRouteBudgetPage(); }
 
   invoke() {
     // these need to be defined inside `invoke` because ynab must be on the window

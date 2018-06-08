@@ -1,10 +1,10 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage, getEntityManager } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class CategoryActivityCopy extends Feature {
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') !== -1;
+    return isCurrentRouteBudgetPage();
   }
 
   invoke() {

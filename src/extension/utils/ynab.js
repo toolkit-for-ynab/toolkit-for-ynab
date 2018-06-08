@@ -13,7 +13,7 @@ export function getCurrentBudgetDate() {
   return { year: date.slice(0, 4), month: date.slice(4, 6) };
 }
 
-export function currentRouteIsBudgetPage() {
+export function isCurrentRouteBudgetPage() {
   const currentRoute = getCurrentRouteName();
 
   return (
@@ -22,7 +22,7 @@ export function currentRouteIsBudgetPage() {
   );
 }
 
-export function currentRouteIsAccountsPage() {
+export function isCurrentRouteAccountsPage() {
   const currentRoute = getCurrentRouteName();
 
   return (

@@ -1,11 +1,11 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class ToBeBudgetedWarning extends Feature {
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') !== -1;
+    return isCurrentRouteBudgetPage();
   }
 
   invoke() {

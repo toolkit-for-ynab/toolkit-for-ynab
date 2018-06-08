@@ -1,5 +1,5 @@
 import { TransactionGridFeature } from '../feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 const TOOLKIT_RECONCILED_CLASS = 'toolkit-is-reconciled';
 const YNAB_IS_CHECKED_CLASS = 'is-checked';
@@ -20,7 +20,7 @@ export class ReconciledTextColor extends TransactionGridFeature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('account') !== -1;
+    return isCurrentRouteAccountsPage();
   }
 
   didUpdate() {

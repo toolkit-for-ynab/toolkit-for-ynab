@@ -1,5 +1,5 @@
 import { TransactionGridFeature } from '../feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class CheckNumbers extends TransactionGridFeature {
@@ -32,9 +32,9 @@ export class CheckNumbers extends TransactionGridFeature {
   }
 
   // Should return a boolean that informs AdditionalColumns feature that it
-  // is on a page that should recevie the new column.
+  // is on a page that should receive the new column.
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('account') !== -1;
+    return isCurrentRouteAccountsPage();
   }
 
   // Called when one of the grid rows is getting inserted into the dom but

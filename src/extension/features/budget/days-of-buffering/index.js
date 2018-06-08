@@ -1,7 +1,7 @@
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { Feature } from 'toolkit/extension/features/feature';
-import { currentRouteIsBudgetPage, getSidebarViewModel } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage, getSidebarViewModel } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class DaysOfBuffering extends Feature {
@@ -11,7 +11,7 @@ export class DaysOfBuffering extends Feature {
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() {
-    return currentRouteIsBudgetPage() && !document.querySelector('toolkit-days-of-buffering');
+    return isCurrentRouteBudgetPage() && !document.querySelector('toolkit-days-of-buffering');
   }
 
   invoke() {

@@ -1,11 +1,11 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class DisplayTotalMonthlyGoals extends Feature {
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') !== -1;
+    return isCurrentRouteBudgetPage();
   }
 
   extractCategoryGoalInformation(element) {

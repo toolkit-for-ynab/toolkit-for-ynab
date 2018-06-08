@@ -1,6 +1,6 @@
 import { TransactionGridFeature } from '../feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { getCurrentRouteName, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage, getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export class RunningBalance extends TransactionGridFeature {
   hasInitialized = false;
@@ -21,7 +21,7 @@ export class RunningBalance extends TransactionGridFeature {
 
   shouldInvoke() {
     return (
-      getCurrentRouteName().includes('account') &&
+      isCurrentRouteAccountsPage() &&
       controllerLookup('application').get('selectedAccountId') !== null
     );
   }

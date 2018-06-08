@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
@@ -19,7 +19,7 @@ export class ToggleSplits extends Feature {
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('account') !== -1 && !$(`#${this.idName}`).length;
+    return isCurrentRouteAccountsPage() && !$(`#${this.idName}`).length;
   }
 
   invoke() {

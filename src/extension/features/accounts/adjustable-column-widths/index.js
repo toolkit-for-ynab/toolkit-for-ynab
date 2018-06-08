@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { getToolkitStorageKey, removeToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 const RESIZABLES = [
@@ -22,7 +22,7 @@ export class AdjustableColumnWidths extends Feature {
   currentX = null;
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('account') !== -1;
+    return isCurrentRouteAccountsPage();
   }
 
   onMouseMove(event) {

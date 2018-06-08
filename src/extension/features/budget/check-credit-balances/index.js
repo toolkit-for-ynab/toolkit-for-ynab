@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getAllBudgetMonthsViewModel, getCurrentBudgetDate, getCurrentBudgetMonth, getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { getAllBudgetMonthsViewModel, getCurrentBudgetDate, getCurrentBudgetMonth, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class CheckCreditBalances extends Feature {
   budgetView = null;
@@ -9,7 +9,7 @@ export class CheckCreditBalances extends Feature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') !== -1;
+    return isCurrentRouteBudgetPage();
   }
 
   invoke() {
