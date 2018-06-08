@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class SplitTransactionAutoAdjust extends Feature {
   addAnotherSplit;
@@ -9,7 +9,7 @@ export class SplitTransactionAutoAdjust extends Feature {
   deletingSplit;
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('account') !== -1;
+    return isCurrentRouteAccountsPage();
   }
 
   invoke() {

@@ -1,12 +1,12 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { currentRouteIsBudgetPage, getBudgetViewModel, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage, getBudgetViewModel, getEntityManager } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class IncomeFromLastMonth extends Feature {
   injectCSS() { return require('./index.css'); }
 
-  shouldInvoke() { return currentRouteIsBudgetPage(); }
+  shouldInvoke() { return isCurrentRouteBudgetPage(); }
 
   invoke() {
     // Do nothing if no header found.

@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { getDeemphasizedCategories, migrateLegacyPacingStorage, pacingForCategory, setDeemphasizedCategories } from 'toolkit/extension/utils/pacing';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
@@ -13,7 +13,7 @@ export class Pacing extends Feature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().includes('budget') && isCurrentMonthSelected();
+    return isCurrentRouteBudgetPage() && isCurrentMonthSelected();
   }
 
   invoke() {

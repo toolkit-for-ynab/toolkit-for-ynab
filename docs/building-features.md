@@ -109,12 +109,12 @@ should be invoked. You should also use this function in your `observe()`, or
 Example:
 
 ```javascript
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 ...
 
 shouldInvoke() {
-  return getCurrentRoute().includes('accounts');
+  return isCurrentRouteBudgetPage();
 }
 ```
 

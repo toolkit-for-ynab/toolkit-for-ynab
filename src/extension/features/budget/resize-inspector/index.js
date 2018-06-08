@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 const HIDEIMAGE = 'toolkit-modal-item-hide-image';
 const BUTTONDISABLED = 'button-disabled';
@@ -12,7 +12,7 @@ export class ResizeInspector extends Feature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().includes('budget');
+    return isCurrentRouteBudgetPage();
   }
 
   invoke() {

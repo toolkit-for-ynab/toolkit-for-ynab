@@ -1,12 +1,12 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 const DEFAULT_ADDITIONAL_HEIGHT = 100; // 4 pixels of padding
 const BOTTOM_OF_PAGE_PADDING = 4;
 
 export class EnlargeCategoriesDropdown extends Feature {
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') > -1;
+    return isCurrentRouteBudgetPage();
   }
 
   invoke() {

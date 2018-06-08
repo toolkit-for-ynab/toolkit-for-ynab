@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 const DISTRIBUTE_BUTTON_ID = 'toolkit-auto-distribute-splits-button';
 
@@ -22,7 +22,7 @@ export class AutoDistributeSplits extends Feature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().includes('account');
+    return isCurrentRouteAccountsPage();
   }
 
   invoke() {

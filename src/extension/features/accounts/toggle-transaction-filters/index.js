@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class ToggleTransactionFilters extends Feature {
@@ -8,7 +8,7 @@ export class ToggleTransactionFilters extends Feature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('account') > -1;
+    return isCurrentRouteAccountsPage();
   }
 
   onRouteChanged() {

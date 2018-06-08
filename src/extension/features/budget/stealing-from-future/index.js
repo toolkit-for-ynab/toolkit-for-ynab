@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName, transitionTo } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage, transitionTo } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 // TODO: move income-from-last-month to the new framework and just export this
@@ -10,7 +10,7 @@ export class StealingFromFuture extends Feature {
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') !== -1;
+    return isCurrentRouteBudgetPage();
   }
 
   isMonthABeforeB(a, b) {

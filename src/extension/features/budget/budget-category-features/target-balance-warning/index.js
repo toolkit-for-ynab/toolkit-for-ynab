@@ -1,9 +1,9 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { currentRouteIsBudgetPage } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { CategoryAttributes } from 'toolkit/extension/features/budget/budget-category-features';
 
 export class TargetBalanceWarning extends Feature {
-  shouldInvoke() { return currentRouteIsBudgetPage(); }
+  shouldInvoke() { return isCurrentRouteBudgetPage(); }
 
   invoke() {
     const targetBalance = ynab.constants.SubCategoryGoalType.TargetBalance;

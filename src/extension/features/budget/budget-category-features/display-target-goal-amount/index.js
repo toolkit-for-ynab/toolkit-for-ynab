@@ -1,7 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { currentRouteIsBudgetPage } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { CategoryAttributes, GOAL_TABLE_CELL_CLASSNAME } from 'toolkit/extension/features/budget/budget-category-features';
 
 export const Settings = {
@@ -17,7 +17,7 @@ const EmphasisColor = {
 };
 
 export class DisplayTargetGoalAmount extends Feature {
-  shouldInvoke() { return currentRouteIsBudgetPage(); }
+  shouldInvoke() { return isCurrentRouteBudgetPage(); }
 
   invoke() {
     const userSetting = this.settings.enabled;

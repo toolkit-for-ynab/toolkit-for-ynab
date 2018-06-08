@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 const MOVE_POPUP =
   'ynab-u modal-popup modal-budget modal-budget-move-money ember-view modal-overlay active';
@@ -12,7 +12,7 @@ export class EnterToMove extends Feature {
   modalIsOpen = false;
 
   shouldInvoke() {
-    return getCurrentRouteName().indexOf('budget') !== -1;
+    return isCurrentRouteBudgetPage();
   }
 
   invoke() {}

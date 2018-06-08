@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 const BUDGET_CATEGORIES_DROPDOWN_NODE = 'ynab-u modal-popup modal-account-dropdown modal-account-categories ember-view modal-overlay active';
 
@@ -9,7 +9,7 @@ export class SplitKeyboardShortcut extends Feature {
   }
 
   observe(changedNodes) {
-    if (getCurrentRouteName().indexOf('account') !== -1) {
+    if (isCurrentRouteAccountsPage()) {
       if (changedNodes.has(BUDGET_CATEGORIES_DROPDOWN_NODE)) {
         const splitButton = $('.button.button-primary.modal-account-categories-split-transaction');
 
