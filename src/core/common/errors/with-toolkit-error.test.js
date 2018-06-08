@@ -60,6 +60,32 @@ describe('logToolkitError', () => {
       functionName: 'observe'
     });
 
-    expect(console.error).toMatchSnapshot();
+    expect(console.error).toHaveBeenCalledWith(`Toolkit Error:
+  - Feature: mock feature
+  - Feature Setting: false
+  - Function: observe
+  - Message: mock error`, mockError.stack);
+  });
+
+  it('should send the error to the background via post message with omitted IDs', () => {
+    const postMessageSpy = jest.spyOn(window, 'postMessage');
+    const mockError = new Error('mock error');
+    logToolkitError({
+      exception: mockError,
+      featureName: 'mock feature',
+      featureSetting: 'false',
+      functionName: 'observe'
+    });
+
+    expect(postMessageSpy).toHaveBeenCalledWith({
+      context: {
+        featureName: 'mock feature',
+        featureSetting: 'false',
+        functionName: 'observe',
+        routeName: '/omitted/budget/201802',
+        serializedError: mockError.stack.toString()
+      },
+      type: 'ynab-toolkit-error'
+    }, '*');
   });
 });

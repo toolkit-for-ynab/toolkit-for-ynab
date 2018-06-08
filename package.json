@@ -102,6 +102,7 @@
     "reporters": [
       "jest-dot-reporter"
     ],
+    "testURL": "https://app.youneedabudget.com/aaaaaaaa-bbbb-cccc-dddd-000000000000/budget/201802",
     "transform": {
       "^.+\\.js$": "babel-jest",
       ".*.css": "<rootDir>/node_modules/jest-css-modules"

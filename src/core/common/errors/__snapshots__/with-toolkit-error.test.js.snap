@@ -1,25 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`logToolkitError should log a detailed toolkit error the the console 1`] = `
-[MockFunction] {
-  "calls": Array [
-    Array [
-      "Toolkit Error:
-  - Feature: mock feature
-  - Feature Setting: false
-  - Function: observe
-  - Message: mock error",
-      "Error: mock error
-    at Object.<anonymous> (/Users/joshmade/dev/github.com/toolkit-for-ynab/toolkit-for-ynab/src/core/common/errors/with-toolkit-error.test.js:55:21)
-    at Object.asyncFn (/Users/joshmade/dev/github.com/toolkit-for-ynab/toolkit-for-ynab/node_modules/jest-jasmine2/build/jasmine_async.js:124:345)
-    at resolve (/Users/joshmade/dev/github.com/toolkit-for-ynab/toolkit-for-ynab/node_modules/jest-jasmine2/build/queue_runner.js:51:12)
-    at new Promise (<anonymous>)
-    at mapper (/Users/joshmade/dev/github.com/toolkit-for-ynab/toolkit-for-ynab/node_modules/jest-jasmine2/build/queue_runner.js:40:274)
-    at promise.then (/Users/joshmade/dev/github.com/toolkit-for-ynab/toolkit-for-ynab/node_modules/jest-jasmine2/build/queue_runner.js:83:39)
-    at <anonymous>",
-    ],
-  ],
-}
-`;
-
 exports[`withToolkitError should error if the first argument is not a function 1`] = `"The first argument to withToolkitError must be a Function"`;
