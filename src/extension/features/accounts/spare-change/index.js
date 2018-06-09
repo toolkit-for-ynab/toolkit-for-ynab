@@ -1,6 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class SpareChange extends Feature {
   selectedTransactions;
@@ -153,7 +154,7 @@ export class SpareChange extends Feature {
         currencySpan.addClass('zero');
       }
 
-      let formatted = ynabToolKit.shared.formatCurrency(spareChange);
+      let formatted = formatCurrency(spareChange);
       spareChangeAmount.attr('title', formatted.string);
 
       let formattedHtml = formatted.string.replace(/\$/g, '<bdi>$</bdi>');

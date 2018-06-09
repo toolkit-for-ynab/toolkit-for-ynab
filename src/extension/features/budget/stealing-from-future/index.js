@@ -100,8 +100,7 @@ export class StealingFromFuture extends Feature {
   }
 
   invoke() {
-    let budgetController = ynabToolKit.shared.containerLookup('controller:budget');
-    let budgetViewModel = budgetController.get('budgetViewModel');
+    const budgetViewModel = controllerLookup('budget').get('budgetViewModel');
     if (budgetViewModel) {
       budgetViewModel.get('allBudgetMonthsViewModel.monthlyBudgetCalculationsCollection').forEach((month) => {
         month.addObserver('availableToBudget', this.onAvailableToBudgetChange.bind(this, budgetViewModel));

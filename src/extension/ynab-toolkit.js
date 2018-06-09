@@ -36,7 +36,10 @@ export class YNABToolkit {
       event.source === window &&
       event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE
     ) {
-      window.ynabToolKit = event.data.ynabToolKit;
+      window.ynabToolKit = {
+        ...window.ynabToolKit,
+        ...event.data.ynabToolKit
+      };
       this._setupErrorTracking();
       this._createFeatureInstances();
       this._removeMessageListener();
