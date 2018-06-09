@@ -1,4 +1,5 @@
 import { ObserveListener, RouteChangeListener } from 'toolkit/extension/listeners';
+import { logToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
 export class Feature {
   constructor() {
@@ -23,6 +24,14 @@ export class Feature {
   }
 
   injectCSS() { /* stubbed, default to no injected CSS */ }
+
+  logError(exception) {
+    logToolkitError({
+      exception,
+      featureName: this.constructor.name,
+      featureSetting: this.settings.enabled
+    });
+  }
 
   observe() { /* stubbed listener function */ }
 
