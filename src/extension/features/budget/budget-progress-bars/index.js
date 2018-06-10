@@ -132,7 +132,7 @@ export class BudgetProgressBars extends Feature {
     let masterCategoryName = '';
 
     if (this.subCats === null || this.subCats.length === 0 || this.loadCategories) {
-      this.subCats = ynabToolKit.shared.getMergedCategories();
+      this.subCats = getMergedCategories();
       this.loadCategories = false;
     }
 
@@ -236,4 +236,27 @@ export class BudgetProgressBars extends Feature {
       this.invoke();
     }
   }
+}
+
+
+function getMergedCategories() {
+  const entityManager = getEntityManager();
+  const masterCategories = entityManager.getAllNonTombstonedMasterCategories();
+  const mergedCategories = [];
+
+  masterCategories.forEach((masterCategory) => {
+    // Ignore certain categories!
+    if (masterCategory.isHidden !== true && masterCategory.name !== 'Internal Master Category') {
+      const subCategories = entityManager.getSubCategoriesByMasterCategoryId(masterCategory.getEntityId());
+      subCategories.forEach((subCategory) => {
+        // Ignore certain categories!
+        if (subCategory.isHidden !== true && !subCategory.isTombstone && subCategory.name !== 'Uncategorized Transactions') {
+          subCategory.toolkitName = masterCategory.name + '_' + subCategory.name; // Add toolkit specific attribute
+          mergedCategories.push(subCategory);
+        }
+      });
+    }
+  });
+
+  return mergedCategories;
 }
