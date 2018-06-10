@@ -192,7 +192,7 @@ export class CheckCreditBalances extends Feature {
         .append(l10n('toolkit.checkCreditBalances', 'Rectify Difference:'))
         .append(' ' + positive)
         .append($('<strong>', { class: 'user-data', title: fDifference })
-          .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), difference)));
+          .append($('<span>', { class: 'user-data currency zero' }).text(formatCurrency(difference))));
 
       if (difference !== 0) {
         button.removeAttr('disabled');

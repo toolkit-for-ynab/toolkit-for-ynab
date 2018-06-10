@@ -21,31 +21,6 @@ ynabToolKit.shared = (function () {
       return new Ember.Handlebars.SafeString(formatted);
     },
 
-    appendFormattedCurrencyHtml(jQueryElement, number) {
-      var formatted = ynab.formatCurrency(number);
-      var currency = ynab.YNABSharedLib.currencyFormatter.getCurrency();
-
-      if (!currency.display_symbol) {
-        jQueryElement.text(formatted);
-        return;
-      }
-
-      if (currency.symbol_first) {
-        if (formatted.charAt(0) === '-') {
-          jQueryElement.append('-');
-          formatted = formatted.slice(1);
-        }
-
-        jQueryElement.append($('<bdi>', { text: currency.currency_symbol }))
-          .append(formatted);
-      } else {
-        jQueryElement.append(formatted)
-          .append($('<bdi>', { text: currency.currency_symbol }));
-      }
-
-      return jQueryElement;
-    },
-
     parseSelectedMonth() {
       // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
       if ($('.ember-view .budget-header').length) {
