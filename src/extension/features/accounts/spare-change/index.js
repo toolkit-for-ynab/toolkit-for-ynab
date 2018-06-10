@@ -39,7 +39,7 @@ export class SpareChange extends Feature {
 
       if (isCurrentRouteAccountsPage()) {
         if (this.applicationController.get('selectedAccountId')) {
-          this.onYnabGridyBodyChanged();
+          this.onYnabGridBodyChanged();
         } else {
           this.removeHeader();
         }
@@ -155,14 +155,14 @@ export class SpareChange extends Feature {
       }
 
       let formatted = formatCurrency(spareChange);
-      spareChangeAmount.attr('title', formatted.string);
+      spareChangeAmount.attr('title', formatted);
 
-      let formattedHtml = formatted.string.replace(/\$/g, '<bdi>$</bdi>');
+      let formattedHtml = formatted.replace(/\$/g, '<bdi>$</bdi>');
       currencySpan.html(formattedHtml);
     }
   }
 
-  onYnabGridyBodyChanged() {
+  onYnabGridBodyChanged() {
     Ember.run.debounce(this, function () {
       this.setSelectedTransactions();
       this.updateSpareChangeCalculation();
@@ -172,6 +172,6 @@ export class SpareChange extends Feature {
 
   onYnabSelectionChanged() {
     this.selectedTransactions = undefined;
-    this.onYnabGridyBodyChanged();
+    this.onYnabGridBodyChanged();
   }
 }
