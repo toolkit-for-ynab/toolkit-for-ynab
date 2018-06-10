@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getAllBudgetMonthsViewModel, getCurrentBudgetDate, getCurrentBudgetMonth, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { getAllBudgetMonthsViewModel, getCurrentBudgetDate, getCurrentBudgetMonth, getSelectedMonth, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
@@ -92,7 +92,7 @@ export class CheckCreditBalances extends Feature {
         let account = _this.budgetView
           .sidebarViewModel.accountCalculationsCollection
           .findItemByAccountId(a.accountId);
-        let currentMonth = moment(ynabToolKit.shared.parseSelectedMonth()).format('YYYY-MM');
+        let currentMonth = getSelectedMonth().format('YYYY-MM');
         let balance = account.clearedBalance + account.unclearedBalance;
         let monthlyBudget = _this.budgetView
           .monthlySubCategoryBudgetCalculationsCollection

@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage, getEntityManager, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage, getEntityManager, getSelectedMonth, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
 import { migrateLegacyPacingStorage, pacingForCategory } from 'toolkit/extension/utils/pacing';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
@@ -136,13 +136,8 @@ export class BudgetProgressBars extends Feature {
       this.loadCategories = false;
     }
 
-    this.selMonth = ynabToolKit.shared.parseSelectedMonth();
-
-    // will be null on YNAB load when the user is not on the budget screen
-    if (this.selMonth !== null) {
-      this.selMonth = ynabToolKit.shared.yyyymm(this.selMonth);
-      this.internalIdBase = 'mcbc/' + this.selMonth + '/';
-    }
+    this.selMonth = getSelectedMonth().format('YYYY-MM');
+    this.internalIdBase = 'mcbc/' + this.selMonth + '/';
 
     $(categories).each((index, element) => {
       let nameCell;
