@@ -21,61 +21,6 @@ export class YNABToolkit {
     window.postMessage({ type: TOOLKIT_LOADED_MESSAGE }, '*');
   }
 
-  _removeMessageListener() {
-    window.removeEventListener('message', this._onBackgroundMessage);
-  }
-
-  _createFeatureInstances() {
-    features.forEach((Feature) => {
-      this._featureInstances.push(new Feature());
-    });
-  }
-
-  _onBackgroundMessage = (event) => {
-    if (
-      event.source === window &&
-      event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE
-    ) {
-      window.ynabToolKit = {
-        ...window.ynabToolKit,
-        ...event.data.ynabToolKit
-      };
-      this._setupErrorTracking();
-      this._createFeatureInstances();
-      this._removeMessageListener();
-      this._waitForUserSettings();
-    }
-  }
-
-  _setupErrorTracking = () => {
-    window.addEventListener('error', ({ error }) => {
-      let serializedError = '';
-      if (error.stack) {
-        serializedError = error.stack.toString();
-      } else if (error.message) {
-        serializedError = error.message;
-      }
-
-      if (serializedError.includes(window.ynabToolKit.extensionId)) {
-        logToolkitError({
-          exception: error,
-          featureName: 'unknown',
-          featureSetting: 'unknown',
-          functionName: 'global'
-        });
-      }
-    });
-  }
-
-  _invokeFeature = (featureName) => {
-    const feature = this._featureInstances.find((f) => f.constructor.name === featureName);
-    const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
-    const wrappedInvoke = feature.invoke.bind(feature);
-    if (isFeatureEnabled(feature) && wrappedShouldInvoke()) {
-      wrappedInvoke();
-    }
-  }
-
   _applyGlobalCSS() {
     const globalCSS = this._featureInstances.reduce((css, feature) => {
       const wrappedInjectCSS = withToolkitError(feature.injectCSS.bind(feature), feature);
@@ -90,6 +35,21 @@ export class YNABToolkit {
 
     $('head').append($('<style>', { id: 'toolkit-injected-styles', type: 'text/css' })
       .text(globalCSS));
+  }
+
+  _createFeatureInstances() {
+    features.forEach((Feature) => {
+      this._featureInstances.push(new Feature());
+    });
+  }
+
+  _invokeFeature = (featureName) => {
+    const feature = this._featureInstances.find((f) => f.constructor.name === featureName);
+    const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
+    const wrappedInvoke = feature.invoke.bind(feature);
+    if (isFeatureEnabled(feature) && wrappedShouldInvoke()) {
+      wrappedInvoke();
+    }
   }
 
   _invokeFeatureInstances = async () => {
@@ -115,6 +75,51 @@ export class YNABToolkit {
         if (wrappedShouldInvoke()) {
           wrappedInvoke();
         }
+      }
+    });
+  }
+
+  _onBackgroundMessage = (event) => {
+    if (
+      event.source === window &&
+      event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE
+    ) {
+      window.ynabToolKit = {
+        ...window.ynabToolKit,
+        ...event.data.ynabToolKit
+      };
+
+      if (event.data.ynabToolKit.environment === 'development') {
+        Rollbar.impl.instrumenter.deinstrumentConsole(); // eslint-disable-line
+      }
+
+      this._setupErrorTracking();
+      this._createFeatureInstances();
+      this._removeMessageListener();
+      this._waitForUserSettings();
+    }
+  }
+
+  _removeMessageListener() {
+    window.removeEventListener('message', this._onBackgroundMessage);
+  }
+
+  _setupErrorTracking = () => {
+    window.addEventListener('error', ({ error }) => {
+      let serializedError = '';
+      if (error.stack) {
+        serializedError = error.stack.toString();
+      } else if (error.message) {
+        serializedError = error.message;
+      }
+
+      if (serializedError.includes(window.ynabToolKit.extensionId)) {
+        logToolkitError({
+          exception: error,
+          featureName: 'unknown',
+          featureSetting: 'unknown',
+          functionName: 'global'
+        });
       }
     });
   }
