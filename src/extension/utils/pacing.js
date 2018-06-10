@@ -2,7 +2,7 @@ import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
-export const LEAGCY_PACING_DEEMPHASIZED_KEY = 'ynab_toolkit_pacing_deemphasized_categories';
+export const LEGACY_PACING_DEEMPHASIZED_KEY = 'ynab_toolkit_pacing_deemphasized_categories';
 export const PACING_DEEMPHASIZED_KEY = 'pacing-deemphasized-categories';
 
 export function getDeemphasizedCategories() {
@@ -19,7 +19,7 @@ export function migrateLegacyPacingStorage() {
   let legacyValues;
   const newValues = getDeemphasizedCategories();
   try {
-    legacyValues = JSON.parse(localStorage.getItem(LEAGCY_PACING_DEEMPHASIZED_KEY));
+    legacyValues = JSON.parse(localStorage.getItem(LEGACY_PACING_DEEMPHASIZED_KEY));
   } catch (e) { /* ignore */ }
 
   if (legacyValues && legacyValues.length) {
@@ -56,14 +56,14 @@ export function migrateLegacyPacingStorage() {
     }, newValues);
 
     if (newLegacyValues.length) {
-      localStorage.setItem(LEAGCY_PACING_DEEMPHASIZED_KEY, JSON.stringify(newLegacyValues));
+      localStorage.setItem(LEGACY_PACING_DEEMPHASIZED_KEY, JSON.stringify(newLegacyValues));
     } else {
-      localStorage.removeItem(LEAGCY_PACING_DEEMPHASIZED_KEY);
+      localStorage.removeItem(LEGACY_PACING_DEEMPHASIZED_KEY);
     }
 
     setDeemphasizedCategories(categoryIds);
   } else {
-    localStorage.removeItem(LEAGCY_PACING_DEEMPHASIZED_KEY);
+    localStorage.removeItem(LEGACY_PACING_DEEMPHASIZED_KEY);
   }
 }
 
