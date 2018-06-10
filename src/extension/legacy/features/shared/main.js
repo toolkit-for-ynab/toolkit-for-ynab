@@ -32,55 +32,10 @@ ynabToolKit.shared = (function () {
       return null;
     },
 
-    // TODO Maybe add universal function.
-    // Usage: declension(daysNumber, {nom: 'день', gen: 'дня', plu: 'дней'});
-    declension(locale, num, cases) {
-      if (locale === 'ru') {
-        num = Math.abs(num);
-        var word = '';
-        if (num.toString().indexOf('.') > -1) {
-          word = cases.gen;
-        } else {
-          word = (
-            num % 10 === 1 && num % 100 !== 11
-              ? cases.nom
-              : num % 10 >= 2 && num % 10 <= 4 && (num % 100 < 10 || num % 100 >= 20)
-                ? cases.gen
-                : cases.plu
-          );
-        }
-
-        return word;
-      }
-    },
-
-    // Pass over each available category balance and provide a total. This can be used to
-    // evaluate if a feature script needs to continue based on an update to the budget.
-    availableBalance: (function () {
-      return {
-        presentTotal: 0,
-        cachedTotal: 'init',
-        snapshot() {
-          var totalAvailable = 0;
-
-          // Find and collect the available balances of each category in the budget
-          var availableBalances = $('.budget-table-cell-available').find('span.user-data.currency').map(function () {
-            var availableBalance = $(this).html();
-            return Number(availableBalance.replace(/[^\d.-]/g, ''));
-          });
-
-          // Add each balance together to get the total available sum
-          $.each(availableBalances, function () { totalAvailable += parseFloat(this) || 0; });
-
-          return totalAvailable;
-        }
-      };
-    }()),
-
     /**
      * Short function for obtaining an Ember view.
      *
-     * Variable number of parms is supported. First is the container name, second is the
+     * Variable number of params is supported. First is the container name, second is the
      * view index number. Defaults to 0.
      */
     containerLookup(name, index) {
@@ -90,84 +45,13 @@ ynabToolKit.shared = (function () {
       return this.getEmberView(Ember.keys(this.getEmberViewRegistry())[viewIndex]).container.lookup(containerName);
     },
 
-    // Add formatting method to dates to get YYYY-MM.
-    yyyymm(date) {
-      var yyyy = date.getFullYear().toString();
-      var mm = (date.getMonth() + 1).toString(); // getMonth() is zero-based
-      return yyyy + '-' + (mm[1] ? mm : '0' + mm[0]); // padding
-    },
-
     getEmberView(viewId) {
       var registry = this.getEmberViewRegistry();
       return registry[viewId];
     },
 
-    getEmberViewByContainerKey(containerKey) {
-      var registry = this.getEmberViewRegistry();
-      for (var viewId in registry) {
-        if (registry[viewId].get('_debugContainerKey') === containerKey) {
-          return registry[viewId];
-        }
-      }
-    },
-
     getEmberViewRegistry() {
       return Ember.Component.create().get('_viewRegistry');
-    },
-
-    invokeExternalFeature(featureName) {
-      var self = this;
-      if (ynabToolKit[featureName] && typeof ynabToolKit[featureName].invoke === 'function') {
-        ynabToolKit[featureName].invoke();
-      } else {
-        setTimeout(function () {
-          self.invokeExternalFeature(featureName);
-        }, 250);
-      }
-    },
-
-    showModal(title, message, actionType) {
-      let actions;
-      switch (actionType) {
-        case 'reload':
-          actions = '<button class="button button-primary toolkit-modal-action-reload">Reload</button>';
-          break;
-        case 'close':
-          actions = '<button class="button button-primary toolkit-modal-action-close">Close</button>';
-          break;
-      }
-
-      let $modal = $(`<div class="ynab-u modal-overlay modal-generic modal-error active toolkit-modal">
-                        <div class="modal" style="height: auto">
-                          <div class="modal-header">
-                            ${title}
-                          </div>
-                          <div class="modal-content">
-                            ${message}
-                          </div>
-                          <div class="modal-actions">
-                            ${actions}
-                          </div>
-                        </div>
-                      </div>`);
-
-      $modal.find('.toolkit-modal-action-reload').on('click', () => {
-        return windowReload();
-      });
-
-      $modal.find('.toolkit-modal-action-close').on('click', () => {
-        return $('.layout .toolkit-modal').remove();
-      });
-
-      if (!$('.modal-error').length) {
-        $('.layout').append($modal);
-      }
-    },
-
-    showFeatureErrorModal(featureName) {
-      let title = 'Toolkit for YNAB Error!';
-      let message = `The toolkit is having an issue with the "${featureName}" feature. Please submit an issue <a href='https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/new' target='_blank'>here</a> if there isn't one already.`;
-      this.showModal(title, message, 'close');
     },
 
     showNewReleaseModal() {
@@ -247,32 +131,10 @@ ynabToolKit.shared = (function () {
       return localStorage.removeItem(storageKeyPrefix + key, value);
     },
 
-    // https://github.com/janl/mustache.js/blob/master/mustache.js#L60
-    escapeHtml(htmlString) {
-      let entityMap = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;',
-        '/': '&#x2F;',
-        '`': '&#x60;',
-        '=': '&#x3D;'
-      };
-
-      return String(htmlString).replace(/[&<>"'`=/]/g, function fromEntityMap(s) {
-        return entityMap[s];
-      });
-    },
-
-    getCurrentRoute: function () {
-      let applicationController = this.containerLookup('controller:application');
-      return applicationController.get('currentRouteName');
-    },
-
     monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
     ],
+
     monthsFull: ['January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ]
