@@ -39,8 +39,8 @@ export class SplitKeyboardShortcut extends Feature {
             }
           }
         }).on('keyup', function () {
-          const categoryInputString = new RegExp('^' + $(this).val());
-          if (categoryInputString.test('split') && categoryList.find('li').length === 3) {
+          const categoryInputString = new RegExp('^s(?:p|$)(?:l|$)(?:i|$)(?:t|$)', 'i');
+          if (categoryInputString.test($(this).val()) && categoryList.find('li').length === 3) {
             // highlight new split button if input contains part of
             // 'split' and there are no other categories available
             categoryList.addClass('toolkit-hide-firstchild');
