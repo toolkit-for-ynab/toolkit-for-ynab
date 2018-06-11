@@ -7,6 +7,6 @@ module.exports = {
   description: 'Allows you to hide the edit account button to help prevent accidentally clicking on it.',
   options: [
     { name: 'Default', value: '0' },
-    { name: 'Hidden (right-click to edit)', value: '1' }
+    { name: 'Hidden (right-click to edit)', value: '2' }
   ]
 };
