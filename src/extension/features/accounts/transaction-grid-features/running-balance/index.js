@@ -173,8 +173,7 @@ function calculateRunningBalance(accountId) {
           return Ember.compare(a.getEntityId(), b.getEntityId());
         }
 
-        const sortAscending = localStorage.getItem(`.${accountId}_sortAscending`) || 'true';
-        return sortAscending === 'true' ? res : -res;
+        return -res;
       }
 
       return res;
