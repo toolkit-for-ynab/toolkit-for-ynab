@@ -1,5 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getAllBudgetMonthsViewModel, getCurrentBudgetDate, getCurrentBudgetMonth, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { getAllBudgetMonthsViewModel, getCurrentBudgetDate, getCurrentBudgetMonth, getSelectedMonth, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class CheckCreditBalances extends Feature {
   budgetView = null;
@@ -90,7 +92,7 @@ export class CheckCreditBalances extends Feature {
         let account = _this.budgetView
           .sidebarViewModel.accountCalculationsCollection
           .findItemByAccountId(a.accountId);
-        let currentMonth = moment(ynabToolKit.shared.parseSelectedMonth()).format('YYYY-MM');
+        let currentMonth = getSelectedMonth().format('YYYY-MM');
         let balance = account.clearedBalance + account.unclearedBalance;
         let monthlyBudget = _this.budgetView
           .monthlySubCategoryBudgetCalculationsCollection
@@ -161,7 +163,7 @@ export class CheckCreditBalances extends Feature {
     let inspectorName = $('.inspector-category-name.user-data').text().trim();
 
     if (name && name === inspectorName) {
-      let fDifference = ynabToolKit.shared.formatCurrency(difference);
+      let fDifference = formatCurrency(difference);
       let positive = '';
       if (ynab.unformat(difference) >= 0) {
         positive = '+';
@@ -187,10 +189,10 @@ export class CheckCreditBalances extends Feature {
         .data('name', name)
         .data('difference', difference)
         .empty()
-        .append(((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.checkCreditBalances']) || 'Rectify Difference:'))
+        .append(l10n('toolkit.checkCreditBalances', 'Rectify Difference:'))
         .append(' ' + positive)
         .append($('<strong>', { class: 'user-data', title: fDifference })
-          .append(ynabToolKit.shared.appendFormattedCurrencyHtml($('<span>', { class: 'user-data currency zero' }), difference)));
+          .append($('<span>', { class: 'user-data currency zero' }).text(formatCurrency(difference))));
 
       if (difference !== 0) {
         button.removeAttr('disabled');

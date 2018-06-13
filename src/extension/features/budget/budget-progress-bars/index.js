@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage, getEntityManager, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage, getEntityManager, getSelectedMonth, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
 import { migrateLegacyPacingStorage, pacingForCategory } from 'toolkit/extension/utils/pacing';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
@@ -132,17 +132,12 @@ export class BudgetProgressBars extends Feature {
     let masterCategoryName = '';
 
     if (this.subCats === null || this.subCats.length === 0 || this.loadCategories) {
-      this.subCats = ynabToolKit.shared.getMergedCategories();
+      this.subCats = getMergedCategories();
       this.loadCategories = false;
     }
 
-    this.selMonth = ynabToolKit.shared.parseSelectedMonth();
-
-    // will be null on YNAB load when the user is not on the budget screen
-    if (this.selMonth !== null) {
-      this.selMonth = ynabToolKit.shared.yyyymm(this.selMonth);
-      this.internalIdBase = 'mcbc/' + this.selMonth + '/';
-    }
+    this.selMonth = getSelectedMonth().format('YYYY-MM');
+    this.internalIdBase = 'mcbc/' + this.selMonth + '/';
 
     $(categories).each((index, element) => {
       let nameCell;
@@ -236,4 +231,27 @@ export class BudgetProgressBars extends Feature {
       this.invoke();
     }
   }
+}
+
+
+function getMergedCategories() {
+  const entityManager = getEntityManager();
+  const masterCategories = entityManager.getAllNonTombstonedMasterCategories();
+  const mergedCategories = [];
+
+  masterCategories.forEach((masterCategory) => {
+    // Ignore certain categories!
+    if (masterCategory.isHidden !== true && masterCategory.name !== 'Internal Master Category') {
+      const subCategories = entityManager.getSubCategoriesByMasterCategoryId(masterCategory.getEntityId());
+      subCategories.forEach((subCategory) => {
+        // Ignore certain categories!
+        if (subCategory.isHidden !== true && !subCategory.isTombstone && subCategory.name !== 'Uncategorized Transactions') {
+          subCategory.toolkitName = masterCategory.name + '_' + subCategory.name; // Add toolkit specific attribute
+          mergedCategories.push(subCategory);
+        }
+      });
+    }
+  });
+
+  return mergedCategories;
 }

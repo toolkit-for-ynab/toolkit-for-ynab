@@ -1,7 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage, getBudgetViewModel, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage, getSelectedMonth, getEntityManager } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { l10n } from 'toolkit/extension/utils/toolkit';
+import { l10n, l10nMonth, MonthStyle } from 'toolkit/extension/utils/toolkit';
 
 export class IncomeFromLastMonth extends Feature {
   injectCSS() { return require('./index.css'); }
@@ -11,8 +11,8 @@ export class IncomeFromLastMonth extends Feature {
   invoke() {
     // Do nothing if no header found.
     if ($('.budget-header-totals-details-values').length === 0) return;
-    const matchMonth = getBudgetViewModel().get('month').clone().subtractMonths(this.settings.enabled);
-    const previousMonthName = ynabToolKit.shared.monthsShort[matchMonth.getMonth()];
+    const matchMonth = getSelectedMonth().subtractMonths(this.settings.enabled);
+    const previousMonthName = l10nMonth(matchMonth.getMonth(), MonthStyle.Short);
 
     const total = getEntityManager().getAllTransactions().reduce((reduced, transaction) => {
       if (transaction.getIsSplit()) {
