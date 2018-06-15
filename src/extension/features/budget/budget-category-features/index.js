@@ -16,7 +16,7 @@ export const CategoryAttributes = {
 export class BudgetCategoryFeatures extends Feature {
   shouldCreateGoalContainer = (
     ynabToolKit.options.GoalIndicator ||
-    ynabToolKit.options.DisplayGoalAmount !== DisplayGoalAmountSettings.Off
+    ynabToolKit.options.DisplayTargetGoalAmount !== DisplayGoalAmountSettings.Off
   );
 
   injectCSS() {
