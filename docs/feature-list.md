@@ -18,8 +18,8 @@ Adds a button that can collapse the menu on the left so you can see more of your
 ## Colour Blind Mode
 Changes colours like red, yellow and green in the interface to colours and shapes that are more easily distinguishable by colourblind people.
 
-## Edit Account Button Position
-Allows you to move or hide the edit account button to help prevent accidentally clicking on it.
+## Hide Edit Account Button
+Allows you to hide the edit account button to help prevent accidentally clicking on it.
 
 ## Hide Account Balances
 Allows you to hide account type totals and/or account balances.

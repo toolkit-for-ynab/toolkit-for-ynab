@@ -1,6 +1,7 @@
 import { TransactionGridFeature } from '../feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { isCurrentRouteAccountsPage, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class RunningBalance extends TransactionGridFeature {
   hasInitialized = false;
@@ -98,7 +99,7 @@ export class RunningBalance extends TransactionGridFeature {
         if (transaction.get('parentEntityId') !== null) {
           currencySpan.text('');
         } else {
-          currencySpan.text(ynabToolKit.shared.formatCurrency(runningBalance));
+          currencySpan.text(formatCurrency(runningBalance));
         }
 
         currentRowRunningBalance.insertAfter($('.ynab-grid-cell-inflow', $currentRow));
@@ -136,13 +137,6 @@ function attachAnyItemChangedListener(accountId, transactionViewModel) {
         calculateRunningBalance(updatedAccountId);
       }
     });
-
-  controllerLookup('accounts').addObserver('sortAscending', function (displayItems) {
-    const updatedAccountId = displayItems.get('visibleTransactionDisplayItems.firstObject.accountId');
-    if (updatedAccountId) {
-      calculateRunningBalance(updatedAccountId);
-    }
-  });
 }
 
 function calculateRunningBalance(accountId) {
@@ -151,6 +145,9 @@ function calculateRunningBalance(accountId) {
       attachAnyItemChangedListener(accountId, transactionViewModel);
     }
 
+    // Sort all transactions is ascending order first. If the dates match, sort transactions
+    // in ascending order (outflows are negative when using `.getAmount`). If the dates are
+    // equal, the amounts are always sorted in descending order.
     const transactions = transactionViewModel.get('visibleTransactionDisplayItems');
     const sorted = transactions.slice().sort((a, b) => {
       let propA = a.get('date');
@@ -159,24 +156,17 @@ function calculateRunningBalance(accountId) {
       if (propA instanceof ynab.utilities.DateWithoutTime) propA = propA.getUTCTime();
       if (propB instanceof ynab.utilities.DateWithoutTime) propB = propB.getUTCTime();
 
-      // compare the dates
-      let res = Ember.compare(propA, propB);
-
-      // if the dates are equal
-      if (res === 0) {
-        // compare the amounts
-        res = Ember.compare(a.getAmount(), b.getAmount());
-
-        // if the amounts are equal
-        if (res === 0) {
+      const dateCompare = Ember.compare(propA, propB);
+      if (dateCompare === 0) {
+        const amountCompare = Ember.compare(a.getAmount(), b.getAmount());
+        if (amountCompare === 0) {
           return Ember.compare(a.getEntityId(), b.getEntityId());
         }
 
-        const sortAscending = localStorage.getItem(`.${accountId}_sortAscending`) || 'true';
-        return sortAscending === 'true' ? res : -res;
+        return -amountCompare;
       }
 
-      return res;
+      return dateCompare;
     });
 
     let runningBalance = 0;

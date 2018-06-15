@@ -1,4 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 const Settings = {
   AlwaysOn: '1',
@@ -21,9 +22,9 @@ export class PrivacyMode extends Feature {
   }
 
   invoke() {
-    let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode');
+    let toggle = getToolkitStorageKey('privacy-mode');
     if (typeof toggle === 'undefined') {
-      ynabToolKit.shared.setToolkitStorageKey('privacy-mode', false);
+      setToolkitStorageKey('privacy-mode', false);
     }
 
     if (ynabToolKit.options.PrivacyMode === Settings.Toggle) {
@@ -36,7 +37,7 @@ export class PrivacyMode extends Feature {
         });
       }
     } else if (ynabToolKit.options.PrivacyMode === Settings.AlwaysOn) {
-      ynabToolKit.shared.setToolkitStorageKey('privacy-mode', true);
+      setToolkitStorageKey('privacy-mode', true);
     }
 
     this.updatePrivacyMode();
@@ -45,13 +46,13 @@ export class PrivacyMode extends Feature {
   togglePrivacyMode() {
     $('button#toolkit-togglePrivacy').toggleClass('active');
 
-    let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode');
-    ynabToolKit.shared.setToolkitStorageKey('privacy-mode', !toggle);
+    let toggle = getToolkitStorageKey('privacy-mode');
+    setToolkitStorageKey('privacy-mode', !toggle);
     this.updatePrivacyMode();
   }
 
   updatePrivacyMode() {
-    let toggle = ynabToolKit.shared.getToolkitStorageKey('privacy-mode');
+    let toggle = getToolkitStorageKey('privacy-mode');
 
     if (toggle) {
       $('body').addClass('toolkit-privacyMode');

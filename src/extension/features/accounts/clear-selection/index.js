@@ -9,9 +9,9 @@ export class ClearSelection extends Feature {
       accountsController.set('areAllTransactionsSet', false);
       accountsController.get('areChecked').setEach('isChecked', 0);
       accountsController.send('closeModal');
-    } catch (e) {
+    } catch (exception) {
       accountsController.send('closeModal');
-      ynabToolKit.shared.showFeatureErrorModal('Clear Selection');
+      this.logFeatureError(exception);
     }
   }
 
