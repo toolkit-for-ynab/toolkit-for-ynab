@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getAllBudgetMonthsViewModel, getCurrentBudgetDate, getCurrentBudgetMonth, getSelectedMonth, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { getAllBudgetMonthsViewModel, getCurrentBudgetDate, getSelectedMonth, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
@@ -15,10 +15,6 @@ export class CheckCreditBalances extends Feature {
   }
 
   invoke() {
-    if (this.currentYear === 0 || this.currentMonth === 0) {
-      this.onMonthChanged(getCurrentBudgetMonth());
-    }
-
     if (this.inCurrentMonth()) {
       let debtAccounts = this.getDebtAccounts();
 
