@@ -48,7 +48,8 @@ export function getBudgetViewModel() {
 }
 
 export function getSelectedMonth() {
-  return getBudgetViewModel().get('month').clone();
+  const monthString = controllerLookup('application').get('monthString');
+  return ynab.utilities.DateWithoutTime.createFromString(monthString, 'YYYYMM');
 }
 
 export function getSidebarViewModel() {
