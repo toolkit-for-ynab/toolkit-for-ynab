@@ -1,7 +1,9 @@
-.import-notification {
-  background-color: #227e99;
+.ynabtk-import-notification-underline {
+  text-decoration: none;
+  border-bottom: 1.75px solid white;
 }
 
-.import-notification-red {
-  background-color: #FF0000;
+.ynabtk-import-notification-underline-red {
+  text-decoration: none;
+  border-bottom: 1.75px solid red;
 }
