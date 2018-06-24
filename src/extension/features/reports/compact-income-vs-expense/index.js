@@ -1,11 +1,11 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 export class CompactIncomeVsExpense extends Feature {
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
+    return getCurrentRouteName().includes('reports.income-expense');
   }
 
   invoke() {
