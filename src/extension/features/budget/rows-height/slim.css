@@ -22,7 +22,7 @@
   height: 1.6em !important;
 }
 
-.budget-table-row.is-sub-category > .budget-table-cell-available .positive, .budget-table-row.is-sub-category > .budget-table-cell-available .negative, .budget-table-row.is-sub-category > .budget-table-cell-available .cautious, .budget-table-row.is-sub-category > .budget-table-cell-available .zero {
+.budget-table-row.is-sub-category .ynab-new-budget-available-number {
   top: 0 !important;
   padding: 0em 0.4em !important;
   font-size: 1em !important;
@@ -63,4 +63,8 @@
 
 .toolkit-goalindicator {
   line-height: 1.8em !important;
+}
+
+.budget-table-cell-available {
+  padding: 0 !important;
 }

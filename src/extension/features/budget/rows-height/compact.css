@@ -56,3 +56,7 @@
 .toolkit-goalindicator {
   line-height: 1.8em !important;
 }
+
+.budget-table-cell-available {
+  padding: 0 !important;
+}

@@ -206,7 +206,7 @@ export class BudgetProgressBars extends Feature {
     }
 
     if (changedNodes.has('budget-table-row') ||
-        changedNodes.has('budget-table-cell-available-div user-data') ||
+        changedNodes.has('ynab-new-budget-available-number user-data') ||
         changedNodes.has('budget-table-cell-budgeted') ||
         changedNodes.has('navlink-budget active') ||
         changedNodes.has('budget-inspector')) {
