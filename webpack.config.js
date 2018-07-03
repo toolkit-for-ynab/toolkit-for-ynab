@@ -70,7 +70,8 @@ module.exports = function (env) {
         { from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/background`), to: path.join(__dirname, `${BUILD_PATH}/background`), ignore: '**/*.js' },
         { from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/options`), to: path.join(__dirname, `${BUILD_PATH}/options`), ignore: '**/*.js' },
         { from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/popup`), to: path.join(__dirname, `${BUILD_PATH}/popup`), ignore: '**/*.js' },
-        { from: path.join(__dirname, `${CODE_SOURCE_DIR}/extension/legacy/**/*.css`), to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`), context: 'src/extension' }
+        { from: path.join(__dirname, `${CODE_SOURCE_DIR}/extension/legacy/**/*.css`), to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`), context: 'src/extension' },
+        { from: path.join(__dirname, `${CODE_SOURCE_DIR}/extension/legacy/features/l10n/locales/*.json`), to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`), context: 'src/extension' }
       ])
     ]
   };

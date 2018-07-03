@@ -200,7 +200,7 @@
     ynabToolKit.l10n.budgetHeader();
 
     // Rerender sidebar and content views on page load.
-    var rerenderClasses = ['.content', 'nav'];
+    var rerenderClasses = ['.layout'];
     for (var i = 0; i < rerenderClasses.length; i++) {
       ynabToolKit.shared.getEmberView($(rerenderClasses[i]).attr('id')).rerender();
     }
