@@ -10,7 +10,7 @@
 .budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-overview-available dt {
 	color: #009cc2;
 }
-.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-overview-available dd .cautious {
+.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .ynab-new-budget-available-number {
 	background: #009cc2;
 }
 .budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-message {

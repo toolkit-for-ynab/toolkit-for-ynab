@@ -150,8 +150,10 @@ export class CheckCreditBalances extends Feature {
       let inspectorBalance = $('.inspector-overview-available .user-data .user-data.currency');
       inspectorBalance.removeClass('positive zero');
       if (!inspectorBalance.hasClass('negative')) {
-        $('.inspector-overview-available .user-data .user-data.currency, .inspector-overview-available dt').addClass('cautious toolkit-pif-cautious');
+        $('.inspector-overview-available').addClass('toolkit-pif-cautious');
       }
+    } else {
+      $('.inspector-overview-available').removeClass('toolkit-pif-cautious');
     }
   }
 

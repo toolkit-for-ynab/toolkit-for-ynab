@@ -7,9 +7,9 @@ body .budget-table .budget-table-row.is-sub-category.is-debt-payment-category .b
 }
 
 /* inspector */
-body .budget-inspector .budget-inspector-category-overview .inspector-overview-available.toolkit-row-debt-category dt.toolkit-pif-cautious {
+.inspector-overview-available.toolkit-pif-cautious dt {
   color: #e59100 !important;
 }
-body .budget-inspector .budget-inspector-category-overview .inspector-overview-available.toolkit-row-debt-category dd .toolkit-pif-cautious {
+.inspector-overview-available.toolkit-pif-cautious .ynab-new-budget-available-number {
   background: #e59100 !important;
 }
