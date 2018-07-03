@@ -1,8 +1,8 @@
 /* row */
-.budget-table-row[data-toolkit-goal-underfunded] .budget-table-cell-available .cautious {
+.budget-table-row[data-toolkit-goal-underfunded] .budget-table-cell-available .ynab-new-budget-available-number {
 	background-color: #009cc2;
 }
-.budget-table-row[data-toolkit-goal-underfunded] .budget-table-cell-available .cautious:hover {
+.budget-table-row[data-toolkit-goal-underfunded] .budget-table-cell-available .ynab-new-budget-available-number:hover {
 	background-color: #1f8ca7;
 }
 

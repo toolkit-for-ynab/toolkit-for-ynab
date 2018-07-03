@@ -30,7 +30,7 @@ export class CheckCreditBalances extends Feature {
     if (!this.shouldInvoke()) return;
 
     if (changedNodes.has('navlink-budget active') ||
-        changedNodes.has('budget-table-cell-available-div user-data') ||
+        changedNodes.has('ynab-new-budget-available-number user-data') ||
         changedNodes.has('budget-inspector') ||
         changedNodes.has('budget-table-row is-sub-category is-debt-payment-category is-checked') ||
         changedNodes.has('budget-header-totals-cell-value user-data')) {
@@ -135,10 +135,10 @@ export class CheckCreditBalances extends Feature {
         .match(/.[^\n]*/)[0]; // strip the Note string
 
       if (name === accountName) {
-        let categoryBalance = $(this).find('.budget-table-cell-available-div .user-data.currency');
+        let categoryBalance = $(this).find('.ynab-new-budget-available-number .user-data.currency');
         categoryBalance.removeClass('positive zero');
         if (!categoryBalance.hasClass('negative')) {
-          $(this).find('.budget-table-cell-available-div .user-data.currency').addClass('cautious toolkit-pif-cautious');
+          $(this).find('.ynab-new-budget-available-number').addClass('cautious toolkit-pif-cautious');
         }
       }
     });

@@ -17,26 +17,26 @@
 }
 
 /* ======== Goal-related colours / shapes ======== */
-.toolkit-row-goal.toolkit-row-availablepositive .budget-table-cell-available .cautious, 
+.toolkit-row-goal.toolkit-row-availablepositive .budget-table-cell-available .cautious,
 .toolkit-row-goal.toolkit-row-availablezero .budget-table-cell-available .cautious {
 	background: #1282a0 !important;
 }
-.toolkit-row-goal.toolkit-row-availablepositive .budget-table-cell-available .cautious:hover, 
+.toolkit-row-goal.toolkit-row-availablepositive .budget-table-cell-available .cautious:hover,
 .toolkit-row-goal.toolkit-row-availablezero .budget-table-cell-available .cautious:hover {
 	background: #0e6c85 !important;
 }
 
-.toolkit-row-goal.toolkit-row-availablepositive dd .cautious, 
+.toolkit-row-goal.toolkit-row-availablepositive dd .cautious,
 .toolkit-row-goal.toolkit-row-availablezero dd .cautious {
 	background: #1282a0 !important;
 }
-.toolkit-row-goal.toolkit-row-availablepositive dd .cautious:hover, 
+.toolkit-row-goal.toolkit-row-availablepositive dd .cautious:hover,
 .toolkit-row-goal.toolkit-row-availablezero dd .cautious:hover {
 	background: #0e6c85 !important;
 }
 
 /* ======== Negative colours / shapes ======== */
-ul.is-sub-category > li.budget-table-cell-available > div.budget-table-cell-available-div > span.negative {
+ul.is-sub-category > li.budget-table-cell-available > div.ynab-new-budget-available-number > span.negative {
     border-radius: 0em !important;
     -webkit-border-radius: 0em !important;
     background-color: #d55e00 !important;

@@ -62,9 +62,8 @@ export class BudgetCategoryFeatures extends Feature {
     if (
       changedNodes.has('budget-table-row is-sub-category') ||
       changedNodes.has('budget-inspector') ||
-      changedNodes.has('budget-table-cell-available-div user-data') ||
+      changedNodes.has('budget-header-totals-cell-value user-data') ||
       changedNodes.has('budget-inspector-goals') ||
-      changedNodes.has('budget-table-cell-available') ||
       changedNodes.has('budget-header-item budget-header-calendar toolkit-highlight-current-month')
     ) {
       this.invoke();
