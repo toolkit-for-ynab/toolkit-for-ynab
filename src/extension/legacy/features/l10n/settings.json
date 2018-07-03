@@ -133,181 +133,181 @@
     "actions": {
         "portuguese": [
             "injectScript", 
-            "locales/Portuguese.json", 
+            "locales/Portuguese.js", 
             "injectScript", 
             "main.js"
         ], 
         "czech": [
             "injectScript", 
-            "locales/Czech.json", 
+            "locales/Czech.js", 
             "injectScript", 
             "main.js"
         ], 
         "spanish": [
             "injectScript", 
-            "locales/Spanish.json", 
+            "locales/Spanish.js", 
             "injectScript", 
             "main.js"
         ], 
         "polish": [
             "injectScript", 
-            "locales/Polish.json", 
+            "locales/Polish.js", 
             "injectScript", 
             "main.js"
         ], 
         "arabic": [
             "injectScript", 
-            "locales/Arabic.json", 
+            "locales/Arabic.js", 
             "injectScript", 
             "main.js"
         ], 
         "swedish": [
             "injectScript", 
-            "locales/Swedish.json", 
+            "locales/Swedish.js", 
             "injectScript", 
             "main.js"
         ], 
         "icelandic": [
             "injectScript", 
-            "locales/Icelandic.json", 
+            "locales/Icelandic.js", 
             "injectScript", 
             "main.js"
         ], 
         "turkish": [
             "injectScript", 
-            "locales/Turkish.json", 
+            "locales/Turkish.js", 
             "injectScript", 
             "main.js"
         ], 
         "romanian": [
             "injectScript", 
-            "locales/Romanian.json", 
+            "locales/Romanian.js", 
             "injectScript", 
             "main.js"
         ], 
         "slovenian": [
             "injectScript", 
-            "locales/Slovenian.json", 
+            "locales/Slovenian.js", 
             "injectScript", 
             "main.js"
         ], 
         "german": [
             "injectScript", 
-            "locales/German.json", 
+            "locales/German.js", 
             "injectScript", 
             "main.js"
         ], 
         "dutch": [
             "injectScript", 
-            "locales/Dutch.json", 
+            "locales/Dutch.js", 
             "injectScript", 
             "main.js"
         ], 
         "portuguese, brazilian": [
             "injectScript", 
-            "locales/Portuguese, Brazilian.json", 
+            "locales/Portuguese, Brazilian.js", 
             "injectScript", 
             "main.js"
         ], 
         "danish": [
             "injectScript", 
-            "locales/Danish.json", 
+            "locales/Danish.js", 
             "injectScript", 
             "main.js"
         ], 
         "indonesian": [
             "injectScript", 
-            "locales/Indonesian.json", 
+            "locales/Indonesian.js", 
             "injectScript", 
             "main.js"
         ], 
         "tagalog": [
             "injectScript", 
-            "locales/Tagalog.json", 
+            "locales/Tagalog.js", 
             "injectScript", 
             "main.js"
         ], 
         "hungarian": [
             "injectScript", 
-            "locales/Hungarian.json", 
+            "locales/Hungarian.js", 
             "injectScript", 
             "main.js"
         ], 
         "ukrainian": [
             "injectScript", 
-            "locales/Ukrainian.json", 
+            "locales/Ukrainian.js", 
             "injectScript", 
             "main.js"
         ], 
         "lithuanian": [
             "injectScript", 
-            "locales/Lithuanian.json", 
+            "locales/Lithuanian.js", 
             "injectScript", 
             "main.js"
         ], 
         "french": [
             "injectScript", 
-            "locales/French.json", 
+            "locales/French.js", 
             "injectScript", 
             "main.js"
         ], 
         "norwegian": [
             "injectScript", 
-            "locales/Norwegian.json", 
+            "locales/Norwegian.js", 
             "injectScript", 
             "main.js"
         ], 
         "russian": [
             "injectScript", 
-            "locales/Russian.json", 
+            "locales/Russian.js", 
             "injectScript", 
             "main.js"
         ], 
         "korean": [
             "injectScript", 
-            "locales/Korean.json", 
+            "locales/Korean.js", 
             "injectScript", 
             "main.js"
         ], 
         "finnish": [
             "injectScript", 
-            "locales/Finnish.json", 
+            "locales/Finnish.js", 
             "injectScript", 
             "main.js"
         ], 
         "catalan": [
             "injectScript", 
-            "locales/Catalan.json", 
+            "locales/Catalan.js", 
             "injectScript", 
             "main.js"
         ], 
         "chinese traditional": [
             "injectScript", 
-            "locales/Chinese Traditional.json", 
+            "locales/Chinese Traditional.js", 
             "injectScript", 
             "main.js"
         ], 
         "vietnamese": [
             "injectScript", 
-            "locales/Vietnamese.json", 
+            "locales/Vietnamese.js", 
             "injectScript", 
             "main.js"
         ], 
         "chinese simplified": [
             "injectScript", 
-            "locales/Chinese Simplified.json", 
+            "locales/Chinese Simplified.js", 
             "injectScript", 
             "main.js"
         ], 
         "latvian": [
             "injectScript", 
-            "locales/Latvian.json", 
+            "locales/Latvian.js", 
             "injectScript", 
             "main.js"
         ], 
         "italian": [
             "injectScript", 
-            "locales/Italian.json", 
+            "locales/Italian.js", 
             "injectScript", 
             "main.js"
         ]

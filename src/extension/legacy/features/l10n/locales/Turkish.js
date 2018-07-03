@@ -1,3 +1,4 @@
+/* eslint-disable */
 ynabToolKit.l10nData = {
   "toolkit.selectedTotal": "Seçilen işlemler toplamı",
   "toolkit.balanceToZero": "0,00'a dengele:",

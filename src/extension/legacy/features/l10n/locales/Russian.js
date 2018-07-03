@@ -1,3 +1,4 @@
+/* eslint-disable */
 ynabToolKit.l10nData = {
   "toolkit.selectedTotal": "Общая сумма по выбранным проводкам",
   "toolkit.balanceToZero": "Обнулить доступный остаток:",

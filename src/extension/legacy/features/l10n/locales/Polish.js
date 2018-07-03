@@ -1,3 +1,4 @@
+/* eslint-disable */
 ynabToolKit.l10nData = {
   "toolkit.selectedTotal": "Suma wybranych transakcji",
   "toolkit.balanceToZero": "Rozlicz do 0.00:",

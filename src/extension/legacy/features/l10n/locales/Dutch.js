@@ -1,3 +1,4 @@
+/* eslint-disable */
 ynabToolKit.l10nData = {
   "toolkit.selectedTotal": "Het totaal van de geselecteerde transacties",
   "toolkit.balanceToZero": "Budgetteer tot 0,00:",

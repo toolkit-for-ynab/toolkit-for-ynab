@@ -1,3 +1,4 @@
+/* eslint-disable */
 ynabToolKit.l10nData = {
   "toolkit.selectedTotal": "Valitut tapahtumat yhteensä",
   "toolkit.balanceToZero": "Saldo nollaksi:",

@@ -61,11 +61,17 @@ def unpack(lang_completed):
                 with open(os.path.join(DEST_DIR, name), 'r+') as f:
                     content = f.read()
                     f.seek(0, 0)
-                    f.write('ynabToolKit.l10nData = ' + content)
+                    f.write('/* eslint-disable */\nynabToolKit.l10nData = ' + content)
     for root, dirs, files in os.walk(DEST_DIR):
         for name in dirs:
             shutil.rmtree(os.path.join(root, name))
     os.remove(FILENAME)
+
+def rename():
+    for root, dirs, files in os.walk(DEST_DIR):
+        for name in files:
+            inname = os.path.join(root,name)
+            os.rename(inname, inname[:-5]+'.js')
 
 def create_settings(lang_completed):
     """Generate settings.json file."""
@@ -97,4 +103,5 @@ lang_completed = get_l10ns_stats()
 export_l10ns()
 donwload_l10ns()
 unpack(lang_completed)
+rename()
 create_settings(lang_completed)

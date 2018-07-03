@@ -1,3 +1,4 @@
+/* eslint-disable */
 ynabToolKit.l10nData = {
   "toolkit.selectedTotal": "Vybrané transakce celkem",
   "toolkit.balanceToZero": "Dorovnat na zůstatek 0,00:",

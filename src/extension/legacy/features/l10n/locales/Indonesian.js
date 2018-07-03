@@ -1,3 +1,4 @@
+/* eslint-disable */
 ynabToolKit.l10nData = {
   "toolkit.selectedTotal": "Total Transaksi yang Dipilih",
   "toolkit.balanceToZero": "Keseimbangan untuk 0.00:",
