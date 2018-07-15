@@ -1,14 +1,13 @@
-.nav-accounts .nav-account-row {
-  line-height: normal;
-  padding: 0.025em 0;
+.nav-account-block,
+.nav-account-row {
+  height: 1.5rem !important;
 }
 
-.nav-accounts .nav-account-row .nav-account-value {
-	position: relative;
-	top: -2px;
+.nav-account-value {
+  overflow: unset !important;
 }
 
-.nav-accounts .nav-account-row .negative {
-	position: relative;
-	top: 2px;
+.nav-account-name {
+  display: flex !important;
+  align-items: center;
 }
