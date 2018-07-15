@@ -32,7 +32,7 @@ export function isCurrentRouteAccountsPage() {
 }
 
 export function getCurrentRouteName() {
-  return controllerLookup('application').get('currentRouteName');
+  return controllerLookup('application').get('activeRoute');
 }
 
 export function getCategoriesViewModel() {
