@@ -1,11 +1,10 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getAllBudgetMonthsViewModel, getCurrentBudgetDate, getSelectedMonth, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { getSelectedMonth, getEntityManager, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class CheckCreditBalances extends Feature {
-  budgetView = null;
-
   injectCSS() {
     return require('./index.css');
   }
@@ -15,12 +14,10 @@ export class CheckCreditBalances extends Feature {
   }
 
   invoke() {
-    if (this.inCurrentMonth()) {
-      let debtAccounts = this.getDebtAccounts();
+    const today = new ynab.utilities.DateWithoutTime();
 
-      if (debtAccounts !== null) {
-        this.processDebtAccounts(debtAccounts);
-      }
+    if (today.equalsByMonth(getSelectedMonth())) {
+      this.processDebtAccounts();
     } else {
       $('.toolkit-rectify-difference').remove();
     }
@@ -30,16 +27,11 @@ export class CheckCreditBalances extends Feature {
     if (!this.shouldInvoke()) return;
 
     if (changedNodes.has('navlink-budget active') ||
-        changedNodes.has('ynab-new-budget-available-number user-data') ||
         changedNodes.has('budget-inspector') ||
         changedNodes.has('budget-table-row is-sub-category is-debt-payment-category is-checked') ||
         changedNodes.has('budget-header-totals-cell-value user-data')) {
       this.invoke();
     }
-  }
-
-  onBudgetChanged() {
-    this.budgetView = null;
   }
 
   onRouteChanged() {
@@ -48,52 +40,36 @@ export class CheckCreditBalances extends Feature {
     this.invoke();
   }
 
-  inCurrentMonth() { // check for current month or future month
-    let today = new Date();
-    let budgetDate = getCurrentBudgetDate();
-
-    // check for current month or future month
-    // must subtract 1 from budget month because the Date object is zero based.
-    return budgetDate.month - 1 >= today.getMonth() && budgetDate.year >= today.getYear();
-  }
-
-  getDebtAccounts() {
-    // After using Budget Quick Switch, budgetView needs to be reset to the new budget. The try catch construct is necessary
-    // because this function can be called several times during the budget switch process.
-    if (this.budgetView === null || this.budgetView.categoriesViewModel === null) {
-      try {
-        this.budgetView = getAllBudgetMonthsViewModel();
-      } catch (e) {
-        return null;
-      }
-    }
-
-    let categoryEntityId = this.budgetView
-      .categoriesViewModel.debtPaymentMasterCategory.entityId;
-
-    let debtAccounts = this.budgetView
-      .categoriesViewModel.subCategoriesCollection
-      .findItemsByMasterCategoryId(categoryEntityId);
+  getDebtCategories() {
+    const masterDebtCategoryId = controllerLookup('application').get('categoriesViewModel.debtPaymentMasterCategory.entityId');
+    const debtAccounts = getEntityManager().subCategoriesCollection.filter((c) => {
+      return !c.get('isTombstone') && c.get('masterCategoryId') === masterDebtCategoryId;
+    });
 
     return debtAccounts || [];
   }
 
-  processDebtAccounts(debtAccounts) {
+  processDebtAccounts() {
+    const debtCategories = this.getDebtCategories();
     let foundButton = false;
-    let _this = this;
-    debtAccounts.forEach(function (a) {
-      // Not sure why but sometimes on a reload (F5 or CTRL-R) of YNAB, the accountId field is null which if not handled
-      // throws an error and kills the feature.
-      if (a.accountId !== null) {
-        let account = _this.budgetView
-          .sidebarViewModel.accountCalculationsCollection
-          .findItemByAccountId(a.accountId);
-        let currentMonth = getSelectedMonth().format('YYYY-MM');
-        let balance = account.clearedBalance + account.unclearedBalance;
-        let monthlyBudget = _this.budgetView
-          .monthlySubCategoryBudgetCalculationsCollection
-          .findItemByEntityId('mcbc/' + currentMonth + '/' + a.entityId);
 
+    debtCategories.forEach((debtCategory) => {
+      const { accountCalculationsCollection, monthlySubCategoryBudgetCalculationsCollection } = getEntityManager();
+
+      // Not sure why but sometimes on a reload (F5 or CTRL-R) of YNAB, the accountId field
+      // is null which if not handled throws an error and kills the feature.
+      if (debtCategory.accountId !== null) {
+        const debtCategoryId = debtCategory.get('entityId');
+        const debtAccountId = debtCategory.get('accountId');
+
+        const currentMonth = getSelectedMonth().format('YYYY-MM');
+        const monthlyBudget = monthlySubCategoryBudgetCalculationsCollection.findItemByEntityId(`mcbc/${currentMonth}/${debtCategoryId}`);
+        const calculation = accountCalculationsCollection.find((c) => c.get('accountId') === debtAccountId);
+        if (!calculation) {
+          return;
+        }
+
+        const balance = calculation.clearedBalance + calculation.unclearedBalance;
         let available = 0;
         if (monthlyBudget) {
           available = monthlyBudget.balance;
@@ -101,22 +77,22 @@ export class CheckCreditBalances extends Feature {
 
         // ensure that available is >= zero, otherwise don't update
         if (available >= 0) {
-          // If cleared balance is positive, bring available to 0, otherwise
-          // offset by the correct amount
+          // If cleared balance is positive, bring available to 0, otherwise offset by the correct amount
           let difference = 0;
           if (balance > 0) {
-            difference = (available * -1);
+            difference = -available;
           } else {
-            difference = ((available + balance) * -1);
+            difference = -(available + balance);
           }
 
           if (!foundButton) {
-            foundButton = _this.updateInspectorButton(a.name, difference);
+            foundButton = this.updateInspectorButton(debtCategory.name, difference);
           }
 
           if (balance < 0 && available !== (balance * -1)) {
-            _this.updateRow(a.name);
-            _this.updateInspectorStyle(a.name);
+            this.addWarning(debtCategoryId);
+          } else {
+            this.removeWarning(debtCategoryId);
           }
         }
       }
@@ -127,34 +103,20 @@ export class CheckCreditBalances extends Feature {
     }
   }
 
-  updateRow(name) {
-    let rows = $('.is-sub-category.is-debt-payment-category');
-    rows.each(function () {
-      let accountName = $(this).find('.budget-table-cell-name div.button-truncate')
-        .prop('title')
-        .match(/.[^\n]*/)[0]; // strip the Note string
+  addWarning(debtCategoryId) {
+    const debtRow = document.querySelector(`[data-entity-id="${debtCategoryId}"]`);
+    debtRow.setAttribute('data-toolkit-pif-assist', 'true');
 
-      if (name === accountName) {
-        let categoryBalance = $(this).find('.ynab-new-budget-available-number .user-data.currency');
-        categoryBalance.removeClass('positive zero');
-        if (!categoryBalance.hasClass('negative')) {
-          $(this).find('.ynab-new-budget-available-number').addClass('cautious toolkit-pif-cautious');
-        }
-      }
-    });
+    const inspector = document.querySelector('.budget-inspector');
+    inspector.setAttribute('data-toolkit-pif-assist', 'true');
   }
 
-  updateInspectorStyle(name) {
-    let inspectorName = $('.inspector-category-name.user-data').text().trim();
-    if (name === inspectorName) {
-      let inspectorBalance = $('.inspector-overview-available .user-data .user-data.currency');
-      inspectorBalance.removeClass('positive zero');
-      if (!inspectorBalance.hasClass('negative')) {
-        $('.inspector-overview-available').addClass('toolkit-pif-cautious');
-      }
-    } else {
-      $('.inspector-overview-available').removeClass('toolkit-pif-cautious');
-    }
+  removeWarning(debtCategoryId) {
+    const debtRow = document.querySelector(`[data-entity-id="${debtCategoryId}"]`);
+    debtRow.removeAttribute('data-toolkit-pif-assist');
+
+    const inspector = document.querySelector('.budget-inspector');
+    inspector.removeAttribute('data-toolkit-pif-assist', 'true');
   }
 
   updateInspectorButton(name, difference) {

@@ -1,15 +1,15 @@
 /* row */
-body .budget-table .budget-table-row.is-sub-category.is-debt-payment-category .budget-table-cell-available .toolkit-pif-cautious {
-  background-color: #e59100;
+.budget-table-row.is-sub-category.is-debt-payment-category[data-toolkit-pif-assist] .ynab-new-budget-available-number {
+  background-color: #e59100 !important;
 }
-body .budget-table .budget-table-row.is-sub-category.is-debt-payment-category .budget-table-cell-available .toolkit-pif-cautious:hover {
-  background-color: #c37b00;
+.budget-table-row.is-sub-category.is-debt-payment-category[data-toolkit-pif-assist] .ynab-new-budget-available-number:hover {
+  background-color: #c37b00 !important;
 }
 
 /* inspector */
-.inspector-overview-available.toolkit-pif-cautious dt {
+.budget-inspector[data-toolkit-pif-assist] .inspector-overview-available dt {
   color: #e59100 !important;
 }
-.inspector-overview-available.toolkit-pif-cautious .ynab-new-budget-available-number {
+.budget-inspector[data-toolkit-pif-assist] .ynab-new-budget-available-number {
   background: #e59100 !important;
 }
