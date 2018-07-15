@@ -17,15 +17,23 @@
 	font-weight: normal;
 }
 
-.budget-table-row.is-sub-category.is-checked.goal-progress > .budget-table-cell-available .positive
-{
+.budget-table-row.is-sub-category.is-checked.goal-progress > .budget-table-cell-available .positive {
 	color: #16a336;
 	font-weight: bold;
 }
 
-.budget-table-row.is-sub-category.is-checked > .budget-table-cell-available .positive,
-.budget-table-row.is-sub-category.is-checked > .budget-table-cell-available .zero {
+.budget-table-row.is-sub-category.is-checked > .budget-table-cell-available .positive span,
+.budget-table-row.is-sub-category.is-checked > .budget-table-cell-available .zero span {
 	color: #fff;
 }
 
-
+/* play well with check-credit-balances feature */
+.budget-table-row.is-sub-category.is-debt-payment-category[data-toolkit-pif-assist] .ynab-new-budget-available-number {
+  color: #fff !important;
+}
+.budget-table-row.is-sub-category.is-debt-payment-category[data-toolkit-pif-assist] .ynab-new-budget-available-number:hover {
+  color: #fff !important;
+}
+.budget-inspector[data-toolkit-pif-assist] .ynab-new-budget-available-number {
+  color: #fff !important;
+}
