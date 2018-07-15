@@ -26,10 +26,13 @@ export class CheckCreditBalances extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (changedNodes.has('navlink-budget active') ||
-        changedNodes.has('budget-inspector') ||
-        changedNodes.has('budget-table-row is-sub-category is-debt-payment-category is-checked') ||
-        changedNodes.has('budget-header-totals-cell-value user-data')) {
+    if (
+      changedNodes.has('budget-number user-data') ||
+      changedNodes.has('navlink-budget active') ||
+      changedNodes.has('budget-inspector') ||
+      changedNodes.has('budget-table-row is-sub-category is-debt-payment-category is-checked') ||
+      changedNodes.has('budget-header-totals-cell-value user-data')
+    ) {
       this.invoke();
     }
   }
