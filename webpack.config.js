@@ -33,12 +33,13 @@ module.exports = function (env) {
       alias: {
         toolkit: path.resolve(__dirname, CODE_SOURCE_DIR)
       },
+      extensions: ['.js', '.jsx'],
       modules: ['node_modules']
     },
 
     module: {
       rules: [{
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         include: [
           path.resolve(__dirname, CODE_SOURCE_DIR)
@@ -52,6 +53,9 @@ module.exports = function (env) {
           path.resolve(__dirname, CODE_SOURCE_DIR)
         ],
         use: ['to-string-loader', 'css-loader']
+      }, {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
       }]
     },
 

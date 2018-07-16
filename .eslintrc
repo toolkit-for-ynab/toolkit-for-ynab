@@ -5,11 +5,19 @@
         "jest/globals": true
     },
     "parser": "babel-eslint",
-    "plugins": ["import", "jest"],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "plugins": ["import", "jest", "react"],
     "settings": {
       "import/resolver": "webpack"
     },
-    "extends": "airbnb-base/legacy",
+    "extends": [
+        "airbnb-base/legacy",
+        "plugin:react/recommended"
+    ],
     "globals": {
         "$": true,
         "Chart": true,
@@ -51,6 +59,8 @@
         "no-mixed-operators": "off",
         "no-plusplus": "off",
         "class-methods-use-this": "off",
-        "object-curly-newline": "off"
+        "object-curly-newline": "off",
+        "react/jsx-uses-react": "error",
+        "react/jsx-uses-vars": "error"
     }
 }
