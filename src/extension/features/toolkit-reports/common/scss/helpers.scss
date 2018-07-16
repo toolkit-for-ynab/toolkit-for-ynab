@@ -1,0 +1,77 @@
+/* space fillers */
+.tk-full-height { height: 100%; }
+.tk-full-width { width: 100%; }
+
+/* flexbox helpers */
+.tk-flex { display: flex; }
+.tk-flex-row { flex-direction: row; }
+.tk-flex-column { flex-direction: column; }
+
+.tk-flex-grow-1 { flex-grow: 1; }
+
+.tk-justify-content-center { justify-content: center; }
+.tk-justify-content-between { justify-content: space-between; }
+.tk-justify-content-around { justify-content: space-around; }
+
+.tk-align-items-center { align-items: center; }
+
+.tk-align-self-start { align-self: flex-start; }
+.tk-align-self-end { align-self: flex-end; }
+
+/* padding helpers */
+.tk-pd-05 { padding: 0.5em; }
+.tk-pd-1 { padding: 1em; }
+.tk-pd-2 { padding: 2em; }
+
+.tk-pd-l-05 { padding-left: 0.5em; }
+.tk-pd-l-1 { padding-left: 1em; }
+.tk-pd-l-2 { padding-left: 2em; }
+
+.tk-pd-r-05 { padding-right: 0.5em; }
+.tk-pd-r-1 { padding-right: 1em; }
+.tk-pd-r-2 { padding-right: 2em; }
+
+.tk-pd-t-05 { padding-top: 0.5em; }
+.tk-pd-t-1 { padding-top: 1em; }
+.tk-pd-t-2 { padding-top: 2em; }
+
+.tk-pd-b-05 { padding-bottom: 0.5em; }
+.tk-pd-b-1 { padding-bottom: 1em; }
+.tk-pd-b-2 { padding-bottom: 2em; }
+
+.tk-pd-x-05 { padding-left: 0.5em; padding-right: 0.5em; }
+.tk-pd-x-1 { padding-left: 1em; padding-right: 1em; }
+.tk-pd-x-2 { padding-left: 2em; padding-right: 2em; }
+
+.tk-pd-y-05 { padding-top: 0.5em; padding-bottom: 0.5em; }
+.tk-pd-y-1 { padding-top: 1em; padding-bottom: 1em; }
+.tk-pd-y-2 { padding-top: 2em; padding-bottom: 2em; }
+
+/* padding helpers */
+.tk-mg-05 { margin: 0.5em; }
+.tk-mg-1 { margin: 1em; }
+.tk-mg-2 { margin: 2em; }
+
+.tk-mg-l-05 { margin-left: 0.5em; }
+.tk-mg-l-1 { margin-left: 1em; }
+.tk-mg-l-2 { margin-left: 2em; }
+
+.tk-mg-r-05 { margin-right: 0.5em; }
+.tk-mg-r-1 { margin-right: 1em; }
+.tk-mg-r-2 { margin-right: 2em; }
+
+.tk-mg-t-05 { margin-top: 0.5em; }
+.tk-mg-t-1 { margin-top: 1em; }
+.tk-mg-t-2 { margin-top: 2em; }
+
+.tk-mg-b-05 { margin-bottom: 0.5em; }
+.tk-mg-b-1 { margin-bottom: 1em; }
+.tk-mg-b-2 { margin-bottom: 2em; }
+
+.tk-mg-x-05 { margin-left: 0.5em; margin-right: 0.5em; }
+.tk-mg-x-1 { margin-left: 1em; margin-right: 1em; }
+.tk-mg-x-2 { margin-left: 2em; margin-right: 2em; }
+
+.tk-mg-y-05 { margin-top: 0.5em; margin-bottom: 0.5em; }
+.tk-mg-y-1 { margin-top: 1em; margin-bottom: 1em; }
+.tk-mg-y-2 { margin-top: 2em; margin-bottom: 2em; }
