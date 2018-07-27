@@ -103,15 +103,21 @@ export class AutoDistributeSplits extends Feature {
         'are you sure you want to subtract from them?');
   }
 
-  getUpdatedSubValues(subValues, total, remaining) {
-    return subValues.map(this.proportionalValue(total, remaining));
-  }
-
-  proportionalValue(total, remaining) {
-    return value => {
-      const proportionalValue = value + value / (total - remaining) * remaining;
-      return Math.round(proportionalValue * 100) / 100;
-    };
+  getUpdatedSubValues(subValues, total, originalRemainingAmount) {
+    const subTotal = total - originalRemainingAmount;
+    let remainingAmountToDistribute = originalRemainingAmount;
+    return subValues.map((subValue, i) => {
+      let proportionOfRemaining = (subValue / subTotal) * originalRemainingAmount;
+      proportionOfRemaining = Math.round(proportionOfRemaining * 100) / 100;
+      const isLastSubValue = (i + 1) === subValues.length;
+      const amountToAdd = (isLastSubValue &&
+        (proportionOfRemaining === 0 ||
+          proportionOfRemaining > remainingAmountToDistribute))
+        ? remainingAmountToDistribute
+        : proportionOfRemaining;
+      remainingAmountToDistribute -= amountToAdd;
+      return Math.round((subValue + amountToAdd) * 100) / 100;
+    });
   }
 
   adjustValues(subCells, newSubValues) {
