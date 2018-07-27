@@ -72,10 +72,8 @@ export class AutoDistributeSplits extends Feature {
       return;
     }
 
-    this.adjustValues(
-      subCells,
-      subValues.map(this.proportionalValue(total, remaining))
-    );
+    const newSubValues = this.getUpdatedSubValues(subValues, total, remaining);
+    this.adjustValues(subCells, newSubValues);
   }
 
   getCellsAndValues() {
@@ -105,14 +103,21 @@ export class AutoDistributeSplits extends Feature {
         'are you sure you want to subtract from them?');
   }
 
+  getUpdatedSubValues(subValues, total, remaining) {
+    return subValues.map(this.proportionalValue(total, remaining));
+  }
+
   proportionalValue(total, remaining) {
-    return value => value + value / (total - remaining) * remaining;
+    return value => {
+      const proportionalValue = value + value / (total - remaining) * remaining;
+      return Math.round(proportionalValue * 100) / 100;
+    };
   }
 
   adjustValues(subCells, newSubValues) {
     subCells.forEach((cell, i) => {
       $(cell).val(actualNumber(newSubValues[i])
-        ? (Math.round(newSubValues[i] * 100) / 100).toFixed(2)
+        ? newSubValues[i].toFixed(2)
         : '');
       $(cell).trigger('change');
     });
