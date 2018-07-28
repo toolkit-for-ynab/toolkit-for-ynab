@@ -45,7 +45,7 @@ export class CheckCreditBalances extends Feature {
 
   getDebtCategories() {
     const masterDebtCategoryId = controllerLookup('application').get('categoriesViewModel.debtPaymentMasterCategory.entityId');
-    const debtAccounts = getEntityManager().subCategoriesCollection.filter((c) => {
+    const debtAccounts = getEntityManager().getAllSubCategories().filter((c) => {
       return !c.get('isTombstone') && c.get('masterCategoryId') === masterDebtCategoryId;
     });
 
@@ -107,19 +107,27 @@ export class CheckCreditBalances extends Feature {
   }
 
   addWarning(debtCategoryId) {
-    const debtRow = document.querySelector(`[data-entity-id="${debtCategoryId}"]`);
-    debtRow.setAttribute('data-toolkit-pif-assist', 'true');
+    const debtRowElement = document.querySelector(`[data-entity-id="${debtCategoryId}"]`);
+    if (debtRowElement) {
+      debtRowElement.setAttribute('data-toolkit-pif-assist', 'true');
+    }
 
-    const inspector = document.querySelector('.budget-inspector');
-    inspector.setAttribute('data-toolkit-pif-assist', 'true');
+    const inspectorElement = document.querySelector('.budget-inspector');
+    if (inspectorElement) {
+      inspectorElement.setAttribute('data-toolkit-pif-assist', 'true');
+    }
   }
 
   removeWarning(debtCategoryId) {
-    const debtRow = document.querySelector(`[data-entity-id="${debtCategoryId}"]`);
-    debtRow.removeAttribute('data-toolkit-pif-assist');
+    const debtRowElement = document.querySelector(`[data-entity-id="${debtCategoryId}"]`);
+    if (debtRowElement) {
+      debtRowElement.removeAttribute('data-toolkit-pif-assist');
+    }
 
-    const inspector = document.querySelector('.budget-inspector');
-    inspector.removeAttribute('data-toolkit-pif-assist', 'true');
+    const inspectorElement = document.querySelector('.budget-inspector');
+    if (inspectorElement) {
+      inspectorElement.removeAttribute('data-toolkit-pif-assist', 'true');
+    }
   }
 
   updateInspectorButton(name, difference) {

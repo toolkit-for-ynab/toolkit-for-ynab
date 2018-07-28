@@ -1,8 +1,9 @@
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage, getSidebarViewModel } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { Collections } from 'toolkit/extension/utils/collections';
 
 export class DaysOfBuffering extends Feature {
   _lookbackMonths = parseInt(ynabToolKit.options.DaysOfBufferingHistoryLookup);
@@ -16,7 +17,15 @@ export class DaysOfBuffering extends Feature {
 
   invoke() {
     const eligibleTransactions = getEntityManager().getAllTransactions().filter(this._eligibleTransactionFilter);
-    const onBudgetBalance = getSidebarViewModel().getOnBudgetAccountsBalance();
+    const onBudgetBalance = Collections.accountsCollection.getOnBudgetAccounts().reduce((reduced, current) => {
+      const calculation = current.getAccountCalculation();
+      if (calculation && !calculation.getAccountIsTombstone()) {
+        reduced += calculation.getBalance();
+      }
+
+      return reduced;
+    }, 0);
+
     const calculation = this._calculateDaysOfBuffering(onBudgetBalance, eligibleTransactions);
     this._updateDisplay(calculation);
   }

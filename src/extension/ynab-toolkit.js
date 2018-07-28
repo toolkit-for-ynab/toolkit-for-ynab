@@ -2,6 +2,7 @@ import 'babel-polyfill';
 import { features } from 'toolkit/extension/features';
 import * as ynabUtils from 'toolkit/extension/utils/ynab';
 import * as emberUtils from 'toolkit/extension/utils/ember';
+import * as Collections from 'toolkit/extension/utils/collections';
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
 import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
@@ -10,7 +11,8 @@ export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
 window.__toolkitUtils = {
   ...ynabUtils,
-  ...emberUtils
+  ...emberUtils,
+  ...Collections
 };
 
 export class YNABToolkit {
