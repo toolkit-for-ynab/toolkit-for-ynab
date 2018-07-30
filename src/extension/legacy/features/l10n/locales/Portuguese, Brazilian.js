@@ -929,7 +929,7 @@ ynabToolKit.l10nData = {
   "aria.checkAllPayees": "Verificar todas as entidades",
   "aria.checkThisTransaction": "Verificar essa transação",
   "aria.selectName": "Selecionar {{name}}",
-  "loading.YNAB": "Loading YNAB",
+  "loading.YNAB": "Carregando YNAB",
   "error.disagreeTerms": "You must agree to the Terms of Service and Privacy Policy to create your account.",
   "modal.payees.emptySavedPayees": "Comece a digitar para adicionar uma entidade.",
   "modal.payees.oneMatchingPayeeIsHidden": "1 matching payee is hidden",
