@@ -45,8 +45,10 @@ export class BudgetCategoryFeatures extends Feature {
     const activeCategory = controllerLookup('budget').get('activeCategory');
     if (activeCategory) {
       const inspectorElement = document.getElementsByClassName('budget-inspector')[0];
-      const attributes = getCategoryAttributes(activeCategory);
-      applyCategoryAttributes(inspectorElement, attributes);
+      if (inspectorElement) {
+        const attributes = getCategoryAttributes(activeCategory);
+        applyCategoryAttributes(inspectorElement, attributes);
+      }
     }
 
     ynabToolKit.invokeFeature('DisplayTargetGoalAmount');
@@ -116,9 +118,9 @@ function getCategoryAttributes(category) {
 function applyCategoryAttributes(element, attributes) {
   Object.keys(attributes).forEach((key) => {
     if (typeof attributes[key] === 'boolean' && attributes[key] === false) {
-      element.removeAttribute(`data-${key}`);
+      $(element).removeAttribute(`data-${key}`);
     } else {
-      element.setAttribute(`data-${key}`, attributes[key]);
+      $(element).setAttribute(`data-${key}`, attributes[key]);
     }
   });
 }

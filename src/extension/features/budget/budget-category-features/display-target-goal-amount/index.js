@@ -11,9 +11,9 @@ export const Settings = {
   NoEmphasis: '3'
 };
 
-const EmphasisColor = {
-  [Settings.WarnBudgetOverTarget]: '#ff4545',
-  [Settings.GreenBudgetOverTarget]: '#00b300'
+const EmphasisClass = {
+  [Settings.WarnBudgetOverTarget]: 'toolkit-display-goal-warn',
+  [Settings.GreenBudgetOverTarget]: 'toolkit-display-goal-highlight'
 };
 
 export class DisplayTargetGoalAmount extends Feature {
@@ -78,7 +78,7 @@ export class DisplayTargetGoalAmount extends Feature {
         $(goalAmountElement).text(formatCurrency(goalAmount));
 
         if (applyEmphasis) {
-          $(goalAmountElement).css({ color: EmphasisColor[this.settings.enabled] });
+          $(goalAmountElement).addClass(EmphasisClass[this.settings.enabled]);
         }
       } else if (goalAmount !== null) {
         $(`.${GOAL_TABLE_CELL_CLASSNAME}`, element).prepend($('<div>', {
@@ -87,9 +87,9 @@ export class DisplayTargetGoalAmount extends Feature {
         }));
 
         if (applyEmphasis) {
-          $('.toolkit-target-goal-amount', element).css({
-            color: EmphasisColor[this.settings.enabled]
-          });
+          $(goalAmountElement).addClass(EmphasisClass[this.settings.enabled]);
+        } else {
+          $(goalAmountElement).removeClass(EmphasisClass[this.settings.enabled]);
         }
       }
     });
