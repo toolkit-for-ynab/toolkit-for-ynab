@@ -118,9 +118,9 @@ function getCategoryAttributes(category) {
 function applyCategoryAttributes(element, attributes) {
   Object.keys(attributes).forEach((key) => {
     if (typeof attributes[key] === 'boolean' && attributes[key] === false) {
-      $(element).removeAttribute(`data-${key}`);
+      element.removeAttribute(`data-${key}`);
     } else {
-      $(element).setAttribute(`data-${key}`, attributes[key]);
+      element.setAttribute(`data-${key}`, attributes[key]);
     }
   });
 }
