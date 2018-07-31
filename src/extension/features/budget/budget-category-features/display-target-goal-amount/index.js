@@ -17,6 +17,8 @@ const EmphasisClass = {
 };
 
 export class DisplayTargetGoalAmount extends Feature {
+  injectCSS() { return require('./index.css'); }
+
   shouldInvoke() { return isCurrentRouteBudgetPage(); }
 
   invoke() {
