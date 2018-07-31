@@ -77,9 +77,13 @@ export class ToggleTransactionFilters extends Feature {
 
   initToggleButtons() {
     // get internal filters
-    let container = controllerLookup('accounts');
-    let settingReconciled = container.filters.get('reconciled');
-    let settingScheduled = container.filters.get('scheduled');
+    const controller = controllerLookup('accounts');
+    if (!controller) {
+      return;
+    }
+
+    const settingReconciled = controller.filters.get('reconciled');
+    const settingScheduled = controller.filters.get('scheduled');
 
     // insert or edit buttons
     if (!$('#toolkit-toggleReconciled').length) {
