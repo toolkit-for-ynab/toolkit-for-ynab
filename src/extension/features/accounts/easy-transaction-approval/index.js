@@ -49,8 +49,12 @@ export class EasyTransactionApproval extends Feature {
   invoke() {
     // get selected transactions
     this.selectedTransactions = undefined;
-    var accountController = controllerLookup('accounts');
-    var visibleTransactionDisplayItems = accountController.get('visibleTransactionDisplayItems');
+    const accountController = controllerLookup('accounts');
+    if (!accountController) {
+      return;
+    }
+
+    const visibleTransactionDisplayItems = accountController.get('visibleTransactionDisplayItems');
     this.selectedTransactions = visibleTransactionDisplayItems.filter(i => i.isChecked && i.get('accepted') === false);
 
     // only watch for keydown if there are selected, unaccepted transactions
