@@ -73,7 +73,7 @@ export class DisplayTargetGoalAmount extends Feature {
 
       const goalAmountElement = element.querySelector('.toolkit-target-goal-amount');
       if (goalAmountElement) {
-        if (!goalAmount) {
+        if (goalAmount === null) {
           goalAmountElement.remove();
         }
 
@@ -81,18 +81,14 @@ export class DisplayTargetGoalAmount extends Feature {
 
         if (applyEmphasis) {
           $(goalAmountElement).addClass(EmphasisClass[this.settings.enabled]);
-        }
-      } else if (goalAmount !== null) {
-        $(`.${GOAL_TABLE_CELL_CLASSNAME}`, element).prepend($('<div>', {
-          class: 'toolkit-target-goal-amount currency',
-          text: formatCurrency(goalAmount)
-        }));
-
-        if (applyEmphasis) {
-          $(goalAmountElement).addClass(EmphasisClass[this.settings.enabled]);
         } else {
           $(goalAmountElement).removeClass(EmphasisClass[this.settings.enabled]);
         }
+      } else if (goalAmount !== null) {
+        $(`.${GOAL_TABLE_CELL_CLASSNAME}`, element).prepend($('<div>', {
+          class: `toolkit-target-goal-amount currency ${applyEmphasis ? EmphasisClass[this.settings.enabled] : ''}`,
+          text: formatCurrency(goalAmount)
+        }));
       }
     });
   }
