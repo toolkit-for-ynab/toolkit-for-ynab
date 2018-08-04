@@ -3,14 +3,16 @@ export function formatCurrency(value) {
   const userCurrency = currencyFormatter.getCurrency();
 
   let formattedCurrency = currencyFormatter.format(value).toString();
-  if (userCurrency.symbol_first) {
-    if (formattedCurrency.charAt(0) === '-') {
-      formattedCurrency = `-${userCurrency.currency_symbol}${formattedCurrency.slice(1)}`;
+  if (userCurrency.display_symbol) {
+    if (userCurrency.symbol_first) {
+      if (formattedCurrency.charAt(0) === '-') {
+        formattedCurrency = `-${userCurrency.currency_symbol}${formattedCurrency.slice(1)}`;
+      } else {
+        formattedCurrency = `${userCurrency.currency_symbol}${formattedCurrency}`;
+      }
     } else {
-      formattedCurrency = `${userCurrency.currency_symbol}${formattedCurrency}`;
+      formattedCurrency = `${formattedCurrency}${userCurrency.currency_symbol}`;
     }
-  } else {
-    formattedCurrency = `${formattedCurrency}${userCurrency.currency_symbol}`;
   }
 
   return formattedCurrency;
