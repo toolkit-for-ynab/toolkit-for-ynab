@@ -48,17 +48,19 @@ export class EasyTransactionApproval extends Feature {
 
   invoke() {
     // get selected transactions
-    this.selectedTransactions = undefined;
+    this.selectedTransactions = null;
     const accountController = controllerLookup('accounts');
     if (!accountController) {
       return;
     }
 
     const visibleTransactionDisplayItems = accountController.get('visibleTransactionDisplayItems');
-    this.selectedTransactions = visibleTransactionDisplayItems.filter(i => i.isChecked && i.get('accepted') === false);
+    if (visibleTransactionDisplayItems) {
+      this.selectedTransactions = visibleTransactionDisplayItems.filter(i => i.isChecked && i.get('accepted') === false);
+    }
 
     // only watch for keydown if there are selected, unaccepted transactions
-    if (this.selectedTransactions.length > 0) {
+    if (this.selectedTransactions && this.selectedTransactions.length > 0) {
       this.watchForKeys = true;
     }
 
