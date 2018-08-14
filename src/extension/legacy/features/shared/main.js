@@ -38,20 +38,24 @@ ynabToolKit.shared = (function () {
      * Variable number of params is supported. First is the container name, second is the
      * view index number. Defaults to 0.
      */
-    containerLookup(name, index) {
-      var containerName = name;
-      var viewIndex = (typeof index !== 'undefined') ? index : 0;
+    containerLookup(containerName) {
+      let container;
+      try {
+        container = __ynabapp__.__container__.lookup(containerName);
+      } catch (e) {
+        container = __ynabapp__.__container__.factoryCache[containerName];
+      }
 
-      return this.getEmberView(Ember.keys(this.getEmberViewRegistry())[viewIndex]).container.lookup(containerName);
+      return container;
     },
 
     getEmberView(viewId) {
-      var registry = this.getEmberViewRegistry();
+      const registry = this.getEmberViewRegistry();
       return registry[viewId];
     },
 
     getEmberViewRegistry() {
-      return Ember.Component.create().get('_viewRegistry');
+      return __ynabapp__.__container__.lookup('-view-registry:main');
     },
 
     showNewReleaseModal() {
@@ -146,7 +150,6 @@ ynabToolKit.shared = (function () {
 (function poll() {
   function isYNABReady() {
     return (
-      typeof Em !== 'undefined' &&
       typeof Ember !== 'undefined' &&
       typeof $ !== 'undefined' &&
       !$('.ember-view.is-loading').length &&
