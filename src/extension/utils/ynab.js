@@ -69,7 +69,6 @@ export function isCurrentMonthSelected() {
 
 export function isYNABReady() {
   return (
-    typeof Em !== 'undefined' &&
     typeof Ember !== 'undefined' &&
     typeof $ !== 'undefined' &&
     !$('.ember-view.is-loading').length &&
