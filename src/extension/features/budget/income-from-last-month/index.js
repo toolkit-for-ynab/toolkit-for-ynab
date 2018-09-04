@@ -38,9 +38,9 @@ export class IncomeFromLastMonth extends Feature {
       $('.budget-header-totals-details-values')
         .prepend($('<div>', {
           class: 'budget-header-totals-cell-value toolkit-income-from-last-month user-data'
-        }).append('<span>', {
+        }).append($('<span>', {
           class: 'user-data currency positive'
-        }));
+        })));
 
       $('.budget-header-totals-details-names')
         .prepend($('<div>', {
