@@ -9,7 +9,10 @@ export class RemoveZeroCategories extends Feature {
   invoke() {
     let coverOverbudgetingCategories = $('.modal-budget-overspending .dropdown-list > li');
     coverOverbudgetingCategories.each(function () {
-      let t = $(this).find('.category-available').text(); // Category balance text.
+      let t = $(this).find('.category-available').attr('title'); // Category balance text.
+      if (t == null) {
+        return;
+      }
       let categoryBalance = parseInt(t.replace(/[^\d-]/g, ''));
       if (categoryBalance <= 0) {
         $(this).remove();
