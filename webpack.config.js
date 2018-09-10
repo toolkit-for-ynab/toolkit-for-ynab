@@ -31,7 +31,8 @@ module.exports = function (env) {
 
     resolve: {
       alias: {
-        toolkit: path.resolve(__dirname, CODE_SOURCE_DIR)
+        toolkit: path.resolve(__dirname, CODE_SOURCE_DIR),
+        'toolkit-reports': path.resolve(__dirname, path.join(CODE_SOURCE_DIR, 'extension', 'features', 'toolkit-reports'))
       },
       extensions: ['.js', '.jsx'],
       modules: ['node_modules']

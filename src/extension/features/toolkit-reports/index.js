@@ -9,7 +9,12 @@ export class ReactReports extends Feature {
 
   invoke() {
     if (!document.getElementById('toolkit-reports')) {
-      $('.ynab-u.content').append($('<div id="toolkit-reports"></div>'));
+      $('.ynab-u.content').append($('<div>', {
+        id: 'toolkit-reports',
+        css: {
+          height: '100%'
+        }
+      }));
     }
 
     if (!$('.toolkit-react-reports-link').length) {
