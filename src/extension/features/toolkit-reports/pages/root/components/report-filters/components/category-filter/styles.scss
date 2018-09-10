@@ -1,0 +1,8 @@
+.tk-category-filter {
+  min-width: 20rem;
+
+  &__category-list {
+    max-height: 20rem;
+    overflow: scroll;
+  }
+}
