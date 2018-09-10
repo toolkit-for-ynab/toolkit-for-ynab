@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { l10n } from 'toolkit/extension/utils/toolkit';
 import { localizedMonthAndYear, sortByTransactionDate } from 'toolkit/extension/utils/date';
-import { Legend } from './components/legend';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
+import { Legend } from './components/legend';
 
 export class NetWorthComponent extends React.Component {
   static propTypes = {
@@ -15,25 +15,27 @@ export class NetWorthComponent extends React.Component {
   state = {}
 
   componentDidMount() {
-    this._renderReport();
+    this._calculateData();
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.visibleTransactions !== prevProps.visibleTransactions) {
-      this._renderReport();
+    if (this.props.filters !== prevProps.filters) {
+      this._calculateData();
     }
   }
 
   render() {
     return (
       <div className="tk-flex tk-flex-column tk-flex-grow-1">
-        {this.state.hoveredData && (
-          <Legend
-            assets={this.state.hoveredData.assets}
-            debts={this.state.hoveredData.debts}
-            netWorth={this.state.hoveredData.netWorth}
-          />
-        )}
+        <div className="tk-flex tk-justify-content-end">
+          {this.state.hoveredData && (
+            <Legend
+              assets={this.state.hoveredData.assets}
+              debts={this.state.hoveredData.debts}
+              netWorth={this.state.hoveredData.netWorth}
+            />
+          )}
+        </div>
         <div className="tk-flex-grow-1" id="tk-net-worth-chart" />
       </div>
     );
@@ -41,7 +43,7 @@ export class NetWorthComponent extends React.Component {
 
   _renderReport() {
     const _this = this;
-    const { labels, debts, assets, netWorths } = this._calculateData();
+    const { labels, debts, assets, netWorths } = this.state.reportData;
 
     const pointHover = {
       events: {
@@ -103,21 +105,16 @@ export class NetWorthComponent extends React.Component {
       ]
     });
 
-    this.setState({
-      chart,
-      hoveredData: {
-        assets: assets[assets.length - 1] || 0,
-        debts: debts[debts.length - 1] || 0,
-        netWorth: netWorths[netWorths.length - 1] || 0
-      }
-    });
+    this.setState({ chart });
   }
 
-  _renderLegend() {}
-
   _calculateData() {
+    if (!this.props.filters) {
+      return;
+    }
+
     const accounts = new Map();
-    const reportData = { assets: [], labels: [], debts: [], netWorths: [] };
+    const allReportData = { assets: [], labels: [], debts: [], netWorths: [] };
     const transactions = this.props.visibleTransactions.slice().sort(sortByTransactionDate);
 
     let lastMonth = null;
@@ -132,10 +129,10 @@ export class NetWorthComponent extends React.Component {
         }
       });
 
-      reportData.assets.push(assets);
-      reportData.debts.push(debts);
-      reportData.netWorths.push(assets - debts);
-      reportData.labels.push(localizedMonthAndYear(lastMonth));
+      allReportData.assets.push(assets);
+      allReportData.debts.push(debts);
+      allReportData.netWorths.push(assets - debts);
+      allReportData.labels.push(localizedMonthAndYear(lastMonth));
     }
 
     transactions.forEach((transaction) => {
@@ -159,7 +156,7 @@ export class NetWorthComponent extends React.Component {
       }
     });
 
-    if (lastMonth && reportData.labels[reportData.labels.length - 1] !== localizedMonthAndYear(lastMonth)) {
+    if (lastMonth && allReportData.labels[allReportData.labels.length - 1] !== localizedMonthAndYear(lastMonth)) {
       pushCurrentAccountData();
     }
 
@@ -169,8 +166,8 @@ export class NetWorthComponent extends React.Component {
       const transactionMonth = transactions[0].get('date').clone().startOfMonth();
       const lastTransactionMonth = transactions[transactions.length - 1].get('date').clone().startOfMonth();
       while (transactionMonth.isBefore(lastTransactionMonth)) {
-        if (!reportData.labels.includes(localizedMonthAndYear(transactionMonth))) {
-          const { assets, debts, netWorths, labels } = reportData;
+        if (!allReportData.labels.includes(localizedMonthAndYear(transactionMonth))) {
+          const { assets, debts, netWorths, labels } = allReportData;
           labels.splice(currentIndex, 0, localizedMonthAndYear(transactionMonth));
           assets.splice(currentIndex, 0, assets[currentIndex - 1] || 0);
           debts.splice(currentIndex, 0, debts[currentIndex - 1] || 0);
@@ -182,6 +179,29 @@ export class NetWorthComponent extends React.Component {
       }
     }
 
-    return reportData;
+    // Net Worth is calculated from the start of time so we need to handle "filters" here
+    // rather than using `filteredTransactions` from context.
+    const { fromDate, toDate } = this.props.filters.dateFilter;
+    const { labels, assets, debts, netWorths } = allReportData;
+    const startIndex = labels.findIndex((label) => label === localizedMonthAndYear(fromDate));
+    const endIndex = labels.findIndex((label) => label === localizedMonthAndYear(toDate)) + 1;
+    const filteredLabels = labels.slice(startIndex, endIndex);
+    const filteredDebts = debts.slice(startIndex, endIndex);
+    const filteredAssets = assets.slice(startIndex, endIndex);
+    const filteredNetWorths = netWorths.slice(startIndex, endIndex);
+
+    this.setState({
+      hoveredData: {
+        assets: assets[assets.length - 1] || 0,
+        debts: debts[debts.length - 1] || 0,
+        netWorth: netWorths[netWorths.length - 1] || 0
+      },
+      reportData: {
+        labels: filteredLabels,
+        debts: filteredDebts,
+        assets: filteredAssets,
+        netWorths: filteredNetWorths
+      }
+    }, this._renderReport);
   }
 }

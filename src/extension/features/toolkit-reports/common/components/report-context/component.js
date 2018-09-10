@@ -56,6 +56,7 @@ const REPORT_COMPONENTS = [{
 
 const { Provider, Consumer } = React.createContext({
   filteredTransactions: [],
+  filters: null,
   selectedReport: REPORT_COMPONENTS[0],
   setActiveReportKey: () => {},
   setFilters: () => {},
@@ -72,12 +73,16 @@ export function withReportContextProvider(InnerComponent) {
       super(props);
 
       const visibleTransactions = Collections.transactionsCollection.filter((transaction) => {
-        return ynab.constants.TransactionSource.getDisplayableSources().includes(transaction.getSource());
+        return (
+          !transaction.get('isTombstone') &&
+          ynab.constants.TransactionSource.getDisplayableSources().includes(transaction.getSource())
+        );
       });
 
       this.state = {
         activeReportKey: getToolkitStorageKey(ACTIVE_REPORT_KEY, REPORT_TYPES[0].key),
         filteredTransactions: visibleTransactions,
+        filters: null,
         visibleTransactions
       };
     }
@@ -88,6 +93,7 @@ export function withReportContextProvider(InnerComponent) {
           <Provider
             value={{
               filteredTransactions: this.state.filteredTransactions,
+              filters: this.state.filters,
               selectedReport: this.selectedReport,
               setActiveReportKey: this._setActiveReportKey,
               setFilters: this._setFilters,
