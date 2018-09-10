@@ -4,10 +4,10 @@ import { REPORT_TYPES } from 'toolkit/extension/features/toolkit-reports/common/
 import classnames from 'classnames';
 import './styles.scss';
 
-export class ReportSelector extends React.Component {
+export class ReportSelectorComponent extends React.Component {
   static propTypes = {
     activeReportKey: PropTypes.string.isRequired,
-    onSelect: PropTypes.func.isRequired
+    setActiveReportKey: PropTypes.func.isRequired
   }
 
   render() {
@@ -19,12 +19,7 @@ export class ReportSelector extends React.Component {
           });
 
           return (
-            <div
-              className={reportNameClasses}
-              data-report-key={key}
-              key={key}
-              onClick={this._onSelect}
-            >
+            <div className={reportNameClasses} data-report-key={key} key={key} onClick={this._onSelect}>
               {name}
             </div>
           );
@@ -34,6 +29,6 @@ export class ReportSelector extends React.Component {
   }
 
   _onSelect = ({ currentTarget }) => {
-    this.props.onSelect(currentTarget.dataset.reportKey);
+    this.props.setActiveReportKey(currentTarget.dataset.reportKey);
   }
 }
