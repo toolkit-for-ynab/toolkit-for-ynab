@@ -11,16 +11,11 @@ import './styles.scss';
 export class ReportFiltersComponent extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
-    disableCategoryFilter: PropTypes.bool,
     selectedReport: PropTypes.shape(SelectedReportContextPropType),
     setFilters: PropTypes.func.isRequired,
     showAccountFilterModal: PropTypes.func.isRequired,
     showCategoryFilterModal: PropTypes.func.isRequired,
     showDateSelectorModal: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {
-    disableCategoryFilter: false
   }
 
   static getDerivedStateFromProps(props) {
@@ -46,8 +41,9 @@ export class ReportFiltersComponent extends React.Component {
   }
 
   render() {
+    const { disableCategoryFilter } = this.props.selectedReport.filterSettings;
     const categoryButtonClasses = classnames('tk-button', 'tk-button--medium', 'tk-button--text', {
-      'tk-button--disabled': this.props.disableCategoryFilter
+      'tk-button--disabled': disableCategoryFilter
     });
 
     return (
@@ -96,7 +92,7 @@ export class ReportFiltersComponent extends React.Component {
   }
 
   _showCategoryFilterModal = () => {
-    if (this.props.disableCategoryFilter) {
+    if (this.props.selectedReport.filterSettings.disableCategoryFilter) {
       return;
     }
 
