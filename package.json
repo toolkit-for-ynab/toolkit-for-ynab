@@ -87,6 +87,7 @@
   ],
   "dependencies": {
     "classnames": "^2.2.6",
+    "highcharts": "^6.1.2",
     "raven-js": "^3.25.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1"

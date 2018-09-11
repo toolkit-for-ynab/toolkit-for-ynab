@@ -1,7 +1,8 @@
 {
          "name": "reports",
          "type": "checkbox",
-      "default": true,
+      "default": false,
+       "hidden": true,
       "section": "general",
         "title": "Reports",
   "description": "Adds a button to the side bar to access reports. Net Worth, Spending By Category, and Income vs. Expense are all available reports.",

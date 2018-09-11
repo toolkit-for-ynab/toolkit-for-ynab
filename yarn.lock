@@ -2732,6 +2732,10 @@ hawk@~6.0.2:
     hoek "4.x.x"
     sntp "2.x.x"
 
+highcharts@^6.1.2:
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-6.1.2.tgz#5df3664436a2a6b9de75b074b5bfbae36ccd565d"
+
 hmac-drbg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"
