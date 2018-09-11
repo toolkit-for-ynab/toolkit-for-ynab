@@ -183,8 +183,11 @@ export class NetWorthComponent extends React.Component {
     // rather than using `filteredTransactions` from context.
     const { fromDate, toDate } = this.props.filters.dateFilter;
     const { labels, assets, debts, netWorths } = allReportData;
-    const startIndex = labels.findIndex((label) => label === localizedMonthAndYear(fromDate));
-    const endIndex = labels.findIndex((label) => label === localizedMonthAndYear(toDate)) + 1;
+    let startIndex = labels.findIndex((label) => label === localizedMonthAndYear(fromDate));
+    startIndex = startIndex === -1 ? 0 : startIndex;
+    let endIndex = labels.findIndex((label) => label === localizedMonthAndYear(toDate)) + 1;
+    endIndex = endIndex === -1 ? labels.length - 1 : endIndex;
+
     const filteredLabels = labels.slice(startIndex, endIndex);
     const filteredDebts = debts.slice(startIndex, endIndex);
     const filteredAssets = assets.slice(startIndex, endIndex);

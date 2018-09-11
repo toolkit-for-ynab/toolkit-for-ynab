@@ -27,7 +27,7 @@ function storeDateFilters(reportKey, filters) {
 const Options = {
   ThisMonth: 'This Month',
   LastMonth: 'Last Month',
-  LastThreeMonths: 'Last Three Months',
+  LatestThree: 'Latest Three Months',
   ThisYear: 'This Year',
   LastYear: 'Last Year',
   AllDates: 'All Dates'
@@ -67,7 +67,7 @@ export class DateFilterComponent extends React.Component {
         <div className="tk-flex tk-mg-t-1 tk-mg-b-05 tk-pd-y-05 tk-border-y tk-modal-content__header-actions">
           <button name={Options.ThisMonth} className="tk-button tk-button--small tk-button--text" onClick={this._handleOptionSelected}>{Options.ThisMonth}</button>
           <button name={Options.LastMonth} className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleOptionSelected}>{Options.LastMonth}</button>
-          <button name={Options.LastThreeMonths} className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleOptionSelected}>{Options.LastThreeMonths}</button>
+          <button name={Options.LatestThree} className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleOptionSelected}>{Options.LatestThree}</button>
           <button name={Options.ThisYear} className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleOptionSelected}>{Options.ThisYear}</button>
           <button name={Options.LastYear} className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleOptionSelected}>{Options.LastYear}</button>
           <button name={Options.AllDates} className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleOptionSelected}>{Options.AllDates}</button>
@@ -217,8 +217,8 @@ export class DateFilterComponent extends React.Component {
         const lastMonth = today.clone().subtractMonths(1);
         this.setState(this._getSelectedFromDates(lastMonth, lastMonth));
         break;
-      case Options.LastThreeMonths:
-        this.setState(this._getSelectedFromDates(today.clone().subtractMonths(3), today));
+      case Options.LatestThree:
+        this.setState(this._getSelectedFromDates(today.clone().subtractMonths(2), today));
         break;
       case Options.ThisYear:
         this.setState(this._getSelectedFromDates(today.clone().startOfYear(), today));
