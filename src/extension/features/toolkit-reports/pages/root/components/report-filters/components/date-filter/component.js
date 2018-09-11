@@ -207,31 +207,34 @@ export class DateFilterComponent extends React.Component {
   }
 
   _handleOptionSelected = ({ currentTarget }) => {
+    let selectedDates;
     const today = getToday();
 
     switch (currentTarget.name) {
       case Options.ThisMonth:
-        this.setState(this._getSelectedFromDates(today, today));
+        selectedDates = this._getSelectedFromDates(today, today);
         break;
       case Options.LastMonth:
         const lastMonth = today.clone().subtractMonths(1);
-        this.setState(this._getSelectedFromDates(lastMonth, lastMonth));
+        selectedDates = this._getSelectedFromDates(lastMonth, lastMonth);
         break;
       case Options.LatestThree:
-        this.setState(this._getSelectedFromDates(today.clone().subtractMonths(2), today));
+        selectedDates = this._getSelectedFromDates(today.clone().subtractMonths(2), today);
         break;
       case Options.ThisYear:
-        this.setState(this._getSelectedFromDates(today.clone().startOfYear(), today));
+        selectedDates = this._getSelectedFromDates(today.clone().startOfYear(), today);
         break;
       case Options.LastYear:
         const startOfLastYear = today.clone().subtractYears(1).startOfYear();
         const endOfLastYear = today.clone().subtractYears(1).endOfYear();
-        this.setState(this._getSelectedFromDates(startOfLastYear, endOfLastYear));
+        selectedDates = this._getSelectedFromDates(startOfLastYear, endOfLastYear);
         break;
       case Options.AllDates:
-        this.setState(this._getSelectedFromDates(this.firstMonthOfBudget, today));
+        selectedDates = this._getSelectedFromDates(this.firstMonthOfBudget, today);
         break;
     }
+
+    this.setState(selectedDates, this._save);
   }
 
   _save = () => {
