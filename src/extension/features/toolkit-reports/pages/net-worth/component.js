@@ -1,3 +1,4 @@
+import Highcharts from 'highcharts';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
@@ -5,7 +6,6 @@ import { localizedMonthAndYear, sortByTransactionDate } from 'toolkit/extension/
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { Legend } from './components/legend';
-import Highcharts from 'highcharts';
 
 export class NetWorthComponent extends React.Component {
   static propTypes = {
