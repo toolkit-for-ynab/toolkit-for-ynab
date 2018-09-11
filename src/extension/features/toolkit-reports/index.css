@@ -1,0 +1,15 @@
+.nav-main .tk-react-reports-link {
+  cursor: pointer;
+}
+
+.nav-main .tk-react-reports-link.active a .flaticon {
+	color: #fed168;
+}
+
+.nav-main .tk-navlink-reports-link > span {
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  margin-right: .9rem;
+}
