@@ -100,17 +100,20 @@ export class BudgetProgressBars extends Feature {
     const balancePriorToSpending = subCategory.get('balancePriorToSpending');
     const { budgetedPace, monthPace } = pacingCalculation;
 
+    // For pacing progress bars we can't use budgeted pace higher than 100%, otherwise the bars get screwed. So we cap it at 100% width
+    const cappedBudgetedPace = Math.min(budgetedPace, 1);
+
     if (!pacingCalculation.isDeemphasized) {
       if (balancePriorToSpending > 0) {
         if (monthPace > budgetedPace) {
           $(target).css('background', this.generateProgressBarStyle(
             ['var(--progress-bar-pacing-color)', 'var(--progress-bar-pacing-spacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-spacing-color)'],
-            [budgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
+            [cappedBudgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
           ));
         } else {
           $(target).css('background', this.generateProgressBarStyle(
             ['var(--progress-bar-pacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-color)', 'var(--progress-bar-pacing-spacing-color)'],
-            [this.monthProgress - progressIndicatorWidth, this.monthProgress, budgetedPace]
+            [this.monthProgress - progressIndicatorWidth, this.monthProgress, cappedBudgetedPace]
           ));
         }
       } else {
