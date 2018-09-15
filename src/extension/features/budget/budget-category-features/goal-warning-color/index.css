@@ -1,29 +1,39 @@
-/* row */
-.budget-table-row[data-toolkit-goal-underfunded] .budget-table-cell-available .ynab-new-budget-available-number {
-	background-color: #009cc2;
+/* We set the colors as variables, to be able to modify them, just in case */
+:root {
+  --goal-warning-underfunded-color: #009cc2;
+  --goal-warning-underfunded-hover-color: #1f8ca7;
+  --goal-warning-underfunded-message-color: #d0ecf5;
+  --goal-warning-underfunded-progress-inner-circle-color: #43aecb;
+  --goal-warning-underfunded-progress-outer-circle-color: var(--goal-warning-underfunded-hover-color);
 }
-.budget-table-row[data-toolkit-goal-underfunded] .budget-table-cell-available .ynab-new-budget-available-number:hover {
-	background-color: #1f8ca7;
+
+/* row */
+.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit) {
+  background-color: var(--goal-warning-underfunded-color);
+}
+.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit):hover {
+  background-color: var(--goal-warning-underfunded-hover-color);
 }
 
 /* inspector */
-.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-overview-available dt {
-	color: #009cc2;
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-inspector-category-overview .inspector-overview-available dt {
+  color: var(--goal-warning-underfunded-color);
 }
-.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .ynab-new-budget-available-number {
-	background: #009cc2;
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-inspector-category-overview .ynab-new-budget-available-number,
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-inspector-category-overview .ynab-new-budget-available-number span {
+  background: var(--goal-warning-underfunded-color);
 }
-.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-message {
-  background-color: #d0ecf5;
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-inspector-category-overview .inspector-message {
+  background: var(--goal-warning-underfunded-message-color);
 }
-.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-message .inspector-message-arrow {
-  border-bottom-color: #d0ecf5;
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-inspector-category-overview .inspector-message .inspector-message-arrow {
+  border-bottom-color: var(--goal-warning-underfunded-message-color);
 }
 
 /* goal */
-.budget-inspector[data-toolkit-goal-underfunded] .goal-progress-chart .inner-circle {
-	stroke: #43aecb;
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .goal-progress-chart .inner-circle {
+  stroke: var(--goal-warning-underfunded-progress-inner-circle-color);
 }
-.budget-inspector[data-toolkit-goal-underfunded] .goal-progress-chart .outer-circle {
-	fill: #1f8ca7;
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .goal-progress-chart .outer-circle {
+  fill: var(--goal-warning-underfunded-progress-outer-circle-color);
 }
