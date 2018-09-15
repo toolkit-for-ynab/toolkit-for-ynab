@@ -1,12 +1,12 @@
 :root {
   /* General color definitions */
   /* ReSharper disable Redundant, used implicitly in js code */
-  --progress-bar-goal-color: rgba(22, 163, 54, 0.3);
-  --progress-bar-goal-spacing-color: rgba(0, 0, 0, 0);
-  --progress-bar-pacing-color: rgb(192, 226, 233);
-  --progress-bar-pacing-month-progress-indicator-color: rgb(207, 213, 216);
-  --progress-bar-pacing-spacing-color: rgba(0, 0, 0, 0);
-  --progress-bar-pacing-master-spacing-color: rgba(0, 0, 0, 0);
+  --tk-color-progress-bar-goal: rgba(22, 163, 54, 0.3);
+  --tk-color-progress-bar-goal-spacing: rgba(0, 0, 0, 0);
+  --tk-color-progress-bar-pacing: rgb(192, 226, 233);
+  --tk-color-progress-bar-pacing-month-progress-indicator: rgb(207, 213, 216);
+  --tk-color-progress-bar-pacing-spacing: rgba(0, 0, 0, 0);
+  --tk-color-progress-bar-pacing-master-spacing: rgba(0, 0, 0, 0);
   /* ReSharper restore Redundant */
 }
 
