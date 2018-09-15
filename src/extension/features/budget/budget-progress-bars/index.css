@@ -1,3 +1,25 @@
+:root {
+  /* General color definitions */
+  /* ReSharper disable Redundant, used implicitly in js code */
+  --progress-bar-goal-color: rgba(22, 163, 54, 0.3);
+  --progress-bar-goal-spacing-color: rgba(0, 0, 0, 0);
+  --progress-bar-pacing-color: rgb(192, 226, 233);
+  --progress-bar-pacing-month-progress-indicator-color: rgb(207, 213, 216);
+  --progress-bar-pacing-spacing-color: rgba(0, 0, 0, 0);
+  --progress-bar-pacing-master-spacing-color: rgba(0, 0, 0, 0);
+  /* ReSharper restore Redundant */
+}
+
+/* Fix position of head monthly progress indicator by moving the bg slightly to the right and making it shorter. Also move the text back */
+.budget-table-row.is-master-category .budget-table-cell-name {
+  margin-left: 0.5rem;
+  width: 39%;
+}
+.budget-table-cell-name-static-width {
+  margin-left: -0.4rem;
+}
+
+
 .budget-table-row.is-checked,
 .budget-table-row.is-checked .budget-table-cell-name,
 .budget-table-row.is-checked .budget-table-cell-budgeted {
