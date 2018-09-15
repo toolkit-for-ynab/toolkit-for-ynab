@@ -84,7 +84,7 @@ export class BudgetProgressBars extends Feature {
 
     if (hasGoal) {
       let percent = Math.round(parseFloat(status));
-      $(target).css('background', 'linear-gradient(to right, rgba(22, 163, 54, 0.3) ' + percent + '%, white ' + percent + '%)');
+      $(target).css('background', 'linear-gradient(to right, var(--progress-bar-goal-color) ' + percent + '%, var(--progress-bar-goal-spacing-color) ' + percent + '%)');
     } else {
       $(target).css('background', '');
     }
@@ -100,22 +100,25 @@ export class BudgetProgressBars extends Feature {
     const balancePriorToSpending = subCategory.get('balancePriorToSpending');
     const { budgetedPace, monthPace } = pacingCalculation;
 
+    // For pacing progress bars we can't use budgeted pace higher than 100%, otherwise the bars get screwed. So we cap it at 100% width
+    const cappedBudgetedPace = Math.min(budgetedPace, 1);
+
     if (!pacingCalculation.isDeemphasized) {
       if (balancePriorToSpending > 0) {
         if (monthPace > budgetedPace) {
           $(target).css('background', this.generateProgressBarStyle(
-            ['#c0e2e9', 'white', '#CFD5D8', 'white'],
-            [budgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
+            ['var(--progress-bar-pacing-color)', 'var(--progress-bar-pacing-spacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-spacing-color)'],
+            [cappedBudgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
           ));
         } else {
           $(target).css('background', this.generateProgressBarStyle(
-            ['#c0e2e9', '#CFD5D8', '#c0e2e9', 'white'],
-            [this.monthProgress - progressIndicatorWidth, this.monthProgress, budgetedPace]
+            ['var(--progress-bar-pacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-color)', 'var(--progress-bar-pacing-spacing-color)'],
+            [this.monthProgress - progressIndicatorWidth, this.monthProgress, cappedBudgetedPace]
           ));
         }
       } else {
         $(target).css('background', this.generateProgressBarStyle(
-          ['white', '#CFD5D8', 'white'],
+          ['var(--progress-bar-pacing-spacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-spacing-color)'],
           [this.monthProgress - progressIndicatorWidth, this.monthProgress]
         ));
       }
@@ -172,18 +175,18 @@ export class BudgetProgressBars extends Feature {
         }
       }
 
-      if ($(this).hasClass('is-master-category')) {
+      if ($(element).hasClass('is-master-category')) {
         switch (this.settings.enabled) {
           case 'pacing':
             $(this).css('background', this.generateProgressBarStyle(
-              ['#E5F5F9', '#CFD5D8', '#E5F5F9'],
+              ['var(--progress-bar-pacing-master-spacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-master-spacing-color)'],
               [this.monthProgress - progressIndicatorWidth, this.monthProgress]
             ));
             break;
           case 'both':
-            nameCell = $(this).find('li.budget-table-cell-name');// [0];
+            nameCell = $(element).find('li.budget-table-cell-name');// [0];
             $(nameCell).css('background', this.generateProgressBarStyle(
-              ['#E5F5F9', '#CFD5D8', '#E5F5F9'],
+              ['var(--progress-bar-pacing-master-spacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-master-spacing-color)'],
               [this.monthProgress - progressIndicatorWidth, this.monthProgress]
             ));
             break;

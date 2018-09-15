@@ -35,7 +35,7 @@ follow these steps:
 3. Create an `index.js` file which has the following:
   <!-- spacing is intentionally weird here because of markdown -->
   ```javascript
-  import { Feature } from 'toolkit/core/feature';
+  import { Feature } from 'toolkit/extension/features/feature';
 
   export class MyCoolFeature extends Feature {
     shouldInvoke() {
