@@ -59,6 +59,7 @@ export class CollapseSideMenu extends Feature {
         $('.ynab-u.content').animate({ left: '3rem' }).promise(),
         $('.budget-header').animate({ left: '3rem' }).promise()
       ]).then(() => {
+        $('.layout.user-logged-in').addClass('collapsed');
         $('.ynabtk-navlink-reports-link span').addClass('ynabtk-nav-link-collapsed');
         $('.ynabtk-collapse-link span').addClass('ynabtk-nav-link-collapsed');
         $('.ynabtk-collapse-icon').removeClass('left-circle-4').addClass('right-circle-4');
@@ -70,6 +71,7 @@ export class CollapseSideMenu extends Feature {
         $('.ynab-u.content').animate({ left: '260px' }).promise(),
         $('.budget-header').animate({ left: '260px' }).promise()
       ]).then(() => {
+        $('.layout.user-logged-in').removeClass('collapsed');
         $('.ynabtk-navlink-reports-link span').removeClass('ynabtk-nav-link-collapsed');
         $('.ynabtk-collapse-link span').removeClass('ynabtk-nav-link-collapsed');
         $('.ynabtk-collapse-icon').removeClass('right-circle-4').addClass('left-circle-4');
