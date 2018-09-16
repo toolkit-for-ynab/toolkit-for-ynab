@@ -1,6 +1,6 @@
 {
   "name": "toolkit-for-ynab",
-  "version": "2.8.6",
+  "version": "2.8.7",
   "private": true,
   "devDependencies": {
     "archiver": "^2.1.0",
