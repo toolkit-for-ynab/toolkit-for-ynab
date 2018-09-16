@@ -84,7 +84,7 @@ export class BudgetProgressBars extends Feature {
 
     if (hasGoal) {
       let percent = Math.round(parseFloat(status));
-      $(target).css('background', 'linear-gradient(to right, var(--progress-bar-goal-color) ' + percent + '%, var(--progress-bar-goal-spacing-color) ' + percent + '%)');
+      $(target).css('background', 'linear-gradient(to right, var(--tk-color-progress-bar-goal) ' + percent + '%, var(--tk-color-progress-bar-goal-spacing) ' + percent + '%)');
     } else {
       $(target).css('background', '');
     }
@@ -107,18 +107,18 @@ export class BudgetProgressBars extends Feature {
       if (balancePriorToSpending > 0) {
         if (monthPace > budgetedPace) {
           $(target).css('background', this.generateProgressBarStyle(
-            ['var(--progress-bar-pacing-color)', 'var(--progress-bar-pacing-spacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-spacing-color)'],
+            ['var(--tk-color-progress-bar-pacing)', 'var(--tk-color-progress-bar-pacing-spacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing-spacing)'],
             [cappedBudgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
           ));
         } else {
           $(target).css('background', this.generateProgressBarStyle(
-            ['var(--progress-bar-pacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-color)', 'var(--progress-bar-pacing-spacing-color)'],
+            ['var(--tk-color-progress-bar-pacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing)', 'var(--tk-color-progress-bar-pacing-spacing)'],
             [this.monthProgress - progressIndicatorWidth, this.monthProgress, cappedBudgetedPace]
           ));
         }
       } else {
         $(target).css('background', this.generateProgressBarStyle(
-          ['var(--progress-bar-pacing-spacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-spacing-color)'],
+          ['var(--tk-color-progress-bar-pacing-spacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing-spacing)'],
           [this.monthProgress - progressIndicatorWidth, this.monthProgress]
         ));
       }
@@ -179,14 +179,14 @@ export class BudgetProgressBars extends Feature {
         switch (this.settings.enabled) {
           case 'pacing':
             $(this).css('background', this.generateProgressBarStyle(
-              ['var(--progress-bar-pacing-master-spacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-master-spacing-color)'],
+              ['var(--tk-color-progress-bar-pacing-master-spacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing-master-spacing)'],
               [this.monthProgress - progressIndicatorWidth, this.monthProgress]
             ));
             break;
           case 'both':
             nameCell = $(element).find('li.budget-table-cell-name');// [0];
             $(nameCell).css('background', this.generateProgressBarStyle(
-              ['var(--progress-bar-pacing-master-spacing-color)', 'var(--progress-bar-pacing-month-progress-indicator-color)', 'var(--progress-bar-pacing-master-spacing-color)'],
+              ['var(--tk-color-progress-bar-pacing-master-spacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing-master-spacing)'],
               [this.monthProgress - progressIndicatorWidth, this.monthProgress]
             ));
             break;
