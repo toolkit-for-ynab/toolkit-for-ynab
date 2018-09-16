@@ -120,7 +120,7 @@ export class ShowDebtButton extends Feature {
       // Restore the highlight on whatever they're trying to click on.
       // For example, if they were on the Budget tab, then clicked on Reports, clicking on
       // Budget again wouldn't do anything as YNAB thinks they're already there. This switches
-      // the correct classes back on and triggers our .observe below.
+      // the correct classes back on and triggers our .observe().
       if ($(this).hasClass('navlink-budget') ||
           $(this).hasClass('navlink-accounts') ||
           $(this).hasClass('navlink-reports')) {

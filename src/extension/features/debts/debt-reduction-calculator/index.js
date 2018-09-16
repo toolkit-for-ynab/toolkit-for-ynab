@@ -10,6 +10,17 @@ export class DebtReductionCalculator extends Feature {
   onBudgetAccounts = null;
   offBudgetAccounts = null;
 
+  debtTools = [{
+    name: 'Debt Snowball',
+    toolkitId: 'toolSnowball'
+  }, {
+    name: 'Financial Calculator',
+    toolkitId: 'toolCalc'
+  }, {
+    name: 'Tool #3',
+    toolkitId: 'toolNum3'
+  }];
+
   injectCSS() { return require('./index.css'); }
 
   // willInvoke() {
@@ -67,18 +78,21 @@ export class DebtReductionCalculator extends Feature {
     // append the entire page to the .scroll-wrap pane in YNAB (called by showReports)
     $pane.append($('<div class="ynabtk-debts"></div>')
       // append the navigation (list of supportedReports)
-      // .append(generateReportNavigation())
+      .append(this.generatePageNavigation())
       // append the filters and containers for report headers/report data
+      // .append($(`<div id="ynabtk-menubar" class="ember-view ynab-u reports-header"><button id="ynabtk-menubar-drc" class="active ember-view active">    Debt Reduction Calculator
+      //             </button><button id="ynabtk-menubar-opt2" class="ember-view">    Net Worth
+      //             </button><button id="ynabtk-menubar-opt3" class="ember-view">    Income v Expense</button></div>`)
       .append($('<div class="ynabtk-reports-filters"></div>')
         .append(`<h3>
-                ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.filters']) || 'Filters')}
+                ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.filters']) || 'Debt Reduction Parameters')}
               </h3>
               <div class="ynabtk-filter-group date-filter">
                 <span class="reports-filter-name timeframe">
-                  ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.timeframe']) || 'Timeframe')}:
+                  ${((ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.timeframe']) || 'Strategy')}:
                 </span>
                 <select class="ynabtk-filter-select ynabtk-quick-date-filters">
-                  <option value="none" disabled selected>Quick Filter...</option>
+                  <option value="none" disabled selected>Select a Strategy...</option>
                 </select>
                 <div id="ynabtk-date-filter" class="ynabtk-date-filter-slider"></div>
               </div>
@@ -95,6 +109,74 @@ export class DebtReductionCalculator extends Feature {
       .append('<div class="ynabtk-reports-data"></div>'));
 
     // generateDateSlider(transactionsViewModel);
-    // generateQuickDateFilters();
+    this.generateReductionStrategies();
+  }
+
+  generatePageNavigation() {
+    // create the page header
+    let $pageHeader = $(`<div class="ynabtk-reports-nav">
+        <h2>
+          <span><i class="flaticon stroke document-4"></i></span>
+        </h2>
+        <ul class="nav-reports"></ul>
+      </div>`);
+
+    // now populate the page header!
+    this.debtTools.forEach((tool) => {
+      $('.nav-reports', $pageHeader).append($('<li>', { class: 'nav-reports-navlink' }).append($('<a>', { id: tool.toolkitId, href: '#' }).text(tool.name).click(() => {
+        this.onToolSelected(tool.toolkitId);
+      })));
+    });
+
+    return $pageHeader;
+  }
+
+  generateReductionStrategies() {
+    // const dateFilter = document.getElementById('ynabtk-date-filter');
+    const reductionStrategies = [{
+      name: 'Snowball',
+      strategy: 'snowball'
+    }, {
+      name: 'Avalanche',
+      strategy: 'avalance'
+    }, {
+      name: 'Order Entered',
+      strategy: 'orderEntered'
+    }, {
+      name: 'No Snowball',
+      strategy: 'noSnowball'
+    }, {
+      name: 'Custom - Highest First',
+      strategy: 'customHighestFirst'
+    }, {
+      name: 'Custom - Lowest First',
+      strategy: 'customLowestFirst'
+    }];
+
+    reductionStrategies.forEach((strategy, index) => {
+      let disabled = false;
+
+      $('.ynabtk-quick-date-filters')
+        .append($('<option>', {
+          value: index,
+          disabled: disabled
+        })
+          .text(strategy.name));
+    });
+
+    $('.ynabtk-quick-date-filters').on('change', this, function (event) {
+      let _this = event.data;
+      let quickFilterIndex = parseInt($(this).val());
+      // let quickFilterValue = reductionStrategies[quickFilterIndex].strategy;
+      // dateFilter.noUiSlider.set(quickFilterValue);
+      // dateFilter.set(quickFilterValue);
+      // ynabToolKit.shared.setToolkitStorageKey('current-date-filter', quickFilterValue);
+      _this.applyReductionStrategy(quickFilterIndex);
+    });
+  }
+
+  applyReductionStrategy(strategy) {
+    console.log('applyReductionStrategy:: strategy: ' + strategy);
+    // return;
   }
 }
