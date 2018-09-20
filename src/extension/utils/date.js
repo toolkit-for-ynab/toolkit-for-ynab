@@ -14,9 +14,9 @@ export function getFirstMonthOfBudget() {
   return getEntityManager().getFirstMonthForBudget().clone();
 }
 
-export function localizedMonthAndYear(date) {
-  const month = date.getMonth(MonthStyle.Short);
-  return `${l10nMonth(month)} ${date.getYear()}`;
+export function localizedMonthAndYear(date, style = MonthStyle.Long) {
+  const month = date.getMonth();
+  return `${l10nMonth(month, style)} ${date.getYear()}`;
 }
 
 export function sortByGettableDate(a, b) {

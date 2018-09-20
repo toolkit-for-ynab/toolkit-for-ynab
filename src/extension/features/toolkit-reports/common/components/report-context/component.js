@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Collections } from 'toolkit/extension/utils/collections';
 import { ReportKeys, REPORT_TYPES } from 'toolkit-reports/common/constants/report-types';
 import { IncomeVsExpense } from 'toolkit-reports/pages/income-vs-expense';
 import { NetWorth } from 'toolkit-reports/pages/net-worth';
 import { SpendingByPayee } from 'toolkit-reports/pages/spending-by-payee';
 import { SpendingByCategory } from 'toolkit-reports/pages/spending-by-category';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export const SelectedReportContextPropType = {
   component: PropTypes.func.isRequired,
@@ -72,10 +72,12 @@ export function withReportContextProvider(InnerComponent) {
     constructor(props) {
       super(props);
 
-      const visibleTransactions = Collections.transactionsCollection.filter((transaction) => {
+      const visibleTransactionDisplayItems = controllerLookup('application').get('transactionViewModel.visibleTransactionDisplayItems');
+      const visibleTransactions = visibleTransactionDisplayItems.filter((transaction) => {
         return (
-          !transaction.get('isTombstone') &&
-          ynab.constants.TransactionSource.getDisplayableSources().includes(transaction.getSource())
+          !transaction.getIsSplit() &&
+          !transaction.isScheduledTransaction() &&
+          !transaction.isScheduledSubTransaction()
         );
       });
 

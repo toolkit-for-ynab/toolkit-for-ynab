@@ -1,10 +1,10 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Collections } from 'toolkit/extension/utils/collections';
-import { MasterCategoryRow } from './components/master-category-row';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { sortByGettableDate } from 'toolkit/extension/utils/date';
 import { mapToArray } from 'toolkit/extension/utils/helpers';
+import { MonthlyTransactionTotalsTable } from './components/monthly-transaction-totals-table';
 import './styles.scss';
 
 export const MONTHLY_TOTALS_KEY = '__totals';
@@ -52,33 +52,14 @@ export class IncomeVsExpenseComponent extends React.Component {
   }
 
   render() {
-    const { collapsedMasterCategories, expenses, incomeByPayee } = this.state;
+    const { expenses, incomeByPayee } = this.state;
     if (!incomeByPayee || !expenses) {
       return null;
     }
 
-    const masterCategoriesData = expenses.get('masterCategories');
-    const masterCategoryRows = masterCategoriesData.map((masterCategoryData) => {
-      const masterCategory = masterCategoryData.get('masterCategory');
-      const masterCategoryId = masterCategory.get('entityId');
-      const subCategories = masterCategoryData.get('subCategories');
-      const monthlyTotals = masterCategoryData.get('monthlyTotals');
-
-      return (
-        <MasterCategoryRow
-          key={masterCategoryId}
-          masterCategory={masterCategory}
-          subCategories={subCategories}
-          monthlyTotals={monthlyTotals}
-          isCollapsed={collapsedMasterCategories.has(masterCategoryId)}
-          onToggleCollapse={this._collapseMasterCategory}
-        />
-      );
-    });
-
     return (
-      <div className="tk-income-vs-expense tk-overflow-scroll">
-        {masterCategoryRows}
+      <div className="tk-ive tk-overflow-scroll">
+        <MonthlyTransactionTotalsTable name="Expense" data={expenses} />
       </div>
     );
   }
@@ -115,19 +96,6 @@ export class IncomeVsExpenseComponent extends React.Component {
 
     const sortedExpenses = this._sortAndNormalizeExpenses(expenses);
     this.setState({ expenses: sortedExpenses, incomeByPayee });
-  }
-
-  _collapseMasterCategory = (masterCategoryId) => {
-    this.setState((prevState) => {
-      const { collapsedMasterCategories } = prevState;
-      if (collapsedMasterCategories.has(masterCategoryId)) {
-        collapsedMasterCategories.delete(masterCategoryId);
-      } else {
-        collapsedMasterCategories.add(masterCategoryId);
-      }
-
-      return { collapsedMasterCategories };
-    });
   }
 
   _assignIncomeTransaction(incomeByPayee, transaction) {
@@ -210,21 +178,21 @@ export class IncomeVsExpenseComponent extends React.Component {
         subCategoryMonthlyTotalsArray.sort(sortByGettableDate);
 
         return new Map([
-          ['subCategory', subCategoryData.get('subCategory')],
-          ['monthlyTotals', subCategoryMonthlyTotalsArray]
+          ['monthlyTotals', subCategoryMonthlyTotalsArray],
+          ['source', subCategoryData.get('subCategory')]
         ]);
       });
 
       return new Map([
-        ['masterCategory', masterCategoryData.get('masterCategory')],
         ['monthlyTotals', masterCategoryMonthlyTotalsArray],
-        ['subCategories', subCategoriesArray]
+        ['source', masterCategoryData.get('masterCategory')],
+        ['sources', subCategoriesArray]
       ]);
     });
 
     return new Map([
-      ['masterCategories', masterCategoriesArray],
-      ['monthlyTotals', monthlyTotalsArray]
+      ['monthlyTotals', monthlyTotalsArray],
+      ['sources', masterCategoriesArray]
     ]);
   }
 }
