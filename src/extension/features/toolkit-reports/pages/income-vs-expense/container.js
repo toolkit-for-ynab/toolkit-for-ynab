@@ -3,7 +3,8 @@ import { IncomeVsExpenseComponent } from './component';
 
 function mapReportContextToProps(context) {
   return {
-    filteredTransactions: context.filteredTransactions
+    filteredTransactions: context.filteredTransactions,
+    filters: context.filters
   };
 }
 

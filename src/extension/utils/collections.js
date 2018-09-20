@@ -19,6 +19,12 @@ export class Collections {
     return collection;
   }
 
+  static get payeesCollection() {
+    const collection = new ynab.collections.PayeesCollection();
+    collection.addItemsFromArray(getEntityManager().getAllPayees());
+    return collection;
+  }
+
   static get subCategoriesCollection() {
     const collection = new ynab.collections.SubCategoriesCollection();
     collection.addItemsFromArray(getEntityManager().getAllSubCategories());
