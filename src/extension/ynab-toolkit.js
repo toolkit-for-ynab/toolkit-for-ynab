@@ -92,7 +92,7 @@ export class YNABToolkit {
       };
 
       // eslint-disable-next-line
-      if (event.data.ynabToolKit.environment === 'development' && Rollbar) {
+      if (event.data.ynabToolKit.environment === 'development' && Rollbar && Rollbar.impl && Rollbar.instrumenter && Rollbar.instrumenter.deinstrumentConsole) {
         Rollbar.impl.instrumenter.deinstrumentConsole(); // eslint-disable-line
       }
 

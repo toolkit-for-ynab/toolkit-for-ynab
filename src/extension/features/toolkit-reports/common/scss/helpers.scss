@@ -5,6 +5,9 @@
 .tk-full-height { height: 100%; }
 .tk-full-width { width: 100%; }
 
+/* overflow handlers */
+.tk-overflow-scroll { overflow: scroll; }
+
 /* flexbox helpers */
 .tk-flex { display: flex; }
 .tk-flex-row { flex-direction: row; }

@@ -19,7 +19,7 @@ export function localizedMonthAndYear(date) {
   return `${l10nMonth(month)} ${date.getYear()}`;
 }
 
-export function sortByTransactionDate(a, b) {
+export function sortByGettableDate(a, b) {
   const dateA = a.get('date');
   const dateB = b.get('date');
 

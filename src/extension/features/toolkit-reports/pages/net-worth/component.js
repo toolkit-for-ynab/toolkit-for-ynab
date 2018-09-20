@@ -2,7 +2,7 @@ import Highcharts from 'highcharts';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { localizedMonthAndYear, sortByTransactionDate } from 'toolkit/extension/utils/date';
+import { localizedMonthAndYear, sortByGettableDate } from 'toolkit/extension/utils/date';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { Legend } from './components/legend';
@@ -116,7 +116,7 @@ export class NetWorthComponent extends React.Component {
 
     const accounts = new Map();
     const allReportData = { assets: [], labels: [], debts: [], netWorths: [] };
-    const transactions = this.props.visibleTransactions.slice().sort(sortByTransactionDate);
+    const transactions = this.props.visibleTransactions.slice().sort(sortByGettableDate);
 
     let lastMonth = null;
     function pushCurrentAccountData() {
