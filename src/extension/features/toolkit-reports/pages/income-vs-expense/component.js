@@ -100,7 +100,7 @@ export class IncomeVsExpenseComponent extends React.Component {
 
   _assignIncomeTransaction(incomeByPayee, transaction) {
     // const transactionAmount = transaction.get('amount');
-    // const transactionMonth = transaction.get('date').startOfMonth();
+    // const transactionMonth = transaction.get('date').clone().startOfMonth();
     // const transactionPayeeId = transaction.get('payeeId');
 
     // const incomePayeeData = incomeByPayee.get(transactionPayeeId) || createPayeeMap(transactionPayeeId, this._createEmptyMonthMapFromFilters());
@@ -138,7 +138,7 @@ export class IncomeVsExpenseComponent extends React.Component {
 
   _addTransactionToMonthlyTotals(transaction, monthlyTotalsMap) {
     const transactionAmount = transaction.get('amount');
-    const transactionMonth = transaction.get('date').startOfMonth();
+    const transactionMonth = transaction.get('date').clone().startOfMonth();
     const monthlyTotalsKey = transactionMonth.toISOString();
 
     const monthlyTotalsData = monthlyTotalsMap.get(monthlyTotalsKey);

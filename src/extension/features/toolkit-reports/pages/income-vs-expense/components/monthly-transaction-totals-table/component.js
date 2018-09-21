@@ -2,13 +2,18 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { CollapsableRow } from './components/collapsable-row';
 import { localizedMonthAndYear } from 'toolkit/extension/utils/date';
-import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { MonthStyle } from 'toolkit/extension/utils/toolkit';
+import { MonthlyTotalsColumns } from 'toolkit-reports/pages/income-vs-expense/components/monthly-totals-columns';
 import './styles.scss';
+
+const TableType = {
+  Expense: 'expense',
+  Income: 'income'
+};
 
 export class MonthlyTransactionTotalsTable extends React.Component {
   static propTypes = {
-    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
     data: PropTypes.any.isRequired
   }
 
@@ -16,9 +21,16 @@ export class MonthlyTransactionTotalsTable extends React.Component {
     collapsedSources: new Set()
   }
 
+  get tableProperties() {
+    return {
+      classSuffix: this.props.type === TableType.Income ? '--income' : '--expense',
+      tableName: this.props.type === TableType.Income ? 'Income' : 'Expenses'
+    };
+  }
+
   render() {
     return (
-      <div>
+      <div className="tk-totals-table">
         {this._renderTableHeader()}
         {this._renderTableBody()}
         {this._renderTableFooter()}
@@ -27,19 +39,22 @@ export class MonthlyTransactionTotalsTable extends React.Component {
   }
 
   _renderTableHeader() {
-    const headerColumns = this.props.data.get('monthlyTotals').map((monthData) => {
-      const date = monthData.get('date');
-      return (
-        <div key={date.toISOString()} className="tk-totals-table__data-cell">
-          {localizedMonthAndYear(date, MonthStyle.Short)}
-        </div>
-      );
-    });
+    const { classSuffix, tableName } = this.tableProperties;
+    const className = `tk-flex tk-totals-table__header-row tk-totals-table__header-row${classSuffix} tk-totals-table__title-row`;
+    const monthlyTotals = this.props.data.get('monthlyTotals');
 
     return (
-      <div className="tk-flex tk-totals-table__title-row">
-        <div className="tk-totals-table__data-cell--title">{this.props.name}</div>
-        {headerColumns.length && <div className="tk-flex">{headerColumns}</div>}
+      <div className={className}>
+        <div className="tk-totals-table__data-cell--title">{tableName}</div>
+        <div className="tk-flex">
+          {monthlyTotals.map((monthData) => (
+            <div key={monthData.get('date').toISOString()} className="tk-totals-table__data-cell">
+              {localizedMonthAndYear(monthData.get('date'), MonthStyle.Short)}
+            </div>
+          ))}
+          <div key="average" className="tk-totals-table__data-cell">Average</div>
+          <div key="total" className="tk-totals-table__data-cell">Total</div>
+        </div>
       </div>
     );
   }
@@ -65,20 +80,13 @@ export class MonthlyTransactionTotalsTable extends React.Component {
   }
 
   _renderTableFooter() {
-    const footerColumns = this.props.data.get('monthlyTotals').map((monthData) => {
-      const date = monthData.get('date');
-      const total = monthData.get('total');
-      return (
-        <div key={date.toISOString()} className="tk-totals-table__data-cell">
-          {formatCurrency(total)}
-        </div>
-      );
-    });
+    const { classSuffix, tableName } = this.tableProperties;
+    const className = `tk-flex tk-totals-table__footer-row tk-totals-table__footer-row${classSuffix} tk-totals-table__title-row`;
 
     return (
-      <div className="tk-totals-table__title-row tk-flex">
-        <div className="tk-totals-table__data-cell--title">Total {this.props.name}</div>
-        {footerColumns.length && <div className="tk-flex">{footerColumns}</div>}
+      <div className={className}>
+        <div className="tk-totals-table__data-cell--title">Total {tableName}</div>
+        <MonthlyTotalsColumns monthlyTotals={this.props.data.get('monthlyTotals')} />
       </div>
     );
   }

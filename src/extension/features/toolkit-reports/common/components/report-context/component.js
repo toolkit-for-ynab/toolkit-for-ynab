@@ -75,9 +75,9 @@ export function withReportContextProvider(InnerComponent) {
       const visibleTransactionDisplayItems = controllerLookup('application').get('transactionViewModel.visibleTransactionDisplayItems');
       const visibleTransactions = visibleTransactionDisplayItems.filter((transaction) => {
         return (
-          !transaction.getIsSplit() &&
-          !transaction.isScheduledTransaction() &&
-          !transaction.isScheduledSubTransaction()
+          !transaction.get('isSplit') &&
+          !transaction.get('isScheduledTransaction') &&
+          !transaction.get('isScheduledSubTransaction')
         );
       });
 

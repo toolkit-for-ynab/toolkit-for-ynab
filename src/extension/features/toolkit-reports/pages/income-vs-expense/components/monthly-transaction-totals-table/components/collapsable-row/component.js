@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { ChildRow } from './components/child-row';
-import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { MonthlyTotalsColumns } from 'toolkit-reports/pages/income-vs-expense/components/monthly-totals-columns';
 
 export class CollapsableRow extends React.Component {
   static propTypes = {
@@ -13,27 +13,22 @@ export class CollapsableRow extends React.Component {
   }
 
   render() {
-    const monthlyTotalColumns = this._renderMonthlyTotals();
+    const monthlyTotalColumns = <MonthlyTotalsColumns monthlyTotals={this.props.monthlyTotals} />;
 
     return (
-      <div className="tk-mg-b-05">
+      <div>
         <div className="tk-flex tk-totals-table__title-row">
           <div className="tk-totals-table__data-cell--title" onClick={this._toggleCollapse}>
             <div>{this.props.source.get('name')}</div>
           </div>
-          {this.props.isCollapsed && (
-            <div className="tk-flex">{monthlyTotalColumns}</div>
-          )}
+          {this.props.isCollapsed && monthlyTotalColumns}
         </div>
         {!this.props.isCollapsed && (
           <div>
             {this._renderChildRows()}
             <div className="tk-flex tk-totals-table__title-row">
-              <div className="tk-totals-table__data-cell--title">
-                Total {this.props.source.get('name')}
-              </div>
-
-              <div className="tk-flex">{monthlyTotalColumns}</div>
+              <div className="tk-totals-table__data-cell--title tk-pd-l-1">Total {this.props.source.get('name')}</div>
+              {monthlyTotalColumns}
             </div>
           </div>
         )}
@@ -48,18 +43,6 @@ export class CollapsableRow extends React.Component {
 
       return (
         <ChildRow key={source.get('entityId')} source={source} monthlyTotals={monthlyTotals} />
-      );
-    });
-  }
-
-  _renderMonthlyTotals() {
-    return this.props.monthlyTotals.map((monthData) => {
-      const key = `${monthData.get('date').toISOString()}`;
-
-      return (
-        <div key={key} className="tk-totals-table__data-cell">
-          {formatCurrency(monthData.get('total'))}
-        </div>
       );
     });
   }

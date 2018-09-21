@@ -1,5 +1,22 @@
 .tk-totals-table {
+  width: fit-content;
+
+  &__header-row,
+  &__footer-row {
+    font-size: 0.85rem;
+
+    &--expense {
+      background-color: #ffecea;
+    }
+
+    &--income {
+      background-color: #edf5e6;
+    }
+  }
+
   &__title-row {
+    border-top: 1px dotted #d1d1d1;
+
     .tk-totals-table {
       &__data-cell {
         font-weight: bold;
@@ -8,6 +25,8 @@
   }
 
   &__child-row {
+    border-top: 1px dotted #d1d1d1;
+
     .tk-totals-table {
       &__data-cell {
         &--title {
@@ -18,10 +37,13 @@
   }
 
   &__data-cell {
+    border-right: 1px dotted #d1d1d1;
     min-width: 8rem;
     max-width: 8rem;
 
     &--title {
+      border-left: 1px dotted #d1d1d1;
+      border-right: 1px dotted #d1d1d1;
       font-weight: bold;
       min-width: 12rem;
       max-width: 12rem;
@@ -30,30 +52,4 @@
       text-overflow: ellipsis;
     }
   }
-
-  // &__row {
-  //   &--title {
-  //     font-weight: bold;
-  //   }
-  // }
-
-  // &__cell {
-  //   &--title {
-  //     font-weight: bold;
-  //     max-width: 180px;
-  //     min-width: 180px;
-  //     white-space: nowrap;
-  //     overflow: hidden;
-  //     text-overflow: ellipsis;
-
-  //     &--nested {
-  //       font-weight: normal;
-  //     }
-  //   }
-
-  //   &--data {
-  //     max-width: 120px;
-  //     min-width: 120px;
-  //   }
-  // }
 }
