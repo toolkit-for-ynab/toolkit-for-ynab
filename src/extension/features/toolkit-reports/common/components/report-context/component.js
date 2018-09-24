@@ -6,7 +6,7 @@ import { NetWorth } from 'toolkit-reports/pages/net-worth';
 import { SpendingByPayee } from 'toolkit-reports/pages/spending-by-payee';
 import { SpendingByCategory } from 'toolkit-reports/pages/spending-by-category';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { getStoredFilters, storeAccountFilters, storeCategoryFilters, storeDateFilters } from 'toolkit-reports/utils/filters';
 
 export const SelectedReportContextPropType = {
   component: PropTypes.func.isRequired,
@@ -60,7 +60,7 @@ const { Provider, Consumer } = React.createContext({
   selectedReport: REPORT_COMPONENTS[0],
   setActiveReportKey: () => {},
   setFilters: () => {},
-  visibleTransactions: []
+  allReportableTransactions: []
 });
 
 export function withReportContextProvider(InnerComponent) {
@@ -71,22 +71,30 @@ export function withReportContextProvider(InnerComponent) {
 
     constructor(props) {
       super(props);
+      const activeReportKey = getToolkitStorageKey(ACTIVE_REPORT_KEY, REPORT_TYPES[0].key);
 
-      const visibleTransactionDisplayItems = controllerLookup('application').get('transactionViewModel.visibleTransactionDisplayItems');
-      const visibleTransactions = visibleTransactionDisplayItems.filter((transaction) => {
-        return (
+      this.state = {
+        activeReportKey,
+        filteredTransactions: [],
+        filters: getStoredFilters(activeReportKey),
+        allReportableTransactions: []
+      };
+    }
+
+    componentDidMount() {
+      ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then((transactionsViewModel) => {
+        const visibleTransactionDisplayItems = transactionsViewModel.get('visibleTransactionDisplayItems');
+        const allReportableTransactions = visibleTransactionDisplayItems.filter((transaction) => (
           !transaction.get('isSplit') &&
           !transaction.get('isScheduledTransaction') &&
           !transaction.get('isScheduledSubTransaction')
-        );
-      });
+        ));
 
-      this.state = {
-        activeReportKey: getToolkitStorageKey(ACTIVE_REPORT_KEY, REPORT_TYPES[0].key),
-        filteredTransactions: visibleTransactions,
-        filters: null,
-        visibleTransactions
-      };
+        this.setState({
+          filteredTransactions: [],
+          allReportableTransactions
+        }, this._applyFilters);
+      });
     }
 
     render() {
@@ -99,7 +107,7 @@ export function withReportContextProvider(InnerComponent) {
               selectedReport: this.selectedReport,
               setActiveReportKey: this._setActiveReportKey,
               setFilters: this._setFilters,
-              visibleTransactions: this.state.visibleTransactions
+              allReportableTransactions: this.state.allReportableTransactions
             }}
           >
             <InnerComponent {...this.props} />
@@ -110,13 +118,27 @@ export function withReportContextProvider(InnerComponent) {
 
     _setActiveReportKey = (activeReportKey) => {
       setToolkitStorageKey(ACTIVE_REPORT_KEY, activeReportKey);
-      this.setState({ activeReportKey });
+
+      const filters = getStoredFilters(activeReportKey);
+      this.setState({ activeReportKey, filters }, this._applyFilters);
     }
 
     _setFilters = (filters) => {
-      const { visibleTransactions } = this.state;
+      storeAccountFilters(this.state.activeReportKey, filters.accountFilterIds);
+      storeCategoryFilters(this.state.activeReportKey, filters.categoryFilterIds);
+      storeDateFilters(this.state.activeReportKey, filters.dateFilter);
+
+      this.setState({ filters }, this._applyFilters);
+    }
+
+    _applyFilters = () => {
+      const { allReportableTransactions, filters } = this.state;
+      if (!allReportableTransactions || !allReportableTransactions.length || !filters) {
+        return;
+      }
+
       const { accountFilterIds, categoryFilterIds, dateFilter } = filters;
-      const filteredTransactions = visibleTransactions.filter((transaction) => {
+      const filteredTransactions = allReportableTransactions.filter((transaction) => {
         const { accountId, subCategoryId, date } = transaction;
 
         const isFilteredAccount = accountFilterIds.has(accountId);
@@ -130,26 +152,21 @@ export function withReportContextProvider(InnerComponent) {
         return true;
       });
 
-      this.setState({
-        filteredTransactions,
-        filters
-      });
+      this.setState({ filteredTransactions });
     }
   };
 }
 
 export function withReportContext(mapContextToProps) {
   return function (InnerComponent) {
-    return class WithReportContextProvider extends React.Component {
-      render() {
-        return (
-          <Consumer>
-            {(value) => (
-              <InnerComponent {...this.props} {...mapContextToProps(value)} />
-            )}
-          </Consumer>
-        );
-      }
+    return function WithReportContextProvider(props) {
+      return (
+        <Consumer>
+          {(value) => (
+            <InnerComponent {...props} {...mapContextToProps(value)} />
+          )}
+        </Consumer>
+      );
     };
   };
 }

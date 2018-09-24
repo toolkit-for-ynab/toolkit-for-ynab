@@ -7,6 +7,7 @@ import { ReportFiltersComponent } from './component';
 
 function mapReportContextToProps(context) {
   return {
+    filters: context.filters,
     selectedReport: context.selectedReport,
     setFilters: context.setFilters
   };

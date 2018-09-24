@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Collections } from 'toolkit/extension/utils/collections';
-import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
 import './styles.scss';
 
@@ -9,34 +8,21 @@ function sortableIndexCompare(a, b) {
   return a.sortableIndex - b.sortableIndex;
 }
 
-export function getStoredCategoryFilters(reportKey) {
-  const stored = getToolkitStorageKey(`category-filters-${reportKey}`, {
-    ignoreSubCategories: []
-  });
-
-  return {
-    ignoreSubCategories: new Set(stored.ignoreSubCategories)
-  };
-}
-
-function storeCategoryFilters(reportKey, filters) {
-  setToolkitStorageKey(`category-filters-${reportKey}`, {
-    ignoreSubCategories: Array.from(filters.ignoreSubCategories)
-  });
-}
-
 export class CategoryFilterComponent extends React.Component {
   static propTypes = {
     activeReportKey: PropTypes.string.isRequired,
+    categoryFilterIds: PropTypes.any.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired
   }
 
-  state = getStoredCategoryFilters(this.props.activeReportKey)
+  state = {
+    categoryFilterIds: this.props.categoryFilterIds
+  }
 
   render() {
     const { masterCategoriesCollection, subCategoriesCollection } = Collections;
-    const { ignoreSubCategories } = this.state;
+    const { categoryFilterIds } = this.state;
     const categoriesList = [];
     masterCategoriesCollection.forEach((masterCategory) => {
       const { entityId: masterCategoryId } = masterCategory;
@@ -45,7 +31,7 @@ export class CategoryFilterComponent extends React.Component {
       }
 
       const subCategories = subCategoriesCollection.findItemsByMasterCategoryId(masterCategoryId);
-      const areAllSubCategoriesIgnored = subCategories.every(({ entityId }) => ignoreSubCategories.has(entityId));
+      const areAllSubCategoriesIgnored = subCategories.every(({ entityId }) => categoryFilterIds.has(entityId));
 
       categoriesList.push((
         <div key={masterCategoryId}>
@@ -68,7 +54,7 @@ export class CategoryFilterComponent extends React.Component {
           <div className="tk-mg-l-1" key={subCategoryId}>
             <LabeledCheckbox
               id={subCategoryId}
-              checked={!this.state.ignoreSubCategories.has(subCategoryId)}
+              checked={!this.state.categoryFilterIds.has(subCategoryId)}
               label={subCategory.name}
               onChange={this._handleSubCategoryToggled}
             />
@@ -96,13 +82,13 @@ export class CategoryFilterComponent extends React.Component {
   }
 
   _handleSelectAll = () => {
-    const { ignoreSubCategories } = this.state;
-    ignoreSubCategories.clear();
-    this.setState({ ignoreSubCategories });
+    const { categoryFilterIds } = this.state;
+    categoryFilterIds.clear();
+    this.setState({ categoryFilterIds });
   }
 
   _handleSelectNone = () => {
-    const { ignoreSubCategories } = this.state;
+    const { categoryFilterIds } = this.state;
     const { masterCategoriesCollection, subCategoriesCollection } = Collections;
 
     masterCategoriesCollection.forEach((masterCategory) => {
@@ -111,42 +97,41 @@ export class CategoryFilterComponent extends React.Component {
         subCategoriesCollection.findItemsByMasterCategoryId(masterCategoryId).sort(sortableIndexCompare).forEach((subCategory) => {
           const { entityId: subCategoryId } = subCategory;
           if (!subCategory.isTombstone || !subCategory.internalName) {
-            ignoreSubCategories.add(subCategoryId);
+            categoryFilterIds.add(subCategoryId);
           }
         });
       }
     });
 
-    this.setState({ ignoreSubCategories });
+    this.setState({ categoryFilterIds });
   }
 
   _handleMasterCategoryToggled = ({ currentTarget }) => {
     const { checked, name } = currentTarget;
-    const { ignoreSubCategories } = this.state;
+    const { categoryFilterIds } = this.state;
     const subCategories = Collections.subCategoriesCollection.findItemsByMasterCategoryId(name);
     if (checked) {
-      subCategories.forEach(({ entityId }) => ignoreSubCategories.delete(entityId));
+      subCategories.forEach(({ entityId }) => categoryFilterIds.delete(entityId));
     } else {
-      subCategories.forEach(({ entityId }) => ignoreSubCategories.add(entityId));
+      subCategories.forEach(({ entityId }) => categoryFilterIds.add(entityId));
     }
 
-    this.setState({ ignoreSubCategories });
+    this.setState({ categoryFilterIds });
   }
 
   _handleSubCategoryToggled = ({ currentTarget }) => {
     const { checked, name } = currentTarget;
-    const { ignoreSubCategories } = this.state;
+    const { categoryFilterIds } = this.state;
     if (checked) {
-      ignoreSubCategories.delete(name);
+      categoryFilterIds.delete(name);
     } else {
-      ignoreSubCategories.add(name);
+      categoryFilterIds.add(name);
     }
 
-    this.setState({ ignoreSubCategories });
+    this.setState({ categoryFilterIds });
   }
 
   _save = () => {
-    storeCategoryFilters(this.props.activeReportKey, this.state);
-    this.props.onSave(this.state.ignoreSubCategories);
+    this.props.onSave(this.state.categoryFilterIds);
   }
 }

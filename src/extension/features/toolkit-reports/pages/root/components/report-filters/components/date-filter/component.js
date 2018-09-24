@@ -1,28 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { getFirstMonthOfBudget, getToday } from 'toolkit/extension/utils/date';
-import { getToolkitStorageKey, l10nMonth, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+import { l10nMonth } from 'toolkit/extension/utils/toolkit';
 import './styles.scss';
-
-export function getStoredDateFilters(reportKey) {
-  const stored = getToolkitStorageKey(`date-filters-${reportKey}`, { fromDate: null, toDate: null });
-
-  let fromDate = getFirstMonthOfBudget();
-  let toDate = getToday();
-  try {
-    fromDate = ynab.utilities.DateWithoutTime.createFromISOString(stored.fromDate);
-    toDate = ynab.utilities.DateWithoutTime.createFromISOString(stored.toDate);
-  } catch (e) { /* defaults */ }
-
-  return { fromDate, toDate };
-}
-
-function storeDateFilters(reportKey, filters) {
-  setToolkitStorageKey(`date-filters-${reportKey}`, {
-    fromDate: filters.fromDate ? filters.fromDate.toISOString() : null,
-    toDate: filters.toDate ? filters.toDate.toISOString() : null
-  });
-}
 
 const Options = {
   ThisMonth: 'This Month',
@@ -36,6 +16,10 @@ const Options = {
 export class DateFilterComponent extends React.Component {
   static propTypes = {
     activeReportKey: PropTypes.string.isRequired,
+    dateFilter: PropTypes.shape({
+      fromDate: PropTypes.any.isRequired,
+      toDate: PropTypes.any.isRequired
+    }).isRequired,
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired
   }
@@ -48,17 +32,12 @@ export class DateFilterComponent extends React.Component {
     return getToday().startOfMonth();
   }
 
-  constructor(props) {
-    super(props);
-
-    const storedFilters = getStoredDateFilters(this.props.activeReportKey);
-    this.state = {
-      selectedFromMonth: storedFilters.fromDate.getMonth(),
-      selectedFromYear: storedFilters.fromDate.getYear(),
-      selectedToMonth: storedFilters.toDate.getMonth(),
-      selectedToYear: storedFilters.toDate.getYear()
-    };
-  }
+  state = {
+    selectedFromMonth: this.props.dateFilter.fromDate.getMonth(),
+    selectedFromYear: this.props.dateFilter.fromDate.getYear(),
+    selectedToMonth: this.props.dateFilter.toDate.getMonth(),
+    selectedToYear: this.props.dateFilter.toDate.getYear()
+  };
 
   render() {
     return (
@@ -250,7 +229,6 @@ export class DateFilterComponent extends React.Component {
     toDate.endOfMonth();
 
     const dateFilters = { toDate, fromDate };
-    storeDateFilters(this.props.activeReportKey, dateFilters);
     this.props.onSave(dateFilters);
   }
 }

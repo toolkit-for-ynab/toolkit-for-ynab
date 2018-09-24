@@ -1,6 +1,14 @@
 .tk-totals-table {
   width: fit-content;
 
+  &__child-row,
+  &__child-summary-row,
+  &__title-row--collapsed {
+    &:hover {
+      background-color: aliceblue;
+    }
+  }
+
   &__header-row,
   &__footer-row {
     font-size: 0.85rem;
@@ -12,12 +20,22 @@
     &--income {
       background-color: #edf5e6;
     }
+
+    .tk-monthly-totals-row {
+      &__title-cell {
+        padding-left: 0.5rem;
+      }
+    }
   }
 
   &__title-row {
     border-top: 1px dotted #d1d1d1;
 
-    .tk-totals-table {
+    .tk-monthly-totals-row {
+      &__title-cell {
+        padding-left: 0.5rem;
+      }
+
       &__data-cell {
         font-weight: bold;
       }
@@ -27,29 +45,25 @@
   &__child-row {
     border-top: 1px dotted #d1d1d1;
 
-    .tk-totals-table {
-      &__data-cell {
-        &--title {
-          font-weight: normal;
-        }
+    .tk-monthly-totals-row {
+      &__title-cell {
+        font-weight: normal;
+        padding-left: 1rem;
       }
     }
   }
 
-  &__data-cell {
-    border-right: 1px dotted #d1d1d1;
-    min-width: 8rem;
-    max-width: 8rem;
+  &__child-summary-row {
+    border-top: 1px solid #000000;
 
-    &--title {
-      border-left: 1px dotted #d1d1d1;
-      border-right: 1px dotted #d1d1d1;
-      font-weight: bold;
-      min-width: 12rem;
-      max-width: 12rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .tk-monthly-totals-row {
+      &__title-cell {
+        padding-left: 1rem;
+      }
+
+      &__data-cell {
+        font-weight: bold;
+      }
     }
   }
 }

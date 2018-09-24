@@ -10,7 +10,7 @@ import { Legend } from './components/legend';
 export class NetWorthComponent extends React.Component {
   static propTypes = {
     filters: PropTypes.shape(FiltersPropType),
-    visibleTransactions: PropTypes.array.isRequired
+    allReportableTransactions: PropTypes.array.isRequired
   };
 
   state = {}
@@ -20,7 +20,10 @@ export class NetWorthComponent extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.filters !== prevProps.filters) {
+    if (
+      this.props.filters !== prevProps.filters ||
+      this.props.allReportableTransactions !== prevProps.allReportableTransactions
+    ) {
       this._calculateData();
     }
   }
@@ -116,7 +119,7 @@ export class NetWorthComponent extends React.Component {
 
     const accounts = new Map();
     const allReportData = { assets: [], labels: [], debts: [], netWorths: [] };
-    const transactions = this.props.visibleTransactions.slice().sort(sortByGettableDate);
+    const transactions = this.props.allReportableTransactions.slice().sort(sortByGettableDate);
 
     let lastMonth = null;
     function pushCurrentAccountData() {

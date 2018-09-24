@@ -1,16 +1,15 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { localizedMonthAndYear } from 'toolkit/extension/utils/date';
-import { getStoredAccountFilters } from './components/account-filter';
-import { getStoredCategoryFilters } from './components/category-filter';
-import { getStoredDateFilters } from './components/date-filter';
 import { SelectedReportContextPropType } from 'toolkit-reports/common/components/report-context/component';
 import classnames from 'classnames';
 import './styles.scss';
+import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 
 export class ReportFiltersComponent extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
+    filters: PropTypes.shape(FiltersPropType),
     selectedReport: PropTypes.shape(SelectedReportContextPropType),
     setFilters: PropTypes.func.isRequired,
     showAccountFilterModal: PropTypes.func.isRequired,
@@ -18,30 +17,9 @@ export class ReportFiltersComponent extends React.Component {
     showDateSelectorModal: PropTypes.func.isRequired
   }
 
-  static getDerivedStateFromProps(props) {
-    const activeReportKey = props.selectedReport.key;
-
-    return {
-      accountFilterIds: getStoredAccountFilters(activeReportKey).ignoredAccounts,
-      categoryFilterIds: getStoredCategoryFilters(activeReportKey).ignoreSubCategories,
-      dateFilter: getStoredDateFilters(activeReportKey)
-    };
-  }
-
-  state = {}
-
-  componentDidMount() {
-    this._applyFilters();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.selectedReport.key !== prevProps.selectedReport.key) {
-      this._applyFilters();
-    }
-  }
-
   render() {
     const { disableCategoryFilter } = this.props.selectedReport.filterSettings;
+    const { accountFilterIds, categoryFilterIds, dateFilter } = this.props.filters;
     const categoryButtonClasses = classnames('tk-button', 'tk-button--medium', 'tk-button--text', {
       'tk-button--disabled': disableCategoryFilter
     });
@@ -51,17 +29,17 @@ export class ReportFiltersComponent extends React.Component {
         <div className="tk-flex">
           <div className="tk-mg-r-05">
             <button onClick={this._showCategoryFilterModal} className={categoryButtonClasses}>
-              {this.state.categoryFilterIds.size ? 'Some Categories' : 'All Categories'}
+              {categoryFilterIds.size ? 'Some Categories' : 'All Categories'}
             </button>
           </div>
           <div className="tk-mg-r-05">
             <button onClick={this._showAccountFilterModal} className="tk-button tk-button--medium tk-button--text">
-              {this.state.accountFilterIds.size ? 'Some Accounts' : 'All Accounts'}
+              {accountFilterIds.size ? 'Some Accounts' : 'All Accounts'}
             </button>
           </div>
           <div className="tk-mg-r-05">
             <button onClick={this._showDateSelectorModal} className="tk-button tk-button--medium tk-button--text">
-              {`${localizedMonthAndYear(this.state.dateFilter.fromDate)} - ${localizedMonthAndYear(this.state.dateFilter.toDate)}`}
+              {`${localizedMonthAndYear(dateFilter.fromDate)} - ${localizedMonthAndYear(dateFilter.toDate)}`}
             </button>
           </div>
         </div>
@@ -70,25 +48,21 @@ export class ReportFiltersComponent extends React.Component {
   }
 
   _handleAccountsChanged = (accountFilterIds) => {
-    this.setState({ accountFilterIds }, () => {
-      this.props.closeModal();
-      this._applyFilters();
-    });
+    this.props.closeModal();
+    this._applyFilters({ accountFilterIds });
   }
 
   _showAccountFilterModal = () => {
     this.props.showAccountFilterModal({
-      accountFilterIds: this.state.accountFilterIds,
+      accountFilterIds: this.props.filters.accountFilterIds,
       onCancel: this.props.closeModal,
       onSave: this._handleAccountsChanged
     });
   }
 
   _handleCategoriesChanged = (categoryFilterIds) => {
-    this.setState({ categoryFilterIds }, () => {
-      this.props.closeModal();
-      this._applyFilters();
-    });
+    this.props.closeModal();
+    this._applyFilters({ categoryFilterIds });
   }
 
   _showCategoryFilterModal = () => {
@@ -97,31 +71,29 @@ export class ReportFiltersComponent extends React.Component {
     }
 
     this.props.showCategoryFilterModal({
-      categoryFilterIds: this.state.categoryFilterIds,
+      categoryFilterIds: this.props.filters.categoryFilterIds,
       onCancel: this.props.closeModal,
       onSave: this._handleCategoriesChanged
     });
   }
 
   _handleDatesChanged = (dateFilter) => {
-    this.setState({ dateFilter }, () => {
-      this.props.closeModal();
-      this._applyFilters();
-    });
+    this.props.closeModal();
+    this._applyFilters({ dateFilter });
   }
 
   _showDateSelectorModal = () => {
     this.props.showDateSelectorModal({
+      dateFilter: this.props.filters.dateFilter,
       onCancel: this.props.closeModal,
       onSave: this._handleDatesChanged
     });
   }
 
-  _applyFilters() {
+  _applyFilters(newFilters) {
     this.props.setFilters({
-      accountFilterIds: this.state.accountFilterIds,
-      categoryFilterIds: this.state.categoryFilterIds,
-      dateFilter: this.state.dateFilter
+      ...this.props.filters,
+      ...newFilters
     });
   }
 }

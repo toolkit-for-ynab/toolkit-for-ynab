@@ -4,7 +4,8 @@ import { Collections } from 'toolkit/extension/utils/collections';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { sortByGettableDate } from 'toolkit/extension/utils/date';
 import { mapToArray } from 'toolkit/extension/utils/helpers';
-import { MonthlyTransactionTotalsTable } from './components/monthly-transaction-totals-table';
+import { MonthlyTransactionTotalsTable, TableType } from './components/monthly-transaction-totals-table';
+import { MonthlyTotalsRow } from 'toolkit-reports/pages/income-vs-expense/components/monthly-totals-row';
 import './styles.scss';
 
 export const MONTHLY_TOTALS_KEY = '__totals';
@@ -38,7 +39,7 @@ export class IncomeVsExpenseComponent extends React.Component {
   };
 
   state = {
-    collapsedMasterCategories: new Set()
+    collapsedSources: new Set()
   }
 
   componentDidMount() {
@@ -52,16 +53,60 @@ export class IncomeVsExpenseComponent extends React.Component {
   }
 
   render() {
-    const { expenses, incomeByPayee } = this.state;
-    if (!incomeByPayee || !expenses) {
+    const { expenses, incomes, netIncome } = this.state;
+    if (!incomes || !expenses) {
       return null;
     }
 
     return (
-      <div className="tk-ive tk-overflow-scroll">
-        <MonthlyTransactionTotalsTable name="Expense" data={expenses} />
+      <div className="tk-ive tk-mg-r-1 tk-mg-b-1 tk-mg-l-1 tk-overflow-scroll">
+        <div className="tk-flex">
+          <button className="tk-button tk-button--small tk-button--text" onClick={this._collapseAll}>Collapse All</button>
+          <button className="tk-button tk-button--small tk-button--text" onClick={this._expandAll}>Expand All</button>
+        </div>
+        <div className="tk-mg-b-1">
+          <MonthlyTransactionTotalsTable type={TableType.Income} data={incomes} collapsedSources={this.state.collapsedSources} onCollapseSource={this._collapseSourceRow} />
+        </div>
+        <div className="tk-mg-b-1">
+          <MonthlyTransactionTotalsTable type={TableType.Expense} data={expenses} collapsedSources={this.state.collapsedSources} onCollapseSource={this._collapseSourceRow} />
+        </div>
+        <MonthlyTotalsRow className="tk-ive__net-income" monthlyTotals={netIncome} titleCell="Net Income" emphasizeTotals />
       </div>
     );
+  }
+
+  _collapseAll = () =>{
+    this.setState((prevState) => {
+      const collapsedSources = new Set();
+      const prevPayees = prevState.incomes.get('sources');
+      const prevMasterCategories = prevState.expenses.get('sources');
+      prevPayees.forEach((payee) => {
+        collapsedSources.add(payee.get('source').get('entityId'));
+      });
+
+      prevMasterCategories.forEach((category) => {
+        collapsedSources.add(category.get('source').get('entityId'));
+      });
+
+      return { collapsedSources };
+    });
+  }
+
+  _expandAll = () =>{
+    this.setState({ collapsedSources: new Set() });
+  }
+
+  _collapseSourceRow = (sourceId) => {
+    this.setState((prevState) => {
+      const { collapsedSources } = prevState;
+      if (collapsedSources.has(sourceId)) {
+        collapsedSources.delete(sourceId);
+      } else {
+        collapsedSources.add(sourceId);
+      }
+
+      return { collapsedSources };
+    });
   }
 
   _calculateData() {
@@ -70,7 +115,10 @@ export class IncomeVsExpenseComponent extends React.Component {
     }
 
     const { subCategoriesCollection } = Collections;
-    const incomeByPayee = new Map();
+    const incomes = new Map([
+      ['payees', new Map()],
+      ['monthlyTotals', this._createEmptyMonthMapFromFilters()]
+    ]);
     const expenses = new Map([
       ['masterCategories', new Map()],
       ['monthlyTotals', this._createEmptyMonthMapFromFilters()]
@@ -88,40 +136,38 @@ export class IncomeVsExpenseComponent extends React.Component {
       }
 
       if (transactionSubCategory.isIncomeCategory()) {
-        this._assignIncomeTransaction(incomeByPayee, transaction);
+        this._assignIncomeTransaction(incomes, transaction);
       } else {
         this._assignExpenseTransaction(expenses, transaction, transactionSubCategory);
       }
     });
 
-    const sortedExpenses = this._sortAndNormalizeExpenses(expenses);
-    this.setState({ expenses: sortedExpenses, incomeByPayee });
+    const normalizedExpenses = this._sortAndNormalizeExpenses(expenses);
+    const normalizedIncomes = this._sortAndNormalizeIncomes(incomes);
+    const normalizedNetIncome = this._normalizeNetIncomes(normalizedExpenses, normalizedIncomes);
+    this.setState({ expenses: normalizedExpenses, incomes: normalizedIncomes, netIncome: normalizedNetIncome });
   }
 
-  _assignIncomeTransaction(incomeByPayee, transaction) {
-    // const transactionAmount = transaction.get('amount');
-    // const transactionMonth = transaction.get('date').clone().startOfMonth();
-    // const transactionPayeeId = transaction.get('payeeId');
+  _assignIncomeTransaction(incomes, transaction) {
+    const allPayeesData = incomes.get('payees');
+    const transactionPayeeId = transaction.get('payeeId');
+    const incomePayeeData = allPayeesData.get(transactionPayeeId) || createPayeeMap(transactionPayeeId, this._createEmptyMonthMapFromFilters());
+    if (!incomePayeeData.get('payee') || incomePayeeData.get('payee').isStartingBalancePayee()) {
+      return;
+    }
 
-    // const incomePayeeData = incomeByPayee.get(transactionPayeeId) || createPayeeMap(transactionPayeeId, this._createEmptyMonthMapFromFilters());
-    // const payeeMonthData = incomePayeeData.get('months').get(transactionMonth.toISOString());
-    // payeeMonthData.set('total', payeeMonthData.get('total') + transactionAmount);
-    // payeeMonthData.set('transactions', payeeMonthData.get('transactions').concat(transaction));
+    // global monthly income totals
+    this._addTransactionToMonthlyTotals(transaction, incomes.get('monthlyTotals'));
+    this._addTransactionToMonthlyTotals(transaction, incomePayeeData.get('monthlyTotals'));
 
-    // const incomePayeeTotalsData = incomeByPayee.get(MONTHLY_TOTALS_KEY) || createPayeeMap(MONTHLY_TOTALS_KEY, this._createEmptyMonthMapFromFilters());
-    // const payeeTotalsMonth = incomePayeeTotalsData.get('months').get(transactionMonth.toISOString());
-    // payeeTotalsMonth.set('total', payeeTotalsMonth.get('total') + transactionAmount);
-    // payeeTotalsMonth.set('transactions', payeeTotalsMonth.get('transactions').concat(transaction));
-
-    // incomeByPayee.set(transactionPayeeId, incomePayeeData);
-    // incomeByPayee.set(MONTHLY_TOTALS_KEY, incomePayeeTotalsData);
+    allPayeesData.set(transactionPayeeId, incomePayeeData);
   }
 
   _assignExpenseTransaction(expenses, transaction, transactionSubCategory) {
-    // first, update the global expense monthly totals
+    // global monthly expense totals
     this._addTransactionToMonthlyTotals(transaction, expenses.get('monthlyTotals'));
 
-    // now update the specific master category data
+    // specific sub-category
     const transactionSubCategoryId = transactionSubCategory.get('entityId');
     const transactionMasterCategoryId = transactionSubCategory.get('masterCategoryId');
     const allMasterCategoriesReportData = expenses.get('masterCategories');
@@ -194,5 +240,59 @@ export class IncomeVsExpenseComponent extends React.Component {
       ['monthlyTotals', monthlyTotalsArray],
       ['sources', masterCategoriesArray]
     ]);
+  }
+
+  _sortAndNormalizeIncomes(incomes) {
+    const monthlyTotalsArray = mapToArray(incomes.get('monthlyTotals'));
+    monthlyTotalsArray.sort(sortByGettableDate);
+
+    const payeesArray = mapToArray(incomes.get('payees')).sort((a, b) => {
+      const nameA = a.get('payee').get('name');
+      const nameB = b.get('payee').get('name');
+      if (nameA < nameB) {
+        return -1;
+      } else if (nameA < nameB) {
+        return 1;
+      }
+
+      return 0;
+    }).map((payeeData) => {
+      const payeeMonthlyTotalsArray = mapToArray(payeeData.get('monthlyTotals'));
+      payeeMonthlyTotalsArray.sort(sortByGettableDate);
+
+      return new Map([
+        ['monthlyTotals', payeeMonthlyTotalsArray],
+        ['source', payeeData.get('payee')]
+      ]);
+    });
+
+    return new Map([
+      ['monthlyTotals', monthlyTotalsArray],
+      ['sources', [
+        new Map([
+          ['monthlyTotals', monthlyTotalsArray],
+          ['source', new Map([
+            ['entityId', '__incomeSources'],
+            ['name', 'Income Sources']
+          ])],
+          ['sources', payeesArray]
+        ])
+      ]]
+    ]);
+  }
+
+  _normalizeNetIncomes(expenses, incomes) {
+    const expensesMonthlyTotals = expenses.get('monthlyTotals');
+    const incomesMonthlyTotals = incomes.get('monthlyTotals');
+
+    return incomesMonthlyTotals.map((incomeMonthData, index) => {
+      const expenseMonthData = expensesMonthlyTotals[index];
+
+      return new Map([
+        ['date', incomeMonthData.get('date').clone()],
+        ['total', incomeMonthData.get('total') + expenseMonthData.get('total')],
+        ['transactions', incomeMonthData.get('transactions').concat(expenseMonthData.get('transactions'))]
+      ]);
+    });
   }
 }
