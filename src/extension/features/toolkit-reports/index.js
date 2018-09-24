@@ -50,24 +50,35 @@ export class ReactReports extends Feature {
     $(YNAB_NAVLINK_SELECTOR).removeClass('active');
     $(YNAB_NAVACCOUNT_SELECTOR).removeClass('is-selected');
     $(TOOLKIT_REPORTS_NAVLINK_SELECTOR).addClass('active');
+    $(`${YNAB_NAVLINK_SELECTOR}, ${YNAB_NAVACCOUNT_SELECTOR}`).on('click', this._removeToolkitReports);
+  }
 
-    $(`${YNAB_NAVLINK_SELECTOR}, ${YNAB_NAVACCOUNT_SELECTOR}`).on('click', (event) => {
-      $(TOOLKIT_REPORTS_NAVLINK_SELECTOR).removeClass('active');
-      $(YNAB_APPLICATION_CONTENT_SELECTOR).show();
-      ReactDOM.unmountComponentAtNode(document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID));
+  _removeToolkitReports(event) {
+    $(TOOLKIT_REPORTS_NAVLINK_SELECTOR).removeClass('active');
+    $(YNAB_APPLICATION_CONTENT_SELECTOR).show();
 
-      const $currentTarget = $(event.currentTarget);
-      if (YNAB_NAVLINK_CLASSES.some((className) => $currentTarget.hasClass(className))) {
-        $currentTarget.addClass('active');
-      } else if ($currentTarget.hasClass(YNAB_NAVACCOUNT_CLASS)) {
-        $currentTarget.addClass('is-selected');
-      }
-    });
+    const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
+    if (container) {
+      ReactDOM.unmountComponentAtNode(container);
+    }
+
+    const $currentTarget = $(event.currentTarget);
+    if (YNAB_NAVLINK_CLASSES.some((className) => $currentTarget.hasClass(className))) {
+      $currentTarget.addClass('active');
+    } else if ($currentTarget.hasClass(YNAB_NAVACCOUNT_CLASS)) {
+      $currentTarget.addClass('is-selected');
+    }
   }
 
   _renderToolkitReports() {
-    $(YNAB_APPLICATION_CONTENT_SELECTOR).hide();
-    ReactDOM.render(React.createElement(Root), document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID));
+    setTimeout(() => {
+      $(YNAB_APPLICATION_CONTENT_SELECTOR).hide();
+
+      const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
+      if (container) {
+        ReactDOM.render(React.createElement(Root), container);
+      }
+    }, 50);
   }
 
   onRouteChanged() {

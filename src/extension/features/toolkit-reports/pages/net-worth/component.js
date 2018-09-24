@@ -152,6 +152,10 @@ export class NetWorthComponent extends React.Component {
       }
 
       const transactionAccountId = transaction.get('accountId');
+      if (this.props.filters.accountFilterIds.has(transactionAccountId)) {
+        return;
+      }
+
       const transactionAmount = transaction.get('amount');
       if (accounts.has(transactionAccountId)) {
         accounts.set(transactionAccountId, accounts.get(transactionAccountId) + transactionAmount);
