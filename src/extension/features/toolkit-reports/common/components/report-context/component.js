@@ -6,7 +6,7 @@ import { NetWorth } from 'toolkit-reports/pages/net-worth';
 import { SpendingByPayee } from 'toolkit-reports/pages/spending-by-payee';
 import { SpendingByCategory } from 'toolkit-reports/pages/spending-by-category';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
-import { getStoredFilters, storeAccountFilters, storeCategoryFilters, storeDateFilters } from 'toolkit-reports/utils/filters';
+import { getStoredFilters, storeAccountFilters, storeCategoryFilters, storeDateFilters } from 'toolkit-reports/utils/storage';
 
 export const SelectedReportContextPropType = {
   component: PropTypes.func.isRequired,
