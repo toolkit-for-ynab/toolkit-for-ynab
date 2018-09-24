@@ -149,10 +149,11 @@ export class IncomeVsExpenseComponent extends React.Component {
   }
 
   _assignIncomeTransaction(incomes, transaction) {
+    const transactionPayeeId = transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
     const allPayeesData = incomes.get('payees');
-    const transactionPayeeId = transaction.get('payeeId');
     const incomePayeeData = allPayeesData.get(transactionPayeeId) || createPayeeMap(transactionPayeeId, this._createEmptyMonthMapFromFilters());
-    if (!incomePayeeData.get('payee') || incomePayeeData.get('payee').isStartingBalancePayee()) {
+    const payee = incomePayeeData.get('payee');
+    if (!payee || payee.isStartingBalancePayee()) {
       return;
     }
 
