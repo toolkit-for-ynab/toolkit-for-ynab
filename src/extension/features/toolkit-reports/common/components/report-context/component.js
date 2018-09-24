@@ -93,7 +93,9 @@ export function withReportContextProvider(InnerComponent) {
         this.setState({
           filteredTransactions: [],
           allReportableTransactions
-        }, this._applyFilters);
+        }, () => {
+          this._applyFilters(this.state.activeReportKey);
+        });
       });
     }
 
@@ -119,8 +121,9 @@ export function withReportContextProvider(InnerComponent) {
     _setActiveReportKey = (activeReportKey) => {
       setToolkitStorageKey(ACTIVE_REPORT_KEY, activeReportKey);
 
-      const filters = getStoredFilters(activeReportKey);
-      this.setState({ activeReportKey, filters }, this._applyFilters);
+      // const filters = getStoredFilters(activeReportKey);
+      // this.setState({ activeReportKey, filters }, this._applyFilters);
+      this._applyFilters(activeReportKey);
     }
 
     _setFilters = (filters) => {
@@ -128,11 +131,15 @@ export function withReportContextProvider(InnerComponent) {
       storeCategoryFilters(this.state.activeReportKey, filters.categoryFilterIds);
       storeDateFilters(this.state.activeReportKey, filters.dateFilter);
 
-      this.setState({ filters }, this._applyFilters);
+      // this.setState({ filters }, this._applyFilters);
+      this._applyFilters(this.state.activeReportKey);
     }
 
-    _applyFilters = () => {
-      const { allReportableTransactions, filters } = this.state;
+    _applyFilters = (activeReportKey) => {
+      const filters = getStoredFilters(activeReportKey);
+
+
+      const { allReportableTransactions } = this.state;
       if (!allReportableTransactions || !allReportableTransactions.length || !filters) {
         return;
       }
@@ -152,7 +159,7 @@ export function withReportContextProvider(InnerComponent) {
         return true;
       });
 
-      this.setState({ filteredTransactions });
+      this.setState({ filteredTransactions, filters, activeReportKey });
     }
   };
 }

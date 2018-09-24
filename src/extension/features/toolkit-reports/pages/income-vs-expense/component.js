@@ -10,13 +10,13 @@ import './styles.scss';
 
 export const MONTHLY_TOTALS_KEY = '__totals';
 
-const createPayeeMap = (payeeId, months) => new Map([
-  ['payee', Collections.payeesCollection.findItemByEntityId(payeeId)],
+const createPayeeMap = (payee, months) => new Map([
+  ['payee', payee],
   ['monthlyTotals', months]
 ]);
 
-const createMasterCategoryMap = (masterCategoryId, months) => new Map([
-  ['masterCategory', Collections.masterCategoriesCollection.findItemByEntityId(masterCategoryId)],
+const createMasterCategoryMap = (masterCategory, months) => new Map([
+  ['masterCategory', masterCategory],
   ['monthlyTotals', months],
   ['subCategories', new Map()]
 ]);
@@ -33,6 +33,10 @@ const createMonthlyTotalsMap = (date) => new Map([
 ]);
 
 export class IncomeVsExpenseComponent extends React.Component {
+  _payeesCollection = Collections.payeesCollection;
+  _subCategoriesCollection = Collections.subCategoriesCollection;
+  _masterCategoriesCollection = Collections.masterCategoriesCollection;
+
   static propTypes = {
     filters: PropTypes.shape(FiltersPropType),
     filteredTransactions: PropTypes.array.isRequired
@@ -114,11 +118,11 @@ export class IncomeVsExpenseComponent extends React.Component {
       return;
     }
 
-    const { subCategoriesCollection } = Collections;
     const incomes = new Map([
       ['payees', new Map()],
       ['monthlyTotals', this._createEmptyMonthMapFromFilters()]
     ]);
+
     const expenses = new Map([
       ['masterCategories', new Map()],
       ['monthlyTotals', this._createEmptyMonthMapFromFilters()]
@@ -130,13 +134,23 @@ export class IncomeVsExpenseComponent extends React.Component {
         return;
       }
 
-      const transactionSubCategory = subCategoriesCollection.findItemByEntityId(transactionSubCategoryId);
+      const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(transactionSubCategoryId);
       if (!transactionSubCategory) {
         return;
       }
 
       if (transactionSubCategory.isIncomeCategory()) {
-        this._assignIncomeTransaction(incomes, transaction);
+        const transactionPayeeId = transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
+        if (!transactionPayeeId) {
+          return;
+        }
+
+        const transactionPayee = this._payeesCollection.findItemByEntityId(transactionPayeeId);
+        if (!transactionPayee) {
+          return;
+        }
+
+        this._assignIncomeTransaction(incomes, transaction, transactionPayee);
       } else {
         this._assignExpenseTransaction(expenses, transaction, transactionSubCategory);
       }
@@ -148,19 +162,17 @@ export class IncomeVsExpenseComponent extends React.Component {
     this.setState({ expenses: normalizedExpenses, incomes: normalizedIncomes, netIncome: normalizedNetIncome });
   }
 
-  _assignIncomeTransaction(incomes, transaction) {
-    const transactionPayeeId = transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
+  _assignIncomeTransaction(incomes, transaction, transactionPayee) {
     const allPayeesData = incomes.get('payees');
-    const incomePayeeData = allPayeesData.get(transactionPayeeId) || createPayeeMap(transactionPayeeId, this._createEmptyMonthMapFromFilters());
-    const payee = incomePayeeData.get('payee');
-    if (!payee || payee.isStartingBalancePayee()) {
+    const transactionPayeeId = transactionPayee.get('entityId');
+    const incomePayeeData = allPayeesData.get(transactionPayeeId) || createPayeeMap(transactionPayee, this._createEmptyMonthMapFromFilters());
+    if (transactionPayee.isStartingBalancePayee()) {
       return;
     }
 
     // global monthly income totals
     this._addTransactionToMonthlyTotals(transaction, incomes.get('monthlyTotals'));
     this._addTransactionToMonthlyTotals(transaction, incomePayeeData.get('monthlyTotals'));
-
     allPayeesData.set(transactionPayeeId, incomePayeeData);
   }
 
@@ -172,7 +184,8 @@ export class IncomeVsExpenseComponent extends React.Component {
     const transactionSubCategoryId = transactionSubCategory.get('entityId');
     const transactionMasterCategoryId = transactionSubCategory.get('masterCategoryId');
     const allMasterCategoriesReportData = expenses.get('masterCategories');
-    const masterCategoryReportData = allMasterCategoriesReportData.get(transactionMasterCategoryId) || createMasterCategoryMap(transactionMasterCategoryId, this._createEmptyMonthMapFromFilters());
+    const masterCategory = this._masterCategoriesCollection.findItemByEntityId(transactionMasterCategoryId);
+    const masterCategoryReportData = allMasterCategoriesReportData.get(transactionMasterCategoryId) || createMasterCategoryMap(masterCategory, this._createEmptyMonthMapFromFilters());
     this._addTransactionToMonthlyTotals(transaction, masterCategoryReportData.get('monthlyTotals'));
 
     const allSubCategoryReportData = masterCategoryReportData.get('subCategories');
@@ -252,7 +265,7 @@ export class IncomeVsExpenseComponent extends React.Component {
       const nameB = b.get('payee').get('name');
       if (nameA < nameB) {
         return -1;
-      } else if (nameA < nameB) {
+      } else if (nameA > nameB) {
         return 1;
       }
 
