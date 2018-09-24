@@ -34,7 +34,7 @@ export class CategoryFilterComponent extends React.Component {
       const areAllSubCategoriesIgnored = subCategories.every(({ entityId }) => categoryFilterIds.has(entityId));
 
       categoriesList.push((
-        <div key={masterCategoryId}>
+        <div key={masterCategoryId} className="tk-category-filter__labeled-checkbox--parent">
           <LabeledCheckbox
             id={masterCategoryId}
             checked={!areAllSubCategoriesIgnored}

@@ -70,7 +70,7 @@ export class AccountFilterComponent extends React.Component {
         <div className="tk-account-filter__account-list tk-pd-x-05">
           {onBudgetAccounts.length && (
             <React.Fragment>
-              <div>
+              <div className="tk-account-filter__labeled-checkbox--parent">
                 <LabeledCheckbox
                   id="on-budget-accounts"
                   checked={!areAllOnBudgetAccountsIgnored}
@@ -83,7 +83,7 @@ export class AccountFilterComponent extends React.Component {
           )}
           {offBudgetAccounts.length && (
             <React.Fragment>
-              <div>
+              <div className="tk-account-filter__labeled-checkbox--parent">
                 <LabeledCheckbox
                   id="off-budget-accounts"
                   checked={!areAllOffBudgetAccountsIgnored}
