@@ -90,6 +90,18 @@ export class BudgetProgressBars extends Feature {
     }
   }
 
+  addMasterPacingProgress(target) {
+    if (!isCurrentMonthSelected()) {
+      $(target).css('background', '');
+      return;
+    }
+
+    $(target).css('background', this.generateProgressBarStyle(
+      ['var(--tk-color-progress-bar-pacing-master-spacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing-master-spacing)'],
+      [this.monthProgress - progressIndicatorWidth, this.monthProgress]
+    ));
+  }
+
   addPacingProgress(subCategory, target) {
     if (!isCurrentMonthSelected()) {
       $(target).css('background', '');
@@ -178,17 +190,11 @@ export class BudgetProgressBars extends Feature {
       if ($(element).hasClass('is-master-category')) {
         switch (this.settings.enabled) {
           case 'pacing':
-            $(this).css('background', this.generateProgressBarStyle(
-              ['var(--tk-color-progress-bar-pacing-master-spacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing-master-spacing)'],
-              [this.monthProgress - progressIndicatorWidth, this.monthProgress]
-            ));
+            this.addMasterPacingProgress($(element));
             break;
           case 'both':
             nameCell = $(element).find('li.budget-table-cell-name');// [0];
-            $(nameCell).css('background', this.generateProgressBarStyle(
-              ['var(--tk-color-progress-bar-pacing-master-spacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing-master-spacing)'],
-              [this.monthProgress - progressIndicatorWidth, this.monthProgress]
-            ));
+            this.addMasterPacingProgress($(nameCell));
             break;
         }
       }
