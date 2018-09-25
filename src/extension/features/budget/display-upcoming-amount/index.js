@@ -18,7 +18,7 @@ export class DisplayUpcomingAmount extends Feature {
         $('.budget-table-cell-activity', element)
           .addClass('toolkit-activity-upcoming')
           .prepend($('<div>', {
-            class: 'toolkit-activity-upcoming-amount',
+            class: 'toolkit-activity-upcoming-amount currency',
             title: `Total upcoming transaction amount in this month for ${subCategory.get('name')}`,
             text: formatCurrency(monthlySubCategoryBudgetCalculation.upcomingTransactions)
           }));
