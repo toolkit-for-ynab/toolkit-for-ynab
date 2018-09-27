@@ -1,8 +1,10 @@
+/* ReSharper disable UnknownCssVariable */
 :root {
   --tk-number-resize-sidebar-original-width: 260;
   --tk-number-resize-sidebar-resizer-width: 3;
-  --tk-number-resize-sidebar-width: var(--tk-number-resize-sidebar-width, var(--tk-number-resize-sidebar-original-width));
+  --tk-number-resize-sidebar-width: var(--tk-number-resize-sidebar-width-from-code, var(--tk-number-resize-sidebar-original-width));
 }
+/* ReSharper restore UnknownCssVariable */
 
 .sidebar-resizer {
   position: fixed;

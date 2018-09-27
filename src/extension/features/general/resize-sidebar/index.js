@@ -3,8 +3,8 @@ import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/ut
 /* global $, console, require */
 
 const resizerClass = 'sidebar-resizer';
-const widthCssVar = '--tk-number-resize-sidebar-width';
-const widthStorageKey = 'resize-sidebar-widthsssssssss';
+const widthCssVar = '--tk-number-resize-sidebar-width-from-code';
+const widthStorageKey = 'resize-sidebar-width';
 const mindWidth = 200;
 const maxWidth = 800;
 
@@ -52,11 +52,14 @@ export class ResizeSidebar extends Feature {
     this.toggleResize(false, event);
   }
 
-  toggleResize(isResizing, event) {
+  toggleResize(isMouseDown, event) {
     event.preventDefault();
     event.stopPropagation();
-    this.isMouseDown = isResizing;
-    if (isResizing) {
+    this.isMouseDown = isMouseDown;
+
+    // Bind or unbind the events based on if the mouse is down.
+    // Use a local property so that unbinding works.
+    if (isMouseDown) {
       $('body').on('mousemove', this.bindOnMouseMove = this.onMouseMove.bind(this));
       $('body').on('mouseup', this.bindOnMouseUp = this.onMouseUp.bind(this));
     } else {
