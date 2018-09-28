@@ -1,12 +1,11 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
-/* global $, console, require */
 
-const resizerClass = 'sidebar-resizer';
-const widthCssVar = '--tk-number-resize-sidebar-width-from-code';
-const widthStorageKey = 'resize-sidebar-width';
-const mindWidth = 200;
-const maxWidth = 800;
+const RESIZER_CLASS = 'tk-sidebar-resizer';
+const WIDTH_CSS_VAR = '--tk-number-resize-sidebar-width-from-code';
+const WIDTH_STORAGE_KEY = 'resize-sidebar-width';
+const MIN_WIDTH = 200;
+const MAX_WIDTH = 800;
 
 export class ResizeSidebar extends Feature {
   injectCSS() {
@@ -18,7 +17,7 @@ export class ResizeSidebar extends Feature {
   shouldInvoke() { return true; }
 
   invoke() {
-    const width = getToolkitStorageKey(widthStorageKey);
+    const width = getToolkitStorageKey(WIDTH_STORAGE_KEY);
     this.updateProperty(width);
     this.addSidebarResizer();
   }
@@ -27,7 +26,7 @@ export class ResizeSidebar extends Feature {
     const sidebar = $('nav.sidebar');
 
     // Build the resizer element
-    const resizer = $('<div>', { class: resizerClass });
+    const resizer = $('<div>', { class: RESIZER_CLASS });
 
     // Adds the resizer after the sidebar now
     $(sidebar).after(resizer);
@@ -72,9 +71,9 @@ export class ResizeSidebar extends Feature {
     if (typeof width !== 'number') { return; }
 
     // Keep the width between our defined borders
-    width = Math.max(mindWidth, Math.min(width, maxWidth));
+    const realWidth = Math.max(MIN_WIDTH, Math.min(width, MAX_WIDTH));
 
-    $(':root')[0].style.setProperty(widthCssVar, width);
-    setToolkitStorageKey(widthStorageKey, width);
+    $(':root')[0].style.setProperty(WIDTH_CSS_VAR, realWidth);
+    setToolkitStorageKey(WIDTH_STORAGE_KEY, realWidth);
   }
 }

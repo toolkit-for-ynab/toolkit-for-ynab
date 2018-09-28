@@ -6,7 +6,7 @@
 }
 /* ReSharper restore UnknownCssVariable */
 
-.sidebar-resizer {
+.tk-sidebar-resizer {
   position: fixed;
   top: 0;
   bottom: 0;
