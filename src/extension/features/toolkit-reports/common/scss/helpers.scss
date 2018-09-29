@@ -85,10 +85,12 @@
 .tk-mg-y-2 { margin-top: 2rem; margin-bottom: 2rem; }
 
 /* borders */
-.tk-border { border: solid $color-accent 1px };
-.tk-border-t { border-top: solid $color-accent 1px };
-.tk-border-l { border-left: solid $color-accent 1px };
-.tk-border-b { border-bottom: solid $color-accent 1px };
-.tk-border-r { border-right: solid $color-accent 1px };
-.tk-border-x { border-right: solid $color-accent 1px; border-left: solid $color-accent 1px };
-.tk-border-y { border-top: solid $color-accent 1px; border-bottom: solid $color-accent 1px };
+.tk-border   { border:        solid $grey-8 1px };
+.tk-border-t { border-top:    solid $grey-8 1px };
+.tk-border-l { border-left:   solid $grey-8 1px };
+.tk-border-b { border-bottom: solid $grey-8 1px };
+.tk-border-r { border-right:  solid $grey-8 1px };
+.tk-border-x { border-right:  solid $grey-8 1px;
+               border-left:   solid $grey-8 1px };
+.tk-border-y { border-top:    solid $grey-8 1px;
+               border-bottom: solid $grey-8 1px };

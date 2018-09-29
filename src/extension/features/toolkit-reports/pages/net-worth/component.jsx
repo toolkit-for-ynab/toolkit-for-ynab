@@ -45,7 +45,7 @@ export class NetWorthComponent extends React.Component {
     );
   }
 
-  _renderReport() {
+  _renderReport = () => {
     const _this = this;
     const { labels, debts, assets, netWorths } = this.state.reportData;
 
