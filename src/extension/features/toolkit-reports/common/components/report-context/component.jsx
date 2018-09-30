@@ -106,7 +106,7 @@ export function withReportContextProvider(InnerComponent) {
             value={{
               filteredTransactions: this.state.filteredTransactions,
               filters: this.state.filters,
-              selectedReport: this.selectedReport,
+              selectedReport: this._findReportSettingsByKey(this.state.activeReportKey),
               setActiveReportKey: this._setActiveReportKey,
               setFilters: this._setFilters,
               allReportableTransactions: this.state.allReportableTransactions
@@ -137,8 +137,7 @@ export function withReportContextProvider(InnerComponent) {
 
     _applyFilters = (activeReportKey) => {
       const filters = getStoredFilters(activeReportKey);
-
-
+      const { filterSettings } = this._findReportSettingsByKey(activeReportKey);
       const { allReportableTransactions } = this.state;
       if (!allReportableTransactions || !allReportableTransactions.length || !filters) {
         return;
@@ -149,7 +148,7 @@ export function withReportContextProvider(InnerComponent) {
         const { accountId, subCategoryId, date } = transaction;
 
         const isFilteredAccount = accountFilterIds.has(accountId);
-        const isFilteredCategory = !this.selectedReport.filterSettings.disableCategoryFilter && categoryFilterIds.has(subCategoryId);
+        const isFilteredCategory = !filterSettings.disableCategoryFilter && categoryFilterIds.has(subCategoryId);
         const isFilteredDate = dateFilter && (date.isBefore(dateFilter.fromDate) || date.isAfter(dateFilter.toDate));
 
         if (isFilteredAccount || isFilteredCategory || isFilteredDate) {
@@ -160,6 +159,10 @@ export function withReportContextProvider(InnerComponent) {
       });
 
       this.setState({ filteredTransactions, filters, activeReportKey });
+    }
+
+    _findReportSettingsByKey(findKey) {
+      return REPORT_COMPONENTS.find(({ key }) => key === findKey);
     }
   };
 }
