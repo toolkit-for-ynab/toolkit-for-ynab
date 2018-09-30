@@ -6,6 +6,7 @@ import { Collections } from 'toolkit/extension/utils/collections';
 import { mapToArray } from 'toolkit/extension/utils/helpers';
 import { SeriesLegend } from '../../common/components/series-legend';
 import { ALL_OTHER_DATA_COLOR, PIE_CHART_COLORS } from 'toolkit-reports/common/constants/colors';
+import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
 import './styles.scss';
 
 const createPayeeMap = (payee) => new Map([
@@ -132,8 +133,14 @@ export class SpendingByPayeeComponent extends React.Component {
       if (seriesData.length < payeeCount) {
         seriesData.push({
           color: PIE_CHART_COLORS[payeeIndex % PIE_CHART_COLORS.length],
+          events: {
+            click: (event) => {
+              showTransactionModal(event.point.name, event.point.transactions);
+            }
+          },
           id: payeeId,
           name: payeeName,
+          transactions: spendingData.get('transactions'),
           y: payeeTotal
         });
       } else {
@@ -187,7 +194,8 @@ export class SpendingByPayeeComponent extends React.Component {
     }).map((payeeData) => {
       return new Map([
         ['source', payeeData.get('payee')],
-        ['total', payeeData.get('total') * -1]
+        ['total', payeeData.get('total') * -1],
+        ['transactions', payeeData.get('transactions')]
       ]);
     });
   }

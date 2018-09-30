@@ -7,7 +7,7 @@ import { Collections } from 'toolkit/extension/utils/collections';
 import { mapToArray } from 'toolkit/extension/utils/helpers';
 import { SeriesLegend } from '../../common/components/series-legend';
 import { PIE_CHART_COLORS } from 'toolkit-reports/common/constants/colors';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
 import './styles.scss';
 
 const createMasterCategoryMap = (masterCategory) => new Map([
@@ -129,16 +129,6 @@ export class SpendingByCategoryComponent extends React.Component {
     });
   }
 
-  _renderTransactionsModal = (event) => {
-    const applicationController = controllerLookup('application');
-    const reportsController = controllerLookup('reports');
-    reportsController.set('modalTitle', event.point.name);
-    reportsController.set('modalTransactions', event.point.transactions);
-    applicationController.send('openModal', 'modals/reports/transactions', {
-      controller: reportsController
-    });
-  }
-
   _renderReport = () => {
     const _this = this;
     const { spendingByMasterCategory } = this.state;
@@ -171,7 +161,9 @@ export class SpendingByCategoryComponent extends React.Component {
           transactions: subCategoryData.get('transactions')
         })),
         events: {
-          click: this._renderTransactionsModal
+          click: (event) => {
+            showTransactionModal(event.point.name, event.point.transactions);
+          }
         },
         id: masterCategoryId,
         innerSize: '50%',
