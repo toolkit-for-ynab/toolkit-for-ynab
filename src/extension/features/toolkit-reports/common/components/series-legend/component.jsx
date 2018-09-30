@@ -29,7 +29,7 @@ export const SeriesLegendComponent = (props) => {
     <div className="tk-totals-legend tk-pd-1 tk-flex-grow-1 tk-border-l">
       {totalSummary}
       {averageSummary}
-      <div className="tk-totals-legend__table-row tk-flex tk-justify-content-between">
+      <div className="tk-totals-legend__table-row tk-totals-legend__table-row--header tk-mg-t-05 tk-flex tk-justify-content-between">
         <div>{props.sourceName}</div>
         <div>{props.tableName}</div>
       </div>

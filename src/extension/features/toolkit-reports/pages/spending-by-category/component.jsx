@@ -59,7 +59,7 @@ export class SpendingByCategoryComponent extends React.Component {
 
     return (
       <div className="tk-flex tk-flex-grow-1">
-        <div className="tk-flex-grow-1" id="tk-spending-by-category" />
+        <div className="tk-flex tk-justify-content-center tk-align-items-center tk-flex-grow-1" id="tk-spending-by-category" />
         <div className="tk-spending-by-category__totals-legend tk-flex">
           {legendSeries && spendingByMasterCategory && (
             <SeriesLegend
@@ -168,6 +168,7 @@ export class SpendingByCategoryComponent extends React.Component {
     const chart = new Highcharts.Chart({
       credits: false,
       chart: {
+        height: '70%',
         type: 'pie',
         renderTo: 'tk-spending-by-category',
         events: {

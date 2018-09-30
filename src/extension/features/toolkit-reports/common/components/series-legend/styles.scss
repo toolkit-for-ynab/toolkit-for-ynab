@@ -14,6 +14,19 @@
   &__table-row {
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
+
+    &:hover {
+      background-color: $ynab-blue-8;
+    }
+
+    &--header {
+      font-weight: bold;
+      text-transform: uppercase;
+
+      &:hover {
+        background-color: inherit;
+      }
+    }
   }
 
   &__summary-total {
