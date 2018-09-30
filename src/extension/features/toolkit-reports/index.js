@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Feature } from 'toolkit/extension/features/feature';
 import { Root } from './pages/root';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 import './common/scss/helpers.scss';
 
 const TOOLKIT_REPORTS_CONTAINER_ID = 'toolkit-reports';
@@ -32,7 +33,7 @@ export class ReactReports extends Feature {
       const toolkitReportsLink = $('<li>', { class: TOOLKIT_REPORTS_NAVLINK_CLASS })
         .append($('<a>', { class: 'tk-navlink-reports-link' })
           .append($('<span>', { class: 'flaticon stroke document-4' }))
-          .append((ynabToolKit.l10nData && ynabToolKit.l10nData['sidebar.reports']) || 'React Reports'));
+          .append((l10n('toolkit.reports') || 'Toolkit Reports')));
 
       $('.nav-main > li:eq(1)').after(toolkitReportsLink);
 
