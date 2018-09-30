@@ -7,6 +7,7 @@ import { Collections } from 'toolkit/extension/utils/collections';
 import { mapToArray } from 'toolkit/extension/utils/helpers';
 import { SeriesLegend } from '../../common/components/series-legend';
 import { PIE_CHART_COLORS } from 'toolkit-reports/common/constants/colors';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 import './styles.scss';
 
 const createMasterCategoryMap = (masterCategory) => new Map([
@@ -128,6 +129,16 @@ export class SpendingByCategoryComponent extends React.Component {
     });
   }
 
+  _renderTransactionsModal = (event) => {
+    const applicationController = controllerLookup('application');
+    const reportsController = controllerLookup('reports');
+    reportsController.set('modalTitle', event.point.name);
+    reportsController.set('modalTransactions', event.point.transactions);
+    applicationController.send('openModal', 'modals/reports/transactions', {
+      controller: reportsController
+    });
+  }
+
   _renderReport = () => {
     const _this = this;
     const { spendingByMasterCategory } = this.state;
@@ -152,16 +163,20 @@ export class SpendingByCategoryComponent extends React.Component {
       });
 
       drillDownData.push({
-        name: masterCategoryName,
-        id: masterCategoryId,
-        size: '80%',
-        innerSize: '50%',
         data: spendingData.get('sources').map((subCategoryData, subCategoryIndex) => ({
           color: PIE_CHART_COLORS[subCategoryIndex % PIE_CHART_COLORS.length],
           id: subCategoryData.get('source').get('entityId'),
           name: subCategoryData.get('source').get('name'),
-          y: subCategoryData.get('total')
-        }))
+          y: subCategoryData.get('total'),
+          transactions: subCategoryData.get('transactions')
+        })),
+        events: {
+          click: this._renderTransactionsModal
+        },
+        id: masterCategoryId,
+        innerSize: '50%',
+        name: masterCategoryName,
+        size: '80%'
       });
     });
 
@@ -226,7 +241,8 @@ export class SpendingByCategoryComponent extends React.Component {
         return b.get('total') - a.get('total');
       }).map((subCategoryData) => new Map([
         ['source', subCategoryData.get('subCategory')],
-        ['total', subCategoryData.get('total') * -1]
+        ['total', subCategoryData.get('total') * -1],
+        ['transactions', subCategoryData.get('transactions')]
       ]));
 
       return new Map([
