@@ -12,7 +12,7 @@ export const SeriesLegendComponent = (props) => {
   const totalSummary = (
     <div className="tk-flex tk-flex-column tk-justify-content tk-align-items-center tk-border-b tk-pd-b-1">
       <div>Total {props.tableName}</div>
-      <div className="tk-totals-legend__summary-total">{formatCurrency(seriesTotal)}</div>
+      <div className="tk-series-legend__summary-total">{formatCurrency(seriesTotal)}</div>
       <div>For this time period.</div>
     </div>
   );
@@ -20,28 +20,30 @@ export const SeriesLegendComponent = (props) => {
   const averageSummary = (
     <div className="tk-flex tk-flex-column tk-justify-content tk-align-items-center tk-border-b tk-pd-y-1">
       <div>Average {props.tableName}</div>
-      <div className="tk-totals-legend__summary-total">{formatCurrency(seriesTotal / totalMonths)}</div>
+      <div className="tk-series-legend__summary-total">{formatCurrency(seriesTotal / totalMonths)}</div>
       <div>Per month.</div>
     </div>
   );
 
   return (
-    <div className="tk-totals-legend tk-pd-1 tk-flex-grow-1 tk-border-l">
+    <div className="tk-series-legend tk-pd-1 tk-flex-grow-1 tk-border-l">
       {totalSummary}
       {averageSummary}
-      <div className="tk-totals-legend__table-row tk-totals-legend__table-row--header tk-mg-t-05 tk-flex tk-justify-content-between">
+      <div className="tk-series-legend__table-row tk-series-legend__table-row--header tk-mg-t-05 tk-flex tk-justify-content-between">
         <div>{props.sourceName}</div>
         <div>{props.tableName}</div>
       </div>
-      {sortedSeries.map((seriesData) => (
-        <div className="tk-totals-legend__table-row tk-flex tk-justify-content-between" key={seriesData.id} onMouseEnter={() => props.onDataHover(seriesData.id)}>
-          <div className="tk-flex">
-            <div className="tk-totals-legend__legend-icon tk-mg-r-05" style={{ backgroundColor: seriesData.color }} />
-            <div>{seriesData.name}</div>
+      <div className="tk-full-height tk-overflow-scroll">
+        {sortedSeries.map((seriesData) => (
+          <div className="tk-series-legend__table-row tk-flex tk-justify-content-between" key={seriesData.id} onMouseEnter={() => props.onDataHover(seriesData.id)}>
+            <div className="tk-flex">
+              <div className="tk-series-legend__legend-icon tk-mg-r-05" style={{ backgroundColor: seriesData.color }} />
+              <div>{seriesData.name}</div>
+            </div>
+            <div>{formatCurrency(seriesData.y)}</div>
           </div>
-          <div>{formatCurrency(seriesData.y)}</div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

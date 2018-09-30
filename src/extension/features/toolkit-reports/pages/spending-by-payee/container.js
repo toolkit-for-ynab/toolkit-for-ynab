@@ -8,4 +8,3 @@ function mapReportContextToProps(context) {
 }
 
 export const SpendingByPayee = withReportContext(mapReportContextToProps)(SpendingByPayeeComponent);
-

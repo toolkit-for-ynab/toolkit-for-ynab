@@ -1,3 +1,4 @@
+export const ALL_OTHER_DATA_COLOR = '#696a69';
 export const PIE_CHART_COLORS = [
   '#ea5439',
   '#f3ad51',
