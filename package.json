@@ -80,10 +80,10 @@
     "EnlargeCategoriesDropdown",
     "IncomeVsExpenseHoverHighlight",
     "PrintingImprovements",
-    "reports",
     "RightClickToEdit",
     "ShowIntercom",
-    "SplitKeyboardShortcut"
+    "SplitKeyboardShortcut",
+    "ToolkitReports"
   ],
   "dependencies": {
     "classnames": "^2.2.6",

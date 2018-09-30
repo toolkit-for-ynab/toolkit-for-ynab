@@ -16,7 +16,7 @@ const YNAB_NAVLINK_SELECTOR = `.${YNAB_NAVLINK_CLASSES.join(', .')}`;
 const YNAB_NAVACCOUNT_CLASS = 'nav-account-row';
 const YNAB_NAVACCOUNT_SELECTOR = `.${YNAB_NAVACCOUNT_CLASS}`;
 
-export class ReactReports extends Feature {
+export class ToolkitReports extends Feature {
   injectCSS() { return require('./index.css'); }
 
   shouldInvoke() { return true; }
