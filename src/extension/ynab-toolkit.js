@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import { features } from 'toolkit/extension/features';
 import * as ynabUtils from 'toolkit/extension/utils/ynab';
 import * as emberUtils from 'toolkit/extension/utils/ember';
