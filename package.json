@@ -73,7 +73,6 @@
     "ToolkitReports"
   ],
   "dependencies": {
-    "babel-loader": "^8.0.4",
     "classnames": "^2.2.6",
     "highcharts": "^6.1.2",
     "raven-js": "^3.25.2",
@@ -91,6 +90,7 @@
     "archiver": "^2.1.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
+    "babel-loader": "^8.0.4",
     "chokidar": "^1.6.0",
     "chrome-webstore-upload": "0.2.1",
     "clean-webpack-plugin": "^0.1.17",
