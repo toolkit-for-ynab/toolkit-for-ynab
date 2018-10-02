@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import { features } from 'toolkit/extension/features';
 import * as ynabUtils from 'toolkit/extension/utils/ynab';
 import * as emberUtils from 'toolkit/extension/utils/ember';
@@ -92,8 +91,10 @@ export class YNABToolkit {
       };
 
       // eslint-disable-next-line
-      if (event.data.ynabToolKit.environment === 'development' && Rollbar) {
-        Rollbar.impl.instrumenter.deinstrumentConsole(); // eslint-disable-line
+      if (event.data.ynabToolKit.environment === 'development') {
+        try {
+          Rollbar.impl.instrumenter.deinstrumentConsole(); // eslint-disable-line
+        } catch { /* ignore */ }
       }
 
       this._setupErrorTracking();

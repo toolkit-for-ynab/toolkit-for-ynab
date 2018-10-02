@@ -1,0 +1,18 @@
+.tk-modal-container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  height: 100vh;
+}
+
+.tk-modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+  border-radius: .4rem;
+  box-shadow: 0 0 4em 0 rgba(0,0,0,0.25);
+  background: white;
+}

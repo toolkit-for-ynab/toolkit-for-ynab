@@ -1,0 +1,28 @@
+.tk-ive {
+  flex: 1;
+  font-size: .85rem;
+
+  &__net-income {
+    border-top: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    width: fit-content;
+
+    .tk-monthly-totals-row {
+      &__title-cell {
+        padding-left: 0.5rem;
+      }
+
+      &__data-cell {
+        font-weight: bold;
+
+        &--positive {
+          color: #16a336;
+        }
+
+        &--negative {
+          color: #d33c2d
+        }
+      }
+    }
+  }
+}

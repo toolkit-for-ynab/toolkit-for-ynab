@@ -58,7 +58,8 @@ const legacySettingMap = {
   StripedRows: 'accountsStripedRows',
   ToBeBudgetedWarning: 'toBeBudgetedWarning',
   ToggleMasterCategories: 'collapseExpandBudgetGroups',
-  ToggleSplits: 'toggleSplits'
+  ToggleSplits: 'toggleSplits',
+  ToolkitReports: 'reports'
 };
 
 let previousSettings;

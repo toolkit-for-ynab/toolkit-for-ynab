@@ -1,0 +1,66 @@
+@import './variables.scss';
+
+.tk-button {
+  background-color: $ynab-blue;
+  background: $ynab-blue;
+  border-radius: .4rem;
+  color: $white;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: .3rem .6rem;
+  text-align: left;
+  white-space: nowrap;
+
+  &:hover {
+    color: $white;
+    background: $ynab-blue-3;
+    background-color: $ynab-blue-3;
+  }
+
+  &--medium {
+    font-size: .9rem;
+  }
+
+  &--small {
+    font-size: .8rem;
+  }
+
+  &--hollow {
+    background: transparent;
+    background-color: transparent;
+    border: 2px solid $grey-8;
+    color: $ynab-blue;
+
+    &:hover {
+      background: transparent;
+      background-color: transparent;
+      color: $ynab-blue-3;
+    }
+  }
+
+  &--text {
+    border: none;
+    color: $ynab-blue;
+    background: transparent;
+    background-color: transparent;
+
+    &:hover {
+      background: transparent;
+      background-color: transparent;
+      color: $ynab-blue-3;
+    }
+  }
+
+  &--disabled {
+    background: transparent;
+    background-color: transparent;
+    color: $grey-8;
+    cursor: not-allowed;
+
+    &:hover {
+      background: transparent;
+      background-color: transparent;
+      color: $grey-8;
+    }
+  }
+}

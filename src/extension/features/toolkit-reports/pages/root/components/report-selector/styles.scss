@@ -1,0 +1,11 @@
+.tk-report-selector {
+  background-color: #003540;
+  color: #ffffff;
+  height: 3em;
+
+  &__item {
+    &--active {
+      color: #fed168;
+    }
+  }
+}
