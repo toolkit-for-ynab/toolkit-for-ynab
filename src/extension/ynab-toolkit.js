@@ -94,7 +94,7 @@ export class YNABToolkit {
       if (event.data.ynabToolKit.environment === 'development') {
         try {
           Rollbar.impl.instrumenter.deinstrumentConsole(); // eslint-disable-line
-        } catch { /* ignore */ }
+        } catch (e) { /* ignore */ }
       }
 
       this._setupErrorTracking();
