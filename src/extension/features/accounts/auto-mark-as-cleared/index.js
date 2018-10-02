@@ -16,7 +16,6 @@ export class AutomaticallyMarkAsCleared extends Feature {
 
 
   invoke() {
-    console.log('Click clag!');
     // Calling click at DOM node and not jQuery because jQuery sometimes doesn't work properly
     let $markClearedButton = $('.ynab-cleared:not(.is-cleared)');
     if ($markClearedButton.length !== 0) {
