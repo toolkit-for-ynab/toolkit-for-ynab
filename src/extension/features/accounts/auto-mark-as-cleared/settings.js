@@ -3,6 +3,6 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Automatically mark transaction as cleared',
-  description: 'Automatically mark transaction as cleared when you enter it manually.'
+  title: 'Automatically Mark Transaction as Cleared',
+  description: 'Automatically ark transaction as cleared when you enter it manually.'
 };

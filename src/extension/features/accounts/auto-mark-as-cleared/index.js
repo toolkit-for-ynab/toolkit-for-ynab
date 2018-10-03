@@ -17,7 +17,7 @@ export class AutomaticallyMarkAsCleared extends Feature {
 
   invoke() {
     // Calling click at DOM node and not jQuery because jQuery sometimes doesn't work properly
-    let $markClearedButton = $('.ynab-cleared:not(.is-cleared)');
+    let $markClearedButton = $('.is-adding .ynab-cleared:not(.is-cleared)');
     if ($markClearedButton.length !== 0) {
       $markClearedButton[0].click();
     }
