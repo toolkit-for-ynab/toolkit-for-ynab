@@ -75,7 +75,9 @@ export class SpendingByPayeeComponent extends React.Component {
 
       const transactionPayeeId = transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
       const transactionPayee = this._payeesCollection.findItemByEntityId(transactionPayeeId);
-
+      if (!transactionPayee) {
+        return;
+      }
 
       const transactionAmount = transaction.get('amount');
       const payeeReportData = spendingByPayeeData.get(transactionPayeeId) || createPayeeMap(transactionPayee);
