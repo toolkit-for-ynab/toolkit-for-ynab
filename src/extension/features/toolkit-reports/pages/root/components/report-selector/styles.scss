@@ -4,6 +4,8 @@
   height: 3em;
 
   &__item {
+    cursor: pointer;
+
     &--active {
       color: #fed168;
     }
