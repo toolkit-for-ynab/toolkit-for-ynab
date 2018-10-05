@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getSelectedMonth, getEntityManager, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { /* getSelectedMonth, */ getEntityManager, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
@@ -7,7 +7,6 @@ import { controllerLookup } from 'toolkit/extension/utils/ember';
 const BUTTON_CLASS = 'tk-button-cover-from-future';
 
 export class CoverOverspendingFromFuture extends Feature {
-
   injectCSS() {
     return require('./index.css');
   }
@@ -37,6 +36,9 @@ export class CoverOverspendingFromFuture extends Feature {
 
     const category = checkedRows[0];
     const { isMasterCategory, available, budgeted } = category.getProperties('isMasterCategory', 'available', 'budgeted');
+
+    // TODO: Test
+    console.log(budgeted);
 
     // We can't budget for master categories
     // We don't need this if available is not negative
@@ -99,34 +101,37 @@ export class CoverOverspendingFromFuture extends Feature {
 
     // Get the current month
     const today = new ynab.utilities.DateWithoutTime();
-    const currentMonth = today.startOfMonth();
+    const currentMonth = today.clone().startOfMonth();
+    // const currentMonth = new Date(year, month - 1);
+    console.log('currentMonth: ', currentMonth, currentMonth.toString());
 
     // Initialize return collection
-    const categories = [category.monthlySubCategoryBudgetCalculation];
+    const categories = [];
 
-    // Loop and find every future month after the current one
-    let findMonth = currentMonth;
+    const funcFindInDirection = (future) => {
+      // Loop and find every future month after the current one
+      let findMonth = currentMonth.clone();
 
-    const funcFindInDirection = function (future) {
       while (findMonth) {
-        // Go to next month, depending on future or past
-        findMonth = findMonth.addMonths(future ? 1 : -1);
-
         // Find next category based on it's entityId
-        const nextEntityId = this.buildEntityId(path, findMonth, id);
+        const nextEntityId = buildEntityId(path, findMonth, id);
         console.log('nextEntityId: ', nextEntityId);
         const nextCategory = monthlySubCategoryBudgetCalculationsCollection.findItemByEntityId(nextEntityId);
 
         // Break if there is no next category
         if (nextCategory === null) {
-          findMonth = null;
-          break;
+          findMonth = false;
+          return;
         }
 
         categories.push({
           month: findMonth,
+          month_string: findMonth.toString(),
           category: nextCategory
         });
+
+        // Go to next month, depending on future or past
+        findMonth.addMonths(future ? 1 : -1);
       }
     };
 
@@ -134,7 +139,7 @@ export class CoverOverspendingFromFuture extends Feature {
     funcFindInDirection(true);
     funcFindInDirection(false);
 
-    return categories.sort(function (a, b) { return a.month - b.month; });
+    return categories.sort(function (a, b) { return a.month.toString() > b.month.toString() ? 1 : (a.month.toString() < b.month.toString() ? -1 : 0); });
   }
 
   splitEntityId(entityId) {
@@ -147,12 +152,12 @@ export class CoverOverspendingFromFuture extends Feature {
       id: split[2]
     };
   }
+}
 
-
-  buildEntityId(path, dateTime, id) {
-    return this.buildEntityIdFromParts(path, dateTime.getYear(), dateTime.getMonth(), id);
-  }
-  buildEntityIdFromParts(path, year, month, id) {
-    return `${path}/${year}-${month}/${id}`;
-  }
+function buildEntityId(path, dateTime, id) {
+  return buildEntityIdFromParts(path, dateTime.getYear(), dateTime.getMonth(), id);
+}
+function buildEntityIdFromParts(path, year, month, id) {
+  const fullMonth = (month + 1 < 10 ? '0' : '') + (month + 1);
+  return `${path}/${year}-${fullMonth}/${id}`;
 }
