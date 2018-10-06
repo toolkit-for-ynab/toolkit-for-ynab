@@ -9,7 +9,7 @@
         "https://*.youneedabudget.com/*"
       ],
       "all_frames": true,
-      "run_at": "document_end",
+      "run_at": "document_idle",
       "js": [
         "content-scripts/init.js"
       ]
