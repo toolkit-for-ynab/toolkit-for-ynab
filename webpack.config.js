@@ -15,11 +15,11 @@ module.exports = function (env) {
 
   const config = {
     entry: {
-      'background/background': ['@babel/polyfill', path.resolve(`${CODE_SOURCE_DIR}/core/browser/background/index.js`)],
-      'options/options': ['@babel/polyfill', path.resolve(`${CODE_SOURCE_DIR}/core/browser/options/options.js`)],
-      'popup/popup': ['@babel/polyfill', path.resolve(`${CODE_SOURCE_DIR}/core/browser/popup/index.js`)],
-      'content-scripts/init': ['@babel/polyfill', path.resolve(`${CODE_SOURCE_DIR}/core/browser/content-scripts/init.js`)],
-      'web-accessibles/ynab-toolkit': ['@babel/polyfill', path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`)]
+      'background/background': path.resolve(`${CODE_SOURCE_DIR}/core/browser/background/index.js`),
+      'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/browser/options/options.js`),
+      'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/browser/popup/index.js`),
+      'content-scripts/init': path.resolve(`${CODE_SOURCE_DIR}/core/browser/content-scripts/init.js`),
+      'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`)
     },
 
     devtool: 'source-map',

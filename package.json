@@ -9,7 +9,7 @@
     "build:development": "yarn build:check && yarn webpack:development && yarn build:legacy && yarn manifest:development",
     "build:prod": "yarn build:production",
     "build:production": "yarn build:check && yarn webpack:production && yarn build:legacy && yarn compress",
-    "build:legacy": "babel src/extension/legacy --compact false --quiet --out-dir dist/extension/web-accessibles/legacy",
+    "build:legacy": "babel src/extension/legacy --quiet --no-babelrc --compact false --config-file ./.babelrc-legacy --out-dir dist/extension/web-accessibles/legacy",
     "build:webpack": "webpack",
     "compress": "yarn compress:dist && yarn compress:src",
     "compress:dist": "node scripts/compressDist.js",

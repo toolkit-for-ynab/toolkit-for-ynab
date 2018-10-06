@@ -1,5 +1,5 @@
 import { mockToolkitStorage } from 'toolkit/test/mocks/toolkit-storage';
 
-export const ToolkitStorage = () => {
+export function ToolkitStorage() {
   return mockToolkitStorage;
-};
+}
