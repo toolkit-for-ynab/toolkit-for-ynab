@@ -78,27 +78,27 @@ function handleToolkitError(context) {
   getBrowser().runtime.sendMessage({ type: 'error', context });
 }
 
-function initializeYNABToolkit() {
-  getUserSettings().then((userSettings) => {
-    sendToolkitBootstrap(userSettings);
+async function initializeYNABToolkit() {
+  const userSettings = await getUserSettings();
+  sendToolkitBootstrap(userSettings);
 
-    /* Load this to setup shared utility functions */
-    injectScript('web-accessibles/legacy/features/shared/main.js');
+  /* Load this to setup shared utility functions */
+  injectScript('web-accessibles/legacy/features/shared/main.js');
 
-    /* Global toolkit css. */
-    injectCSS('web-accessibles/legacy/features/shared/main.css');
+  /* Global toolkit css. */
+  injectCSS('web-accessibles/legacy/features/shared/main.css');
 
-    /* This script to be built automatically by the python script */
-    injectScript('web-accessibles/legacy/features/act-on-change/feedChanges.js');
+  /* This script to be built automatically by the python script */
+  injectScript('web-accessibles/legacy/features/act-on-change/feedChanges.js');
 
-    /* Load this to setup behaviors when the DOM updates and shared functions */
-    injectScript('web-accessibles/legacy/features/act-on-change/main.js');
+  /* Load this to setup behaviors when the DOM updates and shared functions */
+  injectScript('web-accessibles/legacy/features/act-on-change/main.js');
 
-    applySettingsToDom(userSettings);
-  });
+  applySettingsToDom(userSettings);
 }
 
-storage.getFeatureSetting('DisableToolkit').then((isToolkitDisabled) => {
+async function init() {
+  const isToolkitDisabled = await storage.getFeatureSetting('DisableToolkit');
   if (isToolkitDisabled) {
     console.log(`${getBrowser().runtime.getManifest().name} is disabled!`);
     return;
@@ -109,4 +109,6 @@ storage.getFeatureSetting('DisableToolkit').then((isToolkitDisabled) => {
 
   // wait for the bundle to tell us it's loaded
   window.addEventListener('message', messageHandler);
-});
+}
+
+init();
