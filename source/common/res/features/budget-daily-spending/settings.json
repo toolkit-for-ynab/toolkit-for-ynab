@@ -1,0 +1,13 @@
+{
+         "name": "dailySpending",
+         "type": "checkbox",
+      "default": false,
+      "section": "budget",
+        "title": "Daily Spending Allowance",
+  "description": "Add the daily spending allowance to the inspector of a category budget",
+      "actions": {
+                    "true": [
+                      "injectScript", "main.js"
+                    ]
+                 }
+}
