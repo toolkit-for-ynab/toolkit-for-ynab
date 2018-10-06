@@ -43,8 +43,8 @@ export class SpendingByPayeeComponent extends React.Component {
     const { seriesData, spendingByPayeeData } = this.state;
 
     return (
-      <div className="tk-flex tk-flex-grow-1">
-        <div className="tk-flex tk-justify-content-center tk-align-items-center tk-flex-grow-1" id="tk-spending-by-payee" />
+      <div className="tk-flex tk-flex-grow">
+        <div className="tk-highcharts-report-container" id="tk-spending-by-payee" />
         <div className="tk-spending-by-payee__totals-legend tk-flex">
           {seriesData && spendingByPayeeData && (
             <SeriesLegend

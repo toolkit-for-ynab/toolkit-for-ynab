@@ -26,14 +26,14 @@ export const SeriesLegendComponent = (props) => {
   );
 
   return (
-    <div className="tk-series-legend tk-pd-1 tk-flex-grow-1 tk-border-l">
+    <div className="tk-series-legend tk-pd-1 tk-flex-grow tk-overflow-scroll tk-border-l">
       {totalSummary}
       {averageSummary}
       <div className="tk-series-legend__table-row tk-series-legend__table-row--header tk-mg-t-05 tk-flex tk-justify-content-between">
         <div>{props.sourceName}</div>
         <div>{props.tableName}</div>
       </div>
-      <div className="tk-full-height tk-overflow-scroll">
+      <div className="tk-full-height">
         {sortedSeries.map((seriesData) => (
           <div className="tk-series-legend__table-row tk-flex tk-justify-content-between" key={seriesData.id} onMouseEnter={() => props.onDataHover(seriesData.id)}>
             <div className="tk-flex">

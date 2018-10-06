@@ -12,7 +12,7 @@ export class ReportSelectorComponent extends React.Component {
 
   render() {
     return (
-      <div className="tk-flex tk-pd-l-05 tk-align-items-center tk-report-selector">
+      <div className="tk-flex tk-pd-l-05 tk-flex-shrink-none tk-align-items-center tk-report-selector">
         {REPORT_TYPES.map(({ key, name }) => {
           const reportNameClasses = classnames('tk-mg-r-05', 'tk-report-selector__item', {
             'tk-report-selector__item--active': this.props.activeReportKey === key

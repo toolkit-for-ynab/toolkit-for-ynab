@@ -30,7 +30,7 @@ export class NetWorthComponent extends React.Component {
 
   render() {
     return (
-      <div className="tk-flex tk-flex-column tk-flex-grow-1">
+      <div className="tk-flex tk-flex-column tk-flex-grow">
         <div className="tk-flex tk-justify-content-end">
           {this.state.hoveredData && (
             <Legend
@@ -40,7 +40,7 @@ export class NetWorthComponent extends React.Component {
             />
           )}
         </div>
-        <div className="tk-flex-grow-1" id="tk-net-worth-chart" />
+        <div className="tk-highcharts-report-container" id="tk-net-worth-chart" />
       </div>
     );
   }

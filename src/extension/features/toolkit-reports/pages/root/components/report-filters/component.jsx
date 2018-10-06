@@ -25,7 +25,7 @@ export class ReportFiltersComponent extends React.Component {
     });
 
     return (
-      <div className="tk-flex tk-pd-05 tk-border-b">
+      <div className="tk-flex tk-pd-05 tk-flex-shrink-none tk-border-b">
         <div className="tk-flex">
           <div className="tk-mg-r-05">
             <button onClick={this._showCategoryFilterModal} className={categoryButtonClasses}>
