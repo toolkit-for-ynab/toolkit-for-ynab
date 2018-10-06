@@ -3,24 +3,6 @@
 ynabToolKit.shared = (function () {
   let storageKeyPrefix = 'ynab-toolkit-';
   return {
-    // This function formats a number to a currency.
-    // number is the number you want to format, and html dictates if the <bdi> tag should be added or not.
-    formatCurrency(number) {
-      var formatted, currency, negative, currencySymbol;
-      formatted = ynab.formatCurrency(number);
-      currency = ynab.YNABSharedLib.currencyFormatter.getCurrency();
-      if (!currency.display_symbol) {
-        return new Ember.Handlebars.SafeString(formatted);
-      }
-
-      currencySymbol = Ember.Handlebars.Utils.escapeExpression(currency.currency_symbol);
-
-      // eslint-disable-next-line yoda, no-unused-expressions
-      currency.symbol_first ? (negative = '-' === formatted.charAt(0), formatted = negative ? '-' + currencySymbol + formatted.slice(1) : currencySymbol + formatted) : formatted += currencySymbol;
-
-      return new Ember.Handlebars.SafeString(formatted);
-    },
-
     parseSelectedMonth() {
       // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox
       if ($('.ember-view .budget-header').length) {
@@ -30,23 +12,6 @@ ynabToolKit.shared = (function () {
       }
 
       return null;
-    },
-
-    /**
-     * Short function for obtaining an Ember view.
-     *
-     * Variable number of params is supported. First is the container name, second is the
-     * view index number. Defaults to 0.
-     */
-    containerLookup(containerName) {
-      let container;
-      try {
-        container = __ynabapp__.__container__.lookup(containerName);
-      } catch (e) {
-        container = __ynabapp__.__container__.factoryCache[containerName];
-      }
-
-      return container;
     },
 
     getEmberView(viewId) {
