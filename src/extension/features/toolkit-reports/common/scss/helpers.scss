@@ -13,7 +13,10 @@
 .tk-flex-row { flex-direction: row; }
 .tk-flex-column { flex-direction: column; }
 
-.tk-flex-grow-1 { flex-grow: 1; }
+.tk-flex-grow { flex-grow: 1; }
+.tk-flex-grow-none { flex-grow: 0; }
+.tk-flex-shrink { flex-shrink: 1; }
+.tk-flex-shrink-none { flex-shrink: 0; }
 
 .tk-justify-content-center { justify-content: center; }
 .tk-justify-content-between { justify-content: space-between; }

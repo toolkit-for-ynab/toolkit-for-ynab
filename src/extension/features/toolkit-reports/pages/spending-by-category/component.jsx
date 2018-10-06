@@ -59,8 +59,8 @@ export class SpendingByCategoryComponent extends React.Component {
     }
 
     return (
-      <div className="tk-flex tk-flex-grow-1">
-        <div className="tk-flex tk-justify-content-center tk-align-items-center tk-flex-grow-1" id="tk-spending-by-category" />
+      <div className="tk-flex tk-flex-grow">
+        <div className="tk-highcharts-report-container" id="tk-spending-by-category" />
         <div className="tk-spending-by-category__totals-legend tk-flex">
           {legendSeries && spendingByMasterCategory && (
             <SeriesLegend
