@@ -47,7 +47,6 @@ function writeFeedChanges(features) {
       ${features.map((feature, index) => (
     `${index > 0 ? '      ' : ''}try {
         if (changes.changedNodes) ${feature}.observe(changes.changedNodes);
-        if (changes.routeChanged) ${feature}.onRouteChanged(changes.routeChanged);
       } catch (err) { /* ignore */ }`
   )).join('\n\n')}
     };
