@@ -29,8 +29,10 @@ export class DisplayTotalMonthlyGoals extends Feature {
       }
     }
 
+    // if the user edits a goal amount, it's turned into a string on the `subCategory`
+    // object. just convert everything into a number just in case.
     return {
-      monthlyGoalAmount,
+      monthlyGoalAmount: parseInt(monthlyGoalAmount, 10),
       isChecked: viewData.get('isChecked')
     };
   }
