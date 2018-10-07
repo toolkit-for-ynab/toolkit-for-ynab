@@ -9,6 +9,7 @@
 
 /* row */
 .budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit) {
+  color: white;
   background-color: var(--tk-color-goal-warning-underfunded);
 }
 .budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit):hover {
@@ -20,6 +21,7 @@
   color: var(--tk-color-goal-warning-underfunded);
 }
 .budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-inspector-category-overview .ynab-new-budget-available-number {
+  color: white;
   background: var(--tk-color-goal-warning-underfunded);
 }
 .budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-inspector-category-overview .inspector-message {
