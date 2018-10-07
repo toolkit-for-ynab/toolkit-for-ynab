@@ -64,6 +64,9 @@ export class CollapseSideMenu extends Feature {
         $('.ynabtk-collapse-link span').addClass('ynabtk-nav-link-collapsed');
         $('.ynabtk-collapse-icon').removeClass('left-circle-4').addClass('right-circle-4');
         this.getHideElements().hide();
+        Ember.run.next(() => {
+          window.dispatchEvent(new Event('resize'));
+        });
       });
     } else {
       Promise.all([
@@ -76,6 +79,9 @@ export class CollapseSideMenu extends Feature {
         $('.ynabtk-collapse-link span').removeClass('ynabtk-nav-link-collapsed');
         $('.ynabtk-collapse-icon').removeClass('right-circle-4').addClass('left-circle-4');
         this.getHideElements().show();
+        Ember.run.next(() => {
+          window.dispatchEvent(new Event('resize'));
+        });
       });
     }
   }
