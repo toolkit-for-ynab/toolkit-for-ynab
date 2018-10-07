@@ -80,7 +80,7 @@ async function uploadToWebStore(environmentVariables) {
 
 async function uploadSourcemapsToSentry({ sentryAuthToken }) {
   console.log(sentryAuthToken);
-  const version = require(`${extensionDistPath}/extension/manifest.json`).version + `.${Date.now()}`;
+  const version = require(`${extensionDistPath}/extension/manifest.json`).version;
 
   try {
     await request({
