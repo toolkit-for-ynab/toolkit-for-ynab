@@ -15,20 +15,36 @@ export class IncomeFromLastMonth extends Feature {
     const previousMonthName = l10nMonth(matchMonth.getMonth(), MonthStyle.Short);
 
     const total = getEntityManager().getAllTransactions().reduce((reduced, transaction) => {
-      if (transaction.getIsSplit()) {
-        transaction.getSubTransactions().forEach((subTransaction) => {
-          if (subTransaction.get('subCategory') && subTransaction.get('subCategory').isIncomeCategory()) {
-            reduced += subTransaction.get('amount');
+      const isSplit = transaction.getIsSplit();
+      const transactionSubCategory = transaction.get('subCategory');
+      const transactionAmount = transaction.get('amount');
+
+      if (
+        !transaction.get('date').equalsByMonth(matchMonth) ||
+        transaction.get('isTombstone') ||
+        !transactionSubCategory
+      ) {
+        return reduced;
+      }
+
+      if (transactionSubCategory.isIncomeCategory()) {
+        return reduced + transactionAmount;
+      } else if (isSplit) {
+        let subTransactionIncomes = 0;
+        transaction.get('subTransactions').forEach((subTransaction) => {
+          const subTransactionSubCategory = subTransaction.get('subCategory');
+          const subTransactionAmount = subTransaction.get('amount');
+
+          if (!transactionSubCategory) {
+            return;
+          }
+
+          if (subTransactionSubCategory.isIncomeCategory()) {
+            subTransactionIncomes += subTransactionAmount;
           }
         });
-      } else if (
-        !transaction.get('isTombstone') &&
-        !transaction.isTransferTransaction() &&
-        transaction.get('account.onBudget') &&
-        (transaction.get('date') && transaction.get('date').equalsByMonth(matchMonth)) &&
-        (transaction.get('subCategory') && transaction.get('subCategory').isIncomeCategory())
-      ) {
-        reduced += transaction.get('amount');
+
+        return reduced + subTransactionIncomes;
       }
 
       return reduced;
