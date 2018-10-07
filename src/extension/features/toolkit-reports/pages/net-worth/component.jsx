@@ -169,11 +169,12 @@ export class NetWorthComponent extends React.Component {
     }
 
     // make sure we have a label for any months which have empty data
+    const { fromDate, toDate } = this.props.filters.dateFilter;
     if (transactions.length) {
       let currentIndex = 0;
       const transactionMonth = transactions[0].get('date').clone().startOfMonth();
-      const lastTransactionMonth = transactions[transactions.length - 1].get('date').clone().startOfMonth();
-      while (transactionMonth.isBefore(lastTransactionMonth)) {
+      const lastFilterMonth = toDate.clone().addMonths(1).startOfMonth();
+      while (transactionMonth.isBefore(lastFilterMonth)) {
         if (!allReportData.labels.includes(localizedMonthAndYear(transactionMonth))) {
           const { assets, debts, netWorths, labels } = allReportData;
           labels.splice(currentIndex, 0, localizedMonthAndYear(transactionMonth));
@@ -189,12 +190,11 @@ export class NetWorthComponent extends React.Component {
 
     // Net Worth is calculated from the start of time so we need to handle "filters" here
     // rather than using `filteredTransactions` from context.
-    const { fromDate, toDate } = this.props.filters.dateFilter;
     const { labels, assets, debts, netWorths } = allReportData;
     let startIndex = labels.findIndex((label) => label === localizedMonthAndYear(fromDate));
     startIndex = startIndex === -1 ? 0 : startIndex;
-    let endIndex = labels.findIndex((label) => label === localizedMonthAndYear(toDate)) + 1;
-    endIndex = endIndex === -1 ? labels.length - 1 : endIndex;
+    let endIndex = labels.findIndex((label) => label === localizedMonthAndYear(toDate));
+    endIndex = endIndex === -1 ? (labels.length + 1) : (endIndex + 1);
 
     const filteredLabels = labels.slice(startIndex, endIndex);
     const filteredDebts = debts.slice(startIndex, endIndex);
