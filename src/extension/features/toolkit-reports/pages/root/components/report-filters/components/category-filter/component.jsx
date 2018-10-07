@@ -26,10 +26,15 @@ export class CategoryFilterComponent extends React.Component {
     const categoriesList = [];
     masterCategoriesCollection.forEach((masterCategory) => {
       const { entityId: masterCategoryId } = masterCategory;
-      if (masterCategory.isTombstone || masterCategory.internalName) {
+      if (
+        masterCategory.isTombstone ||
+        masterCategory.isDebtPaymentMasterCategory() ||
+        masterCategory.isInternalMasterCategory()
+      ) {
         return;
       }
 
+      const isHiddenMasterCategory = masterCategory.isHiddenMasterCategory();
       const subCategories = subCategoriesCollection.findItemsByMasterCategoryId(masterCategoryId);
       const areAllSubCategoriesIgnored = subCategories.every(({ entityId }) => categoryFilterIds.has(entityId));
 
@@ -46,7 +51,7 @@ export class CategoryFilterComponent extends React.Component {
 
       subCategories.sort(sortableIndexCompare).forEach((subCategory) => {
         const { entityId: subCategoryId } = subCategory;
-        if (subCategory.isTombstone || subCategory.internalName) {
+        if (subCategory.isTombstone || (subCategory.internalName && !isHiddenMasterCategory)) {
           return;
         }
 
