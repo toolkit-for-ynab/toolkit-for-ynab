@@ -111,8 +111,8 @@ export class YNABToolkit {
   _setupErrorTracking = () => {
     window.addEventListener('error', ({ error }) => {
       let serializedError = '';
-      if (error.stack) {
-        serializedError = error.stack.toString();
+      if (error.message && error.stack) {
+        serializedError = `${error.message}\n${error.stack.toString()}`;
       } else if (error.message) {
         serializedError = error.message;
       }
