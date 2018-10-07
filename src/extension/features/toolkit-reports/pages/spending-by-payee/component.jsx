@@ -164,7 +164,7 @@ export class SpendingByPayeeComponent extends React.Component {
           dataLabels: {
             formatter: function () {
               let formattedNumber = formatCurrency(this.y);
-              return `${this.point.name}<br>${formattedNumber} (${Math.round(this.percentage)}%)`;
+              return `${this.point.name}<br><span class="currency">${formattedNumber} (${Math.round(this.percentage)}%)</span>`;
             }
           }
         }
@@ -175,7 +175,7 @@ export class SpendingByPayeeComponent extends React.Component {
       title: {
         align: 'center',
         verticalAlign: 'middle',
-        text: `Total Spending<br>${formatCurrency(totalSpending)}`
+        text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`
       },
       series: [{
         name: 'Total Spending',

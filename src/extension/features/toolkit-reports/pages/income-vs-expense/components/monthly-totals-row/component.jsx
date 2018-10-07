@@ -1,9 +1,9 @@
-import * as React from 'react';
+import classnames from 'classnames';
 import * as PropTypes from 'prop-types';
-import { formatCurrency } from 'toolkit/extension/utils/currency';
+import * as React from 'react';
 import { localizedMonthAndYear } from 'toolkit/extension/utils/date';
 import { MonthStyle } from 'toolkit/extension/utils/toolkit';
-import classnames from 'classnames';
+import { Currency } from 'toolkit-reports/common/components/currency';
 import './styles.scss';
 
 export const MonthlyTotalsRow = (props) => {
@@ -27,15 +27,17 @@ export const MonthlyTotalsRow = (props) => {
 
             return (
               <div key={monthData.get('date').toISOString()} className={className}>
-                {props.titles ? localizedMonthAndYear(monthData.get('date'), MonthStyle.Short) : formatCurrency(monthData.get('total'))}
+                {props.titles
+                  ? localizedMonthAndYear(monthData.get('date'), MonthStyle.Short)
+                  : <Currency value={monthData.get('total')} />}
               </div>
             );
           })}
           <div key="average" className={allMonthsClassName}>
-            {props.titles ? 'Average' : formatCurrency(allMonthsTotal / props.monthlyTotals.length)}
+            {props.titles ? 'Average' : <Currency value={allMonthsTotal / props.monthlyTotals.length} />}
           </div>
           <div key="total" className={allMonthsClassName}>
-            {props.titles ? 'Total' : formatCurrency(allMonthsTotal)}
+            {props.titles ? 'Total' : <Currency value={allMonthsTotal} />}
           </div>
         </React.Fragment>
       )}

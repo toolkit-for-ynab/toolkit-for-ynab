@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { Currency } from 'toolkit-reports/common/components/currency';
 import './styles.scss';
 
 export const SeriesLegendComponent = (props) => {
@@ -12,7 +12,9 @@ export const SeriesLegendComponent = (props) => {
   const totalSummary = (
     <div className="tk-flex tk-flex-column tk-justify-content tk-align-items-center tk-border-b tk-pd-b-1">
       <div>Total {props.tableName}</div>
-      <div className="tk-series-legend__summary-total">{formatCurrency(seriesTotal)}</div>
+      <div className="tk-series-legend__summary-total">
+        <Currency value={seriesTotal} />
+      </div>
       <div>For this time period.</div>
     </div>
   );
@@ -20,7 +22,9 @@ export const SeriesLegendComponent = (props) => {
   const averageSummary = (
     <div className="tk-flex tk-flex-column tk-justify-content tk-align-items-center tk-border-b tk-pd-y-1">
       <div>Average {props.tableName}</div>
-      <div className="tk-series-legend__summary-total">{formatCurrency(seriesTotal / totalMonths)}</div>
+      <div className="tk-series-legend__summary-total">
+        <Currency value={seriesTotal / totalMonths} />
+      </div>
       <div>Per month.</div>
     </div>
   );
@@ -40,7 +44,9 @@ export const SeriesLegendComponent = (props) => {
               <div className="tk-series-legend__legend-icon tk-mg-r-05" style={{ backgroundColor: seriesData.color }} />
               <div>{seriesData.name}</div>
             </div>
-            <div>{formatCurrency(seriesData.y)}</div>
+            <div>
+              <Currency value={seriesData.y} />
+            </div>
           </div>
         ))}
       </div>
