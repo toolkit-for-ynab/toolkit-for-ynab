@@ -1,3 +1,12 @@
+/* global reusable colors */
+:root {
+  --tk-color-black: #000000;
+  --tk-color-gray: #cfd5d8;
+  --tk-color-positive: #16a336;
+  --tk-color-positive--hover: #138b2e;
+  --tk-color-white: #ffffff;
+}
+
 .accounts-toolbar {
   display: flex;
   justify-content: space-between;
