@@ -49,6 +49,9 @@ export class ResizeSidebar extends Feature {
 
   onMouseUp(event) {
     this.toggleResize(false, event);
+    Ember.run.next(() => {
+      window.dispatchEvent(new Event('resize'));
+    });
   }
 
   toggleResize(isMouseDown, event) {
