@@ -1,0 +1,8 @@
+.tk-multi-flags__icon {
+  margin: 0 .5em;
+}
+
+.tk-multi-flags__button {
+  display: flex;
+  align-items: center;
+}
