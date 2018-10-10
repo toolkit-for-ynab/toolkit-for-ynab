@@ -6,6 +6,9 @@
 ## Account Name Height
 Makes the account names smaller so that you can see more of the account names and fit more on the screen.
 
+## Allow Resizing of Side Menu
+Allows the Side Menu on the left to be resized. Resizing also allows longer account names to show up completely.
+
 ## Better scrollbars
 Provides smaller and cleaner scrollbars across the application.
 
@@ -18,11 +21,11 @@ Adds a button that can collapse the menu on the left so you can see more of your
 ## Colour Blind Mode
 Changes colours like red, yellow and green in the interface to colours and shapes that are more easily distinguishable by colourblind people.
 
-## Hide Edit Account Button
-Allows you to hide the edit account button to help prevent accidentally clicking on it.
-
 ## Hide Account Balances
 Allows you to hide account type totals and/or account balances.
+
+## Hide Edit Account Button
+Allows you to hide the edit account button to help prevent accidentally clicking on it.
 
 ## Hide Help (?) Button
 This feature hides the blue help (?) button in the bottom right corner of the screen. View the account-options popup (click your e-mail in the bottom left) to show or hide the help button.
@@ -45,17 +48,17 @@ Changes print styles so budget and account sections can be easily printed. Due t
 ## Privacy Mode
 Obscures dollar amounts everywhere until hovered. In toggle mode, a lock icon will appear to the right of your budget name in the top left corner of YNAB. Click to enable or disable privacy mode.
 
-## Reports
-Adds a button to the side bar to access reports. Net Worth, Spending By Category, and Income vs. Expense are all available reports.
-
-## Show Import Notifications in Sidebar
-Display a notification in the sidebar when there are transactions to be imported.
+## Show Import Notifications in Navigation Sidebar
+Underline account names in the navigation sidebar that have transactions to be imported. Hovering the mouse over the account name will display the number of transactions to be imported.
 
 ## Show Intercom
 It's easy to just click 'X' on the intercom announcements when they show up and forget to read what was there. This feature add an option to the account-options popup (click your e-mail at the bottom left of the screen) to show the intercom again.
 
 ## Square Negative Mode
-Changes the round borders on all negative numbers to square. Helps them become more of an eyesore so you want to get rid of them!</details>
+Changes the round borders on all negative numbers to square. Helps them become more of an eyesore so you want to get rid of them!
+
+## Toolkit Reports
+Adds Toolkit Reports to the sidebar. Current reports include: Net Worth, Spending By Category/Payee, and Income vs Expense</details>
 <details><summary>Budget (Click to Expand/Collapse)</summary>
 
 ## Add "Enter" Shortcut to the Move Popup
@@ -166,6 +169,9 @@ Clicking the Toggle Splits button shows or hides all sub-transactions within all
 ## Auto Adjust Split Transactions
 When entering split transactions, each additional split will be auto-filled with the current remaining amount.
 
+## Automatically Mark Transaction as Cleared
+Automatically mark transaction as cleared when you enter it manually.
+
 ## Change Behaviour of Enter Key When Adding Transactions
 When you press enter while adding transactions, the default behaviour is 'Save and add another'. This option changes it to just 'Save'.
 
@@ -174,6 +180,9 @@ Adds an option to the transaction edit drop-down menu to clear the current selec
 
 ## Easy Transaction Approval
 Quickly approve scheduled or linked transactions by selecting the transaction(s) and pressing 'a' or 'enter' on your keyboard. Alternately, approve single scheduled or linked transactions by right clicking on the blue 'i' or link icon.
+
+## Edit Multiple Flags at Once
+Adds a button to the edit dialog which allows you to set the flag. If multiple transactions are selected, all transactions are updated.
 
 ## Emphasize Outflows
 Make values in the outflow column red and put them in parenthesis.
