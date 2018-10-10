@@ -5,6 +5,8 @@ import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-check
 import './styles.scss';
 
 export class AccountFilterComponent extends React.Component {
+  _accountsCollection = Collections.accountsCollection;
+
   static propTypes = {
     accountFilterIds: PropTypes.any.isRequired,
     activeReportKey: PropTypes.string.isRequired,
@@ -17,11 +19,13 @@ export class AccountFilterComponent extends React.Component {
   }
 
   get onBudgetAccounts() {
-    return Collections.accountsCollection.getOnBudgetAccounts().toArray();
+    const onBudgetAccounts = this._accountsCollection.getOnBudgetAccounts();
+    return onBudgetAccounts ? onBudgetAccounts.toArray() : [];
   }
 
   get offBudgetAccounts() {
-    return Collections.accountsCollection.getOffBudgetAccounts().toArray();
+    const offBudgetAccounts = this._accountsCollection.getOffBudgetAccounts();
+    return offBudgetAccounts ? offBudgetAccounts.toArray() : [];
   }
 
   render() {

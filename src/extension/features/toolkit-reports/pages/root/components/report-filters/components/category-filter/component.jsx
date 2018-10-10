@@ -9,6 +9,9 @@ function sortableIndexCompare(a, b) {
 }
 
 export class CategoryFilterComponent extends React.Component {
+  _masterCategoriesCollection = Collections;
+  _subCategoriesCollection = Collections;
+
   static propTypes = {
     activeReportKey: PropTypes.string.isRequired,
     categoryFilterIds: PropTypes.any.isRequired,
@@ -21,10 +24,9 @@ export class CategoryFilterComponent extends React.Component {
   }
 
   render() {
-    const { masterCategoriesCollection, subCategoriesCollection } = Collections;
     const { categoryFilterIds } = this.state;
     const categoriesList = [];
-    masterCategoriesCollection.forEach((masterCategory) => {
+    this._masterCategoriesCollection.forEach((masterCategory) => {
       const { entityId: masterCategoryId } = masterCategory;
       if (
         masterCategory.isTombstone ||
@@ -35,7 +37,11 @@ export class CategoryFilterComponent extends React.Component {
       }
 
       const isHiddenMasterCategory = masterCategory.isHiddenMasterCategory();
-      const subCategories = subCategoriesCollection.findItemsByMasterCategoryId(masterCategoryId);
+      const subCategories = this._subCategoriesCollection.findItemsByMasterCategoryId(masterCategoryId);
+      if (!subCategories) {
+        return;
+      }
+
       const areAllSubCategoriesIgnored = subCategories.every(({ entityId }) => categoryFilterIds.has(entityId));
 
       categoriesList.push((
@@ -94,12 +100,16 @@ export class CategoryFilterComponent extends React.Component {
 
   _handleSelectNone = () => {
     const { categoryFilterIds } = this.state;
-    const { masterCategoriesCollection, subCategoriesCollection } = Collections;
 
-    masterCategoriesCollection.forEach((masterCategory) => {
+    this._masterCategoriesCollection.forEach((masterCategory) => {
       const { entityId: masterCategoryId } = masterCategory;
       if (!masterCategory.isTombstone && !masterCategory.internalName) {
-        subCategoriesCollection.findItemsByMasterCategoryId(masterCategoryId).sort(sortableIndexCompare).forEach((subCategory) => {
+        const subCategories = this._subCategoriesCollection.findItemsByMasterCategoryId(masterCategoryId);
+        if (!subCategories) {
+          return;
+        }
+
+        subCategories.forEach((subCategory) => {
           const { entityId: subCategoryId } = subCategory;
           if (!subCategory.isTombstone || !subCategory.internalName) {
             categoryFilterIds.add(subCategoryId);
@@ -114,7 +124,11 @@ export class CategoryFilterComponent extends React.Component {
   _handleMasterCategoryToggled = ({ currentTarget }) => {
     const { checked, name } = currentTarget;
     const { categoryFilterIds } = this.state;
-    const subCategories = Collections.subCategoriesCollection.findItemsByMasterCategoryId(name);
+    const subCategories = this._subCategoriesCollection.findItemsByMasterCategoryId(name);
+    if (!subCategories) {
+      return;
+    }
+
     if (checked) {
       subCategories.forEach(({ entityId }) => categoryFilterIds.delete(entityId));
     } else {

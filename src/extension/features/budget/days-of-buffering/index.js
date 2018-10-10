@@ -17,14 +17,19 @@ export class DaysOfBuffering extends Feature {
 
   invoke() {
     const eligibleTransactions = getEntityManager().getAllTransactions().filter(this._eligibleTransactionFilter);
-    const onBudgetBalance = Collections.accountsCollection.getOnBudgetAccounts().reduce((reduced, current) => {
-      const calculation = current.getAccountCalculation();
-      if (calculation && !calculation.getAccountIsTombstone()) {
-        reduced += calculation.getBalance();
-      }
+    const onBudgetAccounts = Collections.accountsCollection.getOnBudgetAccounts();
 
-      return reduced;
-    }, 0);
+    let onBudgetBalance = 0;
+    if (onBudgetAccounts) {
+      onBudgetBalance = onBudgetAccounts.reduce((reduced, current) => {
+        const calculation = current.getAccountCalculation();
+        if (calculation && !calculation.getAccountIsTombstone()) {
+          reduced += calculation.getBalance();
+        }
+
+        return reduced;
+      }, 0);
+    }
 
     const calculation = this._calculateDaysOfBuffering(onBudgetBalance, eligibleTransactions);
     this._updateDisplay(calculation);
