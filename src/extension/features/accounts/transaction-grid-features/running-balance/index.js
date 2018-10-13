@@ -140,6 +140,26 @@ function attachAnyItemChangedListener(accountId, transactionViewModel) {
 }
 
 function calculateRunningBalance(accountId) {
+  const accountController = controllerLookup('accounts');
+  const registerSort = accountController.get('registerSort');
+  const sortFields = registerSort.fetchSortFields(accountId).copy();
+
+  const dateSortFieldIndex = sortFields.findIndex((sortField) => sortField.property === 'date');
+  if (dateSortFieldIndex !== 0) {
+    const temp = sortFields[0];
+    sortFields[0] = sortFields[dateSortFieldIndex];
+    sortFields[dateSortFieldIndex] = temp;
+  }
+
+  const sortFunction = registerSort.createSortFunction(sortFields);
+
+  if (!accountController.__tkSortFieldsListener) {
+    accountController.addObserver('sortFields', function (controller) {
+      accountController.__tkSortFieldsListener = true;
+      calculateRunningBalance(controller.get('filters.entityId'));
+    });
+  }
+
   return ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(accountId).then((transactionViewModel) => {
     if (!transactionViewModel.__ynabToolKitAnyItemChangedListener) {
       attachAnyItemChangedListener(accountId, transactionViewModel);
@@ -148,41 +168,32 @@ function calculateRunningBalance(accountId) {
     // Sort all transactions is ascending order first. If the dates match, sort transactions
     // in ascending order (outflows are negative when using `.getAmount`). If the dates are
     // equal, the amounts are always sorted in descending order.
-    const transactions = transactionViewModel.get('visibleTransactionDisplayItems');
-    const sorted = transactions.slice().sort((a, b) => {
-      let propA = a.get('date');
-      let propB = b.get('date');
-
-      if (propA instanceof ynab.utilities.DateWithoutTime) propA = propA.getUTCTime();
-      if (propB instanceof ynab.utilities.DateWithoutTime) propB = propB.getUTCTime();
-
-      const dateCompare = Ember.compare(propA, propB);
-      if (dateCompare === 0) {
-        const amountCompare = Ember.compare(a.getAmount(), b.getAmount());
-        if (amountCompare === 0) {
-          return Ember.compare(a.getEntityId(), b.getEntityId());
-        }
-
-        return -amountCompare;
-      }
-
-      return dateCompare;
-    });
+    const sorted = transactionViewModel.get('visibleTransactionDisplayItems').slice().sort(sortFunction);
+    const dateSortField = sortFields.find((sortField) => sortField.property === 'date');
+    const sortedAscending = dateSortField ? dateSortField.sortAscending : false;
 
     let runningBalance = 0;
-    sorted.forEach((transaction) => {
-      if (transaction.get('parentEntityId') !== null) {
+    if (sortedAscending) {
+      sorted.forEach((transaction) => {
+        if (transaction.get('parentEntityId') === null && transaction.get('inflow')) {
+          runningBalance += transaction.get('inflow');
+        } else if (transaction.get('parentEntityId') === null && transaction.get('outflow')) {
+          runningBalance -= transaction.get('outflow');
+        }
+
         transaction.__ynabToolKitRunningBalance = runningBalance;
-        return;
-      }
+      });
+    } else {
+      for (let x = sorted.length - 1; x >= 0; x--) {
+        const transaction = sorted[x];
+        if (transaction.get('parentEntityId') === null && transaction.get('inflow')) {
+          runningBalance += transaction.get('inflow');
+        } else if (transaction.get('parentEntityId') === null && transaction.get('outflow')) {
+          runningBalance -= transaction.get('outflow');
+        }
 
-      if (transaction.get('inflow')) {
-        runningBalance += transaction.get('inflow');
-      } else if (transaction.get('outflow')) {
-        runningBalance -= transaction.get('outflow');
+        transaction.__ynabToolKitRunningBalance = runningBalance;
       }
-
-      transaction.__ynabToolKitRunningBalance = runningBalance;
-    });
+    }
   });
 }
