@@ -35,7 +35,7 @@ export class IncomeFromLastMonth extends Feature {
           const subTransactionSubCategory = subTransaction.get('subCategory');
           const subTransactionAmount = subTransaction.get('amount');
 
-          if (!transactionSubCategory) {
+          if (!subTransactionSubCategory) {
             return;
           }
 
