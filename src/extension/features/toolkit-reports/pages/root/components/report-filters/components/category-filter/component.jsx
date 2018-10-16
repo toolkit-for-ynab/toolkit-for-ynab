@@ -9,8 +9,8 @@ function sortableIndexCompare(a, b) {
 }
 
 export class CategoryFilterComponent extends React.Component {
-  _masterCategoriesCollection = Collections;
-  _subCategoriesCollection = Collections;
+  _masterCategoriesCollection = Collections.masterCategoriesCollection;
+  _subCategoriesCollection = Collections.subCategoriesCollection;
 
   static propTypes = {
     activeReportKey: PropTypes.string.isRequired,
