@@ -118,5 +118,9 @@
     "to-string-loader": "^1.1.5",
     "webpack": "^3.10.0",
     "yargs": "^11.0.0"
+  },
+  "engines": {
+    "node": ">=8.12.0",
+    "yarn": ">=1.10.0"
   }
 }
