@@ -156,7 +156,11 @@ function calculateRunningBalance(accountId) {
   if (!accountController.__tkSortFieldsListener) {
     accountController.addObserver('sortFields', function (controller) {
       accountController.__tkSortFieldsListener = true;
-      calculateRunningBalance(controller.get('filters.entityId'));
+
+      const observedAccountId = controller.get('filters.entityId');
+      if (observedAccountId) {
+        calculateRunningBalance(observedAccountId);
+      }
     });
   }
 
