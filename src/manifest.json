@@ -1,4 +1,5 @@
 {
+  "author": "Toolkit for YNAB",
   "name": "Toolkit for YNAB",
   "description": "UI customizations and tweaks for the web version of YNAB.",
   "version": "2.9.3",
@@ -27,7 +28,8 @@
     "web-accessibles/*"
   ],
   "background": {
-    "page": "background/index.html"
+    "page": "background/index.html",
+    "persistent": true
   },
   "homepage_url": "https://github.com/toolkit-for-ynab/toolkit-for-ynab/",
   "options_ui": {
