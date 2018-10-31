@@ -196,9 +196,6 @@ Change the height of transaction rows so more of them are displayed on the scree
 ## Larger Clickable Area for Icons
 Makes the uncleared, cleared and reconciled icons easier to select.
 
-## Make Column Widths Adjustable
-Allows you to drag the columns to make them different sizes.
-
 ## Reconciled Text Colour
 Makes the text on reconciled transactions appear in a more obvious colour of your choosing.
 
