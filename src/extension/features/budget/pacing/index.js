@@ -34,7 +34,7 @@ export class Pacing extends Feature {
       .not('.is-debt-payment-category')
       .not('.is-master-category')
       .each((index, element) => {
-        const { category } = getEmberView(element.id);
+        const category = getEmberView(element.id, 'category');
         const pacingCalculation = pacingForCategory(category);
 
         const $display = this.generateDisplay(category.get('subCategory.entityId'), pacingCalculation);
