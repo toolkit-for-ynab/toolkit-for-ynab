@@ -51,9 +51,6 @@ Obscures dollar amounts everywhere until hovered. In toggle mode, a lock icon wi
 ## Show Import Notifications in Navigation Sidebar
 Underline account names in the navigation sidebar that have transactions to be imported. Hovering the mouse over the account name will display the number of transactions to be imported.
 
-## Show Intercom
-It's easy to just click 'X' on the intercom announcements when they show up and forget to read what was there. This feature add an option to the account-options popup (click your e-mail at the bottom left of the screen) to show the intercom again.
-
 ## Square Negative Mode
 Changes the round borders on all negative numbers to square. Helps them become more of an eyesore so you want to get rid of them!
 
