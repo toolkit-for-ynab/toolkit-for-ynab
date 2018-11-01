@@ -106,7 +106,9 @@ export class SetMultipleFlags extends Feature {
     getEntityManager().batchChangeProperties(() => {
       this._checkedRows.forEach((transaction) => {
         const entity = transactionsCollection.findItemByEntityId(transaction.get('entityId'));
-        entity.set('flag', color);
+        if (entity) {
+          entity.set('flag', color);
+        }
       });
     });
 
