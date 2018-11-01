@@ -213,7 +213,7 @@ export class IncomeVsExpenseComponent extends React.Component {
       [date.toISOString(), createMonthlyTotalsMap(date)]
     ]);
 
-    while (date.isBefore(toDate)) {
+    while (!date.isAfter(toDate)) {
       dates.set(date.toISOString(), createMonthlyTotalsMap(date));
       date.addMonths(1);
     }
