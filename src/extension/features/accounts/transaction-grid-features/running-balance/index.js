@@ -31,6 +31,11 @@ export class RunningBalance extends TransactionGridFeature {
     this.initializeRunningBalances();
   }
 
+  onBudgetChanged() {
+    this.hasInitialized = false;
+    this.initializeRunningBalances();
+  }
+
   cleanup() {
     $('.ynab-grid-cell-toolkit-running-balance').remove();
   }
@@ -86,24 +91,24 @@ export class RunningBalance extends TransactionGridFeature {
 
       const transaction = this.get('content');
       const runningBalance = transaction.__ynabToolKitRunningBalance;
-      if (typeof runningBalance !== 'undefined') {
-        const currencySpan = $('.user-data', currentRowRunningBalance);
-        if (runningBalance < 0) {
-          currencySpan.addClass('user-data currency negative');
-        } else if (runningBalance > 0) {
-          currencySpan.addClass('user-data currency positive');
-        } else {
-          currencySpan.addClass('user-data currency zero');
-        }
-
-        if (transaction.get('parentEntityId') !== null) {
-          currencySpan.text('');
-        } else {
-          currencySpan.text(formatCurrency(runningBalance));
-        }
-
-        currentRowRunningBalance.insertAfter($('.ynab-grid-cell-inflow', $currentRow));
+      const currencySpan = $('.user-data', currentRowRunningBalance);
+      if (runningBalance < 0) {
+        currencySpan.addClass('user-data currency negative');
+      } else if (runningBalance > 0) {
+        currencySpan.addClass('user-data currency positive');
+      } else {
+        currencySpan.addClass('user-data currency zero');
       }
+
+      if (transaction.get('parentEntityId') !== null) {
+        currencySpan.text('');
+      } else if (typeof runningBalance === 'undefined') {
+        currencySpan.text('Refresh Required');
+      } else {
+        currencySpan.text(formatCurrency(runningBalance));
+      }
+
+      currentRowRunningBalance.insertAfter($('.ynab-grid-cell-inflow', $currentRow));
     } else if (!isActions && !$('.ynab-grid-cell-toolkit-running-balance', this.element).length) {
       $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">')
         .insertAfter($('.ynab-grid-cell-inflow', this.element));
@@ -120,15 +125,14 @@ export class RunningBalance extends TransactionGridFeature {
 
     const promises = [];
     accountsCollection.forEach((account) => {
-      const viewModel = ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(account.entityId);
-      promises.push(viewModel.then(() => calculateRunningBalance(account.entityId)));
+      promises.push(calculateRunningBalance(account.entityId));
     });
 
     return Promise.all(promises);
   }
 }
 
-function attachAnyItemChangedListener(accountId, transactionViewModel) {
+function attachAnyItemChangedListener(transactionViewModel) {
   transactionViewModel.__ynabToolKitAnyItemChangedListener = true;
   transactionViewModel.get('visibleTransactionDisplayItems')
     .addObserver('anyItemChangedCounter', function (displayItems) {
@@ -164,9 +168,14 @@ function calculateRunningBalance(accountId) {
     });
   }
 
-  return ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(accountId).then((transactionViewModel) => {
+  let accountViewModel;
+  try {
+    accountViewModel = ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(accountId);
+  } catch (e) { /* do nothing */ }
+
+  return accountViewModel.then((transactionViewModel) => {
     if (!transactionViewModel.__ynabToolKitAnyItemChangedListener) {
-      attachAnyItemChangedListener(accountId, transactionViewModel);
+      attachAnyItemChangedListener(transactionViewModel);
     }
 
     // Sort all transactions is ascending order first. If the dates match, sort transactions

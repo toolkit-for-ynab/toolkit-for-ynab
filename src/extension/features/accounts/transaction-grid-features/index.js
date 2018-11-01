@@ -121,8 +121,6 @@ export class TransactionGridFeatures extends Feature {
         feature.invoke();
       }
     });
-
-    ynabToolKit.invokeFeature('AdjustableColumnWidths');
   }
 
   // We're not querying the DOM here because we really want this observe to be as
@@ -173,5 +171,9 @@ export class TransactionGridFeatures extends Feature {
         this.invoke();
       }
     }
+  }
+
+  onBudgetChanged() {
+    this.features.forEach((feature) => feature.onBudgetChanged());
   }
 }
