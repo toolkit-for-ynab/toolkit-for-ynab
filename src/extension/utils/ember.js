@@ -1,5 +1,10 @@
-export function getEmberView(viewId) {
-  return getViewRegistry()[viewId];
+export function getEmberView(viewId, getterString) {
+  const view = getViewRegistry()[viewId];
+  if (getterString && view) {
+    return view.get(getterString);
+  }
+
+  return view;
 }
 
 export function getRouter() {

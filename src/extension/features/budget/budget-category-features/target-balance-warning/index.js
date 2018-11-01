@@ -18,7 +18,7 @@ export class TargetBalanceWarning extends Feature {
         '.budget-inspector .inspector-overview-available .ynab-new-budget-available-number .currency'
       ].join(',');
       const availableNumberElement = $('.ynab-new-budget-available-number', element);
-      const originalClass = getEmberView(availableNumberElement.attr('id')).get('currencyClass');
+      const originalCurrencyClass = getEmberView(availableNumberElement.attr('id'), 'currencyClass');
       const inspectorElements = $(inspectorSelectors);
 
       if (element.hasAttribute(`data-${CategoryAttributes.GoalUnderFunded}`)) {
@@ -29,11 +29,10 @@ export class TargetBalanceWarning extends Feature {
         availableNumberElement.addClass('cautious');
       } else {
         availableNumberElement.removeClass('cautious');
-        availableNumberElement.addClass(originalClass);
+        availableNumberElement.addClass(originalCurrencyClass);
       }
 
-      const budgetInspectorView = getEmberView($('.budget-inspector').attr('id'));
-      const activeCategoryId = budgetInspectorView && budgetInspectorView.get('activeCategory.categoryId');
+      const activeCategoryId = getEmberView($('.budget-inspector').attr('id'), 'activeCategory.categoryId');
       if (activeCategoryId && activeCategoryId === element.dataset.entityId) {
         if ($(`.budget-inspector[data-${CategoryAttributes.GoalUnderFunded}]`).length) {
           REMOVE_CLASSES.forEach((className) => {
@@ -43,7 +42,7 @@ export class TargetBalanceWarning extends Feature {
           inspectorElements.addClass('cautious');
         } else {
           inspectorElements.removeClass('cautious');
-          inspectorElements.addClass(originalClass);
+          inspectorElements.addClass(originalCurrencyClass);
         }
       }
     });

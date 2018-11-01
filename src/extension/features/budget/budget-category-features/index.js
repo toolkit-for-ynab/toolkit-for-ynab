@@ -32,7 +32,7 @@ export class BudgetCategoryFeatures extends Feature {
 
     const categories = [...document.getElementsByClassName('budget-table-row')];
     categories.forEach((element) => {
-      const { category } = getEmberView(element.id);
+      const category = getEmberView(element.id, 'category');
       if (category) {
         const { isMasterCategory, subCategory } = category.getProperties('isMasterCategory', 'subCategory');
         if (!isMasterCategory && subCategory) {
