@@ -1,13 +1,10 @@
 :root {
-  /* General color definitions */
-  /* ReSharper disable Redundant, used implicitly in js code */
   --tk-color-progress-bar-goal: rgba(22, 163, 54, 0.3);
   --tk-color-progress-bar-goal-spacing: rgba(0, 0, 0, 0);
   --tk-color-progress-bar-pacing: rgb(192, 226, 233);
   --tk-color-progress-bar-pacing-month-progress-indicator: rgb(207, 213, 216);
   --tk-color-progress-bar-pacing-spacing: rgba(0, 0, 0, 0);
-  --tk-color-progress-bar-pacing-master-spacing: rgba(0, 0, 0, 0);
-  /* ReSharper restore Redundant */
+  --tk-color-progress-bar-pacing-master-spacing: rgb(229, 245, 249);
 }
 
 /* Fix position of head monthly progress indicator by moving the bg slightly to the right and making it shorter. Also move the text back */
