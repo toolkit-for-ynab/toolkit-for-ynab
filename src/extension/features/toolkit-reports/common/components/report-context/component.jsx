@@ -13,7 +13,8 @@ export const SelectedReportContextPropType = {
   key: PropTypes.string.isRequired,
   filterSettings: PropTypes.shape({
     disableCategoryFilter: PropTypes.bool,
-    disableTrackingAccounts: PropTypes.bool
+    disableTrackingAccounts: PropTypes.bool,
+    includeTrackingAccounts: PropTypes.bool
   })
 };
 
@@ -32,25 +33,29 @@ const REPORT_COMPONENTS = [{
   component: NetWorth,
   key: ReportKeys.NetWorth,
   filterSettings: {
-    disableCategoryFilter: true
+    disableCategoryFilter: true,
+    includeTrackingAccounts: true
   }
 }, {
   component: SpendingByPayee,
   key: ReportKeys.SpendingByPayee,
   filterSettings: {
-    disableTrackingAccounts: true
+    disableTrackingAccounts: true,
+    includeTrackingAccounts: false
   }
 }, {
   component: SpendingByCategory,
   key: ReportKeys.SpendingByCategory,
   filterSettings: {
-    disableTrackingAccounts: true
+    disableTrackingAccounts: true,
+    includeTrackingAccounts: false
   }
 }, {
   component: IncomeVsExpense,
   key: ReportKeys.IncomeVsExpense,
   filterSettings: {
-    disableTrackingAccounts: true
+    disableTrackingAccounts: true,
+    includeTrackingAccounts: false
   }
 }];
 
