@@ -10,11 +10,14 @@ export class DisplayTotalMonthlyGoals extends Feature {
 
   extractCategoryGoalInformation(element) {
     const emberId = element.id;
-    const viewData = getEmberView(emberId).category;
+    const category = getEmberView(emberId, 'category');
+    if (!category) {
+      return;
+    }
 
-    const goalType = viewData.get('subCategory.goalType');
-    const monthlyFunding = viewData.get('subCategory.monthlyFunding');
-    const targetBalanceDate = viewData.get('monthlySubCategoryBudgetCalculation.goalTarget');
+    const goalType = category.get('subCategory.goalType');
+    const monthlyFunding = category.get('subCategory.monthlyFunding');
+    const targetBalanceDate = category.get('monthlySubCategoryBudgetCalculation.goalTarget');
 
     let monthlyGoalAmount = 0;
 
@@ -33,7 +36,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
     // object. just convert everything into a number just in case.
     return {
       monthlyGoalAmount: parseInt(monthlyGoalAmount, 10),
-      isChecked: viewData.get('isChecked')
+      isChecked: category.get('isChecked')
     };
   }
 

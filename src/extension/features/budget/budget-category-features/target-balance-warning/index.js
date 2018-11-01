@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { getEmberView } from 'toolkit/extension/utils/ember';
 import { CategoryAttributes } from 'toolkit/extension/features/budget/budget-category-features';
 
 const REMOVE_CLASSES = ['positive', 'zero'];
@@ -16,27 +17,33 @@ export class TargetBalanceWarning extends Feature {
         '.budget-inspector .inspector-overview-available .ynab-new-budget-available-number',
         '.budget-inspector .inspector-overview-available .ynab-new-budget-available-number .currency'
       ].join(',');
-      const rowElements = $('.ynab-new-budget-available-number', element);
+      const availableNumberElement = $('.ynab-new-budget-available-number', element);
+      const originalCurrencyClass = getEmberView(availableNumberElement.attr('id'), 'currencyClass');
       const inspectorElements = $(inspectorSelectors);
 
       if (element.hasAttribute(`data-${CategoryAttributes.GoalUnderFunded}`)) {
         REMOVE_CLASSES.forEach((className) => {
-          rowElements.removeClass(className);
+          availableNumberElement.removeClass(className);
         });
 
-        rowElements.addClass('cautious');
+        availableNumberElement.addClass('cautious');
       } else {
-        rowElements.removeClass('cautious');
+        availableNumberElement.removeClass('cautious');
+        availableNumberElement.addClass(originalCurrencyClass);
       }
 
-      if ($(`.budget-inspector[data-${CategoryAttributes.GoalUnderFunded}]`).length) {
-        REMOVE_CLASSES.forEach((className) => {
-          inspectorElements.removeClass(className);
-        });
+      const activeCategoryId = getEmberView($('.budget-inspector').attr('id'), 'activeCategory.categoryId');
+      if (activeCategoryId && activeCategoryId === element.dataset.entityId) {
+        if ($(`.budget-inspector[data-${CategoryAttributes.GoalUnderFunded}]`).length) {
+          REMOVE_CLASSES.forEach((className) => {
+            inspectorElements.removeClass(className);
+          });
 
-        inspectorElements.addClass('cautious');
-      } else {
-        inspectorElements.removeClass('cautious');
+          inspectorElements.addClass('cautious');
+        } else {
+          inspectorElements.removeClass('cautious');
+          inspectorElements.addClass(originalCurrencyClass);
+        }
       }
     });
   }

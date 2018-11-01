@@ -25,7 +25,7 @@ export class DisplayTargetGoalAmount extends Feature {
     const userSetting = this.settings.enabled;
     const budgetRows = [...document.getElementsByClassName('budget-table-row')];
     budgetRows.forEach((element) => {
-      const { category } = getEmberView(element.id);
+      const category = getEmberView(element.id, 'category');
       if (!category) {
         return;
       }
