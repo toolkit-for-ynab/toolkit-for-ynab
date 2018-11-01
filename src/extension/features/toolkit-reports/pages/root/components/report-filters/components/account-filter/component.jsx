@@ -10,6 +10,8 @@ export class AccountFilterComponent extends React.Component {
   static propTypes = {
     accountFilterIds: PropTypes.any.isRequired,
     activeReportKey: PropTypes.string.isRequired,
+    includeClosedAccountType: PropTypes.string,
+    includeTrackingAccounts: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired
   }
@@ -24,14 +26,30 @@ export class AccountFilterComponent extends React.Component {
   }
 
   get offBudgetAccounts() {
+    if (!this.props.includeTrackingAccounts) {
+      return [];
+    }
+
     const offBudgetAccounts = this._accountsCollection.getOffBudgetAccounts();
     return offBudgetAccounts ? offBudgetAccounts.toArray() : [];
+  }
+
+  get closedAccounts() {
+    const closedAccounts = this._accountsCollection.getClosedAccounts();
+    return closedAccounts.toArray().filter((account) => {
+      if (account.get('onBudget') === false && !this.props.includeTrackingAccounts) {
+        return false;
+      }
+
+      return true;
+    });
   }
 
   render() {
     const { accountFilterIds } = this.state;
     const onBudgetAccounts = this.onBudgetAccounts;
     const offBudgetAccounts = this.offBudgetAccounts;
+    const closedAccounts = this.closedAccounts;
 
     const onBudgetAccountsList = [];
     onBudgetAccounts.forEach(({ entityId, accountName }) => {
@@ -61,8 +79,23 @@ export class AccountFilterComponent extends React.Component {
       ));
     });
 
+    const closedAccountsList = [];
+    closedAccounts.forEach(({ entityId, accountName }) => {
+      closedAccountsList.push((
+        <div className="tk-mg-l-1" key={entityId}>
+          <LabeledCheckbox
+            id={entityId}
+            checked={!accountFilterIds.has(entityId)}
+            label={accountName}
+            onChange={this._handleAccountToggled}
+          />
+        </div>
+      ));
+    });
+
     const areAllOnBudgetAccountsIgnored = onBudgetAccounts.every(({ entityId }) => accountFilterIds.has(entityId));
     const areAllOffBudgetAccountsIgnored = offBudgetAccounts.every(({ entityId }) => accountFilterIds.has(entityId));
+    const areAllClosedAccountsIgnored = closedAccounts.every(({ entityId }) => accountFilterIds.has(entityId));
 
     return (
       <div className="tk-account-filter tk-pd-1">
@@ -72,7 +105,7 @@ export class AccountFilterComponent extends React.Component {
           <button className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleSelectNone}>Select None</button>
         </div>
         <div className="tk-account-filter__account-list tk-pd-x-05">
-          {onBudgetAccounts.length && (
+          {onBudgetAccounts.length !== 0 && (
             <React.Fragment>
               <div className="tk-account-filter__labeled-checkbox--parent">
                 <LabeledCheckbox
@@ -85,7 +118,7 @@ export class AccountFilterComponent extends React.Component {
               {onBudgetAccountsList}
             </React.Fragment>
           )}
-          {offBudgetAccounts.length && (
+          {offBudgetAccounts.length !== 0 && (
             <React.Fragment>
               <div className="tk-account-filter__labeled-checkbox--parent">
                 <LabeledCheckbox
@@ -96,6 +129,19 @@ export class AccountFilterComponent extends React.Component {
                 />
               </div>
               {offBudgetAccountsList}
+            </React.Fragment>
+          )}
+          {closedAccounts.length !== 0 && (
+            <React.Fragment>
+              <div className="tk-account-filter__labeled-checkbox--parent">
+                <LabeledCheckbox
+                  id="closed-accounts"
+                  checked={!areAllClosedAccountsIgnored}
+                  label="Closed Accounts"
+                  onChange={this._handleAllClosedToggled}
+                />
+              </div>
+              {closedAccountsList}
             </React.Fragment>
           )}
         </div>
@@ -140,6 +186,18 @@ export class AccountFilterComponent extends React.Component {
       this.offBudgetAccounts.forEach(({ entityId }) => accountFilterIds.delete(entityId));
     } else {
       this.offBudgetAccounts.forEach(({ entityId }) => accountFilterIds.add(entityId));
+    }
+
+    this.setState({ accountFilterIds });
+  }
+
+  _handleAllClosedToggled = ({ currentTarget }) => {
+    const { checked } = currentTarget;
+    const { accountFilterIds } = this.state;
+    if (checked) {
+      this.closedAccounts.forEach(({ entityId }) => accountFilterIds.delete(entityId));
+    } else {
+      this.closedAccounts.forEach(({ entityId }) => accountFilterIds.add(entityId));
     }
 
     this.setState({ accountFilterIds });

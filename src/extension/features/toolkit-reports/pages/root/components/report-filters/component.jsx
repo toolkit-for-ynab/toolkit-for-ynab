@@ -55,6 +55,7 @@ export class ReportFiltersComponent extends React.Component {
   _showAccountFilterModal = () => {
     this.props.showAccountFilterModal({
       accountFilterIds: this.props.filters.accountFilterIds,
+      includeTrackingAccounts: this.props.selectedReport.filterSettings.includeTrackingAccounts,
       onCancel: this.props.closeModal,
       onSave: this._handleAccountsChanged
     });
