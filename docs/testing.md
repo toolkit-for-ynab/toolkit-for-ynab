@@ -6,7 +6,7 @@ Here's the way we test:
 Chrome is the easiest platform to test on as it seems the best set up for inspecting
 what's going on and is the easiest to refresh when you make changes.
 
-1. Run `yarn build`
+1. Run `yarn build:dev`
 2. Go to the URL `chrome://extensions`
 3. In the top right corner tick the tickbox titled "Developer Mode"
 4. You'll see some buttons appear. Click `Load Unpacked Extension...`
@@ -21,7 +21,7 @@ you'll have to releade the extension. If you find it easier,
 will reload all unpacked extensions when clicked.
 
 ## Firefox
-1. Run `yarn build`
+1. Run `yarn build:dev`
 2. Go to the URL about:debugging
 3. Click the checkbox to `Enable add-on debugging`.
 4. Click `Load Temporary Add-on`
