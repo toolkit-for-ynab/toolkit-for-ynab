@@ -2,7 +2,6 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getSelectedMonth, getEntityManager, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class CheckCreditBalances extends Feature {
   injectCSS() {
@@ -44,9 +43,13 @@ export class CheckCreditBalances extends Feature {
   }
 
   getDebtCategories() {
-    const masterDebtCategoryId = controllerLookup('application').get('categoriesViewModel.debtPaymentMasterCategory.entityId');
+    const entityManager = getEntityManager();
+    const debtMasterCategory = entityManager.masterCategoriesCollection.find((c) => {
+      return c.get('internalName') === ynab.constants.InternalCategories.DebtPaymentMasterCategory;
+    });
+
     const debtAccounts = getEntityManager().getAllSubCategories().filter((c) => {
-      return !c.get('isTombstone') && c.get('masterCategoryId') === masterDebtCategoryId;
+      return !c.get('isTombstone') && c.get('masterCategoryId') === debtMasterCategory.get('entityId');
     });
 
     return debtAccounts || [];
