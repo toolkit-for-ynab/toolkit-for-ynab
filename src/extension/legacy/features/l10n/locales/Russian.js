@@ -25,7 +25,7 @@ ynabToolKit.l10nData = {
   "toolkit.transfer": "Перевод между счетами",
   "toolkit.memorized": "Сохраненные",
   "toolkit.inflow": "Поступление",
-  "toolkit.startingBalance": "Начальный остаток",
+  "toolkit.startingBalance": "Начальный баланс",
   "toolkit.inflowTBB": "Приход: для бюджетирования",
   "toolkit.splitMultipleCategories": "Разбивка (несколько категорий)...",
   "toolkit.netWorthReport": "Собственные средства (активы минус долги)",
@@ -1486,7 +1486,7 @@ ynabToolKit.l10nData = {
   "accountWidget.goAheadEstimate": "Go ahead—estimate! You can edit it later.",
   "accountWidget.linkMoreAccountsOrAdd": "Link more accounts from these connected institutions or add a new connection.",
   "accountWidget.wasThisHelpful": "Was this helpful?",
-  "accountWidget.accountOptions": "Account Options",
+  "accountWidget.accountOptions": "Настройки учётной записи",
   "accountWidget.skipLinking": "Skip Linking",
   "accountWidget.ifYouSkipLinking": "If you skip linking this account, add your current balance and enter your own transactions instead.<br/><br/>If you change your mind, you have the option to link or unlink an account at any time."
 }
