@@ -11,6 +11,9 @@ export class DisplayUpcomingAmount extends Feature {
   }
 
   invoke() {
+    $('.toolkit-activity-upcoming').removeClass('.toolkit-activity-upcoming');
+    $('.toolkit-activity-upcoming-amount').remove();
+
     $('.budget-table-row.is-sub-category').each((_, element) => {
       const { monthlySubCategoryBudgetCalculation, subCategory } = getEmberView(element.id, 'category');
 
