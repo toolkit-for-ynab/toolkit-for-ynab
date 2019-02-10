@@ -3,31 +3,31 @@ import * as ReactDOM from 'react-dom';
 export function componentAppend(component, element) {
   const div = document.createElement('div');
   ReactDOM.render(component, div);
-  div.childNodes.forEach((child) => {
-    element.append(child.cloneNode(true));
-  });
+  while (div.children.length) {
+    element.append(div.firstChild);
+  }
 }
 
 export function componentPrepend(component, element) {
   const div = document.createElement('div');
   ReactDOM.render(component, div);
-  div.childNodes.forEach((child) => {
-    element.prepend(child.cloneNode(true));
-  });
+  while (div.children.length) {
+    element.prepend(div.firstChild);
+  }
 }
 
 export function componentAfter(component, element) {
   const div = document.createElement('div');
   ReactDOM.render(component, div);
-  div.childNodes.forEach((child) => {
-    element.after(child.cloneNode(true));
-  });
+  while (div.children.length) {
+    element.after(div.firstChild);
+  }
 }
 
 export function componentBefore(component, element) {
   const div = document.createElement('div');
   ReactDOM.render(component, div);
-  div.childNodes.forEach((child) => {
-    element.before(child.cloneNode(true));
-  });
+  while (div.children.length) {
+    element.before(div.firstChild);
+  }
 }
