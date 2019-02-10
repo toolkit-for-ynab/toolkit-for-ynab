@@ -60,6 +60,7 @@
         "class-methods-use-this": "off",
         "object-curly-newline": "off",
         "react/jsx-uses-react": "error",
-        "react/jsx-uses-vars": "error"
+        "react/jsx-uses-vars": "error",
+        "function-paren-newline": "off"
     }
 }
