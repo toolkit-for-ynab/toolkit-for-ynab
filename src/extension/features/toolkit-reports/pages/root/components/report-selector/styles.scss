@@ -5,9 +5,14 @@
 
   &__item {
     cursor: pointer;
+    border-radius: 1000px;
+    color: #ffffff;
+    font-size: .9em;
+    padding: .4em 1em;
+    margin-right: 1em;
 
     &--active {
-      color: #fed168;
+      background-color: #16a336;
     }
   }
 }
