@@ -1,15 +1,10 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export class ToggleSplitButton extends React.Component {
-  static propTypes = {
-    toggleSplits: PropTypes.func.isRequired
-  }
-
   state = {
     areAllSplitsExpanded: getToolkitStorageKey('are-all-splits-expanded', true)
   }
