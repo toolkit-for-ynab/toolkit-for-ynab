@@ -16,7 +16,7 @@ export class ToggleSplitButton extends React.Component {
 
   componentDidMount() {
     if (this.state.areAllSplitsExpanded) {
-      this.hideAllSplits();
+      this.showAllSplits();
     }
   }
 
