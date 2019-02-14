@@ -1,5 +1,6 @@
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
+import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
 let instance = null;
 
@@ -22,7 +23,11 @@ export class RouteChangeListener {
         (controller, changedProperty) => {
           if (changedProperty === 'budgetVersionId') {
             (function poll() {
-              if (controller.get('budgetVersionId') === controller.get('budgetViewModel.budgetVersionId')) {
+              const applicationBudgetVersion = controllerLookup('application').get('budgetVersionId');
+              const { activeBudgetVersion } = getEntityManager().getSharedLibInstance();
+              const entityManagerBudgetVersion = activeBudgetVersion.entityId;
+
+              if (applicationBudgetVersion === entityManagerBudgetVersion) {
                 Ember.run.scheduleOnce('afterRender', controller, 'emitBudgetRouteChange');
               } else {
                 Ember.run.next(poll, 250);
