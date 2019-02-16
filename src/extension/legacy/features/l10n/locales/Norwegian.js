@@ -1048,7 +1048,7 @@ ynabToolKit.l10nData = {
   "onboarding.itsWhereYourMoneyLives": "It's where your money lives. <br/>Let's go!",
   "onboarding.showMeHow": "Show me how!",
   "onboarding.step400-schedule-upcoming-transactions": "Schedule upcoming transactions",
-  "onboarding.step100-set-a-goal": "Set a goal",
+  "onboarding.step100-set-a-goal": "Sett et mål",
   "onboarding.itsWhyYoureHere": "It's why you're here. Add one now.",
   "onboarding.step300-budget": "Budget!",
   "onboarding.takeControlOfYourMoney": "Take total control of your money.",

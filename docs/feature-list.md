@@ -161,7 +161,7 @@ Adds the check number column to your account view.
 Instead of clicking the Split button, type 'split' in the category input to automatically create a new split transaction.
 
 ## Add a Toggle Splits Button to the Account(s) toolbar
-Clicking the Toggle Splits button shows or hides all sub-transactions within all split transactions. *__Note__: you must toggle splits open before editing a split transaction!*
+Clicking the Toggle Splits button shows or hides all sub-transactions within all split transactions.
 
 ## Auto Adjust Split Transactions
 When entering split transactions, each additional split will be auto-filled with the current remaining amount.

@@ -22,7 +22,7 @@
             "value": "catalan"
         }, 
         {
-            "name": "Portuguese, Brazilian (52%)", 
+            "name": "Portuguese, Brazilian (53%)", 
             "value": "portuguese, brazilian"
         }, 
         {
@@ -94,11 +94,11 @@
             "value": "polish"
         }, 
         {
-            "name": "Serbian (Cyrillic) (7%)", 
+            "name": "Serbian (Cyrillic) (100%)", 
             "value": "serbian (cyrillic)"
         }, 
         {
-            "name": "French (52%)", 
+            "name": "French (53%)", 
             "value": "french"
         }, 
         {
@@ -130,7 +130,7 @@
             "value": "lithuanian"
         }, 
         {
-            "name": "Dutch (42%)", 
+            "name": "Dutch (44%)", 
             "value": "dutch"
         }
     ], 
