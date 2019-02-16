@@ -14,6 +14,7 @@
     "compress": "yarn compress:dist && yarn compress:src",
     "compress:dist": "node scripts/compressDist.js",
     "compress:src": "node scripts/compressSrc.js",
+    "deploy:beta": "git fetch origin master:beta && git push origin beta",
     "manifest:beta": "node scripts/applyManifestOverrides.js --env=beta",
     "manifest:development": "node scripts/applyManifestOverrides.js --env=development",
     "webpack:beta": "yarn build:webpack --env.buildType=beta",
