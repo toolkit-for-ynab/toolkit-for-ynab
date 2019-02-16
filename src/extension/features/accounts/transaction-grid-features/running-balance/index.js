@@ -173,6 +173,10 @@ function calculateRunningBalance(accountId) {
     accountViewModel = ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(accountId);
   } catch (e) { /* do nothing */ }
 
+  if (!accountViewModel) {
+    return;
+  }
+
   return accountViewModel.then((transactionViewModel) => {
     if (!transactionViewModel.__ynabToolKitAnyItemChangedListener) {
       attachAnyItemChangedListener(transactionViewModel);

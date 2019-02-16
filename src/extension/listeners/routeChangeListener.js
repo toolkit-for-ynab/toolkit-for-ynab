@@ -25,9 +25,7 @@ export class RouteChangeListener {
             (function poll() {
               const applicationBudgetVersion = controllerLookup('application').get('budgetVersionId');
               const { activeBudgetVersion } = getEntityManager().getSharedLibInstance();
-              const entityManagerBudgetVersion = activeBudgetVersion.entityId;
-
-              if (applicationBudgetVersion === entityManagerBudgetVersion) {
+              if (activeBudgetVersion && activeBudgetVersion.entityId && activeBudgetVersion.entityId === applicationBudgetVersion) {
                 Ember.run.scheduleOnce('afterRender', controller, 'emitBudgetRouteChange');
               } else {
                 Ember.run.next(poll, 250);
