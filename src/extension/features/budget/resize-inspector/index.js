@@ -73,7 +73,14 @@ export class ResizeInspector extends Feature {
                   _this.setProperties($(this).data('inspector-size'));
                 })
                 .append($('<i>', { class: IMAGECLASSES }))
-                .append('15% '))))
+                .append('15% ')))
+            .append($('<li>')
+              .append($('<button>', { 'data-inspector-size': '4', class: 'button-list' })
+                .click(function () {
+                  _this.setProperties($(this).data('inspector-size'));
+                })
+                .append($('<i>', { class: IMAGECLASSES }))
+                .append('0% '))))
           .append($('<div>', { class: 'modal-arrow', style: 'position:absolute;width: 0;height: 0;bottom: 100%;left: 37px;border: solid transparent;border-color: transparent;border-width: 15px;border-bottom-color: #fff' }))));
 
     // Handle dismissal of modal via the ESC key
@@ -114,6 +121,7 @@ export class ResizeInspector extends Feature {
     if ($(ele).length) {
       let contentWidth = '67%';
       let inspectorWidth = '33%';
+      let inspectorVisibility = 'visible';
 
       if (width === 1) {
         contentWidth = '75%';
@@ -124,10 +132,14 @@ export class ResizeInspector extends Feature {
       } else if (width === 3) {
         contentWidth = '85%';
         inspectorWidth = '15%';
+      } else if (width === 4) {
+        contentWidth = '100%';
+        inspectorVisibility = 'hidden';
       }
 
       $(ele)[0].style.setProperty('--toolkit-content-width', contentWidth);
       $('.budget-inspector')[0].style.setProperty('--toolkit-inspector-width', inspectorWidth);
+      $('.budget-inspector')[0].style.setProperty('--toolkit-inspector-visibility', inspectorVisibility);
 
       // Save the users current selection for future page loads.
       setToolkitStorageKey('inspector-width', width);
