@@ -2,6 +2,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { TransactionGridFeature } from './feature';
 import { RunningBalance } from './running-balance';
 import { CheckNumbers } from './check-numbers';
+import { SwapClearedFlagged } from './swap-cleared-flagged';
 import { ReconciledTextColor } from './reconciled-text-color';
 import { controllerLookup, componentLookup } from 'toolkit/extension/utils/ember';
 
@@ -9,7 +10,8 @@ export class TransactionGridFeatures extends Feature {
   features = [
     ynabToolKit.options.CheckNumbers ? new CheckNumbers() : new TransactionGridFeature(),
     ynabToolKit.options.RunningBalance !== '0' ? new RunningBalance() : new TransactionGridFeature(),
-    ynabToolKit.options.ReconciledTextColor !== '0' ? new ReconciledTextColor() : new TransactionGridFeature()
+    ynabToolKit.options.ReconciledTextColor !== '0' ? new ReconciledTextColor() : new TransactionGridFeature(),
+    ynabToolKit.options.SwapClearedFlagged ? new SwapClearedFlagged() : new TransactionGridFeature()
   ];
 
   injectCSS() {
