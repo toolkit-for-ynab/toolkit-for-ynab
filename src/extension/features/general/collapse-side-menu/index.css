@@ -48,6 +48,10 @@
   margin-right: 1rem !important;
 }
 
+.tk-collapse-toggle-text {
+  margin: 0 !important;
+}
+
 .nav-main > li > a {
   display: -webkit-box;
   height: 3rem;
