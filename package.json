@@ -71,10 +71,12 @@
     "RightClickToEdit",
     "ShowIntercom",
     "SplitKeyboardShortcut",
-    "ToolkitReports"
+    "ToolkitReports",
+    "FilterCategories"
   ],
   "dependencies": {
     "classnames": "^2.2.6",
+    "fuzzysort": "^1.1.4",
     "highcharts": "^6.1.2",
     "raven-js": "^3.25.2",
     "react": "^16.4.1",

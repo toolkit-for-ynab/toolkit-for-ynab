@@ -28,13 +28,17 @@ export class ResizeInspector extends Feature {
   addResizeButton() {
     if (!$('#toolkitResizeInspector').length) {
       let buttonText = ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.InspectorWidth'] || 'Inspector Width';
-      $('<button>', { id: 'toolkitResizeInspector', class: 'ember-view button', style: 'float: right' })
+      let $button = $('<button>', { id: 'toolkitResizeInspector', class: 'ember-view button' })
         .append($('<i>', { class: 'ember-view flaticon stroke gear-1' }))
         .append(' ' + buttonText)
         .click(() => {
           this.showResizeModal();
-        })
-        .insertAfter('.undo-redo-container');
+        });
+      if ($('.toolkit-budget-toolbar-buttons').length === 0) {
+        $('.budget-toolbar').append('<div class="toolkit-budget-toolbar-buttons"></div>');
+      }
+      $('.toolkit-budget-toolbar-buttons').append($button);
+
     }
   }
 

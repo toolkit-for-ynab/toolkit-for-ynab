@@ -37,3 +37,8 @@
 .accounts-toolbar .transaction-search .transaction-search-input {
   position: static;
 }
+
+.toolkit-budget-toolbar-buttons {
+  float: right;
+  display: flex;
+}
