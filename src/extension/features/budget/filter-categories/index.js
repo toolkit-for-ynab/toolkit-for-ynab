@@ -1,13 +1,14 @@
 import fuzzysort from 'fuzzysort';
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class FilterCategories extends Feature {
   TEXTBOX = `<div class="toolkit-categories-filter-wrapper">
                 <i class="toolkit-categories-filter-icon flaticon stroke magnifying-glass-1"></i>
-                <input id="toolkit-categories-filter-input" spellcheck="false" 
-                placeholder="${ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.CategoriesFilterPlaceholder'] || 'Filter categories'}"
-                 title="${ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.CategoriesFilterTitle'] || "Find the categories you're looking for..."}" 
+                <input id="toolkit-categories-filter-input" spellcheck="false"
+                placeholder="${l10n('toolkit.CategoriesFilterPlaceholder', 'Filter categories')}"
+                 title="${l10n('toolkit.CategoriesFilterTitle', "Find the categories you're looking for...")}"
                  autocomplete="off" type="text" class="toolkit-categories-filter-input ember-view ember-text-field">
                 <button class="flaticon solid x-1 button toolkit-categories-filter-cancel-icon"></button>
              </div>`;
