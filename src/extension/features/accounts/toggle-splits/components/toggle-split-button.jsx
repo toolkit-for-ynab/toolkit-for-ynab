@@ -40,13 +40,18 @@ export class ToggleSplitButton extends React.Component {
   }
 
   hideAllSplits = () => {
-    const collapsedSplitsMap = getEntityManager().transactionsCollection.reduce((reduced, transaction) => {
-      if (transaction.getIsSplit()) {
-        reduced[transaction.get('entityId')] = true;
-      }
+    const { scheduledTransactionsCollection, transactionsCollection } = getEntityManager();
+    const collapsedSplitsMap = {};
 
-      return reduced;
-    }, {});
+    [scheduledTransactionsCollection, transactionsCollection].forEach((collection) => {
+      collection.reduce((reduced, transaction) => {
+        if (transaction.getIsSplit()) {
+          reduced[transaction.get('entityId')] = true;
+        }
+
+        return reduced;
+      }, collapsedSplitsMap);
+    });
 
     getEmberView($('.ynab-grid').attr('id')).set('collapsedSplits', collapsedSplitsMap);
   }
