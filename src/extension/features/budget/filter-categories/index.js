@@ -56,9 +56,6 @@ export class FilterCategories extends Feature {
     let $textbox = $(this.TEXTBOX);
     $textbox.find('#toolkit-categories-filter-input').on('keyup', this._keyUpHandler);
     $textbox.find('.toolkit-categories-filter-cancel-icon').on('click', this._clear);
-    if ($('.toolkit-budget-toolbar-buttons').length === 0) {
-      $('.budget-toolbar').append('<div class="toolkit-budget-toolbar-buttons"></div>');
-    }
-    $('.toolkit-budget-toolbar-buttons').prepend($textbox);
+    $('.budget-toolbar').prepend($textbox);
   }
 }

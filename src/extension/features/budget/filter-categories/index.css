@@ -15,7 +15,7 @@
 
 .toolkit-categories-filter-wrapper {
   position: relative;
-  margin-right: 8px;
+  display: inline-flex;
 }
 
 .toolkit-categories-filter-icon {
