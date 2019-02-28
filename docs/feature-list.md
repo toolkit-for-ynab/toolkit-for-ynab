@@ -71,7 +71,7 @@ Add indicators for subcategories with goals. Types: (M)onthly goal,  target by (
 Add a column for 'pacing' which shows you how much money you've spent based on how far you are through the month. Note that clicking on the pacing value will toggle emphasis, allowing you to selectively enable the feature per category.
 
 ## Allow Resizing of Inspector
-Adds a button to the Budget Toolbar that allows resizing the Budget Inspector to predetermined widths of 33% (YNAB default), 25%, 20% or 15%. Note that smaller values maybe not be suitable on small screens.
+Adds a button to the Budget Toolbar that allows resizing the Budget Inspector to predetermined widths of 33% (YNAB default), 25%, 20%, 15%, or 0%. Note that smaller values maybe not be suitable on small screens.
 
 ## Budget Rows Progress Bars
 Add progress bars and a vertical bar that shows how far you are through the month to category rows.
@@ -93,6 +93,9 @@ Adds a 'Goal' column which displays the target goal amount for every category wi
 
 ## Display Total Monthly Goals
 Adds a 'Total Monthly Goals' to the budget inspector, which displays the total amount of monthly funding goals.
+
+## Enable Categories Filter
+Enable textbox at budget page for categories filtering
 
 ## Goal Indicator Warning Color
 Change the orange goal underfunded warning to blue, to better differentiate it from credit card overspending.
