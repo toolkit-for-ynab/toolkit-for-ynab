@@ -12,9 +12,14 @@ export class BudgetQuickSwitch extends Feature {
     ynab.YNABSharedLib.getCatalogViewModel_UserViewModel().then(({ userBudgetDisplayItems }) => {
       userBudgetDisplayItems.filter((budget) => {
         return !budget.get('isTombstone') && budget.get('budgetVersionId') !== activeBudgetVersionId;
-      }).forEach((budget) => {
+      }).forEach((budget, i) => {
         const budgetVersionName = budget.get('budgetVersionName');
         const budgetVersionId = budget.get('budgetVersionId');
+
+        if (i === 0) {
+          componentPrepend((<li><hr /></li>), modalList);
+        }
+
         componentPrepend((
           <BudgetListItem
             key={budget.get('budgetVersionId')}
