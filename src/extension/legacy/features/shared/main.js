@@ -28,7 +28,7 @@ ynabToolKit.shared = (function () {
       // beta concatenates the TRAVIS_BUILD_NUMBER so we do this to strip it for
       // the URL that points to diffs on master for beta/development builds
       const githubVersion = version.split('.').slice(0, 3).join('.');
-      const githubIssuesLink = '<a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues" target="_blank">Github Issues</a>';
+      const githubIssuesLink = '<a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues" target="_blank">GitHub Issues</a>';
 
       const releaseNotes = ynabToolKit.environment === 'production'
         ? 'View the <a href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/releases" target="_blank">release notes</a>.'
