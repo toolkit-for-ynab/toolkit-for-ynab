@@ -30,11 +30,17 @@ export class LinkToInflows extends Feature {
    * Add the wrapper element to the TOTAL INFLOWS inspector area.
    */
   invoke() {
-    $('.budget-inspector')
-      .find(`h3:contains("${l10n('inspector.totalIncome', 'TOTAL INFLOWS')}")`)
-      .next()
-      .andSelf()
-      .wrapAll('<span class="toolkit-total-inflows" />');
+    const budgetInspector = $('.budget-inspector');
+
+    // Attempt to target the english string, `TOTAL INFLOWS`, but if that's not
+    // found, try the localized version of the string.
+    const englishHeading = 'TOTAL INFLOWS';
+    const localizedHeading = l10n('inspector.totalIncome', englishHeading);
+    const inflowsHeadingEl =
+      budgetInspector.find(`h3:contains(${englishHeading})`)[0] ||
+      budgetInspector.find(`h3:contains(${localizedHeading})`)[0];
+
+    $(inflowsHeadingEl).next().andSelf().wrapAll('<span class="toolkit-total-inflows" />');
 
     $('.toolkit-total-inflows').click(this.onClick);
   }
@@ -51,10 +57,7 @@ export class LinkToInflows extends Feature {
       controller.filters.resetFilters();
     }
 
-    controller.set(
-      'searchText',
-      `${l10n('search.income', 'Income')}: ${month.format('MMMM YYYY')}`
-    );
+    controller.set('searchText', `Income: ${month.format('MMMM YYYY')}`);
     transitionTo('accounts');
   }
 }
