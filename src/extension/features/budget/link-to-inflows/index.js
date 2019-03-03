@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 import {
   getSelectedMonth,
   isCurrentRouteBudgetPage,
@@ -10,6 +11,11 @@ import {
  * Adds a click handler to the "TOTAL INFLOW" inspector area.
  */
 export class LinkToInflows extends Feature {
+
+  injectCSS() {
+    return require('./index.css');
+  }
+
   shouldInvoke() {
     return isCurrentRouteBudgetPage();
   }
@@ -25,7 +31,7 @@ export class LinkToInflows extends Feature {
    */
   invoke() {
     $('.budget-inspector')
-      .find(`h3:contains("${Ember.I18n.t('inspector.totalIncome')}")`)
+      .find(`h3:contains("${l10n('inspector.totalIncome', 'TOTAL INFLOWS')}")`)
       .next()
       .andSelf()
       .wrapAll('<span class="toolkit-total-inflows" />');
@@ -47,12 +53,8 @@ export class LinkToInflows extends Feature {
 
     controller.set(
       'searchText',
-      `${Ember.I18n.t('search.income')}: ${month.format('MMMM YYYY')}`
+      `${l10n('search.income', 'Income')}: ${month.format('MMMM YYYY')}`
     );
     transitionTo('accounts');
-  }
-
-  injectCSS() {
-    return require('./index.css');
   }
 }
