@@ -75,6 +75,11 @@
     "ToolkitReports",
     "FilterCategories"
   ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "dependencies": {
     "classnames": "^2.2.6",
     "fuzzysort": "^1.1.4",
