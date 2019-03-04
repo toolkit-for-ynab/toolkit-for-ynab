@@ -38,7 +38,6 @@ export class ResizeInspector extends Feature {
         $('.budget-toolbar').append('<div class="toolkit-budget-toolbar-buttons"></div>');
       }
       $('.toolkit-budget-toolbar-buttons').append($button);
-
     }
   }
 
