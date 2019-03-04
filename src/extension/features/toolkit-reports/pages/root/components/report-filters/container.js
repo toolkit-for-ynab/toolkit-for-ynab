@@ -9,17 +9,19 @@ function mapReportContextToProps(context) {
   return {
     filters: context.filters,
     selectedReport: context.selectedReport,
-    setFilters: context.setFilters
+    setFilters: context.setFilters,
   };
 }
 
 function mapModalContextToProps({ closeModal, showModal }) {
   return {
     closeModal,
-    showAccountFilterModal: (props) => showModal(AccountFilter, props),
-    showDateSelectorModal: (props) => showModal(DateFilter, props),
-    showCategoryFilterModal: (props) => showModal(CategoryFilter, props)
+    showAccountFilterModal: props => showModal(AccountFilter, props),
+    showDateSelectorModal: props => showModal(DateFilter, props),
+    showCategoryFilterModal: props => showModal(CategoryFilter, props),
   };
 }
 
-export const ReportFilters = withModalContext(mapModalContextToProps)(withReportContext(mapReportContextToProps)(ReportFiltersComponent));
+export const ReportFilters = withModalContext(mapModalContextToProps)(
+  withReportContext(mapReportContextToProps)(ReportFiltersComponent)
+);

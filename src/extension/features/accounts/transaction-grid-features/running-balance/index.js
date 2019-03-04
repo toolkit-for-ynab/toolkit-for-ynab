@@ -49,13 +49,14 @@ export class RunningBalance extends TransactionGridFeature {
     runningBalanceHeader.addClass('ynab-grid-cell-toolkit-running-balance');
     runningBalanceHeader.text('RUNNING BALANCE').css('font-weight', 'normal');
     runningBalanceHeader.insertAfter($('.ynab-grid-cell-inflow', $headerRow));
-    runningBalanceHeader.click((event) => {
+    runningBalanceHeader.click(event => {
       event.preventDefault();
       event.stopPropagation();
       $('.ynab-grid-cell-date', $headerRow).click();
     });
 
-    if ($('.ynab-grid-body .ynab-grid-body-row-top .ynab-grid-cell-toolkit-running-balance').length) return;
+    if ($('.ynab-grid-body .ynab-grid-body-row-top .ynab-grid-cell-toolkit-running-balance').length)
+      return;
     var $topRow = $('.ynab-grid-body-row-top');
     var topRowRunningBalance = $('.ynab-grid-cell-inflow', $topRow).clone();
     topRowRunningBalance.removeClass('ynab-grid-cell-inflow');
@@ -66,8 +67,9 @@ export class RunningBalance extends TransactionGridFeature {
   handleSingleRenderColumn($appendToRows) {
     $appendToRows.each((index, row) => {
       if ($('.ynab-grid-cell-toolkit-running-balance', row).length === 0) {
-        $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">')
-          .insertAfter($('.ynab-grid-cell-inflow', row));
+        $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">').insertAfter(
+          $('.ynab-grid-cell-inflow', row)
+        );
       }
     });
   }
@@ -82,7 +84,9 @@ export class RunningBalance extends TransactionGridFeature {
     if (isRunningBalance) {
       const applicationController = controllerLookup('application');
       const selectedAccountId = applicationController.get('selectedAccountId');
-      if (!selectedAccountId) { return; }
+      if (!selectedAccountId) {
+        return;
+      }
 
       const $currentRow = $(this.element);
       const currentRowRunningBalance = $('.ynab-grid-cell-inflow', $currentRow).clone();
@@ -110,8 +114,9 @@ export class RunningBalance extends TransactionGridFeature {
 
       currentRowRunningBalance.insertAfter($('.ynab-grid-cell-inflow', $currentRow));
     } else if (!isActions && !$('.ynab-grid-cell-toolkit-running-balance', this.element).length) {
-      $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">')
-        .insertAfter($('.ynab-grid-cell-inflow', this.element));
+      $('<div class="ynab-grid-cell ynab-grid-cell-toolkit-running-balance">').insertAfter(
+        $('.ynab-grid-cell-inflow', this.element)
+      );
     }
   }
 
@@ -124,7 +129,7 @@ export class RunningBalance extends TransactionGridFeature {
     this.hasInitialized = true;
 
     const promises = [];
-    accountsCollection.forEach((account) => {
+    accountsCollection.forEach(account => {
       promises.push(calculateRunningBalance(account.entityId));
     });
 
@@ -134,8 +139,9 @@ export class RunningBalance extends TransactionGridFeature {
 
 function attachAnyItemChangedListener(transactionViewModel) {
   transactionViewModel.__ynabToolKitAnyItemChangedListener = true;
-  transactionViewModel.get('visibleTransactionDisplayItems')
-    .addObserver('anyItemChangedCounter', function (displayItems) {
+  transactionViewModel
+    .get('visibleTransactionDisplayItems')
+    .addObserver('anyItemChangedCounter', function(displayItems) {
       const updatedAccountId = displayItems.get('firstObject.accountId');
       if (updatedAccountId) {
         calculateRunningBalance(updatedAccountId);
@@ -148,7 +154,7 @@ function calculateRunningBalance(accountId) {
   const registerSort = accountController.get('registerSort');
   const sortFields = registerSort.fetchSortFields(accountId).copy();
 
-  const dateSortFieldIndex = sortFields.findIndex((sortField) => sortField.property === 'date');
+  const dateSortFieldIndex = sortFields.findIndex(sortField => sortField.property === 'date');
   if (dateSortFieldIndex !== 0) {
     const temp = sortFields[0];
     sortFields[0] = sortFields[dateSortFieldIndex];
@@ -158,7 +164,7 @@ function calculateRunningBalance(accountId) {
   const sortFunction = registerSort.createSortFunction(sortFields);
 
   if (!accountController.__tkSortFieldsListener) {
-    accountController.addObserver('sortFields', function (controller) {
+    accountController.addObserver('sortFields', function(controller) {
       accountController.__tkSortFieldsListener = true;
 
       const observedAccountId = controller.get('filters.entityId');
@@ -170,14 +176,18 @@ function calculateRunningBalance(accountId) {
 
   let accountViewModel;
   try {
-    accountViewModel = ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(accountId);
-  } catch (e) { /* do nothing */ }
+    accountViewModel = ynab.YNABSharedLib.defaultInstance.getBudgetViewModel_AccountTransactionsViewModel(
+      accountId
+    );
+  } catch (e) {
+    /* do nothing */
+  }
 
   if (!accountViewModel) {
     return;
   }
 
-  return accountViewModel.then((transactionViewModel) => {
+  return accountViewModel.then(transactionViewModel => {
     if (!transactionViewModel.__ynabToolKitAnyItemChangedListener) {
       attachAnyItemChangedListener(transactionViewModel);
     }
@@ -185,13 +195,16 @@ function calculateRunningBalance(accountId) {
     // Sort all transactions is ascending order first. If the dates match, sort transactions
     // in ascending order (outflows are negative when using `.getAmount`). If the dates are
     // equal, the amounts are always sorted in descending order.
-    const sorted = transactionViewModel.get('visibleTransactionDisplayItems').slice().sort(sortFunction);
-    const dateSortField = sortFields.find((sortField) => sortField.property === 'date');
+    const sorted = transactionViewModel
+      .get('visibleTransactionDisplayItems')
+      .slice()
+      .sort(sortFunction);
+    const dateSortField = sortFields.find(sortField => sortField.property === 'date');
     const sortedAscending = dateSortField ? dateSortField.sortAscending : false;
 
     let runningBalance = 0;
     if (sortedAscending) {
-      sorted.forEach((transaction) => {
+      sorted.forEach(transaction => {
         if (transaction.get('parentEntityId') === null && transaction.get('inflow')) {
           runningBalance += transaction.get('inflow');
         } else if (transaction.get('parentEntityId') === null && transaction.get('outflow')) {

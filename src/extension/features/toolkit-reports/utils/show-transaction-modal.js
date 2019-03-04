@@ -6,6 +6,6 @@ export function showTransactionModal(title, transactions) {
   reportsController.set('modalTitle', title);
   reportsController.set('modalTransactions', transactions);
   applicationController.send('openModal', 'modals/reports/transactions', {
-    controller: reportsController
+    controller: reportsController,
   });
 }

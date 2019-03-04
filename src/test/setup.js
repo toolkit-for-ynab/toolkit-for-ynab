@@ -11,7 +11,7 @@ function resetConsoleSpies() {
     error: jest.fn(),
     info: jest.fn(),
     log: jest.fn(),
-    warn: jest.fn()
+    warn: jest.fn(),
   };
 }
 

@@ -4,5 +4,5 @@ module.exports = {
   default: true,
   section: 'budget',
   title: 'Enable Categories Filter',
-  description: 'Enable textbox at budget page for categories filtering'
+  description: 'Enable textbox at budget page for categories filtering',
 };

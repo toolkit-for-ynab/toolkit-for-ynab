@@ -7,7 +7,9 @@ const extensionDirectory = path.join(workspaceRoot, 'dist', 'extension');
 const outputDirectory = path.join(workspaceRoot, 'dist');
 
 if (!fs.existsSync(extensionDirectory)) {
-  console.error('The dist/web-extension directory doesn\'t exist yet. Run `yarn build` before running this script.');
+  console.error(
+    "The dist/web-extension directory doesn't exist yet. Run `yarn build` before running this script."
+  );
   process.exit(1);
 }
 
@@ -36,15 +38,11 @@ archive.on('error', error => {
   throw error;
 });
 
-
 // append everything except for dist/, putting all contents at the root of archive
 const files = fs.readdirSync(workspaceRoot);
 
 for (const file of files) {
-  if (file !== '.DS_Store' &&
-      file !== '.git' &&
-      file !== 'dist' &&
-      file !== 'node_modules') {
+  if (file !== '.DS_Store' && file !== '.git' && file !== 'dist' && file !== 'node_modules') {
     const stats = fs.statSync(file);
 
     if (stats.isDirectory()) {

@@ -78,8 +78,12 @@ export class ReconciledTextColor extends TransactionGridFeature {
       if (content.get('isSubTransaction')) {
         const parentEntityId = content.get('parentEntityId');
 
-        content = content.getEntityManager().transactionsCollection.findItemByEntityId(parentEntityId);
-        isChecked = $(`.${YNAB_GRID_BODY_ROW_CLASS}[data-row-id="${parentEntityId}"]`).hasClass(YNAB_IS_CHECKED_CLASS);
+        content = content
+          .getEntityManager()
+          .transactionsCollection.findItemByEntityId(parentEntityId);
+        isChecked = $(`.${YNAB_GRID_BODY_ROW_CLASS}[data-row-id="${parentEntityId}"]`).hasClass(
+          YNAB_IS_CHECKED_CLASS
+        );
       }
 
       const isReconciled = content.get('cleared') === ynab.constants.TransactionState.Reconciled;

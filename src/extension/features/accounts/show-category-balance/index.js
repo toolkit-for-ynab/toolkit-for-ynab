@@ -1,5 +1,8 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteAccountsPage, getAllBudgetMonthsViewModel } from 'toolkit/extension/utils/ynab';
+import {
+  isCurrentRouteAccountsPage,
+  getAllBudgetMonthsViewModel,
+} from 'toolkit/extension/utils/ynab';
 import { getCurrentDate } from 'toolkit/extension/utils/date';
 import { componentLookup } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
@@ -11,28 +14,30 @@ export class ShowCategoryBalance extends Feature {
 
   invoke() {
     const allBudgetMonthsViewModel = getAllBudgetMonthsViewModel();
-    const subCategoryCalculations = allBudgetMonthsViewModel.get('monthlySubCategoryBudgetCalculationsCollection');
+    const subCategoryCalculations = allBudgetMonthsViewModel.get(
+      'monthlySubCategoryBudgetCalculationsCollection'
+    );
     const categoryLookupPrefix = `mcbc/${getCurrentDate('YYYY-MM')}`;
 
     const GridSubComponent = componentLookup('register/grid-sub');
     GridSubComponent.constructor.reopen({
-      didRender: function () {
+      didRender: function() {
         didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
-      }
+      },
     });
 
     const GridRowComponent = componentLookup('register/grid-row');
     GridRowComponent.constructor.reopen({
-      didRender: function () {
+      didRender: function() {
         didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
-      }
+      },
     });
 
     const GridScheduledComponent = componentLookup('register/grid-scheduled');
     GridScheduledComponent.constructor.reopen({
-      didRender: function () {
+      didRender: function() {
         didRender.call(this, subCategoryCalculations, categoryLookupPrefix);
-      }
+      },
     });
   }
 
@@ -46,7 +51,9 @@ export class ShowCategoryBalance extends Feature {
 function didRender(subCategoryCalculations, categoryLookupPrefix) {
   const element = this.get('element');
   const subCategoryId = this.get('content.subCategoryId');
-  const budgetData = subCategoryCalculations.findItemByEntityId(`${categoryLookupPrefix}/${subCategoryId}`);
+  const budgetData = subCategoryCalculations.findItemByEntityId(
+    `${categoryLookupPrefix}/${subCategoryId}`
+  );
 
   // if there's no budget data (could be an income/credit category) skip it.
   if (!budgetData) return;

@@ -20,7 +20,9 @@ export function migrateLegacyPacingStorage() {
   const newValues = getDeemphasizedCategories();
   try {
     legacyValues = JSON.parse(localStorage.getItem(LEGACY_PACING_DEEMPHASIZED_KEY));
-  } catch (e) { /* ignore */ }
+  } catch (e) {
+    /* ignore */
+  }
 
   if (legacyValues && legacyValues.length) {
     let newLegacyValues = legacyValues.slice();
@@ -35,7 +37,7 @@ export function migrateLegacyPacingStorage() {
         return ids;
       }
 
-      const subCategory = subCategoriesCollection.find((cat) => {
+      const subCategory = subCategoriesCollection.find(cat => {
         return (
           cat.get('masterCategoryId') === masterCategory.get('entityId') &&
           cat.get('name') === subCategoryName
@@ -46,11 +48,11 @@ export function migrateLegacyPacingStorage() {
       if (!subCategory) {
         return ids;
       } else if (ids.includes(subCategory.get('entityId'))) {
-        newLegacyValues = newLegacyValues.filter((name) => name !== current);
+        newLegacyValues = newLegacyValues.filter(name => name !== current);
         return ids;
       }
 
-      newLegacyValues = newLegacyValues.filter((name) => name !== current);
+      newLegacyValues = newLegacyValues.filter(name => name !== current);
       ids.push(subCategory.get('entityId'));
       return ids;
     }, newValues);
@@ -68,7 +70,10 @@ export function migrateLegacyPacingStorage() {
 }
 
 export function pacingForCategory(budgetMonthDisplayItem) {
-  if (budgetMonthDisplayItem.getEntityType() !== ynab.constants.DisplayEntityType.BudgetMonthDisplayItem) {
+  if (
+    budgetMonthDisplayItem.getEntityType() !==
+    ynab.constants.DisplayEntityType.BudgetMonthDisplayItem
+  ) {
     throw new Error('Invalid Argument to calculate pacing. Expected BudgetMonthDisplayItem');
   }
 
@@ -84,7 +89,7 @@ export function pacingForCategory(budgetMonthDisplayItem) {
 
   const balancePriorToSpending = budgetMonthDisplayItem.get('balancePriorToSpending');
   const activity = budgetMonthDisplayItem.get('activity');
-  const budgetedPace = (-activity) / balancePriorToSpending;
+  const budgetedPace = -activity / balancePriorToSpending;
 
   let monthPace = today.getDate() / today.daysInMonth();
   if (categoryMonth.isBefore(startOfCurrentMonth)) {
@@ -97,11 +102,18 @@ export function pacingForCategory(budgetMonthDisplayItem) {
   const entityManager = budgetMonthDisplayItem.getEntityManager();
   const allTransactions = entityManager.getTransactionsBySubCategoryId(subCategoryId);
   const allSubTransactions = entityManager.getSubTransactionsBySubCategoryId(subCategoryId);
-  const transactions = allTransactions.filter((transaction) => {
-    return transaction.get('date').equalsByMonth(today);
-  }).concat(allSubTransactions.filter((transaction) => {
-    return transaction.get('transaction').get('date').equalsByMonth(today);
-  }));
+  const transactions = allTransactions
+    .filter(transaction => {
+      return transaction.get('date').equalsByMonth(today);
+    })
+    .concat(
+      allSubTransactions.filter(transaction => {
+        return transaction
+          .get('transaction')
+          .get('date')
+          .equalsByMonth(today);
+      })
+    );
 
   const paceAmount = Math.round(balancePriorToSpending * monthPace + activity);
   const target = today.getDate();
@@ -115,6 +127,6 @@ export function pacingForCategory(budgetMonthDisplayItem) {
     isDeemphasized: deemphasizedCategories.contains(subCategoryId),
     monthPace,
     paceAmount,
-    transactions
+    transactions,
   };
 }

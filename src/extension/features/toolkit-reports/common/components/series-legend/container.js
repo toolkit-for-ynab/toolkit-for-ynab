@@ -3,7 +3,7 @@ import { SeriesLegendComponent } from './component';
 
 function mapReportContextToProps(context) {
   return {
-    filters: context.filters
+    filters: context.filters,
   };
 }
 

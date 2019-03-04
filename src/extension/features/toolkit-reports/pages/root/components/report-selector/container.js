@@ -4,7 +4,7 @@ import { ReportSelectorComponent } from './component';
 function mapContextToProps(context) {
   return {
     activeReportKey: context.selectedReport.key,
-    setActiveReportKey: context.setActiveReportKey
+    setActiveReportKey: context.setActiveReportKey,
   };
 }
 

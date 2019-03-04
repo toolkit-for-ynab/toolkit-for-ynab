@@ -8,25 +8,33 @@ export class CategoryActivityCopy extends Feature {
   }
 
   invoke() {
-    $('.modal-actions > .button-primary').clone().attr('id', 'toolkit-copy-button')
+    $('.modal-actions > .button-primary')
+      .clone()
+      .attr('id', 'toolkit-copy-button')
       .insertAfter('.modal-actions > .button-primary')
       .on('click', this.categoryActivityCopy);
 
     var childCache = $('#toolkit-copy-button').children();
-    $('#toolkit-copy-button').text('Copy Transactions').append(childCache);
-    $('#toolkit-copy-button > .flaticon').toggleClass('checkmark-2 copy').css('margin-left', '3px');
+    $('#toolkit-copy-button')
+      .text('Copy Transactions')
+      .append(childCache);
+    $('#toolkit-copy-button > .flaticon')
+      .toggleClass('checkmark-2 copy')
+      .css('margin-left', '3px');
   }
 
   categoryActivityCopy() {
     const activityTransactions = controllerLookup('budget').get('selectedActivityTransactions');
     const entityManager = getEntityManager();
 
-    const activities = activityTransactions.map((transaction) => {
+    const activities = activityTransactions.map(transaction => {
       const parentEntityId = transaction.get('parentEntityId');
       let payeeId = transaction.get('payeeId');
 
       if (parentEntityId) {
-        payeeId = entityManager.transactionsCollection.findItemByEntityId(parentEntityId).get('payeeId');
+        payeeId = entityManager.transactionsCollection
+          .findItemByEntityId(parentEntityId)
+          .get('payeeId');
       }
 
       const payee = entityManager.payeesCollection.findItemByEntityId(payeeId);
@@ -37,13 +45,15 @@ export class CategoryActivityCopy extends Feature {
         Payee: payee.get('name'),
         Category: transaction.get('subCategoryNameWrapped'),
         Memo: transaction.get('memo'),
-        Amount: ynab.formatCurrency(transaction.get('amount'))
+        Amount: ynab.formatCurrency(transaction.get('amount')),
       };
     });
 
-    const replacer = (key, value) => value === null ? '' : value;
+    const replacer = (key, value) => (value === null ? '' : value);
     const header = Object.keys(activities[0]);
-    let csv = activities.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t'));
+    let csv = activities.map(row =>
+      header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t')
+    );
     csv.unshift(header.join('\t'));
     csv = csv.join('\r\n');
     let $temp = $('<textarea style="position:absolute; left: -9999px; top: 50px;"/>');
@@ -55,7 +65,9 @@ export class CategoryActivityCopy extends Feature {
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
-    if (changedNodes.has('ynab-u modal-popup modal-budget-activity ember-view modal-overlay active')) {
+    if (
+      changedNodes.has('ynab-u modal-popup modal-budget-activity ember-view modal-overlay active')
+    ) {
       this.invoke();
     }
   }

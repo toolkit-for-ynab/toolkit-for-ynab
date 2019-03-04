@@ -4,7 +4,7 @@ import { logToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 export class Feature {
   constructor() {
     this.settings = {
-      enabled: ynabToolKit.options[this.constructor.name]
+      enabled: ynabToolKit.options[this.constructor.name],
     };
   }
 
@@ -23,21 +23,29 @@ export class Feature {
     throw Error(`Feature: ${this.constructor.name} does not implement required invoke() method.`);
   }
 
-  injectCSS() { /* stubbed, default to no injected CSS */ }
+  injectCSS() {
+    /* stubbed, default to no injected CSS */
+  }
 
   logError(exception) {
     logToolkitError({
       exception,
       featureName: this.constructor.name,
-      featureSetting: this.settings.enabled
+      featureSetting: this.settings.enabled,
     });
   }
 
-  observe() { /* stubbed listener function */ }
+  observe() {
+    /* stubbed listener function */
+  }
 
-  onRouteChanged() { /* stubbed listener function */ }
+  onRouteChanged() {
+    /* stubbed listener function */
+  }
 
-  onBudgetChanged() { /* stubbed listener function */ }
+  onBudgetChanged() {
+    /* stubbed listener function */
+  }
 
   applyListeners() {
     let observeListener = new ObserveListener();

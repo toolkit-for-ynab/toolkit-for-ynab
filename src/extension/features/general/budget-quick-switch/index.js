@@ -10,24 +10,34 @@ export class BudgetQuickSwitch extends Feature {
     let activeBudgetVersionId = controllerLookup('application').get('budgetVersionId');
 
     ynab.YNABSharedLib.getCatalogViewModel_UserViewModel().then(({ userBudgetDisplayItems }) => {
-      userBudgetDisplayItems.filter((budget) => {
-        return !budget.get('isTombstone') && budget.get('budgetVersionId') !== activeBudgetVersionId;
-      }).forEach((budget, i) => {
-        const budgetVersionName = budget.get('budgetVersionName');
-        const budgetVersionId = budget.get('budgetVersionId');
+      userBudgetDisplayItems
+        .filter(budget => {
+          return (
+            !budget.get('isTombstone') && budget.get('budgetVersionId') !== activeBudgetVersionId
+          );
+        })
+        .forEach((budget, i) => {
+          const budgetVersionName = budget.get('budgetVersionName');
+          const budgetVersionId = budget.get('budgetVersionId');
 
-        if (i === 0) {
-          componentPrepend((<li><hr /></li>), modalList);
-        }
+          if (i === 0) {
+            componentPrepend(
+              <li>
+                <hr />
+              </li>,
+              modalList
+            );
+          }
 
-        componentPrepend((
-          <BudgetListItem
-            key={budget.get('budgetVersionId')}
-            budgetVersionId={budgetVersionId}
-            budgetVersionName={budgetVersionName}
-          />
-        ), modalList);
-      });
+          componentPrepend(
+            <BudgetListItem
+              key={budget.get('budgetVersionId')}
+              budgetVersionId={budgetVersionId}
+              budgetVersionName={budgetVersionName}
+            />,
+            modalList
+          );
+        });
     });
   }
 

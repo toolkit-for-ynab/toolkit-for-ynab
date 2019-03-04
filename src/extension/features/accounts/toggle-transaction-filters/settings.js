@@ -8,6 +8,6 @@ module.exports = {
   options: [
     { name: 'Disabled', value: '0' },
     { name: 'Show Icons', value: '1' },
-    { name: 'Show Icons and Text Labels', value: '2' }
-  ]
+    { name: 'Show Icons and Text Labels', value: '2' },
+  ],
 };

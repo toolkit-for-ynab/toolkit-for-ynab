@@ -5,14 +5,14 @@ import { setupWithWebExtensionStorage } from 'toolkit/test/utils/setup';
 const setup = setupWithWebExtensionStorage((overrides = {}) => {
   const options = {
     storageArea: 'local',
-    ...overrides
+    ...overrides,
   };
 
   const storage = new ToolkitStorage(options.storageArea);
 
   return {
     browser: getBrowser(),
-    storage
+    storage,
   };
 });
 
@@ -30,7 +30,7 @@ describe('ToolkitStorage', () => {
       const getStorageItemSpy = jest.spyOn(storage, 'getStorageItem');
       storage.getFeatureSetting('testSetting');
       expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', {
-        parse: false
+        parse: false,
       });
     });
 
@@ -40,7 +40,7 @@ describe('ToolkitStorage', () => {
       storage.getFeatureSetting('testSetting', { parse: true, test: 'thing' });
       expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', {
         parse: true,
-        test: 'thing'
+        test: 'thing',
       });
     });
   });
@@ -51,17 +51,28 @@ describe('ToolkitStorage', () => {
       const getStorageItemSpy = jest.spyOn(storage, 'getStorageItem');
       storage.getFeatureSettings(['test', 'setting']);
       expect(getStorageItemSpy).toHaveBeenCalledTimes(2);
-      expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:test', { parse: false });
+      expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:test', {
+        parse: false,
+      });
       expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:setting', { parse: false });
     });
 
     it('should allow overrides of options', () => {
       const { storage } = setup();
       const getStorageItemSpy = jest.spyOn(storage, 'getStorageItem');
-      storage.getFeatureSettings(['test', 'setting'], { parse: true, test: 'thing' });
+      storage.getFeatureSettings(['test', 'setting'], {
+        parse: true,
+        test: 'thing',
+      });
       expect(getStorageItemSpy).toHaveBeenCalledTimes(2);
-      expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:test', { parse: true, test: 'thing' });
-      expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:setting', { parse: true, test: 'thing' });
+      expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:test', {
+        parse: true,
+        test: 'thing',
+      });
+      expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:setting', {
+        parse: true,
+        test: 'thing',
+      });
     });
 
     it('should resolve a list of values', async () => {
@@ -70,7 +81,7 @@ describe('ToolkitStorage', () => {
       const results = await storage.getFeatureSettings(['test', 'setting']);
       expect(Array.isArray(results)).toEqual(true);
       expect(results).toHaveLength(2);
-      results.forEach((result) => {
+      results.forEach(result => {
         expect(result).toEqual('result');
       });
     });
@@ -88,7 +99,9 @@ describe('ToolkitStorage', () => {
       const { storage } = setup();
       const setStorageItemSpy = jest.spyOn(storage, 'setStorageItem');
       storage.setFeatureSetting('testSetting', 'ynab', { parse: false });
-      expect(setStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', 'ynab', { parse: false });
+      expect(setStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', 'ynab', {
+        parse: false,
+      });
     });
   });
 
@@ -104,7 +117,9 @@ describe('ToolkitStorage', () => {
       const { storage } = setup();
       const removeStorageItemSpy = jest.spyOn(storage, 'removeStorageItem');
       storage.removeFeatureSetting('testSetting', { parse: false });
-      expect(removeStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', { parse: false });
+      expect(removeStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', {
+        parse: false,
+      });
     });
   });
 
@@ -112,8 +127,8 @@ describe('ToolkitStorage', () => {
     it('should return the value from web-extensions storage', async () => {
       const { storage } = setup({
         storage: {
-          item: 'mock-value'
-        }
+          item: 'mock-value',
+        },
       });
       const actual = await storage.getStorageItem('item');
       expect(actual).toEqual('mock-value');
@@ -122,8 +137,8 @@ describe('ToolkitStorage', () => {
     it('should parse the data by default', async () => {
       const { storage } = setup({
         storage: {
-          item: 'true'
-        }
+          item: 'true',
+        },
       });
       const actual = await storage.getStorageItem('item');
       expect(typeof actual).toEqual('boolean');
@@ -133,8 +148,8 @@ describe('ToolkitStorage', () => {
     it('should not parse the data when fetching all storage items', async () => {
       const { storage } = setup({
         storage: {
-          item: 'true'
-        }
+          item: 'true',
+        },
       });
       const actual = await storage.getStorageItem(null);
       expect(actual).toEqual({ item: 'true' });
@@ -143,8 +158,8 @@ describe('ToolkitStorage', () => {
     it("shouldn't parse if parse option is false", async () => {
       const { storage } = setup({
         storage: {
-          item: 'true'
-        }
+          item: 'true',
+        },
       });
       const actual = await storage.getStorageItem('item', { parse: false });
       expect(actual).toEqual('true');
@@ -152,7 +167,9 @@ describe('ToolkitStorage', () => {
 
     it('should return the default if specified and there is no value in storage', async () => {
       const { storage } = setup();
-      const actual = await storage.getStorageItem('not-there', { default: 'mock-default' });
+      const actual = await storage.getStorageItem('not-there', {
+        default: 'mock-default',
+      });
       expect(actual).toEqual('mock-default');
     });
   });
@@ -169,7 +186,10 @@ describe('ToolkitStorage', () => {
     it('should call set on the storage area', () => {
       const { storage } = setup();
       storage.setStorageItem('item', 'test');
-      expect(getBrowser().storage.local.set).toHaveBeenCalledWith({ item: 'test' }, expect.any(Function));
+      expect(getBrowser().storage.local.set).toHaveBeenCalledWith(
+        { item: 'test' },
+        expect.any(Function)
+      );
     });
   });
 
@@ -178,8 +198,8 @@ describe('ToolkitStorage', () => {
       const { storage } = setup({
         storage: {
           'toolkit-feature:test': 'value',
-          someOtherSetting: 'thing'
-        }
+          someOtherSetting: 'thing',
+        },
       });
 
       const actual = await storage.getStoredFeatureSettings();

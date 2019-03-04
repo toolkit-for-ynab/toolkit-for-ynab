@@ -11,7 +11,7 @@ export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 window.__toolkitUtils = {
   ...ynabUtils,
   ...emberUtils,
-  ...Collections
+  ...Collections,
 };
 
 export class YNABToolkit {
@@ -28,33 +28,36 @@ export class YNABToolkit {
       const featureCSS = wrappedInjectCSS();
 
       if (isFeatureEnabled(feature) && featureCSS) {
-        css += `/* == Injected CSS from feature: ${feature.constructor.name} == */\n${featureCSS}\n\n`;
+        css += `/* == Injected CSS from feature: ${
+          feature.constructor.name
+        } == */\n${featureCSS}\n\n`;
       }
 
       return css;
     }, require('./ynab-toolkit.css'));
 
-    $('head').append($('<style>', { id: 'toolkit-injected-styles', type: 'text/css' })
-      .text(globalCSS));
+    $('head').append(
+      $('<style>', { id: 'toolkit-injected-styles', type: 'text/css' }).text(globalCSS)
+    );
   }
 
   _createFeatureInstances() {
-    features.forEach((Feature) => {
+    features.forEach(Feature => {
       this._featureInstances.push(new Feature());
     });
   }
 
-  _invokeFeature = (featureName) => {
-    const feature = this._featureInstances.find((f) => f.constructor.name === featureName);
+  _invokeFeature = featureName => {
+    const feature = this._featureInstances.find(f => f.constructor.name === featureName);
     const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
     const wrappedInvoke = feature.invoke.bind(feature);
     if (isFeatureEnabled(feature) && wrappedShouldInvoke()) {
       wrappedInvoke();
     }
-  }
+  };
 
   _invokeFeatureInstances = async () => {
-    this._featureInstances.forEach(async (feature) => {
+    this._featureInstances.forEach(async feature => {
       if (isFeatureEnabled(feature)) {
         feature.applyListeners();
 
@@ -67,7 +70,7 @@ export class YNABToolkit {
             exception,
             featureName,
             featureSetting,
-            functionName: 'willInvoke'
+            functionName: 'willInvoke',
           });
         }
 
@@ -78,23 +81,22 @@ export class YNABToolkit {
         }
       }
     });
-  }
+  };
 
-  _onBackgroundMessage = (event) => {
-    if (
-      event.source === window &&
-      event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE
-    ) {
+  _onBackgroundMessage = event => {
+    if (event.source === window && event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE) {
       window.ynabToolKit = {
         ...window.ynabToolKit,
-        ...event.data.ynabToolKit
+        ...event.data.ynabToolKit,
       };
 
       // eslint-disable-next-line
       if (event.data.ynabToolKit.environment === 'development') {
         try {
           Rollbar.impl.instrumenter.deinstrumentConsole(); // eslint-disable-line
-        } catch (e) { /* ignore */ }
+        } catch (e) {
+          /* ignore */
+        }
       }
 
       this._setupErrorTracking();
@@ -102,7 +104,7 @@ export class YNABToolkit {
       this._removeMessageListener();
       this._waitForUserSettings();
     }
-  }
+  };
 
   _removeMessageListener() {
     window.removeEventListener('message', this._onBackgroundMessage);
@@ -122,11 +124,11 @@ export class YNABToolkit {
           exception: error,
           featureName: 'unknown',
           featureSetting: 'unknown',
-          functionName: 'global'
+          functionName: 'global',
         });
       }
     });
-  }
+  };
 
   _waitForUserSettings() {
     const self = this;
@@ -148,6 +150,6 @@ export class YNABToolkit {
       } else {
         setTimeout(poll, 250);
       }
-    }());
+    })();
   }
 }

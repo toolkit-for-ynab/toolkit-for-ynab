@@ -29,7 +29,8 @@ export class ToggleTransactionFilters extends Feature {
     // activate if switch to individual account, or all accounts views
     if (
       changedNodes.has('modal-overlay ynab-u modal-generic modal-account-filters active closing') ||
-      changedNodes.has('ynab-grid-body')) {
+      changedNodes.has('ynab-grid-body')
+    ) {
       this.initToggleButtons();
     }
   }
@@ -41,9 +42,13 @@ export class ToggleTransactionFilters extends Feature {
     container.filters.applyFilters();
 
     if (settingReconciled) {
-      $('#toolkit-toggleReconciled').removeClass('toolkit-button-toggle-hidden').addClass('toolkit-button-toggle-visible');
+      $('#toolkit-toggleReconciled')
+        .removeClass('toolkit-button-toggle-hidden')
+        .addClass('toolkit-button-toggle-visible');
     } else {
-      $('#toolkit-toggleReconciled').addClass('toolkit-button-toggle-hidden').removeClass('toolkit-button-toggle-visible');
+      $('#toolkit-toggleReconciled')
+        .addClass('toolkit-button-toggle-hidden')
+        .removeClass('toolkit-button-toggle-visible');
     }
   }
 
@@ -54,24 +59,36 @@ export class ToggleTransactionFilters extends Feature {
     container.filters.applyFilters();
 
     if (settingScheduled) {
-      $('#toolkit-toggleScheduled').removeClass('toolkit-button-toggle-hidden').addClass('toolkit-button-toggle-visible');
+      $('#toolkit-toggleScheduled')
+        .removeClass('toolkit-button-toggle-hidden')
+        .addClass('toolkit-button-toggle-visible');
     } else {
-      $('#toolkit-toggleScheduled').addClass('toolkit-button-toggle-hidden').removeClass('toolkit-button-toggle-visible');
+      $('#toolkit-toggleScheduled')
+        .addClass('toolkit-button-toggle-hidden')
+        .removeClass('toolkit-button-toggle-visible');
     }
   }
 
   updateToggleButtons(settingReconciled, settingScheduled) {
     // set button classes
     if (settingReconciled) {
-      $('#toolkit-toggleReconciled').removeClass('toolkit-button-toggle-hidden').addClass('toolkit-button-toggle-visible');
+      $('#toolkit-toggleReconciled')
+        .removeClass('toolkit-button-toggle-hidden')
+        .addClass('toolkit-button-toggle-visible');
     } else {
-      $('#toolkit-toggleReconciled').addClass('toolkit-button-toggle-hidden').removeClass('toolkit-button-toggle-visible');
+      $('#toolkit-toggleReconciled')
+        .addClass('toolkit-button-toggle-hidden')
+        .removeClass('toolkit-button-toggle-visible');
     }
 
     if (settingScheduled) {
-      $('#toolkit-toggleScheduled').removeClass('toolkit-button-toggle-hidden').addClass('toolkit-button-toggle-visible');
+      $('#toolkit-toggleScheduled')
+        .removeClass('toolkit-button-toggle-hidden')
+        .addClass('toolkit-button-toggle-visible');
     } else {
-      $('#toolkit-toggleScheduled').addClass('toolkit-button-toggle-hidden').removeClass('toolkit-button-toggle-visible');
+      $('#toolkit-toggleScheduled')
+        .addClass('toolkit-button-toggle-hidden')
+        .removeClass('toolkit-button-toggle-visible');
     }
   }
 
@@ -87,19 +104,37 @@ export class ToggleTransactionFilters extends Feature {
     // insert or edit buttons
     if (!$('#toolkit-toggleReconciled').length) {
       // create buttons if they don't already exist
-      $('.accounts-toolbar .accounts-toolbar-right')
-        .append($('<button>', { id: 'toolkit-toggleReconciled', class: 'button', title: 'Toggle Reconciled Transactions' })
-          .click(() => { this.toggleReconciled(); })
-          .append($('<i>', { class: 'flaticon solid lock-1 is-reconciled' })
-          // show both text and icons or just the icon
-            .append(this.settings.enabled === '2' ? ' Reconciled' : '')));
+      $('.accounts-toolbar .accounts-toolbar-right').append(
+        $('<button>', {
+          id: 'toolkit-toggleReconciled',
+          class: 'button',
+          title: 'Toggle Reconciled Transactions',
+        })
+          .click(() => {
+            this.toggleReconciled();
+          })
+          .append(
+            $('<i>', { class: 'flaticon solid lock-1 is-reconciled' })
+              // show both text and icons or just the icon
+              .append(this.settings.enabled === '2' ? ' Reconciled' : '')
+          )
+      );
 
-      $('.accounts-toolbar .accounts-toolbar-right')
-        .append($('<button>', { id: 'toolkit-toggleScheduled', class: 'button', title: 'Toggle Scheduled Transactions' })
-          .click(() => { this.toggleScheduled(); })
-          .append($('<i>', { class: 'flaticon solid clock-1 is-reconciled' })
-          // show both text and icons or just the icon
-            .append(this.settings.enabled === '2' ? ' Scheduled' : '')));
+      $('.accounts-toolbar .accounts-toolbar-right').append(
+        $('<button>', {
+          id: 'toolkit-toggleScheduled',
+          class: 'button',
+          title: 'Toggle Scheduled Transactions',
+        })
+          .click(() => {
+            this.toggleScheduled();
+          })
+          .append(
+            $('<i>', { class: 'flaticon solid clock-1 is-reconciled' })
+              // show both text and icons or just the icon
+              .append(this.settings.enabled === '2' ? ' Scheduled' : '')
+          )
+      );
 
       this.updateToggleButtons(settingReconciled, settingScheduled);
     } else {

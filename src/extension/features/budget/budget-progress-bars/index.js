@@ -1,5 +1,10 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage, getEntityManager, getSelectedMonth, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
+import {
+  isCurrentRouteBudgetPage,
+  getEntityManager,
+  getSelectedMonth,
+  isCurrentMonthSelected,
+} from 'toolkit/extension/utils/ynab';
 import { migrateLegacyPacingStorage, pacingForCategory } from 'toolkit/extension/utils/pacing';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
@@ -13,7 +18,9 @@ export class BudgetProgressBars extends Feature {
   internalIdBase;
   monthProgress;
 
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 
   willInvoke() {
     migrateLegacyPacingStorage();
@@ -27,20 +34,24 @@ export class BudgetProgressBars extends Feature {
   generateProgressBarStyle(colors, points) {
     points.unshift(0);
     points.push(1);
-    let pointsPercent = Array.from(points, function (p) { return p * 100; });
+    let pointsPercent = Array.from(points, function(p) {
+      return p * 100;
+    });
 
     let style = 'linear-gradient(to right, ';
     for (let i = 0; i < colors.length; i++) {
       style += colors[i] + ' ' + pointsPercent[i] + '%, ';
       style += colors[i] + ' ' + pointsPercent[i + 1] + '%';
-      style += (i + 1 === colors.length) ? ')' : ', ';
+      style += i + 1 === colors.length ? ')' : ', ';
     }
 
     return style;
   }
 
   getCalculation(subCategoryName) {
-    let subCat = this.subCats.find((ele) => { return ele.toolkitName === subCategoryName; });
+    let subCat = this.subCats.find(ele => {
+      return ele.toolkitName === subCategoryName;
+    });
     let calculation = null;
     if (subCat) {
       let crazyInternalId = this.internalIdBase + subCat.entityId;
@@ -50,7 +61,9 @@ export class BudgetProgressBars extends Feature {
        */
       calculation.targetBalance = subCat.getTargetBalance();
       calculation.goalType = subCat.getGoalType();
-      calculation.goalCreationMonth = (subCat.goalCreationMonth) ? subCat.goalCreationMonth.toString().substr(0, 7) : '';
+      calculation.goalCreationMonth = subCat.goalCreationMonth
+        ? subCat.goalCreationMonth.toString().substr(0, 7)
+        : '';
       /**
        * If the month the goal was created in is greater than the selected month, null the goal type to prevent further
        * processing.
@@ -84,7 +97,14 @@ export class BudgetProgressBars extends Feature {
 
     if (hasGoal) {
       let percent = Math.round(parseFloat(status));
-      $(target).css('background', 'linear-gradient(to right, var(--tk-color-progress-bar-goal) ' + percent + '%, var(--tk-color-progress-bar-goal-spacing) ' + percent + '%)');
+      $(target).css(
+        'background',
+        'linear-gradient(to right, var(--tk-color-progress-bar-goal) ' +
+          percent +
+          '%, var(--tk-color-progress-bar-goal-spacing) ' +
+          percent +
+          '%)'
+      );
     } else {
       $(target).css('background', '');
     }
@@ -96,10 +116,17 @@ export class BudgetProgressBars extends Feature {
       return;
     }
 
-    $(target).css('background', this.generateProgressBarStyle(
-      ['var(--tk-color-progress-bar-pacing-master-spacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing-master-spacing)'],
-      [this.monthProgress - progressIndicatorWidth, this.monthProgress]
-    ));
+    $(target).css(
+      'background',
+      this.generateProgressBarStyle(
+        [
+          'var(--tk-color-progress-bar-pacing-master-spacing)',
+          'var(--tk-color-progress-bar-pacing-month-progress-indicator)',
+          'var(--tk-color-progress-bar-pacing-master-spacing)',
+        ],
+        [this.monthProgress - progressIndicatorWidth, this.monthProgress]
+      )
+    );
   }
 
   addPacingProgress(subCategory, target) {
@@ -118,21 +145,44 @@ export class BudgetProgressBars extends Feature {
     if (!pacingCalculation.isDeemphasized) {
       if (balancePriorToSpending > 0) {
         if (monthPace > budgetedPace) {
-          $(target).css('background', this.generateProgressBarStyle(
-            ['var(--tk-color-progress-bar-pacing)', 'var(--tk-color-progress-bar-pacing-spacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing-spacing)'],
-            [cappedBudgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
-          ));
+          $(target).css(
+            'background',
+            this.generateProgressBarStyle(
+              [
+                'var(--tk-color-progress-bar-pacing)',
+                'var(--tk-color-progress-bar-pacing-spacing)',
+                'var(--tk-color-progress-bar-pacing-month-progress-indicator)',
+                'var(--tk-color-progress-bar-pacing-spacing)',
+              ],
+              [cappedBudgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
+            )
+          );
         } else {
-          $(target).css('background', this.generateProgressBarStyle(
-            ['var(--tk-color-progress-bar-pacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing)', 'var(--tk-color-progress-bar-pacing-spacing)'],
-            [this.monthProgress - progressIndicatorWidth, this.monthProgress, cappedBudgetedPace]
-          ));
+          $(target).css(
+            'background',
+            this.generateProgressBarStyle(
+              [
+                'var(--tk-color-progress-bar-pacing)',
+                'var(--tk-color-progress-bar-pacing-month-progress-indicator)',
+                'var(--tk-color-progress-bar-pacing)',
+                'var(--tk-color-progress-bar-pacing-spacing)',
+              ],
+              [this.monthProgress - progressIndicatorWidth, this.monthProgress, cappedBudgetedPace]
+            )
+          );
         }
       } else {
-        $(target).css('background', this.generateProgressBarStyle(
-          ['var(--tk-color-progress-bar-pacing-spacing)', 'var(--tk-color-progress-bar-pacing-month-progress-indicator)', 'var(--tk-color-progress-bar-pacing-spacing)'],
-          [this.monthProgress - progressIndicatorWidth, this.monthProgress]
-        ));
+        $(target).css(
+          'background',
+          this.generateProgressBarStyle(
+            [
+              'var(--tk-color-progress-bar-pacing-spacing)',
+              'var(--tk-color-progress-bar-pacing-month-progress-indicator)',
+              'var(--tk-color-progress-bar-pacing-spacing)',
+            ],
+            [this.monthProgress - progressIndicatorWidth, this.monthProgress]
+          )
+        );
       }
     } else {
       $(target).css('background', '');
@@ -143,7 +193,9 @@ export class BudgetProgressBars extends Feature {
     const today = new ynab.utilities.DateWithoutTime();
     this.monthProgress = today.getDate() / today.daysInMonth();
 
-    let categories = $('.budget-table ul').not('.budget-table-uncategorized-transactions').not('.is-debt-payment-category');
+    let categories = $('.budget-table ul')
+      .not('.budget-table-uncategorized-transactions')
+      .not('.is-debt-payment-category');
     let masterCategoryName = '';
 
     if (this.subCats === null || this.subCats.length === 0 || this.loadCategories) {
@@ -158,13 +210,18 @@ export class BudgetProgressBars extends Feature {
       let nameCell;
       let budgetedCell;
       if ($(element).hasClass('is-master-category')) {
-        masterCategoryName = $(element).find('div.budget-table-cell-name-row-label-item>div>div[title]');
-        masterCategoryName = (masterCategoryName !== 'undefined') ? ($(masterCategoryName).attr('title') + '_') : '';
+        masterCategoryName = $(element).find(
+          'div.budget-table-cell-name-row-label-item>div>div[title]'
+        );
+        masterCategoryName =
+          masterCategoryName !== 'undefined' ? $(masterCategoryName).attr('title') + '_' : '';
       }
 
       if ($(element).hasClass('is-sub-category')) {
         const subCategory = getEmberView(element.id, 'category');
-        let subCategoryName = $(element).find('li.budget-table-cell-name>div>div')[0].title.match(/.[^\n]*/);
+        let subCategoryName = $(element)
+          .find('li.budget-table-cell-name>div>div')[0]
+          .title.match(/.[^\n]*/);
 
         subCategoryName = masterCategoryName + subCategoryName;
 
@@ -193,7 +250,7 @@ export class BudgetProgressBars extends Feature {
             this.addMasterPacingProgress($(element));
             break;
           case 'both':
-            nameCell = $(element).find('li.budget-table-cell-name');// [0];
+            nameCell = $(element).find('li.budget-table-cell-name'); // [0];
             this.addMasterPacingProgress($(nameCell));
             break;
         }
@@ -214,15 +271,19 @@ export class BudgetProgressBars extends Feature {
       this.loadCategories = true;
     }
 
-    if (changedNodes.has('budget-table-row') ||
-        changedNodes.has('ynab-new-budget-available-number user-data') ||
-        changedNodes.has('budget-table-cell-budgeted') ||
-        changedNodes.has('navlink-budget active') ||
-        changedNodes.has('budget-inspector')) {
+    if (
+      changedNodes.has('budget-table-row') ||
+      changedNodes.has('ynab-new-budget-available-number user-data') ||
+      changedNodes.has('budget-table-cell-budgeted') ||
+      changedNodes.has('navlink-budget active') ||
+      changedNodes.has('budget-inspector')
+    ) {
       this.invoke();
-    } else if (changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-edit-category active') ||
-                changedNodes.has('modal-overlay ynab-u modal-popup modal-add-master-category active') ||
-                changedNodes.has('modal-overlay ynab-u modal-popup modal-add-sub-category active')) {
+    } else if (
+      changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-edit-category active') ||
+      changedNodes.has('modal-overlay ynab-u modal-popup modal-add-master-category active') ||
+      changedNodes.has('modal-overlay ynab-u modal-popup modal-add-sub-category active')
+    ) {
       /**
        * Seems there should be a more 'Embery' way to know when the categories have been
        * updated, added, or deleted but this'll have to do for now. Note that the flag is
@@ -242,19 +303,24 @@ export class BudgetProgressBars extends Feature {
   }
 }
 
-
 function getMergedCategories() {
   const entityManager = getEntityManager();
   const masterCategories = entityManager.getAllNonTombstonedMasterCategories();
   const mergedCategories = [];
 
-  masterCategories.forEach((masterCategory) => {
+  masterCategories.forEach(masterCategory => {
     // Ignore certain categories!
     if (masterCategory.isHidden !== true && masterCategory.name !== 'Internal Master Category') {
-      const subCategories = entityManager.getSubCategoriesByMasterCategoryId(masterCategory.getEntityId());
-      subCategories.forEach((subCategory) => {
+      const subCategories = entityManager.getSubCategoriesByMasterCategoryId(
+        masterCategory.getEntityId()
+      );
+      subCategories.forEach(subCategory => {
         // Ignore certain categories!
-        if (subCategory.isHidden !== true && !subCategory.isTombstone && subCategory.name !== 'Uncategorized Transactions') {
+        if (
+          subCategory.isHidden !== true &&
+          !subCategory.isTombstone &&
+          subCategory.name !== 'Uncategorized Transactions'
+        ) {
           subCategory.toolkitName = masterCategory.name + '_' + subCategory.name; // Add toolkit specific attribute
           mergedCategories.push(subCategory);
         }

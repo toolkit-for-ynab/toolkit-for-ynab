@@ -4,5 +4,6 @@ module.exports = {
   default: false,
   section: 'accounts',
   title: 'Clear Selection',
-  description: 'Adds an option to the transaction edit drop-down menu to clear the current selection.'
+  description:
+    'Adds an option to the transaction edit drop-down menu to clear the current selection.',
 };

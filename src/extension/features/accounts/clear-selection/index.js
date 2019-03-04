@@ -13,16 +13,22 @@ export class ClearSelection extends Feature {
       accountsController.send('closeModal');
       this.logFeatureError(exception);
     }
-  }
+  };
 
-  observe = (changedNodes) => {
-    if (changedNodes.has('ynab-u modal-popup modal-account-edit-transaction-list ember-view modal-overlay active')) {
+  observe = changedNodes => {
+    if (
+      changedNodes.has(
+        'ynab-u modal-popup modal-account-edit-transaction-list ember-view modal-overlay active'
+      )
+    ) {
       this.invoke();
     }
-  }
+  };
 
   invoke = () => {
-    const menuText = ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.accountsClearSelection'] || 'Clear Selection';
+    const menuText =
+      (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.accountsClearSelection']) ||
+      'Clear Selection';
 
     // Note that ${menuText} was intentionally placed on the same line as the <i> tag to
     // prevent the leading space that occurs as a result of using a multi-line string.
@@ -30,14 +36,15 @@ export class ClearSelection extends Feature {
     // more natural.
     //
     // The second <li> functions as a separator on the menu after the feature menu item.
-    $('.modal-account-edit-transaction-list .modal-list')
-      .prepend($(`<li>
+    $('.modal-account-edit-transaction-list .modal-list').prepend(
+      $(`<li>
             <button class="button-list ynab-toolkit-clear-selection">
               <i class="flaticon stroke minus-2"></i>${menuText}
             </button>
           </li>
           <li><hr /><li>`).click(() => {
         this.uncheckTransactions();
-      }));
-  }
+      })
+    );
+  };
 }

@@ -5,7 +5,9 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { ToggleSplitButton } from './components/toggle-split-button';
 
 export class ToggleSplits extends Feature {
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 
   shouldInvoke() {
     return isCurrentRouteAccountsPage();

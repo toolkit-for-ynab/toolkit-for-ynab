@@ -28,12 +28,24 @@ export class CustomFlagNames extends Feature {
   }
 
   invoke() {
-    $('.ynab-grid-cell-flag .ynab-flag-red').parent().attr('title', redFlagLabel);
-    $('.ynab-grid-cell-flag .ynab-flag-blue').parent().attr('title', blueFlagLabel);
-    $('.ynab-grid-cell-flag .ynab-flag-orange').parent().attr('title', orangeFlagLabel);
-    $('.ynab-grid-cell-flag .ynab-flag-yellow').parent().attr('title', yellowFlagLabel);
-    $('.ynab-grid-cell-flag .ynab-flag-green').parent().attr('title', greenFlagLabel);
-    $('.ynab-grid-cell-flag .ynab-flag-purple').parent().attr('title', purpleFlagLabel);
+    $('.ynab-grid-cell-flag .ynab-flag-red')
+      .parent()
+      .attr('title', redFlagLabel);
+    $('.ynab-grid-cell-flag .ynab-flag-blue')
+      .parent()
+      .attr('title', blueFlagLabel);
+    $('.ynab-grid-cell-flag .ynab-flag-orange')
+      .parent()
+      .attr('title', orangeFlagLabel);
+    $('.ynab-grid-cell-flag .ynab-flag-yellow')
+      .parent()
+      .attr('title', yellowFlagLabel);
+    $('.ynab-grid-cell-flag .ynab-flag-green')
+      .parent()
+      .attr('title', greenFlagLabel);
+    $('.ynab-grid-cell-flag .ynab-flag-purple')
+      .parent()
+      .attr('title', purpleFlagLabel);
   }
 
   observe(changedNodes) {
@@ -43,7 +55,9 @@ export class CustomFlagNames extends Feature {
       this.invoke();
     }
 
-    if (changedNodes.has('ynab-u modal-popup modal-account-flags ember-view modal-overlay active')) {
+    if (
+      changedNodes.has('ynab-u modal-popup modal-account-flags ember-view modal-overlay active')
+    ) {
       $('.ynab-flag-red .label, .ynab-flag-red .label-bg').text(redFlagLabel);
       $('.ynab-flag-blue .label, .ynab-flag-blue .label-bg').text(blueFlagLabel);
       $('.ynab-flag-orange .label, .ynab-flag-orange .label-bg').text(orangeFlagLabel);
@@ -51,11 +65,20 @@ export class CustomFlagNames extends Feature {
       $('.ynab-flag-green .label, .ynab-flag-green .label-bg').text(greenFlagLabel);
       $('.ynab-flag-purple .label, .ynab-flag-purple .label-bg').text(purpleFlagLabel);
 
-      $('.modal-account-flags .modal').css({ height: '22em' })
-        .append($('<div>', { id: 'account-flags-actions' }).css({ padding: '0 .3em' })
-          .append($('<button>', { id: 'flags-edit', class: 'button button-primary' })
-            .append('Edit Flag Names ')
-            .append($('<i>', { class: 'flaticon stroke compose-3' }))));
+      $('.modal-account-flags .modal')
+        .css({ height: '22em' })
+        .append(
+          $('<div>', { id: 'account-flags-actions' })
+            .css({ padding: '0 .3em' })
+            .append(
+              $('<button>', {
+                id: 'flags-edit',
+                class: 'button button-primary',
+              })
+                .append('Edit Flag Names ')
+                .append($('<i>', { class: 'flaticon stroke compose-3' }))
+            )
+        );
 
       this.addEventListeners();
     }
@@ -69,16 +92,20 @@ export class CustomFlagNames extends Feature {
 
   addEventListeners() {
     let $this = this;
-    $('#flags-edit').click(function () {
+    $('#flags-edit').click(function() {
       $('.modal-account-flags .modal-list').empty();
 
       for (let key in flags) {
         let flag = flags[key];
 
-        $('.modal-account-flags .modal-list')
-          .append($('<li>')
-            .append($('<input>', {
-              id: key, type: 'text', class: 'flag-input', value: flag.label, placeholder: flag.label
+        $('.modal-account-flags .modal-list').append(
+          $('<li>').append(
+            $('<input>', {
+              id: key,
+              type: 'text',
+              class: 'flag-input',
+              value: flag.label,
+              placeholder: flag.label,
             }).css({
               color: '#fff',
               fill: flag.color,
@@ -86,35 +113,41 @@ export class CustomFlagNames extends Feature {
               height: 30,
               padding: '0 .7em',
               'margin-bottom': '.3em',
-              border: 'none'
-            })));
+              border: 'none',
+            })
+          )
+        );
       }
 
       $('#account-flags-actions').empty();
 
-      $('#account-flags-actions')
-        .append($('<button>', {
+      $('#account-flags-actions').append(
+        $('<button>', {
           id: 'flags-close',
-          class: 'button button-primary'
-        }).append('Ok ')
-          .append($('<i>', {
-            class: 'flaticon stroke checkmark-2'
-          })));
+          class: 'button button-primary',
+        })
+          .append('Ok ')
+          .append(
+            $('<i>', {
+              class: 'flaticon stroke checkmark-2',
+            })
+          )
+      );
 
-      $('input.flag-input').focus(function () {
+      $('input.flag-input').focus(function() {
         $(this).css({
-          color: '#000'
+          color: '#000',
         });
       });
 
-      $('input.flag-input').blur(function () {
+      $('input.flag-input').blur(function() {
         $(this).css({
-          color: '#fff'
+          color: '#fff',
         });
         $this.saveFlag($(this));
       });
 
-      $('#flags-close').click(function () {
+      $('#flags-close').click(function() {
         controllerLookup('application').send('closeModal');
       });
     });
@@ -145,28 +178,28 @@ export class CustomFlagNames extends Feature {
     const flagsJSON = {
       red: {
         label: 'Red',
-        color: '#d43d2e'
+        color: '#d43d2e',
       },
       orange: {
         label: 'Orange',
-        color: '#ff7b00'
+        color: '#ff7b00',
       },
       yellow: {
         label: 'Yellow',
-        color: '#f8e136'
+        color: '#f8e136',
       },
       green: {
         label: 'Green',
-        color: '#9ac234'
+        color: '#9ac234',
       },
       blue: {
         label: 'Blue',
-        color: '#0082cb'
+        color: '#0082cb',
       },
       purple: {
         label: 'Purple',
-        color: '#9384b7'
-      }
+        color: '#9384b7',
+      },
     };
 
     setToolkitStorageKey('flags', flagsJSON);

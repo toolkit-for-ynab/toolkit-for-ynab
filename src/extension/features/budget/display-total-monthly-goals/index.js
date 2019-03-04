@@ -36,7 +36,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
     // object. just convert everything into a number just in case.
     return {
       monthlyGoalAmount: parseInt(monthlyGoalAmount, 10),
-      isChecked: category.get('isChecked')
+      isChecked: category.get('isChecked'),
     };
   }
 
@@ -44,7 +44,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
     const categoryGoals = {
       total: 0,
       checkedTotal: 0,
-      checkedCount: 0
+      checkedCount: 0,
     };
 
     $('.budget-table-row.is-sub-category').each((index, element) => {
@@ -58,15 +58,13 @@ export class DisplayTotalMonthlyGoals extends Feature {
     });
 
     return {
-      amount: categoryGoals.checkedCount > 0
-        ? categoryGoals.checkedTotal
-        : categoryGoals.total,
-      checkedCategoryCount: categoryGoals.checkedCount
+      amount: categoryGoals.checkedCount > 0 ? categoryGoals.checkedTotal : categoryGoals.total,
+      checkedCategoryCount: categoryGoals.checkedCount,
     };
   }
 
   createInspectorElement(goalsAmount) {
-    const currencyClass = (goalsAmount === 0) ? 'zero' : 'positive';
+    const currencyClass = goalsAmount === 0 ? 'zero' : 'positive';
 
     return $(`
       <div class="total-monthly-goals-inspector">
@@ -91,14 +89,15 @@ export class DisplayTotalMonthlyGoals extends Feature {
       return;
     }
 
-    this.createInspectorElement(monthlyGoals.amount)
-      .insertBefore($('.inspector-quick-budget'));
+    this.createInspectorElement(monthlyGoals.amount).insertBefore($('.inspector-quick-budget'));
   }
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
-    if (changedNodes.has('budget-table-row is-sub-category is-checked') ||
-        changedNodes.has('budget-table-row is-sub-category')) {
+    if (
+      changedNodes.has('budget-table-row is-sub-category is-checked') ||
+      changedNodes.has('budget-table-row is-sub-category')
+    ) {
       this.invoke();
     }
   }

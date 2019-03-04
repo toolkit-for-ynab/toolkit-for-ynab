@@ -23,37 +23,43 @@ export class RouteChangeListener {
         (controller, changedProperty) => {
           if (changedProperty === 'budgetVersionId') {
             (function poll() {
-              const applicationBudgetVersion = controllerLookup('application').get('budgetVersionId');
+              const applicationBudgetVersion = controllerLookup('application').get(
+                'budgetVersionId'
+              );
               const { activeBudgetVersion } = getEntityManager().getSharedLibInstance();
-              if (activeBudgetVersion && activeBudgetVersion.entityId && activeBudgetVersion.entityId === applicationBudgetVersion) {
+              if (
+                activeBudgetVersion &&
+                activeBudgetVersion.entityId &&
+                activeBudgetVersion.entityId === applicationBudgetVersion
+              ) {
                 Ember.run.scheduleOnce('afterRender', controller, 'emitBudgetRouteChange');
               } else {
                 Ember.run.next(poll, 250);
               }
-            }());
+            })();
           } else {
             Ember.run.scheduleOnce('afterRender', controller, 'emitSameBudgetRouteChange');
           }
         }
       ),
 
-      emitSameBudgetRouteChange: function () {
+      emitSameBudgetRouteChange: function() {
         let currentRoute = applicationController.get('currentRouteName');
-        routeChangeListener.features.forEach((feature) => {
+        routeChangeListener.features.forEach(feature => {
           const observe = feature.onRouteChanged.bind(feature, currentRoute);
           const wrapped = withToolkitError(observe, feature);
           Ember.run.later(wrapped, 0);
         });
       },
 
-      emitBudgetRouteChange: function () {
+      emitBudgetRouteChange: function() {
         let currentRoute = applicationController.get('currentRouteName');
-        routeChangeListener.features.forEach((feature) => {
+        routeChangeListener.features.forEach(feature => {
           const observe = feature.onBudgetChanged.bind(feature, currentRoute);
           const wrapped = withToolkitError(observe, feature);
           Ember.run.later(wrapped, 0);
         });
-      }
+      },
     });
 
     instance = this;

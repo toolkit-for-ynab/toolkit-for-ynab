@@ -34,19 +34,23 @@ export class SpareChange extends Feature {
       this.accountsController = controllerLookup('accounts');
     }
 
-    Ember.run.debounce(this, function () {
-      this.accountsController.addObserver('areChecked', this, 'onYnabSelectionChanged');
+    Ember.run.debounce(
+      this,
+      function() {
+        this.accountsController.addObserver('areChecked', this, 'onYnabSelectionChanged');
 
-      if (isCurrentRouteAccountsPage()) {
-        if (this.applicationController.get('selectedAccountId')) {
-          this.onYnabGridBodyChanged();
-        } else {
-          this.removeHeader();
+        if (isCurrentRouteAccountsPage()) {
+          if (this.applicationController.get('selectedAccountId')) {
+            this.onYnabGridBodyChanged();
+          } else {
+            this.removeHeader();
+          }
         }
-      }
 
-      this.currentlyRunning = false;
-    }, 250);
+        this.currentlyRunning = false;
+      },
+      250
+    );
   }
 
   observe(changedNodes) {
@@ -60,8 +64,12 @@ export class SpareChange extends Feature {
   }
 
   setSelectedTransactions() {
-    let visibleTransactionDisplayItems = this.accountsController.get('visibleTransactionDisplayItems');
-    this.selectedTransactions = visibleTransactionDisplayItems.filter(i => i.isChecked && i.get('outflow'));
+    let visibleTransactionDisplayItems = this.accountsController.get(
+      'visibleTransactionDisplayItems'
+    );
+    this.selectedTransactions = visibleTransactionDisplayItems.filter(
+      i => i.isChecked && i.get('outflow')
+    );
   }
 
   getSelectedAccount() {
@@ -113,14 +121,14 @@ export class SpareChange extends Feature {
     $('.ynab-toolkit-accounts-header-balances-spare-change').remove();
 
     // build spare change div
-    let spareChangeDiv = $('<div />')
-      .addClass('ynab-toolkit-accounts-header-balances-spare-change');
+    let spareChangeDiv = $('<div />').addClass(
+      'ynab-toolkit-accounts-header-balances-spare-change'
+    );
     let spareChangeAmount = $('<span />').addClass('user-data');
-    let spareChangeTitle =
-      $('<div />')
-        .addClass('accounts-header-balances-label')
-        .attr('title', 'The selected items "spare change" when rounded up to the nearest dollar.')
-        .text('Spare Change');
+    let spareChangeTitle = $('<div />')
+      .addClass('accounts-header-balances-label')
+      .attr('title', 'The selected items "spare change" when rounded up to the nearest dollar.')
+      .text('Spare Change');
     let currencySpan = $('<span />').addClass('user-data currency');
 
     spareChangeAmount.append(currencySpan);
@@ -163,11 +171,15 @@ export class SpareChange extends Feature {
   }
 
   onYnabGridBodyChanged() {
-    Ember.run.debounce(this, function () {
-      this.setSelectedTransactions();
-      this.updateSpareChangeCalculation();
-      this.updateSpareChangeHeader();
-    }, 250);
+    Ember.run.debounce(
+      this,
+      function() {
+        this.setSelectedTransactions();
+        this.updateSpareChangeCalculation();
+        this.updateSpareChangeHeader();
+      },
+      250
+    );
   }
 
   onYnabSelectionChanged() {

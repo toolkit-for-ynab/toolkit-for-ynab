@@ -11,8 +11,7 @@ export class Background {
 
   constructor() {
     this._initializeSentry();
-    this._storage.getFeatureSetting(TOOLKIT_DISABLED_FEATURE_SETTING)
-      .then(this._updatePopupIcon);
+    this._storage.getFeatureSetting(TOOLKIT_DISABLED_FEATURE_SETTING).then(this._updatePopupIcon);
   }
 
   initListeners() {
@@ -31,20 +30,20 @@ export class Background {
       default:
         console.log('unknown message', message);
     }
-  }
+  };
 
-  _handleException = (context) => {
+  _handleException = context => {
     Raven.captureException(new Error(context.serializedError), {
       tags: {
-        featureName: context.featureName
+        featureName: context.featureName,
       },
       extra: {
         featureSetting: context.featureSetting,
         functionName: context.functionName,
-        routeName: context.routeName
-      }
+        routeName: context.routeName,
+      },
     });
-  }
+  };
 
   _handleStorageMessage = (request, callback) => {
     switch (request.type) {
@@ -57,13 +56,13 @@ export class Background {
       default:
         console.log('unknown storage request', request);
     }
-  }
+  };
 
   _initializeSentry() {
     const environment = getEnvironment();
     const context = {
       environment,
-      release: this._browser.runtime.getManifest().version
+      release: this._browser.runtime.getManifest().version,
     };
 
     if (environment !== 'development') {
@@ -72,9 +71,9 @@ export class Background {
     }
   }
 
-  _updatePopupIcon = (isToolkitDisabled) => {
+  _updatePopupIcon = isToolkitDisabled => {
     const imagePath = `assets/images/icons/button${isToolkitDisabled ? '-disabled' : ''}.png`;
     const imageURL = this._browser.runtime.getURL(imagePath);
     this._browser.browserAction.setIcon({ path: imageURL });
-  }
+  };
 }

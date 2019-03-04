@@ -11,10 +11,10 @@ export class ObserveListener {
     this.features = [];
 
     let _MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-    let observer = new _MutationObserver((mutations) => {
+    let observer = new _MutationObserver(mutations => {
       this.changedNodes = new Set();
 
-      mutations.forEach((mutation) => {
+      mutations.forEach(mutation => {
         let newNodes = mutation.target;
         let $nodes = $(newNodes);
 
@@ -39,7 +39,7 @@ export class ObserveListener {
       childList: true,
       characterData: true,
       attributes: true,
-      attributeFilter: ['class']
+      attributeFilter: ['class'],
     });
 
     instance = this;
@@ -52,7 +52,7 @@ export class ObserveListener {
   }
 
   emitChanges() {
-    this.features.forEach((feature) => {
+    this.features.forEach(feature => {
       const observe = feature.observe.bind(feature, this.changedNodes);
       const wrapped = withToolkitError(observe, feature);
       Ember.run.later(wrapped, 0);

@@ -4,5 +4,5 @@ module.exports = {
   default: false,
   section: 'budget',
   title: 'Credit Card Emoji',
-  description: 'Adds a credit card emoji 💳 to the "Credit Card Payments" category.'
+  description: 'Adds a credit card emoji 💳 to the "Credit Card Payments" category.',
 };

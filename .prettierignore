@@ -1,0 +1,5 @@
+# Ignore any files in the assets directory, as they're 3rd party code.
+src/assets/**
+
+# Ignore the files in the Localization feature, as they're auto-generated.
+**/locales/*.js

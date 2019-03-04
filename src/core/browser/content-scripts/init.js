@@ -7,7 +7,7 @@ import { getEnvironment } from 'toolkit/core/common/web-extensions';
 const storage = new ToolkitStorage();
 
 function applySettingsToDom(userSettings) {
-  allToolkitSettings.forEach((setting) => {
+  allToolkitSettings.forEach(setting => {
     let userSettingValue = userSettings[setting.name];
     // Check for specific upgrade path where a boolean setting gets
     // changed to a select. Previous value will be 'true' but
@@ -46,19 +46,22 @@ function sendToolkitBootstrap(options) {
   const environment = getEnvironment();
   const manifest = browser.runtime.getManifest();
 
-  window.postMessage({
-    type: 'ynab-toolkit-bootstrap',
-    ynabToolKit: {
-      assets: {
-        logo: browser.runtime.getURL('assets/images/logos/toolkitforynab-logo-400.png')
+  window.postMessage(
+    {
+      type: 'ynab-toolkit-bootstrap',
+      ynabToolKit: {
+        assets: {
+          logo: browser.runtime.getURL('assets/images/logos/toolkitforynab-logo-400.png'),
+        },
+        environment,
+        extensionId: browser.runtime.id,
+        name: manifest.name,
+        options,
+        version: manifest.version,
       },
-      environment,
-      extensionId: browser.runtime.id,
-      name: manifest.name,
-      options,
-      version: manifest.version
-    }
-  }, '*');
+    },
+    '*'
+  );
 }
 
 function messageHandler(event) {

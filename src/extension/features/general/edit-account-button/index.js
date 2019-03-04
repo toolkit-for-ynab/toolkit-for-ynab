@@ -1,7 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 
 const Settings = {
-  Hidden: '2'
+  Hidden: '2',
 };
 
 export class EditAccountButton extends Feature {

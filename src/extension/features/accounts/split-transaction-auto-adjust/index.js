@@ -24,7 +24,12 @@ export class SplitTransactionAutoAdjust extends Feature {
     this.splitTransactionRow = $('.ynab-grid-add-rows');
     this.addAnotherSplit = $('.ynab-grid-split-add-sub-transaction');
 
-    this.splitTransactionRow.on('keyup', '.currency-input .ember-text-field', this, this.onKeyPress);
+    this.splitTransactionRow.on(
+      'keyup',
+      '.currency-input .ember-text-field',
+      this,
+      this.onKeyPress
+    );
     this.splitTransactionRow.on('click', '.ynab-grid-sub-remove', this.onDeleteSplit);
     this.addAnotherSplit.on('click', this.onAddAnotherSplit);
   }
@@ -41,10 +46,15 @@ export class SplitTransactionAutoAdjust extends Feature {
 
   getCurrentInputClass() {
     let firstRow = $('.ynab-grid-body-row', this.splitTransactionRow).first();
-    let outflowValue = ynab.unformat($('.ynab-grid-cell-outflow .ember-text-field', firstRow).val());
+    let outflowValue = ynab.unformat(
+      $('.ynab-grid-cell-outflow .ember-text-field', firstRow).val()
+    );
     let inflowValue = ynab.unformat($('.ynab-grid-cell-inflow .ember-text-field', firstRow).val());
-    return outflowValue > 0 ? '.ynab-grid-cell-outflow' :
-      inflowValue > 0 ? '.ynab-grid-cell-inflow' : false;
+    return outflowValue > 0
+      ? '.ynab-grid-cell-outflow'
+      : inflowValue > 0
+      ? '.ynab-grid-cell-inflow'
+      : false;
   }
 
   onAddAnotherSplit() {
@@ -57,7 +67,10 @@ export class SplitTransactionAutoAdjust extends Feature {
 
   autoFillNextRow(currentInputElement) {
     let inputClass = this.getCurrentInputClass();
-    let total = ynab.unformat($(inputClass + ' .ember-text-field', this.splitTransactionRow.children().eq(0)).val()) * 1000;
+    let total =
+      ynab.unformat(
+        $(inputClass + ' .ember-text-field', this.splitTransactionRow.children().eq(0)).val()
+      ) * 1000;
     // local version of the class variable to get around the 'this' issue in the .each() function below.
     let splitTransactionRow = this.splitTransactionRow;
 
@@ -66,7 +79,7 @@ export class SplitTransactionAutoAdjust extends Feature {
       let currentRowIndex = splitTransactionRow.children().index(currentRow);
       let currentValue = ynab.unformat($(currentInputElement).val()) * 1000;
 
-      splitTransactionRow.children().each(function (index, splitRow) {
+      splitTransactionRow.children().each(function(index, splitRow) {
         if (index === currentRowIndex) {
           let nextRow = splitTransactionRow.children().eq(currentRowIndex + 1);
           if (index === 0) {
@@ -78,7 +91,8 @@ export class SplitTransactionAutoAdjust extends Feature {
             $(inputClass + ' .ember-text-field', nextRow).trigger('change');
           }
         } else if (index < currentRowIndex) {
-          if (index !== 0) { // don't decrement total if we're the total row, that's silly
+          if (index !== 0) {
+            // don't decrement total if we're the total row, that's silly
             total -= ynab.unformat($(inputClass + ' .ember-text-field', splitRow).val()) * 1000;
           }
         }
@@ -89,8 +103,12 @@ export class SplitTransactionAutoAdjust extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    let addTransactionSplit = changedNodes.has('button button-primary modal-account-categories-split-transaction');
-    let editSplitTransaction = changedNodes.has('ynab-grid-body-row ynab-grid-body-split is-editing');
+    let addTransactionSplit = changedNodes.has(
+      'button button-primary modal-account-categories-split-transaction'
+    );
+    let editSplitTransaction = changedNodes.has(
+      'ynab-grid-body-row ynab-grid-body-split is-editing'
+    );
     let splitTransactionNodeChanged = addTransactionSplit && !editSplitTransaction;
     let splitTransactionButton = $('.ynab-grid-split-add-sub-transaction').length !== 0;
 

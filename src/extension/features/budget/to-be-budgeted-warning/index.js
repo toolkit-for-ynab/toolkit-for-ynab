@@ -2,7 +2,9 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class ToBeBudgetedWarning extends Feature {
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 
   shouldInvoke() {
     return isCurrentRouteBudgetPage();
@@ -22,8 +24,10 @@ export class ToBeBudgetedWarning extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (changedNodes.has('budget-header-item budget-header-calendar') ||
-      changedNodes.has('budget-header-totals-cell-value user-data')) {
+    if (
+      changedNodes.has('budget-header-item budget-header-calendar') ||
+      changedNodes.has('budget-header-totals-cell-value user-data')
+    ) {
       this.invoke();
     }
   }
