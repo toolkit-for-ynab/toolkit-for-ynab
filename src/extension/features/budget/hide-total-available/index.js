@@ -6,7 +6,6 @@ import { l10n } from 'toolkit/extension/utils/toolkit';
  * Hides the "Total Available" section of the budget inspector.
  */
 export class HideTotalAvailable extends Feature {
-
   shouldInvoke() {
     return isCurrentRouteBudgetPage();
   }
