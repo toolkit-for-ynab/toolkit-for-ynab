@@ -4,14 +4,13 @@ import { l10n } from 'toolkit/extension/utils/toolkit';
 import {
   getSelectedMonth,
   isCurrentRouteBudgetPage,
-  transitionTo,
+  transitionTo
 } from 'toolkit/extension/utils/ynab';
 
 /**
  * Adds a click handler to the "TOTAL INFLOW" inspector area.
  */
 export class LinkToInflows extends Feature {
-
   injectCSS() {
     return require('./index.css');
   }
