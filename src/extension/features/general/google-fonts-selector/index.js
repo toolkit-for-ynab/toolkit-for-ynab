@@ -10,6 +10,8 @@ export class GoogleFontsSelector extends Feature {
       return require('./roboto-condensed.css');
     } else if (this.settings.enabled === '4') {
       return require('./droid-sans.css');
+    } else if (this.settings.enabled === '5') {
+      return require('./inconsolata.css');
     }
   }
 }

@@ -1,85 +1,89 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,400italic);
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700,400italic');
 @import url('./shared.css');
 
 .ember-view {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .nav-account-block .nav-account-name-button {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .budget-header-calendar .budget-header-calendar-date-button {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .budget-inspector-button {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .budget-inspector-goals .link-button {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .inspector-category-edit {
-    font-family: 'Roboto', sans-serif;
-    top: 3px;
-    font-size: 1em;
+  font-family: 'Roboto', sans-serif;
+  top: 3px;
+  font-size: 1em;
 }
 
 .nav-account-block .nav-account-name-button {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
-.budget-content ul, .budget-table-row.is-dragging {
-    font-family: 'Roboto', sans-serif;
+.budget-content ul,
+.budget-table-row.is-dragging {
+  font-family: 'Roboto', sans-serif;
 }
 
 .modal-popup .modal-actions .button {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .modal-generic .modal-actions .button {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .modal-generic .modal-header {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .modal-popup .modal-content {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .modal-account-filters .modal-header {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
-.modal-account-filters .date-range-dates li.active button, .modal-account-filters .date-range-dates li:hover button {
-    font-family: 'Roboto', sans-serif;
+.modal-account-filters .date-range-dates li.active button,
+.modal-account-filters .date-range-dates li:hover button {
+  font-family: 'Roboto', sans-serif;
 }
 
 .modal-popup ul.modal-list button {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
-.modal-account-approve-reject.modal-account-dropdown .modal, .modal-account-match-transaction.modal-account-dropdown .modal {
-    font-family: 'Roboto', sans-serif;
+.modal-account-approve-reject.modal-account-dropdown .modal,
+.modal-account-match-transaction.modal-account-dropdown .modal {
+  font-family: 'Roboto', sans-serif;
 }
 
 .edit-direct-connect-toggle {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
-.account-modal .modal-content dt, .account-modal .modal-content dd {
-    font-family: 'Roboto', sans-serif;
+.account-modal .modal-content dt,
+.account-modal .modal-content dd {
+  font-family: 'Roboto', sans-serif;
 }
 
 /* if reports stuff is enabled */
 .reports-inspector-detail {
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 #reports-header {
-    font-family: 'Roboto', sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
 }

@@ -1,85 +1,89 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700);
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700');
 @import url('./shared.css');
 
 .ember-view {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .nav-account-block .nav-account-name-button {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .budget-header-calendar .budget-header-calendar-date-button {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .budget-inspector-button {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .budget-inspector-goals .link-button {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .inspector-category-edit {
-    font-family: 'Open Sans', sans-serif;
-    top: 3px;
-    font-size: 1em;
+  font-family: 'Open Sans', sans-serif;
+  top: 3px;
+  font-size: 1em;
 }
 
 .nav-account-block .nav-account-name-button {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
-.budget-content ul, .budget-table-row.is-dragging {
-    font-family: 'Open Sans', sans-serif;
+.budget-content ul,
+.budget-table-row.is-dragging {
+  font-family: 'Open Sans', sans-serif;
 }
 
 .modal-popup .modal-actions .button {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .modal-generic .modal-actions .button {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .modal-generic .modal-header {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .modal-popup .modal-content {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .modal-account-filters .modal-header {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
-.modal-account-filters .date-range-dates li.active button, .modal-account-filters .date-range-dates li:hover button {
-    font-family: 'Open Sans', sans-serif;
+.modal-account-filters .date-range-dates li.active button,
+.modal-account-filters .date-range-dates li:hover button {
+  font-family: 'Open Sans', sans-serif;
 }
 
 .modal-popup ul.modal-list button {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
-.modal-account-approve-reject.modal-account-dropdown .modal, .modal-account-match-transaction.modal-account-dropdown .modal {
-    font-family: 'Open Sans', sans-serif;
+.modal-account-approve-reject.modal-account-dropdown .modal,
+.modal-account-match-transaction.modal-account-dropdown .modal {
+  font-family: 'Open Sans', sans-serif;
 }
 
 .edit-direct-connect-toggle {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
-.account-modal .modal-content dt, .account-modal .modal-content dd {
-    font-family: 'Open Sans', sans-serif;
+.account-modal .modal-content dt,
+.account-modal .modal-content dd {
+  font-family: 'Open Sans', sans-serif;
 }
 
 /* if reports stuff is enabled */
 .reports-inspector-detail {
-    font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 #reports-header {
-    font-family: 'Open Sans', sans-serif !important;
+  font-family: 'Open Sans', sans-serif !important;
 }

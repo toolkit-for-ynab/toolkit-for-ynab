@@ -11,5 +11,6 @@ module.exports = {
     { name: 'Roboto', value: '2' },
     { name: 'Roboto Condensed', value: '3' },
     { name: 'Droid Sans', value: '4' },
+    { name: 'Inconsolata', value: '5' },
   ],
 };
