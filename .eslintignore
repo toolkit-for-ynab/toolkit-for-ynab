@@ -3,3 +3,5 @@ node_modules
 **/*/l10n/get_ember_strings.js
 **/*/lib/
 **/assets
+**/extension/features/index.js
+**/extension/legacy/features/act-on-change/feedChanges.js
