@@ -17,7 +17,7 @@ jq(() => {
     pedantic: false,
     sanitize: true, // prevent xss attacks by not allowing html in the markdown
     smartLists: true,
-    smartypants: false
+    smartypants: false,
   });
 
   function saveCheckboxOption(elementId) {
@@ -27,7 +27,11 @@ jq(() => {
       return storage.setFeatureSetting(elementId, element.checked);
     }
 
-    console.log("WARNING: Tried to saveCheckboxOption but couldn't find element " + elementId + ' on the page.');
+    console.log(
+      "WARNING: Tried to saveCheckboxOption but couldn't find element " +
+        elementId +
+        ' on the page.'
+    );
   }
 
   function saveSelectOption(elementId) {
@@ -37,7 +41,9 @@ jq(() => {
       return storage.setFeatureSetting(elementId, select.options[select.selectedIndex].value);
     }
 
-    console.log("WARNING: Tried to saveSelectOption but couldn't find element " + elementId + ' on the page.');
+    console.log(
+      "WARNING: Tried to saveSelectOption but couldn't find element " + elementId + ' on the page.'
+    );
   }
 
   function restoreCheckboxOption(elementId, currentSetting) {
@@ -46,7 +52,11 @@ jq(() => {
     if (element) {
       element.checked = currentSetting;
     } else {
-      console.log("WARNING: Tried to restoreCheckboxOption but couldn't find element " + elementId + ' on the page.');
+      console.log(
+        "WARNING: Tried to restoreCheckboxOption but couldn't find element " +
+          elementId +
+          ' on the page.'
+      );
     }
   }
 
@@ -83,14 +93,18 @@ jq(() => {
         select.value = select.options[0].value;
       }
     } else {
-      console.log("WARNING: Tried to restoreSelectOption but couldn't find element " + elementId + ' on the page.');
+      console.log(
+        "WARNING: Tried to restoreSelectOption but couldn't find element " +
+          elementId +
+          ' on the page.'
+      );
     }
   }
 
   function saveOptions() {
     var promises = [];
 
-    allToolkitSettings.forEach((setting) => {
+    allToolkitSettings.forEach(setting => {
       if (setting.type === 'checkbox') {
         promises.push(saveCheckboxOption(setting.name));
       } else if (setting.type === 'select') {
@@ -109,7 +123,7 @@ jq(() => {
   // Restores select box and checkbox state using the preferences
   // stored in chrome.storage.
   function restoreOptions(userSettings) {
-    allToolkitSettings.forEach((setting) => {
+    allToolkitSettings.forEach(setting => {
       if (setting.type === 'checkbox') {
         restoreCheckboxOption(setting.name, userSettings[setting.name]);
       } else if (setting.type === 'select') {
@@ -128,33 +142,33 @@ jq(() => {
       pageContent: templateSelector,
       icon: templateSelector + ' .fa',
       title: templateSelector + ' .page-header-title',
-      actions: templateSelector + ' .actions'
+      actions: templateSelector + ' .actions',
     };
     const pages = [
       {
         id: 'generalSettingsPage',
         iconClass: 'fa-cogs',
         title: 'General Settings',
-        showActions: true
+        showActions: true,
       },
       {
         id: 'accountsSettingsPage',
         iconClass: 'fa-university',
         title: 'Accounts Screen Settings',
-        showActions: true
+        showActions: true,
       },
       {
         id: 'budgetSettingsPage',
         iconClass: 'fa-envelope-o',
         title: 'Budget Screen Settings',
-        showActions: true
+        showActions: true,
       },
       {
         id: 'reportsSettingsPage',
         iconClass: 'fa-bar-chart',
         title: 'Reports Screen Settings',
-        showActions: true
-      }
+        showActions: true,
+      },
     ];
 
     pages.forEach(page => {
@@ -178,9 +192,9 @@ jq(() => {
     initializeSettingPages();
 
     // Order by section, then type, then name.
-    var settings = allToolkitSettings.slice().filter((setting) => setting.section !== 'system');
+    var settings = allToolkitSettings.slice().filter(setting => setting.section !== 'system');
 
-    settings.sort(function (a, b) {
+    settings.sort(function(a, b) {
       if (a.section !== b.section) {
         return a.section.localeCompare(b.section);
       }
@@ -192,32 +206,61 @@ jq(() => {
       return a.title.localeCompare(b.title);
     });
 
-    settings.forEach(function (setting) {
+    settings.forEach(function(setting) {
       if (setting.section === 'system') return;
 
       let markDown = marked(setting.description);
 
       if (setting.type === 'checkbox') {
-        jq('#' + setting.section + 'SettingsPage > .content')
-          .append(jq('<div>', { class: 'row option-row' })
-            .append(jq('<input>', {
-              type: 'checkbox', id: setting.name, name: setting.name, 'aria-describedby': setting.name + 'HelpBlock'
-            }))
-            .append(jq('<div>', { class: 'option-description' })
-              .append(jq('<label>', { for: setting.name, text: setting.title }))
-              .append(jq('<span>', { id: setting.name + 'HelpBlock', class: 'help-block' }))));
+        jq('#' + setting.section + 'SettingsPage > .content').append(
+          jq('<div>', { class: 'row option-row' })
+            .append(
+              jq('<input>', {
+                type: 'checkbox',
+                id: setting.name,
+                name: setting.name,
+                'aria-describedby': setting.name + 'HelpBlock',
+              })
+            )
+            .append(
+              jq('<div>', { class: 'option-description' })
+                .append(jq('<label>', { for: setting.name, text: setting.title }))
+                .append(
+                  jq('<span>', {
+                    id: setting.name + 'HelpBlock',
+                    class: 'help-block',
+                  })
+                )
+            )
+        );
         jq('#' + setting.name + 'HelpBlock').html(markDown);
       } else if (setting.type === 'select') {
-        jq('#' + setting.section + 'SettingsPage > .content')
-          .append(jq('<div>', { class: 'row option-row' })
+        jq('#' + setting.section + 'SettingsPage > .content').append(
+          jq('<div>', { class: 'row option-row' })
             .append(jq('<label>', { for: setting.name, text: setting.title }))
-            .append(jq('<select>', {
-              name: setting.name, id: setting.name, class: 'form-control', 'aria-describedby': setting.name + 'HelpBlock'
-            })
-              .append(setting.options.map(function (option) {
-                return jq('<option>', { value: option.value, style: option.style || '', text: option.name });
-              })))
-            .append(jq('<span>', { id: setting.name + 'HelpBlock', class: 'help-block' })));
+            .append(
+              jq('<select>', {
+                name: setting.name,
+                id: setting.name,
+                class: 'form-control',
+                'aria-describedby': setting.name + 'HelpBlock',
+              }).append(
+                setting.options.map(function(option) {
+                  return jq('<option>', {
+                    value: option.value,
+                    style: option.style || '',
+                    text: option.name,
+                  });
+                })
+              )
+            )
+            .append(
+              jq('<span>', {
+                id: setting.name + 'HelpBlock',
+                class: 'help-block',
+              })
+            )
+        );
         jq('#' + setting.name + 'HelpBlock').html(markDown);
       }
     });
@@ -255,21 +298,21 @@ jq(() => {
   }
 
   function importExportModal() {
-    storage.getStoredFeatureSettings().then(function (keys) {
-      const promises = keys.map((settingKey) => {
-        return storage.getFeatureSetting(settingKey).then((settingValue) => {
+    storage.getStoredFeatureSettings().then(function(keys) {
+      const promises = keys.map(settingKey => {
+        return storage.getFeatureSetting(settingKey).then(settingValue => {
           return { key: settingKey, value: settingValue };
         });
       });
 
-      Promise.all(promises).then((allSettings) => {
+      Promise.all(promises).then(allSettings => {
         jq('#importExportContent').val(JSON.stringify(allSettings));
 
         jq('#importExportModal').modal();
-        jq('#importExportModal').one('shown.bs.modal', function () {
+        jq('#importExportModal').one('shown.bs.modal', function() {
           jq('#importExportContent').select();
 
-          jq('#importExportContent').click(function () {
+          jq('#importExportContent').click(function() {
             jq(this).select();
           });
 
@@ -280,11 +323,11 @@ jq(() => {
 
     function applySettings() {
       const newSettings = JSON.parse(jq('#importExportContent').val());
-      const promises = newSettings.map(function (setting) {
+      const promises = newSettings.map(function(setting) {
         return storage.setFeatureSetting(setting.key, setting.value);
       });
 
-      Promise.all(promises).then(function () {
+      Promise.all(promises).then(function() {
         window.location.reload();
       });
     }
@@ -300,7 +343,7 @@ jq(() => {
     jq(`${modalSelector} .modal-body`).html(content);
 
     jq(modalSelector).modal();
-    jq(modalSelector).one('shown.bs.modal', function () {
+    jq(modalSelector).one('shown.bs.modal', function() {
       jq(`${modalSelector} .confirmationButton`).click(fn);
     });
   }
@@ -309,9 +352,9 @@ jq(() => {
     // ensure there aren't any pre-web-extensions feature settings stored
     localStorage.clear();
 
-    return storage.getStoredFeatureSettings().then((settings) => {
+    return storage.getStoredFeatureSettings().then(settings => {
       localStorage.clear();
-      const promises = settings.map((settingKey) => {
+      const promises = settings.map(settingKey => {
         return storage.removeFeatureSetting(settingKey);
       });
 
@@ -328,7 +371,7 @@ jq(() => {
     const topHeaderHeight = jq('nav.top-navbar').height();
     const preferredClass = 'sticky-header';
 
-    jq(window).scroll(function () {
+    jq(window).scroll(function() {
       if (jq(window).scrollTop() >= topHeaderHeight) {
         jq(pageHeaderSelector).addClass(preferredClass);
         jq(successSelector).addClass(preferredClass);
@@ -340,12 +383,14 @@ jq(() => {
   }
 
   function updateToolkitLogo(isToolkitDisabled) {
-    const logo = `assets/images/logos/toolkitforynab-logo-200${isToolkitDisabled ? '-disabled' : ''}.png`;
+    const logo = `assets/images/logos/toolkitforynab-logo-200${
+      isToolkitDisabled ? '-disabled' : ''
+    }.png`;
     jq('#logo').attr('src', getBrowser().runtime.getURL(logo));
   }
 
   function toggleToolkit() {
-    storage.getFeatureSetting('DisableToolkit').then((isDisabled) => {
+    storage.getFeatureSetting('DisableToolkit').then(isDisabled => {
       storage.setFeatureSetting('DisableToolkit', !isDisabled);
     });
   }
@@ -353,7 +398,7 @@ jq(() => {
   storage.onFeatureSettingChanged('DisableToolkit', updateToolkitLogo);
   jq('#logo').click(toggleToolkit);
 
-  getUserSettings().then((userSettings) => {
+  getUserSettings().then(userSettings => {
     updateToolkitLogo(userSettings.DisableToolkit);
 
     buildOptionsPage();
@@ -361,35 +406,41 @@ jq(() => {
 
     restoreOptions(userSettings);
 
-    storage.getStorageItem('options.dark-mode').then(function (data) {
+    storage.getStorageItem('options.dark-mode').then(function(data) {
       applyDarkMode(data);
 
       jq('#darkMode').bootstrapSwitch('state', data);
     });
 
-    jq('#darkMode').on('switchChange.bootstrapSwitch', function (event, state) {
-      storage.setFeatureSetting('options.dark-mode', state).then(function () {
+    jq('#darkMode').on('switchChange.bootstrapSwitch', function(event, state) {
+      storage.setFeatureSetting('options.dark-mode', state).then(function() {
         applyDarkMode(state);
       });
     });
 
-    jq('#generalMenuItem').click(function (e) {
-      loadPanel('general'); e.preventDefault();
+    jq('#generalMenuItem').click(function(e) {
+      loadPanel('general');
+      e.preventDefault();
     });
-    jq('#accountsMenuItem').click(function (e) {
-      loadPanel('accounts'); e.preventDefault();
+    jq('#accountsMenuItem').click(function(e) {
+      loadPanel('accounts');
+      e.preventDefault();
     });
-    jq('#budgetMenuItem').click(function (e) {
-      loadPanel('budget'); e.preventDefault();
+    jq('#budgetMenuItem').click(function(e) {
+      loadPanel('budget');
+      e.preventDefault();
     });
-    jq('#reportsMenuItem').click(function (e) {
-      loadPanel('reports'); e.preventDefault();
+    jq('#reportsMenuItem').click(function(e) {
+      loadPanel('reports');
+      e.preventDefault();
     });
-    jq('#supportMenuItem').click(function (e) {
-      loadPanel('support', false); e.preventDefault();
+    jq('#supportMenuItem').click(function(e) {
+      loadPanel('support', false);
+      e.preventDefault();
     });
-    jq('#advancedMenuItem').click(function (e) {
-      loadPanel('advanced'); e.preventDefault();
+    jq('#advancedMenuItem').click(function(e) {
+      loadPanel('advanced');
+      e.preventDefault();
       jq('#footer-buttons').hide();
     });
 
@@ -398,7 +449,11 @@ jq(() => {
     jq('.cancel-button').click(() => window.close());
 
     jq('.reset-settings-button').click(() => {
-      return openModal('Reset Settings', document.querySelector('#resetSettingsModalContent').innerHTML, resetSettings);
+      return openModal(
+        'Reset Settings',
+        document.querySelector('#resetSettingsModalContent').innerHTML,
+        resetSettings
+      );
     });
 
     // set version number

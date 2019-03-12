@@ -9,24 +9,20 @@ import { ALL_OTHER_DATA_COLOR, PIE_CHART_COLORS } from 'toolkit-reports/common/c
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
 import './styles.scss';
 
-const createPayeeMap = (payee) => new Map([
-  ['payee', payee],
-  ['total', 0],
-  ['transactions', []]
-]);
+const createPayeeMap = payee => new Map([['payee', payee], ['total', 0], ['transactions', []]]);
 
 export class SpendingByPayeeComponent extends React.Component {
   _subCategoriesCollection = Collections.subCategoriesCollection;
   _payeesCollection = Collections.payeesCollection;
 
   static propTypes = {
-    filteredTransactions: PropTypes.array.isRequired
+    filteredTransactions: PropTypes.array.isRequired,
   };
 
   state = {
     seriesData: null,
     spendingByPayeeData: null,
-    payeeCount: 20
+    payeeCount: 20,
   };
 
   componentDidMount() {
@@ -62,25 +58,29 @@ export class SpendingByPayeeComponent extends React.Component {
   _calculateData() {
     const spendingByPayeeData = new Map();
 
-    this.props.filteredTransactions.forEach((transaction) => {
+    this.props.filteredTransactions.forEach(transaction => {
       if (transaction.getIsOnBudgetTransfer()) {
         return;
       }
 
       const transactionSubCategoryId = transaction.get('subCategoryId');
-      const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(transactionSubCategoryId);
+      const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(
+        transactionSubCategoryId
+      );
       if (!transactionSubCategory || transactionSubCategory.isIncomeCategory()) {
         return;
       }
 
-      const transactionPayeeId = transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
+      const transactionPayeeId =
+        transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
       const transactionPayee = this._payeesCollection.findItemByEntityId(transactionPayeeId);
       if (!transactionPayee) {
         return;
       }
 
       const transactionAmount = transaction.get('amount');
-      const payeeReportData = spendingByPayeeData.get(transactionPayeeId) || createPayeeMap(transactionPayee);
+      const payeeReportData =
+        spendingByPayeeData.get(transactionPayeeId) || createPayeeMap(transactionPayee);
       payeeReportData.set('total', payeeReportData.get('total') + transactionAmount);
       payeeReportData.set('transactions', payeeReportData.get('transactions').concat(transaction));
 
@@ -88,12 +88,15 @@ export class SpendingByPayeeComponent extends React.Component {
     });
 
     const sortedSpendingData = this._sortAndNormalizeData(spendingByPayeeData);
-    this.setState({
-      spendingByPayeeData: sortedSpendingData
-    }, this._renderReport);
+    this.setState(
+      {
+        spendingByPayeeData: sortedSpendingData,
+      },
+      this._renderReport
+    );
   }
 
-  _onLegendDataHover = (hoveredId) => {
+  _onLegendDataHover = hoveredId => {
     const { chart } = this.state;
     if (!chart) {
       return;
@@ -103,14 +106,14 @@ export class SpendingByPayeeComponent extends React.Component {
       return;
     }
 
-    chart.series[0].points.forEach((point) => {
+    chart.series[0].points.forEach(point => {
       if (point.id === hoveredId) {
         point.setState('hover');
       } else {
         point.setState('');
       }
     });
-  }
+  };
 
   _renderReport = () => {
     const { spendingByPayeeData, payeeCount } = this.state;
@@ -121,7 +124,7 @@ export class SpendingByPayeeComponent extends React.Component {
       color: ALL_OTHER_DATA_COLOR,
       id: '__all-other-payees',
       name: 'All Other Payees',
-      y: 0
+      y: 0,
     };
 
     spendingByPayeeData.forEach((spendingData, payeeIndex) => {
@@ -136,14 +139,14 @@ export class SpendingByPayeeComponent extends React.Component {
         seriesData.push({
           color: PIE_CHART_COLORS[payeeIndex % PIE_CHART_COLORS.length],
           events: {
-            click: (event) => {
+            click: event => {
               showTransactionModal(event.point.name, event.point.transactions);
-            }
+            },
           },
           id: payeeId,
           name: payeeName,
           transactions: spendingData.get('transactions'),
-          y: payeeTotal
+          y: payeeTotal,
         });
       } else {
         allOtherPayees.y += payeeTotal;
@@ -157,48 +160,54 @@ export class SpendingByPayeeComponent extends React.Component {
       chart: {
         height: '70%',
         type: 'pie',
-        renderTo: 'tk-spending-by-payee'
+        renderTo: 'tk-spending-by-payee',
       },
       plotOptions: {
         series: {
           dataLabels: {
-            formatter: function () {
+            formatter: function() {
               let formattedNumber = formatCurrency(this.y);
-              return `${this.point.name}<br><span class="currency">${formattedNumber} (${Math.round(this.percentage)}%)</span>`;
-            }
-          }
-        }
+              return `${this.point.name}<br><span class="currency">${formattedNumber} (${Math.round(
+                this.percentage
+              )}%)</span>`;
+            },
+          },
+        },
       },
       tooltip: {
-        enabled: false
+        enabled: false,
       },
       title: {
         align: 'center',
         verticalAlign: 'middle',
-        text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`
+        text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
       },
-      series: [{
-        name: 'Total Spending',
-        data: seriesData,
-        size: '80%',
-        innerSize: '50%'
-      }]
+      series: [
+        {
+          name: 'Total Spending',
+          data: seriesData,
+          size: '80%',
+          innerSize: '50%',
+        },
+      ],
     });
 
     this.setState({ chart, seriesData });
-  }
+  };
 
   _sortAndNormalizeData(spendingByPayeeData) {
     const spendingByPayeeArray = mapToArray(spendingByPayeeData);
 
-    return spendingByPayeeArray.sort((a, b) => {
-      return a.get('total') - b.get('total');
-    }).map((payeeData) => {
-      return new Map([
-        ['source', payeeData.get('payee')],
-        ['total', payeeData.get('total') * -1],
-        ['transactions', payeeData.get('transactions')]
-      ]);
-    });
+    return spendingByPayeeArray
+      .sort((a, b) => {
+        return a.get('total') - b.get('total');
+      })
+      .map(payeeData => {
+        return new Map([
+          ['source', payeeData.get('payee')],
+          ['total', payeeData.get('total') * -1],
+          ['transactions', payeeData.get('transactions')],
+        ]);
+      });
   }
 }

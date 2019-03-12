@@ -6,7 +6,7 @@ import './styles.scss';
 
 export const TableType = {
   Expense: 'expense',
-  Income: 'income'
+  Income: 'income',
 };
 
 export class MonthlyTransactionTotalsTable extends React.Component {
@@ -14,13 +14,13 @@ export class MonthlyTransactionTotalsTable extends React.Component {
     onCollapseSource: PropTypes.func.isRequired,
     collapsedSources: PropTypes.any.isRequired, // Set
     type: PropTypes.string.isRequired,
-    data: PropTypes.any.isRequired
-  }
+    data: PropTypes.any.isRequired,
+  };
 
   get tableProperties() {
     return {
       classSuffix: this.props.type === TableType.Income ? '--income' : '--expense',
-      tableName: this.props.type === TableType.Income ? 'Income' : 'Expenses'
+      tableName: this.props.type === TableType.Income ? 'Income' : 'Expenses',
     };
   }
 
@@ -40,14 +40,19 @@ export class MonthlyTransactionTotalsTable extends React.Component {
     const monthlyTotals = this.props.data.get('monthlyTotals');
 
     return (
-      <MonthlyTotalsRow className={className} titleCell={tableName} monthlyTotals={monthlyTotals} titles />
+      <MonthlyTotalsRow
+        className={className}
+        titleCell={tableName}
+        monthlyTotals={monthlyTotals}
+        titles
+      />
     );
   }
 
   _renderTableBody() {
     const { collapsedSources } = this.props;
 
-    return this.props.data.get('sources').map((sourceData) => {
+    return this.props.data.get('sources').map(sourceData => {
       const source = sourceData.get('source');
       const sourceId = source.get('entityId');
 

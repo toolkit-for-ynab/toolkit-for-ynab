@@ -11,7 +11,9 @@ export function getToday() {
 }
 
 export function getFirstMonthOfBudget() {
-  return getEntityManager().getFirstMonthForBudget().clone();
+  return getEntityManager()
+    .getFirstMonthForBudget()
+    .clone();
 }
 
 export function localizedMonthAndYear(date, style = MonthStyle.Long) {

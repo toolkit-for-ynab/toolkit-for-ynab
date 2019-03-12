@@ -3,7 +3,7 @@ import { DateFilterComponent } from './component';
 
 function mapContextToProps(context) {
   return {
-    activeReportKey: context.selectedReport.key
+    activeReportKey: context.selectedReport.key,
   };
 }
 

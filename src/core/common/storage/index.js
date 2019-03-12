@@ -2,10 +2,10 @@ import { getBrowser } from 'toolkit/core/common/web-extensions';
 
 const FEATURE_SETTING_PREFIX = 'toolkit-feature:';
 
-export const featureSettingKey = (featureName) => `${FEATURE_SETTING_PREFIX}${featureName}`;
+export const featureSettingKey = featureName => `${FEATURE_SETTING_PREFIX}${featureName}`;
 
 export const StorageArea = {
-  Local: 'local'
+  Local: 'local',
 };
 
 export class ToolkitStorage {
@@ -27,7 +27,7 @@ export class ToolkitStorage {
   getFeatureSetting(settingName, options = {}) {
     const getFeatureSettingOptions = {
       parse: false,
-      ...options
+      ...options,
     };
 
     return this.getStorageItem(featureSettingKey(settingName), getFeatureSettingOptions);
@@ -36,12 +36,14 @@ export class ToolkitStorage {
   getFeatureSettings(settingNames, options = {}) {
     const getFeatureSettingsOptions = {
       parse: false,
-      ...options
+      ...options,
     };
 
-    return Promise.all(settingNames.map((settingName) => {
-      return this.getStorageItem(featureSettingKey(settingName), getFeatureSettingsOptions);
-    }));
+    return Promise.all(
+      settingNames.map(settingName => {
+        return this.getStorageItem(featureSettingKey(settingName), getFeatureSettingsOptions);
+      })
+    );
   }
 
   setFeatureSetting(settingName, value, options = {}) {
@@ -53,7 +55,7 @@ export class ToolkitStorage {
   }
 
   getStorageItem(itemKey, options = {}) {
-    return this._get(itemKey, options).then((value) => {
+    return this._get(itemKey, options).then(value => {
       if (typeof value === 'undefined' && typeof options.default !== 'undefined') {
         return options.default;
       }
@@ -71,7 +73,7 @@ export class ToolkitStorage {
   }
 
   getStoredFeatureSettings(options = {}) {
-    return this._get(null, options).then((allStorage) => {
+    return this._get(null, options).then(allStorage => {
       const storedSettings = [];
       for (const [key] of Object.entries(allStorage)) {
         if (key.startsWith(FEATURE_SETTING_PREFIX)) {
@@ -95,7 +97,7 @@ export class ToolkitStorage {
   offStorageItemChanged(storageKey, callback) {
     if (this._storageListeners.has(storageKey)) {
       const listeners = this._storageListeners.get(storageKey);
-      this._storageListeners.set(storageKey, listeners.filter((listener) => listener !== callback));
+      this._storageListeners.set(storageKey, listeners.filter(listener => listener !== callback));
     }
   }
 
@@ -113,21 +115,23 @@ export class ToolkitStorage {
     for (const [key, value] of Object.entries(changes)) {
       if (this._storageListeners.has(key)) {
         const listeners = this._storageListeners.get(key);
-        listeners.forEach((listener) => { listener(value.newValue); });
+        listeners.forEach(listener => {
+          listener(value.newValue);
+        });
       }
     }
-  }
+  };
 
   _get(key, options) {
     const getOptions = {
       parse: true,
       storageArea: this._storageArea,
-      ...options
+      ...options,
     };
 
     return new Promise((resolve, reject) => {
       try {
-        this._browser.storage[getOptions.storageArea].get(key, (data) => {
+        this._browser.storage[getOptions.storageArea].get(key, data => {
           // if we're fetching everything -- don't try parsing it
           if (key === null) {
             return resolve(data);

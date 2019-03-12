@@ -1,5 +1,7 @@
 export function formatCurrency(value) {
-  const { currencyFormatter } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
+  const {
+    currencyFormatter,
+  } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
   const userCurrency = currencyFormatter.getCurrency();
 
   let formattedCurrency = currencyFormatter.format(value).toString();

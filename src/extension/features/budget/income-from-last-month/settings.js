@@ -10,6 +10,6 @@ module.exports = {
     { name: 'Use previous month', value: '1' },
     { name: 'Use month before last', value: '2' },
     { name: 'Use two months before last', value: '3' },
-    { name: 'Use three months before last', value: '4' }
-  ]
+    { name: 'Use three months before last', value: '4' },
+  ],
 };

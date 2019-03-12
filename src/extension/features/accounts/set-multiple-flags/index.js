@@ -11,12 +11,16 @@ export class SetMultipleFlags extends Feature {
   }
 
   get _isAnyCheckedTransactionFlagged() {
-    return this._checkedRows.some((transaction) => transaction.get('flag'));
+    return this._checkedRows.some(transaction => transaction.get('flag'));
   }
 
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 
-  shouldInvoke() { return isCurrentRouteAccountsPage(); }
+  shouldInvoke() {
+    return isCurrentRouteAccountsPage();
+  }
 
   invoke() {
     const $editModal = $('.modal-account-edit-transaction-list');
@@ -24,12 +28,15 @@ export class SetMultipleFlags extends Feature {
       return;
     }
 
-
     this._injectButtons($editModal);
   }
 
   observe(changedNodes) {
-    if (changedNodes.has('ynab-u modal-popup modal-account-edit-transaction-list ember-view modal-overlay active')) {
+    if (
+      changedNodes.has(
+        'ynab-u modal-popup modal-account-edit-transaction-list ember-view modal-overlay active'
+      )
+    ) {
       this.invoke();
     }
   }
@@ -40,7 +47,11 @@ export class SetMultipleFlags extends Feature {
 
   _injectButtons($editModal) {
     if (!$('#tk-add-flags', $editModal).length) {
-      $('hr', $editModal).first().parent().after($(`
+      $('hr', $editModal)
+        .first()
+        .parent()
+        .after(
+          $(`
         <li id="tk-add-flags">
           <button class="button-list tk-multi-flags__button">
             <svg class="ynab-flag ynab-flag-header tk-multi-flags__icon">
@@ -51,13 +62,17 @@ export class SetMultipleFlags extends Feature {
             Set Flag${this._checkedRows.length > 1 ? 's' : ''}
           </button>
         </li>
-      `).click(this._handleAddFlags));
+      `).click(this._handleAddFlags)
+        );
     }
 
     if (!$('#tk-remove-flags', $editModal).length) {
-      $('#tk-add-flags', $editModal).after($(`
+      $('#tk-add-flags', $editModal).after(
+        $(`
         <li id="tk-remove-flags">
-          <button class="button-list tk-multi-flags__button ${!this._isAnyCheckedTransactionFlagged ? 'button-disabled' : ''}">
+          <button class="button-list tk-multi-flags__button ${
+            !this._isAnyCheckedTransactionFlagged ? 'button-disabled' : ''
+          }">
             <svg class="ynab-flag ynab-flag-none tk-multi-flags__icon">
               <g>
                 <path d="M 0,4 16,4 12,9 16,14 0,14 z"></path>
@@ -66,7 +81,8 @@ export class SetMultipleFlags extends Feature {
             Remove Flag${this._checkedRows.length > 1 ? 's' : ''}
           </button>
         </li>
-      `).click(this._handleRemoveFlags));
+      `).click(this._handleRemoveFlags)
+      );
     }
 
     if (!$('#tk-separator', $editModal).length) {
@@ -77,21 +93,26 @@ export class SetMultipleFlags extends Feature {
   _handleAddFlags = () => {
     const customColorNames = getToolkitStorageKey('flags');
 
-    $('.modal-account-edit-transaction-list').removeClass('modal-account-edit-transaction-list').addClass('modal-account-flags');
+    $('.modal-account-edit-transaction-list')
+      .removeClass('modal-account-edit-transaction-list')
+      .addClass('modal-account-flags');
     const $modalList = $('.modal-list').empty();
-    FLAG_COLORS.forEach((color) => {
+    FLAG_COLORS.forEach(color => {
       let colorDisplayName = color;
       if (ynabToolKit.options.CustomFlagNames) {
         colorDisplayName = customColorNames[color.toLowerCase()].label;
       }
 
-      $modalList.append($('<li>')
-        .append($('<button>', { class: `ynab-flag-${color.toLowerCase()}` })
-          .click(() => this._applyColor(color))
-          .append($('<div>', { class: 'label-bg', text: colorDisplayName }))
-          .append($('<div>', { class: 'label', text: colorDisplayName }))));
+      $modalList.append(
+        $('<li>').append(
+          $('<button>', { class: `ynab-flag-${color.toLowerCase()}` })
+            .click(() => this._applyColor(color))
+            .append($('<div>', { class: 'label-bg', text: colorDisplayName }))
+            .append($('<div>', { class: 'label', text: colorDisplayName }))
+        )
+      );
     });
-  }
+  };
 
   _handleRemoveFlags = () => {
     if (!this._isAnyCheckedTransactionFlagged) {
@@ -99,12 +120,12 @@ export class SetMultipleFlags extends Feature {
     }
 
     this._applyColor('');
-  }
+  };
 
-  _applyColor = (color) => {
+  _applyColor = color => {
     const { transactionsCollection } = getEntityManager();
     getEntityManager().batchChangeProperties(() => {
-      this._checkedRows.forEach((transaction) => {
+      this._checkedRows.forEach(transaction => {
         const entity = transactionsCollection.findItemByEntityId(transaction.get('entityId'));
         if (entity) {
           entity.set('flag', color);
@@ -113,5 +134,5 @@ export class SetMultipleFlags extends Feature {
     });
 
     this._closeModal();
-  }
+  };
 }

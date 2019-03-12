@@ -22,7 +22,7 @@ function getEnvironmentVariables() {
     chromeClientId: getEnvironmentOrExit('CHROME_CLIENT_ID'),
     chromeClientSecret: getEnvironmentOrExit('CHROME_CLIENT_SECRET'),
     chromeRefreshToken: getEnvironmentOrExit('CHROME_REFRESH_TOKEN'),
-    sentryAuthToken: getEnvironmentOrExit('SENTRY_AUTH_TOKEN')
+    sentryAuthToken: getEnvironmentOrExit('SENTRY_AUTH_TOKEN'),
   };
 }
 
@@ -34,7 +34,7 @@ async function uploadToWebStore(environmentVariables) {
   results = results.filter(result => result.indexOf('source') < 0);
 
   if (results.length < 1) {
-    console.error('Found no extension to upload, ensure you\'ve built first.');
+    console.error("Found no extension to upload, ensure you've built first.");
     process.exit(5);
   } else if (results.length > 1) {
     console.error('Found multiple extensions to upload. Quitting.', results);
@@ -46,7 +46,7 @@ async function uploadToWebStore(environmentVariables) {
     extensionId: environmentVariables.chromeExtensionId,
     clientId: environmentVariables.chromeClientId,
     clientSecret: environmentVariables.chromeClientSecret,
-    refreshToken: environmentVariables.chromeRefreshToken
+    refreshToken: environmentVariables.chromeRefreshToken,
   });
 
   const extension = fs.createReadStream(results[0]);
@@ -86,14 +86,14 @@ async function uploadSourcemapsToSentry({ sentryAuthToken }) {
     await request({
       json: {
         projects: ['toolkit-for-ynab'],
-        version: `${version}`
+        version: `${version}`,
       },
       headers: {
         Authorization: `Bearer ${sentryAuthToken}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       method: 'POST',
-      url: 'https://sentry.io/api/0/organizations/toolkit-for-ynab/releases/'
+      url: 'https://sentry.io/api/0/organizations/toolkit-for-ynab/releases/',
     });
 
     console.log(`Release: ${version} created`);
@@ -103,30 +103,35 @@ async function uploadSourcemapsToSentry({ sentryAuthToken }) {
 
   glob(`${extensionDistPath}/**/*.{js,map}`, async (_, files) => {
     try {
-      await Promise.all(files.map((filePath) => {
-        return new Promise((resolve, reject) => {
-          request({
-            formData: {
-              file: fs.createReadStream(filePath),
-              name: filePath.replace(`${extensionDistPath}/extension/`, '~/')
-            },
-            headers: {
-              Authorization: `Bearer ${sentryAuthToken}`,
-              'Content-Type': 'multipart/form-data'
-            },
-            method: 'POST',
-            url: `https://sentry.io/api/0/projects/toolkit-for-ynab/toolkit-for-ynab/releases/${version}/files/`
-          }, (error) => {
-            if (error) {
-              console.log(`${filePath}: failure`);
-              return reject();
-            }
+      await Promise.all(
+        files.map(filePath => {
+          return new Promise((resolve, reject) => {
+            request(
+              {
+                formData: {
+                  file: fs.createReadStream(filePath),
+                  name: filePath.replace(`${extensionDistPath}/extension/`, '~/'),
+                },
+                headers: {
+                  Authorization: `Bearer ${sentryAuthToken}`,
+                  'Content-Type': 'multipart/form-data',
+                },
+                method: 'POST',
+                url: `https://sentry.io/api/0/projects/toolkit-for-ynab/toolkit-for-ynab/releases/${version}/files/`,
+              },
+              error => {
+                if (error) {
+                  console.log(`${filePath}: failure`);
+                  return reject();
+                }
 
-            console.log(`${filePath}: success`);
-            resolve();
+                console.log(`${filePath}: success`);
+                resolve();
+              }
+            );
           });
-        });
-      }));
+        })
+      );
     } catch (error) {
       console.log('Error uploading files: ', error);
     }
@@ -138,7 +143,9 @@ async function publishForChrome() {
   // Are we on the correct branch?
   if (environmentVariables.travisBranch !== 'beta') {
     console.log(`TRAVIS_BRANCH is '${environmentVariables.travisBranch}'.`);
-    console.log('Either we\'re on the wrong branch or we\'re not on Travis. Either way, no need to publish.');
+    console.log(
+      "Either we're on the wrong branch or we're not on Travis. Either way, no need to publish."
+    );
     process.exit(0);
   }
 

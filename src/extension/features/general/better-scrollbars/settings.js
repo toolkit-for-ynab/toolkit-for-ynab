@@ -9,6 +9,6 @@ module.exports = {
     { name: 'Default', value: '0' },
     { name: 'Small', value: '1' },
     { name: 'Tiny', value: '2' },
-    { name: 'Off', value: '3' }
-  ]
+    { name: 'Off', value: '3' },
+  ],
 };

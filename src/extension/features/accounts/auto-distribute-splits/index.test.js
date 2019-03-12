@@ -10,7 +10,7 @@ describe('AutoDistributeSplits', () => {
   it('should distribute remaining value proportionally across all subvalues', () => {
     const total = 6.06;
     const remaining = 0.06;
-    const originalSubValues = [1.00, 2.00, 3.00];
+    const originalSubValues = [1.0, 2.0, 3.0];
     const expectedSubValues = [1.01, 2.02, 3.03];
     testDistributionLogic(total, remaining, originalSubValues, expectedSubValues);
   });
@@ -32,7 +32,7 @@ describe('AutoDistributeSplits', () => {
   });
 
   it('should distribute 1 cent correctly when all subvalues are less than half of subtotal', () => {
-    const total = 0.10;
+    const total = 0.1;
     const remaining = 0.01;
     const originalSubValues = [0.03, 0.03, 0.03];
     const expectedSubValues = [0.03, 0.03, 0.04];

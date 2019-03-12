@@ -4,9 +4,8 @@ import { NetWorthComponent } from './component';
 function mapReportContextToProps(context) {
   return {
     filters: context.filters,
-    allReportableTransactions: context.allReportableTransactions
+    allReportableTransactions: context.allReportableTransactions,
   };
 }
 
 export const NetWorth = withReportContext(mapReportContextToProps)(NetWorthComponent);
-

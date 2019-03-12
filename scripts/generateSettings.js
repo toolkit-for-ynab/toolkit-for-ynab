@@ -2,7 +2,8 @@ require('colors');
 const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
-const defaultFeatures = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'))).defaultFeatures;
+const defaultFeatures = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json')))
+  .defaultFeatures;
 
 const LEAGACY_SETTINGS_PROJECT_DIR = 'src/extension/legacy/features';
 const NEW_SETTINGS_PROJECT_DIR = 'src/extension/features';
@@ -59,50 +60,52 @@ const legacySettingMap = {
   ToBeBudgetedWarning: 'toBeBudgetedWarning',
   ToggleMasterCategories: 'collapseExpandBudgetGroups',
   ToggleSplits: 'toggleSplits',
-  ToolkitReports: 'reports'
+  ToolkitReports: 'reports',
 };
 
 let previousSettings;
 
 function run(callback) {
   previousSettings = new Set();
-  Promise.all([
-    gatherLegacySettings(),
-    gatherNewSettings()
-  ]).then(values => {
-    let validatedSettings = [];
-    let settingsConcatenated = values[0].concat(values[1]);
-    settingsConcatenated.forEach(setting => {
-      if (Array.isArray(setting.setting)) {
-        setting.setting.forEach(subSetting => {
-          let validatedSetting = validateSetting({
-            setting: subSetting,
-            file: setting.file,
-            legacy: setting.legacy
-          });
+  Promise.all([gatherLegacySettings(), gatherNewSettings()])
+    .then(
+      values => {
+        let validatedSettings = [];
+        let settingsConcatenated = values[0].concat(values[1]);
+        settingsConcatenated.forEach(setting => {
+          if (Array.isArray(setting.setting)) {
+            setting.setting.forEach(subSetting => {
+              let validatedSetting = validateSetting({
+                setting: subSetting,
+                file: setting.file,
+                legacy: setting.legacy,
+              });
 
-          if (validatedSetting.hidden !== true) {
-            validatedSettings.push(validatedSetting);
+              if (validatedSetting.hidden !== true) {
+                validatedSettings.push(validatedSetting);
+              }
+            });
+          } else {
+            let validatedSetting = validateSetting(setting);
+
+            if (validatedSetting.hidden !== true) {
+              validatedSettings.push(validatedSetting);
+            }
           }
         });
-      } else {
-        let validatedSetting = validateSetting(setting);
 
-        if (validatedSetting.hidden !== true) {
-          validatedSettings.push(validatedSetting);
-        }
+        let allSettingsFile = generateAllSettingsFile(validatedSettings);
+        fs.writeFile(ALL_SETTINGS_OUTPUT, allSettingsFile, () => {
+          fs.writeFile(SETTINGS_JSON, JSON.stringify(validatedSettings), callback);
+        });
+      },
+      reason => {
+        callback(reason);
       }
+    )
+    .catch(exception => {
+      callback(exception.stack);
     });
-
-    let allSettingsFile = generateAllSettingsFile(validatedSettings);
-    fs.writeFile(ALL_SETTINGS_OUTPUT, allSettingsFile, () => {
-      fs.writeFile(SETTINGS_JSON, JSON.stringify(validatedSettings), callback);
-    });
-  }, reason => {
-    callback(reason);
-  }).catch(exception => {
-    callback(exception.stack);
-  });
 }
 
 function gatherLegacySettings() {
@@ -113,20 +116,22 @@ function gatherLegacySettings() {
       let legacySettingsPromises = [];
 
       files.forEach(file => {
-        legacySettingsPromises.push(new Promise((resolve, reject) => {
-          let setting;
-          const filePath = `${__dirname}/../${file}`;
-          try {
-            setting = require(filePath); // eslint-disable-line global-require
-          } catch (e) {
-            fs.readFile(filePath, 'utf8', (error, data) => {
-              if (error) return reject(error);
-              setting = JSON.parse(data);
-            });
-          }
+        legacySettingsPromises.push(
+          new Promise((resolve, reject) => {
+            let setting;
+            const filePath = `${__dirname}/../${file}`;
+            try {
+              setting = require(filePath); // eslint-disable-line global-require
+            } catch (e) {
+              fs.readFile(filePath, 'utf8', (error, data) => {
+                if (error) return reject(error);
+                setting = JSON.parse(data);
+              });
+            }
 
-          resolve({ file, setting, legacy: true });
-        }));
+            resolve({ file, setting, legacy: true });
+          })
+        );
       });
 
       Promise.all(legacySettingsPromises).then(resolve, reject);
@@ -139,10 +144,12 @@ function gatherNewSettings() {
     glob(path.join(NEW_SETTINGS_PROJECT_DIR, '**', 'settings.js'), (error, files) => {
       if (error) return reject(error);
 
-      resolve(files.map(file => {
-        const setting = require(path.join(__dirname, '..', file)); // eslint-disable-line global-require
-        return { file, setting };
-      }));
+      resolve(
+        files.map(file => {
+          const setting = require(path.join(__dirname, '..', file)); // eslint-disable-line global-require
+          return { file, setting };
+        })
+      );
     });
   });
 }
@@ -156,11 +163,11 @@ function validateSetting(settingObj) {
   }
 
   REQUIRED_SETTINGS.forEach(requiredSetting => {
-    if (typeof featureSettings[requiredSetting] === 'undefined' || featureSettings[requiredSetting] === null) {
-      logFatal(
-        settingFilename,
-        `"${requiredSetting}" is a required setting for all features.`
-      );
+    if (
+      typeof featureSettings[requiredSetting] === 'undefined' ||
+      featureSettings[requiredSetting] === null
+    ) {
+      logFatal(settingFilename, `"${requiredSetting}" is a required setting for all features.`);
     }
   });
 
@@ -181,11 +188,17 @@ function validateSetting(settingObj) {
       if (featureSettings.default === true && !defaultFeatures.includes(featureSettings.name)) {
         logWarning(
           settingFilename,
-          `${featureSettings.name} is not expected to be defaulted to on. If this default was intentional, add the feature name to the defaultFeatures array found in package.json`
+          `${
+            featureSettings.name
+          } is not expected to be defaulted to on. If this default was intentional, add the feature name to the defaultFeatures array found in package.json`
         );
       }
 
-      if (settingObj.legacy && typeof featureSettings.actions.true === 'undefined' && typeof featureSettings.actions.false === 'undefined') {
+      if (
+        settingObj.legacy &&
+        typeof featureSettings.actions.true === 'undefined' &&
+        typeof featureSettings.actions.false === 'undefined'
+      ) {
         logFatal(
           settingFilename,
           'Checkbox settings must declare an action for "true" or "false" to have any effect.'
@@ -215,10 +228,7 @@ function validateActions(settingObj) {
   const settingFilename = settingObj.file;
 
   if (typeof featureSettings.actions === 'undefined') {
-    logFatal(
-      settingFilename,
-      'Setting "actions" is required'
-    );
+    logFatal(settingFilename, 'Setting "actions" is required');
   }
 
   for (const actionKey in featureSettings.actions) {

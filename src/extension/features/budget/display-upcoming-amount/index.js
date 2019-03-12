@@ -4,7 +4,9 @@ import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class DisplayUpcomingAmount extends Feature {
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 
   shouldInvoke() {
     return isCurrentRouteBudgetPage();
@@ -15,16 +17,26 @@ export class DisplayUpcomingAmount extends Feature {
     $('.toolkit-activity-upcoming-amount').remove();
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
-      const { monthlySubCategoryBudgetCalculation, subCategory } = getEmberView(element.id, 'category');
+      const { monthlySubCategoryBudgetCalculation, subCategory } = getEmberView(
+        element.id,
+        'category'
+      );
 
-      if (monthlySubCategoryBudgetCalculation && monthlySubCategoryBudgetCalculation.upcomingTransactions) {
+      if (
+        monthlySubCategoryBudgetCalculation &&
+        monthlySubCategoryBudgetCalculation.upcomingTransactions
+      ) {
         $('.budget-table-cell-activity', element)
           .addClass('toolkit-activity-upcoming')
-          .prepend($('<div>', {
-            class: 'toolkit-activity-upcoming-amount currency',
-            title: `Total upcoming transaction amount in this month for ${subCategory.get('name')}`,
-            text: formatCurrency(monthlySubCategoryBudgetCalculation.upcomingTransactions)
-          }));
+          .prepend(
+            $('<div>', {
+              class: 'toolkit-activity-upcoming-amount currency',
+              title: `Total upcoming transaction amount in this month for ${subCategory.get(
+                'name'
+              )}`,
+              text: formatCurrency(monthlySubCategoryBudgetCalculation.upcomingTransactions),
+            })
+          );
       }
     });
   }

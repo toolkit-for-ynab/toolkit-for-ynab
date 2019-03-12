@@ -6,8 +6,8 @@ import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export class ToggleSplitButton extends React.Component {
   state = {
-    areAllSplitsExpanded: getToolkitStorageKey('are-all-splits-expanded', true)
-  }
+    areAllSplitsExpanded: getToolkitStorageKey('are-all-splits-expanded', true),
+  };
 
   componentDidMount() {
     if (this.state.areAllSplitsExpanded) {
@@ -20,8 +20,8 @@ export class ToggleSplitButton extends React.Component {
   render() {
     return (
       <button className="button tk-toggle-splits" onClick={this.toggleSplits}>
-        {this.state.areAllSplitsExpanded && <i className="flaticon stroke down"></i>}
-        {!this.state.areAllSplitsExpanded && <i className="flaticon stroke right"></i>}
+        {this.state.areAllSplitsExpanded && <i className="flaticon stroke down" />}
+        {!this.state.areAllSplitsExpanded && <i className="flaticon stroke right" />}
         {l10n('toolkit.toggleSplits', 'Toggle Splits')}
       </button>
     );
@@ -37,13 +37,13 @@ export class ToggleSplitButton extends React.Component {
 
     setToolkitStorageKey('are-all-splits-expanded', newAreAllSplitsExpanded);
     this.setState({ areAllSplitsExpanded: newAreAllSplitsExpanded });
-  }
+  };
 
   hideAllSplits = () => {
     const { scheduledTransactionsCollection, transactionsCollection } = getEntityManager();
     const collapsedSplitsMap = {};
 
-    [scheduledTransactionsCollection, transactionsCollection].forEach((collection) => {
+    [scheduledTransactionsCollection, transactionsCollection].forEach(collection => {
       collection.reduce((reduced, transaction) => {
         if (transaction.getIsSplit()) {
           reduced[transaction.get('entityId')] = true;
@@ -54,9 +54,9 @@ export class ToggleSplitButton extends React.Component {
     });
 
     getEmberView($('.ynab-grid').attr('id')).set('collapsedSplits', collapsedSplitsMap);
-  }
+  };
 
   showAllSplits = () => {
     getEmberView($('.ynab-grid').attr('id')).set('collapsedSplits', {});
-  }
+  };
 }

@@ -33,7 +33,9 @@ export class ChangeEnterBehavior extends Feature {
       event.preventDefault();
       event.stopPropagation();
 
-      const $saveButton = $('.ynab-grid-actions-buttons .button.button-primary:not(.button-another)');
+      const $saveButton = $(
+        '.ynab-grid-actions-buttons .button.button-primary:not(.button-another)'
+      );
       $saveButton.click();
     }
   }

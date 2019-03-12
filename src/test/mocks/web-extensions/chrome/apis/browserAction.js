@@ -1,3 +1,3 @@
 export class BrowserAction {
-  setIcon = jest.fn()
+  setIcon = jest.fn();
 }

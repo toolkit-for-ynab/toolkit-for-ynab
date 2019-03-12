@@ -3,9 +3,10 @@ import { SpendingByCategoryComponent } from './component';
 
 function mapReportContextToProps(context) {
   return {
-    filteredTransactions: context.filteredTransactions
+    filteredTransactions: context.filteredTransactions,
   };
 }
 
-export const SpendingByCategory = withReportContext(mapReportContextToProps)(SpendingByCategoryComponent);
-
+export const SpendingByCategory = withReportContext(mapReportContextToProps)(
+  SpendingByCategoryComponent
+);

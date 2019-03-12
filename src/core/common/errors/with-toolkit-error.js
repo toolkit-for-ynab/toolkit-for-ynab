@@ -10,10 +10,12 @@ export function withToolkitError(wrappedFunction, feature) {
 
   const featureSetting = ynabToolKit.options[featureName];
   if (typeof featureSetting === 'undefined') {
-    console.warn("Second argument to withToolkitError should either be Feature Class or Feature Name as found in the feature's settings.js file");
+    console.warn(
+      "Second argument to withToolkitError should either be Feature Class or Feature Name as found in the feature's settings.js file"
+    );
   }
 
-  return function () {
+  return function() {
     try {
       return wrappedFunction();
     } catch (exception) {
@@ -21,7 +23,7 @@ export function withToolkitError(wrappedFunction, feature) {
         exception,
         featureName,
         featureSetting,
-        functionName: wrappedFunction.name
+        functionName: wrappedFunction.name,
       });
     }
   };
@@ -37,7 +39,10 @@ export function withToolkitError(wrappedFunction, feature) {
  * @param input.functionName The name of the function in the feature that threw the error (if known).
  */
 export function logToolkitError({ exception, featureName, featureSetting, functionName }) {
-  const routeName = window.location.pathname.replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g, 'omitted');
+  const routeName = window.location.pathname.replace(
+    /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g,
+    'omitted'
+  );
   let message = `Toolkit Error:
   - Feature: ${featureName}
   - Feature Setting: ${featureSetting}
@@ -47,14 +52,17 @@ export function logToolkitError({ exception, featureName, featureSetting, functi
   console.error(message, exception.stack ? exception.stack : '');
 
   const serializedError = exception.stack ? exception.stack.toString() : exception.message;
-  window.postMessage({
-    type: 'ynab-toolkit-error',
-    context: {
-      featureName,
-      featureSetting,
-      functionName,
-      routeName,
-      serializedError
-    }
-  }, '*');
+  window.postMessage(
+    {
+      type: 'ynab-toolkit-error',
+      context: {
+        featureName,
+        featureSetting,
+        functionName,
+        routeName,
+        serializedError,
+      },
+    },
+    '*'
+  );
 }

@@ -4,7 +4,7 @@ import { l10n } from 'toolkit/extension/utils/toolkit';
 import {
   getSelectedMonth,
   isCurrentRouteBudgetPage,
-  transitionTo
+  transitionTo,
 } from 'toolkit/extension/utils/ynab';
 
 /**
@@ -39,7 +39,10 @@ export class LinkToInflows extends Feature {
       budgetInspector.find(`h3:contains(${englishHeading})`)[0] ||
       budgetInspector.find(`h3:contains(${localizedHeading})`)[0];
 
-    $(inflowsHeadingEl).next().andSelf().wrapAll('<span class="toolkit-total-inflows" />');
+    $(inflowsHeadingEl)
+      .next()
+      .andSelf()
+      .wrapAll('<span class="toolkit-total-inflows" />');
 
     $('.toolkit-total-inflows').click(this.onClick);
   }

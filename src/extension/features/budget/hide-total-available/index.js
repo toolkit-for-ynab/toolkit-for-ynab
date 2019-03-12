@@ -27,6 +27,9 @@ export class HideTotalAvailable extends Feature {
       budgetInspector.find(`h3:contains(${englishHeading})`)[0] ||
       budgetInspector.find(`h3:contains(${localizedHeading})`)[0];
 
-    $(headingEl).nextUntil('h3').andSelf().addClass('hidden');
+    $(headingEl)
+      .nextUntil('h3')
+      .andSelf()
+      .addClass('hidden');
   }
 }

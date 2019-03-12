@@ -14,7 +14,7 @@ function run(callback) {
     let errorCheckingLines = [];
     let featureNames = [];
 
-    files.forEach((filePath) => {
+    files.forEach(filePath => {
       const filePathSplit = filePath.split('/');
       const projectFeaturePath = filePathSplit.slice(0, filePathSplit.length - 1).join(path.sep);
 
@@ -35,7 +35,9 @@ function run(callback) {
       const importLine = `import { ${featureSetting.name} } from './${featureIndexPath}';`;
       imports.push(importLine);
 
-      const errorCheckingLine = `if (!${featureSetting.name}) { throw new Error('${featureSetting.name} feature failed to import. Have you set the name in the settings.js file to match the class name?'); }`;
+      const errorCheckingLine = `if (!${featureSetting.name}) { throw new Error('${
+        featureSetting.name
+      } feature failed to import. Have you set the name in the settings.js file to match the class name?'); }`;
       errorCheckingLines.push(errorCheckingLine);
 
       featureNames.push(featureSetting.name);

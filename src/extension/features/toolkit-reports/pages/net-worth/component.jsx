@@ -10,10 +10,10 @@ import { Legend } from './components/legend';
 export class NetWorthComponent extends React.Component {
   static propTypes = {
     filters: PropTypes.shape(FiltersPropType),
-    allReportableTransactions: PropTypes.array.isRequired
+    allReportableTransactions: PropTypes.array.isRequired,
   };
 
-  state = {}
+  state = {};
 
   componentDidMount() {
     this._calculateData();
@@ -51,16 +51,16 @@ export class NetWorthComponent extends React.Component {
 
     const pointHover = {
       events: {
-        mouseOver: function () {
+        mouseOver: function() {
           _this.setState({
             hoveredData: {
               assets: assets[this.index],
               debts: debts[this.index],
-              netWorth: netWorths[this.index]
-            }
+              netWorth: netWorths[this.index],
+            },
           });
-        }
-      }
+        },
+      },
     };
 
     const chart = new Highcharts.Chart({
@@ -73,10 +73,10 @@ export class NetWorthComponent extends React.Component {
       yAxis: {
         title: { text: '' },
         labels: {
-          formatter: function () {
+          formatter: function() {
             return formatCurrency(this.value);
-          }
-        }
+          },
+        },
       },
       series: [
         {
@@ -86,7 +86,7 @@ export class NetWorthComponent extends React.Component {
           color: 'rgba(234,106,81,1)',
           data: debts,
           pointPadding: 0,
-          point: pointHover
+          point: pointHover,
         },
         {
           id: 'assets',
@@ -95,7 +95,7 @@ export class NetWorthComponent extends React.Component {
           color: 'rgba(142,208,223,1)',
           data: assets,
           pointPadding: 0,
-          point: pointHover
+          point: pointHover,
         },
         {
           id: 'networth',
@@ -104,13 +104,13 @@ export class NetWorthComponent extends React.Component {
           fillColor: 'rgba(244,248,226,0.5)',
           negativeFillColor: 'rgba(247, 220, 218, 0.5)',
           data: netWorths,
-          point: pointHover
-        }
-      ]
+          point: pointHover,
+        },
+      ],
     });
 
     this.setState({ chart });
-  }
+  };
 
   _calculateData() {
     if (!this.props.filters) {
@@ -125,7 +125,7 @@ export class NetWorthComponent extends React.Component {
     function pushCurrentAccountData() {
       let assets = 0;
       let debts = 0;
-      accounts.forEach((total) => {
+      accounts.forEach(total => {
         if (total > 0) {
           assets += total;
         } else {
@@ -139,8 +139,11 @@ export class NetWorthComponent extends React.Component {
       allReportData.labels.push(localizedMonthAndYear(lastMonth));
     }
 
-    transactions.forEach((transaction) => {
-      const transactionMonth = transaction.get('date').clone().startOfMonth();
+    transactions.forEach(transaction => {
+      const transactionMonth = transaction
+        .get('date')
+        .clone()
+        .startOfMonth();
       if (lastMonth === null) {
         lastMonth = transactionMonth;
       }
@@ -164,7 +167,10 @@ export class NetWorthComponent extends React.Component {
       }
     });
 
-    if (lastMonth && allReportData.labels[allReportData.labels.length - 1] !== localizedMonthAndYear(lastMonth)) {
+    if (
+      lastMonth &&
+      allReportData.labels[allReportData.labels.length - 1] !== localizedMonthAndYear(lastMonth)
+    ) {
       pushCurrentAccountData();
     }
 
@@ -172,8 +178,14 @@ export class NetWorthComponent extends React.Component {
     const { fromDate, toDate } = this.props.filters.dateFilter;
     if (transactions.length) {
       let currentIndex = 0;
-      const transactionMonth = transactions[0].get('date').clone().startOfMonth();
-      const lastFilterMonth = toDate.clone().addMonths(1).startOfMonth();
+      const transactionMonth = transactions[0]
+        .get('date')
+        .clone()
+        .startOfMonth();
+      const lastFilterMonth = toDate
+        .clone()
+        .addMonths(1)
+        .startOfMonth();
       while (transactionMonth.isBefore(lastFilterMonth)) {
         if (!allReportData.labels.includes(localizedMonthAndYear(transactionMonth))) {
           const { assets, debts, netWorths, labels } = allReportData;
@@ -191,28 +203,31 @@ export class NetWorthComponent extends React.Component {
     // Net Worth is calculated from the start of time so we need to handle "filters" here
     // rather than using `filteredTransactions` from context.
     const { labels, assets, debts, netWorths } = allReportData;
-    let startIndex = labels.findIndex((label) => label === localizedMonthAndYear(fromDate));
+    let startIndex = labels.findIndex(label => label === localizedMonthAndYear(fromDate));
     startIndex = startIndex === -1 ? 0 : startIndex;
-    let endIndex = labels.findIndex((label) => label === localizedMonthAndYear(toDate));
-    endIndex = endIndex === -1 ? (labels.length + 1) : (endIndex + 1);
+    let endIndex = labels.findIndex(label => label === localizedMonthAndYear(toDate));
+    endIndex = endIndex === -1 ? labels.length + 1 : endIndex + 1;
 
     const filteredLabels = labels.slice(startIndex, endIndex);
     const filteredDebts = debts.slice(startIndex, endIndex);
     const filteredAssets = assets.slice(startIndex, endIndex);
     const filteredNetWorths = netWorths.slice(startIndex, endIndex);
 
-    this.setState({
-      hoveredData: {
-        assets: assets[assets.length - 1] || 0,
-        debts: debts[debts.length - 1] || 0,
-        netWorth: netWorths[netWorths.length - 1] || 0
+    this.setState(
+      {
+        hoveredData: {
+          assets: assets[assets.length - 1] || 0,
+          debts: debts[debts.length - 1] || 0,
+          netWorth: netWorths[netWorths.length - 1] || 0,
+        },
+        reportData: {
+          labels: filteredLabels,
+          debts: filteredDebts,
+          assets: filteredAssets,
+          netWorths: filteredNetWorths,
+        },
       },
-      reportData: {
-        labels: filteredLabels,
-        debts: filteredDebts,
-        assets: filteredAssets,
-        netWorths: filteredNetWorths
-      }
-    }, this._renderReport);
+      this._renderReport
+    );
   }
 }

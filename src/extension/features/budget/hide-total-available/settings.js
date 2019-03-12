@@ -4,5 +4,5 @@ module.exports = {
   default: false,
   section: 'budget',
   title: 'Hide Total Available',
-  description: 'Hides the "Total Available" section in the budget inspector.'
+  description: 'Hides the "Total Available" section in the budget inspector.',
 };

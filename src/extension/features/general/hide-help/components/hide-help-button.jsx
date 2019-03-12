@@ -15,7 +15,7 @@ export const HideHelpButton = ({ toggleHiddenState }) => {
   return (
     <li onClick={toggleHidden}>
       <button>
-        <i className="flaticon stroke help-2"></i>
+        <i className="flaticon stroke help-2" />
         {` ${label}`} Help Button
       </button>
     </li>
@@ -23,5 +23,5 @@ export const HideHelpButton = ({ toggleHiddenState }) => {
 };
 
 HideHelpButton.propTypes = {
-  toggleHiddenState: PropTypes.func.isRequired
+  toggleHiddenState: PropTypes.func.isRequired,
 };

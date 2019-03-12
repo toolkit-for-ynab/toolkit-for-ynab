@@ -4,9 +4,8 @@ import { IncomeVsExpenseComponent } from './component';
 function mapReportContextToProps(context) {
   return {
     filteredTransactions: context.filteredTransactions,
-    filters: context.filters
+    filters: context.filters,
   };
 }
 
 export const IncomeVsExpense = withReportContext(mapReportContextToProps)(IncomeVsExpenseComponent);
-

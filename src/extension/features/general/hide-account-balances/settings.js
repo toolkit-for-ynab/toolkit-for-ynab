@@ -9,6 +9,6 @@ module.exports = {
     { name: 'Disabled', value: '0' },
     { name: 'Hide All', value: '1' },
     { name: 'Hide Account Type Totals', value: '2' },
-    { name: 'Hide Account Balances', value: '3' }
-  ]
+    { name: 'Hide Account Balances', value: '3' },
+  ],
 };

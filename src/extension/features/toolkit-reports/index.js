@@ -17,23 +17,32 @@ const YNAB_NAVACCOUNT_CLASS = 'nav-account-row';
 const YNAB_NAVACCOUNT_SELECTOR = `.${YNAB_NAVACCOUNT_CLASS}`;
 
 export class ToolkitReports extends Feature {
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 
-  shouldInvoke() { return true; }
+  shouldInvoke() {
+    return true;
+  }
 
   invoke() {
     if (!document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID)) {
-      $(YNAB_CONTENT_CONTAINER_SELECTOR).append($('<div>', {
-        id: TOOLKIT_REPORTS_CONTAINER_ID,
-        css: { height: '100%' }
-      }));
+      $(YNAB_CONTENT_CONTAINER_SELECTOR).append(
+        $('<div>', {
+          id: TOOLKIT_REPORTS_CONTAINER_ID,
+          css: { height: '100%' },
+        })
+      );
     }
 
     if (!$(TOOLKIT_REPORTS_NAVLINK_SELECTOR).length) {
-      const toolkitReportsLink = $('<li>', { class: TOOLKIT_REPORTS_NAVLINK_CLASS })
-        .append($('<a>', { class: 'tk-navlink-reports-link' })
+      const toolkitReportsLink = $('<li>', {
+        class: TOOLKIT_REPORTS_NAVLINK_CLASS,
+      }).append(
+        $('<a>', { class: 'tk-navlink-reports-link' })
           .append($('<span>', { class: 'flaticon stroke document-4' }))
-          .append((l10n('toolkit.reports') || 'Toolkit Reports')));
+          .append(l10n('toolkit.reports') || 'Toolkit Reports')
+      );
 
       $('.nav-main > li:eq(1)').after(toolkitReportsLink);
 
@@ -51,7 +60,10 @@ export class ToolkitReports extends Feature {
     $(YNAB_NAVLINK_SELECTOR).removeClass('active');
     $(YNAB_NAVACCOUNT_SELECTOR).removeClass('is-selected');
     $(TOOLKIT_REPORTS_NAVLINK_SELECTOR).addClass('active');
-    $(`${YNAB_NAVLINK_SELECTOR}, ${YNAB_NAVACCOUNT_SELECTOR}`).on('click', this._removeToolkitReports);
+    $(`${YNAB_NAVLINK_SELECTOR}, ${YNAB_NAVACCOUNT_SELECTOR}`).on(
+      'click',
+      this._removeToolkitReports
+    );
   }
 
   _removeToolkitReports(event) {
@@ -64,7 +76,7 @@ export class ToolkitReports extends Feature {
     }
 
     const $currentTarget = $(event.currentTarget);
-    if (YNAB_NAVLINK_CLASSES.some((className) => $currentTarget.hasClass(className))) {
+    if (YNAB_NAVLINK_CLASSES.some(className => $currentTarget.hasClass(className))) {
       $currentTarget.addClass('active');
     } else if ($currentTarget.hasClass(YNAB_NAVACCOUNT_CLASS)) {
       $currentTarget.addClass('is-selected');

@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { getRouter } from 'toolkit/extension/utils/ember';
 
-export const BudgetListItem = (props) => {
+export const BudgetListItem = props => {
   const handleClick = () => {
     const router = getRouter();
     router.send('openBudget', props.budgetVersionId, props.budgetVersionName);
@@ -11,7 +11,7 @@ export const BudgetListItem = (props) => {
   return (
     <li onClick={handleClick}>
       <button>
-        <i className="flaticon stroke mail-1"></i>
+        <i className="flaticon stroke mail-1" />
         {` Open ${props.budgetVersionName}`}
       </button>
     </li>
@@ -20,5 +20,5 @@ export const BudgetListItem = (props) => {
 
 BudgetListItem.propTypes = {
   budgetVersionId: PropTypes.string.isRequired,
-  budgetVersionName: PropTypes.string.isRequired
+  budgetVersionName: PropTypes.string.isRequired,
 };

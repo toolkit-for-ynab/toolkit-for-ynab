@@ -3,15 +3,15 @@ import { ModalContainer } from '../components/modal-container/component';
 
 const { Provider, Consumer } = React.createContext({
   showModal: () => {},
-  closeModal: () => {}
+  closeModal: () => {},
 });
 
 export function withModalContextProvider(InnerComponent) {
   return class WithModalContextProvider extends React.Component {
     state = {
       modal: null,
-      modalProps: null
-    }
+      modalProps: null,
+    };
 
     render() {
       const Modal = this.state.modal;
@@ -21,7 +21,7 @@ export function withModalContextProvider(InnerComponent) {
           <Provider
             value={{
               closeModal: this._closeModal,
-              showModal: this._showModal
+              showModal: this._showModal,
             }}
           >
             <InnerComponent {...this.props} />
@@ -39,23 +39,21 @@ export function withModalContextProvider(InnerComponent) {
 
     _closeModal = () => {
       this.setState({ modal: null, modalProps: null });
-    }
+    };
 
     _showModal = (modal, modalProps) => {
       this.setState({ modal, modalProps });
-    }
+    };
   };
 }
 
 export function withModalContext(mapContextToProps) {
-  return function (InnerComponent) {
+  return function(InnerComponent) {
     return class WithModalContextProvider extends React.Component {
       render() {
         return (
           <Consumer>
-            {value => (
-              <InnerComponent {...this.props} {...mapContextToProps(value)} />
-            )}
+            {value => <InnerComponent {...this.props} {...mapContextToProps(value)} />}
           </Consumer>
         );
       }

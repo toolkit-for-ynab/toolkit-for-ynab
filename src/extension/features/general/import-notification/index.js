@@ -6,7 +6,9 @@ export class ImportNotification extends Feature {
   isActive = false;
   importClass = 'ynabtk-import-notification-underline';
 
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 
   willInvoke() {
     if (this.settings.enabled !== '0') {
@@ -18,7 +20,9 @@ export class ImportNotification extends Feature {
       // run when new imports show up while the user isn't doing anything in the app. The down side is the
       // handler being called when the user does something like "approve a transaction". That's why this feature
       // has a blocking mechanism (the isActive flag).
-      ynab.YNABSharedLib.defaultInstance.entityManager._transactionEntityPropertyChanged.addHandler(this.invoke);
+      ynab.YNABSharedLib.defaultInstance.entityManager._transactionEntityPropertyChanged.addHandler(
+        this.invoke
+      );
     }
   }
 
@@ -28,7 +32,7 @@ export class ImportNotification extends Feature {
 
   invoke = () => {
     this.checkImportTransactions();
-  }
+  };
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
@@ -53,21 +57,37 @@ export class ImportNotification extends Feature {
       let accountSpan = $(row).find('.nav-account-name > .nav-account-name-val > span');
       if (accountSpan.length) {
         // Remove the title attribute and our underline class in case the account no longer has txns to be imported
-        $(accountSpan).removeAttr('title').removeClass(this.importClass);
+        $(accountSpan)
+          .removeAttr('title')
+          .removeClass(this.importClass);
 
-        let currentTitle = $(row).find('.nav-account-name').prop('title');
+        let currentTitle = $(row)
+          .find('.nav-account-name')
+          .prop('title');
 
         // Check for both functions should be temporary until all users have been switched to new bank data
         // provider but of course we have no good way of knowing when that has occurred.
-        if (typeof account.getDirectConnectEnabled === 'function' && account.getDirectConnectEnabled() ||
-            typeof account.getIsDirectImportActive === 'function' && account.getIsDirectImportActive()) {
-          let t = new ynab.managers.DirectImportManager(ynab.YNABSharedLib.defaultInstance.entityManager, account);
+        if (
+          (typeof account.getDirectConnectEnabled === 'function' &&
+            account.getDirectConnectEnabled()) ||
+          (typeof account.getIsDirectImportActive === 'function' &&
+            account.getIsDirectImportActive())
+        ) {
+          let t = new ynab.managers.DirectImportManager(
+            ynab.YNABSharedLib.defaultInstance.entityManager,
+            account
+          );
           let transactions = t.getImportTransactionsForAccount(account);
 
           if (transactions.length >= 1) {
             $(accountSpan)
               .addClass(this.importClass)
-              .attr('title', currentTitle + ` - ${transactions.length} ` + l10n('toolkit.import.notification', 'transaction(s) to be imported.'));
+              .attr(
+                'title',
+                currentTitle +
+                  ` - ${transactions.length} ` +
+                  l10n('toolkit.import.notification', 'transaction(s) to be imported.')
+              );
           }
         }
       }

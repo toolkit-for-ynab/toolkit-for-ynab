@@ -14,7 +14,9 @@ export class ResizeSidebar extends Feature {
 
   isMouseDown = false;
 
-  shouldInvoke() { return true; }
+  shouldInvoke() {
+    return true;
+  }
 
   invoke() {
     const width = getToolkitStorageKey(WIDTH_STORAGE_KEY);
@@ -32,14 +34,17 @@ export class ResizeSidebar extends Feature {
     $(sidebar).after(resizer);
 
     // Subscribe event on resizer to start resizing
-    $(resizer).click((event) => event.stopPropagation())
-      .mousedown((event) => {
+    $(resizer)
+      .click(event => event.stopPropagation())
+      .mousedown(event => {
         this.toggleResize(true, event);
       });
   }
 
   onMouseMove(event) {
-    if (!this.isMouseDown) { return; }
+    if (!this.isMouseDown) {
+      return;
+    }
 
     event.preventDefault();
     event.stopPropagation();
@@ -62,8 +67,8 @@ export class ResizeSidebar extends Feature {
     // Bind or unbind the events based on if the mouse is down.
     // Use a local property so that unbinding works.
     if (isMouseDown) {
-      $('body').on('mousemove', this.bindOnMouseMove = this.onMouseMove.bind(this));
-      $('body').on('mouseup', this.bindOnMouseUp = this.onMouseUp.bind(this));
+      $('body').on('mousemove', (this.bindOnMouseMove = this.onMouseMove.bind(this)));
+      $('body').on('mouseup', (this.bindOnMouseUp = this.onMouseUp.bind(this)));
     } else {
       $('body').off('mousemove', this.bindOnMouseMove);
       $('body').off('mouseup', this.bindOnMouseUp);
@@ -71,7 +76,9 @@ export class ResizeSidebar extends Feature {
   }
 
   updateProperty(width) {
-    if (typeof width !== 'number') { return; }
+    if (typeof width !== 'number') {
+      return;
+    }
 
     // Keep the width between our defined borders
     const realWidth = Math.max(MIN_WIDTH, Math.min(width, MAX_WIDTH));

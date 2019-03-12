@@ -1,12 +1,19 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { getDeemphasizedCategories, migrateLegacyPacingStorage, pacingForCategory, setDeemphasizedCategories } from 'toolkit/extension/utils/pacing';
+import {
+  getDeemphasizedCategories,
+  migrateLegacyPacingStorage,
+  pacingForCategory,
+  setDeemphasizedCategories,
+} from 'toolkit/extension/utils/pacing';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class Pacing extends Feature {
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 
   willInvoke() {
     migrateLegacyPacingStorage();
@@ -18,8 +25,7 @@ export class Pacing extends Feature {
 
   invoke() {
     $('#ynab-toolkit-pacing-style').remove();
-    $('.budget-table-header .budget-table-cell-available')
-      .after(`<li class="toolkit-cell-pacing">
+    $('.budget-table-header .budget-table-cell-available').after(`<li class="toolkit-cell-pacing">
         ${l10n('toolkit.pacing', 'PACING')}
       </li>`);
 
@@ -37,28 +43,35 @@ export class Pacing extends Feature {
         const category = getEmberView(element.id, 'category');
         const pacingCalculation = pacingForCategory(category);
 
-        const $display = this.generateDisplay(category.get('subCategory.entityId'), pacingCalculation);
-        $(element).append($display.click((event) => {
-          const deemphasizedCategories = getDeemphasizedCategories();
-          const subCategoryId = event.target.getAttribute('data-sub-category-id');
+        const $display = this.generateDisplay(
+          category.get('subCategory.entityId'),
+          pacingCalculation
+        );
+        $(element).append(
+          $display.click(event => {
+            const deemphasizedCategories = getDeemphasizedCategories();
+            const subCategoryId = event.target.getAttribute('data-sub-category-id');
 
-          if (deemphasizedCategories.contains(subCategoryId)) {
-            $(event.target).removeClass('deemphasized');
-            setDeemphasizedCategories(deemphasizedCategories.filter((id) => {
-              return id !== subCategoryId;
-            }));
-          } else {
-            $(event.target).addClass('deemphasized');
-            deemphasizedCategories.push(subCategoryId);
-            setDeemphasizedCategories(deemphasizedCategories);
-          }
+            if (deemphasizedCategories.contains(subCategoryId)) {
+              $(event.target).removeClass('deemphasized');
+              setDeemphasizedCategories(
+                deemphasizedCategories.filter(id => {
+                  return id !== subCategoryId;
+                })
+              );
+            } else {
+              $(event.target).addClass('deemphasized');
+              deemphasizedCategories.push(subCategoryId);
+              setDeemphasizedCategories(deemphasizedCategories);
+            }
 
-          if (['pacing', 'both'].indexOf(ynabToolKit.options.BudgetProgressBars) !== -1) {
-            ynabToolKit.invokeFeature('BudgetProgressBars');
-          }
+            if (['pacing', 'both'].indexOf(ynabToolKit.options.BudgetProgressBars) !== -1) {
+              ynabToolKit.invokeFeature('BudgetProgressBars');
+            }
 
-          event.stopPropagation();
-        }));
+            event.stopPropagation();
+          })
+        );
       });
   }
 
@@ -77,14 +90,22 @@ export class Pacing extends Feature {
 
   cleanup() {
     $('#ynab-toolkit-pacing-style').remove();
-    $('<style type="text/css" id="ynab-toolkit-pacing-style"> .toolkit-cell-pacing { display: none; } </style>').appendTo('head');
+    $(
+      '<style type="text/css" id="ynab-toolkit-pacing-style"> .toolkit-cell-pacing { display: none; } </style>'
+    ).appendTo('head');
   }
 
   generateDisplay(subCategoryId, pacingCalculation) {
-    const { budgetedPace, daysOffTarget, isDeemphasized, monthPace, paceAmount } = pacingCalculation;
+    const {
+      budgetedPace,
+      daysOffTarget,
+      isDeemphasized,
+      monthPace,
+      paceAmount,
+    } = pacingCalculation;
     const deemphasizedClass = isDeemphasized ? 'deemphasized' : '';
     const indicatorClass = this.settings.enabled === '2' ? 'indicator' : '';
-    const temperatureClass = (budgetedPace / monthPace) > 1 ? 'cautious' : 'positive';
+    const temperatureClass = budgetedPace / monthPace > 1 ? 'cautious' : 'positive';
     const tooltip = this.generateTooltip(pacingCalculation);
 
     const $display = $(`
@@ -112,7 +133,13 @@ export class Pacing extends Feature {
   }
 
   generateTooltip(pacingCalculation) {
-    const { daysOffTarget, isDeemphasized, monthPace, paceAmount, transactions } = pacingCalculation;
+    const {
+      daysOffTarget,
+      isDeemphasized,
+      monthPace,
+      paceAmount,
+      transactions,
+    } = pacingCalculation;
 
     const moreOrLess = paceAmount >= 0 ? 'less' : 'more';
     const aheadOrBehind = paceAmount >= 0 ? 'ahead of' : 'behind';
@@ -122,10 +149,12 @@ export class Pacing extends Feature {
     const days = formattedDisplayInDays === 1 ? 'day' : 'days';
     const transactionsFormat = transactions.length === 1 ? 'transaction' : 'transactions';
     const percentOfMonth = Math.round(monthPace * 100);
-    const trimWords = (paragraph) => paragraph.replace(/\s+/g, ' ').trim();
+    const trimWords = paragraph => paragraph.replace(/\s+/g, ' ').trim();
 
     return trimWords(`
-      In ${transactions.length} ${transactionsFormat}, you have spent ${formattedDisplay} ${moreOrLess} than
+      In ${
+        transactions.length
+      } ${transactionsFormat}, you have spent ${formattedDisplay} ${moreOrLess} than
       your available budget for this category ${percentOfMonth}% of the way through the month.
       You are ${formattedDisplayInDays} ${days} ${aheadOrBehind} schedule.
       &#13;&#13;Click to ${hideOrUnhide}.

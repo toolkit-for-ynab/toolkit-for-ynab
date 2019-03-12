@@ -10,31 +10,25 @@ import { PIE_CHART_COLORS } from 'toolkit-reports/common/constants/colors';
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
 import './styles.scss';
 
-const createMasterCategoryMap = (masterCategory) => new Map([
-  ['masterCategory', masterCategory],
-  ['subCategories', new Map()],
-  ['total', 0]
-]);
+const createMasterCategoryMap = masterCategory =>
+  new Map([['masterCategory', masterCategory], ['subCategories', new Map()], ['total', 0]]);
 
-const createSubCategoryMap = (subCategory) => new Map([
-  ['subCategory', subCategory],
-  ['total', 0],
-  ['transactions', []]
-]);
+const createSubCategoryMap = subCategory =>
+  new Map([['subCategory', subCategory], ['total', 0], ['transactions', []]]);
 
 export class SpendingByCategoryComponent extends React.Component {
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
   _subCategoriesCollection = Collections.subCategoriesCollection;
 
   static propTypes = {
-    filteredTransactions: PropTypes.array.isRequired
+    filteredTransactions: PropTypes.array.isRequired,
   };
 
   state = {
     currentDrillDownId: null,
     drillDownData: null,
     seriesData: null,
-    spendingByMasterCategory: null
+    spendingByMasterCategory: null,
   };
 
   componentDidMount() {
@@ -78,25 +72,32 @@ export class SpendingByCategoryComponent extends React.Component {
   _calculateData() {
     const spendingByMasterCategory = new Map();
 
-    this.props.filteredTransactions.forEach((transaction) => {
+    this.props.filteredTransactions.forEach(transaction => {
       if (transaction.getIsOnBudgetTransfer()) {
         return;
       }
 
       const transactionSubCategoryId = transaction.get('subCategoryId');
-      const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(transactionSubCategoryId);
+      const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(
+        transactionSubCategoryId
+      );
       if (!transactionSubCategory || transactionSubCategory.isIncomeCategory()) {
         return;
       }
 
       const transactionMasterCategoryId = transactionSubCategory.get('masterCategoryId');
-      const transactionMasterCategory = this._masterCategoriesCollection.findItemByEntityId(transactionMasterCategoryId);
+      const transactionMasterCategory = this._masterCategoriesCollection.findItemByEntityId(
+        transactionMasterCategoryId
+      );
       const transactionAmount = transaction.get('amount');
-      const masterCategoryData = spendingByMasterCategory.get(transactionMasterCategoryId) || createMasterCategoryMap(transactionMasterCategory);
+      const masterCategoryData =
+        spendingByMasterCategory.get(transactionMasterCategoryId) ||
+        createMasterCategoryMap(transactionMasterCategory);
       masterCategoryData.set('total', masterCategoryData.get('total') + transactionAmount);
 
       const subCategories = masterCategoryData.get('subCategories');
-      const subCategoryData = subCategories.get(transactionSubCategoryId) || createSubCategoryMap(transactionSubCategory);
+      const subCategoryData =
+        subCategories.get(transactionSubCategoryId) || createSubCategoryMap(transactionSubCategory);
       subCategoryData.set('total', subCategoryData.get('total') + transactionAmount);
       subCategoryData.set('transactions', subCategoryData.get('transactions').concat(transaction));
 
@@ -105,12 +106,15 @@ export class SpendingByCategoryComponent extends React.Component {
     });
 
     const sortedSpendingData = this._sortAndNormalizeData(spendingByMasterCategory);
-    this.setState({
-      spendingByMasterCategory: sortedSpendingData
-    }, this._renderReport);
+    this.setState(
+      {
+        spendingByMasterCategory: sortedSpendingData,
+      },
+      this._renderReport
+    );
   }
 
-  _onLegendDataHover = (hoveredId) => {
+  _onLegendDataHover = hoveredId => {
     const { chart } = this.state;
     if (!chart) {
       return;
@@ -120,14 +124,14 @@ export class SpendingByCategoryComponent extends React.Component {
       return;
     }
 
-    chart.series[0].points.forEach((point) => {
+    chart.series[0].points.forEach(point => {
       if (point.id === hoveredId) {
         point.setState('hover');
       } else {
         point.setState('');
       }
     });
-  }
+  };
 
   _renderReport = () => {
     const _this = this;
@@ -149,7 +153,7 @@ export class SpendingByCategoryComponent extends React.Component {
         drilldown: masterCategoryId,
         id: masterCategoryId,
         name: masterCategoryName,
-        y: masterCategoryTotal
+        y: masterCategoryTotal,
       });
 
       drillDownData.push({
@@ -158,17 +162,17 @@ export class SpendingByCategoryComponent extends React.Component {
           id: subCategoryData.get('source').get('entityId'),
           name: subCategoryData.get('source').get('name'),
           y: subCategoryData.get('total'),
-          transactions: subCategoryData.get('transactions')
+          transactions: subCategoryData.get('transactions'),
         })),
         events: {
-          click: (event) => {
+          click: event => {
             showTransactionModal(event.point.name, event.point.transactions);
-          }
+          },
         },
         id: masterCategoryId,
         innerSize: '50%',
         name: masterCategoryName,
-        size: '80%'
+        size: '80%',
       });
     });
 
@@ -179,69 +183,80 @@ export class SpendingByCategoryComponent extends React.Component {
         type: 'pie',
         renderTo: 'tk-spending-by-category',
         events: {
-          drilldown: (event) => {
+          drilldown: event => {
             chart.setTitle({ text: `${event.point.name}<br>${formatCurrency(event.point.y)}` });
             _this.setState({ currentDrillDownId: event.point.id });
           },
           drillup: () => {
             chart.setTitle({ text: `Total Spending<br>${formatCurrency(totalSpending)}` });
             _this.setState({ currentDrillDownId: null });
-          }
-        }
+          },
+        },
       },
       plotOptions: {
         series: {
           dataLabels: {
-            formatter: function () {
+            formatter: function() {
               let formattedNumber = formatCurrency(this.y);
-              return `${this.point.name}<br><span class="currency">${formattedNumber} (${Math.round(this.percentage)}%)</span>`;
-            }
-          }
-        }
+              return `${this.point.name}<br><span class="currency">${formattedNumber} (${Math.round(
+                this.percentage
+              )}%)</span>`;
+            },
+          },
+        },
       },
       tooltip: {
-        enabled: false
+        enabled: false,
       },
       title: {
         align: 'center',
         verticalAlign: 'middle',
-        text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`
+        text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
       },
-      series: [{
-        name: 'Total Spending',
-        data: seriesData,
-        size: '80%',
-        innerSize: '50%'
-      }],
+      series: [
+        {
+          name: 'Total Spending',
+          data: seriesData,
+          size: '80%',
+          innerSize: '50%',
+        },
+      ],
       drilldown: {
-        series: drillDownData
-      }
+        series: drillDownData,
+      },
     });
 
     this.setState({ chart, seriesData, drillDownData });
-  }
+  };
 
   _sortAndNormalizeData(spendingByMasterCategory) {
     const spendingByMasterCategoryArray = mapToArray(spendingByMasterCategory);
 
-    return spendingByMasterCategoryArray.sort((a, b) => {
-      return a.get('total') - b.get('total');
-    }).map((masterCategoryData) => {
-      const subCategoriesArray = mapToArray(masterCategoryData.get('subCategories'));
+    return spendingByMasterCategoryArray
+      .sort((a, b) => {
+        return a.get('total') - b.get('total');
+      })
+      .map(masterCategoryData => {
+        const subCategoriesArray = mapToArray(masterCategoryData.get('subCategories'));
 
-      const normalizedSubCategories = subCategoriesArray.sort((a, b) => {
-        return b.get('total') - a.get('total');
-      }).map((subCategoryData) => new Map([
-        ['source', subCategoryData.get('subCategory')],
-        ['total', subCategoryData.get('total') * -1],
-        ['transactions', subCategoryData.get('transactions')]
-      ]));
+        const normalizedSubCategories = subCategoriesArray
+          .sort((a, b) => {
+            return b.get('total') - a.get('total');
+          })
+          .map(
+            subCategoryData =>
+              new Map([
+                ['source', subCategoryData.get('subCategory')],
+                ['total', subCategoryData.get('total') * -1],
+                ['transactions', subCategoryData.get('transactions')],
+              ])
+          );
 
-      return new Map([
-        ['source', masterCategoryData.get('masterCategory')],
-        ['sources', normalizedSubCategories],
-        ['total', masterCategoryData.get('total') * -1]
-      ]);
-    });
+        return new Map([
+          ['source', masterCategoryData.get('masterCategory')],
+          ['sources', normalizedSubCategories],
+          ['total', masterCategoryData.get('total') * -1],
+        ]);
+      });
   }
 }

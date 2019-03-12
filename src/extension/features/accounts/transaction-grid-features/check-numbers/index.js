@@ -3,7 +3,9 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class CheckNumbers extends TransactionGridFeature {
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 
   insertHeader() {
     if ($('.ynab-grid-header .ynab-grid-cell-toolkit-check-number').length) return;
@@ -14,12 +16,13 @@ export class CheckNumbers extends TransactionGridFeature {
     checkNumberHeader.addClass('ynab-grid-cell-toolkit-check-number');
     checkNumberHeader.text('CHECK NUMBER').css('font-weight', 'normal');
     checkNumberHeader.insertAfter($('.ynab-grid-cell-memo', $headerRow));
-    checkNumberHeader.click((event) => {
+    checkNumberHeader.click(event => {
       event.preventDefault();
       event.stopPropagation();
     });
 
-    if ($('.ynab-grid-body .ynab-grid-body-row-top .ynab-grid-cell-toolkit-check-number').length) return;
+    if ($('.ynab-grid-body .ynab-grid-body-row-top .ynab-grid-cell-toolkit-check-number').length)
+      return;
     var $topRow = $('.ynab-grid-body-row-top');
     var topRowCheckNumber = $('.ynab-grid-cell-inflow', $topRow).clone();
     topRowCheckNumber.removeClass('ynab-grid-cell-inflow');
@@ -50,7 +53,7 @@ export class CheckNumbers extends TransactionGridFeature {
       const $inputBox = $('<input placeholder="check number">')
         .addClass('accounts-text-field')
         .addClass('ynab-grid-cell-toolkit-check-number-input')
-        .blur(function () {
+        .blur(function() {
           editingTransaction.set('checkNumber', $(this).val());
         });
 
@@ -89,7 +92,7 @@ export class CheckNumbers extends TransactionGridFeature {
       const $inputBox = $('<input placeholder="check number">')
         .addClass('accounts-text-field')
         .addClass('ynab-grid-cell-toolkit-check-number-input')
-        .blur(function () {
+        .blur(function() {
           editingTransaction.set('checkNumber', $(this).val());
         });
 

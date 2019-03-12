@@ -2,7 +2,9 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 
 export class CompactIncomeVsExpense extends Feature {
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 
   shouldInvoke() {
     return getCurrentRouteName().includes('reports.income-expense');
@@ -12,7 +14,7 @@ export class CompactIncomeVsExpense extends Feature {
     let viewWidth = $('.reports-content').width();
     let columnCount = $('.income-expense-column.income-expense-column-header').length;
     let tableWidth = columnCount * 115 + 200 + 32;
-    let percentage = Math.ceil(tableWidth / viewWidth * 100);
+    let percentage = Math.ceil((tableWidth / viewWidth) * 100);
 
     $('.income-expense-table').css({ width: percentage + '%' });
 
@@ -20,7 +22,7 @@ export class CompactIncomeVsExpense extends Feature {
     $('.reports-income-expense').off('scroll');
 
     // Re-implement default behavior, but with modifications to the fixed-position header
-    $('.reports-income-expense').scroll(function (e) {
+    $('.reports-income-expense').scroll(function(e) {
       var r = $('.income-expense-header');
       var scrollTop = $('.ember-view.reports-income-expense').scrollTop();
       var scrollLeft = $('.ember-view.reports-income-expense').scrollLeft();
@@ -29,14 +31,17 @@ export class CompactIncomeVsExpense extends Feature {
           position: 'static',
           maxWidth: 'auto',
           left: 0,
-          borderRight: 'none'
+          borderRight: 'none',
         });
       } else {
         $('.income-expense-first-column').css({
           position: 'relative',
-          maxWidth: $('.income-expense-level2 .income-expense-row .income-expense-column:first-child').outerWidth() || 200,
-          left: e.scrollLeft - (parseFloat($('.reports-content').css('padding-left') || 0)),
-          borderRight: '1px solid #dfe4e9'
+          maxWidth:
+            $(
+              '.income-expense-level2 .income-expense-row .income-expense-column:first-child'
+            ).outerWidth() || 200,
+          left: e.scrollLeft - parseFloat($('.reports-content').css('padding-left') || 0),
+          borderRight: '1px solid #dfe4e9',
         });
         $('.income-expense-h1 .income-expense-first-column').css('borderRight', 'none');
       }
@@ -45,7 +50,7 @@ export class CompactIncomeVsExpense extends Feature {
           position: 'static',
           width: 'auto',
           marginLeft: 0,
-          paddingRight: 0
+          paddingRight: 0,
         });
         $('.income-expense-table').css('padding-top', 0);
       } else {
@@ -55,7 +60,7 @@ export class CompactIncomeVsExpense extends Feature {
           top: $('.reports-header').outerHeight() + $('.reports-controls').outerHeight(),
           width: $('.income-expense-income').width(),
           marginLeft: -($(e).scrollLeft() || 0),
-          left: leftPos
+          left: leftPos,
         });
         $('.income-expense-table').css('padding-top', $('.reports-header').outerHeight());
       }
@@ -65,9 +70,11 @@ export class CompactIncomeVsExpense extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (changedNodes.has('income-expense-row') ||
-        changedNodes.has('income-expense-column income-expense-number') ||
-        changedNodes.has('income-expense-header')) {
+    if (
+      changedNodes.has('income-expense-row') ||
+      changedNodes.has('income-expense-column income-expense-number') ||
+      changedNodes.has('income-expense-header')
+    ) {
       this.invoke();
     }
   }

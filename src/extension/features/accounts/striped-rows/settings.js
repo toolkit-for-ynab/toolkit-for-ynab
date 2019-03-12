@@ -4,5 +4,5 @@ module.exports = {
   default: false,
   section: 'accounts',
   title: 'Striped Transaction Rows',
-  description: 'Shows a light gray background on every other transaction row.'
+  description: 'Shows a light gray background on every other transaction row.',
 };

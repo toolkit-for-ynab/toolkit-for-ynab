@@ -1,4 +1,4 @@
-export const setupWithWebExtensionStorage = (setupFn) => {
+export const setupWithWebExtensionStorage = setupFn => {
   return (options = {}) => {
     const mockStorage = options.storage || {};
 
@@ -8,7 +8,7 @@ export const setupWithWebExtensionStorage = (setupFn) => {
   };
 };
 
-export const setupWithLocalStorage = (setupFn) => {
+export const setupWithLocalStorage = setupFn => {
   return (options = {}) => {
     const mockLocalStorage = options.localStorage || {};
 

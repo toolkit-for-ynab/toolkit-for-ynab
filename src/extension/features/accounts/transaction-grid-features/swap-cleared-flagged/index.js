@@ -27,7 +27,12 @@ export class SwapClearedFlagged extends TransactionGridFeature {
 function swapColumns(element) {
   const clearedColumn = element.querySelector('.ynab-grid-cell-cleared');
   const flagColumn = element.querySelector('.ynab-grid-cell-flag');
-  if (!clearedColumn || !flagColumn || clearedColumn.classList.contains('tk-swapped') || flagColumn.classList.contains('tk-swapped')) {
+  if (
+    !clearedColumn ||
+    !flagColumn ||
+    clearedColumn.classList.contains('tk-swapped') ||
+    flagColumn.classList.contains('tk-swapped')
+  ) {
     return;
   }
 

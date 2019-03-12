@@ -32,7 +32,9 @@ export function lookupForReopen(name) {
   // to resolve the cached version.
   try {
     appContainer.lookup(name);
-  } catch (e) { /* not much we can do about it */ }
+  } catch (e) {
+    /* not much we can do about it */
+  }
 
   return appContainer.factoryCache[name];
 }

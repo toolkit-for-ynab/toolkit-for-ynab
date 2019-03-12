@@ -88,9 +88,11 @@ export class AutoDistributeSplits extends Feature {
 
   alertCannotDistribute() {
     // eslint-disable-next-line no-alert
-    alert('Please fill in the transaction total and at least one ' +
+    alert(
+      'Please fill in the transaction total and at least one ' +
         'sub-transaction in order to auto-distribute the ' +
-        'remaining amount between sub-transactions');
+        'remaining amount between sub-transactions'
+    );
   }
 
   getRemainingValue(total, subValues) {
@@ -99,8 +101,10 @@ export class AutoDistributeSplits extends Feature {
 
   confirmSubtraction() {
     // eslint-disable-next-line no-alert
-    return window.confirm('Sub-transactions add up to more than the total, ' +
-        'are you sure you want to subtract from them?');
+    return window.confirm(
+      'Sub-transactions add up to more than the total, ' +
+        'are you sure you want to subtract from them?'
+    );
   }
 
   getUpdatedSubValues(subValues, total, originalRemainingAmount) {
@@ -109,12 +113,12 @@ export class AutoDistributeSplits extends Feature {
     return subValues.map((subValue, i) => {
       let proportionOfRemaining = (subValue / subTotal) * originalRemainingAmount;
       proportionOfRemaining = Math.round(proportionOfRemaining * 100) / 100;
-      const isLastSubValue = (i + 1) === subValues.length;
-      const amountToAdd = (isLastSubValue &&
-        (proportionOfRemaining === 0 ||
-          proportionOfRemaining > remainingAmountToDistribute))
-        ? remainingAmountToDistribute
-        : proportionOfRemaining;
+      const isLastSubValue = i + 1 === subValues.length;
+      const amountToAdd =
+        isLastSubValue &&
+        (proportionOfRemaining === 0 || proportionOfRemaining > remainingAmountToDistribute)
+          ? remainingAmountToDistribute
+          : proportionOfRemaining;
       remainingAmountToDistribute -= amountToAdd;
       return Math.round((subValue + amountToAdd) * 100) / 100;
     });
@@ -122,9 +126,7 @@ export class AutoDistributeSplits extends Feature {
 
   adjustValues(subCells, newSubValues) {
     subCells.forEach((cell, i) => {
-      $(cell).val(actualNumber(newSubValues[i])
-        ? newSubValues[i].toFixed(2)
-        : '');
+      $(cell).val(actualNumber(newSubValues[i]) ? newSubValues[i].toFixed(2) : '');
       $(cell).trigger('change');
     });
   }

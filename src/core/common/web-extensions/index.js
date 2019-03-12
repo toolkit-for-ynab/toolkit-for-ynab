@@ -1,4 +1,9 @@
-import { Browser, BrowserExtensionPrefixMap, Environment, ExtensionIdEnvironmentMap } from 'toolkit/core/common/constants';
+import {
+  Browser,
+  BrowserExtensionPrefixMap,
+  Environment,
+  ExtensionIdEnvironmentMap,
+} from 'toolkit/core/common/constants';
 
 export const getBrowser = () => {
   if (typeof browser !== 'undefined') {

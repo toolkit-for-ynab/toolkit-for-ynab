@@ -7,7 +7,9 @@ const extensionDirectory = path.join(workspaceRoot, 'dist', 'extension');
 const outputDirectory = path.join(workspaceRoot, 'dist');
 
 if (!fs.existsSync(extensionDirectory)) {
-  console.error('The dist/web-extension directory doesn\'t exist yet. Run `yarn build` before running this script.');
+  console.error(
+    "The dist/web-extension directory doesn't exist yet. Run `yarn build` before running this script."
+  );
   process.exit(1);
 }
 
