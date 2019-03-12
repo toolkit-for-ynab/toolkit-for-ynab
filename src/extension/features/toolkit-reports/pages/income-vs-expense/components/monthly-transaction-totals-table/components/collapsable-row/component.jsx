@@ -8,8 +8,8 @@ export class CollapsableRow extends React.Component {
     onToggleCollapse: PropTypes.func.isRequired,
     monthlyTotals: PropTypes.array.isRequired,
     source: PropTypes.any.isRequired,
-    sources: PropTypes.array.isRequired
-  }
+    sources: PropTypes.array.isRequired,
+  };
 
   render() {
     const { isCollapsed, monthlyTotals, source } = this.props;
@@ -17,9 +17,11 @@ export class CollapsableRow extends React.Component {
     return (
       <div>
         <MonthlyTotalsRow
-          className={`tk-totals-table__title-row ${isCollapsed ? 'tk-totals-table__title-row--collapsed' : ''}`}
+          className={`tk-totals-table__title-row ${
+            isCollapsed ? 'tk-totals-table__title-row--collapsed' : ''
+          }`}
           titleCell={this._renderCollapsableTitle()}
-          monthlyTotals={isCollapsed ? monthlyTotals : null }
+          monthlyTotals={isCollapsed ? monthlyTotals : null}
           onClick={this._toggleCollapse}
         />
         {!isCollapsed && (
@@ -41,14 +43,14 @@ export class CollapsableRow extends React.Component {
 
     return (
       <div className="tk-flex">
-        <i className={`flaticon stroke ${isCollapsed ? 'up' : 'down'}`}></i>
+        <i className={`flaticon stroke ${isCollapsed ? 'up' : 'down'}`} />
         <div>{source.get('name')}</div>
       </div>
     );
   }
 
   _renderChildRows() {
-    return this.props.sources.map((sourceData) => {
+    return this.props.sources.map(sourceData => {
       const source = sourceData.get('source');
       const monthlyTotals = sourceData.get('monthlyTotals');
 
@@ -65,5 +67,5 @@ export class CollapsableRow extends React.Component {
 
   _toggleCollapse = () => {
     this.props.onToggleCollapse(this.props.source.get('entityId'));
-  }
+  };
 }

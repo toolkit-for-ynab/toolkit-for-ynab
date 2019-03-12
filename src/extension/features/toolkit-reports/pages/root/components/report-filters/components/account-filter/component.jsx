@@ -13,12 +13,12 @@ export class AccountFilterComponent extends React.Component {
     includeClosedAccountType: PropTypes.string,
     includeTrackingAccounts: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired
-  }
+    onSave: PropTypes.func.isRequired,
+  };
 
   state = {
-    accountFilterIds: this.props.accountFilterIds
-  }
+    accountFilterIds: this.props.accountFilterIds,
+  };
 
   get onBudgetAccounts() {
     const onBudgetAccounts = this._accountsCollection.getOnBudgetAccounts();
@@ -36,7 +36,7 @@ export class AccountFilterComponent extends React.Component {
 
   get closedAccounts() {
     const closedAccounts = this._accountsCollection.getClosedAccounts();
-    return closedAccounts.toArray().filter((account) => {
+    return closedAccounts.toArray().filter(account => {
       if (account.get('onBudget') === false && !this.props.includeTrackingAccounts) {
         return false;
       }
@@ -53,7 +53,7 @@ export class AccountFilterComponent extends React.Component {
 
     const onBudgetAccountsList = [];
     onBudgetAccounts.forEach(({ entityId, accountName }) => {
-      onBudgetAccountsList.push((
+      onBudgetAccountsList.push(
         <div className="tk-mg-l-1" key={entityId}>
           <LabeledCheckbox
             id={entityId}
@@ -62,12 +62,12 @@ export class AccountFilterComponent extends React.Component {
             onChange={this._handleAccountToggled}
           />
         </div>
-      ));
+      );
     });
 
     const offBudgetAccountsList = [];
     offBudgetAccounts.forEach(({ entityId, accountName }) => {
-      offBudgetAccountsList.push((
+      offBudgetAccountsList.push(
         <div className="tk-mg-l-1" key={entityId}>
           <LabeledCheckbox
             id={entityId}
@@ -76,12 +76,12 @@ export class AccountFilterComponent extends React.Component {
             onChange={this._handleAccountToggled}
           />
         </div>
-      ));
+      );
     });
 
     const closedAccountsList = [];
     closedAccounts.forEach(({ entityId, accountName }) => {
-      closedAccountsList.push((
+      closedAccountsList.push(
         <div className="tk-mg-l-1" key={entityId}>
           <LabeledCheckbox
             id={entityId}
@@ -90,19 +90,35 @@ export class AccountFilterComponent extends React.Component {
             onChange={this._handleAccountToggled}
           />
         </div>
-      ));
+      );
     });
 
-    const areAllOnBudgetAccountsIgnored = onBudgetAccounts.every(({ entityId }) => accountFilterIds.has(entityId));
-    const areAllOffBudgetAccountsIgnored = offBudgetAccounts.every(({ entityId }) => accountFilterIds.has(entityId));
-    const areAllClosedAccountsIgnored = closedAccounts.every(({ entityId }) => accountFilterIds.has(entityId));
+    const areAllOnBudgetAccountsIgnored = onBudgetAccounts.every(({ entityId }) =>
+      accountFilterIds.has(entityId)
+    );
+    const areAllOffBudgetAccountsIgnored = offBudgetAccounts.every(({ entityId }) =>
+      accountFilterIds.has(entityId)
+    );
+    const areAllClosedAccountsIgnored = closedAccounts.every(({ entityId }) =>
+      accountFilterIds.has(entityId)
+    );
 
     return (
       <div className="tk-account-filter tk-pd-1">
         <h3 className="tk-mg-0">Accounts</h3>
         <div className="tk-flex tk-mg-t-1 tk-mg-b-05 tk-pd-y-05 tk-border-y tk-modal-content__header-actions">
-          <button className="tk-button tk-button--small tk-button--text" onClick={this._handleSelectAll}>Select All</button>
-          <button className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleSelectNone}>Select None</button>
+          <button
+            className="tk-button tk-button--small tk-button--text"
+            onClick={this._handleSelectAll}
+          >
+            Select All
+          </button>
+          <button
+            className="tk-button tk-button--small tk-button--text tk-mg-l-05"
+            onClick={this._handleSelectNone}
+          >
+            Select None
+          </button>
         </div>
         <div className="tk-account-filter__account-list tk-pd-x-05">
           {onBudgetAccounts.length !== 0 && (
@@ -146,8 +162,12 @@ export class AccountFilterComponent extends React.Component {
           )}
         </div>
         <div className="tk-flex tk-justify-content-center tk-mg-t-1">
-          <button className="tk-button tk-button--hollow" onClick={this.props.onCancel}>Cancel</button>
-          <button className="tk-button tk-mg-l-05" onClick={this._save}>Done</button>
+          <button className="tk-button tk-button--hollow" onClick={this.props.onCancel}>
+            Cancel
+          </button>
+          <button className="tk-button tk-mg-l-05" onClick={this._save}>
+            Done
+          </button>
         </div>
       </div>
     );
@@ -157,15 +177,19 @@ export class AccountFilterComponent extends React.Component {
     const { accountFilterIds } = this.state;
     accountFilterIds.clear();
     this.setState({ accountFilterIds });
-  }
+  };
 
   _handleSelectNone = () => {
     const { accountFilterIds } = this.state;
-    this.onBudgetAccounts.forEach(function ({ entityId }) { accountFilterIds.add(entityId); });
-    this.offBudgetAccounts.forEach(function ({ entityId }) { accountFilterIds.add(entityId); });
+    this.onBudgetAccounts.forEach(function({ entityId }) {
+      accountFilterIds.add(entityId);
+    });
+    this.offBudgetAccounts.forEach(function({ entityId }) {
+      accountFilterIds.add(entityId);
+    });
 
     this.setState({ accountFilterIds });
-  }
+  };
 
   _handleAllOnBudgetToggled = ({ currentTarget }) => {
     const { checked } = currentTarget;
@@ -177,7 +201,7 @@ export class AccountFilterComponent extends React.Component {
     }
 
     this.setState({ accountFilterIds });
-  }
+  };
 
   _handleAllOffBudgetToggled = ({ currentTarget }) => {
     const { checked } = currentTarget;
@@ -189,7 +213,7 @@ export class AccountFilterComponent extends React.Component {
     }
 
     this.setState({ accountFilterIds });
-  }
+  };
 
   _handleAllClosedToggled = ({ currentTarget }) => {
     const { checked } = currentTarget;
@@ -201,7 +225,7 @@ export class AccountFilterComponent extends React.Component {
     }
 
     this.setState({ accountFilterIds });
-  }
+  };
 
   _handleAccountToggled = ({ currentTarget }) => {
     const { checked, name } = currentTarget;
@@ -213,9 +237,9 @@ export class AccountFilterComponent extends React.Component {
     }
 
     this.setState({ accountFilterIds });
-  }
+  };
 
   _save = () => {
     this.props.onSave(this.state.accountFilterIds);
-  }
+  };
 }

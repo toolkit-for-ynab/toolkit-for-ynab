@@ -24,7 +24,7 @@
     "lint:fix": "eslint --fix --ignore-path .eslintignore ./src ./scripts",
     "publish:chrome": "node scripts/publishForChrome.js",
     "publish:desktop": "node scripts/publishForDesktop.js",
-    "prettier": "prettier --write \"{src,scripts}/**/*.js\"",
+    "prettier": "prettier --write \"{src,scripts}/**/*.{js,jsx}\"",
     "test": "yarn && yarn gen && jest",
     "watch": "yarn && node scripts/watch.js",
     "gen": "yarn gen:settings && yarn gen:featureIndex && yarn gen:feedChanges",

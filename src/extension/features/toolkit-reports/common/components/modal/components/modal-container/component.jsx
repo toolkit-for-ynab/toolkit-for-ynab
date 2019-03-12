@@ -8,8 +8,8 @@ export class ModalContainer extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
     modal: PropTypes.any.isRequired,
-    modalProps: PropTypes.any
-  }
+    modalProps: PropTypes.any,
+  };
 
   componentDidMount() {
     document.addEventListener('click', this._handleClick, false);
@@ -18,7 +18,6 @@ export class ModalContainer extends React.Component {
   componentWillUnmount() {
     document.removeEventListener('click', this._handleClick, false);
   }
-
 
   render() {
     const Modal = this.props.modal;
@@ -32,15 +31,15 @@ export class ModalContainer extends React.Component {
     );
   }
 
-  _saveModalContentNode = (node) => {
+  _saveModalContentNode = node => {
     this.modalContentNode = node;
-  }
+  };
 
-  _handleClick = (event) => {
+  _handleClick = event => {
     if (this.modalContentNode && this.modalContentNode.contains(event.target)) {
       return;
     }
 
     this.props.closeModal();
-  }
+  };
 }

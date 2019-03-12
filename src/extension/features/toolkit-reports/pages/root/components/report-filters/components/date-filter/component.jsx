@@ -10,7 +10,7 @@ const Options = {
   LatestThree: 'Latest Three Months',
   ThisYear: 'This Year',
   LastYear: 'Last Year',
-  AllDates: 'All Dates'
+  AllDates: 'All Dates',
 };
 
 export class DateFilterComponent extends React.Component {
@@ -18,11 +18,11 @@ export class DateFilterComponent extends React.Component {
     activeReportKey: PropTypes.string.isRequired,
     dateFilter: PropTypes.shape({
       fromDate: PropTypes.any.isRequired,
-      toDate: PropTypes.any.isRequired
+      toDate: PropTypes.any.isRequired,
     }).isRequired,
     onCancel: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired
-  }
+    onSave: PropTypes.func.isRequired,
+  };
 
   get firstMonthOfBudget() {
     return getFirstMonthOfBudget();
@@ -36,7 +36,7 @@ export class DateFilterComponent extends React.Component {
     selectedFromMonth: this.props.dateFilter.fromDate.getMonth(),
     selectedFromYear: this.props.dateFilter.fromDate.getYear(),
     selectedToMonth: this.props.dateFilter.toDate.getMonth(),
-    selectedToYear: this.props.dateFilter.toDate.getYear()
+    selectedToYear: this.props.dateFilter.toDate.getYear(),
   };
 
   render() {
@@ -44,36 +44,92 @@ export class DateFilterComponent extends React.Component {
       <div className="tk-pd-1">
         <h3 className="tk-mg-0">Date Range</h3>
         <div className="tk-flex tk-mg-t-1 tk-mg-b-05 tk-pd-y-05 tk-border-y tk-modal-content__header-actions">
-          <button name={Options.ThisMonth} className="tk-button tk-button--small tk-button--text" onClick={this._handleOptionSelected}>{Options.ThisMonth}</button>
-          <button name={Options.LastMonth} className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleOptionSelected}>{Options.LastMonth}</button>
-          <button name={Options.LatestThree} className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleOptionSelected}>{Options.LatestThree}</button>
-          <button name={Options.ThisYear} className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleOptionSelected}>{Options.ThisYear}</button>
-          <button name={Options.LastYear} className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleOptionSelected}>{Options.LastYear}</button>
-          <button name={Options.AllDates} className="tk-button tk-button--small tk-button--text tk-mg-l-05" onClick={this._handleOptionSelected}>{Options.AllDates}</button>
+          <button
+            name={Options.ThisMonth}
+            className="tk-button tk-button--small tk-button--text"
+            onClick={this._handleOptionSelected}
+          >
+            {Options.ThisMonth}
+          </button>
+          <button
+            name={Options.LastMonth}
+            className="tk-button tk-button--small tk-button--text tk-mg-l-05"
+            onClick={this._handleOptionSelected}
+          >
+            {Options.LastMonth}
+          </button>
+          <button
+            name={Options.LatestThree}
+            className="tk-button tk-button--small tk-button--text tk-mg-l-05"
+            onClick={this._handleOptionSelected}
+          >
+            {Options.LatestThree}
+          </button>
+          <button
+            name={Options.ThisYear}
+            className="tk-button tk-button--small tk-button--text tk-mg-l-05"
+            onClick={this._handleOptionSelected}
+          >
+            {Options.ThisYear}
+          </button>
+          <button
+            name={Options.LastYear}
+            className="tk-button tk-button--small tk-button--text tk-mg-l-05"
+            onClick={this._handleOptionSelected}
+          >
+            {Options.LastYear}
+          </button>
+          <button
+            name={Options.AllDates}
+            className="tk-button tk-button--small tk-button--text tk-mg-l-05"
+            onClick={this._handleOptionSelected}
+          >
+            {Options.AllDates}
+          </button>
         </div>
         <div className="tk-flex tk-justify-content-around">
           <div className="tk-flex tk-align-items-center">
             <div className="tk-mg-r-05">From:</div>
-            <select className="tk-date-filter__select" value={this.state.selectedFromMonth} onChange={this._handleFromMonthSelected}>
+            <select
+              className="tk-date-filter__select"
+              value={this.state.selectedFromMonth}
+              onChange={this._handleFromMonthSelected}
+            >
               {this._renderEligibleMonths(this.state.selectedFromYear)}
             </select>
-            <select className="tk-date-filter__select tk-mg-l-05" value={this.state.selectedFromYear} onChange={this._handleFromYearSelected}>
+            <select
+              className="tk-date-filter__select tk-mg-l-05"
+              value={this.state.selectedFromYear}
+              onChange={this._handleFromYearSelected}
+            >
               {this._renderEligibleYears()}
             </select>
           </div>
           <div className="tk-flex tk-align-items-center">
             <div className="tk-mg-r-05">To:</div>
-            <select className="tk-date-filter__select" value={this.state.selectedToMonth} onChange={this._handleToMonthSelected}>
+            <select
+              className="tk-date-filter__select"
+              value={this.state.selectedToMonth}
+              onChange={this._handleToMonthSelected}
+            >
               {this._renderEligibleMonths(this.state.selectedToYear)}
             </select>
-            <select className="tk-date-filter__select tk-mg-l-05" value={this.state.selectedToYear} onChange={this._handleToYearSelected}>
+            <select
+              className="tk-date-filter__select tk-mg-l-05"
+              value={this.state.selectedToYear}
+              onChange={this._handleToYearSelected}
+            >
               {this._renderEligibleYears()}
             </select>
           </div>
         </div>
         <div className="tk-flex tk-justify-content-center tk-mg-t-1">
-          <button className="tk-button tk-button--hollow" onClick={this.props.onCancel}>Cancel</button>
-          <button className="tk-button tk-mg-l-05" onClick={this._save}>Done</button>
+          <button className="tk-button tk-button--hollow" onClick={this.props.onCancel}>
+            Cancel
+          </button>
+          <button className="tk-button tk-mg-l-05" onClick={this._save}>
+            Done
+          </button>
         </div>
       </div>
     );
@@ -90,7 +146,7 @@ export class DateFilterComponent extends React.Component {
     while (date.getYear().toString() === selectedYear.toString()) {
       options.push({
         disabled: date.isAfter(today) || date.isBefore(this.firstMonthOfBudget),
-        month: date.getMonth()
+        month: date.getMonth(),
       });
 
       date.addMonths(1);
@@ -101,9 +157,11 @@ export class DateFilterComponent extends React.Component {
 
   _renderEligibleMonths(selectedYear) {
     const eligibleMonths = this._getEligibleMonths(selectedYear);
-    return eligibleMonths.map(({ disabled, month }) => ((
-      <option key={month} disabled={disabled} value={month}>{l10nMonth(month)}</option>
-    )));
+    return eligibleMonths.map(({ disabled, month }) => (
+      <option key={month} disabled={disabled} value={month}>
+        {l10nMonth(month)}
+      </option>
+    ));
   }
 
   _renderEligibleYears() {
@@ -112,9 +170,11 @@ export class DateFilterComponent extends React.Component {
 
     const options = [];
     while (date.getYear() <= today.getYear()) {
-      options.push((
-        <option key={date.getYear()} value={date.getYear()}>{date.getYear()}</option>
-      ));
+      options.push(
+        <option key={date.getYear()} value={date.getYear()}>
+          {date.getYear()}
+        </option>
+      );
 
       date.addYears(1);
     }
@@ -124,12 +184,15 @@ export class DateFilterComponent extends React.Component {
 
   _handleFromMonthSelected = ({ currentTarget }) => {
     this.setState({ selectedFromMonth: currentTarget.value });
-  }
+  };
 
   _handleFromYearSelected = ({ currentTarget }) => {
     const { selectedFromMonth } = this.state;
     const toDate = new ynab.utilities.DateWithoutTime();
-    toDate.setMonth(selectedFromMonth).setYear(currentTarget.value).startOfMonth();
+    toDate
+      .setMonth(selectedFromMonth)
+      .setYear(currentTarget.value)
+      .startOfMonth();
 
     let selectedMonth = selectedFromMonth;
     if (toDate.isBefore(this.firstMonthOfBudget)) {
@@ -139,16 +202,19 @@ export class DateFilterComponent extends React.Component {
     }
 
     this.setState({ selectedFromMonth: selectedMonth, selectedFromYear: currentTarget.value });
-  }
+  };
 
   _handleToMonthSelected = ({ currentTarget }) => {
     this.setState({ selectedToMonth: currentTarget.value });
-  }
+  };
 
   _handleToYearSelected = ({ currentTarget }) => {
     const { selectedToMonth } = this.state;
     const toDate = new ynab.utilities.DateWithoutTime();
-    toDate.setMonth(selectedToMonth).setYear(currentTarget.value).startOfMonth();
+    toDate
+      .setMonth(selectedToMonth)
+      .setYear(currentTarget.value)
+      .startOfMonth();
 
     let selectedMonth = selectedToMonth;
     if (toDate.isBefore(this.firstMonthOfBudget)) {
@@ -158,11 +224,14 @@ export class DateFilterComponent extends React.Component {
     }
 
     this.setState({ selectedToMonth: selectedMonth, selectedToYear: currentTarget.value });
-  }
+  };
 
   _getEligibleMonth(selectedMonth, selectedYear) {
     const date = new ynab.utilities.DateWithoutTime();
-    date.setMonth(selectedMonth).setYear(selectedYear).startOfMonth();
+    date
+      .setMonth(selectedMonth)
+      .setYear(selectedYear)
+      .startOfMonth();
 
     if (date.isBefore(this.firstMonthOfBudget)) {
       return this.firstMonthOfBudget;
@@ -181,7 +250,7 @@ export class DateFilterComponent extends React.Component {
       selectedFromMonth: eligibleFromDate.getMonth(),
       selectedFromYear: eligibleFromDate.getYear(),
       selectedToMonth: eligibleToDate.getMonth(),
-      selectedToYear: eligibleToDate.getYear()
+      selectedToYear: eligibleToDate.getYear(),
     };
   }
 
@@ -204,8 +273,14 @@ export class DateFilterComponent extends React.Component {
         selectedDates = this._getSelectedFromDates(today.clone().startOfYear(), today);
         break;
       case Options.LastYear:
-        const startOfLastYear = today.clone().subtractYears(1).startOfYear();
-        const endOfLastYear = today.clone().subtractYears(1).endOfYear();
+        const startOfLastYear = today
+          .clone()
+          .subtractYears(1)
+          .startOfYear();
+        const endOfLastYear = today
+          .clone()
+          .subtractYears(1)
+          .endOfYear();
         selectedDates = this._getSelectedFromDates(startOfLastYear, endOfLastYear);
         break;
       case Options.AllDates:
@@ -214,7 +289,7 @@ export class DateFilterComponent extends React.Component {
     }
 
     this.setState(selectedDates, this._save);
-  }
+  };
 
   _save = () => {
     const { selectedFromMonth, selectedFromYear, selectedToMonth, selectedToYear } = this.state;
@@ -230,5 +305,5 @@ export class DateFilterComponent extends React.Component {
 
     const dateFilters = { toDate, fromDate };
     this.props.onSave(dateFilters);
-  }
+  };
 }
