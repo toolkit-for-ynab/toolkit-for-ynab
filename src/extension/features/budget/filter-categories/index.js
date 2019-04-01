@@ -17,9 +17,7 @@ export class FilterCategories extends Feature {
              </div>`;
 
   shouldInvoke = () => {
-    return (
-      isCurrentRouteBudgetPage() && $('.toolkit-categories-filter-wrapper:visible').length === 0
-    );
+    return isCurrentRouteBudgetPage() && $('.toolkit-categories-filter-wrapper').length === 0;
   };
 
   injectCSS = () => {
