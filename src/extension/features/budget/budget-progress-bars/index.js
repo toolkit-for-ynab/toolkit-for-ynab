@@ -59,7 +59,7 @@ export class BudgetProgressBars extends Feature {
       /**
        * Add a few values from the subCat object to the calculation object.
        */
-      calculation.targetBalance = subCat.getTargetBalance();
+      calculation.targetBalance = subCat.getGoalTargetAmount();
       calculation.goalType = subCat.getGoalType();
       calculation.goalCreationMonth = subCat.goalCreationMonth
         ? subCat.goalCreationMonth.toString().substr(0, 7)
