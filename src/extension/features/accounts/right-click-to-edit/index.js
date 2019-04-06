@@ -12,8 +12,6 @@ export class RightClickToEdit extends Feature {
     return isCurrentRouteAccountsPage();
   }
 
-  // Supporting functions,
-  // or variables, etc
   displayContextMenu(event) {
     let $element = $(this);
     // check for a right click on a split transaction
@@ -34,7 +32,12 @@ export class RightClickToEdit extends Feature {
     // determine if modal needs to be positioned above or below clicked element
     let height = $('.modal-account-edit-transaction-list .modal').outerHeight();
     let below = event.pageY + height > $(window).height() ? false : true; // eslint-disable-line no-unneeded-ternary
+
+    // sometimes, offset is undefined -- if this is the case, just show the normal un-positioned edit menu
     let offset = $element.offset(); // move context menu
+    if (!offset) {
+      return;
+    }
 
     if (below) {
       // position below
