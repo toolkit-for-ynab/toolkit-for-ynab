@@ -47,8 +47,11 @@ export class DisplayTotalMonthlyGoals extends Feature {
       checkedCount: 0,
     };
 
-    $('.budget-table-row.is-sub-category').each((index, element) => {
+    $('.budget-table-row.is-sub-category').each((_, element) => {
       const categoryGoal = this.extractCategoryGoalInformation(element);
+      if (!categoryGoal) {
+        return;
+      }
 
       categoryGoals.total += categoryGoal.monthlyGoalAmount;
       if (categoryGoal.isChecked) {

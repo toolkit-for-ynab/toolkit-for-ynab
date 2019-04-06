@@ -41,6 +41,10 @@ export class Pacing extends Feature {
       .not('.is-master-category')
       .each((index, element) => {
         const category = getEmberView(element.id, 'category');
+        if (!category) {
+          return;
+        }
+
         const pacingCalculation = pacingForCategory(category);
 
         const $display = this.generateDisplay(

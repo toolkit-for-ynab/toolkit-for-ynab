@@ -17,11 +17,12 @@ export class DisplayUpcomingAmount extends Feature {
     $('.toolkit-activity-upcoming-amount').remove();
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
-      const { monthlySubCategoryBudgetCalculation, subCategory } = getEmberView(
-        element.id,
-        'category'
-      );
+      const category = getEmberView(element.id, 'category');
+      if (!category) {
+        return;
+      }
 
+      const { monthlySubCategoryBudgetCalculation, subCategory } = category;
       if (
         monthlySubCategoryBudgetCalculation &&
         monthlySubCategoryBudgetCalculation.upcomingTransactions

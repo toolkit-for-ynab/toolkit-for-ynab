@@ -53,10 +53,16 @@ export class ToggleSplitButton extends React.Component {
       }, collapsedSplitsMap);
     });
 
-    getEmberView($('.ynab-grid').attr('id')).set('collapsedSplits', collapsedSplitsMap);
+    const emberView = getEmberView($('.ynab-grid').attr('id'));
+    if (emberView) {
+      emberView.set('collapsedSplits', collapsedSplitsMap);
+    }
   };
 
   showAllSplits = () => {
-    getEmberView($('.ynab-grid').attr('id')).set('collapsedSplits', {});
+    const emberView = getEmberView($('.ynab-grid').attr('id'));
+    if (emberView) {
+      emberView.set('collapsedSplits', {});
+    }
   };
 }
