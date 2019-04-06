@@ -1,326 +1,191 @@
 {
-    "name": "l10n", 
-    "title": "Localization of YNAB", 
-    "default": "0", 
-    "section": "general", 
-    "type": "select", 
-    "options": [
-        {
-            "name": "Default", 
-            "value": "0"
-        }, 
-        {
-            "name": "Czech (64%)", 
-            "value": "czech"
-        }, 
-        {
-            "name": "Tagalog (1%)", 
-            "value": "tagalog"
-        }, 
-        {
-            "name": "Catalan (1%)", 
-            "value": "catalan"
-        }, 
-        {
-            "name": "Portuguese, Brazilian (53%)", 
-            "value": "portuguese, brazilian"
-        }, 
-        {
-            "name": "Chinese Simplified (13%)", 
-            "value": "chinese simplified"
-        }, 
-        {
-            "name": "Russian (44%)", 
-            "value": "russian"
-        }, 
-        {
-            "name": "Finnish (50%)", 
-            "value": "finnish"
-        }, 
-        {
-            "name": "Icelandic (4%)", 
-            "value": "icelandic"
-        }, 
-        {
-            "name": "Spanish (79%)", 
-            "value": "spanish"
-        }, 
-        {
-            "name": "Vietnamese (11%)", 
-            "value": "vietnamese"
-        }, 
-        {
-            "name": "Hungarian (45%)", 
-            "value": "hungarian"
-        }, 
-        {
-            "name": "Turkish (72%)", 
-            "value": "turkish"
-        }, 
-        {
-            "name": "Swedish (45%)", 
-            "value": "swedish"
-        }, 
-        {
-            "name": "German (52%)", 
-            "value": "german"
-        }, 
-        {
-            "name": "Latvian (11%)", 
-            "value": "latvian"
-        }, 
-        {
-            "name": "Ukrainian (4%)", 
-            "value": "ukrainian"
-        }, 
-        {
-            "name": "Italian (13%)", 
-            "value": "italian"
-        }, 
-        {
-            "name": "Chinese Traditional (36%)", 
-            "value": "chinese traditional"
-        }, 
-        {
-            "name": "Danish (43%)", 
-            "value": "danish"
-        }, 
-        {
-            "name": "Korean (1%)", 
-            "value": "korean"
-        }, 
-        {
-            "name": "Polish (77%)", 
-            "value": "polish"
-        }, 
-        {
-            "name": "Serbian (Cyrillic) (100%)", 
-            "value": "serbian (cyrillic)"
-        }, 
-        {
-            "name": "French (53%)", 
-            "value": "french"
-        }, 
-        {
-            "name": "Norwegian (51%)", 
-            "value": "norwegian"
-        }, 
-        {
-            "name": "Romanian (2%)", 
-            "value": "romanian"
-        }, 
-        {
-            "name": "Portuguese (19%)", 
-            "value": "portuguese"
-        }, 
-        {
-            "name": "Indonesian (72%)", 
-            "value": "indonesian"
-        }, 
-        {
-            "name": "Slovenian (1%)", 
-            "value": "slovenian"
-        }, 
-        {
-            "name": "Arabic (26%)", 
-            "value": "arabic"
-        }, 
-        {
-            "name": "Lithuanian (1%)", 
-            "value": "lithuanian"
-        }, 
-        {
-            "name": "Dutch (45%)", 
-            "value": "dutch"
-        }
-    ], 
-    "actions": {
-        "portuguese": [
-            "injectScript", 
-            "locales/Portuguese.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "czech": [
-            "injectScript", 
-            "locales/Czech.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "spanish": [
-            "injectScript", 
-            "locales/Spanish.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "polish": [
-            "injectScript", 
-            "locales/Polish.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "arabic": [
-            "injectScript", 
-            "locales/Arabic.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "swedish": [
-            "injectScript", 
-            "locales/Swedish.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "icelandic": [
-            "injectScript", 
-            "locales/Icelandic.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "vietnamese": [
-            "injectScript", 
-            "locales/Vietnamese.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "romanian": [
-            "injectScript", 
-            "locales/Romanian.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "slovenian": [
-            "injectScript", 
-            "locales/Slovenian.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "german": [
-            "injectScript", 
-            "locales/German.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "dutch": [
-            "injectScript", 
-            "locales/Dutch.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "korean": [
-            "injectScript", 
-            "locales/Korean.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "serbian (cyrillic)": [
-            "injectScript", 
-            "locales/Serbian (Cyrillic).js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "danish": [
-            "injectScript", 
-            "locales/Danish.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "indonesian": [
-            "injectScript", 
-            "locales/Indonesian.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "tagalog": [
-            "injectScript", 
-            "locales/Tagalog.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "hungarian": [
-            "injectScript", 
-            "locales/Hungarian.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "ukrainian": [
-            "injectScript", 
-            "locales/Ukrainian.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "lithuanian": [
-            "injectScript", 
-            "locales/Lithuanian.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "french": [
-            "injectScript", 
-            "locales/French.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "catalan": [
-            "injectScript", 
-            "locales/Catalan.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "russian": [
-            "injectScript", 
-            "locales/Russian.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "portuguese, brazilian": [
-            "injectScript", 
-            "locales/Portuguese, Brazilian.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "finnish": [
-            "injectScript", 
-            "locales/Finnish.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "norwegian": [
-            "injectScript", 
-            "locales/Norwegian.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "chinese traditional": [
-            "injectScript", 
-            "locales/Chinese Traditional.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "turkish": [
-            "injectScript", 
-            "locales/Turkish.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "chinese simplified": [
-            "injectScript", 
-            "locales/Chinese Simplified.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "latvian": [
-            "injectScript", 
-            "locales/Latvian.js", 
-            "injectScript", 
-            "main.js"
-        ], 
-        "italian": [
-            "injectScript", 
-            "locales/Italian.js", 
-            "injectScript", 
-            "main.js"
-        ]
-    }, 
-    "description": "Localization of interface."
+  "name": "l10n",
+  "title": "Localization of YNAB",
+  "default": "0",
+  "section": "general",
+  "type": "select",
+  "options": [
+    {
+      "name": "Default",
+      "value": "0"
+    },
+    {
+      "name": "Czech (64%)",
+      "value": "czech"
+    },
+    {
+      "name": "Tagalog (1%)",
+      "value": "tagalog"
+    },
+    {
+      "name": "Catalan (1%)",
+      "value": "catalan"
+    },
+    {
+      "name": "Portuguese, Brazilian (70%)",
+      "value": "portuguese, brazilian"
+    },
+    {
+      "name": "Chinese Simplified (13%)",
+      "value": "chinese simplified"
+    },
+    {
+      "name": "Russian (44%)",
+      "value": "russian"
+    },
+    {
+      "name": "Finnish (50%)",
+      "value": "finnish"
+    },
+    {
+      "name": "Icelandic (4%)",
+      "value": "icelandic"
+    },
+    {
+      "name": "Spanish (79%)",
+      "value": "spanish"
+    },
+    {
+      "name": "Vietnamese (11%)",
+      "value": "vietnamese"
+    },
+    {
+      "name": "Hungarian (45%)",
+      "value": "hungarian"
+    },
+    {
+      "name": "Turkish (72%)",
+      "value": "turkish"
+    },
+    {
+      "name": "Swedish (45%)",
+      "value": "swedish"
+    },
+    {
+      "name": "German (67%)",
+      "value": "german"
+    },
+    {
+      "name": "Latvian (11%)",
+      "value": "latvian"
+    },
+    {
+      "name": "Ukrainian (4%)",
+      "value": "ukrainian"
+    },
+    {
+      "name": "Italian (13%)",
+      "value": "italian"
+    },
+    {
+      "name": "Chinese Traditional (36%)",
+      "value": "chinese traditional"
+    },
+    {
+      "name": "Danish (43%)",
+      "value": "danish"
+    },
+    {
+      "name": "Korean (1%)",
+      "value": "korean"
+    },
+    {
+      "name": "Polish (77%)",
+      "value": "polish"
+    },
+    {
+      "name": "Serbian (Cyrillic) (100%)",
+      "value": "serbian (cyrillic)"
+    },
+    {
+      "name": "French (53%)",
+      "value": "french"
+    },
+    {
+      "name": "Norwegian (51%)",
+      "value": "norwegian"
+    },
+    {
+      "name": "Romanian (2%)",
+      "value": "romanian"
+    },
+    {
+      "name": "Portuguese (19%)",
+      "value": "portuguese"
+    },
+    {
+      "name": "Indonesian (72%)",
+      "value": "indonesian"
+    },
+    {
+      "name": "Slovenian (1%)",
+      "value": "slovenian"
+    },
+    {
+      "name": "Arabic (26%)",
+      "value": "arabic"
+    },
+    {
+      "name": "Lithuanian (1%)",
+      "value": "lithuanian"
+    },
+    {
+      "name": "Dutch (45%)",
+      "value": "dutch"
+    }
+  ],
+  "actions": {
+    "portuguese": ["injectScript", "locales/Portuguese.js", "injectScript", "main.js"],
+    "czech": ["injectScript", "locales/Czech.js", "injectScript", "main.js"],
+    "spanish": ["injectScript", "locales/Spanish.js", "injectScript", "main.js"],
+    "polish": ["injectScript", "locales/Polish.js", "injectScript", "main.js"],
+    "arabic": ["injectScript", "locales/Arabic.js", "injectScript", "main.js"],
+    "swedish": ["injectScript", "locales/Swedish.js", "injectScript", "main.js"],
+    "icelandic": ["injectScript", "locales/Icelandic.js", "injectScript", "main.js"],
+    "vietnamese": ["injectScript", "locales/Vietnamese.js", "injectScript", "main.js"],
+    "romanian": ["injectScript", "locales/Romanian.js", "injectScript", "main.js"],
+    "slovenian": ["injectScript", "locales/Slovenian.js", "injectScript", "main.js"],
+    "german": ["injectScript", "locales/German.js", "injectScript", "main.js"],
+    "dutch": ["injectScript", "locales/Dutch.js", "injectScript", "main.js"],
+    "korean": ["injectScript", "locales/Korean.js", "injectScript", "main.js"],
+    "serbian (cyrillic)": [
+      "injectScript",
+      "locales/Serbian (Cyrillic).js",
+      "injectScript",
+      "main.js"
+    ],
+    "danish": ["injectScript", "locales/Danish.js", "injectScript", "main.js"],
+    "indonesian": ["injectScript", "locales/Indonesian.js", "injectScript", "main.js"],
+    "tagalog": ["injectScript", "locales/Tagalog.js", "injectScript", "main.js"],
+    "hungarian": ["injectScript", "locales/Hungarian.js", "injectScript", "main.js"],
+    "ukrainian": ["injectScript", "locales/Ukrainian.js", "injectScript", "main.js"],
+    "lithuanian": ["injectScript", "locales/Lithuanian.js", "injectScript", "main.js"],
+    "french": ["injectScript", "locales/French.js", "injectScript", "main.js"],
+    "catalan": ["injectScript", "locales/Catalan.js", "injectScript", "main.js"],
+    "russian": ["injectScript", "locales/Russian.js", "injectScript", "main.js"],
+    "portuguese, brazilian": [
+      "injectScript",
+      "locales/Portuguese, Brazilian.js",
+      "injectScript",
+      "main.js"
+    ],
+    "finnish": ["injectScript", "locales/Finnish.js", "injectScript", "main.js"],
+    "norwegian": ["injectScript", "locales/Norwegian.js", "injectScript", "main.js"],
+    "chinese traditional": [
+      "injectScript",
+      "locales/Chinese Traditional.js",
+      "injectScript",
+      "main.js"
+    ],
+    "turkish": ["injectScript", "locales/Turkish.js", "injectScript", "main.js"],
+    "chinese simplified": [
+      "injectScript",
+      "locales/Chinese Simplified.js",
+      "injectScript",
+      "main.js"
+    ],
+    "latvian": ["injectScript", "locales/Latvian.js", "injectScript", "main.js"],
+    "italian": ["injectScript", "locales/Italian.js", "injectScript", "main.js"]
+  },
+  "description": "Localization of interface."
 }
