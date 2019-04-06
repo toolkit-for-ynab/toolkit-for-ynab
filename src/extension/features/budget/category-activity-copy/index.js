@@ -25,8 +25,11 @@ export class CategoryActivityCopy extends Feature {
 
   categoryActivityCopy() {
     const activityTransactions = controllerLookup('budget').get('selectedActivityTransactions');
-    const entityManager = getEntityManager();
+    if (!activityTransactions) {
+      return;
+    }
 
+    const entityManager = getEntityManager();
     const activities = activityTransactions.map(transaction => {
       const parentEntityId = transaction.get('parentEntityId');
       let payeeId = transaction.get('payeeId');
@@ -42,7 +45,7 @@ export class CategoryActivityCopy extends Feature {
       return {
         Account: transaction.get('accountName'),
         Date: ynab.formatDateLong(transaction.get('date').toNativeDate()),
-        Payee: payee.get('name'),
+        Payee: payee && payee.get('name') ? payee.get('name') : 'Unknown',
         Category: transaction.get('subCategoryNameWrapped'),
         Memo: transaction.get('memo'),
         Amount: ynab.formatCurrency(transaction.get('amount')),
