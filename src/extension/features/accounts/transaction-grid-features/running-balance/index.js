@@ -152,7 +152,9 @@ function attachAnyItemChangedListener(transactionViewModel) {
 function calculateRunningBalance(accountId) {
   const accountController = controllerLookup('accounts');
   const registerSort = accountController.get('registerSort');
-  const sortFields = registerSort.fetchSortFields(accountId).copy();
+  const sortFields = registerSort
+    .fetchSortFields(accountController.get('budgetVersionId'), accountId)
+    .copy();
 
   const dateSortFieldIndex = sortFields.findIndex(sortField => sortField.property === 'date');
   if (dateSortFieldIndex !== 0) {
