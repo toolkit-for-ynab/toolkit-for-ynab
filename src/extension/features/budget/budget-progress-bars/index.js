@@ -56,6 +56,9 @@ export class BudgetProgressBars extends Feature {
     if (subCat) {
       let crazyInternalId = this.internalIdBase + subCat.entityId;
       calculation = getEntityManager().getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
+      if (!calculation) {
+        return;
+      }
       /**
        * Add a few values from the subCat object to the calculation object.
        */

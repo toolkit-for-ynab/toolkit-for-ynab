@@ -96,7 +96,7 @@ export class CheckNumbers extends TransactionGridFeature {
           editingTransaction.set('checkNumber', $(this).val());
         });
 
-      if (typeof editingTransaction !== 'undefined') {
+      if (editingTransaction) {
         $inputBox.val(editingTransaction.get('checkNumber'));
       }
 
