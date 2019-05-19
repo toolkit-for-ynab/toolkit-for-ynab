@@ -1,27 +1,34 @@
 /* We set the colors as variables, to be able to modify them, just in case */
 :root {
-  --tk-color-goal-warning-underfunded: #009cc2;
-  --tk-color-goal-warning-underfunded-hover: #1f8ca7;
+  --tk-color-goal-warning-underfunded: #c9e1fd;
+  --tk-color-goal-warning-underfunded-hover: #a6cefc;
   --tk-color-goal-warning-underfunded-message: #d0ecf5;
-  --tk-color-goal-warning-underfunded-progress-inner-circle: #43aecb;
-  --tk-color-goal-warning-underfunded-progress-outer-circle: var(--tk-color-goal-warning-underfunded-hover);
+  --tk-color-goal-warning-underfunded-text: #445C78;
 }
 
 /* row */
 .budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit) {
-  color: white;
+  color: var(--tk-color-goal-warning-underfunded-text);
   background-color: var(--tk-color-goal-warning-underfunded);
 }
 .budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit):hover {
   background-color: var(--tk-color-goal-warning-underfunded-hover);
 }
 
+/* goal */
+.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit) .icon-goal circle.inner {
+  fill: var(--tk-color-goal-warning-underfunded-text);
+}
+.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit) .icon-goal circle.outer {
+  stroke: var(--tk-color-goal-warning-underfunded-text);
+}
+
 /* inspector */
 .budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-inspector-category-overview .inspector-overview-available dt {
-  color: var(--tk-color-goal-warning-underfunded);
+  color: var(--tk-color-goal-warning-underfunded-text);
 }
 .budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-inspector-category-overview .ynab-new-budget-available-number {
-  color: white;
+  color: var(--tk-color-goal-warning-underfunded-text);
   background: var(--tk-color-goal-warning-underfunded);
 }
 .budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-inspector-category-overview .inspector-message {
@@ -37,9 +44,9 @@
 }
 
 /* goal */
-.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .goal-progress-chart .inner-circle {
-  stroke: var(--tk-color-goal-warning-underfunded-progress-inner-circle);
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .icon-goal circle.inner {
+  fill: var(--tk-color-goal-warning-underfunded-text);
 }
-.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .goal-progress-chart .outer-circle {
-  fill: var(--tk-color-goal-warning-underfunded-progress-outer-circle);
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .icon-goal circle.outer {
+  stroke: var(--tk-color-goal-warning-underfunded-text);
 }
