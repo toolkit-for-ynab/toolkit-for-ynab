@@ -122,7 +122,7 @@
     "jest-css-modules": "^1.1.0",
     "jest-dot-reporter": "^1.0.3",
     "jest-localstorage-mock": "^2.1.0",
-    "jquery": "^3.2.1",
+    "jquery": "3.4.0",
     "node-sass": "^4.9.3",
     "prettier": "^1.16.4",
     "pretty-quick": "^1.10.0",
