@@ -16,6 +16,14 @@ export class HideTotalAvailable extends Feature {
     }
   }
 
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (changedNodes.has('budget-inspector')) {
+      this.invoke();
+    }
+  }
+
   invoke() {
     const budgetInspector = $('.budget-inspector');
 
