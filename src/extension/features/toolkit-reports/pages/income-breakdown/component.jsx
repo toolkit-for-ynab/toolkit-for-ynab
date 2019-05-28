@@ -66,28 +66,9 @@ export class IncomeBreakdownComponent extends React.Component {
         if (!transactionPayee) {
           return;
         }
-        let amount = transaction.get('amount');
-        if (incomes.has(transactionPayee)) {
-          amount += incomes.get(transactionPayee);
-        }
-        incomes.set(transactionPayee, amount);
+        this._assignIncomeTransaction(incomes, transaction, transactionPayee);
       } else {
-        const transactionMasterCategory = this._masterCategoriesCollection.findItemByEntityId(
-          transactionSubCategory.get('masterCategoryId')
-        );
-
-        let amount = transaction.get('amount');
-        let subCategoryMap;
-        if (expenses.has(transactionMasterCategory)) {
-          subCategoryMap = expenses.get(transactionMasterCategory);
-        } else {
-          subCategoryMap = new Map();
-          expenses.set(transactionMasterCategory, subCategoryMap);
-        }
-        subCategoryMap.set(
-          transactionSubCategory,
-          (subCategoryMap.get(transactionSubCategory) || 0) + amount
-        );
+        this._assignExpenseTransaction(expenses, transaction, transactionSubCategory);
       }
     });
     this.setState(
@@ -99,9 +80,35 @@ export class IncomeBreakdownComponent extends React.Component {
     );
   }
 
-  _renderReport = () => {
+  _assignExpenseTransaction(expenses, transaction, transactionSubCategory) {
+    const transactionMasterCategory = this._masterCategoriesCollection.findItemByEntityId(
+      transactionSubCategory.get('masterCategoryId')
+    );
+
+    let amount = transaction.get('amount');
+    let subCategoryMap;
+    if (expenses.has(transactionMasterCategory)) {
+      subCategoryMap = expenses.get(transactionMasterCategory);
+    } else {
+      subCategoryMap = new Map();
+      expenses.set(transactionMasterCategory, subCategoryMap);
+    }
+    subCategoryMap.set(
+      transactionSubCategory,
+      (subCategoryMap.get(transactionSubCategory) || 0) + amount
+    );
+  }
+
+  _assignIncomeTransaction(incomes, transaction, transactionPayee) {
+    let amount = transaction.get('amount');
+    if (incomes.has(transactionPayee)) {
+      amount += incomes.get(transactionPayee);
+    }
+    incomes.set(transactionPayee, amount);
+  }
+
+  _getSeriesData(incomes, expenses) {
     let seriesData = [];
-    const { incomes, expenses } = this.state;
     let totalIncome = 0;
     incomes.forEach((amount, payee) => {
       if (amount <= 0) {
@@ -148,6 +155,12 @@ export class IncomeBreakdownComponent extends React.Component {
 
     seriesData.sort((a, b) => b.weight - a.weight);
 
+    return seriesData;
+  }
+
+  _renderReport = () => {
+    const { incomes, expenses } = this.state;
+
     const linksHover = (point, state) => {
       if (point.isNode) {
         point.linksTo.forEach(l => {
@@ -158,7 +171,7 @@ export class IncomeBreakdownComponent extends React.Component {
         });
       }
     };
-    const chart = new Highcharts.Chart({
+    Highcharts.chart({
       credits: false,
       title: {
         text: '',
@@ -194,11 +207,10 @@ export class IncomeBreakdownComponent extends React.Component {
       series: [
         {
           keys: ['from', 'to', 'weight'],
-          data: seriesData,
+          data: this._getSeriesData(incomes, expenses),
           type: 'sankey',
         },
       ],
     });
-    this.setState({ chart });
   };
 }
