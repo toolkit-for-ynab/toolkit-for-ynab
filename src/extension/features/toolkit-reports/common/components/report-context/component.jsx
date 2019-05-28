@@ -12,6 +12,7 @@ import {
   storeCategoryFilters,
   storeDateFilters,
 } from 'toolkit-reports/utils/storage';
+import { SankeyGraph } from '../../../pages/sankey-graph/container';
 
 export const SelectedReportContextPropType = {
   component: PropTypes.func.isRequired,
@@ -62,6 +63,14 @@ const REPORT_COMPONENTS = [
   {
     component: IncomeVsExpense,
     key: ReportKeys.IncomeVsExpense,
+    filterSettings: {
+      disableTrackingAccounts: true,
+      includeTrackingAccounts: false,
+    },
+  },
+  {
+    component: SankeyGraph,
+    key: ReportKeys.SankeyGraph,
     filterSettings: {
       disableTrackingAccounts: true,
       includeTrackingAccounts: false,
