@@ -1,5 +1,5 @@
 import { withReportContext } from 'toolkit-reports/common/components/report-context';
-import { SankeyGraphComponent } from './component';
+import { IncomeBreakdownComponent } from './component';
 
 function mapReportContextToProps(context) {
   return {
@@ -8,4 +8,4 @@ function mapReportContextToProps(context) {
   };
 }
 
-export const SankeyGraph = withReportContext(mapReportContextToProps)(SankeyGraphComponent);
+export const IncomeBreakdown = withReportContext(mapReportContextToProps)(IncomeBreakdownComponent);

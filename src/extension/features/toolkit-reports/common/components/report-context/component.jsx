@@ -12,7 +12,7 @@ import {
   storeCategoryFilters,
   storeDateFilters,
 } from 'toolkit-reports/utils/storage';
-import { SankeyGraph } from '../../../pages/sankey-graph/container';
+import { IncomeBreakdown } from '../../../pages/income-breakdown/container';
 
 export const SelectedReportContextPropType = {
   component: PropTypes.func.isRequired,
@@ -69,8 +69,8 @@ const REPORT_COMPONENTS = [
     },
   },
   {
-    component: SankeyGraph,
-    key: ReportKeys.SankeyGraph,
+    component: IncomeBreakdown,
+    key: ReportKeys.IncomeBreakdown,
     filterSettings: {
       disableTrackingAccounts: true,
       includeTrackingAccounts: false,

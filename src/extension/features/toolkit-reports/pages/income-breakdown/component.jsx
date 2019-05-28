@@ -6,7 +6,7 @@ import { Collections } from 'toolkit/extension/utils/collections';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 
-export class SankeyGraphComponent extends React.Component {
+export class IncomeBreakdownComponent extends React.Component {
   _payeesCollection = Collections.payeesCollection;
   _subCategoriesCollection = Collections.subCategoriesCollection;
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
@@ -29,7 +29,7 @@ export class SankeyGraphComponent extends React.Component {
   render() {
     return (
       <div className="tk-flex tk-flex-grow">
-        <div className="tk-highcharts-report-container" id="tk-sankey-graph" />
+        <div className="tk-highcharts-report-container" id="tk-income-breakdown" />
       </div>
     );
   }
@@ -164,7 +164,7 @@ export class SankeyGraphComponent extends React.Component {
         text: '',
       },
       chart: {
-        renderTo: 'tk-sankey-graph',
+        renderTo: 'tk-income-breakdown',
       },
       plotOptions: {
         sankey: {

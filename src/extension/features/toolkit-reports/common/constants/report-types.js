@@ -3,7 +3,7 @@ export const ReportKeys = {
   SpendingByCategory: 'spending-by-category',
   SpendingByPayee: 'spending-by-payee',
   IncomeVsExpense: 'income-vs-expense',
-  SankeyGraph: 'sankey-graph',
+  IncomeBreakdown: 'income-breakdown',
 };
 
 export const ReportNames = {
@@ -11,7 +11,7 @@ export const ReportNames = {
   SpendingByCategory: 'Spending By Category',
   SpendingByPayee: 'Spending By Payee',
   IncomeVsExpense: 'Income vs. Expense',
-  SankeyGraph: 'Sankey Graph',
+  IncomeBreakdown: 'Income Breakdown',
 };
 
 export const REPORT_TYPES = [
@@ -32,7 +32,7 @@ export const REPORT_TYPES = [
     name: ReportNames.IncomeVsExpense,
   },
   {
-    key: ReportKeys.SankeyGraph,
-    name: ReportNames.SankeyGraph,
+    key: ReportKeys.IncomeBreakdown,
+    name: ReportNames.IncomeBreakdown,
   },
 ];
