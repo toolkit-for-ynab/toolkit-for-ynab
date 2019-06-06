@@ -5,6 +5,8 @@ import * as PropTypes from 'prop-types';
 import { Collections } from 'toolkit/extension/utils/collections';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
+import './styles.scss';
 
 export class IncomeBreakdownComponent extends React.Component {
   _payeesCollection = Collections.payeesCollection;
@@ -15,6 +17,16 @@ export class IncomeBreakdownComponent extends React.Component {
     filters: PropTypes.shape(FiltersPropType),
     filteredTransactions: PropTypes.array.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showIncome: true,
+      showExpense: true,
+      showLossGain: true,
+    };
+  }
 
   componentDidUpdate(prevProps) {
     if (this.props.filteredTransactions !== prevProps.filteredTransactions) {
@@ -27,12 +39,59 @@ export class IncomeBreakdownComponent extends React.Component {
   }
 
   render() {
+    const { showIncome, showExpense, showLossGain } = this.state;
     return (
-      <div className="tk-flex tk-flex-grow">
-        <div className="tk-highcharts-report-container" id="tk-income-breakdown" />
+      <div className="tk-flex-grow tk-flex tk-flex-column">
+        <div className="tk-flex tk-pd-05 tk-border-b">
+          <div className="tk-income-breakdown__filter">
+            <LabeledCheckbox
+              id="tk-income-breakdown-hide-income-selector"
+              checked={showIncome}
+              label="Show Income"
+              onChange={this.toggleIncome}
+            />
+          </div>
+          <div className="tk-income-breakdown__filter">
+            <LabeledCheckbox
+              id="tk-income-breakdown-hide-epxense-selector"
+              checked={showExpense}
+              label="Show Expense"
+              onChange={this.toggleExpense}
+            />
+          </div>
+          <div className="tk-income-breakdown__filter">
+            <LabeledCheckbox
+              id="tk-income-breakdown-loss-gain-selector"
+              checked={showLossGain}
+              label="Show Net Loss/Gain"
+              onChange={this.toggleLossGainEntry}
+            />
+          </div>
+        </div>
+        <div className="tk-flex tk-flex-grow">
+          <div className="tk-highcharts-report-container" id="tk-income-breakdown" />
+        </div>
       </div>
     );
   }
+
+  toggleLossGainEntry = ({ currentTarget }) => {
+    const { checked } = currentTarget;
+    this.setState({ showLossGain: checked });
+    this._calculateData();
+  };
+
+  toggleIncome = ({ currentTarget }) => {
+    const { checked } = currentTarget;
+    this.setState({ showIncome: checked });
+    this._calculateData();
+  };
+
+  toggleExpense = ({ currentTarget }) => {
+    const { checked } = currentTarget;
+    this.setState({ showExpense: checked });
+    this._calculateData();
+  };
 
   _calculateData() {
     if (!this.props.filters) {
@@ -107,60 +166,75 @@ export class IncomeBreakdownComponent extends React.Component {
     incomes.set(transactionPayee, amount);
   }
 
-  _getSeriesData(incomes, expenses) {
+  _getSeriesData() {
+    const { incomes, expenses, showLossGain, showExpense, showIncome } = this.state;
     let seriesData = [];
     let totalIncome = 0;
+    let totalExpense = 0;
     incomes.forEach((amount, payee) => {
       if (amount <= 0) {
         return;
       }
-      seriesData.push({
-        from: payee.get('name'),
-        to: 'Income',
-        weight: amount,
-      });
+      if (showIncome) {
+        seriesData.push({
+          from: payee.get('name'),
+          to: 'Budget',
+          weight: amount,
+        });
+      }
       totalIncome += amount;
     });
-    seriesData.push({
-      from: 'Income',
-      to: 'Expense',
-      weight: totalIncome,
-    });
+
+    let categorySeries = [];
     expenses.forEach((subCategoryMap, masterCategory) => {
-      const masterCategorySeries = [];
+      let subCategorySeries = [];
       let masterCategoryTotal = 0;
       subCategoryMap.forEach((amount, subCatogory) => {
         const absAmount = Math.abs(amount);
         if (absAmount <= 0) {
           return;
         }
-        masterCategorySeries.push({
+        subCategorySeries.push({
           from: masterCategory.get('name'),
           to: subCatogory.get('name'),
           weight: absAmount,
           outgoing: true,
         });
         masterCategoryTotal += absAmount;
+        totalExpense += absAmount;
       });
       if (masterCategoryTotal <= 0) {
         return;
       }
-      masterCategorySeries.push({
-        from: 'Expense',
-        to: masterCategory.get('name'),
-        weight: masterCategoryTotal,
+      categorySeries.push({
+        masterEntry: {
+          from: 'Budget',
+          to: masterCategory.get('name'),
+          weight: masterCategoryTotal,
+        },
+        subEntries: subCategorySeries.sort((a, b) => b.weight - a.weight),
       });
-      seriesData = seriesData.concat(masterCategorySeries);
     });
+    if (showExpense) {
+      categorySeries = categorySeries.sort((a, b) => b.masterEntry.weight - a.masterEntry.weight);
+      categorySeries.forEach(categorySerie => {
+        seriesData.push(categorySerie.masterEntry);
+        seriesData.push(...categorySerie.subEntries);
+      });
+    }
 
-    seriesData.sort((a, b) => b.weight - a.weight);
+    if (showLossGain && (showExpense || showExpense) && totalExpense !== totalIncome) {
+      seriesData.push({
+        from: totalExpense > totalIncome ? 'OVERDRAFT' : 'Budget',
+        to: totalExpense > totalIncome ? 'Budget' : 'NET GAIN',
+        weight: Math.abs(totalIncome - totalExpense),
+      });
+    }
 
     return seriesData;
   }
 
   _renderReport = () => {
-    const { incomes, expenses } = this.state;
-
     const linksHover = (point, state) => {
       if (point.isNode) {
         point.linksTo.forEach(l => {
@@ -207,7 +281,7 @@ export class IncomeBreakdownComponent extends React.Component {
       series: [
         {
           keys: ['from', 'to', 'weight'],
-          data: this._getSeriesData(incomes, expenses),
+          data: this._getSeriesData(),
           type: 'sankey',
         },
       ],
