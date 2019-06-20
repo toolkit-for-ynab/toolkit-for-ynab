@@ -3,6 +3,7 @@ export const ReportKeys = {
   SpendingByCategory: 'spending-by-category',
   SpendingByPayee: 'spending-by-payee',
   IncomeVsExpense: 'income-vs-expense',
+  IncomeBreakdown: 'income-breakdown',
 };
 
 export const ReportNames = {
@@ -10,6 +11,7 @@ export const ReportNames = {
   SpendingByCategory: 'Spending By Category',
   SpendingByPayee: 'Spending By Payee',
   IncomeVsExpense: 'Income vs. Expense',
+  IncomeBreakdown: 'Income Breakdown',
 };
 
 export const REPORT_TYPES = [
@@ -28,5 +30,9 @@ export const REPORT_TYPES = [
   {
     key: ReportKeys.IncomeVsExpense,
     name: ReportNames.IncomeVsExpense,
+  },
+  {
+    key: ReportKeys.IncomeBreakdown,
+    name: ReportNames.IncomeBreakdown,
   },
 ];
