@@ -50,7 +50,9 @@ export class ResizeInspector extends Feature {
   showResizeModal() {
     let _this = this;
     let btnLeft =
-      $('.budget-toolbar').outerWidth() + $('#toolkitResizeInspector').outerWidth() + 29;
+      $('.budget-toolbar').outerWidth() +
+      $('.sidebar').outerWidth() -
+      $('#toolkitResizeInspector').outerWidth();
     let btnTop = $('.budget-toolbar').outerHeight() + $('.budget-header-flexbox').outerHeight() + 8;
     let $modal = $('<div>', {
       id: 'toolkitInspectorODiv',
