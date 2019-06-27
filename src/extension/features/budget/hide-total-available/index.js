@@ -37,7 +37,7 @@ export class HideTotalAvailable extends Feature {
 
     $(headingEl)
       .nextUntil('h3')
-      .andSelf()
+      .addBack()
       .addClass('hidden');
   }
 }

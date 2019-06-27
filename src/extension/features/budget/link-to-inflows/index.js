@@ -41,7 +41,7 @@ export class LinkToInflows extends Feature {
 
     $(inflowsHeadingEl)
       .next()
-      .andSelf()
+      .addBack()
       .wrapAll('<span class="toolkit-total-inflows" />');
 
     $('.toolkit-total-inflows').click(this.onClick);
