@@ -177,7 +177,7 @@ export class IncomeBreakdownComponent extends React.Component {
       }
       if (showIncome) {
         seriesData.push({
-          from: payee.get('name'),
+          from: payee.get('entityId'),
           to: 'Budget',
           weight: amount,
         });
@@ -235,16 +235,12 @@ export class IncomeBreakdownComponent extends React.Component {
   }
 
   _getNodeData() {
-    const { expenses } = this.state;
+    const { expenses, incomes } = this.state;
 
     let nodeData = [];
 
     expenses.forEach((subCategoryMap, masterCategory) => {
-      subCategoryMap.forEach((amount, subCatogory) => {
-        const absAmount = Math.abs(amount);
-        if (absAmount <= 0) {
-          return;
-        }
+      subCategoryMap.forEach((_amount, subCatogory) => {
         nodeData.push({
           id: subCatogory.get('entityId'),
           name: subCatogory.get('name'),
@@ -254,6 +250,13 @@ export class IncomeBreakdownComponent extends React.Component {
       nodeData.push({
         id: masterCategory.get('entityId'),
         name: masterCategory.get('name'),
+      });
+    });
+
+    incomes.forEach((_amount, payee) => {
+      nodeData.push({
+        id: payee.get('entityId'),
+        name: payee.get('name'),
       });
     });
 
