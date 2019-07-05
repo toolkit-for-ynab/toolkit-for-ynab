@@ -177,7 +177,7 @@ export class IncomeBreakdownComponent extends React.Component {
       }
       if (showIncome) {
         seriesData.push({
-          from: payee.get('name'),
+          from: payee.get('entityId'),
           to: 'Budget',
           weight: amount,
         });
@@ -195,8 +195,8 @@ export class IncomeBreakdownComponent extends React.Component {
           return;
         }
         subCategorySeries.push({
-          from: masterCategory.get('name'),
-          to: subCatogory.get('name'),
+          from: masterCategory.get('entityId'),
+          to: subCatogory.get('entityId'),
           weight: absAmount,
           outgoing: true,
         });
@@ -209,7 +209,7 @@ export class IncomeBreakdownComponent extends React.Component {
       categorySeries.push({
         masterEntry: {
           from: 'Budget',
-          to: masterCategory.get('name'),
+          to: masterCategory.get('entityId'),
           weight: masterCategoryTotal,
         },
         subEntries: subCategorySeries.sort((a, b) => b.weight - a.weight),
@@ -232,6 +232,35 @@ export class IncomeBreakdownComponent extends React.Component {
     }
 
     return seriesData;
+  }
+
+  _getNodeData() {
+    const { expenses, incomes } = this.state;
+
+    let nodeData = [];
+
+    expenses.forEach((subCategoryMap, masterCategory) => {
+      subCategoryMap.forEach((_amount, subCatogory) => {
+        nodeData.push({
+          id: subCatogory.get('entityId'),
+          name: subCatogory.get('name'),
+        });
+      });
+
+      nodeData.push({
+        id: masterCategory.get('entityId'),
+        name: masterCategory.get('name'),
+      });
+    });
+
+    incomes.forEach((_amount, payee) => {
+      nodeData.push({
+        id: payee.get('entityId'),
+        name: payee.get('name'),
+      });
+    });
+
+    return nodeData;
   }
 
   _renderReport = () => {
@@ -283,6 +312,7 @@ export class IncomeBreakdownComponent extends React.Component {
           keys: ['from', 'to', 'weight'],
           data: this._getSeriesData(),
           type: 'sankey',
+          nodes: this._getNodeData(),
         },
       ],
     });
