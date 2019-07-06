@@ -5,6 +5,7 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { localizedMonthAndYear, sortByGettableDate } from 'toolkit/extension/utils/date';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
+import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
 import { Legend } from './components/legend';
 
 export class NetWorthComponent extends React.Component {
@@ -13,7 +14,9 @@ export class NetWorthComponent extends React.Component {
     allReportableTransactions: PropTypes.array.isRequired,
   };
 
-  state = {};
+  state = {
+    showDaily: false,
+  };
 
   componentDidMount() {
     this._calculateData();
@@ -29,8 +32,19 @@ export class NetWorthComponent extends React.Component {
   }
 
   render() {
+    const { showDaily } = this.state;
     return (
       <div className="tk-flex tk-flex-column tk-flex-grow">
+        <div className="tk-flex tk-pd-05 tk-border-b">
+          <div className="tk-income-breakdown__filter">
+            <LabeledCheckbox
+              id="tk-income-breakdown-hide-income-selector"
+              checked={showDaily}
+              label="Show Daily Net Worth"
+              onChange={this.toggleDaily}
+            />
+          </div>
+        </div>
         <div className="tk-flex tk-justify-content-end">
           {this.state.hoveredData && (
             <Legend
@@ -44,6 +58,12 @@ export class NetWorthComponent extends React.Component {
       </div>
     );
   }
+
+  toggleDaily = ({ currentTarget }) => {
+    const { checked } = currentTarget;
+    this.setState({ showDaily: checked });
+    // this._calculateData();
+  };
 
   _renderReport = () => {
     const _this = this;
