@@ -119,15 +119,6 @@ export const DailyReport = ({
       },
       series: [
         {
-          id: 'debts',
-          type: 'area',
-          name: l10n('toolkit.debts', 'Debts'),
-          color: 'rgba(234,106,81,1)',
-          data: filteredDebts,
-          pointPadding: 0,
-          // point: pointHover,
-        },
-        {
           id: 'assets',
           type: 'area',
           name: l10n('toolkit.assets', 'Assets'),
@@ -137,8 +128,17 @@ export const DailyReport = ({
           // point: pointHover,
         },
         {
-          id: 'networth',
+          id: 'debts',
           type: 'area',
+          name: l10n('toolkit.debts', 'Debts'),
+          color: 'rgba(234,106,81,1)',
+          data: filteredDebts,
+          pointPadding: 0,
+          // point: pointHover,
+        },
+        {
+          id: 'networth',
+          type: 'line',
           name: l10n('toolkit.netWorth', 'Net Worth'),
           fillColor: 'rgba(244,248,226,0.5)',
           negativeFillColor: 'rgba(247, 220, 218, 0.5)',
