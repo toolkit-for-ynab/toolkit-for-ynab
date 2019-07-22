@@ -7,7 +7,8 @@ export class AutomaticallyMarkAsCleared extends Feature {
   }
 
   observe(changedNodes) {
-    if (!changedNodes.has('flaticon copyright solid')) return;
+    if (!changedNodes.has('ynab-grid-cell js-ynab-grid-cell ynab-grid-cell-accountName user-data'))
+      return;
 
     if (this.shouldInvoke()) {
       this.invoke();
