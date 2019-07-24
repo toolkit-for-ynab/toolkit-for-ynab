@@ -1,0 +1,23 @@
+input.tk-spend-goal {
+  margin-right: 20px;
+  position: relative;
+  left: 20px;
+  top: -10px;
+  max-width: 20px;
+  width: 20px;
+  box-sizing: border-box;
+  float: left;
+  width: 15px;
+}
+
+label.tk-goallabel {
+  max-width: 200px;
+  left: 10px;
+  top: -3px;
+  position: relative;
+  float: none;
+}
+
+text.tk-spent-label {
+  transform: translateX(+8px);
+}
