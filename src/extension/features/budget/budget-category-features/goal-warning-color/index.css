@@ -7,11 +7,11 @@
 }
 
 /* row */
-.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit) {
+.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]):not([tk-spending-goal]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit) {
   color: var(--tk-color-goal-warning-underfunded-text);
   background-color: var(--tk-color-goal-warning-underfunded);
 }
-.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit):hover {
+.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]):not([tk-spending-goal]) .budget-table-cell-available .ynab-new-budget-available-number:not(.negative):not(.credit):hover {
   background-color: var(--tk-color-goal-warning-underfunded-hover);
 }
 
