@@ -46,9 +46,6 @@ export class BudgetSpendingGoal extends Feature {
       this.updateCategorySpendGoal();
     }
 
-    // When the goal inspector button is cliecked update the available UI.
-    $('button.button-primary').on('click', this.updateAvailableUI(element));
-
     const goalstate = $(element).find(
       '.ynab-new-budget-available-number.js-budget-available-number.user-data'
     )[0];
@@ -71,6 +68,9 @@ export class BudgetSpendingGoal extends Feature {
         .find('.tk-spent-label')
         .removeClass('tk-spent-label');
     }
+
+    // When the goal inspector button is cliecked update the available UI.
+    $('button.button-primary').on('click', this.updateAvailableUI(element));
   }
 
   updateAvailableUI(element) {
@@ -80,6 +80,7 @@ export class BudgetSpendingGoal extends Feature {
     const goalstate = $(element).find(
       '.ynab-new-budget-available-number.js-budget-available-number.user-data'
     )[0];
+
     const hasSpendingGoal = $(goalstate).hasClass('tk-spending-goal');
     // if the goal is set and spending goal has not been added then we need to reverse the warnings.
     // else if the goal has not been set and spending goal class exists we need to undo the changes.
@@ -90,17 +91,19 @@ export class BudgetSpendingGoal extends Feature {
           .removeClass('goal')
           .addClass('positive')
           .addClass('tk-spending-goal');
+        $(element).attr('tk-spending-goal', '');
         this.udpateGoalChart('positive');
       } else if ($(goalstate).hasClass('positive')) {
         $(goalstate)
           .removeClass('positive')
           .addClass('cautious')
           .addClass('goal')
-          .addClass('tk-spending-goal');
-        $(element).addClass('tk-spending-goal');
+          .addClass('tk-spending-goal')
+          .find('span.user-data.currency.positive')
+          .removeClass('positive');
+        $(element).attr('tk-spending-goal', '');
         this.udpateGoalChart('cautious');
       }
-      $(element).attr('tk-spending-goal', '');
     } else if (hasSpendingGoal && !isGoalStored) {
       if ($(goalstate).hasClass('positive')) {
         $(goalstate)
@@ -108,12 +111,16 @@ export class BudgetSpendingGoal extends Feature {
           .removeClass('tk-spending-goal')
           .addClass('cautious')
           .addClass('goal');
+        $(element).removeAttr('tk-spending-goal');
       } else if ($(goalstate).hasClass('cautious')) {
         $(goalstate)
-          .removeClass('positive')
+          .removeClass('cautious')
+          .removeClass('goal')
           .removeClass('tk-spending-goal')
-          .addClass('cautious')
-          .addClass('goal');
+          .addClass('positive')
+          .find('span.user-data.currency')
+          .addClass('positive');
+        $(element).removeAttr('tk-spending-goal');
       }
     }
   }
@@ -124,7 +131,7 @@ export class BudgetSpendingGoal extends Feature {
       $(element)
         .removeClass('goal-warning')
         .addClass('tk-spending-goal');
-    } else {
+    } else if (chart === 'cautious') {
       $(element)
         .addClass('goal-warning')
         .addClass('tk-spending-goal');
