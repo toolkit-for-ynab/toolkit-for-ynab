@@ -5,14 +5,14 @@ The folder structure is as such:
 
 ```
 |-core
-|---listeners
 |-features
 |---accounts
 |---budget
 |---general
 |---reports
-|---toolkitReports
-|-helpers
+|---toolkit-reports
+|-listeners
+|-utils
 ```
 
 `core/`: Contains all the core functionality for the Toolkit such as the observers
@@ -22,7 +22,7 @@ and the base `Feature` class.
 and house the source code for each individual feature. This is where most
 development will take place.
 
-`helpers/`: Contains any helpers shared code for the Toolkit such as looking up
+`utils/`: Contains any helpers shared code for the Toolkit such as looking up
 Ember views or normalizing currency values.
 
 ## Writing Your First Feature
@@ -56,14 +56,14 @@ follow these steps:
     default: false,
     section: 'budget',
     title: 'My Cool Feature!',
-    description: 'This is my brand new feature.'
+    description: 'This is my brand new feature.',
   };
 
   ```
 
-5. Run `./build` to build the extension for all the browswers.
+5. Run `yarn build:development` or `yarn watch` to build the extension for all the browswers.
 6. *chrome:* go to `chrome://extensions` and turn on "Developer mode". Then "Load
-unpacked extension". Select `/output/chrome/` and it will load into chrome.
+unpacked extension". Select `/dist/extension/` and it will load into chrome.
 7. Reload YNAB!
 
 In order to help you develop cool features, we've created a few API functions
