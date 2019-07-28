@@ -1,9 +1,13 @@
+/* eslint-disable prettier/prettier */
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+import { getEmberView } from '../../../utils/ember';
 
 export class BudgetSpendingGoal extends Feature {
+  tkSpendingGoal = 'tk-spending-goal';
+
   shouldInvoke() {
     return isCurrentRouteBudgetPage();
   }
@@ -50,18 +54,20 @@ export class BudgetSpendingGoal extends Feature {
       '.ynab-new-budget-available-number.js-budget-available-number.user-data'
     )[0];
     const goalElement = document.getElementsByClassName('goal-progress-container');
-    if ($(goalstate).hasClass('tk-spending-goal')) {
+    if ($(goalstate).hasClass(this.tkSpendingGoal)) {
       if ($(goalstate).hasClass('positive')) {
         this.udpateGoalChart('positive');
-        if ($(goalElement).hasClass('tk-spending-goal')) {
+        if ($(goalElement).hasClass(this.tkSpendingGoal)) {
           $('.goal-progress-chart')
             .find('.percent-label')
             .addClass('tk-spent-label')
             .text('Spent');
         }
       } else if ($(goalstate).hasClass('cautious')) {
-        // TODO: update goal chart to reflect overspending.
+        // TODO: update goal chart to reflect percent of overspending.
         this.udpateGoalChart('cautious');
+      } else {
+        this.udpateGoalChart('positive');
       }
     } else {
       $(goalElement)
@@ -80,48 +86,80 @@ export class BudgetSpendingGoal extends Feature {
     const goalstate = $(element).find(
       '.ynab-new-budget-available-number.js-budget-available-number.user-data'
     )[0];
+    const category = getEmberView(element.id, 'category');
+    if (!category) {
+      return;
+    }
 
-    const hasSpendingGoal = $(goalstate).hasClass('tk-spending-goal');
+    const { subCategory, monthlySubCategoryBudget } = category.getProperties(
+      'subCategory',
+      'monthlySubCategoryBudget'
+    );
+
+    if (!subCategory || !monthlySubCategoryBudget) {
+      return;
+    }
+
+    const { monthlyFunding } = subCategory.getProperties('monthlyFunding');
+    const budget = monthlySubCategoryBudget.get('budgeted');
+    const hasSpendingGoal = $(goalstate).hasClass(this.tkSpendingGoal);
+
     // if the goal is set and spending goal has not been added then we need to reverse the warnings.
     // else if the goal has not been set and spending goal class exists we need to undo the changes.
     if (!hasSpendingGoal && isGoalStored) {
-      if ($(goalstate).hasClass('cautious')) {
+      if (monthlyFunding > budget) {
         $(goalstate)
-          .removeClass('cautious')
-          .removeClass('goal')
+          .removeClass('cautious goal')
+          .removeClass('zero')
           .addClass('positive')
-          .addClass('tk-spending-goal');
-        $(element).attr('tk-spending-goal', '');
+          .addClass(this.tkSpendingGoal);
+        $(element).attr(this.tkSpendingGoal, '');
         this.udpateGoalChart('positive');
-      } else if ($(goalstate).hasClass('positive')) {
+      } else if (monthlyFunding < budget) {
         $(goalstate)
           .removeClass('positive')
-          .addClass('cautious')
-          .addClass('goal')
-          .addClass('tk-spending-goal')
+          .removeClass('zero')
+          .addClass('cautious goal')
+          .addClass(this.tkSpendingGoal)
           .find('span.user-data.currency.positive')
           .removeClass('positive');
-        $(element).attr('tk-spending-goal', '');
+        console.log(
+          'currency has positive: ' +
+            $(goalstate)
+              .find('span.user-data.currency.positive')
+              .hasClass('positive')
+        );
+        $(element).attr(this.tkSpendingGoal, '');
         this.udpateGoalChart('cautious');
       }
     } else if (hasSpendingGoal && !isGoalStored) {
       if ($(goalstate).hasClass('positive')) {
         $(goalstate)
           .removeClass('positive')
-          .removeClass('tk-spending-goal')
+          .removeClass(this.tkSpendingGoal)
           .addClass('cautious')
           .addClass('goal');
-        $(element).removeAttr('tk-spending-goal');
+        $(element).removeAttr(this.tkSpendingGoal);
       } else if ($(goalstate).hasClass('cautious')) {
         $(goalstate)
           .removeClass('cautious')
           .removeClass('goal')
-          .removeClass('tk-spending-goal')
+          .removeClass(this.tkSpendingGoal)
           .addClass('positive')
           .find('span.user-data.currency')
           .addClass('positive');
-        $(element).removeAttr('tk-spending-goal');
+        $(element).removeAttr(this.tkSpendingGoal);
       }
+    }
+
+    if (isGoalStored && monthlyFunding === budget) {
+      $(goalstate)
+        .removeClass('positive')
+        .removeClass('cautious goal')
+        .removeClass(this.tkSpendingGoal)
+        .addClass('zero');
+      $(element).attr(this.tkSpendingGoal, '');
+      this.udpateGoalChart('positive');
     }
   }
 
@@ -130,11 +168,11 @@ export class BudgetSpendingGoal extends Feature {
     if (chart === 'positive') {
       $(element)
         .removeClass('goal-warning')
-        .addClass('tk-spending-goal');
+        .addClass(this.tkSpendingGoal);
     } else if (chart === 'cautious') {
       $(element)
         .addClass('goal-warning')
-        .addClass('tk-spending-goal');
+        .addClass(this.tkSpendingGoal);
     }
   }
 
@@ -145,7 +183,7 @@ export class BudgetSpendingGoal extends Feature {
       if ($(this).is(':checked')) {
         spendingGoals.push(subcategoryID);
         setSpendingGoals(spendingGoals);
-      } else if (spendingGoals.contains(subcategoryID)) {
+      } else {
         setSpendingGoals(
           spendingGoals.filter(id => {
             return id !== subcategoryID;

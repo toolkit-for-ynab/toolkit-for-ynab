@@ -223,6 +223,13 @@
   stroke: var(--tk-color-white);
 }
 
+.budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded])
+  .ynab-new-budget-available-number.cautious.goal.tk-spending-goal
+  .user-data.currency.positive {
+  color: var(--tk-color-black);
+  font-weight: normal;
+}
+
 .budget-inspector[data-toolkit-pif-assist] .ynab-new-budget-available-number .currency,
 .budget-table-row.is-sub-category.is-debt-payment-category[data-toolkit-pif-assist]
   .ynab-new-budget-available-number
