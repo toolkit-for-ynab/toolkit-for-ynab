@@ -21,3 +21,24 @@ label.tk-goallabel {
 text.tk-spent-label {
   transform: translateX(+8px);
 }
+.budget-table-row.is-sub-category[tk-spending-goal]
+  .budget-table-cell-available
+  .tk-spending-goal
+  .zero,
+.budget-table-row.is-sub-category.is-checked
+  .ynab-new-budget-available-number.cautious.goal.tk-spending-goal
+  span.zero {
+  color: black;
+  font-weight: normal;
+}
+
+.budget-table-row.is-sub-category
+  .ynab-new-budget-available-number.cautious.goal.tk-spending-goal
+  span.positive,
+.budget-table-row.is-sub-category[tk-spending-goal]
+  .budget-table-cell-available
+  .tk-spending-goal
+  .zero {
+  color: var(--tk-color-black);
+  font-weight: normal;
+}

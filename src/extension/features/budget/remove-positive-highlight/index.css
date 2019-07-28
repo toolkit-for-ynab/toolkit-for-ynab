@@ -1,10 +1,8 @@
 /* default positive color overrides */
-.budget-table-row.is-sub-category[tk-spending-goal] .inspector-overview-available .positive,
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded])
   .inspector-overview-available
   .positive,
 .budget-inspector:not([data-toolkit-goal-underfunded]) .inspector-overview-available .positive,
-.budget-table-row.is-sub-category[tk-spending-goal] .budget-table-cell-available .positive,
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded])
   .budget-table-cell-available
   .positive,
@@ -14,11 +12,6 @@
   font-weight: bold;
 }
 
-.budget-table-row.is-sub-category[tk-spending-goal]
-  .inspector-overview-available
-  .positive
-  .icon-goal
-  .inner,
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded])
   .inspector-overview-available
   .positive
@@ -26,11 +19,6 @@
   .inner,
 .budget-inspector:not([data-toolkit-goal-underfunded])
   .inspector-overview-available
-  .positive
-  .icon-goal
-  .inner,
-.budget-table-row.is-sub-category[tk-spending-goal]
-  .budget-table-cell-available
   .positive
   .icon-goal
   .inner,
@@ -46,11 +34,7 @@
   .inner {
   fill: var(--tk-color-positive);
 }
-.budget-table-row.is-sub-category[tk-spending-goal]
-  .inspector-overview-available
-  .positive
-  .icon-goal
-  .outer,
+
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded])
   .inspector-overview-available
   .positive
@@ -58,11 +42,6 @@
   .outer,
 .budget-inspector:not([data-toolkit-goal-underfunded])
   .inspector-overview-available
-  .positive
-  .icon-goal
-  .outer,
-.budget-table-row.is-sub-category[tk-spending-goal]
-  .budget-table-cell-available
   .positive
   .icon-goal
   .outer,
@@ -138,16 +117,12 @@
   stroke: var(--tk-color-gray);
 }
 
-.budget-table-row.is-sub-category.is-checked[tk-spending-goal]
-  .budget-table-cell-available
-  .positive
-  .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded]).is-checked
+.budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded]).is-checked
   .budget-table-cell-available
   .positive,
 .budget-inspector:not([data-toolkit-goal-underfunded]).is-checked
   .budget-table-cell-available
   .positive,
-.budget-table-row.is-sub-category.is-checked[tk-spending-goal] .budget-table-cell-available .zero,
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded]).is-checked
   .budget-table-cell-available
   .zero,
@@ -157,11 +132,6 @@
   color: var(--tk-color-white);
 }
 
-.budget-table-row.is-sub-category.is-checked[tk-spending-goal]
-  .budget-table-cell-available
-  .positive
-  .icon-goal
-  .inner,
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded]).is-checked
   .budget-table-cell-available
   .positive
@@ -170,11 +140,6 @@
 .budget-inspector:not([data-toolkit-goal-underfunded]).is-checked
   .budget-table-cell-available
   .positive
-  .icon-goal
-  .inner,
-.budget-table-row.is-sub-category.is-checked[tk-spending-goal]
-  .budget-table-cell-available
-  .zero
   .icon-goal
   .inner,
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded]).is-checked
@@ -190,11 +155,6 @@
   fill: var(--tk-color-white);
 }
 
-.budget-table-row.is-sub-category.is-checked[tk-spending-goal]
-  .budget-table-cell-available
-  .positive
-  .icon-goal
-  .outer,
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded]).is-checked
   .budget-table-cell-available
   .positive
@@ -203,11 +163,6 @@
 .budget-inspector:not([data-toolkit-goal-underfunded]).is-checked
   .budget-table-cell-available
   .positive
-  .icon-goal
-  .outer,
-.budget-table-row.is-sub-category.is-checked[tk-spending-goal]
-  .budget-table-cell-available
-  .zero
   .icon-goal
   .outer,
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded]).is-checked
@@ -221,13 +176,6 @@
   .icon-goal
   .outer {
   stroke: var(--tk-color-white);
-}
-
-.budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded])
-  .ynab-new-budget-available-number.cautious.goal.tk-spending-goal
-  .user-data.currency.positive {
-  color: var(--tk-color-black);
-  font-weight: normal;
 }
 
 .budget-inspector[data-toolkit-pif-assist] .ynab-new-budget-available-number .currency,
@@ -248,47 +196,38 @@
     background-color: transparent;
     color: var(--tk-color-positive);
     font-weight: bold;
-
     .icon-goal .inner {
       fill: var(--tk-color-positive);
     }
-
     .icon-goal .outer {
       stroke: var(--tk-color-positive);
     }
   }
-
   .inspector-overview-available .zero,
   .budget-table-cell-available .zero {
     background-color: transparent;
     color: var(--tk-color-gray);
     font-weight: bold;
-
     .icon-goal .inner {
       fill: var(--tk-color-gray);
     }
-
     .icon-goal .outer {
       stroke: var(--tk-color-gray);
     }
   }
-
   &.is-checked {
     .budget-table-cell-available .positive,
     .budget-table-cell-available .zero {
       color: var(--tk-color-white);
-
       .icon-goal .inner {
         fill: var(--tk-color-white);
       }
-
       .icon-goal .outer {
         stroke: var(--tk-color-white);
       }
     }
   }
 }
-
 .budget-inspector[data-toolkit-pif-assist],
 .budget-table-row.is-sub-category.is-debt-payment-category[data-toolkit-pif-assist] {
   .ynab-new-budget-available-number .currency {
