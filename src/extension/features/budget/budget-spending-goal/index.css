@@ -1,0 +1,44 @@
+input.tk-spend-goal {
+  margin-right: 20px;
+  position: relative;
+  left: 20px;
+  top: -10px;
+  max-width: 20px;
+  width: 20px;
+  box-sizing: border-box;
+  float: left;
+  width: 15px;
+}
+
+label.tk-goallabel {
+  max-width: 200px;
+  left: 10px;
+  top: -3px;
+  position: relative;
+  float: none;
+}
+
+text.tk-spent-label {
+  transform: translateX(+8px);
+}
+.budget-table-row.is-sub-category[tk-spending-goal]
+  .budget-table-cell-available
+  .tk-spending-goal
+  .zero,
+.budget-table-row.is-sub-category.is-checked
+  .ynab-new-budget-available-number.cautious.goal.tk-spending-goal
+  span.zero {
+  color: black;
+  font-weight: normal;
+}
+
+.budget-table-row.is-sub-category
+  .ynab-new-budget-available-number.cautious.goal.tk-spending-goal
+  span.positive,
+.budget-table-row.is-sub-category[tk-spending-goal]
+  .budget-table-cell-available
+  .tk-spending-goal
+  .zero {
+  color: var(--tk-color-black);
+  font-weight: normal;
+}
