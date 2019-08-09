@@ -7,11 +7,8 @@ fi
 
 cd src/extension/legacy/features/l10n/
 
-echo "Loading actual localisation strings from app.youneedabudget.com."
-phantomjs get_ember_strings.js > actual.json
-
 echo "Merging actual localisation into current one."
-jq -s '.[0] * .[1]' en.json actual.json > new.json
+jq -s '.[0] * .[1] * .[2]' en.json ynab.json toolkit.json > new.json
 mv new.json en.json
 
 echo "Sending updated localisation to Crowdin."
