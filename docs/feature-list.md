@@ -178,6 +178,10 @@ Remove the borders between selected month, funds and Age of Money in the budget 
 
 Adds the total of upcoming transactions alongside activity for each category.
 
+## Spending Goal
+
+Allows the monthly funding goal to be set as a max spending goal for each category.
+
 ## Stealing From Future Alert
 
 Highlights "Budget Next Month" red when you've gone negative as some point in the future.
@@ -239,6 +243,10 @@ When you press enter while adding transactions, the default behaviour is 'Save a
 ## Clear Selection
 
 Adds an option to the transaction edit drop-down menu to clear the current selection.
+
+## Deselect Transactions on Save
+
+Deselects all transactions after any transaction is saved.
 
 ## Easy Transaction Approval
 
