@@ -12,6 +12,8 @@ export class GoogleFontsSelector extends Feature {
       return require('./droid-sans.css');
     } else if (this.settings.enabled === '5') {
       return require('./inconsolata.css');
+    } else if (this.settings.enabled === '6') {
+      return require('./system-ui.css');
     }
   }
 }
