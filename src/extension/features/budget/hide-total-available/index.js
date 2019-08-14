@@ -40,7 +40,7 @@ export class HideTotalAvailable extends Feature {
     }
 
     $(headingEl)
-      .nextUntil('h3')
+      .nextUntil('h3, .inspector-quick-budget')
       .addBack()
       .addClass('hidden');
   }
