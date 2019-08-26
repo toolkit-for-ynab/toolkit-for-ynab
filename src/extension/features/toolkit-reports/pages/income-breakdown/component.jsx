@@ -185,11 +185,17 @@ export class IncomeBreakdownComponent extends React.Component {
       totalIncome += amount;
     });
 
+    let positiveCategoriesAmount = 0;
     let categorySeries = [];
     expenses.forEach((subCategoryMap, masterCategory) => {
       let subCategorySeries = [];
       let masterCategoryTotal = 0;
       subCategoryMap.forEach((amount, subCatogory) => {
+        if (amount > 0) {
+          positiveCategoriesAmount += amount;
+          totalIncome += amount;
+          return;
+        }
         const absAmount = Math.abs(amount);
         if (absAmount <= 0) {
           return;
@@ -215,6 +221,13 @@ export class IncomeBreakdownComponent extends React.Component {
         subEntries: subCategorySeries.sort((a, b) => b.weight - a.weight),
       });
     });
+    if (positiveCategoriesAmount > 0 && showIncome) {
+      seriesData.push({
+        from: 'POSITIVE CATEGORIES',
+        to: 'Budget',
+        weight: positiveCategoriesAmount,
+      });
+    }
     if (showExpense) {
       categorySeries = categorySeries.sort((a, b) => b.masterEntry.weight - a.masterEntry.weight);
       categorySeries.forEach(categorySerie => {
@@ -223,9 +236,9 @@ export class IncomeBreakdownComponent extends React.Component {
       });
     }
 
-    if (showLossGain && (showExpense || showExpense) && totalExpense !== totalIncome) {
+    if (showLossGain && (showExpense || showIncome) && totalExpense !== totalIncome) {
       seriesData.push({
-        from: totalExpense > totalIncome ? 'OVERDRAFT' : 'Budget',
+        from: totalExpense > totalIncome ? 'NET LOSS' : 'Budget',
         to: totalExpense > totalIncome ? 'Budget' : 'NET GAIN',
         weight: Math.abs(totalIncome - totalExpense),
       });
