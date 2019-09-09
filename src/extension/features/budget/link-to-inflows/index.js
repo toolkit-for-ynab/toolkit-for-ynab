@@ -1,11 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { l10n } from 'toolkit/extension/utils/toolkit';
-import {
-  getSelectedMonth,
-  isCurrentRouteBudgetPage,
-  transitionTo,
-} from 'toolkit/extension/utils/ynab';
+import { controllerLookup, componentLookup } from 'toolkit/extension/utils/ember';
+import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
+import { getSelectedMonth, transitionTo } from 'toolkit/extension/utils/ynab';
 
 /**
  * Adds a click handler to the "TOTAL INFLOW" inspector area.
@@ -16,20 +12,22 @@ export class LinkToInflows extends Feature {
   }
 
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
-  }
-
-  onRouteChanged() {
-    if (this.shouldInvoke()) {
-      this.invoke();
-    }
+    return true;
   }
 
   /**
    * Add the wrapper element to the TOTAL INFLOWS inspector area.
    */
   invoke() {
-    const budgetInspector = $('.budget-inspector');
+    const inspectorProto = Object.getPrototypeOf(
+      componentLookup('budget/inspector/default-inspector')
+    );
+
+    addToolkitEmberHook(this, inspectorProto, 'didRender', this._addTotalInflowsLink);
+  }
+
+  _addTotalInflowsLink(element) {
+    const budgetInspector = $(element);
 
     // Attempt to target the english string, `TOTAL INFLOWS`, but if that's not
     // found, try the localized version of the string.

@@ -8,6 +8,9 @@ import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/wi
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
+export const EMBER_COMPONENT_TOOLKIT_HOOKS = ['didRender'];
+export const emberComponentToolkitHookKey = hookName => `_tk_${hookName}_hooks_`;
+
 window.__toolkitUtils = {
   ...ynabUtils,
   ...emberUtils,
@@ -130,6 +133,17 @@ export class YNABToolkit {
     });
   };
 
+  _addToolkitEmberHooks = () => {
+    EMBER_COMPONENT_TOOLKIT_HOOKS.forEach(lifecycleName => {
+      Ember.Component.prototype[lifecycleName] = function() {
+        const hooks = this[emberComponentToolkitHookKey(lifecycleName)];
+        if (hooks) {
+          hooks.forEach(({ context, fn }) => fn.call(context, this.element));
+        }
+      };
+    });
+  };
+
   _waitForUserSettings() {
     const self = this;
 
@@ -145,6 +159,8 @@ export class YNABToolkit {
 
         // Hook up listeners and then invoke any features that are ready to go.
         self._invokeFeatureInstances();
+
+        self._addToolkitEmberHooks();
       } else if (typeof Ember !== 'undefined') {
         Ember.run.later(poll, 250);
       } else {

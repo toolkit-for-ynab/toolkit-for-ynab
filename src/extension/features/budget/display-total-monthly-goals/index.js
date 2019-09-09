@@ -1,11 +1,12 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { componentLookup } from 'toolkit/extension/utils/ember';
+import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class DisplayTotalMonthlyGoals extends Feature {
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
+    return true;
   }
 
   extractCategoryGoalInformation(element) {
@@ -82,7 +83,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
     `);
   }
 
-  invoke() {
+  addTotalMonthlyGoals(element) {
     const monthlyGoals = this.calculateMonthlyGoals();
 
     $('.total-monthly-goals-inspector').remove();
@@ -92,21 +93,16 @@ export class DisplayTotalMonthlyGoals extends Feature {
       return;
     }
 
-    this.createInspectorElement(monthlyGoals.amount).insertBefore($('.inspector-quick-budget'));
+    this.createInspectorElement(monthlyGoals.amount).insertBefore(
+      $('.inspector-quick-budget', element)
+    );
   }
 
-  observe(changedNodes) {
-    if (!this.shouldInvoke()) return;
-    if (
-      changedNodes.has('budget-table-row is-sub-category is-checked') ||
-      changedNodes.has('budget-table-row is-sub-category')
-    ) {
-      this.invoke();
-    }
-  }
+  invoke() {
+    const inspectorProto = Object.getPrototypeOf(
+      componentLookup('budget/inspector/default-inspector')
+    );
 
-  onRouteChanged() {
-    if (!this.shouldInvoke()) return;
-    this.invoke();
+    addToolkitEmberHook(this, inspectorProto, 'didRender', this.addTotalMonthlyGoals);
   }
 }
