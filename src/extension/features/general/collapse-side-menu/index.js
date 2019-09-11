@@ -1,4 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 import { getToolkitStorageKey, l10n, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 export class CollapseSideMenu extends Feature {
@@ -7,7 +8,7 @@ export class CollapseSideMenu extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return getCurrentRouteName() !== 'users.budgets';
   }
 
   invoke() {
