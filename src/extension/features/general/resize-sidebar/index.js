@@ -1,4 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 const RESIZER_CLASS = 'tk-sidebar-resizer';
@@ -15,7 +16,7 @@ export class ResizeSidebar extends Feature {
   isMouseDown = false;
 
   shouldInvoke() {
-    return true;
+    return getCurrentRouteName() !== 'users.budgets';
   }
 
   invoke() {
