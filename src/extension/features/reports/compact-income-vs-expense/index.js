@@ -40,7 +40,8 @@ export class CompactIncomeVsExpense extends Feature {
             $(
               '.income-expense-level2 .income-expense-row .income-expense-column:first-child'
             ).outerWidth() || 200,
-          left: e.scrollLeft - parseFloat($('.reports-content').css('padding-left') || 0),
+          left:
+            e.currentTarget.scrollLeft - parseFloat($('.reports-content').css('padding-left') || 0),
           borderRight: '1px solid #dfe4e9',
         });
         $('.income-expense-h1 .income-expense-first-column').css('borderRight', 'none');
