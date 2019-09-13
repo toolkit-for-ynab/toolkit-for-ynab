@@ -46,7 +46,7 @@ YNAB shows a "Share YNAB, Get YNAB free" banner. If you'd rather not see this ba
 
 ## Interface Font
 
-Select a font from the Google Fonts library.
+Select a font from the Google Fonts library or choose to use your system font.
 
 ## Localization of YNAB
 
@@ -55,6 +55,10 @@ Localization of interface.
 ## Navigation Tabs Height
 
 Makes the navigation tabs (Budget, Reports, etc) smaller, and with less padding, so that you can see more of the sidebar on the screen.
+
+## POS-style currency entry mode
+
+Allow entry of currency values without decimal separators (as done in real-life on POS terminals). For example, entering a figure of "500" will expand to "5.00". Values containing decimal separator of current account are left unmodified (e.g. "50.00" will stay "50.00"). As a shorthand, values ending with "-" will be expanded to full monetary unit (e.g. "50-" will result in "50.00"). Math operations are supported as well (e.g. "50\*5" becomes "2.50").
 
 ## Printing Improvements
 
