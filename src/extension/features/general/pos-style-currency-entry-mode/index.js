@@ -1,6 +1,6 @@
-import { create, all } from 'mathjs';
 import { Feature } from 'toolkit/extension/features/feature';
 import { componentLookup } from 'toolkit/extension/utils/ember';
+import { ToolkitMath } from 'toolkit/extension/utils/math';
 
 export class POSStyleCurrencyEntryMode extends Feature {
   constructor() {
@@ -66,8 +66,7 @@ export class POSStyleCurrencyEntryMode extends Feature {
     }
     // Digits with math operators => POS style entry, preceded by math evaluation
     else if (!editValue.includes(decimalSeparator) && /[-*+/^%]/.test(editValue)) {
-      // Transformation of decimal separator as Math.js can only handle `.` natively
-      // Ref: https://mathjs.org/examples/browser/custom_separators.html.html
+      // Transformation of decimal separator simplifies Toolkit's math computation logic
       const normalizedExpression = editValue.replace(new RegExp(`/\\${decimalSeparator}/g`), '.');
       const mathResult = self.evaluateMath(normalizedExpression) * posMultiplier;
       const formattedResult = mathResult.toString().replace(/[,]/g, decimalSeparator);
@@ -80,7 +79,7 @@ export class POSStyleCurrencyEntryMode extends Feature {
 
   evaluateMath(expression) {
     try {
-      return Math.round(this.mathEvaluator()(expression));
+      return Math.round(this.mathEvaluator().evaluate(expression));
     } catch (_) {
       return 0;
     }
@@ -91,33 +90,7 @@ export class POSStyleCurrencyEntryMode extends Feature {
       return this.mathEvaluatorInstance;
     }
 
-    const math = create(all);
-    this.mathEvaluatorInstance = math.evaluate;
-
-    // Ref: https://mathjs.org/examples/advanced/more_secure_eval.js.html
-    math.import(
-      {
-        import: function() {
-          throw new Error('Function import is disabled');
-        },
-        createUnit: function() {
-          throw new Error('Function createUnit is disabled');
-        },
-        evaluate: function() {
-          throw new Error('Function evaluate is disabled');
-        },
-        parse: function() {
-          throw new Error('Function parse is disabled');
-        },
-        simplify: function() {
-          throw new Error('Function simplify is disabled');
-        },
-        derivative: function() {
-          throw new Error('Function derivative is disabled');
-        },
-      },
-      { override: true }
-    );
+    this.mathEvaluatorInstance = new ToolkitMath();
 
     return this.mathEvaluatorInstance;
   }
