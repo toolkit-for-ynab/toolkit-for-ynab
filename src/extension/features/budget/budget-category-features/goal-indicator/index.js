@@ -18,12 +18,14 @@ export class GoalIndicator extends Feature {
     // these need to be defined inside `invoke` because ynab must be on the window
     const GoalTypeTitle = {
       [ynab.constants.SubCategoryGoalType.MonthlyFunding]: 'Monthly budgeting goal',
+      [ynab.constants.SubCategoryGoalType.Needed]: 'Spending goal',
       [ynab.constants.SubCategoryGoalType.TargetBalance]: 'Target balance goal',
       [ynab.constants.SubCategoryGoalType.TargetBalanceOnDate]: 'Target by date goal',
     };
 
     const GoalTypeIndicator = {
       [ynab.constants.SubCategoryGoalType.MonthlyFunding]: 'M',
+      [ynab.constants.SubCategoryGoalType.Needed]: 'S',
       [ynab.constants.SubCategoryGoalType.TargetBalance]: 'T',
       [ynab.constants.SubCategoryGoalType.TargetBalanceOnDate]: 'D',
     };
