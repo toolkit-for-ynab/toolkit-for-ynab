@@ -4,9 +4,13 @@ import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class EasyTransactionApproval extends Feature {
   initBudgetVersion = true;
+
   initKeyLoop = true;
+
   initClickLoop = true;
+
   watchForKeys = false;
+
   selectedTransactions = undefined;
 
   shouldInvoke() {

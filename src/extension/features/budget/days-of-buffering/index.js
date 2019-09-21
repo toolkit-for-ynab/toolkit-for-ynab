@@ -7,6 +7,7 @@ import { Collections } from 'toolkit/extension/utils/collections';
 
 export class DaysOfBuffering extends Feature {
   _lookbackMonths = parseInt(ynabToolKit.options.DaysOfBufferingHistoryLookup);
+
   _lookbackDays = this._lookbackMonths * 30;
 
   injectCSS() {

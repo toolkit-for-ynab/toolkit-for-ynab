@@ -1,69 +1,75 @@
 # YNAB Toolkit Development
-This folder holds all the source code for the YNAB Toolkit.
+
+The `src/extension` folder holds all the source code for the YNAB Toolkit.
 
 The folder structure is as such:
 
 ```
-|-core
-|-features
-|---accounts
-|---budget
-|---general
-|---reports
-|---toolkit-reports
-|-listeners
-|-utils
+src/extension/
+├── features/
+├── legacy/
+├── listeners/
+└── utils/
 ```
-
-`core/`: Contains all the core functionality for the Toolkit such as the observers
-and the base `Feature` class.
 
 `features/`: Contains sub-directories for each section of the YNAB application
 and house the source code for each individual feature. This is where most
 development will take place.
+
+`legacy/`: Is a deprecated folder where features used to be developed for the toolkit.
+The only remaining feature here is the localization feature. Once that feature has
+been converted, this folder will be deleted.
+
+`listeners/`: Contains some of the base functionality for triggering life-cycle methods
+of a Toolkit Feature which can be tapped into by implementing the `Feature` class.
 
 `utils/`: Contains any helpers shared code for the Toolkit such as looking up
 Ember views or normalizing currency values.
 
 ## Writing Your First Feature
 
-It is extremely easy to get started with your first feature. In order to do so,
+It is very easy to get started with your first feature. In order to do so,
 follow these steps:
 
-1. Determine where your feature belongs in YNAB (accounts/budget/general)
-2. Create a sub-directory in the proper sub-directory e.g. `account/`, `budget/`, `general/`
+1. Determine where your feature belongs in YNAB (accounts/budget/general). Note the `reports/`
+   folder is meant for any features meant to modify native YNAB Reports. If you wish to add a new
+   report or modify existing Toolkit Reports, those changes belong in the `toolkit-reports/` folder.
+2. Create a sub-directory for your feature in the respective folder. Try to name the folder the
+   same as you will name the class. The name of the folder for the following example would be `my-cool-feature`.
 3. Create an `index.js` file which has the following:
-  <!-- spacing is intentionally weird here because of markdown -->
-  ```javascript
-  import { Feature } from 'toolkit/extension/features/feature';
+   <!-- spacing is intentionally weird here because of markdown -->
 
-  export class MyCoolFeature extends Feature {
-    shouldInvoke() {
-      return true;
-    }
+```javascript
+import { Feature } from 'toolkit/extension/features/feature';
 
-    invoke() {
-      console.log('MyCoolFeature is working!');
-    }
+export class MyCoolFeature extends Feature {
+  shouldInvoke() {
+    return true;
   }
-  ```
+
+  invoke() {
+    console.log('MyCoolFeature is working!');
+  }
+}
+```
+
 4. Create a `settings.js` file which has the following:
-  <!-- spacing is intentionally weird here because of markdown -->
-  ```javascript
-  module.exports = {
-    name: 'MyCoolFeature',
-    type: 'checkbox',
-    default: false,
-    section: 'budget',
-    title: 'My Cool Feature!',
-    description: 'This is my brand new feature.',
-  };
+   <!-- spacing is intentionally weird here because of markdown -->
 
-  ```
+```javascript
+module.exports = {
+  name: 'MyCoolFeature',
+  type: 'checkbox',
+  default: false,
+  section: 'budget',
+  title: 'My Cool Feature!',
+  description: 'This is my brand new feature.',
+};
+```
 
-5. Run `yarn build:development` or `yarn watch` to build the extension for all the browswers.
-6. *chrome:* go to `chrome://extensions` and turn on "Developer mode". Then "Load
-unpacked extension". Select `/dist/extension/` and it will load into chrome.
+5. Run `yarn build:development` or `yarn watch` to build the extension for all the browsers.
+6. In Chrome, go to `chrome://extensions` and turn on "Developer mode". Then "Load
+   unpacked extension". Select `/dist/extension/` and it will load into chrome.
 7. Reload YNAB!
 
 In order to help you develop cool features, we've created a few API functions
@@ -74,6 +80,7 @@ that you get for free when extending `Feature`.
 #### The following functions can be declared inside your Feature Class.
 
 #### `constructor()`
+
 **optional function, not required to be declared**
 
 Your feature's constructor is invoked as soon as the Toolkit is injected onto
@@ -84,6 +91,7 @@ of your feature. If `enabled` is set to false for your Feature's settings,
 then invoke will not be called.
 
 #### `willInvoke(): <void|Promise>`
+
 **optional function, not required to be declared**
 
 willInvoke() is an optional hook that you can define in your class that allows
@@ -94,11 +102,12 @@ Note that `willInvoke()` runs before `shouldInvoke()` runs and does not care
 about the return value of `shouldInvoke()`.
 
 Running Balance is an example of why you would want to use this. Running Balance
-runs over all transactions in every account to initalize the running balance
+runs over all transactions in every account to initialize the running balance
 calculation. If this weren't done before we invoked, there's a chance users would
 not see any data in the running balance column.
 
 #### `shouldInvoke(): boolean`
+
 **optional function, not required to be declared**
 
 shouldInvoke is called immediately once the page and YNAB is ready. This function
@@ -119,6 +128,7 @@ shouldInvoke() {
 ```
 
 #### `invoke(): void`
+
 **optional function, not required to be declared**
 
 Invoke is called immediately once the page and YNAB is ready and shouldInvoke()
@@ -126,6 +136,7 @@ returns true. This is the entrypoint of your feature. You can be certain that
 at this point, the page is ready for manipulation and YNAB is loaded.
 
 #### `injectCSS()`
+
 **optional function, not required to be declared**
 
 injectCSS is called only once when the feature is instantiated, and its job is to
@@ -135,18 +146,22 @@ return any global CSS styles you'd like to have placed in a `<style>` tag in the
 For example, a CSS based feature to hide the referral program banner would look like this:
 
 **index.js**
+
 ```javascript
 import { Feature } from 'toolkit/core/feature';
 
 export class HideReferralBanner extends Feature {
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 }
 ```
 
 **index.css**
+
 ```css
 div.referral-program {
-    display: none;
+  display: none;
 }
 ```
 
@@ -155,12 +170,13 @@ be aware that YNAB itself isn't loaded yet. This feature is designed to be used
 statically for styles that don't change that your feature requires on the page.
 
 #### `observe(changedNodes: Set): void`
+
 **optional function, not required to be declared**
 
 Observe will be called every time there's a change to the DOM. The underlying
 code of observe uses a [Mutation Observer][mutation-observer]. Once a change is
 detected from the DOM, we iterate over every node and add the `class` attribute
-from the underylying element to a `Set`. `ember-view ` is stripped from every
+from the underylying element to a `Set`. `ember-view` is stripped from every
 class name to reduce complexity.
 
 Note that it is extremely likely to receive many calls to observe when things
@@ -184,6 +200,7 @@ Note: The first line of your `observe()` function should call `this.shouldInvoke
 and return immediately if the result is false.
 
 #### `onRouteChanged(currentRoute: string): void`
+
 **optional function, not required to be declared**
 
 OnRouteChanged is designed to be called every time the user navigates to a new
@@ -191,18 +208,18 @@ page. In order to do this, we've implemented an Ember Observer which watches for
 changes to the following attributes:
 
 - `currentRouteName`: Any time the Ember router changes the underlying controller
-or view, this gets changed. (ie: Accounts -> Budget or vise versa). This does not
-change if you just simply switch which account you're looking at.
+  or view, this gets changed. (ie: Accounts -> Budget or vise versa). This does not
+  change if you just simply switch which account you're looking at.
 
 - `budgetVersionId`: This will change if the user switches to an entirely different
-budget. This can be done natively but going through the three page budget swap
-flow or with the Toolkit 'Quck Budget Switch' feature.
+  budget. This can be done natively but going through the three page budget swap
+  flow or with the Toolkit 'Quck Budget Switch' feature.
 
 - `selectedAccountId`: This handles the case where a user is just flipping through
-accounts but still remaining on the 'accounts' route.
+  accounts but still remaining on the 'accounts' route.
 
 - `monthString`: This handles the case where the user is flipping through months
-on the budget page.
+  on the budget page.
 
 When one of these things are changed, your `onRouteChanged` handler will get called
 with the name of the route the user is currently on. More often than not a simple

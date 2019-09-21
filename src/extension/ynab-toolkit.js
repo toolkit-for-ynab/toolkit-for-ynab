@@ -31,9 +31,7 @@ export class YNABToolkit {
       const featureCSS = wrappedInjectCSS();
 
       if (isFeatureEnabled(feature) && featureCSS) {
-        css += `/* == Injected CSS from feature: ${
-          feature.constructor.name
-        } == */\n${featureCSS}\n\n`;
+        css += `/* == Injected CSS from feature: ${feature.constructor.name} == */\n${featureCSS}\n\n`;
       }
 
       return css;

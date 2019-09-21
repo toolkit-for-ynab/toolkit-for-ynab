@@ -123,12 +123,6 @@ export class BudgetSpendingGoal extends Feature {
           .addClass(this.tkSpendingGoal)
           .find('span.user-data.currency.positive')
           .removeClass('positive');
-        console.log(
-          'currency has positive: ' +
-            $(goalstate)
-              .find('span.user-data.currency.positive')
-              .hasClass('positive')
-        );
         $(element).attr(this.tkSpendingGoal, '');
         this.udpateGoalChart('cautious');
       }

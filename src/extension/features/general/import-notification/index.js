@@ -4,6 +4,7 @@ import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class ImportNotification extends Feature {
   isActive = false;
+
   importClass = 'ynabtk-import-notification-underline';
 
   injectCSS() {

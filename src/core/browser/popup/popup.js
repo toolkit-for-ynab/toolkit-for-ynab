@@ -5,6 +5,7 @@ const TOOLKIT_DISABLED_FEATURE_SETTING = 'DisableToolkit';
 
 export class Popup {
   _storage = new ToolkitStorage();
+
   _browser = getBrowser();
 
   constructor() {

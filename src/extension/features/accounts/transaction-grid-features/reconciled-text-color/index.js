@@ -10,11 +10,14 @@ export class ReconciledTextColor extends TransactionGridFeature {
   injectCSS() {
     if (ynabToolKit.options.ReconciledTextColor === '1') {
       return require('./green.css');
-    } else if (ynabToolKit.options.ReconciledTextColor === '2') {
+    }
+    if (ynabToolKit.options.ReconciledTextColor === '2') {
       return require('./lightgray.css');
-    } else if (ynabToolKit.options.ReconciledTextColor === '3') {
+    }
+    if (ynabToolKit.options.ReconciledTextColor === '3') {
       return require('./darkgray.css');
-    } else if (ynabToolKit.options.ReconciledTextColor === '4') {
+    }
+    if (ynabToolKit.options.ReconciledTextColor === '4') {
       return require('./darkgraybg.css');
     }
   }

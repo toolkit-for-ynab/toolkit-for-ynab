@@ -5,8 +5,11 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class SpareChange extends Feature {
   selectedTransactions;
+
   currentlyRunning = false;
+
   applicationController = null;
+
   accountsController = null;
 
   injectCSS() {

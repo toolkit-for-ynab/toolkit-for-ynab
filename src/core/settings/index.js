@@ -35,7 +35,8 @@ export function getUserSettings() {
             .then(persistedValue => ensureSettingIsValid(setting.name, persistedValue));
 
           // this will be the case for any feature that has been migrated post web-extensions
-        } else if (legacySettingPersisted) {
+        }
+        if (legacySettingPersisted) {
           return updateLegacySetting(legacySettingName, setting.name)
             .then(() => storage.getFeatureSetting(setting.name))
             .then(persistedValue => ensureSettingIsValid(setting.name, persistedValue));

@@ -47,7 +47,8 @@ export function migrateLegacyPacingStorage() {
       // if we got an invalid subcategory or we've already seen this subcategory, then move on
       if (!subCategory) {
         return ids;
-      } else if (ids.includes(subCategory.get('entityId'))) {
+      }
+      if (ids.includes(subCategory.get('entityId'))) {
         newLegacyValues = newLegacyValues.filter(name => name !== current);
         return ids;
       }

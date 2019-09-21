@@ -10,7 +10,9 @@ export const StorageArea = {
 
 export class ToolkitStorage {
   _browser = getBrowser();
+
   _storageArea = 'local';
+
   _storageListeners = new Map();
 
   constructor(storageArea) {

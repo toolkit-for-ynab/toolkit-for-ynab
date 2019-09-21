@@ -13,9 +13,13 @@ const progressIndicatorWidth = 0.005; // Current month progress indicator width
 export class BudgetProgressBars extends Feature {
   // Supporting functions, or variables, etc
   loadCategories = true;
+
   selMonth;
+
   subCats = [];
+
   internalIdBase;
+
   monthProgress;
 
   injectCSS() {

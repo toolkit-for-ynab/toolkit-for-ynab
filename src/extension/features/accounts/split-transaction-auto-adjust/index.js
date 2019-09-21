@@ -3,9 +3,13 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class SplitTransactionAutoAdjust extends Feature {
   addAnotherSplit;
+
   splitTransactionRow;
+
   isInitialized;
+
   addingAnotherSplit;
+
   deletingSplit;
 
   shouldInvoke() {
