@@ -7,6 +7,7 @@ const TOOLKIT_DISABLED_FEATURE_SETTING = 'DisableToolkit';
 
 export class Background {
   _browser = getBrowser();
+
   _storage = new ToolkitStorage();
 
   constructor() {

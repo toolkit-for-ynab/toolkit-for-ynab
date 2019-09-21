@@ -1,6 +1,6 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const BUILD_ROOT = './dist';
 const BUILD_PATH = `${BUILD_ROOT}/extension`;
@@ -14,6 +14,8 @@ module.exports = function(env) {
   }
 
   const config = {
+    mode: 'none',
+
     entry: {
       'background/background': path.resolve(`${CODE_SOURCE_DIR}/core/browser/background/index.js`),
       'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/browser/options/options.js`),
@@ -24,7 +26,7 @@ module.exports = function(env) {
       'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`),
     },
 
-    devtool: 'inline-source-map',
+    devtool: env.buildType !== 'production' ? 'inline-source-map' : '',
 
     output: {
       path: path.join(__dirname, BUILD_PATH),
@@ -68,7 +70,7 @@ module.exports = function(env) {
     },
 
     plugins: [
-      new CleanWebpackPlugin(BUILD_ROOT),
+      new CleanWebpackPlugin(),
       new CopyWebpackPlugin([
         {
           from: path.join(__dirname, `${CODE_SOURCE_DIR}/assets/common`),

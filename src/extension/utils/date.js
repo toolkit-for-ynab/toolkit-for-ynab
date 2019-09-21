@@ -27,7 +27,8 @@ export function sortByGettableDate(a, b) {
 
   if (dateA.isBefore(dateB)) {
     return -1;
-  } else if (dateA.isAfter(dateB)) {
+  }
+  if (dateA.isAfter(dateB)) {
     return 1;
   }
 

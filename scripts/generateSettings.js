@@ -188,9 +188,7 @@ function validateSetting(settingObj) {
       if (featureSettings.default === true && !defaultFeatures.includes(featureSettings.name)) {
         logWarning(
           settingFilename,
-          `${
-            featureSettings.name
-          } is not expected to be defaulted to on. If this default was intentional, add the feature name to the defaultFeatures array found in package.json`
+          `${featureSettings.name} is not expected to be defaulted to on. If this default was intentional, add the feature name to the defaultFeatures array found in package.json`
         );
       }
 

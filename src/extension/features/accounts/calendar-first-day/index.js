@@ -3,6 +3,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 export class CalendarFirstDay extends Feature {
   // Variables for tracking specific states
   isCalendarOpen = false;
+
   isReRendering = false;
 
   shouldInvoke() {

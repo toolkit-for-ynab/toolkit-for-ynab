@@ -156,9 +156,7 @@ export class Pacing extends Feature {
     const trimWords = paragraph => paragraph.replace(/\s+/g, ' ').trim();
 
     return trimWords(`
-      In ${
-        transactions.length
-      } ${transactionsFormat}, you have spent ${formattedDisplay} ${moreOrLess} than
+      In ${transactions.length} ${transactionsFormat}, you have spent ${formattedDisplay} ${moreOrLess} than
       your available budget for this category ${percentOfMonth}% of the way through the month.
       You are ${formattedDisplayInDays} ${days} ${aheadOrBehind} schedule.
       &#13;&#13;Click to ${hideOrUnhide}.
