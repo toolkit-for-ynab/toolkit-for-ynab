@@ -1,6 +1,7 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const webpack = require('webpack');
 
 const BUILD_ROOT = './dist';
 const BUILD_PATH = `${BUILD_ROOT}/extension`;
@@ -29,8 +30,8 @@ module.exports = function(env) {
     devtool: env.buildType !== 'production' ? 'inline-source-map' : '',
 
     output: {
-      path: path.join(__dirname, BUILD_PATH),
-      filename: '[name].js',
+      path: path.join(__dirname, BUILD_ROOT),
+      filename: 'extension/[name].js',
     },
 
     resolve: {
@@ -70,6 +71,7 @@ module.exports = function(env) {
     },
 
     plugins: [
+      new webpack.ProgressPlugin(),
       new CleanWebpackPlugin(),
       new CopyWebpackPlugin([
         {
