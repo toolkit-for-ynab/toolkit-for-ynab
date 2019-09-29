@@ -1,4 +1,5 @@
 export const ReportKeys = {
+  AccountsReport: 'accounts-report',
   NetWorth: 'net-worth',
   SpendingByCategory: 'spending-by-category',
   SpendingByPayee: 'spending-by-payee',
@@ -7,6 +8,7 @@ export const ReportKeys = {
 };
 
 export const ReportNames = {
+  AccountsReport: 'Accounts Report',
   NetWorth: 'Net Worth',
   SpendingByCategory: 'Spending By Category',
   SpendingByPayee: 'Spending By Payee',
@@ -15,6 +17,10 @@ export const ReportNames = {
 };
 
 export const REPORT_TYPES = [
+  {
+    key: ReportKeys.AccountsReport,
+    name: ReportNames.AccountsReport,
+  },
   {
     key: ReportKeys.NetWorth,
     name: ReportNames.NetWorth,
