@@ -1,3 +1,10 @@
+export function getCurrencyFormat() {
+  const {
+    currencyFormatter,
+  } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
+  return currencyFormatter.getCurrency();
+}
+
 export function formatCurrency(value) {
   const {
     currencyFormatter,

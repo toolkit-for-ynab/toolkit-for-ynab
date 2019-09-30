@@ -35,6 +35,19 @@ export function sortByGettableDate(a, b) {
   return 0;
 }
 
+/**
+ * Determine if a given date is between two dates
+ * Note: Filtered boundaries are the date before the month and the first of the month
+ *       Not the first of the month and end of month
+ *
+ * @param {*} date The date to compare with
+ * @param {*} startDate The start date to compare against
+ * @param {*} endDate The end date to compare against
+ * @returns True if date is between the two specified dates, false otherwise
+ */
+export function isBetween(date, startDate, endDate) {
+  return date.isAfter(startDate) && date.isBefore(endDate);
+}
 function ynabDate(format) {
   if (typeof format !== 'string') {
     return ynab.YNABSharedLib.dateFormatter.formatDate();

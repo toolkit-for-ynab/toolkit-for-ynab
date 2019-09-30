@@ -2,232 +2,206 @@ import Highcharts from 'highcharts';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { localizedMonthAndYear, sortByGettableDate } from 'toolkit/extension/utils/date';
-import { l10n } from 'toolkit/extension/utils/toolkit';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
-import { Legend } from './components/legend';
-
+import { isBetween } from 'toolkit/extension/utils/date';
+import { getEntityManager } from 'toolkit/extension/utils/ynab';
 export class AccountsReportComponent extends React.Component {
+  // Define our proptypes for usage of this class
   static propTypes = {
-    filters: PropTypes.shape(FiltersPropType),
+    filters: PropTypes.shape(FiltersPropType).isRequired,
     allReportableTransactions: PropTypes.array.isRequired,
   };
 
-  state = {};
+  /**
+   * Construct a AccountsReport Component
+   * @param {*} props The passed in props from the parent who initialized this component
+   */
+  constructor(props) {
+    super(props);
+    this.state = {}; // Set a default state
+  }
 
-  componentDidMount() {
-    this._calculateData();
+  /**
+   * Attach the chart to the container rendered
+   */
+  _renderChart() {
+    // Format the series to be inserted into the Highlight Graph
+    let series = [];
+    let accountIds = Array.from(this.state.accountsToTransactionsMap.keys());
+    for (let i = 0; i < accountIds.length; i++) {
+      let accountId = accountIds[i];
+      let dataPoints = this._generateDataPoints(accountId);
+      let accountName = getEntityManager().getAccountById(accountId).accountName;
+      let data = [];
+      for (let j = 0; j < dataPoints.length; j++) {
+        let dataPoint = dataPoints[j];
+        console.log(dataPoint);
+        data.push([dataPoint.date, dataPoint.amount]);
+        console.log(`pushing ${dataPoint.date}, ${dataPoint.amount}`);
+      }
+      series.push({
+        name: accountName,
+        data: data,
+      });
+    }
+    console.log(series);
+    const chart = Highcharts.chart('tk-accounts-report-graph', {
+      title: {
+        text: 'Account Amount Over Time',
+      },
+      yAxis: {
+        title: {
+          text: 'Amount',
+        },
+        formatter: function() {
+          return formatCurrency(this.value);
+        },
+        labels: {
+          format: '${value:,.0f}',
+        },
+      },
+      xAxis: {
+        title: 'Time',
+        type: 'datetime',
+        dateTimeLabelFormats: {
+          day: '%d %b %Y', //ex- 01 Jan 2016
+        },
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle',
+      },
+
+      plotOptions: {
+        series: {
+          label: {
+            connectorAllowed: false,
+          },
+        },
+      },
+
+      series: series,
+
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 500,
+            },
+            chartOptions: {
+              legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+              },
+            },
+          },
+        ],
+      },
+    });
+    return chart;
   }
 
   componentDidUpdate(prevProps) {
+    // Only update if the filters got updated
     if (
       this.props.filters !== prevProps.filters ||
       this.props.allReportableTransactions !== prevProps.allReportableTransactions
     ) {
-      this._calculateData();
+      this.setState(
+        {
+          accountsToTransactionsMap: this._mapData(),
+        },
+        () => {
+          this._renderChart();
+        }
+      );
     }
   }
 
   render() {
-    return (
-      <div className="tk-flex tk-flex-column tk-flex-grow">
-        <div className="tk-flex tk-justify-content-end">
-          {this.state.hoveredData && (
-            <Legend
-              assets={this.state.hoveredData.assets}
-              debts={this.state.hoveredData.debts}
-              netWorth={this.state.hoveredData.netWorth}
-            />
-          )}
-        </div>
-        <div className="tk-highcharts-report-container" id="tk-net-worth-chart" />
-      </div>
-    );
+    return <div className="tk-highcharts-report-container" id="tk-accounts-report-graph" />;
   }
 
-  _renderReport = () => {
-    const _this = this;
-    const { labels, debts, assets, netWorths } = this.state.reportData;
+  /**
+   * Map white-listed account ids to transactions sorted by date
+   *
+   * @returns Map of accountId to Sorted Transactions by date, or
+   *          null if no filters or no transactions data.
+   */
+  _mapData() {
+    const { filters, allReportableTransactions } = this.props;
+    if (!filters || !allReportableTransactions) return;
 
-    const pointHover = {
-      events: {
-        mouseOver: function() {
-          _this.setState({
-            hoveredData: {
-              assets: assets[this.index],
-              debts: debts[this.index],
-              netWorth: netWorths[this.index],
-            },
-          });
-        },
-      },
-    };
+    // Get the blacklisted accounted
+    const accountFilterIds = filters.accountFilterIds;
 
-    const chart = new Highcharts.Chart({
-      credits: false,
-      chart: { renderTo: 'tk-net-worth-chart' },
-      legend: { enabled: false },
-      title: { text: '' },
-      tooltip: { enabled: false },
-      xAxis: { categories: labels },
-      yAxis: {
-        title: { text: '' },
-        labels: {
-          formatter: function() {
-            return formatCurrency(this.value);
-          },
-        },
-      },
-      series: [
-        {
-          id: 'debts',
-          type: 'column',
-          name: l10n('toolkit.debts', 'Debts'),
-          color: 'rgba(234,106,81,1)',
-          data: debts,
-          pointPadding: 0,
-          point: pointHover,
-        },
-        {
-          id: 'assets',
-          type: 'column',
-          name: l10n('toolkit.assets', 'Assets'),
-          color: 'rgba(142,208,223,1)',
-          data: assets,
-          pointPadding: 0,
-          point: pointHover,
-        },
-        {
-          id: 'networth',
-          type: 'area',
-          name: l10n('toolkit.netWorth', 'Net Worth'),
-          fillColor: 'rgba(244,248,226,0.5)',
-          negativeFillColor: 'rgba(247, 220, 218, 0.5)',
-          data: netWorths,
-          point: pointHover,
-        },
-      ],
+    // Filter out all the transactions we don't want
+    let desiredTransactions = allReportableTransactions.filter(transaction => {
+      return (
+        isBetween(transaction.date, filters.dateFilter.fromDate, filters.dateFilter.toDate) &&
+        !accountFilterIds.has(transaction.accountId)
+      );
     });
 
-    this.setState({ chart });
-  };
+    // Sort the transactions by date
+    desiredTransactions.sort((t1, t2) => t1.date.getUTCTime() - t2.date.getUTCTime());
 
-  _calculateData() {
-    if (!this.props.filters) {
-      return;
+    // Map each transaction to their respective account id. AccountID => [t1, t2, ... , tn]
+    let accountsToTransactionsMap = new Map();
+    for (let i = 0; i < desiredTransactions.length; i++) {
+      let transaction = desiredTransactions[i];
+      let accountId = transaction.accountId;
+      if (!accountsToTransactionsMap.has(accountId)) {
+        accountsToTransactionsMap.set(accountId, []);
+      }
+      accountsToTransactionsMap.get(accountId).push(transaction);
     }
+    return accountsToTransactionsMap;
+  }
 
-    const accounts = new Map();
-    const allReportData = { assets: [], labels: [], debts: [], netWorths: [] };
-    const transactions = this.props.allReportableTransactions.slice().sort(sortByGettableDate);
+  /**
+   * Generate all the data points used for the graph
+   *
+   * @param {String} accountId The account ID to generate the datapoints for
+   */
+  _generateDataPoints(accountId) {
+    let transactions = this.state.accountsToTransactionsMap.get(accountId);
+    let datapoints = []; // All the datapoints associated with this account id
 
-    let lastMonth = null;
-    function pushCurrentAccountData() {
-      let assets = 0;
-      let debts = 0;
-      accounts.forEach(total => {
-        if (total > 0) {
-          assets += total;
-        } else {
-          debts -= total;
-        }
-      });
-
-      allReportData.assets.push(assets);
-      allReportData.debts.push(debts);
-      allReportData.netWorths.push(assets - debts);
-      allReportData.labels.push(localizedMonthAndYear(lastMonth));
-    }
-
-    transactions.forEach(transaction => {
-      const transactionMonth = transaction
-        .get('date')
-        .clone()
-        .startOfMonth();
-      if (lastMonth === null) {
-        lastMonth = transactionMonth;
+    let currentDate = null;
+    let currentCost = 0;
+    let transactionsForDay = [];
+    for (let i = 0; i < transactions.length; i++) {
+      let transaction = transactions[i];
+      if (currentDate === null) {
+        currentDate = transaction.date;
       }
-
-      // we're on a new month
-      if (transactionMonth.toISOString() !== lastMonth.toISOString()) {
-        pushCurrentAccountData();
-        lastMonth = transactionMonth;
-      }
-
-      const transactionAccountId = transaction.get('accountId');
-      if (this.props.filters.accountFilterIds.has(transactionAccountId)) {
-        return;
-      }
-
-      const transactionAmount = transaction.get('amount');
-      if (accounts.has(transactionAccountId)) {
-        accounts.set(transactionAccountId, accounts.get(transactionAccountId) + transactionAmount);
+      // If we're still on the same date then we update the current cost
+      if (currentDate.getUTCTime() === transaction.date.getUTCTime()) {
+        if (transaction.outflow) currentCost -= transaction.outflow;
+        if (transaction.inflow) currentCost += transaction.inflow;
+        transactionsForDay.push(transaction.entityId);
       } else {
-        accounts.set(transactionAccountId, transactionAmount);
-      }
-    });
-
-    if (
-      lastMonth &&
-      allReportData.labels[allReportData.labels.length - 1] !== localizedMonthAndYear(lastMonth)
-    ) {
-      pushCurrentAccountData();
-    }
-
-    // make sure we have a label for any months which have empty data
-    const { fromDate, toDate } = this.props.filters.dateFilter;
-    if (transactions.length) {
-      let currentIndex = 0;
-      const transactionMonth = transactions[0]
-        .get('date')
-        .clone()
-        .startOfMonth();
-      const lastFilterMonth = toDate
-        .clone()
-        .addMonths(1)
-        .startOfMonth();
-      while (transactionMonth.isBefore(lastFilterMonth)) {
-        if (!allReportData.labels.includes(localizedMonthAndYear(transactionMonth))) {
-          const { assets, debts, netWorths, labels } = allReportData;
-          labels.splice(currentIndex, 0, localizedMonthAndYear(transactionMonth));
-          assets.splice(currentIndex, 0, assets[currentIndex - 1] || 0);
-          debts.splice(currentIndex, 0, debts[currentIndex - 1] || 0);
-          netWorths.splice(currentIndex, 0, netWorths[currentIndex - 1] || 0);
+        if (i === transactions.length - 1) {
+          currentDate = transaction.date;
+          if (transaction.outflow) currentCost -= transaction.outflow;
+          if (transaction.inflow) currentCost += transaction.inflow;
+          transactionsForDay = [transaction];
         }
-
-        currentIndex++;
-        transactionMonth.addMonths(1);
+        // We're on a new date so go ahead and commit
+        datapoints.push({
+          date: currentDate.getUTCTime(),
+          amount: currentCost,
+          transactions: transactionsForDay,
+        });
+        currentDate = transaction.date;
+        if (transaction.outflow) currentCost -= transaction.outflow;
+        if (transaction.inflow) currentCost += transaction.inflow;
+        transactionsForDay = [];
       }
     }
-
-    // Net Worth is calculated from the start of time so we need to handle "filters" here
-    // rather than using `filteredTransactions` from context.
-    const { labels, assets, debts, netWorths } = allReportData;
-    let startIndex = labels.findIndex(label => label === localizedMonthAndYear(fromDate));
-    startIndex = startIndex === -1 ? 0 : startIndex;
-    let endIndex = labels.findIndex(label => label === localizedMonthAndYear(toDate));
-    endIndex = endIndex === -1 ? labels.length + 1 : endIndex + 1;
-
-    const filteredLabels = labels.slice(startIndex, endIndex);
-    const filteredDebts = debts.slice(startIndex, endIndex);
-    const filteredAssets = assets.slice(startIndex, endIndex);
-    const filteredNetWorths = netWorths.slice(startIndex, endIndex);
-
-    this.setState(
-      {
-        hoveredData: {
-          assets: assets[assets.length - 1] || 0,
-          debts: debts[debts.length - 1] || 0,
-          netWorth: netWorths[netWorths.length - 1] || 0,
-        },
-        reportData: {
-          labels: filteredLabels,
-          debts: filteredDebts,
-          assets: filteredAssets,
-          netWorths: filteredNetWorths,
-        },
-      },
-      this._renderReport
-    );
+    return datapoints;
   }
 }
