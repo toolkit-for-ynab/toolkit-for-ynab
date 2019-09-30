@@ -5,6 +5,8 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { isBetween } from 'toolkit/extension/utils/date';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
+
 export class AccountsReportComponent extends React.Component {
   // Define our proptypes for usage of this class
   static propTypes = {
@@ -13,132 +15,84 @@ export class AccountsReportComponent extends React.Component {
   };
 
   /**
-   * Construct a AccountsReport Component
-   * @param {*} props The passed in props from the parent who initialized this component
+   * Prepare our data before we render
    */
-  constructor(props) {
-    super(props);
-    this.state = {}; // Set a default state
+  componentWillMount() {
+    if (this.props.filters && this.props.allReportableTransactions) {
+      this._invalidateState();
+    }
   }
 
   /**
-   * Attach the chart to the container rendered
+   * Attempt to render the chart on update
    */
-  _renderChart() {
-    // Format the series to be inserted into the Highlight Graph
-    let series = [];
-    let accountIds = Array.from(this.state.accountsToTransactionsMap.keys());
-    for (let i = 0; i < accountIds.length; i++) {
-      let accountId = accountIds[i];
-      let dataPoints = this._generateDataPoints(accountId);
-      let accountName = getEntityManager().getAccountById(accountId).accountName;
-      let data = [];
-      for (let j = 0; j < dataPoints.length; j++) {
-        let dataPoint = dataPoints[j];
-        console.log(dataPoint);
-        data.push([dataPoint.date, dataPoint.amount]);
-        console.log(`pushing ${dataPoint.date}, ${dataPoint.amount}`);
-      }
-      series.push({
-        name: accountName,
-        data: data,
-      });
-    }
-    console.log(series);
-    const chart = Highcharts.chart('tk-accounts-report-graph', {
-      title: {
-        text: 'Account Amount Over Time',
-      },
-      yAxis: {
-        title: {
-          text: 'Amount',
-        },
-        formatter: function() {
-          return formatCurrency(this.value);
-        },
-        labels: {
-          format: '${value:,.0f}',
-        },
-      },
-      xAxis: {
-        title: 'Time',
-        type: 'datetime',
-        dateTimeLabelFormats: {
-          day: '%d %b %Y', //ex- 01 Jan 2016
-        },
-      },
-      legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle',
-      },
-
-      plotOptions: {
-        series: {
-          label: {
-            connectorAllowed: false,
-          },
-        },
-      },
-
-      series: series,
-
-      responsive: {
-        rules: [
-          {
-            condition: {
-              maxWidth: 500,
-            },
-            chartOptions: {
-              legend: {
-                layout: 'horizontal',
-                align: 'center',
-                verticalAlign: 'bottom',
-              },
-            },
-          },
-        ],
-      },
-    });
-    return chart;
+  compontDidMount() {
+    this._renderChart();
   }
 
+  /**
+   * Update the state if the filters or transactions have changed
+   * @param {*} prevProps The previous props used to compare against
+   */
   componentDidUpdate(prevProps) {
     // Only update if the filters got updated
     if (
       this.props.filters !== prevProps.filters ||
       this.props.allReportableTransactions !== prevProps.allReportableTransactions
     ) {
-      this.setState(
-        {
-          accountsToTransactionsMap: this._mapData(),
-        },
-        () => {
-          this._renderChart();
-        }
-      );
+      this._invalidateState();
     }
   }
 
+  /**
+   * Update the current state and render the chart
+   */
+  _invalidateState() {
+    const { filters, allReportableTransactions } = this.props;
+    let accountToTransactionsMap = this._mapAccountsToTransactions(
+      filters,
+      allReportableTransactions
+    );
+    let accountToDataPointsMap = new Map();
+    let accountIds = Array.from(accountToTransactionsMap.keys());
+
+    for (let i = 0; i < accountIds.length; i++) {
+      let accountId = accountIds[i];
+      let transactions = accountToTransactionsMap.get(accountId);
+      accountToDataPointsMap.set(accountId, this._generateDataPointsMap(transactions));
+    }
+    this.setState(
+      {
+        accountToTransactionsMap: accountToTransactionsMap,
+        accountToDataPointsMap: accountToDataPointsMap,
+      },
+      () => {
+        this._renderChart();
+      }
+    );
+  }
+
+  /**
+   * On render, if we are still loading, render the spinner, else render the chart
+   */
   render() {
     return <div className="tk-highcharts-report-container" id="tk-accounts-report-graph" />;
   }
 
   /**
-   * Map white-listed account ids to transactions sorted by date
+   * Generate a Map with keys containing accountIds and value transactions associated with the accountId
    *
-   * @returns Map of accountId to Sorted Transactions by date, or
-   *          null if no filters or no transactions data.
+   * @param {*} filters The filters to use (Passed in from props)
+   * @param {*} transactions The list of transactions to apply the filter to (Passed in from props)
    */
-  _mapData() {
-    const { filters, allReportableTransactions } = this.props;
-    if (!filters || !allReportableTransactions) return;
+  _mapAccountsToTransactions(filters, transactions) {
+    if (!filters || !transactions) return;
 
     // Get the blacklisted accounted
     const accountFilterIds = filters.accountFilterIds;
 
     // Filter out all the transactions we don't want
-    let desiredTransactions = allReportableTransactions.filter(transaction => {
+    let desiredTransactions = transactions.filter(transaction => {
       return (
         isBetween(transaction.date, filters.dateFilter.fromDate, filters.dateFilter.toDate) &&
         !accountFilterIds.has(transaction.accountId)
@@ -162,46 +116,143 @@ export class AccountsReportComponent extends React.Component {
   }
 
   /**
-   * Generate all the data points used for the graph
+   * Given a transactions list, we generate a map of data points of
+   * Key (Date in UTC Time) to Value (object containing, transactions and amount total for that date)
    *
-   * @param {String} accountId The account ID to generate the datapoints for
+   * @param {Array} transactionsList The list of transactions to convert to data points
+   * @returns Map of date to transactions and amount
    */
-  _generateDataPoints(accountId) {
-    let transactions = this.state.accountsToTransactionsMap.get(accountId);
-    let datapoints = []; // All the datapoints associated with this account id
+  _generateDataPointsMap(transactionsList) {
+    let datapoints = new Map();
 
-    let currentDate = null;
-    let currentCost = 0;
-    let transactionsForDay = [];
-    for (let i = 0; i < transactions.length; i++) {
-      let transaction = transactions[i];
-      if (currentDate === null) {
-        currentDate = transaction.date;
-      }
-      // If we're still on the same date then we update the current cost
-      if (currentDate.getUTCTime() === transaction.date.getUTCTime()) {
-        if (transaction.outflow) currentCost -= transaction.outflow;
-        if (transaction.inflow) currentCost += transaction.inflow;
-        transactionsForDay.push(transaction.entityId);
-      } else {
-        if (i === transactions.length - 1) {
-          currentDate = transaction.date;
-          if (transaction.outflow) currentCost -= transaction.outflow;
-          if (transaction.inflow) currentCost += transaction.inflow;
-          transactionsForDay = [transaction];
-        }
-        // We're on a new date so go ahead and commit
-        datapoints.push({
-          date: currentDate.getUTCTime(),
-          amount: currentCost,
-          transactions: transactionsForDay,
+    // Keep track of the running total for the graph, the transactions for each date, along with the amount spend that date
+    let runningTotal = 0;
+    for (let i = 0; i < transactionsList.length; i++) {
+      let transaction = transactionsList[i];
+      let date = transaction.date.getUTCTime();
+      runningTotal = runningTotal - transaction.outflow + transaction.inflow;
+
+      // Add the date with empty values if it's a new date
+      if (!datapoints.has(date)) {
+        datapoints.set(date, {
+          runningTotal: 0,
+          ammountSpentOnDay: 0,
+          transactions: [],
         });
-        currentDate = transaction.date;
-        if (transaction.outflow) currentCost -= transaction.outflow;
-        if (transaction.inflow) currentCost += transaction.inflow;
-        transactionsForDay = [];
       }
+
+      // Update the values of the date with the new values
+      let newValues = datapoints.get(date);
+      newValues.amount = newValues.amount + transaction.inflow - transaction.outflow;
+      newValues.transactions.push(transaction);
+      newValues.runningTotal = runningTotal;
+      datapoints.set(date, newValues);
     }
     return datapoints;
+  }
+
+  /**
+   * Generate the series to be fed into HighCharts
+   * @param {*} dataPointsMap Map containing keys UTC Time and values {amount, transactions, currentTotal}
+   * @returns {*} object containing the HighChart Points
+   */
+  _dataPointsToHighChartSeries(dataPointsMap) {
+    let resultData = [];
+    dataPointsMap.forEach((values, date) => {
+      resultData.push({
+        x: date,
+        y: values.runningTotal,
+        ammountSpentOnDay: values.ammountSpentOnDay,
+        transactions: values.transactions,
+      });
+    });
+
+    return resultData;
+  }
+
+  /**
+   * Get the corresponding account name given a accountId
+   *
+   * @param {} accountId The accountId used to search for name
+   * @returns String, the corresponding account name, null if not found
+   */
+  _getAccountName(accountId) {
+    return getEntityManager().getAccountById(accountId).accountName;
+  }
+
+  /**
+   * Use the current state to render the chart
+   */
+  _renderChart() {
+    if (
+      !this.state.accountToDataPointsMap ||
+      !this.state.accountToTransactionsMap ||
+      !this.state.accountToTransactionsMap.size === 0 ||
+      !this.state.accountToDataPointsMap.size === 0
+    ) {
+      return;
+    }
+    // Generate our series
+    const { accountToDataPointsMap } = this.state;
+    let series = [];
+    accountToDataPointsMap.forEach((datapoints, accountId) => {
+      series.push({
+        name: this._getAccountName(accountId),
+        data: this._dataPointsToHighChartSeries(datapoints),
+      });
+    });
+
+    // Use the series to attach the data to the chart
+    Highcharts.chart('tk-accounts-report-graph', {
+      title: { text: 'Money over Time' },
+      series: series,
+      yAxis: {
+        title: { text: 'Amount' },
+        formatter: function() {
+          return formatCurrency(this.value);
+        },
+      },
+      xAxis: {
+        title: 'Time',
+        type: 'datetime',
+        dateTimeLabelFormats: {
+          day: '%d %b %Y', //ex- 01 Jan 2016
+        },
+      },
+      legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle',
+      },
+      plotOptions: {
+        series: {
+          cursor: 'pointer',
+          events: {
+            click: event => {
+              showTransactionModal(event.point.x, event.point.transactions);
+            },
+            legendItemClick: event => {
+              event.preventDefault(); // Prevent toggling via the le
+            },
+          },
+        },
+      },
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 500,
+            },
+            chartOptions: {
+              legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+              },
+            },
+          },
+        ],
+      },
+    });
   }
 }

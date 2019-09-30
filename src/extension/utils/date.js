@@ -48,6 +48,7 @@ export function sortByGettableDate(a, b) {
 export function isBetween(date, startDate, endDate) {
   return date.isAfter(startDate) && date.isBefore(endDate);
 }
+
 function ynabDate(format) {
   if (typeof format !== 'string') {
     return ynab.YNABSharedLib.dateFormatter.formatDate();
