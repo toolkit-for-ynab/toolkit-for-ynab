@@ -30,7 +30,7 @@
       "value": "chinese simplified"
     },
     {
-      "name": "Russian (28%)",
+      "name": "Russian (29%)",
       "value": "russian"
     },
     {
@@ -60,6 +60,10 @@
     {
       "name": "Swedish (29%)",
       "value": "swedish"
+    },
+    {
+      "name": "Japanese (1%)",
+      "value": "japanese"
     },
     {
       "name": "German (63%)",
@@ -94,7 +98,7 @@
       "value": "serbian (cyrillic)"
     },
     {
-      "name": "French (42%)",
+      "name": "French (44%)",
       "value": "french"
     },
     {
@@ -133,6 +137,7 @@
   "actions": {
     "portuguese": ["injectScript", "locales/Portuguese.js", "injectScript", "main.js"],
     "czech": ["injectScript", "locales/Czech.js", "injectScript", "main.js"],
+    "japanese": ["injectScript", "locales/Japanese.js", "injectScript", "main.js"],
     "spanish": ["injectScript", "locales/Spanish.js", "injectScript", "main.js"],
     "polish": ["injectScript", "locales/Polish.js", "injectScript", "main.js"],
     "arabic": ["injectScript", "locales/Arabic.js", "injectScript", "main.js"],

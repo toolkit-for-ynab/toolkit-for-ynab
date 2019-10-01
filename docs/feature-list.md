@@ -240,6 +240,10 @@ When entering split transactions, each additional split will be auto-filled with
 
 Automatically mark transaction as cleared when you enter it manually.
 
+## Bulk Manage Payees
+
+Adds an option to the transaction edit drop-down menu to manage payees for the current selection.
+
 ## Change Behaviour of Enter Key When Adding Transactions
 
 When you press enter while adding transactions, the default behaviour is 'Save and add another'. This option changes it to just 'Save'.
