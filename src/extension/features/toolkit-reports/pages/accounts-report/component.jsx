@@ -136,14 +136,14 @@ export class AccountsReportComponent extends React.Component {
       if (!datapoints.has(date)) {
         datapoints.set(date, {
           runningTotal: 0,
-          ammountSpentOnDay: 0,
+          netChange: 0,
           transactions: [],
         });
       }
 
       // Update the values of the date with the new values
       let newValues = datapoints.get(date);
-      newValues.amount = newValues.amount + transaction.inflow - transaction.outflow;
+      newValues.netChange = newValues.netChange + transaction.inflow - transaction.outflow;
       newValues.transactions.push(transaction);
       newValues.runningTotal = runningTotal;
       datapoints.set(date, newValues);
@@ -162,11 +162,10 @@ export class AccountsReportComponent extends React.Component {
       resultData.push({
         x: date,
         y: values.runningTotal,
-        ammountSpentOnDay: values.ammountSpentOnDay,
+        netChange: values.netChange,
         transactions: values.transactions,
       });
     });
-
     return resultData;
   }
 
@@ -208,8 +207,10 @@ export class AccountsReportComponent extends React.Component {
       series: series,
       yAxis: {
         title: { text: 'Amount' },
-        formatter: function() {
-          return formatCurrency(this.value);
+        labels: {
+          formatter: e => {
+            return formatCurrency(e.value);
+          },
         },
       },
       xAxis: {
@@ -223,6 +224,21 @@ export class AccountsReportComponent extends React.Component {
         layout: 'vertical',
         align: 'right',
         verticalAlign: 'middle',
+      },
+      tooltip: {
+        useHTML: true,
+        pointFormatter: function() {
+          let coloredPoint = `<span style="color:${this.color}">\u25CF</span>`;
+          let tooltip = `${coloredPoint} ${this.series.name}: <b>${formatCurrency(
+            this.y
+          )}</b><br/>`;
+          // Format the color for the net change
+          let color = this.netChange < 0 ? '#ea5439' : '#16a336';
+          tooltip += `${coloredPoint} Net Change: <span style="color: ${color}"><b>${formatCurrency(
+            this.netChange
+          )}</b> <br/>`;
+          return tooltip;
+        },
       },
       plotOptions: {
         series: {
@@ -240,9 +256,7 @@ export class AccountsReportComponent extends React.Component {
       responsive: {
         rules: [
           {
-            condition: {
-              maxWidth: 500,
-            },
+            condition: { maxWidth: 500 },
             chartOptions: {
               legend: {
                 layout: 'horizontal',

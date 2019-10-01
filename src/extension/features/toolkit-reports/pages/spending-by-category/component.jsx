@@ -166,6 +166,8 @@ export class SpendingByCategoryComponent extends React.Component {
         })),
         events: {
           click: event => {
+            console.log('Transactions');
+            console.log(event.point.transactions);
             showTransactionModal(event.point.name, event.point.transactions);
           },
         },
