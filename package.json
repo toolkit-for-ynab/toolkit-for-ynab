@@ -1,6 +1,6 @@
 {
   "name": "toolkit-for-ynab",
-  "version": "2.14.1",
+  "version": "2.15.0",
   "private": true,
   "scripts": {
     "build:check": "yarn && yarn gen && yarn lint",
