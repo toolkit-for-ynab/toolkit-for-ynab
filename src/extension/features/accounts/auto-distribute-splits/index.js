@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
+import { stripCurrency, formatCurrency } from 'toolkit/extension/utils/currency';
 
 const DISTRIBUTE_BUTTON_ID = 'toolkit-auto-distribute-splits-button';
 
@@ -78,7 +79,7 @@ export class AutoDistributeSplits extends Feature {
 
   getCellsAndValues() {
     const cells = $('.is-editing .ynab-grid-cell-outflow input').toArray();
-    const values = cells.map(node => parseFloat(node.value.trim()));
+    const values = cells.map(node => stripCurrency(node.value));
     return [cells, values];
   }
 
@@ -126,8 +127,9 @@ export class AutoDistributeSplits extends Feature {
 
   adjustValues(subCells, newSubValues) {
     subCells.forEach((cell, i) => {
-      $(cell).val(actualNumber(newSubValues[i]) ? newSubValues[i].toFixed(2) : '');
+      $(cell).val(actualNumber(newSubValues[i]) ? formatCurrency(newSubValues[i], true) : '');
       $(cell).trigger('change');
+      $(cell).trigger('blur');
     });
   }
 }
