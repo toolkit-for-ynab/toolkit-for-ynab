@@ -216,9 +216,7 @@ export class AccountsReportComponent extends React.Component {
       xAxis: {
         title: 'Time',
         type: 'datetime',
-        dateTimeLabelFormats: {
-          day: '%d %b %Y', //ex- 01 Jan 2016
-        },
+        dateTimeLabelFormats: { day: '%d %b %Y' },
       },
       legend: {
         layout: 'vertical',
