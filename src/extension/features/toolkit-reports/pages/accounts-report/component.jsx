@@ -7,6 +7,7 @@ import { isBetween } from 'toolkit/extension/utils/date';
 import { getAccountName } from 'toolkit/extension/utils/ynab';
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
 import { mapAccountsToTransactions, generateDataPointsMap } from 'toolkit/extension/utils/mappings';
+
 export class AccountsReportComponent extends React.Component {
   // Define our proptypes for usage of this class
   static propTypes = {
@@ -23,7 +24,6 @@ export class AccountsReportComponent extends React.Component {
    * Prepare our data by mapping generating all our datapoints
    */
   componentWillMount() {
-    console.log('Will Mount');
     if (this.props.filters && this.props.allReportableTransactions) {
       this._calculateData(this.props.allReportableTransactions);
       this._updateCurrentDataSet();
@@ -34,7 +34,6 @@ export class AccountsReportComponent extends React.Component {
    * Attempt to render the chart on update
    */
   compontDidMount() {
-    console.log('Did Mount');
     this._renderChart();
   }
 
@@ -43,14 +42,11 @@ export class AccountsReportComponent extends React.Component {
    * @param {*} prevProps The previous props used to compare against
    */
   componentDidUpdate(prevProps) {
-    console.log('Did Update');
     // Recalculate our data if new transactions were reported
     if (this.props.allReportableTransactions !== prevProps.allReportableTransactions) {
       this._calculateData(this.props.allReportableTransactions);
-    }
-
-    // Re-apply the filters if they got updated
-    if (this.props.filters !== prevProps.filters) {
+      this._updateCurrentDataSet();
+    } else if (this.props.filters !== prevProps.filters) {
       this._updateCurrentDataSet();
     }
     this._renderChart();
@@ -81,12 +77,13 @@ export class AccountsReportComponent extends React.Component {
 
     // Update our state to reflect the datapoints
     this.setState({
+      accountToTransactionsMap,
       accountToDataPointsMap,
     });
   }
 
   /**
-   * On render, if we are still loading, render the spinner, else render the chart
+   * Render the container for the Chart
    */
   render() {
     return <div className="tk-highcharts-report-container" id="tk-accounts-report-graph" />;
@@ -103,14 +100,11 @@ export class AccountsReportComponent extends React.Component {
     const accountFilters = filters.accountFilterIds;
     const dateFilter = filters.dateFilter;
 
-    // Filter out the data we don't want
+    // Filter out the accounts and transactions we don't want to include
     let filteredData = new Map();
     accountToDataPointsMap.forEach((datapoints, accountId) => {
-      // Filter out the accounts
       if (!accountFilters.has(accountId)) {
         let filteredDatapoints = new Map();
-
-        // Filter out the datapoints we don't care about
         datapoints.forEach((data, date) => {
           if (isBetween(date, dateFilter.fromDate, dateFilter.toDate)) {
             filteredDatapoints.set(date, data);
@@ -119,20 +113,32 @@ export class AccountsReportComponent extends React.Component {
         filteredData.set(accountId, filteredDatapoints);
       }
     });
+
+    // Using our filtered data convert them to the highseries points
+    let series = [];
+    filteredData.forEach((datapoints, accountId) => {
+      series.push({
+        name: getAccountName(accountId),
+        data: this._dataPointsToHighChartSeries(datapoints),
+      });
+    });
+
     this.setState({
       filteredData: filteredData,
+      series: series,
     });
   }
 
   /**
    * Generate the series to be fed into HighCharts
+   * @param {Map} dataPointsMap Map of dates in UTC to data
    * @returns {Array} Array containing the HighChart Points
    */
   _dataPointsToHighChartSeries(dataPointsMap) {
     let resultData = [];
     dataPointsMap.forEach((values, date) => {
       resultData.push({
-        x: new Date(date),
+        x: date,
         y: values.runningTotal,
         netChange: values.netChange,
         transactions: values.transactions,
@@ -145,20 +151,8 @@ export class AccountsReportComponent extends React.Component {
    * Use the current state to render the chart
    */
   _renderChart() {
-    const { filteredData } = this.state;
-    let series = [];
-    if (!filteredData) return;
-    console.log('HERE');
-    console.log(filteredData);
-    console.log(this.props);
-    console.log(this.state);
-    filteredData.forEach((datapoints, accountId) => {
-      series.push({
-        name: getAccountName(accountId),
-        data: this._dataPointsToHighChartSeries(datapoints),
-      });
-    });
-    console.log(series);
+    const { series } = this.state;
+    if (!series) return;
     // Use the series to attach the data to the chart
     Highcharts.chart('tk-accounts-report-graph', {
       title: { text: 'Money over Time' },
@@ -188,8 +182,7 @@ export class AccountsReportComponent extends React.Component {
           let tooltip = `${coloredPoint} ${this.series.name}: <b>${formatCurrency(
             this.y
           )}</b><br/>`;
-          // Format the color for the net change
-          let color = this.netChange < 0 ? '#ea5439' : '#16a336';
+          let color = this.netChange < 0 ? '#ea5439' : '#16a336'; // Red or Green
           tooltip += `${coloredPoint} Net Change: <span style="color: ${color}"><b>${formatCurrency(
             this.netChange
           )}</b> <br/>`;
