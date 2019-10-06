@@ -37,8 +37,10 @@ export function sortByGettableDate(a, b) {
 
 /**
  * Determine if a given date is between two dates
- * Note: Filtered boundaries are the date before the month and the first of the month
- *       Not the first of the month and end of month
+ * Note: Filters are last date of previous month to last date of current month
+ *       IE: September will yield
+ *           startDate: August 31st
+ *           endDate: September 30th
  *
  * @param {*} date The date to compare with
  * @param {*} startDate The start date to compare against
@@ -46,7 +48,9 @@ export function sortByGettableDate(a, b) {
  * @returns True if date is between the two specified dates, false otherwise
  */
 export function isBetween(date, startDate, endDate) {
-  return date.isAfter(startDate) && date.isBefore(endDate);
+  // return (date.equalsDate(endDate) || date.isBefore(endDate)) && (date.isAfter(startDate) || date.equalsDate(startDate));
+  let dateUTC = date;
+  return dateUTC > startDate.getUTCTime() && dateUTC <= endDate.getUTCTime();
 }
 
 function ynabDate(format) {

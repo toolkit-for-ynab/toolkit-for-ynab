@@ -8,6 +8,16 @@ export function getEntityManager() {
   return ynab.YNABSharedLib.defaultInstance.entityManager;
 }
 
+/**
+ * Get the corresponding account name given a accountId
+ *
+ * @param {String} accountId The accountId used to search for name
+ * @returns String The corresponding account name, null if not found
+ */
+export function getAccountName(accountId) {
+  return getEntityManager().getAccountById(accountId).accountName;
+}
+
 export function getCurrentBudgetDate() {
   const date = controllerLookup('application').get('monthString');
   return { year: date.slice(0, 4), month: date.slice(4, 6) };

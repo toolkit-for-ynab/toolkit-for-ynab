@@ -4,9 +4,9 @@ import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { isBetween } from 'toolkit/extension/utils/date';
-import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import { getAccountName } from 'toolkit/extension/utils/ynab';
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
-
+import { mapAccountsToTransactions, generateDataPointsMap } from 'toolkit/extension/utils/mappings';
 export class AccountsReportComponent extends React.Component {
   // Define our proptypes for usage of this class
   static propTypes = {
@@ -14,12 +14,19 @@ export class AccountsReportComponent extends React.Component {
     allReportableTransactions: PropTypes.array.isRequired,
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   /**
-   * Prepare our data before we render
+   * Prepare our data by mapping generating all our datapoints
    */
   componentWillMount() {
+    console.log('Will Mount');
     if (this.props.filters && this.props.allReportableTransactions) {
-      this._invalidateState();
+      this._calculateData(this.props.allReportableTransactions);
+      this._updateCurrentDataSet();
     }
   }
 
@@ -27,6 +34,7 @@ export class AccountsReportComponent extends React.Component {
    * Attempt to render the chart on update
    */
   compontDidMount() {
+    console.log('Did Mount');
     this._renderChart();
   }
 
@@ -35,41 +43,46 @@ export class AccountsReportComponent extends React.Component {
    * @param {*} prevProps The previous props used to compare against
    */
   componentDidUpdate(prevProps) {
-    // Only update if the filters got updated
-    if (
-      this.props.filters !== prevProps.filters ||
-      this.props.allReportableTransactions !== prevProps.allReportableTransactions
-    ) {
-      this._invalidateState();
+    console.log('Did Update');
+    // Recalculate our data if new transactions were reported
+    if (this.props.allReportableTransactions !== prevProps.allReportableTransactions) {
+      this._calculateData(this.props.allReportableTransactions);
     }
+
+    // Re-apply the filters if they got updated
+    if (this.props.filters !== prevProps.filters) {
+      this._updateCurrentDataSet();
+    }
+    this._renderChart();
   }
 
   /**
-   * Update the current state and render the chart
+   * Given a transactions list, update the state by recalculating the datapoints
+   * Updates the state to the reflect the new data points
+   * @param {*} transactions The transactions to use
    */
-  _invalidateState() {
-    const { filters, allReportableTransactions } = this.props;
-    let accountToTransactionsMap = this._mapAccountsToTransactions(
-      filters,
-      allReportableTransactions
-    );
-    let accountToDataPointsMap = new Map();
-    let accountIds = Array.from(accountToTransactionsMap.keys());
+  _calculateData(transactions) {
+    if (!transactions || transactions.length === 0) return;
 
-    for (let i = 0; i < accountIds.length; i++) {
-      let accountId = accountIds[i];
-      let transactions = accountToTransactionsMap.get(accountId);
-      accountToDataPointsMap.set(accountId, this._generateDataPointsMap(transactions));
-    }
-    this.setState(
-      {
-        accountToTransactionsMap: accountToTransactionsMap,
-        accountToDataPointsMap: accountToDataPointsMap,
-      },
-      () => {
-        this._renderChart();
-      }
+    // Sort our transactions by date
+    let sortedTransactions = transactions.sort(
+      (t1, t2) => t1.date.getUTCTime() - t2.date.getUTCTime()
     );
+
+    // Map each account to all their transactions
+    let accountToTransactionsMap = mapAccountsToTransactions(sortedTransactions);
+
+    // Generate our datapoints for each account
+    let accountToDataPointsMap = new Map();
+    accountToTransactionsMap.forEach((transactionsForAcc, accountId) => {
+      let datapoints = generateDataPointsMap(transactionsForAcc);
+      accountToDataPointsMap.set(accountId, datapoints);
+    });
+
+    // Update our state to reflect the datapoints
+    this.setState({
+      accountToDataPointsMap,
+    });
   }
 
   /**
@@ -80,87 +93,46 @@ export class AccountsReportComponent extends React.Component {
   }
 
   /**
-   * Generate a Map with keys containing accountIds and value transactions associated with the accountId
-   *
-   * @param {*} filters The filters to use (Passed in from props)
-   * @param {*} transactions The list of transactions to apply the filter to (Passed in from props)
+   * Use the current filters and data points map to update the data points
    */
-  _mapAccountsToTransactions(filters, transactions) {
-    if (!filters || !transactions) return;
+  _updateCurrentDataSet() {
+    const { filters } = this.props;
+    const { accountToDataPointsMap } = this.state;
+    if (!filters || !accountToDataPointsMap) return;
 
-    // Get the blacklisted accounted
-    const accountFilterIds = filters.accountFilterIds;
+    const accountFilters = filters.accountFilterIds;
+    const dateFilter = filters.dateFilter;
 
-    // Filter out all the transactions we don't want
-    let desiredTransactions = transactions.filter(transaction => {
-      return (
-        isBetween(transaction.date, filters.dateFilter.fromDate, filters.dateFilter.toDate) &&
-        !accountFilterIds.has(transaction.accountId)
-      );
-    });
+    // Filter out the data we don't want
+    let filteredData = new Map();
+    accountToDataPointsMap.forEach((datapoints, accountId) => {
+      // Filter out the accounts
+      if (!accountFilters.has(accountId)) {
+        let filteredDatapoints = new Map();
 
-    // Sort the transactions by date
-    desiredTransactions.sort((t1, t2) => t1.date.getUTCTime() - t2.date.getUTCTime());
-
-    // Map each transaction to their respective account id. AccountID => [t1, t2, ... , tn]
-    let accountsToTransactionsMap = new Map();
-    for (let i = 0; i < desiredTransactions.length; i++) {
-      let transaction = desiredTransactions[i];
-      let accountId = transaction.accountId;
-      if (!accountsToTransactionsMap.has(accountId)) {
-        accountsToTransactionsMap.set(accountId, []);
-      }
-      accountsToTransactionsMap.get(accountId).push(transaction);
-    }
-    return accountsToTransactionsMap;
-  }
-
-  /**
-   * Given a transactions list, we generate a map of data points of
-   * Key (Date in UTC Time) to Value (object containing, transactions and amount total for that date)
-   *
-   * @param {Array} transactionsList The list of transactions to convert to data points
-   * @returns Map of date to transactions and amount
-   */
-  _generateDataPointsMap(transactionsList) {
-    let datapoints = new Map();
-
-    // Keep track of the running total for the graph, the transactions for each date, along with the amount spend that date
-    let runningTotal = 0;
-    for (let i = 0; i < transactionsList.length; i++) {
-      let transaction = transactionsList[i];
-      let date = transaction.date.getUTCTime();
-      runningTotal = runningTotal - transaction.outflow + transaction.inflow;
-
-      // Add the date with empty values if it's a new date
-      if (!datapoints.has(date)) {
-        datapoints.set(date, {
-          runningTotal: 0,
-          netChange: 0,
-          transactions: [],
+        // Filter out the datapoints we don't care about
+        datapoints.forEach((data, date) => {
+          if (isBetween(date, dateFilter.fromDate, dateFilter.toDate)) {
+            filteredDatapoints.set(date, data);
+          }
         });
+        filteredData.set(accountId, filteredDatapoints);
       }
-
-      // Update the values of the date with the new values
-      let newValues = datapoints.get(date);
-      newValues.netChange = newValues.netChange + transaction.inflow - transaction.outflow;
-      newValues.transactions.push(transaction);
-      newValues.runningTotal = runningTotal;
-      datapoints.set(date, newValues);
-    }
-    return datapoints;
+    });
+    this.setState({
+      filteredData: filteredData,
+    });
   }
 
   /**
    * Generate the series to be fed into HighCharts
-   * @param {*} dataPointsMap Map containing keys UTC Time and values {amount, transactions, currentTotal}
-   * @returns {*} object containing the HighChart Points
+   * @returns {Array} Array containing the HighChart Points
    */
   _dataPointsToHighChartSeries(dataPointsMap) {
     let resultData = [];
     dataPointsMap.forEach((values, date) => {
       resultData.push({
-        x: date,
+        x: new Date(date),
         y: values.runningTotal,
         netChange: values.netChange,
         transactions: values.transactions,
@@ -170,37 +142,23 @@ export class AccountsReportComponent extends React.Component {
   }
 
   /**
-   * Get the corresponding account name given a accountId
-   *
-   * @param {} accountId The accountId used to search for name
-   * @returns String, the corresponding account name, null if not found
-   */
-  _getAccountName(accountId) {
-    return getEntityManager().getAccountById(accountId).accountName;
-  }
-
-  /**
    * Use the current state to render the chart
    */
   _renderChart() {
-    if (
-      !this.state.accountToDataPointsMap ||
-      !this.state.accountToTransactionsMap ||
-      !this.state.accountToTransactionsMap.size === 0 ||
-      !this.state.accountToDataPointsMap.size === 0
-    ) {
-      return;
-    }
-    // Generate our series
-    const { accountToDataPointsMap } = this.state;
+    const { filteredData } = this.state;
     let series = [];
-    accountToDataPointsMap.forEach((datapoints, accountId) => {
+    if (!filteredData) return;
+    console.log('HERE');
+    console.log(filteredData);
+    console.log(this.props);
+    console.log(this.state);
+    filteredData.forEach((datapoints, accountId) => {
       series.push({
-        name: this._getAccountName(accountId),
+        name: getAccountName(accountId),
         data: this._dataPointsToHighChartSeries(datapoints),
       });
     });
-
+    console.log(series);
     // Use the series to attach the data to the chart
     Highcharts.chart('tk-accounts-report-graph', {
       title: { text: 'Money over Time' },
