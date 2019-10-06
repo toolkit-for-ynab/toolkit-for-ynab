@@ -49,7 +49,6 @@ export class AccountsReportComponent extends React.Component {
     } else if (this.props.filters !== prevProps.filters) {
       this._updateCurrentDataSet();
     }
-    this._renderChart();
   }
 
   /**
@@ -123,10 +122,13 @@ export class AccountsReportComponent extends React.Component {
       });
     });
 
-    this.setState({
-      filteredData: filteredData,
-      series: series,
-    });
+    this.setState(
+      {
+        filteredData: filteredData,
+        series: series,
+      },
+      this._renderChart
+    );
   }
 
   /**
