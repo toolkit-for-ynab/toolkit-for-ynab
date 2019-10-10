@@ -25,6 +25,7 @@ export class IncomeBreakdownComponent extends React.Component {
       showIncome: true,
       showExpense: true,
       showLossGain: true,
+      groupPositiveCategories: false,
     };
   }
 
@@ -39,7 +40,7 @@ export class IncomeBreakdownComponent extends React.Component {
   }
 
   render() {
-    const { showIncome, showExpense, showLossGain } = this.state;
+    const { showIncome, showExpense, showLossGain, groupPositiveCategories } = this.state;
     return (
       <div className="tk-flex-grow tk-flex tk-flex-column">
         <div className="tk-flex tk-pd-05 tk-border-b">
@@ -67,6 +68,14 @@ export class IncomeBreakdownComponent extends React.Component {
               onChange={this.toggleLossGainEntry}
             />
           </div>
+          <div className="tk-income-breakdown__filter">
+            <LabeledCheckbox
+              id="tk-income-breakdown-positive-categories-selector"
+              checked={groupPositiveCategories}
+              label="Group positive categories"
+              onChange={this.togglePositiveCategories}
+            />
+          </div>
         </div>
         <div className="tk-flex tk-flex-grow">
           <div className="tk-highcharts-report-container" id="tk-income-breakdown" />
@@ -78,6 +87,12 @@ export class IncomeBreakdownComponent extends React.Component {
   toggleLossGainEntry = ({ currentTarget }) => {
     const { checked } = currentTarget;
     this.setState({ showLossGain: checked });
+    this._calculateData();
+  };
+
+  togglePositiveCategories = ({ currentTarget }) => {
+    const { checked } = currentTarget;
+    this.setState({ groupPositiveCategories: checked });
     this._calculateData();
   };
 
@@ -167,7 +182,14 @@ export class IncomeBreakdownComponent extends React.Component {
   }
 
   _getSeriesData() {
-    const { incomes, expenses, showLossGain, showExpense, showIncome } = this.state;
+    const {
+      incomes,
+      expenses,
+      showLossGain,
+      showExpense,
+      showIncome,
+      groupPositiveCategories,
+    } = this.state;
     let seriesData = [];
     let totalIncome = 0;
     let totalExpense = 0;
@@ -186,12 +208,18 @@ export class IncomeBreakdownComponent extends React.Component {
     });
 
     let positiveCategoriesAmount = 0;
+    let positiveCategoriesSeries = [];
     let categorySeries = [];
     expenses.forEach((subCategoryMap, masterCategory) => {
       let subCategorySeries = [];
       let masterCategoryTotal = 0;
       subCategoryMap.forEach((amount, subCatogory) => {
         if (amount > 0) {
+          positiveCategoriesSeries.push({
+            from: subCatogory.get('entityId'),
+            to: 'Budget',
+            weight: amount,
+          });
           positiveCategoriesAmount += amount;
           totalIncome += amount;
           return;
@@ -222,11 +250,15 @@ export class IncomeBreakdownComponent extends React.Component {
       });
     });
     if (positiveCategoriesAmount > 0 && showIncome) {
-      seriesData.push({
-        from: 'POSITIVE CATEGORIES',
-        to: 'Budget',
-        weight: positiveCategoriesAmount,
-      });
+      if (groupPositiveCategories) {
+        seriesData.push({
+          from: 'POSITIVE CATEGORIES',
+          to: 'Budget',
+          weight: positiveCategoriesAmount,
+        });
+      } else {
+        seriesData.push(...positiveCategoriesSeries);
+      }
     }
     if (showExpense) {
       categorySeries = categorySeries.sort((a, b) => b.masterEntry.weight - a.masterEntry.weight);
