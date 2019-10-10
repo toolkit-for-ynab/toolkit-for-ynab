@@ -269,11 +269,14 @@ export class IncomeBreakdownComponent extends React.Component {
     }
 
     if (showLossGain && (showExpense || showIncome) && totalExpense !== totalIncome) {
-      seriesData.push({
+      const lossGainData = {
         from: totalExpense > totalIncome ? 'NET LOSS' : 'Budget',
         to: totalExpense > totalIncome ? 'Budget' : 'NET GAIN',
         weight: Math.abs(totalIncome - totalExpense),
-      });
+      };
+      totalExpense > totalIncome && totalIncome === 0
+        ? seriesData.unshift(lossGainData)
+        : seriesData.push(lossGainData);
     }
 
     return seriesData;
