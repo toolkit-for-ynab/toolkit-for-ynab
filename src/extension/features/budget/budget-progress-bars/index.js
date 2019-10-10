@@ -95,7 +95,7 @@ export class BudgetProgressBars extends Feature {
         case 'TBD':
         case 'MF':
           hasGoal = true;
-          status = calculation.goalPercentageComplete;
+          status = calculation.get('goalPercentageComplete');
 
           break;
         default:
