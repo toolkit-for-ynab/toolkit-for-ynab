@@ -15,7 +15,7 @@ export const HideClosedButton = ({ toggleHiddenState }) => {
   return (
     <li onClick={toggleHidden}>
       <button>
-        <i className="flaticon stroke help-2" />
+        <i className="flaticon stroke no" />
         {` ${label}`} Closed Accounts
       </button>
     </li>
