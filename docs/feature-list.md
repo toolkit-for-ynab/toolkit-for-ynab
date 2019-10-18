@@ -32,13 +32,17 @@ Changes colours like red, yellow and green in the interface to colours and shape
 
 Allows you to hide account type totals and/or account balances.
 
+## Hide Closed Accounts
+
+This feature hides the closed accounts section in the side menu. View the account-options popup (click your e-mail) to show or hide the closed accounts.
+
 ## Hide Edit Account Button
 
 Allows you to hide the edit account button to help prevent accidentally clicking on it.
 
 ## Hide Help (?) Button
 
-This feature hides the blue help (?) button in the bottom right corner of the screen. View the account-options popup (click your e-mail in the bottom left) to show or hide the help button.
+This feature hides the blue help (?) button in the bottom right corner of the screen. View the account-options popup (click your e-mail) to show or hide the help button.
 
 ## Hide Referral Banner
 
@@ -247,6 +251,10 @@ Adds an option to the transaction edit drop-down menu to manage payees for the c
 ## Change Behaviour of Enter Key When Adding Transactions
 
 When you press enter while adding transactions, the default behaviour is 'Save and add another'. This option changes it to just 'Save'.
+
+## Change Behaviour of Enter Key on the Memo field When Adding or Editing Transactions
+
+When you press enter on the memo field while adding or editing a transaction, the default behaviour is 'Save' or 'Save and add another'. This option changes it to move to the next field.
 
 ## Clear Selection
 
