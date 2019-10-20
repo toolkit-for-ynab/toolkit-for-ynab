@@ -1,0 +1,16 @@
+.tk-account-filter {
+  min-width: 20rem;
+
+  &__account-list {
+    max-height: 20rem;
+    overflow: scroll;
+  }
+
+  &__labeled-checkbox {
+    &--parent {
+      .tk-labeled-checkbox {
+        font-weight: bold;
+      }
+    }
+  }
+}

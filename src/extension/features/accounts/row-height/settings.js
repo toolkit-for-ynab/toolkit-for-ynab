@@ -8,6 +8,6 @@ module.exports = {
   options: [
     { name: 'Default', value: '0' },
     { name: 'Compact', value: '1' },
-    { name: 'Slim', value: '2' }
-  ]
+    { name: 'Slim', value: '2' },
+  ],
 };

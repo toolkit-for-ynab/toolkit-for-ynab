@@ -8,7 +8,7 @@ insert_final_newline = true
 
 # Matches multiple files with brace expansion notation
 # Set default charset
-[*.{js,py}]
+[*.{js,jsx,py,scss}]
 charset = utf-8
 
 # 4 space indentation
@@ -17,7 +17,7 @@ indent_style = space
 indent_size = 4
 
 # Indentation override for all JS
-[*.{js,css}]
+[*.{js,json,jsx,css,scss}]
 indent_style = space
 indent_size = 2
 

@@ -57,8 +57,10 @@ This extension uses three main things in its build process:
 content scripts) into single files and manages most of the build process.
 
 1. Clone the repository.
-2. Install `node` and `yarn` (both are available through `brew`, test with node-v9.2.1 and yarn-1.3.2)
-3. On OSX, ensure command line developer tools are installed `xcode-select --install`.
+2. Install Node.js (>= v8.12.0) and Yarn (>= v1.10.0).
+
+	- On **macOS** both prerequisites can be setup using `brew`. Ensure command line developer tools (`xcode-select --install`) are also installed.
+	- On **Windows** `node` and `yarn` can be installed via Chocolatey (`choco`) package manager.
 4. Run `yarn install` within the folder you cloned. This will install all the dependencies needed for the project.
 5. Run `yarn build:development` from within the folder you cloned which will build the Toolkit.
   - Whilst developing, you may prefer to run `yarn watch` which will monitor the project

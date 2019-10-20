@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700');
+
+.ember-view {
+  font-family: 'Inconsolata', monospace;
+}
+
+.nav-account-block .nav-account-name-button {
+  font-family: 'Inconsolata', monospace;
+}
+
+.budget-header-calendar .budget-header-calendar-date-button {
+  font-family: 'Inconsolata', monospace;
+}
+
+.budget-inspector-button {
+  font-family: 'Inconsolata', monospace;
+}
+
+.budget-inspector-goals .link-button {
+  font-family: 'Inconsolata', monospace;
+}
+
+.inspector-category-edit {
+  font-family: 'Inconsolata', monospace;
+  top: 3px;
+  font-size: 1em;
+}
+
+.nav-account-block .nav-account-name-button {
+  font-family: 'Inconsolata', monospace;
+}
+
+.budget-content ul,
+.budget-table-row.is-dragging {
+  font-family: 'Inconsolata', monospace;
+}
+
+.modal-popup .modal-actions .button {
+  font-family: 'Inconsolata', monospace;
+}
+
+.modal-generic .modal-actions .button {
+  font-family: 'Inconsolata', monospace;
+}
+
+.modal-generic .modal-header {
+  font-family: 'Inconsolata', monospace;
+}
+
+.modal-popup .modal-content {
+  font-family: 'Inconsolata', monospace;
+}
+
+.modal-account-filters .modal-header {
+  font-family: 'Inconsolata', monospace;
+}
+
+.modal-account-filters .date-range-dates li.active button,
+.modal-account-filters .date-range-dates li:hover button {
+  font-family: 'Inconsolata', monospace;
+}
+
+.modal-popup ul.modal-list button {
+  font-family: 'Inconsolata', monospace;
+}
+
+.modal-account-approve-reject.modal-account-dropdown .modal,
+.modal-account-match-transaction.modal-account-dropdown .modal {
+  font-family: 'Inconsolata', monospace;
+}
+
+.edit-direct-connect-toggle {
+  font-family: 'Inconsolata', monospace;
+}
+
+.account-modal .modal-content dt,
+.account-modal .modal-content dd {
+  font-family: 'Inconsolata', monospace;
+}
+
+/* if reports stuff is enabled */
+.reports-inspector-detail {
+  font-family: 'Inconsolata', monospace;
+}
+
+#reports-header {
+  font-family: 'Inconsolata', monospace;
+}

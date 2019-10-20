@@ -19,7 +19,7 @@ export class ToggleMasterCategories extends Feature {
     );
   }
 
-  toggleMasterCategories = (event) => {
+  toggleMasterCategories = event => {
     const container = $('.undo-redo-container');
     const min = container.offset().left + container.outerWidth() - 2;
     const max = min + 28;
@@ -32,5 +32,5 @@ export class ToggleMasterCategories extends Feature {
         $('.is-master-category .budget-table-cell-name-static-width button.down').click();
       }
     }
-  }
+  };
 }

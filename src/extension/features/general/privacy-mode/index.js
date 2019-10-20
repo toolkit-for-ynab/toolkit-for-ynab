@@ -3,7 +3,7 @@ import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/ut
 
 const Settings = {
   AlwaysOn: '1',
-  Toggle: '2'
+  Toggle: '2',
 };
 
 export class PrivacyMode extends Feature {
@@ -29,10 +29,12 @@ export class PrivacyMode extends Feature {
 
     if (ynabToolKit.options.PrivacyMode === Settings.Toggle) {
       if (!$('#toolkit-togglePrivacy').length) {
-        $('nav.sidebar.logged-in .sidebar-contents').after('<button id="toolkit-togglePrivacy"><i class="ember-view flaticon stroke lock-1"></i></button>');
+        $('nav.sidebar.logged-in .sidebar-contents').after(
+          '<button id="toolkit-togglePrivacy"><i class="ember-view flaticon stroke lock-1"></i></button>'
+        );
 
         let parent = this;
-        $('body').on('click', 'button#toolkit-togglePrivacy', function () {
+        $('body').on('click', 'button#toolkit-togglePrivacy', function() {
           parent.togglePrivacyMode();
         });
       }
@@ -56,10 +58,14 @@ export class PrivacyMode extends Feature {
 
     if (toggle) {
       $('body').addClass('toolkit-privacyMode');
-      $('#toolkit-togglePrivacy i').removeClass('unlock-1').addClass('lock-1');
+      $('#toolkit-togglePrivacy i')
+        .removeClass('unlock-1')
+        .addClass('lock-1');
     } else {
       $('body').removeClass('toolkit-privacyMode');
-      $('#toolkit-togglePrivacy i').removeClass('lock-1').addClass('unlock-1');
+      $('#toolkit-togglePrivacy i')
+        .removeClass('lock-1')
+        .addClass('unlock-1');
     }
   }
 }

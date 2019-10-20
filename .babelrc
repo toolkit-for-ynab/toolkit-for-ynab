@@ -1,7 +1,17 @@
 {
-  "presets": ["env"],
+  "presets": [
+    ["@babel/preset-env", {
+      "corejs": "2",
+      "useBuiltIns": "usage",
+      "targets": {
+        "chrome": "58",
+        "firefox": "45"
+      }
+    }],
+    "@babel/preset-react"
+  ],
   "plugins": [
-    "transform-class-properties",
-    "transform-object-rest-spread"
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-syntax-object-rest-spread"
   ]
 }

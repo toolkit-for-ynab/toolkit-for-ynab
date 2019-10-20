@@ -1,0 +1,18 @@
+.tk-report-selector {
+  background-color: #003540;
+  color: #ffffff;
+  height: 3em;
+
+  &__item {
+    cursor: pointer;
+    border-radius: 1000px;
+    color: #ffffff;
+    font-size: .9em;
+    padding: .4em 1em;
+    margin-right: 1em;
+
+    &--active {
+      background-color: #16a336;
+    }
+  }
+}

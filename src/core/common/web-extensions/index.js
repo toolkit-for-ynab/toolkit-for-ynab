@@ -1,9 +1,15 @@
-import { Browser, BrowserExtensionPrefixMap, Environment, ExtensionIdEnvironmentMap } from 'toolkit/core/common/constants';
+import {
+  Browser,
+  BrowserExtensionPrefixMap,
+  Environment,
+  ExtensionIdEnvironmentMap,
+} from 'toolkit/core/common/constants';
 
 export const getBrowser = () => {
   if (typeof browser !== 'undefined') {
     return browser;
-  } else if (typeof chrome !== 'undefined') {
+  }
+  if (typeof chrome !== 'undefined') {
     return chrome;
   }
 };
@@ -14,9 +20,11 @@ export function getBrowserName() {
 
   if (URL.startsWith(BrowserExtensionPrefixMap[Browser.Chrome])) {
     return Browser.Chrome;
-  } else if (URL.startsWith(BrowserExtensionPrefixMap[Browser.Firefox])) {
+  }
+  if (URL.startsWith(BrowserExtensionPrefixMap[Browser.Firefox])) {
     return Browser.Firefox;
-  } else if (URL.startsWith(BrowserExtensionPrefixMap[Browser.Edge])) {
+  }
+  if (URL.startsWith(BrowserExtensionPrefixMap[Browser.Edge])) {
     return Browser.Edge;
   }
 

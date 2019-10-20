@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import { features } from 'toolkit/extension/features';
 import * as ynabUtils from 'toolkit/extension/utils/ynab';
 import * as emberUtils from 'toolkit/extension/utils/ember';
@@ -9,10 +8,13 @@ import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/wi
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
+export const EMBER_COMPONENT_TOOLKIT_HOOKS = ['didRender'];
+export const emberComponentToolkitHookKey = hookName => `_tk_${hookName}_hooks_`;
+
 window.__toolkitUtils = {
   ...ynabUtils,
   ...emberUtils,
-  ...Collections
+  ...Collections,
 };
 
 export class YNABToolkit {
@@ -35,27 +37,28 @@ export class YNABToolkit {
       return css;
     }, require('./ynab-toolkit.css'));
 
-    $('head').append($('<style>', { id: 'toolkit-injected-styles', type: 'text/css' })
-      .text(globalCSS));
+    $('head').append(
+      $('<style>', { id: 'toolkit-injected-styles', type: 'text/css' }).text(globalCSS)
+    );
   }
 
   _createFeatureInstances() {
-    features.forEach((Feature) => {
+    features.forEach(Feature => {
       this._featureInstances.push(new Feature());
     });
   }
 
-  _invokeFeature = (featureName) => {
-    const feature = this._featureInstances.find((f) => f.constructor.name === featureName);
+  _invokeFeature = featureName => {
+    const feature = this._featureInstances.find(f => f.constructor.name === featureName);
     const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
     const wrappedInvoke = feature.invoke.bind(feature);
     if (isFeatureEnabled(feature) && wrappedShouldInvoke()) {
       wrappedInvoke();
     }
-  }
+  };
 
   _invokeFeatureInstances = async () => {
-    this._featureInstances.forEach(async (feature) => {
+    this._featureInstances.forEach(async feature => {
       if (isFeatureEnabled(feature)) {
         feature.applyListeners();
 
@@ -68,7 +71,7 @@ export class YNABToolkit {
             exception,
             featureName,
             featureSetting,
-            functionName: 'willInvoke'
+            functionName: 'willInvoke',
           });
         }
 
@@ -79,21 +82,22 @@ export class YNABToolkit {
         }
       }
     });
-  }
+  };
 
-  _onBackgroundMessage = (event) => {
-    if (
-      event.source === window &&
-      event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE
-    ) {
+  _onBackgroundMessage = event => {
+    if (event.source === window && event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE) {
       window.ynabToolKit = {
         ...window.ynabToolKit,
-        ...event.data.ynabToolKit
+        ...event.data.ynabToolKit,
       };
 
       // eslint-disable-next-line
-      if (event.data.ynabToolKit.environment === 'development' && Rollbar) {
-        Rollbar.impl.instrumenter.deinstrumentConsole(); // eslint-disable-line
+      if (event.data.ynabToolKit.environment === 'development') {
+        try {
+          Rollbar.impl.instrumenter.deinstrumentConsole(); // eslint-disable-line
+        } catch (e) {
+          /* ignore */
+        }
       }
 
       this._setupErrorTracking();
@@ -101,7 +105,7 @@ export class YNABToolkit {
       this._removeMessageListener();
       this._waitForUserSettings();
     }
-  }
+  };
 
   _removeMessageListener() {
     window.removeEventListener('message', this._onBackgroundMessage);
@@ -110,8 +114,8 @@ export class YNABToolkit {
   _setupErrorTracking = () => {
     window.addEventListener('error', ({ error }) => {
       let serializedError = '';
-      if (error.stack) {
-        serializedError = error.stack.toString();
+      if (error.message && error.stack) {
+        serializedError = `${error.message}\n${error.stack.toString()}`;
       } else if (error.message) {
         serializedError = error.message;
       }
@@ -121,11 +125,22 @@ export class YNABToolkit {
           exception: error,
           featureName: 'unknown',
           featureSetting: 'unknown',
-          functionName: 'global'
+          functionName: 'global',
         });
       }
     });
-  }
+  };
+
+  _addToolkitEmberHooks = () => {
+    EMBER_COMPONENT_TOOLKIT_HOOKS.forEach(lifecycleName => {
+      Ember.Component.prototype[lifecycleName] = function() {
+        const hooks = this[emberComponentToolkitHookKey(lifecycleName)];
+        if (hooks) {
+          hooks.forEach(({ context, fn }) => fn.call(context, this.element));
+        }
+      };
+    });
+  };
 
   _waitForUserSettings() {
     const self = this;
@@ -142,11 +157,13 @@ export class YNABToolkit {
 
         // Hook up listeners and then invoke any features that are ready to go.
         self._invokeFeatureInstances();
+
+        self._addToolkitEmberHooks();
       } else if (typeof Ember !== 'undefined') {
         Ember.run.later(poll, 250);
       } else {
         setTimeout(poll, 250);
       }
-    }());
+    })();
   }
 }

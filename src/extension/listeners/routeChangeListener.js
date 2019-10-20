@@ -1,5 +1,6 @@
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
+import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
 let instance = null;
 
@@ -22,35 +23,43 @@ export class RouteChangeListener {
         (controller, changedProperty) => {
           if (changedProperty === 'budgetVersionId') {
             (function poll() {
-              if (controller.get('budgetVersionId') === controller.get('budgetViewModel.budgetVersionId')) {
+              const applicationBudgetVersion = controllerLookup('application').get(
+                'budgetVersionId'
+              );
+              const { activeBudgetVersion } = getEntityManager().getSharedLibInstance();
+              if (
+                activeBudgetVersion &&
+                activeBudgetVersion.entityId &&
+                activeBudgetVersion.entityId === applicationBudgetVersion
+              ) {
                 Ember.run.scheduleOnce('afterRender', controller, 'emitBudgetRouteChange');
               } else {
                 Ember.run.next(poll, 250);
               }
-            }());
+            })();
           } else {
             Ember.run.scheduleOnce('afterRender', controller, 'emitSameBudgetRouteChange');
           }
         }
       ),
 
-      emitSameBudgetRouteChange: function () {
+      emitSameBudgetRouteChange: function() {
         let currentRoute = applicationController.get('currentRouteName');
-        routeChangeListener.features.forEach((feature) => {
+        routeChangeListener.features.forEach(feature => {
           const observe = feature.onRouteChanged.bind(feature, currentRoute);
           const wrapped = withToolkitError(observe, feature);
           Ember.run.later(wrapped, 0);
         });
       },
 
-      emitBudgetRouteChange: function () {
+      emitBudgetRouteChange: function() {
         let currentRoute = applicationController.get('currentRouteName');
-        routeChangeListener.features.forEach((feature) => {
+        routeChangeListener.features.forEach(feature => {
           const observe = feature.onBudgetChanged.bind(feature, currentRoute);
           const wrapped = withToolkitError(observe, feature);
           Ember.run.later(wrapped, 0);
         });
-      }
+      },
     });
 
     instance = this;

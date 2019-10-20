@@ -22,7 +22,7 @@ Finally, after properly titling your Pull Request, please fill out the following
 information to provide context to the reviewer and more technical information
 to interested users since this Pull Request will be linked in the release notes.-->
 
-Github Issue (if applicable): #XXX
+GitHub Issue (if applicable): #XXX
 
 Trello Link (if applicable):
 

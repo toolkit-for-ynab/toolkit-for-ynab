@@ -10,11 +10,14 @@ export class ReconciledTextColor extends TransactionGridFeature {
   injectCSS() {
     if (ynabToolKit.options.ReconciledTextColor === '1') {
       return require('./green.css');
-    } else if (ynabToolKit.options.ReconciledTextColor === '2') {
+    }
+    if (ynabToolKit.options.ReconciledTextColor === '2') {
       return require('./lightgray.css');
-    } else if (ynabToolKit.options.ReconciledTextColor === '3') {
+    }
+    if (ynabToolKit.options.ReconciledTextColor === '3') {
       return require('./darkgray.css');
-    } else if (ynabToolKit.options.ReconciledTextColor === '4') {
+    }
+    if (ynabToolKit.options.ReconciledTextColor === '4') {
       return require('./darkgraybg.css');
     }
   }
@@ -78,8 +81,12 @@ export class ReconciledTextColor extends TransactionGridFeature {
       if (content.get('isSubTransaction')) {
         const parentEntityId = content.get('parentEntityId');
 
-        content = content.getEntityManager().transactionsCollection.findItemByEntityId(parentEntityId);
-        isChecked = $(`.${YNAB_GRID_BODY_ROW_CLASS}[data-row-id="${parentEntityId}"]`).hasClass(YNAB_IS_CHECKED_CLASS);
+        content = content
+          .getEntityManager()
+          .transactionsCollection.findItemByEntityId(parentEntityId);
+        isChecked = $(`.${YNAB_GRID_BODY_ROW_CLASS}[data-row-id="${parentEntityId}"]`).hasClass(
+          YNAB_IS_CHECKED_CLASS
+        );
       }
 
       const isReconciled = content.get('cleared') === ynab.constants.TransactionState.Reconciled;

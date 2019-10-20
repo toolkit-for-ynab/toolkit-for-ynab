@@ -1,0 +1,25 @@
+/* base colors */
+$white: #ffffff;
+$black: #000000;
+
+// ordered dark -> light
+$ynab-blue-1: hsl(190, 59%, 14%);
+$ynab-blue-2: hsl(190, 59%, 19%);
+$ynab-blue-3: hsl(190, 59%, 26%);
+$ynab-blue-4: hsl(190, 59%, 33%);
+$ynab-blue-5: hsl(190, 59%, 43%);
+$ynab-blue-6: hsl(190, 59%, 53%);
+$ynab-blue-7: hsl(190, 59%, 73%);
+$ynab-blue-8: hsl(190, 59%, 89%);
+$ynab-blue-9: hsl(190, 59%, 94%);
+$ynab-blue  : $ynab-blue-5;
+
+/* ordered dark -> light */
+$grey-1: hsl(190, 18%, 15%);
+$grey-2: hsl(190, 18%, 25%);
+$grey-3: hsl(190, 18%, 35%);
+$grey-4: hsl(190, 18%, 45%);
+$grey-5: hsl(190, 18%, 55%);
+$grey-6: hsl(190, 18%, 65%);
+$grey-7: hsl(190, 18%, 75%);
+$grey-8: hsl(190, 18%, 85%);

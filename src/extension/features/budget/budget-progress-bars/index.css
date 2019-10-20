@@ -1,3 +1,22 @@
+:root {
+  --tk-color-progress-bar-goal: rgba(22, 163, 54, 0.3);
+  --tk-color-progress-bar-goal-spacing: rgba(0, 0, 0, 0);
+  --tk-color-progress-bar-pacing: rgb(192, 226, 233);
+  --tk-color-progress-bar-pacing-month-progress-indicator: rgb(207, 213, 216);
+  --tk-color-progress-bar-pacing-spacing: rgba(0, 0, 0, 0);
+  --tk-color-progress-bar-pacing-master-spacing: rgb(229, 245, 249);
+}
+
+/* Fix position of head monthly progress indicator by moving the bg slightly to the right and making it shorter. Also move the text back */
+.budget-table-row.is-master-category .budget-table-cell-name {
+  margin-left: 0.5rem;
+  width: 39%;
+}
+.budget-table-cell-name-static-width {
+  margin-left: -0.4rem;
+}
+
+
 .budget-table-row.is-checked,
 .budget-table-row.is-checked .budget-table-cell-name,
 .budget-table-row.is-checked .budget-table-cell-budgeted {

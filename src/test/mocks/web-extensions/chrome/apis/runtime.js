@@ -5,21 +5,21 @@ export class Runtime {
     return {};
   });
 
-  getURL = jest.fn((path) => {
+  getURL = jest.fn(path => {
     return `chrome-extension://${path}`;
   });
 
   onMessage = {
-    addListener: jest.fn((callback) => {
+    addListener: jest.fn(callback => {
       this.listeners.push(callback);
-    })
+    }),
   };
 
   mock = {
-    sendMessage: (message) => {
+    sendMessage: message => {
       const responseSpy = jest.fn();
-      this.listeners.forEach((listener) => listener(message, {}, responseSpy));
+      this.listeners.forEach(listener => listener(message, {}, responseSpy));
       return responseSpy;
-    }
-  }
+    },
+  };
 }

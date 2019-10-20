@@ -1,3 +1,7 @@
 svg.ember-view.svg-icon.edit {
 	visibility: hidden;
 }
+
+.nav-accounts a.nav-account-row > .nav-account-icons.nav-account-icons-left {
+	pointer-events: none;
+}

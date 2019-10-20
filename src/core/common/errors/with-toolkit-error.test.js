@@ -11,7 +11,9 @@ describe('withToolkitError', () => {
   it('should log a warning if the second argument is not a feature instance or feature name', () => {
     const innerFunction = jest.fn();
     const wrappedFunc = withToolkitError(innerFunction, 'doesntexist');
-    expect(console.warn).toHaveBeenCalledWith("Second argument to withToolkitError should either be Feature Class or Feature Name as found in the feature's settings.js file");
+    expect(console.warn).toHaveBeenCalledWith(
+      "Second argument to withToolkitError should either be Feature Class or Feature Name as found in the feature's settings.js file"
+    );
     expect(wrappedFunc).toEqual(expect.any(Function));
   });
 
@@ -57,14 +59,17 @@ describe('logToolkitError', () => {
       exception: mockError,
       featureName: 'mock feature',
       featureSetting: 'false',
-      functionName: 'observe'
+      functionName: 'observe',
     });
 
-    expect(console.error).toHaveBeenCalledWith(`Toolkit Error:
+    expect(console.error).toHaveBeenCalledWith(
+      `Toolkit Error:
   - Feature: mock feature
   - Feature Setting: false
   - Function: observe
-  - Message: mock error`, mockError.stack);
+  - Message: mock error`,
+      mockError.stack
+    );
   });
 
   it('should send the error to the background via post message with omitted IDs', () => {
@@ -74,18 +79,21 @@ describe('logToolkitError', () => {
       exception: mockError,
       featureName: 'mock feature',
       featureSetting: 'false',
-      functionName: 'observe'
+      functionName: 'observe',
     });
 
-    expect(postMessageSpy).toHaveBeenCalledWith({
-      context: {
-        featureName: 'mock feature',
-        featureSetting: 'false',
-        functionName: 'observe',
-        routeName: '/omitted/budget/201802',
-        serializedError: mockError.stack.toString()
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      {
+        context: {
+          featureName: 'mock feature',
+          featureSetting: 'false',
+          functionName: 'observe',
+          routeName: '/omitted/budget/201802',
+          serializedError: mockError.stack.toString(),
+        },
+        type: 'ynab-toolkit-error',
       },
-      type: 'ynab-toolkit-error'
-    }, '*');
+      '*'
+    );
   });
 });

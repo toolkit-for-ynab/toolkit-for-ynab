@@ -8,13 +8,13 @@ const DISABLE_TOOLKIT_FEATURE_KEY = 'DisableToolkit';
 const setup = setupWithLocalStorage((setupOptions = {}) => {
   const options = {
     isToolkitDisabled: false,
-    ...setupOptions
+    ...setupOptions,
   };
 
   mockToolkitStorage.getFeatureSetting.mockReturnValue(Promise.resolve(options.isToolkitDisabled));
 
   return {
-    background: new Background()
+    background: new Background(),
   };
 });
 
@@ -28,9 +28,11 @@ describe('background.js', () => {
       setup({ isToolkitDisabled: false });
 
       await pause();
-      expect(mockToolkitStorage.getFeatureSetting).toHaveBeenCalledWith(DISABLE_TOOLKIT_FEATURE_KEY);
+      expect(mockToolkitStorage.getFeatureSetting).toHaveBeenCalledWith(
+        DISABLE_TOOLKIT_FEATURE_KEY
+      );
       expect(chrome.browserAction.setIcon).toHaveBeenCalledWith({
-        path: expect.stringMatching(/\/\/assets\/images\/icons\/button.png/)
+        path: expect.stringMatching(/\/\/assets\/images\/icons\/button.png/),
       });
     });
 
@@ -38,9 +40,11 @@ describe('background.js', () => {
       setup({ isToolkitDisabled: true });
 
       await pause();
-      expect(mockToolkitStorage.getFeatureSetting).toHaveBeenCalledWith(DISABLE_TOOLKIT_FEATURE_KEY);
+      expect(mockToolkitStorage.getFeatureSetting).toHaveBeenCalledWith(
+        DISABLE_TOOLKIT_FEATURE_KEY
+      );
       expect(chrome.browserAction.setIcon).toHaveBeenCalledWith({
-        path: expect.stringMatching(/\/\/assets\/images\/icons\/button-disabled.png/)
+        path: expect.stringMatching(/\/\/assets\/images\/icons\/button-disabled.png/),
       });
     });
   });
@@ -67,7 +71,7 @@ describe('background.js', () => {
       it('should return an array of keys in localStorage', () => {
         const mockLocalStorage = {
           mockSetting1: true,
-          mockSetting2: false
+          mockSetting2: false,
         };
 
         const { background } = setup({ localStorage: mockLocalStorage });
@@ -77,8 +81,8 @@ describe('background.js', () => {
         const response = chrome.runtime.mock.sendMessage({
           type: 'storage',
           content: {
-            type: 'keys'
-          }
+            type: 'keys',
+          },
         });
 
         expect(response).toHaveBeenCalledWith(Object.keys(localStorage));
@@ -89,7 +93,7 @@ describe('background.js', () => {
       it('should return the value of the key in localStorage', () => {
         const mockLocalStorage = {
           mockSetting1: true,
-          mockSetting2: false
+          mockSetting2: false,
         };
 
         const { background } = setup({ localStorage: mockLocalStorage });
@@ -100,8 +104,8 @@ describe('background.js', () => {
           type: 'storage',
           content: {
             type: 'get',
-            itemName: 'mockSetting1'
-          }
+            itemName: 'mockSetting1',
+          },
         });
 
         expect(response).toHaveBeenCalledWith('true');
@@ -112,7 +116,7 @@ describe('background.js', () => {
       it('should not call the response callback', () => {
         const mockLocalStorage = {
           mockSetting1: true,
-          mockSetting2: false
+          mockSetting2: false,
         };
 
         const { background } = setup({ localStorage: mockLocalStorage });
@@ -122,8 +126,8 @@ describe('background.js', () => {
         const response = chrome.runtime.mock.sendMessage({
           type: 'storage',
           content: {
-            type: 'unexpected'
-          }
+            type: 'unexpected',
+          },
         });
 
         expect(response).not.toHaveBeenCalled();
@@ -139,8 +143,8 @@ describe('background.js', () => {
     const response = chrome.runtime.mock.sendMessage({
       type: 'unexpected',
       content: {
-        type: 'keys'
-      }
+        type: 'keys',
+      },
     });
 
     expect(response).not.toHaveBeenCalled();

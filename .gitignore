@@ -1,6 +1,7 @@
 # workspace files
 .DS_Store
 .project
+.idea
 
 # build/generated files
 node_modules/

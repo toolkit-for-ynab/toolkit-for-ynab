@@ -19,8 +19,11 @@ export class TransactionGridFeature {
   shouldInvoke() {}
 
   // Run any setup your transaction grid feature needs to operate. You want
-  // to make this function idempotant because it is likely to be called many times.
+  // to make this function idempotent because it is likely to be called many times.
   invoke() {}
+
+  // Any logic the feature should perform when the budget changes. (Like re-initialization).
+  onBudgetChanged() {}
 
   // Called during the lifecycle event `didUpdate` in Ember for an Ember Component.
   didUpdate() {}

@@ -21,7 +21,7 @@ function ensureSettingIsValid(name, value) {
 }
 
 export function getUserSettings() {
-  return new Promise(function (resolve) {
+  return new Promise(function(resolve) {
     storage.getStoredFeatureSettings().then(storedFeatureSettings => {
       const settingPromises = allToolkitSettings.map(setting => {
         const legacySettingName = legacySettingMap[setting.name];

@@ -2,14 +2,22 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { TransactionGridFeature } from './feature';
 import { RunningBalance } from './running-balance';
 import { CheckNumbers } from './check-numbers';
+import { SwapClearedFlagged } from './swap-cleared-flagged';
 import { ReconciledTextColor } from './reconciled-text-color';
 import { controllerLookup, componentLookup } from 'toolkit/extension/utils/ember';
 
 export class TransactionGridFeatures extends Feature {
   features = [
     ynabToolKit.options.CheckNumbers ? new CheckNumbers() : new TransactionGridFeature(),
-    ynabToolKit.options.RunningBalance !== '0' ? new RunningBalance() : new TransactionGridFeature(),
-    ynabToolKit.options.ReconciledTextColor !== '0' ? new ReconciledTextColor() : new TransactionGridFeature()
+    ynabToolKit.options.RunningBalance !== '0'
+      ? new RunningBalance()
+      : new TransactionGridFeature(),
+    ynabToolKit.options.ReconciledTextColor !== '0'
+      ? new ReconciledTextColor()
+      : new TransactionGridFeature(),
+    ynabToolKit.options.SwapClearedFlagged
+      ? new SwapClearedFlagged()
+      : new TransactionGridFeature(),
   ];
 
   injectCSS() {
@@ -35,54 +43,56 @@ export class TransactionGridFeatures extends Feature {
     let accountsController = controllerLookup('accounts');
     accountsController.notifyPropertyChange('contentResults');
 
-    return Promise.all(this.features.map((feature) => feature.willInvoke()));
+    return Promise.all(this.features.map(feature => feature.willInvoke()));
   }
 
   // we always want to invoke this feature if it's enabled because we want
   // to at least initialize running balance on all of the accounts
   shouldInvoke() {
-    return this.features.some((feature) => feature.shouldInvoke());
+    return this.features.some(feature => feature.shouldInvoke());
   }
 
   attachWillInsertHandler(componentName) {
     const _this = this;
     const GridComponent = componentLookup(componentName);
 
-    if (GridComponent.__toolkitInitialized) { return; }
+    if (GridComponent.__toolkitInitialized) {
+      return;
+    }
 
     try {
       GridComponent.constructor.reopen({
-        didUpdate: function () {
-          _this.features.forEach((feature) => {
+        didUpdate: function() {
+          _this.features.forEach(feature => {
             if (feature.shouldInvoke()) {
               feature.didUpdate.call(this);
             }
           });
         },
-        willInsertElement: function () {
-          _this.features.forEach((feature) => {
+        willInsertElement: function() {
+          _this.features.forEach(feature => {
             if (feature.shouldInvoke()) {
               feature.willInsertColumn.call(this);
             }
           });
-        }
+        },
       });
     } catch (e) {
       GridComponent.reopen({
-        didUpdate: function () {
-          _this.features.forEach((feature) => {
+        didUpdate: function() {
+          _this.features.forEach(feature => {
             if (feature.shouldInvoke()) {
               feature.didUpdate.call(this);
             }
           });
         },
-        willInsertElement: function () {
-          _this.features.forEach((feature) => {
+        willInsertElement: function() {
+          _this.features.forEach(feature => {
             if (feature.shouldInvoke()) {
               feature.willInsertColumn.call(this);
             }
           });
-        }
+        },
       });
     }
 
@@ -104,7 +114,7 @@ export class TransactionGridFeatures extends Feature {
     }
 
     if ($appendToRows) {
-      this.features.forEach((feature) => {
+      this.features.forEach(feature => {
         if (feature.shouldInvoke()) {
           feature.handleSingleRenderColumn($appendToRows, componentName);
         }
@@ -115,14 +125,12 @@ export class TransactionGridFeatures extends Feature {
   }
 
   invoke() {
-    this.features.forEach((feature) => {
+    this.features.forEach(feature => {
       if (feature.shouldInvoke()) {
         feature.insertHeader();
         feature.invoke();
       }
     });
-
-    ynabToolKit.invokeFeature('AdjustableColumnWidths');
   }
 
   // We're not querying the DOM here because we really want this observe to be as
@@ -161,7 +169,7 @@ export class TransactionGridFeatures extends Feature {
   onRouteChanged(route) {
     if (route.includes('account')) {
       let shouldAnyInvoke = false;
-      this.features.forEach((feature) => {
+      this.features.forEach(feature => {
         if (!feature.shouldInvoke()) {
           feature.cleanup();
         } else {
@@ -173,5 +181,9 @@ export class TransactionGridFeatures extends Feature {
         this.invoke();
       }
     }
+  }
+
+  onBudgetChanged() {
+    this.features.forEach(feature => feature.onBudgetChanged());
   }
 }

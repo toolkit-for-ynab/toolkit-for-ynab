@@ -1,18 +1,14 @@
 {
+  "author": "Toolkit for YNAB",
   "name": "Toolkit for YNAB",
   "description": "UI customizations and tweaks for the web version of YNAB.",
-  "version": "2.8.6",
+  "version": "2.15.1",
   "content_scripts": [
     {
-      "matches": [
-        "http://*.youneedabudget.com/*",
-        "https://*.youneedabudget.com/*"
-      ],
+      "matches": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"],
       "all_frames": true,
-      "run_at": "document_end",
-      "js": [
-        "content-scripts/init.js"
-      ]
+      "run_at": "document_idle",
+      "js": ["content-scripts/init.js"]
     }
   ],
   "icons": {
@@ -22,12 +18,10 @@
     "32": "assets/images/icons/icon32.png",
     "16": "assets/images/icons/button.png"
   },
-  "web_accessible_resources": [
-    "assets/*",
-    "web-accessibles/*"
-  ],
+  "web_accessible_resources": ["assets/*", "web-accessibles/*"],
   "background": {
-    "page": "background/index.html"
+    "page": "background/index.html",
+    "persistent": true
   },
   "homepage_url": "https://github.com/toolkit-for-ynab/toolkit-for-ynab/",
   "options_ui": {
@@ -41,9 +35,5 @@
     "default_title": "Toolkit for YNAB",
     "default_popup": "popup/index.html"
   },
-  "permissions": [
-    "http://*.youneedabudget.com/*",
-    "https://*.youneedabudget.com/*",
-    "storage"
-  ]
+  "permissions": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*", "storage"]
 }

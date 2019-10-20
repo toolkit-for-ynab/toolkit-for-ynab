@@ -1,0 +1,71 @@
+.tk-totals-table {
+  width: fit-content;
+
+  &__child-row,
+  &__child-summary-row,
+  &__title-row--collapsed {
+    background-color: white;
+
+    &:hover {
+      background-color: aliceblue;
+    }
+  }
+
+  &__header-row,
+  &__footer-row {
+    font-size: 0.85rem;
+
+    &--expense {
+      background-color: #ffecea;
+    }
+
+    &--income {
+      background-color: #edf5e6;
+    }
+
+    .tk-monthly-totals-row {
+      &__title-cell {
+        padding-left: 0.5rem;
+      }
+    }
+  }
+
+  &__title-row {
+    border-top: 1px dotted #d1d1d1;
+
+    .tk-monthly-totals-row {
+      &__title-cell {
+        padding-left: 0.5rem;
+      }
+
+      &__data-cell {
+        font-weight: bold;
+      }
+    }
+  }
+
+  &__child-row {
+    border-top: 1px dotted #d1d1d1;
+
+    .tk-monthly-totals-row {
+      &__title-cell {
+        font-weight: normal;
+        padding-left: 1rem;
+      }
+    }
+  }
+
+  &__child-summary-row {
+    border-top: 1px solid #000000;
+
+    .tk-monthly-totals-row {
+      &__title-cell {
+        padding-left: 1rem;
+      }
+
+      &__data-cell {
+        font-weight: bold;
+      }
+    }
+  }
+}

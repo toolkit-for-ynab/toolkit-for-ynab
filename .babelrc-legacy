@@ -1,0 +1,13 @@
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "corejs": "2",
+      "modules": "umd",
+      "useBuiltIns": "usage",
+      "targets": {
+        "chrome": "58",
+        "firefox": "45"
+      }
+    }]
+  ]
+}

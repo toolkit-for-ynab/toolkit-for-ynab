@@ -2,20 +2,13 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Jest tests",
+      "name": "Debug Jest Tests",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
-      "args": [
-        "--runInBand",
-        "--no-cache"
-      ],
-      "runtimeArgs": [
-        "--inspect-brk"
-      ],
-      "cwd": "${workspaceRoot}",
-      "protocol": "inspector",
-      "console": "integratedTerminal"
+      "runtimeArgs": ["--inspect-brk", "${workspaceRoot}/node_modules/.bin/jest", "--runInBand"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229
     }
   ]
 }

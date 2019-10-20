@@ -1,29 +1,78 @@
-/* row */
-.budget-table-row[data-toolkit-goal-underfunded] .budget-table-cell-available .ynab-new-budget-available-number {
-	background-color: #009cc2;
-}
-.budget-table-row[data-toolkit-goal-underfunded] .budget-table-cell-available .ynab-new-budget-available-number:hover {
-	background-color: #1f8ca7;
+/* We set the colors as variables, to be able to modify them, just in case */
+:root {
+  --tk-color-goal-warning-underfunded: #c9e1fd;
+  --tk-color-goal-warning-underfunded-hover: #a6cefc;
+  --tk-color-goal-warning-underfunded-message: #d0ecf5;
+  --tk-color-goal-warning-underfunded-text: #445c78;
 }
 
-/* inspector */
-.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-overview-available dt {
-	color: #009cc2;
+/* row */
+.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]):not([tk-spending-goal])
+  .budget-table-cell-available
+  .ynab-new-budget-available-number:not(.negative):not(.credit) {
+  color: var(--tk-color-goal-warning-underfunded-text);
+  background-color: var(--tk-color-goal-warning-underfunded);
 }
-.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .ynab-new-budget-available-number {
-	background: #009cc2;
-}
-.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-message {
-  background-color: #d0ecf5;
-}
-.budget-inspector[data-toolkit-goal-underfunded] .budget-inspector-category-overview .inspector-message .inspector-message-arrow {
-  border-bottom-color: #d0ecf5;
+.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]):not([tk-spending-goal])
+  .budget-table-cell-available
+  .ynab-new-budget-available-number:not(.negative):not(.credit):hover {
+  background-color: var(--tk-color-goal-warning-underfunded-hover);
 }
 
 /* goal */
-.budget-inspector[data-toolkit-goal-underfunded] .goal-progress-chart .inner-circle {
-	stroke: #43aecb;
+.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]):not([tk-spending-goal])
+  .budget-table-cell-available
+  .ynab-new-budget-available-number:not(.negative):not(.credit)
+  .icon-goal
+  circle.inner {
+  fill: var(--tk-color-goal-warning-underfunded-text);
 }
-.budget-inspector[data-toolkit-goal-underfunded] .goal-progress-chart .outer-circle {
-	fill: #1f8ca7;
+.budget-table-row[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available]):not([tk-spending-goal])
+  .budget-table-cell-available
+  .ynab-new-budget-available-number:not(.negative):not(.credit)
+  .icon-goal
+  circle.outer {
+  stroke: var(--tk-color-goal-warning-underfunded-text);
+}
+
+/* inspector */
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available])
+  .budget-inspector-category-overview
+  .inspector-overview-available
+  dt {
+  color: var(--tk-color-goal-warning-underfunded-text);
+}
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available])
+  .budget-inspector-category-overview
+  .ynab-new-budget-available-number {
+  color: var(--tk-color-goal-warning-underfunded-text);
+  background: var(--tk-color-goal-warning-underfunded);
+}
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available])
+  .budget-inspector-category-overview
+  .inspector-message {
+  background: var(--tk-color-goal-warning-underfunded-message);
+}
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available])
+  .budget-inspector-category-overview
+  .inspector-message
+  .inspector-message-arrow {
+  border-bottom-color: var(--tk-color-goal-warning-underfunded-message);
+}
+
+/* Fix background of available marker, where span overrides the background color */
+.inspector-overview-available span {
+  background: transparent !important;
+}
+
+/* goal */
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available])
+  .icon-goal
+  circle.inner {
+  fill: var(--tk-color-goal-warning-underfunded-text);
+}
+.budget-inspector[data-toolkit-goal-underfunded]:not([data-toolkit-negative-available])
+  .icon-goal
+  circle.outer {
+  stroke: var(--tk-color-goal-warning-underfunded-text);
 }

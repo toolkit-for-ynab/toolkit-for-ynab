@@ -4,7 +4,8 @@ import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 const HIDEIMAGE = 'toolkit-modal-item-hide-image';
 const BUTTONDISABLED = 'button-disabled';
-const IMAGECLASSES = 'ember-view toolkit-menu-item toolkit-modal-item-hide-image flaticon stroke checkmark-1';
+const IMAGECLASSES =
+  'ember-view toolkit-menu-item toolkit-modal-item-hide-image flaticon stroke checkmark-1';
 
 export class ResizeInspector extends Feature {
   injectCSS() {
@@ -27,58 +28,127 @@ export class ResizeInspector extends Feature {
 
   addResizeButton() {
     if (!$('#toolkitResizeInspector').length) {
-      let buttonText = ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.InspectorWidth'] || 'Inspector Width';
-      $('<button>', { id: 'toolkitResizeInspector', class: 'ember-view button', style: 'float: right' })
+      let buttonText =
+        (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.InspectorWidth']) ||
+        'Inspector Width';
+      let $button = $('<button>', {
+        id: 'toolkitResizeInspector',
+        class: 'ember-view button',
+      })
         .append($('<i>', { class: 'ember-view flaticon stroke gear-1' }))
         .append(' ' + buttonText)
         .click(() => {
           this.showResizeModal();
-        })
-        .insertAfter('.undo-redo-container');
+        });
+      if ($('.toolkit-budget-toolbar-buttons').length === 0) {
+        $('.budget-toolbar').append('<div class="toolkit-budget-toolbar-buttons"></div>');
+      }
+      $('.toolkit-budget-toolbar-buttons').append($button);
     }
   }
 
   showResizeModal() {
     let _this = this;
-    let btnLeft = $('.budget-toolbar').outerWidth() + $('#toolkitResizeInspector').outerWidth() + 29;
+    let btnLeft =
+      $('.budget-toolbar').outerWidth() +
+      $('.sidebar').outerWidth() -
+      $('#toolkitResizeInspector').outerWidth();
     let btnTop = $('.budget-toolbar').outerHeight() + $('.budget-header-flexbox').outerHeight() + 8;
-    let $modal = $('<div>', { id: 'toolkitInspectorODiv', class: 'ember-view' })
-      .append($('<div>', { id: 'toolkitInspectorModal', class: 'ynab-u modal-popup modal-resize-inspector ember-view modal-overlay active' })
-        .append($('<div>', { id: 'toolkitInspectorIDiv', class: 'modal', style: 'left:' + btnLeft + 'px; top: ' + btnTop + 'px;' })
-          .append($('<ul>', { class: 'modal-list' })
-            .append($('<li>')
-              .append($('<button>', { 'data-inspector-size': '0', class: 'button-list' })
-                .click(function () {
-                  _this.setProperties($(this).data('inspector-size'));
-                })
-                .append($('<i>', { class: IMAGECLASSES }))
-                .append('Default ')))
-            .append($('<li>')
-              .append($('<button>', { 'data-inspector-size': '1', class: 'button-list' })
-                .click(function () {
-                  _this.setProperties($(this).data('inspector-size'));
-                })
-                .append($('<i>', { class: IMAGECLASSES }))
-                .append('25% ')))
-            .append($('<li>')
-              .append($('<button>', { 'data-inspector-size': '2', class: 'button-list' })
-                .click(function () {
-                  _this.setProperties($(this).data('inspector-size'));
-                })
-                .append($('<i>', { class: IMAGECLASSES }))
-                .append('20% ')))
-            .append($('<li>')
-              .append($('<button>', { 'data-inspector-size': '3', class: 'button-list' })
-                .click(function () {
-                  _this.setProperties($(this).data('inspector-size'));
-                })
-                .append($('<i>', { class: IMAGECLASSES }))
-                .append('15% '))))
-          .append($('<div>', { class: 'modal-arrow', style: 'position:absolute;width: 0;height: 0;bottom: 100%;left: 37px;border: solid transparent;border-color: transparent;border-width: 15px;border-bottom-color: #fff' }))));
+    let $modal = $('<div>', {
+      id: 'toolkitInspectorODiv',
+      class: 'ember-view',
+    }).append(
+      $('<div>', {
+        id: 'toolkitInspectorModal',
+        class: 'ynab-u modal-popup modal-resize-inspector ember-view modal-overlay active',
+      }).append(
+        $('<div>', {
+          id: 'toolkitInspectorIDiv',
+          class: 'modal',
+          style: 'left:' + btnLeft + 'px; top: ' + btnTop + 'px;',
+        })
+          .append(
+            $('<ul>', { class: 'modal-list' })
+              .append(
+                $('<li>').append(
+                  $('<button>', {
+                    'data-inspector-size': '0',
+                    class: 'button-list',
+                  })
+                    .click(function() {
+                      _this.setProperties($(this).data('inspector-size'));
+                    })
+                    .append($('<i>', { class: IMAGECLASSES }))
+                    .append('Default ')
+                )
+              )
+              .append(
+                $('<li>').append(
+                  $('<button>', {
+                    'data-inspector-size': '1',
+                    class: 'button-list',
+                  })
+                    .click(function() {
+                      _this.setProperties($(this).data('inspector-size'));
+                    })
+                    .append($('<i>', { class: IMAGECLASSES }))
+                    .append('25% ')
+                )
+              )
+              .append(
+                $('<li>').append(
+                  $('<button>', {
+                    'data-inspector-size': '2',
+                    class: 'button-list',
+                  })
+                    .click(function() {
+                      _this.setProperties($(this).data('inspector-size'));
+                    })
+                    .append($('<i>', { class: IMAGECLASSES }))
+                    .append('20% ')
+                )
+              )
+              .append(
+                $('<li>').append(
+                  $('<button>', {
+                    'data-inspector-size': '3',
+                    class: 'button-list',
+                  })
+                    .click(function() {
+                      _this.setProperties($(this).data('inspector-size'));
+                    })
+                    .append($('<i>', { class: IMAGECLASSES }))
+                    .append('15% ')
+                )
+              )
+              .append(
+                $('<li>').append(
+                  $('<button>', {
+                    'data-inspector-size': '4',
+                    class: 'button-list',
+                  })
+                    .click(function() {
+                      _this.setProperties($(this).data('inspector-size'));
+                    })
+                    .append($('<i>', { class: IMAGECLASSES }))
+                    .append('0% ')
+                )
+              )
+          )
+          .append(
+            $('<div>', {
+              class: 'modal-arrow',
+              style:
+                'position:absolute;width: 0;height: 0;bottom: 100%;left: 37px;border: solid transparent;border-color: transparent;border-width: 15px;border-bottom-color: #fff',
+            })
+          )
+      )
+    );
 
     // Handle dismissal of modal via the ESC key
-    $(document).one('keydown', (e) => {
-      if (e.keyCode === 27) { // ESC key?
+    $(document).one('keydown', e => {
+      if (e.keyCode === 27) {
+        // ESC key?
         $(document).off('click.toolkitResizeInspector');
         $('#toolkitInspectorODiv').remove();
       }
@@ -86,7 +156,7 @@ export class ResizeInspector extends Feature {
 
     // Handle mouse clicks outside the drop-down modal. Namespace the
     // click event so we can remove our specific instance.
-    $(document).on('click.toolkitResizeInspector', (e) => {
+    $(document).on('click.toolkitResizeInspector', e => {
       if (e.target.id === 'toolkitInspectorModal') {
         $(document).off('click.toolkitResizeInspector');
         $('#toolkitInspectorODiv').remove();
@@ -107,13 +177,17 @@ export class ResizeInspector extends Feature {
   setProperties(width) {
     let ele = '.budget-content';
 
-    if (YNABFEATURES.get('categories-new-style') === undefined || YNABFEATURES.get('categories-new-style') === true) {
+    if (
+      YNABFEATURES.get('categories-new-style') === undefined ||
+      YNABFEATURES.get('categories-new-style') === true
+    ) {
       ele = '.budget-table-container';
     }
 
     if ($(ele).length) {
       let contentWidth = '67%';
       let inspectorWidth = '33%';
+      let inspectorVisibility = 'visible';
 
       if (width === 1) {
         contentWidth = '75%';
@@ -124,10 +198,17 @@ export class ResizeInspector extends Feature {
       } else if (width === 3) {
         contentWidth = '85%';
         inspectorWidth = '15%';
+      } else if (width === 4) {
+        contentWidth = '100%';
+        inspectorVisibility = 'hidden';
       }
 
       $(ele)[0].style.setProperty('--toolkit-content-width', contentWidth);
       $('.budget-inspector')[0].style.setProperty('--toolkit-inspector-width', inspectorWidth);
+      $('.budget-inspector')[0].style.setProperty(
+        '--toolkit-inspector-visibility',
+        inspectorVisibility
+      );
 
       // Save the users current selection for future page loads.
       setToolkitStorageKey('inspector-width', width);

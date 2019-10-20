@@ -4,5 +4,5 @@ module.exports = {
   default: false,
   section: 'accounts',
   title: 'Larger Clickable Area for Icons',
-  description: 'Makes the uncleared, cleared and reconciled icons easier to select.'
+  description: 'Makes the uncleared, cleared and reconciled icons easier to select.',
 };

@@ -1,44 +1,40 @@
 const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
+const request = require('request');
 
 const workspaceRoot = path.join(__dirname, '..');
-const extensionPath = path.join(workspaceRoot, 'dist');
+const extensionDistPath = path.join(workspaceRoot, 'dist');
 
-const uploadToWebStore = async () => {
-  // Are we on the correct branch?
-  if (process.env.TRAVIS_BRANCH !== 'beta') {
-    console.log(`TRAVIS_BRANCH is '${process.env.TRAVIS_BRANCH}'.`);
-    console.log('Either we\'re on the wrong branch or we\'re not on Travis. Either way, no need to publish.');
-    process.exit(0);
-  }
-
-  // Validate that we have all the config we need.
-  if (!process.env.CHROME_EXTENSION_ID) {
-    console.error('The CHROME_EXTENSION_ID env var is required.');
+function getEnvironmentOrExit(variable) {
+  if (!process.env[variable]) {
+    console.log(`The ${variable} env var is required.`);
     process.exit(1);
   }
-  if (!process.env.CHROME_CLIENT_ID) {
-    console.error('The CHROME_CLIENT_ID env var is required.');
-    process.exit(2);
-  }
-  if (!process.env.CHROME_CLIENT_SECRET) {
-    console.error('The CHROME_CLIENT_SECRET env var is required.');
-    process.exit(3);
-  }
-  if (!process.env.CHROME_REFRESH_TOKEN) {
-    console.error('The CHROME_REFRESH_TOKEN env var is required.');
-    process.exit(4);
-  }
 
+  return process.env[variable];
+}
+
+function getEnvironmentVariables() {
+  return {
+    travisBranch: getEnvironmentOrExit('TRAVIS_BRANCH'),
+    chromeExtensionId: getEnvironmentOrExit('CHROME_EXTENSION_ID'),
+    chromeClientId: getEnvironmentOrExit('CHROME_CLIENT_ID'),
+    chromeClientSecret: getEnvironmentOrExit('CHROME_CLIENT_SECRET'),
+    chromeRefreshToken: getEnvironmentOrExit('CHROME_REFRESH_TOKEN'),
+    sentryAuthToken: getEnvironmentOrExit('SENTRY_AUTH_TOKEN'),
+  };
+}
+
+async function uploadToWebStore(environmentVariables) {
   // Look for our zip file to upload
-  let results = glob.sync(path.join(extensionPath, '*.zip'));
+  let results = glob.sync(path.join(extensionDistPath, '*.zip'));
 
   // Remove our 'source' zip.
   results = results.filter(result => result.indexOf('source') < 0);
 
   if (results.length < 1) {
-    console.error('Found no extension to upload, ensure you\'ve built first.');
+    console.error("Found no extension to upload, ensure you've built first.");
     process.exit(5);
   } else if (results.length > 1) {
     console.error('Found multiple extensions to upload. Quitting.', results);
@@ -47,10 +43,10 @@ const uploadToWebStore = async () => {
 
   // Ok, it looks like we have what we need. Let's go!
   const webStore = require('chrome-webstore-upload')({
-    extensionId: process.env.CHROME_EXTENSION_ID,
-    clientId: process.env.CHROME_CLIENT_ID,
-    clientSecret: process.env.CHROME_CLIENT_SECRET,
-    refreshToken: process.env.CHROME_REFRESH_TOKEN
+    extensionId: environmentVariables.chromeExtensionId,
+    clientId: environmentVariables.chromeClientId,
+    clientSecret: environmentVariables.chromeClientSecret,
+    refreshToken: environmentVariables.chromeRefreshToken,
   });
 
   const extension = fs.createReadStream(results[0]);
@@ -80,6 +76,81 @@ const uploadToWebStore = async () => {
   }
 
   console.log('Successfully uploaded and published extension.');
-};
+}
 
-uploadToWebStore();
+async function uploadSourcemapsToSentry({ sentryAuthToken }) {
+  console.log(sentryAuthToken);
+  const version = require(`${extensionDistPath}/extension/manifest.json`).version;
+
+  try {
+    await request({
+      json: {
+        projects: ['toolkit-for-ynab'],
+        version: `${version}`,
+      },
+      headers: {
+        Authorization: `Bearer ${sentryAuthToken}`,
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      url: 'https://sentry.io/api/0/organizations/toolkit-for-ynab/releases/',
+    });
+
+    console.log(`Release: ${version} created`);
+  } catch (error) {
+    console.log(`Failed to create release for ${version}.\n`, error);
+  }
+
+  glob(`${extensionDistPath}/**/*.{js,map}`, async (_, files) => {
+    try {
+      await Promise.all(
+        files.map(filePath => {
+          return new Promise((resolve, reject) => {
+            request(
+              {
+                formData: {
+                  file: fs.createReadStream(filePath),
+                  name: filePath.replace(`${extensionDistPath}/extension/`, '~/'),
+                },
+                headers: {
+                  Authorization: `Bearer ${sentryAuthToken}`,
+                  'Content-Type': 'multipart/form-data',
+                },
+                method: 'POST',
+                url: `https://sentry.io/api/0/projects/toolkit-for-ynab/toolkit-for-ynab/releases/${version}/files/`,
+              },
+              error => {
+                if (error) {
+                  console.log(`${filePath}: failure`);
+                  return reject();
+                }
+
+                console.log(`${filePath}: success`);
+                resolve();
+              }
+            );
+          });
+        })
+      );
+    } catch (error) {
+      console.log('Error uploading files: ', error);
+    }
+  });
+}
+
+async function publishForChrome() {
+  const environmentVariables = getEnvironmentVariables();
+  // Are we on the correct branch?
+  if (environmentVariables.travisBranch !== 'beta') {
+    console.log(`TRAVIS_BRANCH is '${environmentVariables.travisBranch}'.`);
+    console.log(
+      "Either we're on the wrong branch or we're not on Travis. Either way, no need to publish."
+    );
+    process.exit(0);
+  }
+
+  await uploadToWebStore(environmentVariables);
+  await uploadSourcemapsToSentry(environmentVariables);
+}
+
+publishForChrome();

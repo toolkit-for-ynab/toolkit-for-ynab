@@ -20,7 +20,8 @@
 	left: 40px;
 }
 
-.layout.collapsed .content .scroll-wrap {
+.layout.collapsed .content .scroll-wrap,
+.layout.collapsed .content .register-flex-columns {
 	width: inherit;
 	min-width: 838px;
 }
@@ -45,6 +46,10 @@
 .ynabtk-nav-link-collapsed {
   margin-left: 1rem !important;
   margin-right: 1rem !important;
+}
+
+.tk-collapse-toggle-text {
+  margin: 0 !important;
 }
 
 .nav-main > li > a {

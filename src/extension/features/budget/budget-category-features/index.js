@@ -10,14 +10,13 @@ export const CategoryAttributes = {
   GoalUnderFunded: 'toolkit-goal-underfunded',
   NegativeAvailable: 'toolkit-negative-available',
   OverSpent: 'toolkit-overspent',
-  UpcomingTransactions: 'toolkit-upcoming-transactions'
+  UpcomingTransactions: 'toolkit-upcoming-transactions',
 };
 
 export class BudgetCategoryFeatures extends Feature {
-  shouldCreateGoalContainer = (
+  shouldCreateGoalContainer =
     ynabToolKit.options.GoalIndicator ||
-    ynabToolKit.options.DisplayTargetGoalAmount !== DisplayGoalAmountSettings.Off
-  );
+    ynabToolKit.options.DisplayTargetGoalAmount !== DisplayGoalAmountSettings.Off;
 
   injectCSS() {
     if (this.shouldCreateGoalContainer) {
@@ -25,16 +24,21 @@ export class BudgetCategoryFeatures extends Feature {
     }
   }
 
-  shouldInvoke() { return isCurrentRouteBudgetPage(); }
+  shouldInvoke() {
+    return isCurrentRouteBudgetPage();
+  }
 
   invoke() {
     this.ensureGoalContainer();
 
     const categories = [...document.getElementsByClassName('budget-table-row')];
-    categories.forEach((element) => {
-      const { category } = getEmberView(element.id);
+    categories.forEach(element => {
+      const category = getEmberView(element.id, 'category');
       if (category) {
-        const { isMasterCategory, subCategory } = category.getProperties('isMasterCategory', 'subCategory');
+        const { isMasterCategory, subCategory } = category.getProperties(
+          'isMasterCategory',
+          'subCategory'
+        );
         if (!isMasterCategory && subCategory) {
           const attributes = getCategoryAttributes(category);
           applyCategoryAttributes(element, attributes);
@@ -83,40 +87,52 @@ export class BudgetCategoryFeatures extends Feature {
     if (this.shouldCreateGoalContainer) {
       const rowsExistQuery = `.budget-table-row:not(.budget-table-hidden-row) .${GOAL_TABLE_CELL_CLASSNAME}`;
       if (document.querySelectorAll(rowsExistQuery).length === 0) {
-        $('.budget-table-row .budget-table-cell-name')
-          .append($('<div>', { class: GOAL_TABLE_CELL_CLASSNAME }));
+        $('.budget-table-row .budget-table-cell-name').append(
+          $('<div>', { class: GOAL_TABLE_CELL_CLASSNAME })
+        );
       }
 
       const headerExistsQuery = `.budget-table-header .${GOAL_TABLE_CELL_CLASSNAME}`;
       if (!document.querySelector(headerExistsQuery)) {
-        $('.budget-table-header .budget-table-cell-name')
-          .append($('<div>', { class: GOAL_TABLE_CELL_CLASSNAME }).text('GOAL'));
+        $('.budget-table-header .budget-table-cell-name').append(
+          $('<div>', { class: GOAL_TABLE_CELL_CLASSNAME }).text('GOAL')
+        );
       }
     }
   }
 }
 
 function getCategoryAttributes(category) {
-  const { available, goalType, goalTarget } = category.getProperties('available', 'goalTarget', 'goalType');
-  const upcomingTransactionsCount = category.get('monthlySubCategoryBudgetCalculation.upcomingTransactionsCount');
+  const { available, goalType, goalTarget } = category.getProperties(
+    'available',
+    'goalTarget',
+    'goalType'
+  );
+  const upcomingTransactionsCount = category.get(
+    'monthlySubCategoryBudgetCalculation.upcomingTransactionsCount'
+  );
 
   let targetBalanceUnderFunded = false;
-  if (ynabToolKit.options.TargetBalanceWarning && goalType === ynab.constants.SubCategoryGoalType.TargetBalance) {
+  if (
+    ynabToolKit.options.TargetBalanceWarning &&
+    goalType === ynab.constants.SubCategoryGoalType.TargetBalance
+  ) {
     targetBalanceUnderFunded = category.get('goalOverallLeft') > 0;
   }
 
   return {
     [CategoryAttributes.GoalTarget]: !!goalType && goalTarget,
     [CategoryAttributes.GoalType]: !!goalType && goalType,
-    [CategoryAttributes.GoalUnderFunded]: targetBalanceUnderFunded || category.get('isGoalUnderFunded'),
+    [CategoryAttributes.GoalUnderFunded]:
+      targetBalanceUnderFunded || category.get('isGoalUnderFunded'),
     [CategoryAttributes.NegativeAvailable]: available < 0,
     [CategoryAttributes.OverSpent]: category.get('isOverSpent'),
-    [CategoryAttributes.UpcomingTransactions]: upcomingTransactionsCount > 0
+    [CategoryAttributes.UpcomingTransactions]: upcomingTransactionsCount > 0,
   };
 }
 
 function applyCategoryAttributes(element, attributes) {
-  Object.keys(attributes).forEach((key) => {
+  Object.keys(attributes).forEach(key => {
     if (typeof attributes[key] === 'boolean' && attributes[key] === false) {
       element.removeAttribute(`data-${key}`);
     } else {

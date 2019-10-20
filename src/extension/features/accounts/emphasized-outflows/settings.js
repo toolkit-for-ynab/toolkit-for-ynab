@@ -4,5 +4,5 @@ module.exports = {
   default: false,
   section: 'accounts',
   title: 'Emphasize Outflows',
-  description: 'Make values in the outflow column red and put them in parenthesis.'
+  description: 'Make values in the outflow column red and put them in parenthesis.',
 };

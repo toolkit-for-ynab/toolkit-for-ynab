@@ -12,8 +12,6 @@ export class RightClickToEdit extends Feature {
     return isCurrentRouteAccountsPage();
   }
 
-  // Supporting functions,
-  // or variables, etc
   displayContextMenu(event) {
     let $element = $(this);
     // check for a right click on a split transaction
@@ -33,15 +31,22 @@ export class RightClickToEdit extends Feature {
 
     // determine if modal needs to be positioned above or below clicked element
     let height = $('.modal-account-edit-transaction-list .modal').outerHeight();
-    let below = (event.pageY + height) > $(window).height() ? false : true; // eslint-disable-line no-unneeded-ternary
-    let offset = $element.offset(); // move context menu
+    let below = event.pageY + height > $(window).height() ? false : true; // eslint-disable-line no-unneeded-ternary
 
-    if (below) { // position below
+    // sometimes, offset is undefined -- if this is the case, just show the normal un-positioned edit menu
+    let offset = $element.offset(); // move context menu
+    if (!offset) {
+      return;
+    }
+
+    if (below) {
+      // position below
       $('.modal-account-edit-transaction-list .modal')
         .addClass('modal-below')
         .css('left', event.pageX - 115)
         .css('top', offset.top + 41);
-    } else { // position above
+    } else {
+      // position above
       $('.modal-account-edit-transaction-list .modal')
         .addClass('modal-above')
         .css('left', event.pageX - 115)
@@ -58,7 +63,7 @@ export class RightClickToEdit extends Feature {
   invoke() {
     this.isCurrentlyRunning = true;
 
-    Ember.run.next(this, function () {
+    Ember.run.next(this, function() {
       $('.ynab-grid').off('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
       $('.ynab-grid').on('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
 

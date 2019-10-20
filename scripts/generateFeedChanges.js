@@ -6,14 +6,18 @@ const LEGACY_FEATURES_DIR = path.join('src', 'extension', 'legacy', 'features');
 const FEED_CHANGES_PATH = path.join(LEGACY_FEATURES_DIR, 'act-on-change', 'feedChanges.js');
 
 glob(`${LEGACY_FEATURES_DIR}/*/**/main.js`, (error, files) => {
-  if (error) { process.exit(1); }
+  if (error) {
+    process.exit(1);
+  }
 
-  const featureNamePromises = files.map((file) => {
+  const featureNamePromises = files.map(file => {
     return new Promise((resolve, reject) => {
       fs.readFile(file, 'utf8', (error, fileData) => {
         if (error) return reject(error);
 
-        const findString = fileData.match(/^[\s]*(ynabToolKit\..+?)[\s]*=[\s]*\([\s]*function[\s]*\([\s]*\)[\s]*\{.*$/m);
+        const findString = fileData.match(
+          /^[\s]*(ynabToolKit\..+?)[\s]*=[\s]*\([\s]*function[\s]*\([\s]*\)[\s]*\{.*$/m
+        );
 
         if (findString && findString[1]) {
           resolve(findString[1]);
@@ -24,8 +28,8 @@ glob(`${LEGACY_FEATURES_DIR}/*/**/main.js`, (error, files) => {
     });
   });
 
-  Promise.all(featureNamePromises).then((featureNames) => {
-    const features = featureNames.filter((name) => name && !name.includes('shared'));
+  Promise.all(featureNamePromises).then(featureNames => {
+    const features = featureNames.filter(name => name && !name.includes('shared'));
     writeFeedChanges(features);
   });
 });
@@ -44,12 +48,14 @@ function writeFeedChanges(features) {
 (function poll() {
   if (typeof ynabToolKit.shared !== 'undefined') {
     ynabToolKit.shared.feedChanges = function (changes) {
-      ${features.map((feature, index) => (
-    `${index > 0 ? '      ' : ''}try {
+      ${features
+        .map(
+          (feature, index) =>
+            `${index > 0 ? '      ' : ''}try {
         if (changes.changedNodes) ${feature}.observe(changes.changedNodes);
-        if (changes.routeChanged) ${feature}.onRouteChanged(changes.routeChanged);
       } catch (err) { /* ignore */ }`
-  )).join('\n\n')}
+        )
+        .join('\n\n')}
     };
   } else if (typeof Ember !== 'undefined') {
     Ember.run.next(poll, 250);
@@ -59,7 +65,7 @@ function writeFeedChanges(features) {
 }());
 `;
 
-  fs.writeFile(FEED_CHANGES_PATH, fileContents, (error) => {
+  fs.writeFile(FEED_CHANGES_PATH, fileContents, error => {
     if (error) process.exit(1);
     process.exit();
   });

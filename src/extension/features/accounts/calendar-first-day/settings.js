@@ -12,6 +12,6 @@ module.exports = {
     { name: 'Wednesday', value: '3' },
     { name: 'Thursday', value: '4' },
     { name: 'Friday', value: '5' },
-    { name: 'Saturday', value: '6' }
-  ]
+    { name: 'Saturday', value: '6' },
+  ],
 };

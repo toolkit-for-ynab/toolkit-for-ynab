@@ -7,24 +7,34 @@ import { Collections } from 'toolkit/extension/utils/collections';
 
 export class DaysOfBuffering extends Feature {
   _lookbackMonths = parseInt(ynabToolKit.options.DaysOfBufferingHistoryLookup);
+
   _lookbackDays = this._lookbackMonths * 30;
 
-  injectCSS() { return require('./index.css'); }
+  injectCSS() {
+    return require('./index.css');
+  }
 
   shouldInvoke() {
     return isCurrentRouteBudgetPage() && !document.querySelector('toolkit-days-of-buffering');
   }
 
   invoke() {
-    const eligibleTransactions = getEntityManager().getAllTransactions().filter(this._eligibleTransactionFilter);
-    const onBudgetBalance = Collections.accountsCollection.getOnBudgetAccounts().reduce((reduced, current) => {
-      const calculation = current.getAccountCalculation();
-      if (calculation && !calculation.getAccountIsTombstone()) {
-        reduced += calculation.getBalance();
-      }
+    const eligibleTransactions = getEntityManager()
+      .getAllTransactions()
+      .filter(this._eligibleTransactionFilter);
+    const onBudgetAccounts = Collections.accountsCollection.getOnBudgetAccounts();
 
-      return reduced;
-    }, 0);
+    let onBudgetBalance = 0;
+    if (onBudgetAccounts) {
+      onBudgetBalance = onBudgetAccounts.reduce((reduced, current) => {
+        const calculation = current.getAccountCalculation();
+        if (calculation && !calculation.getAccountIsTombstone()) {
+          reduced += calculation.getBalance();
+        }
+
+        return reduced;
+      }, 0);
+    }
 
     const calculation = this._calculateDaysOfBuffering(onBudgetBalance, eligibleTransactions);
     this._updateDisplay(calculation);
@@ -41,29 +51,47 @@ export class DaysOfBuffering extends Feature {
     const daysOfBufferingContainer = document.querySelector('.toolkit-days-of-buffering');
     let $displayElement = $(daysOfBufferingContainer);
     if (!daysOfBufferingContainer) {
-      $displayElement = $('<div>', { class: 'budget-header-item budget-header-days toolkit-days-of-buffering' })
-        .append($('<div>', {
-          class: 'budget-header-days-age',
-          title: l10n('budget.dob.tooltip', 'Don\'t like AoM? Try this out instead!')
-        }))
-        .append($('<div>', {
-          class: 'budget-header-days-label',
-          text: l10n('budget.dob.title', 'Days of Buffering'),
-          title: l10n('budget.dob.tooltip', 'Don\'t like AoM? Try this out instead!')
-        }));
+      $displayElement = $('<div>', {
+        class: 'budget-header-item budget-header-days toolkit-days-of-buffering',
+      })
+        .append(
+          $('<div>', {
+            class: 'budget-header-days-age',
+            title: l10n('budget.dob.tooltip', "Don't like AoM? Try this out instead!"),
+          })
+        )
+        .append(
+          $('<div>', {
+            class: 'budget-header-days-label',
+            text: l10n('budget.dob.title', 'Days of Buffering'),
+            title: l10n('budget.dob.tooltip', "Don't like AoM? Try this out instead!"),
+          })
+        );
 
       $('.budget-header-flexbox').append($displayElement);
     }
 
     if (calculation.notEnoughDates) {
       $('.budget-header-days-age', $displayElement).text('???');
-      $('.budget-header-days-age', $displayElement).attr('title', l10n('budget.dob.noHistory', 'Your budget history is less than 15 days. Go on with YNAB a while.'));
+      $('.budget-header-days-age', $displayElement).attr(
+        'title',
+        l10n(
+          'budget.dob.noHistory',
+          'Your budget history is less than 15 days. Go on with YNAB a while.'
+        )
+      );
     } else {
-      const dayText = daysOfBuffering === 1.0 ? l10n('budget.ageOfMoneyDays.one', 'day') : l10n('budget.ageOfMoneyDays.other', 'days');
+      const dayText =
+        daysOfBuffering === 1.0
+          ? l10n('budget.ageOfMoneyDays.one', 'day')
+          : l10n('budget.ageOfMoneyDays.other', 'days');
       $('.budget-header-days-age', $displayElement).text(`${daysOfBuffering} ${dayText}`);
-      $('.budget-header-days-age', $displayElement).attr('title', `${l10n('budget.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}
+      $('.budget-header-days-age', $displayElement).attr(
+        'title',
+        `${l10n('budget.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}
 ${l10n('budget.dob.days', 'Total days of budgeting')}: ${totalDays}
-${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(averageDailyOutflow)}`);
+${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(averageDailyOutflow)}`
+      );
     }
   }
 
@@ -77,13 +105,16 @@ ${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
    * be calculated.
    */
   _calculateDaysOfBuffering = (balance, transactions) => {
-    const { dates, totalOutflow, uniqueDates } = transactions.reduce((reduced, current) => {
-      const { amount, date } = current.getProperties('amount', 'date');
-      reduced.dates.push(date.toUTCMoment());
-      reduced.uniqueDates.set(date.format());
-      reduced.totalOutflow += amount;
-      return reduced;
-    }, { dates: [], totalOutflow: 0, uniqueDates: new Map() });
+    const { dates, totalOutflow, uniqueDates } = transactions.reduce(
+      (reduced, current) => {
+        const { amount, date } = current.getProperties('amount', 'date');
+        reduced.dates.push(date.toUTCMoment());
+        reduced.uniqueDates.set(date.format());
+        reduced.totalOutflow += amount;
+        return reduced;
+      },
+      { dates: [], totalOutflow: 0, uniqueDates: new Map() }
+    );
 
     const minDate = moment.min(dates);
     const maxDate = moment.max(dates);
@@ -113,11 +144,11 @@ ${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
       daysOfBuffering,
       notEnoughDates,
       totalDays: uniqueDates.size,
-      totalOutflow
+      totalOutflow,
     };
-  }
+  };
 
-  _eligibleTransactionFilter = (transaction) => {
+  _eligibleTransactionFilter = transaction => {
     const today = new ynab.utilities.DateWithoutTime();
 
     let isEligibleDate = false;
@@ -135,5 +166,5 @@ ${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
       transaction.get('account.onBudget') &&
       transaction.get('amount') < 0
     );
-  }
+  };
 }

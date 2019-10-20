@@ -14,8 +14,10 @@ export class EnlargeCategoriesDropdown extends Feature {
     if (modal.length) {
       let totalAdditionalHeight = DEFAULT_ADDITIONAL_HEIGHT + BOTTOM_OF_PAGE_PADDING;
       let currentTop = parseInt(modal.css('top'));
-      let spaceAvailableAboveModal = $(window).height() - (modal.offset().top - modal.outerHeight());
-      let spaceAvailableBelowModal = $(window).height() - (modal.offset().top + modal.outerHeight());
+      let spaceAvailableAboveModal =
+        $(window).height() - (modal.offset().top - modal.outerHeight());
+      let spaceAvailableBelowModal =
+        $(window).height() - (modal.offset().top + modal.outerHeight());
 
       // modal is shown above autocomplete
       if (currentTop < 0) {
@@ -23,16 +25,18 @@ export class EnlargeCategoriesDropdown extends Feature {
           // pad the bottom of the screen with 4 pixels here.
           modal.css({
             height: '+=' + (spaceAvailableAboveModal - BOTTOM_OF_PAGE_PADDING),
-            top: '-=' + (spaceAvailableAboveModal - BOTTOM_OF_PAGE_PADDING)
+            top: '-=' + (spaceAvailableAboveModal - BOTTOM_OF_PAGE_PADDING),
           });
         } else if (spaceAvailableAboveModal >= totalAdditionalHeight) {
           modal.css({
             height: '+=' + DEFAULT_ADDITIONAL_HEIGHT,
-            top: '-=' + DEFAULT_ADDITIONAL_HEIGHT
+            top: '-=' + DEFAULT_ADDITIONAL_HEIGHT,
           });
         }
       } else if (spaceAvailableBelowModal < totalAdditionalHeight) {
-        modal.css({ height: '+=' + (spaceAvailableBelowModal - BOTTOM_OF_PAGE_PADDING) });
+        modal.css({
+          height: '+=' + (spaceAvailableBelowModal - BOTTOM_OF_PAGE_PADDING),
+        });
       } else if (spaceAvailableBelowModal >= totalAdditionalHeight) {
         modal.css({ height: '+=' + DEFAULT_ADDITIONAL_HEIGHT });
       }

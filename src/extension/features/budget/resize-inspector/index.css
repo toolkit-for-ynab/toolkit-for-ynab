@@ -10,6 +10,7 @@ section.budget-table-container {
 .budget-inspector {
   min-width: var(--toolkit-inspector-minwidth, inherit) !important;
   width: var(--toolkit-inspector-width, 25%) !important; /* default to our widest width */
+  visibility: var(--toolkit-inspector-visibility);
 }
 
 .toolkit-modal-item-hide-image {

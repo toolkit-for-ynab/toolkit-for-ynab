@@ -1,0 +1,36 @@
+@import 'toolkit-reports/common/scss/variables.scss';
+
+.tk-series-legend {
+  font-size: .85rem;
+  color: $ynab-blue-3;
+  background-color: $ynab-blue-9;
+
+  &__legend-icon {
+    width: 1rem;
+    height: 1rem;
+    border-radius: .5rem;
+  }
+
+  &__table-row {
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+
+    &:hover {
+      background-color: $ynab-blue-8;
+    }
+
+    &--header {
+      font-weight: bold;
+      text-transform: uppercase;
+
+      &:hover {
+        background-color: inherit;
+      }
+    }
+  }
+
+  &__summary-total {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+}

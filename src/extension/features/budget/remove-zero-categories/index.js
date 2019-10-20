@@ -8,8 +8,13 @@ export class RemoveZeroCategories extends Feature {
 
   invoke() {
     let coverOverbudgetingCategories = $('.modal-budget-overspending .dropdown-list > li');
-    coverOverbudgetingCategories.each(function () {
-      let t = $(this).find('.category-available').text(); // Category balance text.
+    coverOverbudgetingCategories.each(function() {
+      let t = $(this)
+        .find('.category-available')
+        .attr('title'); // Category balance text.
+      if (t == null) {
+        return;
+      }
       let categoryBalance = parseInt(t.replace(/[^\d-]/g, ''));
       if (categoryBalance <= 0) {
         $(this).remove();
@@ -20,8 +25,10 @@ export class RemoveZeroCategories extends Feature {
 
     // Remove empty sections.
     for (let i = 0; i < coverOverbudgetingCategories.length - 1; i++) {
-      if ($(coverOverbudgetingCategories[i]).hasClass('section-item') &&
-        $(coverOverbudgetingCategories[i + 1]).hasClass('section-item')) {
+      if (
+        $(coverOverbudgetingCategories[i]).hasClass('section-item') &&
+        $(coverOverbudgetingCategories[i + 1]).hasClass('section-item')
+      ) {
         $(coverOverbudgetingCategories[i]).remove();
       }
     }

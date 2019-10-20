@@ -4,7 +4,12 @@ const path = require('path');
 const rimraf = require('rimraf');
 
 const workspaceRoot = path.join(__dirname, '..');
-const desktopUpdatesPath = path.join(workspaceRoot, '..', 'toolkit-for-ynab-gh-pages', 'desktop-updates');
+const desktopUpdatesPath = path.join(
+  workspaceRoot,
+  '..',
+  'toolkit-for-ynab-gh-pages',
+  'desktop-updates'
+);
 
 // Clear out the directory and create it clean.
 rimraf.sync(desktopUpdatesPath);

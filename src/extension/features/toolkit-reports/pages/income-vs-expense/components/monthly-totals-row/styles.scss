@@ -1,0 +1,30 @@
+.tk-monthly-totals-row {
+  &__data-cell {
+    border-right: 1px dotted #d1d1d1;
+    min-width: 8rem;
+    max-width: 8rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    padding-right: 0.5rem;
+    text-align: right;
+  }
+
+  &__title-cell {
+    display: flex;
+    align-items: center;
+    border-left: 1px dotted #d1d1d1;
+    border-right: 1px dotted #d1d1d1;
+    font-weight: bold;
+    min-width: 12rem;
+    max-width: 12rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+    padding-right: 0.5rem;
+    position: sticky;
+    left: 0;
+    background: inherit;
+  }
+}

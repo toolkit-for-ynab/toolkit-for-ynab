@@ -1,5 +1,10 @@
-export function getEmberView(viewId) {
-  return getViewRegistry()[viewId];
+export function getEmberView(viewId, getterString) {
+  const view = getViewRegistry()[viewId];
+  if (getterString && view) {
+    return view.get(getterString);
+  }
+
+  return view;
 }
 
 export function getRouter() {
@@ -27,7 +32,9 @@ export function lookupForReopen(name) {
   // to resolve the cached version.
   try {
     appContainer.lookup(name);
-  } catch (e) { /* not much we can do about it */ }
+  } catch (e) {
+    /* not much we can do about it */
+  }
 
   return appContainer.factoryCache[name];
 }

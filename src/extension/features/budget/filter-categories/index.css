@@ -1,0 +1,41 @@
+.toolkit-categories-filter-input {
+  float: right;
+  border-radius: .4em;
+  border: 1px solid #009cc2;
+  color: #009cc2;
+  font-style: italic;
+  outline: none;
+  padding: .3rem .3rem .3rem 1.6rem;
+  z-index: 10;
+}
+
+.toolkit-categories-filter-input:focus {
+  border-width: 1px !important;
+}
+
+.toolkit-categories-filter-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.toolkit-categories-filter-icon {
+  color: #009cc2;
+  left: .6em;
+  position: absolute;
+  top: .55em;
+  z-index: 11;
+}
+
+.toolkit-categories-filter-cancel-icon {
+  color: #009cc2;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0.12rem;
+  z-index: 11;
+}
+
+
+.toolkit-categories-filter-hidden {
+  display: none;
+}
