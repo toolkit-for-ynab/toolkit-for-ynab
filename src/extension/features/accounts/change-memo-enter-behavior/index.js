@@ -24,9 +24,11 @@ export class ChangeMemoEnterBehavior extends Feature {
       event.preventDefault();
       event.stopPropagation();
 
-      const $addEditRow = $('.ynab-grid-body-row.is-adding, .ynab-grid-body-row.is-editing');
-      const $memoColumn = $('.ynab-grid-cell-memo', $addEditRow);
-      const $columns = $addEditRow.children();
+      const $closestAddEditRow = $(this).closest(
+        $('.ynab-grid-body-row.is-adding, .ynab-grid-body-row.is-editing')
+      );
+      const $memoColumn = $('.ynab-grid-cell-memo', $closestAddEditRow);
+      const $columns = $closestAddEditRow.children();
       const $nextColumn = $($columns.get($columns.index($memoColumn) + 1));
 
       $nextColumn.find('input').focus();
