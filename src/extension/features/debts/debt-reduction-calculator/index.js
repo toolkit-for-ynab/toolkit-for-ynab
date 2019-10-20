@@ -9,6 +9,8 @@ export class DebtReductionCalculator extends Feature {
   closedAccounts = null;
   onBudgetAccounts = null;
   offBudgetAccounts = null;
+  selectedAccounts = [];
+
 
   debtTools = [{
     name: 'Debt Snowball',
@@ -17,8 +19,8 @@ export class DebtReductionCalculator extends Feature {
     name: 'Financial Calculator',
     toolkitId: 'toolCalc'
   }, {
-    name: 'Tool #3',
-    toolkitId: 'toolNum3'
+    name: 'Enigmatic Financial Engine',
+    toolkitId: 'toolEngine'
   }];
 
   injectCSS() { return require('./index.css'); }
@@ -53,6 +55,95 @@ export class DebtReductionCalculator extends Feature {
       this.invoke();
     }
   }
+
+  generateAccountSelect() {
+    // let nonAccountOptions = ['all', 'onbudget', 'offbudget', 'custom'];
+
+    // grab handles to the drop down and the list of selected accounts first
+    let $select = $('#ynabtk-report-accounts');
+    let $accountList = $('#selected-account-list');
+
+    // clear both lists before generating the options
+    $select.empty();
+    $accountList.empty();
+
+    $select.append('<option disabled value="custom">Select Specific Accounts...</option>');
+
+    // based on the available account types for the report we're generating, add options
+    // to the drop down. for 'all', add options to filter on on/off budget accounts as well
+    /* switch (availableAccountTypes) {
+      case 'onbudget':
+        $select.append('<option value="onbudget">All Budget Accounts</option>');
+        this.onBudgetAccounts.forEach((account) => {
+          $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
+        });
+        break;
+      case 'offbudget':
+        $select.append('<option value="offbudget">All Tracking Accounts</option>');
+        this.offBudgetAccounts.forEach((account) => {
+          $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
+        });
+        break;
+      case 'all':
+      default:
+        // $select.append('<option value="all">All Accounts</option>');
+        // $select.append('<option value="onbudget">All Budget Accounts</option>');
+        // $select.append('<option value="offbudget">All Tracking Accounts</option>');
+        this.onBudgetAccounts.concat(offBudgetAccounts).forEach((account) => {
+          $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
+        });
+        break;
+    }
+ */
+    this.onBudgetAccounts.concat(this.offBudgetAccounts).forEach((account) => {
+      $select.append($('<option>', { value: account.get('entityId'), text: account.get('accountName') }));
+    });
+
+    this.updateAccountList();
+    // filterTransactionsAndBuildChart();
+  }
+
+  // this function updates the "chips" on the page every time the user changes the select
+  updateAccountList() {
+    let $select = $('#ynabtk-report-accounts');
+    // remove them all first
+    this.$accountList.empty();
+
+    if (this.selectedAccounts.length === 0) {
+      // if the selected accounts are empty and we didn't just click one of the "all" options
+      // then go ahead and set the select to whatever our default for the report is.
+      if (this.nonAccountOptions.indexOf($select.val()) === -1) {
+        $select.val(this.availableAccountTypes);
+      }
+    } else {
+      setTimeout(function () {
+        $select.val('custom');
+      }, 0);
+    }
+
+    // for each selected account, add a chip to the page when someone clicks the chip, it will get
+    // removed from the list of chips. if they've clicked the last chip then the above code will default
+    // us to whatever the default option of the report is
+    this.selectedAccounts.forEach((accountId) => {
+      let accountData = this.onBudgetAccounts.find((account) => accountId === account.get('entityId')) ||
+      this.offBudgetAccounts.find((account) => accountId === account.get('entityId'));
+      this.$accountList
+        .append($('<div>', {
+          class: 'ynabtk-chip',
+          title: accountData.get('accountName'),
+          text: accountData.get('accountName')
+        })
+          .click(() => {
+            let index = this.selectedAccounts.indexOf(accountId);
+            this.selectedAccounts.splice(index, 1);
+            this.updateAccountList();
+            this.filterTransactionsAndBuildChart();
+          }));
+    });
+  }
+
+  // updateAccountList();
+  // }
 
   showCalculator() {
     console.log('showCalculator');

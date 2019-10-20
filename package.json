@@ -116,7 +116,8 @@
     "reports",
     "RightClickToEdit",
     "ShowIntercom",
-    "SplitKeyboardShortcut"
+    "SplitKeyboardShortcut",
+    "ShowDebtButton"
   ],
   "dependencies": {
     "raven-js": "^3.25.2"
