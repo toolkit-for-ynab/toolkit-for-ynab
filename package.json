@@ -73,8 +73,8 @@
     "PrintingImprovements",
     "RightClickToEdit",
     "ShowIntercom",
-    "ShowDebtButton"
-    "ToolkitReports",
+    "ShowDebtButton",
+    "ToolkitReports"
   ],
   "husky": {
     "hooks": {
