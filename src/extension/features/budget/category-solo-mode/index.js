@@ -1,5 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 export class CategorySoloMode extends Feature {
   // ===== LISTENERS ======
@@ -17,9 +19,10 @@ export class CategorySoloMode extends Feature {
 
   invoke() {
     $('.budget-toolbar').append(
-      '<span class="ember-view"><button id="all-category-expand-button">&#8597;</button><input type="checkbox" id="cat-solo-mode" class="ember-view" ' +
-        localStorage.catSoloMode +
-        '><label class="ember-view button" for="cat-solo-mode">Solo Mode</label></span>'
+      '<span class="ember-view"><button id="all-category-expand-button" title="Expands / collapses all categories">&#8597;</button>' +
+        '<input type="checkbox" id="cat-solo-mode" class="ember-view"' +
+        getToolkitStorageKey('catSoloMode') +
+        '><label class="ember-view button" for="cat-solo-mode" title="Only have one category opened a time">Solo Mode</label></span>'
     );
     $('.js-budget-table-cell-collapse').on('click', this.toggleCategory);
     $('.budget-toolbar #cat-solo-mode').on('click', this.initializeState);
@@ -32,13 +35,13 @@ export class CategorySoloMode extends Feature {
     var checked = $('.budget-toolbar #cat-solo-mode').prop('checked');
     $('#all-category-expand-button').attr('disabled', checked);
     if (checked) {
-      localStorage.catSoloMode = 'checked';
+      setToolkitStorageKey('catSoloMode', 'checked');
       $('.js-budget-table-cell-collapse.down')
         .first()
         .click()
         .click();
     } else {
-      localStorage.catSoloMode = '';
+      setToolkitStorageKey('catSoloMode', '');
     }
   };
 
@@ -53,14 +56,9 @@ export class CategorySoloMode extends Feature {
   };
 
   toggleAllCategories = () => {
-    if ($('.js-budget-table-cell-collapse.right').length === 0) {
-      $('.js-budget-table-cell-collapse.down').each(function() {
-        $(this).click();
-      });
-    } else {
-      $('.js-budget-table-cell-collapse.right').each(function() {
-        $(this).click();
-      });
-    }
+    controllerLookup('budget').send(
+      'toggleCollapseMasterCategories',
+      Boolean($('.js-budget-table-cell-collapse.down').length)
+    );
   };
 }
