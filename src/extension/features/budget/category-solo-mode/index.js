@@ -18,15 +18,26 @@ export class CategorySoloMode extends Feature {
   }
 
   invoke() {
-    $('.budget-toolbar').append(
-      '<span class="ember-view"><button id="all-category-expand-button" title="Expands / collapses all categories">&#8597;</button>' +
+    var dom = $('<span class="ember-view"></span>');
+    if (this.settings.enabled.indexOf('toggle-all') !== -1) {
+      dom.append(
+        '<button id="all-category-expand-button" title="Expands / collapses all categories">&#8597;' +
+          '</button>'
+      );
+      $(dom, '#all-category-expand-button').on('click', this.toggleAllCategories);
+    }
+
+    if (this.settings.enabled.indexOf('solo-mode') !== -1) {
+      dom.append(
         '<input type="checkbox" id="cat-solo-mode" class="ember-view"' +
-        getToolkitStorageKey('catSoloMode') +
-        '><label class="ember-view button" for="cat-solo-mode" title="Only have one category opened a time">Solo Mode</label></span>'
-    );
-    $('.js-budget-table-cell-collapse').on('click', this.toggleCategory);
-    $('.budget-toolbar #cat-solo-mode').on('click', this.initializeState);
-    $('.budget-toolbar #all-category-expand-button').on('click', this.toggleAllCategories);
+          getToolkitStorageKey('catSoloMode') +
+          '><label class="ember-view button" for="cat-solo-mode" title="Only have one category opened a time">Solo Mode</label>'
+      );
+      $('.js-budget-table-cell-collapse').on('click', this.toggleCategory);
+      $(dom, '#cat-solo-mode').on('click', this.initializeState);
+    }
+    $('.budget-toolbar').append(dom);
+
     setTimeout(this.initializeState, 500);
   }
 
