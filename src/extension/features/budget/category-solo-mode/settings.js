@@ -3,7 +3,7 @@ module.exports = {
   type: 'select',
   default: false,
   section: 'budget',
-  title: 'Category Solo Mode and Toggle All Categories',
+  title: 'Category Solo Mode and Toggle Master Categories',
   description:
     'Keeps only the selected category open collapsing all others and adds a button to the Budget Toolbar to open or close all master categories at once.',
   options: [

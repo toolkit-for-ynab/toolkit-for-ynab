@@ -21,7 +21,7 @@ export class CategorySoloMode extends Feature {
     var dom = $('<span class="ember-view"></span>');
     if (this.settings.enabled.indexOf('toggle-all') !== -1) {
       dom.append(
-        '<button id="all-category-expand-button" title="Expands / collapses all categories">&#8597;' +
+        '<button id="all-category-expand-button" title="Expands / collapses Master categories">&#8597;' +
           '</button>'
       );
       $(dom, '#all-category-expand-button').on('click', this.toggleAllCategories);
@@ -31,7 +31,7 @@ export class CategorySoloMode extends Feature {
       dom.append(
         '<input type="checkbox" id="cat-solo-mode" class="ember-view"' +
           getToolkitStorageKey('catSoloMode') +
-          '><label class="ember-view button" for="cat-solo-mode" title="Only have one category opened a time">Solo Mode</label>'
+          '><label class="ember-view button" for="cat-solo-mode" title="Only have one master category opened at a time">Solo Mode</label>'
       );
       $('.js-budget-table-cell-collapse').on('click', this.toggleCategory);
       $(dom, '#cat-solo-mode').on('click', this.initializeState);
