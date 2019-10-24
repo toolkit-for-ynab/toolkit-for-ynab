@@ -32,7 +32,7 @@ export function getUserSettings() {
           return storage
             .getFeatureSetting(oldSettingName)
             .then(oldPersistedValue =>
-              storage.setFeatureSetting(setting.name, settingMapping[oldPersistedValue])
+              ensureSettingIsValid(setting.name, settingMapping[oldPersistedValue])
             );
         }
 
