@@ -4,7 +4,6 @@ import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 export class CategorySoloMode extends Feature {
-  // ===== LISTENERS ======
   shouldInvoke() {
     return isCurrentRouteBudgetPage();
   }
@@ -18,30 +17,39 @@ export class CategorySoloMode extends Feature {
   }
 
   invoke() {
-    var dom = $('<span class="ember-view"></span>');
-    if (this.settings.enabled.indexOf('toggle-all') !== -1) {
+    const dom = $('<span></span>');
+    if (this.settings.enabled.includes('toggle-all')) {
       dom.append(
-        '<button id="all-category-expand-button" title="Expands / collapses Master categories">&#8597;' +
-          '</button>'
+        $('<button>', {
+          id: 'all-category-expand-button',
+          title: 'Expands / Collapses Master Categories',
+          text: '↕ ',
+        }).on('click', this.toggleAllCategories)
       );
-      $(dom, '#all-category-expand-button').on('click', this.toggleAllCategories);
     }
 
-    if (this.settings.enabled.indexOf('solo-mode') !== -1) {
+    if (this.settings.enabled.includes('solo-mode')) {
       dom.append(
-        '<input type="checkbox" id="cat-solo-mode" class="ember-view"' +
-          getToolkitStorageKey('catSoloMode') +
-          '><label class="ember-view button" for="cat-solo-mode" title="Only have one master category opened at a time">Solo Mode</label>'
+        $('<label>', {
+          class: 'button',
+          for: 'cat-solo-mode',
+          title: 'Only expand one mastery category at a time',
+          text: 'Solo Mode ',
+        }).append(
+          $('<input>', {
+            id: 'cat-solo-mode',
+            type: 'checkbox',
+            class: getToolkitStorageKey('catSoloMode'),
+          }).on('click', this.initializeState)
+        )
       );
+
       $('.js-budget-table-cell-collapse').on('click', this.toggleCategory);
-      $(dom, '#cat-solo-mode').on('click', this.initializeState);
     }
-    $('.budget-toolbar').append(dom);
 
-    setTimeout(this.initializeState, 500);
+    $('.budget-toolbar').append(dom);
   }
 
-  // ===== Custom functions ======
   initializeState = () => {
     var checked = $('.budget-toolbar #cat-solo-mode').prop('checked');
     $('#all-category-expand-button').attr('disabled', checked);
@@ -69,7 +77,7 @@ export class CategorySoloMode extends Feature {
   toggleAllCategories = () => {
     controllerLookup('budget').send(
       'toggleCollapseMasterCategories',
-      Boolean($('.js-budget-table-cell-collapse.down').length)
+      !!$('.js-budget-table-cell-collapse.down').length
     );
   };
 }
