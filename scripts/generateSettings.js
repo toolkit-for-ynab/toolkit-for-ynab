@@ -11,56 +11,13 @@ const ALL_SETTINGS_OUTPUT = 'src/core/settings/settings.js';
 const SETTINGS_JSON = 'scripts/settings.json';
 const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
-const legacySettingMap = {
-  AccountsDisplayDensity: 'accountsDisplayDensity',
-  AutoCloseReconcile: 'closeReconcileWindow',
-  BetterScrollbars: 'betterScrollbars',
-  BudgetProgressBars: 'budgetProgressBars',
-  BudgetQuickSwitch: 'budgetQuickSwitch',
-  CategoryActivityPopupWidth: 'categoryActivityPopupWidth',
-  ChangeEnterBehavior: 'changeEnterBehavior',
-  CalendarFirstDay: 'calendarFirstDay',
-  CheckCreditBalances: 'checkCreditBalances',
-  CheckNumbers: 'checkNumbers',
-  ClearSelection: 'accountsClearSelection',
-  ColourBlindMode: 'colourBlindMode',
-  CollapseSideMenu: 'collapseSideMenu',
-  CurrentMonthIndicator: 'currentMonthIndicator',
-  DaysOfBuffering: 'daysOfBuffering',
-  DaysOfBufferingHistoryLookup: 'daysOfBufferingHistoryLookup',
-  EditAccountButton: 'editButtonPosition',
-  EnableRetroCalculator: 'enableRetroCalculator',
-  EmphasizedOutflows: 'accountsEmphasizedOutflows',
-  GoalIndicator: 'goalIndicator',
-  GoalWarningColor: 'goalWarningColor',
-  GoogleFontsSelector: 'googleFontsSelector',
-  HideAccountBalancesType: 'hideAccountBalancesType',
-  HideAgeOfMoney: 'hideAgeOfMoney',
-  HideHelp: 'hideHelp',
-  HighlightNegatives: 'highlightNegativesNegative',
-  ImportNotification: 'importNotification',
-  LargerClickableIcons: 'largerClickableIcons',
-  MonthlyNotesPopupWidth: 'monthlyNotesPopupWidth',
-  NavDisplayDensity: 'navDisplayDensity',
-  Pacing: 'pacing',
-  PrintingImprovements: 'printingImprovements',
-  QuickBudgetWarning: 'warnOnQuickBudget',
-  ReconciledTextColor: 'reconciledTextColor',
-  RemovePositiveHighlight: 'removePositiveHighlight',
-  ResizeInspector: 'resizeInspector',
-  RowHeight: 'accountsRowHeight',
-  RowsHeight: 'budgetRowsHeight',
-  RunningBalance: 'runningBalance',
-  SeamlessBudgetHeader: 'seamlessBudgetHeader',
-  ShowIntercom: 'showIntercom',
-  SplitKeyboardShortcut: 'splitKeyboardShortcut',
-  SquareNegativeMode: 'squareNegativeMode',
-  StealingFromFuture: 'stealingFromNextMonth',
-  StripedRows: 'accountsStripedRows',
-  ToBeBudgetedWarning: 'toBeBudgetedWarning',
-  ToggleMasterCategories: 'collapseExpandBudgetGroups',
-  ToggleSplits: 'toggleSplits',
-  ToolkitReports: 'reports',
+const settingMigrationMap = {
+  CategorySoloMode: {
+    oldSettingName: 'ToggleMasterCategories',
+    settingMapping: {
+      true: 'cat-toggle-all',
+    },
+  },
 };
 
 let previousSettings;
@@ -287,7 +244,7 @@ function generateAllSettingsFile(allSettings) {
 
 if (typeof window.ynabToolKit === 'undefined') { window.ynabToolKit = {}; }
 
-export const legacySettingMap = ${JSON.stringify(legacySettingMap)};
+export const settingMigrationMap = ${JSON.stringify(settingMigrationMap)};
 export const allToolkitSettings = ${JSON.stringify(allSettings)};
 
 // eslint-disable-next-line quotes, object-curly-spacing, quote-props
