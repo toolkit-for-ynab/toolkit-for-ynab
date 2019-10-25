@@ -17,7 +17,13 @@ export class CategorySoloMode extends Feature {
   }
 
   invoke() {
-    const dom = $('<span></span>');
+    if ($('.budget-toolbar #category-toggle-mode-container').length) {
+      $('.budget-toolbar #category-toggle-mode-container').remove();
+    }
+
+    const dom = $('<span>', {
+      id: 'category-toggle-mode-container',
+    });
     if (this.settings.enabled.includes('toggle-all')) {
       dom.append(
         $('<button>', {
@@ -30,24 +36,26 @@ export class CategorySoloMode extends Feature {
 
     if (this.settings.enabled.includes('solo-mode')) {
       dom.append(
+        $('<input>', {
+          id: 'cat-solo-mode',
+          type: 'checkbox',
+          checked: getToolkitStorageKey('catSoloMode') === 'checked',
+        }).on('click', this.initializeState)
+      );
+      dom.append(
         $('<label>', {
           class: 'button',
           for: 'cat-solo-mode',
-          title: 'Only expand one mastery category at a time',
+          title: 'Only expand one master category at a time',
           text: 'Solo Mode ',
-        }).append(
-          $('<input>', {
-            id: 'cat-solo-mode',
-            type: 'checkbox',
-            class: getToolkitStorageKey('catSoloMode'),
-          }).on('click', this.initializeState)
-        )
+        })
       );
 
       $('.js-budget-table-cell-collapse').on('click', this.toggleCategory);
     }
 
     $('.budget-toolbar').append(dom);
+    this.initializeState();
   }
 
   initializeState = () => {
