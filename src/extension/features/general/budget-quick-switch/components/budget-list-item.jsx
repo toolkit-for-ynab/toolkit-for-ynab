@@ -5,7 +5,7 @@ import { getRouter } from 'toolkit/extension/utils/ember';
 export const BudgetListItem = props => {
   const handleClick = () => {
     const router = getRouter();
-    router.send('openBudget', props.budgetVersionId, props.budgetVersionName);
+    router.transitionTo(`/${props.budgetVersionId}/budget`);
   };
 
   return (
