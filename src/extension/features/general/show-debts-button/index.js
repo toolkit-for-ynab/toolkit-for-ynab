@@ -24,7 +24,7 @@ export class ShowDebtButton extends Feature {
   invoke = () => {
     this.setUpDebtsButton();
     // this.showDebtsPanel();
-  }
+  };
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
@@ -36,13 +36,16 @@ export class ShowDebtButton extends Feature {
       }
     }
 
-    // Did they switch away from our tab?
-    if (changedNodes.has('navlink-budget active') ||
-        changedNodes.has('navlink-debts active') ||
-        changedNodes.has('navlink-accounts active') ||
-        changedNodes.has('navlink-reports active') ||
-        changedNodes.has('active navlink-reports') ||
-        changedNodes.has('nav-account-row is-selected')) {
+    // Did they switch away from our panel?
+    if (
+      changedNodes.has('navlink-budget active') ||
+      changedNodes.has('navlink-debts active') ||
+      changedNodes.has('navlink-accounts active') ||
+      changedNodes.has('navlink-reports active') ||
+      changedNodes.has('tk-react-reports-link active') ||
+      changedNodes.has('active navlink-reports') ||
+      changedNodes.has('nav-account-row is-selected')
+    ) {
       // The user has left the Debts page.
       // We're no longer the active page.
       $('.ynabtk-navlink-debts').removeClass('active');
@@ -62,11 +65,13 @@ export class ShowDebtButton extends Feature {
     // because the Toolkit reports <li> gets removed when the <li> for the native
     // YNAB links are updated. The CollapseSideMenu Toolkit feature relies on the
     // <li> so it needs to be added back if it's gone missing.
-    if (changedNodes.has('nav-main') ||
-        changedNodes.has('sidebar-contents') ||
-        changedNodes.has('navlink-budget active') ||
-        changedNodes.has('navlink-reports active') ||
-        changedNodes.has('navlink-accounts active')) {
+    if (
+      changedNodes.has('nav-main') ||
+      changedNodes.has('sidebar-contents') ||
+      changedNodes.has('navlink-budget active') ||
+      changedNodes.has('navlink-reports active') ||
+      changedNodes.has('navlink-accounts active')
+    ) {
       this.setUpDebtsButton();
     }
   }
@@ -77,17 +82,19 @@ export class ShowDebtButton extends Feature {
     }
   }
 
-  // throw our reports button into the left-hand navigation pane so they can click it!
+  // throw the debts button into the left-hand navigation pane so they can click it!
   setUpDebtsButton() {
     if ($('li.ynabtk-navlink-debts').length > 0) return;
 
-    $('.nav-main > li:eq(0)')
-      .after($('<li>', { class: 'ynabtk-navlink-debts' })
-        .append($('<a>', { class: 'ynabtk-navlink-debts-link' })
+    $('.nav-main > li:eq(0)').after(
+      $('<li>', { class: 'ynabtk-navlink-debts' }).append(
+        $('<a>', { class: 'ynabtk-navlink-debts-link' })
           .append($('<span>', { class: 'ember-view flaticon stroke calculator' }))
-          .append((ynabToolKit.l10nData && l10n['sidebar.debts']) || 'Debts')));
+          .append((ynabToolKit.l10nData && l10n['sidebar.debts']) || 'Debts')
+      )
+    );
 
-    $('.ynabtk-navlink-debts-link').click((event) => {
+    $('.ynabtk-navlink-debts-link').click(event => {
       event.preventDefault();
     });
 
@@ -115,15 +122,17 @@ export class ShowDebtButton extends Feature {
     $('.nav-account-row').removeClass('is-selected');
     $('.ynabtk-navlink-debts').addClass('active');
 
-    $('.navlink-budget, .navlink-accounts, .nav-account-row').on('click', function () {
+    $('.navlink-budget, .navlink-accounts, .nav-account-row').on('click', function() {
       // They're trying to navigate away.
       // Restore the highlight on whatever they're trying to click on.
       // For example, if they were on the Budget tab, then clicked on Reports, clicking on
       // Budget again wouldn't do anything as YNAB thinks they're already there. This switches
       // the correct classes back on and triggers our .observe().
-      if ($(this).hasClass('navlink-budget') ||
-          $(this).hasClass('navlink-accounts') ||
-          $(this).hasClass('navlink-reports')) {
+      if (
+        $(this).hasClass('navlink-budget') ||
+        $(this).hasClass('navlink-accounts') ||
+        $(this).hasClass('navlink-reports')
+      ) {
         $(this).addClass('active');
       } else if ($(this).hasClass('nav-account-row')) {
         $(this).addClass('is-selected');
