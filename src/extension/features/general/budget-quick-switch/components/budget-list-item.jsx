@@ -1,11 +1,12 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { getRouter } from 'toolkit/extension/utils/ember';
+// import { getRouter } from 'toolkit/extension/utils/ember';
+import { getApplicationService } from 'toolkit/extension/utils/ynab';
 
 export const BudgetListItem = props => {
   const handleClick = () => {
-    const router = getRouter();
-    router.send('openBudget', props.budgetVersionId, props.budgetVersionName);
+    const appService = getApplicationService();
+    appService.loadBudget(props.budgetVersionId, props.budgetVersionName);
   };
 
   return (
