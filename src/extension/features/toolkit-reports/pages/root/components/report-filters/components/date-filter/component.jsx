@@ -137,7 +137,7 @@ export class DateFilterComponent extends React.Component {
 
   _getEligibleMonths(selectedYear) {
     const today = getToday();
-    const date = new ynab.utilities.DateWithoutTime();
+    const date = ynab.utilities.DateWithoutTime.createForToday();
     date.startOfYear().setYear(selectedYear);
 
     const options = [];
@@ -188,7 +188,7 @@ export class DateFilterComponent extends React.Component {
 
   _handleFromYearSelected = ({ currentTarget }) => {
     const { selectedFromMonth } = this.state;
-    const toDate = new ynab.utilities.DateWithoutTime();
+    const toDate = ynab.utilities.DateWithoutTime.createForToday();
     toDate
       .setMonth(selectedFromMonth)
       .setYear(currentTarget.value)
@@ -210,7 +210,7 @@ export class DateFilterComponent extends React.Component {
 
   _handleToYearSelected = ({ currentTarget }) => {
     const { selectedToMonth } = this.state;
-    const toDate = new ynab.utilities.DateWithoutTime();
+    const toDate = ynab.utilities.DateWithoutTime.createForToday();
     toDate
       .setMonth(selectedToMonth)
       .setYear(currentTarget.value)
@@ -227,7 +227,7 @@ export class DateFilterComponent extends React.Component {
   };
 
   _getEligibleMonth(selectedMonth, selectedYear) {
-    const date = new ynab.utilities.DateWithoutTime();
+    const date = ynab.utilities.DateWithoutTime.createForToday();
     date
       .setMonth(selectedMonth)
       .setYear(selectedYear)
@@ -235,7 +235,8 @@ export class DateFilterComponent extends React.Component {
 
     if (date.isBefore(this.firstMonthOfBudget)) {
       return this.firstMonthOfBudget;
-    } else if (date.isAfter(this.startOfThisMonth)) {
+    }
+    if (date.isAfter(this.startOfThisMonth)) {
       return this.startOfThisMonth;
     }
 
@@ -293,12 +294,12 @@ export class DateFilterComponent extends React.Component {
 
   _save = () => {
     const { selectedFromMonth, selectedFromYear, selectedToMonth, selectedToYear } = this.state;
-    const fromDate = new ynab.utilities.DateWithoutTime();
+    const fromDate = ynab.utilities.DateWithoutTime.createForToday();
     fromDate.setYear(selectedFromYear);
     fromDate.setMonth(selectedFromMonth);
     fromDate.startOfMonth();
 
-    const toDate = new ynab.utilities.DateWithoutTime();
+    const toDate = ynab.utilities.DateWithoutTime.createForToday();
     toDate.setYear(selectedToYear);
     toDate.setMonth(selectedToMonth);
     toDate.endOfMonth();
