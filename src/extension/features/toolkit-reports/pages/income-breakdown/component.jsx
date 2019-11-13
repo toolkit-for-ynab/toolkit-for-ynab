@@ -10,7 +10,9 @@ import './styles.scss';
 
 export class IncomeBreakdownComponent extends React.Component {
   _payeesCollection = Collections.payeesCollection;
+
   _subCategoriesCollection = Collections.subCategoriesCollection;
+
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
 
   static propTypes = {
@@ -279,7 +281,7 @@ export class IncomeBreakdownComponent extends React.Component {
         : seriesData.push(lossGainData);
     }
 
-    return seriesData;
+    return { totalIncome, seriesData };
   }
 
   _getNodeData() {
@@ -312,6 +314,7 @@ export class IncomeBreakdownComponent extends React.Component {
   }
 
   _renderReport = () => {
+    const { totalIncome, seriesData } = this._getSeriesData();
     const linksHover = (point, state) => {
       if (point.isNode) {
         point.linksTo.forEach(l => {
@@ -345,8 +348,11 @@ export class IncomeBreakdownComponent extends React.Component {
           tooltip: {
             headerFormat: '',
             pointFormatter: function() {
-              let formattedNumber = formatCurrency(this.weight);
-              return `${this.fromNode.name} → ${this.toNode.name}: <b>${formattedNumber}</b>`;
+              const formattedNumber = formatCurrency(this.weight);
+              const percentage = (this.weight / totalIncome) * 100;
+              return `${this.fromNode.name} → ${
+                this.toNode.name
+              }: <b>${formattedNumber} (${percentage.toFixed(2)}%)</b>`;
             },
             nodeFormatter: function() {
               let formattedNumber = formatCurrency(this.sum);
@@ -358,7 +364,7 @@ export class IncomeBreakdownComponent extends React.Component {
       series: [
         {
           keys: ['from', 'to', 'weight'],
-          data: this._getSeriesData(),
+          data: seriesData,
           type: 'sankey',
           nodes: this._getNodeData(),
         },
