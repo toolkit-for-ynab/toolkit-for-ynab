@@ -61,7 +61,7 @@ export function getApplicationService() {
 }
 
 export function isCurrentMonthSelected() {
-  const today = new ynab.utilities.DateWithoutTime();
+  const today = ynab.utilities.DateWithoutTime.createForToday();
   const selectedMonth = getSelectedMonth();
 
   if (selectedMonth) {

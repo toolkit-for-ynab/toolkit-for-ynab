@@ -197,7 +197,7 @@ export class BudgetProgressBars extends Feature {
   }
 
   invoke() {
-    const today = new ynab.utilities.DateWithoutTime();
+    const today = ynab.utilities.DateWithoutTime.createForToday();
     this.monthProgress = today.getDate() / today.daysInMonth();
 
     let categories = $('.budget-table ul')

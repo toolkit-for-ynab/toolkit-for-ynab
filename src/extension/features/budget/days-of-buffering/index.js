@@ -149,7 +149,7 @@ ${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
   };
 
   _eligibleTransactionFilter = transaction => {
-    const today = new ynab.utilities.DateWithoutTime();
+    const today = ynab.utilities.DateWithoutTime.createForToday();
 
     let isEligibleDate = false;
     if (this._lookbackDays === 0) {

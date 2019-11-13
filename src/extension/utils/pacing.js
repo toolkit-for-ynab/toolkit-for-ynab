@@ -83,7 +83,7 @@ export function pacingForCategory(budgetMonthDisplayItem) {
     throw new Error('Pacing can only be calculated for subCategories.');
   }
 
-  const today = new ynab.utilities.DateWithoutTime();
+  const today = ynab.utilities.DateWithoutTime.createForToday();
   const startOfCurrentMonth = today.clone().startOfMonth();
   const endOfCurrentMonth = today.clone().endOfMonth();
   const categoryMonth = budgetMonthDisplayItem.get('budgetMonth');
