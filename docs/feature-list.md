@@ -110,6 +110,10 @@ Adds a button to the Budget Toolbar that allows resizing the Budget Inspector to
 
 Add progress bars and a vertical bar that shows how far you are through the month to category rows.
 
+## Category Solo Mode and Toggle Master Categories
+
+Keeps only the selected category open collapsing all others and adds a button to the Budget Toolbar to open or close all master categories at once.
+
 ## Credit Card Emoji
 
 Adds a credit card emoji 💳 to the "Credit Card Payments" category.
@@ -197,10 +201,6 @@ Highlights "Budget Next Month" red when you've gone negative as some point in th
 ## To Be Budgeted Warning
 
 Changes the 'To Be Budgeted' background color to yellow if there is unallocated money left to be budgeted.
-
-## Toggle All Master Categories Open/Close
-
-Adds a button to the Budget Toolbar to open or close all master categories at once.
 
 ## Unhighlight all Positive Category Balances
 
