@@ -9,10 +9,19 @@ const ToggleButton = ({ longTitle, stateField }) => {
   const accountsController = controllerLookup('accounts');
   const [isToggled, setIsToggled] = React.useState(accountsController.get(`filters.${stateField}`));
 
+  const observer = React.useCallback(filters => {
+    setIsToggled(filters.get(stateField));
+  });
+
+  React.useEffect(() => {
+    accountsController.get('filters').addObserver(stateField, observer);
+    return () => accountsController.removeObserver(stateField, observer);
+  }, []);
+
   const toggleSetting = () => {
-    const current = accountsController.get(`filters.${stateField}`);
-    accountsController.set(`filters.${stateField}`, !current);
-    setIsToggled(!current);
+    const filters = accountsController.get('filters');
+    filters.set(`propertiesToSet.${stateField}`, !filters.get(stateField));
+    filters.applyFilters();
   };
 
   return (
@@ -52,8 +61,8 @@ export class ToggleTransactionFilters extends Feature {
 
     componentAppend(
       <span id="tk-toggle-transaction-filters">
-        <ToggleButton stateField={'reconciled'} longTitle={this.settings.enabled === '2'} />
         <ToggleButton stateField={'scheduled'} longTitle={this.settings.enabled === '2'} />
+        <ToggleButton stateField={'reconciled'} longTitle={this.settings.enabled === '2'} />
       </span>,
       toolbarRight
     );
