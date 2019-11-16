@@ -17,7 +17,7 @@ export class CheckCreditBalances extends Feature {
   }
 
   invoke() {
-    const today = new ynab.utilities.DateWithoutTime();
+    const today = ynab.utilities.DateWithoutTime.createForToday();
 
     if (today.equalsByMonth(getSelectedMonth())) {
       this.processDebtAccounts();

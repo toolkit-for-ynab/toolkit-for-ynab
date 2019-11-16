@@ -1,8 +1,9 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class BulkManagePayees extends Feature {
-  observe = changedNodes => {
+  observe(changedNodes) {
     if (
       changedNodes.has(
         'ynab-u modal-popup modal-account-edit-transaction-list ember-view modal-overlay active'
@@ -10,12 +11,10 @@ export class BulkManagePayees extends Feature {
     ) {
       this.invoke();
     }
-  };
+  }
 
   invoke() {
-    const menuText =
-      (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.accountsBulkManagePayees']) ||
-      'Manage Payees';
+    const menuText = l10n('toolkit.accountsBulkManagePayees', 'Manage Payees');
 
     // Note that ${menuText} was intentionally placed on the same line as the <i> tag to
     // prevent the leading space that occurs as a result of using a multi-line string.

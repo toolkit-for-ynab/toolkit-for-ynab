@@ -10,7 +10,9 @@ import './styles.scss';
 
 export class IncomeBreakdownComponent extends React.Component {
   _payeesCollection = Collections.payeesCollection;
+
   _subCategoriesCollection = Collections.subCategoriesCollection;
+
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
 
   static propTypes = {
@@ -25,6 +27,7 @@ export class IncomeBreakdownComponent extends React.Component {
       showIncome: true,
       showExpense: true,
       showLossGain: true,
+      groupPositiveCategories: false,
     };
   }
 
@@ -39,7 +42,7 @@ export class IncomeBreakdownComponent extends React.Component {
   }
 
   render() {
-    const { showIncome, showExpense, showLossGain } = this.state;
+    const { showIncome, showExpense, showLossGain, groupPositiveCategories } = this.state;
     return (
       <div className="tk-flex-grow tk-flex tk-flex-column">
         <div className="tk-flex tk-pd-05 tk-border-b">
@@ -67,6 +70,14 @@ export class IncomeBreakdownComponent extends React.Component {
               onChange={this.toggleLossGainEntry}
             />
           </div>
+          <div className="tk-income-breakdown__filter">
+            <LabeledCheckbox
+              id="tk-income-breakdown-positive-categories-selector"
+              checked={groupPositiveCategories}
+              label="Group positive categories"
+              onChange={this.togglePositiveCategories}
+            />
+          </div>
         </div>
         <div className="tk-flex tk-flex-grow">
           <div className="tk-highcharts-report-container" id="tk-income-breakdown" />
@@ -78,6 +89,12 @@ export class IncomeBreakdownComponent extends React.Component {
   toggleLossGainEntry = ({ currentTarget }) => {
     const { checked } = currentTarget;
     this.setState({ showLossGain: checked });
+    this._calculateData();
+  };
+
+  togglePositiveCategories = ({ currentTarget }) => {
+    const { checked } = currentTarget;
+    this.setState({ groupPositiveCategories: checked });
     this._calculateData();
   };
 
@@ -167,7 +184,14 @@ export class IncomeBreakdownComponent extends React.Component {
   }
 
   _getSeriesData() {
-    const { incomes, expenses, showLossGain, showExpense, showIncome } = this.state;
+    const {
+      incomes,
+      expenses,
+      showLossGain,
+      showExpense,
+      showIncome,
+      groupPositiveCategories,
+    } = this.state;
     let seriesData = [];
     let totalIncome = 0;
     let totalExpense = 0;
@@ -186,12 +210,18 @@ export class IncomeBreakdownComponent extends React.Component {
     });
 
     let positiveCategoriesAmount = 0;
+    let positiveCategoriesSeries = [];
     let categorySeries = [];
     expenses.forEach((subCategoryMap, masterCategory) => {
       let subCategorySeries = [];
       let masterCategoryTotal = 0;
       subCategoryMap.forEach((amount, subCatogory) => {
         if (amount > 0) {
+          positiveCategoriesSeries.push({
+            from: subCatogory.get('entityId'),
+            to: 'Budget',
+            weight: amount,
+          });
           positiveCategoriesAmount += amount;
           totalIncome += amount;
           return;
@@ -222,11 +252,15 @@ export class IncomeBreakdownComponent extends React.Component {
       });
     });
     if (positiveCategoriesAmount > 0 && showIncome) {
-      seriesData.push({
-        from: 'POSITIVE CATEGORIES',
-        to: 'Budget',
-        weight: positiveCategoriesAmount,
-      });
+      if (groupPositiveCategories) {
+        seriesData.push({
+          from: 'POSITIVE CATEGORIES',
+          to: 'Budget',
+          weight: positiveCategoriesAmount,
+        });
+      } else {
+        seriesData.push(...positiveCategoriesSeries);
+      }
     }
     if (showExpense) {
       categorySeries = categorySeries.sort((a, b) => b.masterEntry.weight - a.masterEntry.weight);
@@ -237,14 +271,17 @@ export class IncomeBreakdownComponent extends React.Component {
     }
 
     if (showLossGain && (showExpense || showIncome) && totalExpense !== totalIncome) {
-      seriesData.push({
+      const lossGainData = {
         from: totalExpense > totalIncome ? 'NET LOSS' : 'Budget',
         to: totalExpense > totalIncome ? 'Budget' : 'NET GAIN',
         weight: Math.abs(totalIncome - totalExpense),
-      });
+      };
+      totalExpense > totalIncome && totalIncome === 0
+        ? seriesData.unshift(lossGainData)
+        : seriesData.push(lossGainData);
     }
 
-    return seriesData;
+    return { totalIncome, seriesData };
   }
 
   _getNodeData() {
@@ -277,6 +314,7 @@ export class IncomeBreakdownComponent extends React.Component {
   }
 
   _renderReport = () => {
+    const { totalIncome, seriesData } = this._getSeriesData();
     const linksHover = (point, state) => {
       if (point.isNode) {
         point.linksTo.forEach(l => {
@@ -310,8 +348,11 @@ export class IncomeBreakdownComponent extends React.Component {
           tooltip: {
             headerFormat: '',
             pointFormatter: function() {
-              let formattedNumber = formatCurrency(this.weight);
-              return `${this.fromNode.name} → ${this.toNode.name}: <b>${formattedNumber}</b>`;
+              const formattedNumber = formatCurrency(this.weight);
+              const percentage = (this.weight / totalIncome) * 100;
+              return `${this.fromNode.name} → ${
+                this.toNode.name
+              }: <b>${formattedNumber} (${percentage.toFixed(2)}%)</b>`;
             },
             nodeFormatter: function() {
               let formattedNumber = formatCurrency(this.sum);
@@ -323,7 +364,7 @@ export class IncomeBreakdownComponent extends React.Component {
       series: [
         {
           keys: ['from', 'to', 'weight'],
-          data: this._getSeriesData(),
+          data: seriesData,
           type: 'sankey',
           nodes: this._getNodeData(),
         },

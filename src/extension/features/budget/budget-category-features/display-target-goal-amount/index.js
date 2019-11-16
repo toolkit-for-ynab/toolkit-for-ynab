@@ -56,7 +56,7 @@ export class DisplayTargetGoalAmount extends Feature {
         'monthlyFunding',
         'goalTargetAmount'
       );
-      const { balance, targetBalanceDate } = monthlySubCategoryBudgetCalculation.getProperties(
+      const { balance, goalTarget } = monthlySubCategoryBudgetCalculation.getProperties(
         'balance',
         'goalTarget'
       );
@@ -93,13 +93,10 @@ export class DisplayTargetGoalAmount extends Feature {
           }
           break;
         case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
-          goalAmount = targetBalanceDate;
-          if (userSetting === Settings.WarnBudgetOverTarget && budgeted > targetBalanceDate) {
+          goalAmount = goalTarget;
+          if (userSetting === Settings.WarnBudgetOverTarget && budgeted > goalTarget) {
             applyEmphasis = true;
-          } else if (
-            userSetting === Settings.GreenBudgetOverTarget &&
-            budgeted >= targetBalanceDate
-          ) {
+          } else if (userSetting === Settings.GreenBudgetOverTarget && budgeted >= goalTarget) {
             applyEmphasis = true;
           }
           break;

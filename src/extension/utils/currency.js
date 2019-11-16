@@ -1,17 +1,13 @@
-export function getCurrencyFormat() {
-  const {
-    currencyFormatter,
-  } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
-  return currencyFormatter.getCurrency();
-}
-
-export function formatCurrency(value) {
+export function formatCurrency(value, hideSymbol) {
   const {
     currencyFormatter,
   } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
   const userCurrency = currencyFormatter.getCurrency();
 
   let formattedCurrency = currencyFormatter.format(value).toString();
+
+  if (hideSymbol === true) return formattedCurrency;
+
   if (userCurrency.display_symbol) {
     if (userCurrency.symbol_first) {
       if (formattedCurrency.charAt(0) === '-') {
@@ -25,4 +21,11 @@ export function formatCurrency(value) {
   }
 
   return formattedCurrency;
+}
+
+export function stripCurrency(text) {
+  const {
+    currencyFormatter,
+  } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
+  return Number(currencyFormatter.unformat(text) + '000');
 }

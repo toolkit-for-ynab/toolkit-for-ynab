@@ -22,6 +22,7 @@ export class AccountsReportComponent extends React.Component {
 
   /**
    * Prepare our data by mapping generating all our datapoints
+   *
    */
   componentWillMount() {
     if (this.props.filters && this.props.allReportableTransactions) {
@@ -160,7 +161,7 @@ export class AccountsReportComponent extends React.Component {
         title: { text: 'Amount' },
         labels: {
           formatter: e => {
-            return formatCurrency(e.value);
+            return formatCurrency(e.value, false);
           },
         },
       },
@@ -178,13 +179,12 @@ export class AccountsReportComponent extends React.Component {
         useHTML: true,
         pointFormatter: function() {
           let coloredPoint = `<span style="color:${this.color}">\u25CF</span>`;
-          let tooltip = `${coloredPoint} ${this.series.name}: <b>${formatCurrency(
-            this.y
-          )}</b><br/>`;
+          let totalAmount = formatCurrency(this.y, false);
+          let netChange = formatCurrency(this.netChange, false);
+
+          let tooltip = `${coloredPoint} ${this.series.name}: <b>${totalAmount}</b><br/>`;
           let color = this.netChange < 0 ? '#ea5439' : '#16a336'; // Red or Green
-          tooltip += `${coloredPoint} Net Change: <span style="color: ${color}"><b>${formatCurrency(
-            this.netChange
-          )}</b> <br/>`;
+          tooltip += `${coloredPoint} Net Change: <span style="color: ${color}"><b>${netChange}</b> <br/>`;
           return tooltip;
         },
       },

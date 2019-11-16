@@ -6,7 +6,7 @@ export function getCurrentDate(format) {
 }
 
 export function getToday() {
-  const today = new ynab.utilities.DateWithoutTime();
+  const today = ynab.utilities.DateWithoutTime.createForToday();
   return today.clone();
 }
 

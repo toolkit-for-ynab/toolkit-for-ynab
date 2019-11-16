@@ -95,7 +95,7 @@ export class BudgetProgressBars extends Feature {
         case 'TBD':
         case 'MF':
           hasGoal = true;
-          status = calculation.goalPercentageComplete;
+          status = calculation.get('goalPercentageComplete');
 
           break;
         default:
@@ -197,7 +197,7 @@ export class BudgetProgressBars extends Feature {
   }
 
   invoke() {
-    const today = new ynab.utilities.DateWithoutTime();
+    const today = ynab.utilities.DateWithoutTime.createForToday();
     this.monthProgress = today.getDate() / today.daysInMonth();
 
     let categories = $('.budget-table ul')

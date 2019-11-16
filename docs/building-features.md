@@ -212,7 +212,7 @@ changes to the following attributes:
   change if you just simply switch which account you're looking at.
 
 - `budgetVersionId`: This will change if the user switches to an entirely different
-  budget. This can be done natively but going through the three page budget swap
+  budget. This can be done natively by going through the three page budget swap
   flow or with the Toolkit 'Quck Budget Switch' feature.
 
 - `selectedAccountId`: This handles the case where a user is just flipping through
