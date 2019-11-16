@@ -30,11 +30,8 @@ export class AccountsReportComponent extends React.Component {
     }
   }
 
-  /**
-   * Attempt to render the chart on update
-   */
-  compontDidMount() {
-    this._renderChart();
+  componentDidMount() {
+    this._updateCurrentDataSet();
   }
 
   /**
@@ -196,10 +193,12 @@ export class AccountsReportComponent extends React.Component {
           cursor: 'pointer',
           events: {
             click: event => {
-              showTransactionModal(event.point.x, event.point.transactions);
+              let date = new Date(event.point.x);
+              let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date);
+              showTransactionModal(formattedDate, event.point.transactions);
             },
             legendItemClick: event => {
-              event.preventDefault(); // Prevent toggling via the le
+              event.preventDefault(); // Prevent toggling via the legend
             },
           },
         },
