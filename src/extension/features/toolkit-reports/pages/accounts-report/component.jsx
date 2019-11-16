@@ -104,7 +104,7 @@ export class AccountsReportComponent extends React.Component {
         let filteredDatapoints = new Map();
         datapoints.forEach((data, date) => {
           if (isBetween(date, dateFilter.fromDate, dateFilter.toDate)) {
-            filteredDatapoints.set(date, data);
+            filteredDatapoints.set(date.getUTCTime(), data);
           }
         });
         filteredData.set(accountId, filteredDatapoints);
@@ -189,6 +189,11 @@ export class AccountsReportComponent extends React.Component {
         },
       },
       plotOptions: {
+        line: {
+          marker: {
+            enabled: false,
+          },
+        },
         series: {
           cursor: 'pointer',
           events: {
