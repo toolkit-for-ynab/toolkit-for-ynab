@@ -27,5 +27,6 @@ export function stripCurrency(text) {
   const {
     currencyFormatter,
   } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
-  return Number(currencyFormatter.unformat(text) + '000');
+  const numberInDollars = currencyFormatter.unformat(text);
+  return currencyFormatter.convertToMilliDollars(numberInDollars);
 }
