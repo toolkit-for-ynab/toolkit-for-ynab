@@ -18,6 +18,14 @@ const settingMigrationMap = {
       true: 'cat-toggle-all',
     },
   },
+  AutoEnableRunningBalance: {
+    oldSettingName: 'RunningBalance',
+    settingMapping: {
+      0: false,
+      1: true,
+      2: true,
+    },
+  },
 };
 
 let previousSettings;
