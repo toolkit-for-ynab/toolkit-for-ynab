@@ -1,6 +1,6 @@
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
-import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import { getRouter } from 'toolkit/extension/utils/ember';
 
 let instance = null;
 
@@ -10,56 +10,37 @@ export class RouteChangeListener {
       return instance;
     }
 
-    let routeChangeListener = this;
+    const routeChangeListener = this;
     routeChangeListener.features = [];
 
-    let applicationController = controllerLookup('application');
-    applicationController.reopen({
-      onRouteChanged: Ember.observer(
-        'currentRouteName', // this will handle accounts -> budget and vise versa
-        'budgetVersionId', // this will handle changing budgets
-        'selectedAccountId', // this will handle switching around accounts
-        'monthString', // this will handle changing which month of a budget you're looking at
-        (controller, changedProperty) => {
-          if (changedProperty === 'budgetVersionId') {
-            (function poll() {
-              const applicationBudgetVersion = controllerLookup('application').get(
-                'budgetVersionId'
-              );
-              const { activeBudgetVersion } = getEntityManager().getSharedLibInstance();
-              if (
-                activeBudgetVersion &&
-                activeBudgetVersion.entityId &&
-                activeBudgetVersion.entityId === applicationBudgetVersion
-              ) {
-                Ember.run.scheduleOnce('afterRender', controller, 'emitBudgetRouteChange');
-              } else {
-                Ember.run.next(poll, 250);
-              }
-            })();
-          } else {
-            Ember.run.scheduleOnce('afterRender', controller, 'emitSameBudgetRouteChange');
-          }
+    function emitSameBudgetRouteChange() {
+      const applicationController = controllerLookup('application');
+      const currentRoute = applicationController.get('currentRouteName');
+      routeChangeListener.features.forEach(feature => {
+        const observe = feature.onRouteChanged.bind(feature, currentRoute);
+        const wrapped = withToolkitError(observe, feature);
+        Ember.run.later(wrapped, 0);
+      });
+    }
+
+    function emitBudgetRouteChange() {
+      const applicationController = controllerLookup('application');
+      const currentRoute = applicationController.get('currentRouteName');
+      routeChangeListener.features.forEach(feature => {
+        const observe = feature.onBudgetChanged.bind(feature, currentRoute);
+        const wrapped = withToolkitError(observe, feature);
+        Ember.run.later(wrapped, 0);
+      });
+    }
+
+    getRouter().addObserver('currentState', ({ location, router }) => {
+      if (router && router.state && router.state.params && router.state.params.index) {
+        if (location.location.href.includes(router.state.params.index.budgetVersionId)) {
+          Ember.run.scheduleOnce('afterRender', null, emitSameBudgetRouteChange);
+        } else {
+          Ember.run.scheduleOnce('afterRender', null, emitBudgetRouteChange);
         }
-      ),
-
-      emitSameBudgetRouteChange: function() {
-        let currentRoute = applicationController.get('currentRouteName');
-        routeChangeListener.features.forEach(feature => {
-          const observe = feature.onRouteChanged.bind(feature, currentRoute);
-          const wrapped = withToolkitError(observe, feature);
-          Ember.run.later(wrapped, 0);
-        });
-      },
-
-      emitBudgetRouteChange: function() {
-        let currentRoute = applicationController.get('currentRouteName');
-        routeChangeListener.features.forEach(feature => {
-          const observe = feature.onBudgetChanged.bind(feature, currentRoute);
-          const wrapped = withToolkitError(observe, feature);
-          Ember.run.later(wrapped, 0);
-        });
-      },
+      }
     });
 
     instance = this;
