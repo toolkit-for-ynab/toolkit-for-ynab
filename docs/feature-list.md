@@ -240,6 +240,10 @@ Clicking the Toggle Splits button shows or hides all sub-transactions within all
 
 When entering split transactions, each additional split will be auto-filled with the current remaining amount.
 
+## Automatically Enable Running Balance
+
+Enables YNAB's native "Running Balance" by default for each account register.
+
 ## Automatically Mark Transaction as Cleared
 
 Automatically mark transaction as cleared when you enter it manually.
@@ -306,7 +310,7 @@ Right clicking on a transaction will show the contextual menu, allowing easy acc
 
 ## Show Running Balance
 
-Adds a running balance column to the accounts page (does not appear on All Accounts View)
+Adds a running balance column to the accounts page (does not appear on All Accounts View). YNAB recently implemented their own native version of Running Balance. If that has been enabled for your account, this setting is ignored.
 
 ## Show Spare Change
 
