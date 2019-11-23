@@ -29,11 +29,16 @@ export function getUserSettings() {
         const migrationSetting = settingMigrationMap[setting.name];
         if (migrationSetting && storedFeatureSettings.includes(migrationSetting.oldSettingName)) {
           const { oldSettingName, settingMapping } = migrationSetting;
-          return storage
-            .getFeatureSetting(oldSettingName)
-            .then(oldPersistedValue =>
-              ensureSettingIsValid(setting.name, settingMapping[oldPersistedValue])
-            );
+          return storage.getFeatureSetting(oldSettingName).then(oldPersistedValue => {
+            let newSetting = oldPersistedValue;
+            if (settingMapping) {
+              newSetting = settingMapping[oldPersistedValue];
+            }
+
+            return storage
+              .setFeatureSetting(setting.name, newSetting)
+              .then(() => ensureSettingIsValid(setting.name, newSetting));
+          });
         }
 
         return storage

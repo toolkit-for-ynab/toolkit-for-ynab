@@ -1,10 +1,10 @@
-export function formatCurrency(value, hideSymbol) {
+export function formatCurrency(valueInMilliDollars, hideSymbol) {
   const {
     currencyFormatter,
   } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
   const userCurrency = currencyFormatter.getCurrency();
 
-  let formattedCurrency = currencyFormatter.format(value).toString();
+  let formattedCurrency = currencyFormatter.format(valueInMilliDollars).toString();
 
   if (hideSymbol === true) return formattedCurrency;
 
@@ -23,9 +23,10 @@ export function formatCurrency(value, hideSymbol) {
   return formattedCurrency;
 }
 
-export function stripCurrency(text) {
+export function stripCurrency(formattedCurrencyText) {
   const {
     currencyFormatter,
   } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
-  return Number(currencyFormatter.unformat(text) + '000');
+  const numberInDollars = currencyFormatter.unformat(formattedCurrencyText);
+  return currencyFormatter.convertToMilliDollars(numberInDollars);
 }
