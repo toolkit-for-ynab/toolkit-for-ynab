@@ -155,7 +155,7 @@ export class AccountsReportComponent extends React.Component {
     if (!series) return;
     // Use the series to attach the data to the chart
     Highcharts.chart('tk-accounts-report-graph', {
-      title: { text: 'Money over Time' },
+      title: { text: 'Balance over Time' },
       series: series,
       yAxis: {
         title: { text: 'Amount' },
