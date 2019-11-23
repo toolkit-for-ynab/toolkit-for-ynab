@@ -7,7 +7,7 @@ import { getAccountName } from 'toolkit/extension/utils/ynab';
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
 import { mapAccountsToTransactions, generateDataPointsMap } from 'toolkit/extension/utils/mappings';
 
-export class AccountsReportComponent extends React.Component {
+export class BalanceOverTimeComponent extends React.Component {
   // Define our proptypes for usage of this class
   static propTypes = {
     filters: PropTypes.shape(FiltersPropType).isRequired,
@@ -82,7 +82,9 @@ export class AccountsReportComponent extends React.Component {
    * Render the container for the Chart
    */
   render() {
-    return <div className="tk-highcharts-report-container" id="tk-accounts-report-graph" />;
+    return (
+      <div className="tk-highcharts-report-container" id="tk-balance-over-time-report-graph" />
+    );
   }
 
   /**
@@ -153,8 +155,8 @@ export class AccountsReportComponent extends React.Component {
     const { series } = this.state;
     if (!series) return;
     // Use the series to attach the data to the chart
-    Highcharts.chart('tk-accounts-report-graph', {
-      title: { text: 'Balance over Time' },
+    Highcharts.chart('tk-balance-over-time-report-graph', {
+      title: { text: 'Balance Over Time' },
       series: series,
       yAxis: {
         title: { text: 'Amount' },
@@ -165,7 +167,7 @@ export class AccountsReportComponent extends React.Component {
         },
       },
       xAxis: {
-        title: 'Time',
+        title: { text: 'Time' },
         type: 'datetime',
         dateTimeLabelFormats: { day: '%d %b %Y' },
       },

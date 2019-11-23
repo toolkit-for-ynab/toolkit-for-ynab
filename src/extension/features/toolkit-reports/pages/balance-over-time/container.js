@@ -1,5 +1,5 @@
 import { withReportContext } from 'toolkit-reports/common/components/report-context';
-import { AccountsReportComponent } from './component';
+import { BalanceOverTimeComponent } from './component';
 
 function mapReportContextToProps(context) {
   return {
@@ -8,4 +8,4 @@ function mapReportContextToProps(context) {
   };
 }
 
-export const AccountsReport = withReportContext(mapReportContextToProps)(AccountsReportComponent);
+export const BalanceOverTime = withReportContext(mapReportContextToProps)(BalanceOverTimeComponent);
