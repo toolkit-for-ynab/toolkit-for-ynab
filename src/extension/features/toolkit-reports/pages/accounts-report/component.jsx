@@ -3,7 +3,6 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
-import { isBetween } from 'toolkit/extension/utils/date';
 import { getAccountName } from 'toolkit/extension/utils/ynab';
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
 import { mapAccountsToTransactions, generateDataPointsMap } from 'toolkit/extension/utils/mappings';
@@ -95,16 +94,16 @@ export class AccountsReportComponent extends React.Component {
     if (!filters || !accountToDataPointsMap) return;
 
     const accountFilters = filters.accountFilterIds;
-    const dateFilter = filters.dateFilter;
+    const { fromDate, toDate } = filters.dateFilter;
 
     // Filter out the accounts and transactions we don't want to include
     let filteredData = new Map();
     accountToDataPointsMap.forEach((datapoints, accountId) => {
       if (!accountFilters.has(accountId)) {
         let filteredDatapoints = new Map();
-        datapoints.forEach((data, date) => {
-          if (isBetween(date, dateFilter.fromDate, dateFilter.toDate)) {
-            filteredDatapoints.set(date.getUTCTime(), data);
+        datapoints.forEach((data, dateUTC) => {
+          if (dateUTC >= fromDate.getUTCTime() && dateUTC <= toDate.getUTCTime()) {
+            filteredDatapoints.set(dateUTC, data);
           }
         });
         filteredData.set(accountId, filteredDatapoints);

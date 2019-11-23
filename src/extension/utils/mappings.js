@@ -24,7 +24,7 @@ export function mapAccountsToTransactions(transactions) {
 
 /**
  * Given a sorted transactions list, generate a map of data points of
- * Key (Date)
+ * Key (Date in UTC Time)
  * Value (object containing, transactions and amount total for that date)
  * Each value contains the following:
  *  - runningTotal: The current amount in the account after a transaction has been applied
@@ -42,7 +42,7 @@ export function generateDataPointsMap(transactions) {
   let runningTotal = 0;
   for (let i = 0; i < transactions.length; i++) {
     let transaction = transactions[i];
-    let date = transaction.date;
+    let date = transaction.date.getUTCTime();
     runningTotal = runningTotal - transaction.outflow + transaction.inflow;
 
     // Add the date with empty values if it's a new date

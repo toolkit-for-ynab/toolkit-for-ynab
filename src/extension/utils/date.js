@@ -35,19 +35,6 @@ export function sortByGettableDate(a, b) {
   return 0;
 }
 
-/**
- * Determine if a given date is between two dates
- *
- * @param {*} date The date to compare with
- * @param {*} startDate The start date to compare against
- * @param {*} endDate The end date to compare against
- * @returns True if date is between the two specified dates, false otherwise
- */
-export function isBetween(date, startDate, endDate) {
-  let dateUTC = date.getUTCTime();
-  return dateUTC >= startDate.getUTCTime() && dateUTC <= endDate.getUTCTime();
-}
-
 function ynabDate(format) {
   if (typeof format !== 'string') {
     return ynab.YNABSharedLib.dateFormatter.formatDate();
