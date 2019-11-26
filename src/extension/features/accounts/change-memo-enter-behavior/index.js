@@ -36,7 +36,11 @@ export class ChangeMemoEnterBehavior extends Feature {
   }
 
   observe(changedNodes) {
-    if (!changedNodes.has('ynab-grid-body')) return;
+    if (
+      !changedNodes.has('ynab-grid-body-row is-editing') &&
+      !changedNodes.has('ynab-grid-add-rows')
+    )
+      return;
 
     if (this.shouldInvoke()) {
       this.invoke();
