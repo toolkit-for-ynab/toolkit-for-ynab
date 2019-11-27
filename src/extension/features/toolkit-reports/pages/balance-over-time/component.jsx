@@ -3,10 +3,13 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
-import { getAccountName } from 'toolkit/extension/utils/ynab';
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
-import { mapAccountsToTransactions, generateDataPointsMap } from 'toolkit/extension/utils/mappings';
+import { mapAccountsToTransactions, generateDataPointsMap } from './utils';
+import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
+/**
+ * Component representing the Balance Over Time Report
+ */
 export class BalanceOverTimeComponent extends React.Component {
   // Define our proptypes for usage of this class
   static propTypes = {
@@ -21,7 +24,6 @@ export class BalanceOverTimeComponent extends React.Component {
 
   /**
    * Prepare our data by mapping generating all our datapoints
-   *
    */
   componentWillMount() {
     if (this.props.filters && this.props.allReportableTransactions) {
@@ -30,6 +32,9 @@ export class BalanceOverTimeComponent extends React.Component {
     }
   }
 
+  /**
+   * When we first render, update our data set
+   */
   componentDidMount() {
     this._updateCurrentDataSet();
   }
@@ -116,7 +121,7 @@ export class BalanceOverTimeComponent extends React.Component {
     let series = [];
     filteredData.forEach((datapoints, accountId) => {
       series.push({
-        name: getAccountName(accountId),
+        name: getEntityManager().getAccountById(accountId).accountName,
         data: this._dataPointsToHighChartSeries(datapoints),
       });
     });
@@ -159,7 +164,7 @@ export class BalanceOverTimeComponent extends React.Component {
       title: { text: 'Balance Over Time' },
       series: series,
       yAxis: {
-        title: { text: 'Amount' },
+        title: { text: 'Balance' },
         labels: {
           formatter: e => {
             return formatCurrency(e.value, false);
@@ -191,9 +196,7 @@ export class BalanceOverTimeComponent extends React.Component {
       },
       plotOptions: {
         line: {
-          marker: {
-            enabled: false,
-          },
+          marker: { enabled: false },
         },
         series: {
           cursor: 'pointer',
