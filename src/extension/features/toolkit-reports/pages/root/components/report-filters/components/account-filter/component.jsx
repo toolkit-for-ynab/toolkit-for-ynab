@@ -187,6 +187,9 @@ export class AccountFilterComponent extends React.Component {
     this.offBudgetAccounts.forEach(function({ entityId }) {
       accountFilterIds.add(entityId);
     });
+    this.closedAccounts.forEach(function({ entityId }) {
+      accountFilterIds.add(entityId);
+    });
 
     this.setState({ accountFilterIds });
   };
