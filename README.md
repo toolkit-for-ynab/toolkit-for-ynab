@@ -38,9 +38,9 @@ we will do what we can to provide support for their browser.
 
 Features under consideration and the general status of the project and roadmap is
 on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel
-free to vote and comment. To suggest a new feature, please [visit the YNAB Forum for Extensions](https://forum.youneedabudget.com/categories/ynab-extensions)
-and create a new thread titled "Toolkit Feature Request: [a short description of the feature]".
-Forum user @bluebird8203 is managing the features there and will make sure it ends up in Trello.
+free to vote and comment. To suggest a new feature, please [submit an issue](https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/new)
+on GitHub. Once the feature has been added to the Trello board, you will be informed
+allowing you to vote and follow the Trello card for any updates.
 
 ### Contributions
 
@@ -48,7 +48,7 @@ Contributions are greatly welcomed. If you want to contribute, it's best if you 
 us know so we don't double up on effort. You can see what is being worked on and by whom
 on the roadmap. If you can't find what you want to build on the roadmap, feel free to put
 a note up on the github issues board to let the team know you're working on something new.
-When your code is ready, submit a pull request. You can also contact @blarg on [the YNAB forums](http://forum.youneedabudget.com).
+When your code is ready, submit a pull request.
 
 For documentation on how to build a feature, [see the documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/docs/building-features.md).
 
