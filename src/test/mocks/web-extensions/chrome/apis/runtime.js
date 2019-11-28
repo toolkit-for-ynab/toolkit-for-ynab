@@ -1,5 +1,7 @@
 export class Runtime {
-  listeners = [];
+  onMessageListeners = [];
+
+  onUpdateAvailableListeners = [];
 
   getManifest = jest.fn(() => {
     return {};
@@ -11,15 +13,27 @@ export class Runtime {
 
   onMessage = {
     addListener: jest.fn(callback => {
-      this.listeners.push(callback);
+      this.onMessageListeners.push(callback);
     }),
   };
 
+  onUpdateAvailable = {
+    addListener: jest.fn(callback => {
+      this.onUpdateAvailableListeners.push(callback);
+    }),
+  };
+
+  requestUpdateCheck = jest.fn();
+
   mock = {
-    sendMessage: message => {
+    triggerOnMessage: message => {
       const responseSpy = jest.fn();
-      this.listeners.forEach(listener => listener(message, {}, responseSpy));
+      this.onMessageListeners.forEach(listener => listener(message, {}, responseSpy));
       return responseSpy;
+    },
+
+    triggerOnUpdateAvailable: status => {
+      this.onUpdateAvailableListeners.forEach(listener => listener(status));
     },
   };
 }

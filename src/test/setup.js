@@ -5,16 +5,6 @@ import $ from 'jquery';
 
 process.on('unhandledRejection', console.log.bind(console));
 
-function resetConsoleSpies() {
-  global.console = {
-    debug: jest.fn(),
-    error: jest.fn(),
-    info: jest.fn(),
-    log: jest.fn(),
-    warn: jest.fn(),
-  };
-}
-
 function resetWebExtensionsAPI() {
   let webExtensionsAPI = new Chrome();
   global.chrome = webExtensionsAPI;
@@ -42,13 +32,11 @@ export function unreadyYNAB() {
 }
 
 beforeEach(() => {
-  resetConsoleSpies();
   resetWebExtensionsAPI();
   readyYNAB();
 
   localStorage.clear();
 });
 
-resetConsoleSpies();
 resetWebExtensionsAPI();
 readyYNAB();

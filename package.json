@@ -38,6 +38,7 @@
     "sentry:upload": "sentry-cli releases -o toolkit-for-ynab -p toolkit-for-ynab files $$npm_package_version upload-sourcemaps ./dist/extension/"
   },
   "jest": {
+    "clearMocks": true,
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
       "/node_modules/",
