@@ -177,7 +177,7 @@ export class BalanceOverTimeComponent extends React.Component {
         dateTimeLabelFormats: {
           day: '%b %d',
           week: '%b %d, %y',
-          month: '%b %y',
+          month: '%b %Y',
         },
       },
       legend: {
