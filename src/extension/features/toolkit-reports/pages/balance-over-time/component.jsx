@@ -174,7 +174,11 @@ export class BalanceOverTimeComponent extends React.Component {
       xAxis: {
         title: { text: 'Time' },
         type: 'datetime',
-        dateTimeLabelFormats: { day: '%d %b %Y' },
+        dateTimeLabelFormats: {
+          day: '%b %d',
+          week: '%b %d, %y',
+          month: '%b %Y',
+        },
       },
       legend: {
         layout: 'vertical',
@@ -199,6 +203,7 @@ export class BalanceOverTimeComponent extends React.Component {
           marker: { enabled: false },
         },
         series: {
+          step: true,
           cursor: 'pointer',
           events: {
             click: event => {
