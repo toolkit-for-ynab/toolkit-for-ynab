@@ -1,7 +1,8 @@
 import Raven from 'raven-js';
-import { getBrowser } from 'toolkit/core/common/web-extensions';
+import { getBrowser, getBrowserName } from 'toolkit/core/common/web-extensions';
 import { ToolkitStorage } from 'toolkit/core/common/storage';
 import { getEnvironment } from 'toolkit/core/common/web-extensions';
+import { Browser } from 'toolkit/core/common/constants';
 
 const ONE_HOUR_MS = 1000 * 60 * 60;
 const TOOLKIT_DISABLED_FEATURE_SETTING = 'DisableToolkit';
@@ -29,6 +30,10 @@ export class Background {
   };
 
   _checkForUpdates = async () => {
+    if (getBrowserName() !== Browser.Chrome) {
+      return;
+    }
+
     const now = Date.now();
     const nextUpdateCheck = await this._storage.getStorageItem(NEXT_UPDATE_CHECK_STORAGE_KEY);
 

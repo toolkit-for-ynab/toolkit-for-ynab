@@ -2,7 +2,7 @@ jest.mock('toolkit/core/common/storage');
 import { pause } from 'toolkit/test/utils/pause';
 import { Background, NEXT_UPDATE_CHECK_STORAGE_KEY } from './background';
 import { mockToolkitStorage } from 'toolkit/test/mocks/toolkit-storage';
-import { setupWithLocalStorage, setupWithWebExtensionStorage } from 'toolkit/test/utils/setup';
+import { setupWithLocalStorage } from 'toolkit/test/utils/setup';
 
 const DISABLE_TOOLKIT_FEATURE_KEY = 'DisableToolkit';
 const setup = setupWithLocalStorage((setupOptions = {}) => {
