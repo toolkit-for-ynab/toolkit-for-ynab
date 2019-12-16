@@ -8,19 +8,24 @@ export class AutoEnableRunningBalance extends Feature {
   }
 
   invoke() {
-    const registerService = controllerLookup('accounts').get('registerGridService');
-    const { balance } = registerService.get('displayColumns');
-    if (!balance) {
+    const accountsController = controllerLookup('accounts');
+    const { registerGridService, selectedAccountId } = accountsController.getProperties(
+      'registerGridService',
+      'selectedAccountId'
+    );
+
+    const { balance } = registerGridService.get('displayColumns');
+    if (selectedAccountId && !balance) {
       try {
         // misspelled -- should remove once/if fixed
-        registerService.toggleVieMenuColumn('balance');
+        registerGridService.toggleVieMenuColumn('balance');
         return;
       } catch {
         /* ignore */
       }
 
       try {
-        registerService.toggleViewMenuColumn('balance');
+        registerGridService.toggleViewMenuColumn('balance');
       } catch {
         /* ignore */
       }
