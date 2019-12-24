@@ -33,7 +33,13 @@ export class NotesAsMarkdown extends Feature {
 
     if (view.isEditing) {
       ynabNoteContainer.classList.remove('hidden');
-      // ynabNoteContainer.querySelector('textarea');
+
+      const textarea = ynabNoteContainer.querySelector('textarea');
+      if (textarea) {
+        textarea.style.height = '8rem';
+        textarea.focus();
+      }
+
       return;
     }
 
@@ -44,13 +50,6 @@ export class NotesAsMarkdown extends Feature {
       }
 
       view.set('isEditing', true);
-      Ember.run.scheduleOnce('afterRender', () => {
-        const textarea = ynabNoteContainer.querySelector('textarea');
-        if (textarea) {
-          textarea.style.height = '8rem';
-          textarea.focus();
-        }
-      });
     };
 
     const note = view.get('activeCategory.subCategory.note');
