@@ -3,7 +3,13 @@ import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class DateOfMoney extends Feature {
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
+    return isCurrentRouteBudgetPage() && document.querySelector('.toolkit-date-of-money') == null;
+  }
+
+  onRouteChanged() {
+    if (this.shouldInvoke()) {
+      this.invoke();
+    }
   }
 
   invoke() {
@@ -41,6 +47,7 @@ export class DateOfMoney extends Feature {
     dateOfMoneyContainer.style.color = 'var(--header_age_of_money_text)';
     dateOfMoneyContainer.style.paddingTop = '3px';
     dateOfMoneyContainer.style.paddingBottom = '.25em';
+    dateOfMoneyContainer.classList.add('toolkit-date-of-money');
     // Display the Date Of Money to the user
     budgetHeaderDaysContainer.appendChild(dateOfMoneyContainer);
   }
