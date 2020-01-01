@@ -1,10 +1,15 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class DateOfMoney extends Feature {
   shouldInvoke() {
-    return isCurrentRouteBudgetPage() && document.querySelector('.toolkit-date-of-money') == null;
+    return isCurrentRouteBudgetPage() && document.querySelector('.tk-date-of-money') == null;
   }
+
+  // injectCSS() {
+  //   return require('./index.css');
+  // }
 
   onRouteChanged() {
     if (this.shouldInvoke()) {
@@ -20,35 +25,55 @@ export class DateOfMoney extends Feature {
      * 		2. Display the Date of Money to the user
      */
     const budgetHeaderDaysContainer = document.querySelector('.budget-header-days');
+
     /*
-     * Get the div containing the Age Of Money (AOM)
-     * If enabled, days of buffering has the same class, however AOM will always be the first element
+     * Get the div containing the Age Of Money (AOM) and add a mouse over function to display date of money.
+     * If enabled, days of buffering has the same class, however AOM will always be the first element.
      */
     const ageOfMoneyContainer = budgetHeaderDaysContainer.firstElementChild;
-    /*
-     * Get the Age Of Money
-     */
-    let ageOfMoney = 0;
-    const regExAOM = /\d+/;
-    const regExAOMResult = regExAOM.exec(ageOfMoneyContainer.innerText);
-    if (regExAOMResult != null) {
-      ageOfMoney = regExAOMResult[0];
-    } else {
-      return;
-    }
+    ageOfMoneyContainer.addEventListener(
+      'mouseover',
+      function() {
+        this._showDateOfMoney(budgetHeaderDaysContainer, ageOfMoneyContainer);
+      }.bind(this)
+    );
+  }
+
+  _showDateOfMoney(budgetHeaderDaysContainer, ageOfMoneyContainer) {
+    // Get the Age Of Money
+    const budgetController = controllerLookup('budget');
+    const ageOfMoney = budgetController.get(
+      'budgetViewModel.monthlyBudgetCalculationForCurrentMonth.ageOfMoney'
+    );
+
     // Calculate the Date Of Money by subtracting AOM from today's date
     const today = ynab.utilities.DateWithoutTime.createForToday();
     const dateOfMoney = today.subtractDays(ageOfMoney);
+
     // Apply the user's date format
     const dateOfMoneyFormatted = ynab.formatDate(dateOfMoney.format());
+
     // Create and style the node to display
-    let dateOfMoneyContainer = budgetHeaderDaysContainer.lastElementChild.cloneNode();
+    let dateOfMoneyContainer = ageOfMoneyContainer.cloneNode();
     dateOfMoneyContainer.innerText = dateOfMoneyFormatted;
-    dateOfMoneyContainer.style.color = 'var(--header_age_of_money_text)';
-    dateOfMoneyContainer.style.paddingTop = '3px';
-    dateOfMoneyContainer.style.paddingBottom = '.25em';
-    dateOfMoneyContainer.classList.add('toolkit-date-of-money');
+    dateOfMoneyContainer.classList.add('tk-date-of-money');
+
     // Display the Date Of Money to the user
-    budgetHeaderDaysContainer.appendChild(dateOfMoneyContainer);
+    ageOfMoneyContainer.style.display = 'none';
+    budgetHeaderDaysContainer.insertBefore(dateOfMoneyContainer, ageOfMoneyContainer);
+
+    // Add the event listener to hide Date Of Money and display Age Of Money
+    dateOfMoneyContainer.addEventListener(
+      'mouseout',
+      function() {
+        this._hideDateOfMoney(ageOfMoneyContainer, dateOfMoneyContainer);
+      }.bind(this)
+    );
+  }
+
+  _hideDateOfMoney(ageOfMoneyContainer, dateOfMoneyContainer) {
+    // Delete Date Of Money div from the dom and display Age Of Money again
+    dateOfMoneyContainer.remove();
+    ageOfMoneyContainer.style.display = '';
   }
 }
