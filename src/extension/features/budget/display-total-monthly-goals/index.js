@@ -84,10 +84,17 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   invoke() {
-    const inspectorProto = Object.getPrototypeOf(
-      componentLookup('budget/inspector/default-inspector')
+    const inspectorComponents = [
+      'budget/inspector/default-inspector',
+      'budget/inspector/multi-select-inspector',
+    ];
+
+    const inspectorPrototypes = inspectorComponents.map(c =>
+      Object.getPrototypeOf(componentLookup(c))
     );
 
-    addToolkitEmberHook(this, inspectorProto, 'didRender', this.addTotalMonthlyGoals);
+    inspectorPrototypes.forEach(p =>
+      addToolkitEmberHook(this, p, 'didRender', this.addTotalMonthlyGoals)
+    );
   }
 }
