@@ -16,22 +16,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
       return;
     }
 
-    const goalType = category.get('subCategory.goalType');
-    const monthlyFunding = category.get('subCategory.monthlyFunding');
-    const targetBalanceDate = category.get('monthlySubCategoryBudgetCalculation.goalTarget');
-
-    let monthlyGoalAmount = 0;
-
-    switch (goalType) {
-      case 'MF': {
-        monthlyGoalAmount = monthlyFunding;
-        break;
-      }
-      case 'TBD': {
-        monthlyGoalAmount = targetBalanceDate;
-        break;
-      }
-    }
+    let monthlyGoalAmount = category.get('monthlySubCategoryBudgetCalculation.goalTarget');
 
     // if the user edits a goal amount, it's turned into a string on the `subCategory`
     // object. just convert everything into a number just in case.
