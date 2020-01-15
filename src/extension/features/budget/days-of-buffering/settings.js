@@ -23,4 +23,13 @@ module.exports = [
       { name: '1 month', value: '1' },
     ],
   },
+  {
+    name: 'DaysOfBufferingDate',
+    type: 'checkbox',
+    default: false,
+    section: 'budget',
+    title: 'Days Of Buffering Metric - Date',
+    description:
+      'Hover the mouse over Days of Buffering to display the equivalent Date for Days of Buffering.\n For example, on 1st January with Days of Buffering = 10, Date of Buffering would be 11th January.',
+  },
 ];
