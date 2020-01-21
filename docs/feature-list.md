@@ -102,6 +102,10 @@ Add indicators for subcategories with goals. Types: (M)onthly goal, target by (D
 
 Add a column for 'pacing' which shows you how much money you've spent based on how far you are through the month. Note that clicking on the pacing value will toggle emphasis, allowing you to selectively enable the feature per category.
 
+## Allow Markdown in Notes
+
+Adds Markdown parsing to notes, allowing support for links, bullet points, and other formatting tools. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).
+
 ## Allow Resizing of Inspector
 
 Adds a button to the Budget Toolbar that allows resizing the Budget Inspector to predetermined widths of 33% (YNAB default), 25%, 20%, 15%, or 0%. Note that smaller values maybe not be suitable on small screens.
@@ -121,6 +125,16 @@ Adds a credit card emoji 💳 to the "Credit Card Payments" category.
 ## Current Month Indicator
 
 Changes the header bar's background color to a lighter blue when viewing the current month to better differentiate between months.
+
+## Date Of Money
+
+Hover the mouse over Age of Money to display the date of the income.
+For example, on 11th January with Age of Money = 10, Date of Money would be 1st January.
+
+## Days Of Buffering Metric - Date
+
+Hover the mouse over Days of Buffering to display the equivalent Date for Days of Buffering.
+For example, on 1st January with Days of Buffering = 10, Date of Buffering would be 11th January.
 
 ## Days of Buffering History Lookup
 
