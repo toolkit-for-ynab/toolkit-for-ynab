@@ -1,0 +1,4 @@
+.modal-account-calendar
+  .accounts-calendar-grid:not(.accounts-calendar-grid--toolkit-calendar-first-day-managed) {
+  display: none;
+}
