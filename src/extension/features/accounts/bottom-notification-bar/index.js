@@ -28,6 +28,13 @@ export class BottomNotificationBar extends Feature {
     }
   }
 
+  observe() {
+    let notificationBarIsVisible = $('.' + NOTIFICATION_BAR_CSS_KEY).length > 0;
+    if (this.shouldInvoke() && notificationBarIsVisible) {
+      this.setInitialLeftPosAndWidth();
+    }
+  }
+
   invoke() {
     this.setInitialLeftPosAndWidth();
 
