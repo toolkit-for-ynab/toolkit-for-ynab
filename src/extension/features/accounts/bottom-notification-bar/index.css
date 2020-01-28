@@ -1,0 +1,5 @@
+.accounts-notification {
+  position: fixed !important;
+  bottom: 0vh !important;
+  z-index: 9999999 !important;
+}
