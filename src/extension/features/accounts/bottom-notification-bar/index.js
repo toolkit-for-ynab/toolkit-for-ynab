@@ -1,12 +1,11 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
+import { componentLookup } from 'toolkit/extension/utils/ember';
+import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
-const WIDTH_CSS_VAR = '--tk-number-resize-sidebar-width-from-code';
-const NOTIFICATION_BAR_CSS_KEY = 'accounts-notification';
+const POSITIONED_AT_BOTTOM_CSS_VAR = '--tk-positioned-at-bottom';
 
 export class BottomNotificationBar extends Feature {
-  resizer = null;
-
   injectCSS() {
     return require('./index.css');
   }
@@ -15,66 +14,20 @@ export class BottomNotificationBar extends Feature {
     return isCurrentRouteAccountsPage();
   }
 
-  setInitialLeftPosAndWidth() {
-    let resizedWidth = $(':root')[0].style.getPropertyValue(WIDTH_CSS_VAR);
-    if (resizedWidth) {
-      this.updateLeftPosAndWidth(resizedWidth);
-    }
-  }
-
-  onRouteChanged() {
-    if (this.shouldInvoke()) {
-      this.setInitialLeftPosAndWidth();
-    }
-  }
-
-  observe() {
-    let notificationBarIsVisible = $('.' + NOTIFICATION_BAR_CSS_KEY).length > 0;
-    if (this.shouldInvoke() && notificationBarIsVisible) {
-      this.setInitialLeftPosAndWidth();
-    }
-  }
-
   invoke() {
-    this.setInitialLeftPosAndWidth();
+    function moveNotification(element) {
+      if ($(element)[0].style.getPropertyValue(POSITIONED_AT_BOTTOM_CSS_VAR) === '1') {
+        return;
+      }
 
-    // Listen for resizes
-    const MutationObserver =
-      window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+      $(element)[0].style.setProperty(POSITIONED_AT_BOTTOM_CSS_VAR, '1');
+      $(element).appendTo($(element).parent());
+    }
 
-    const config = {
-      attributes: true,
-    };
+    const accountNotificationProto = Object.getPrototypeOf(
+      componentLookup('accounts/account-notification')
+    );
 
-    let lastResizedWidth = -1;
-    let lastDocumentWidth = -1;
-    let documentObserver = new MutationObserver(mutations => {
-      mutations.forEach(mutation => {
-        if (mutation.type === 'attributes') {
-          // Update the notification bar left position with the newly resized width of the sidebar
-          let resizedWidth = $(':root')[0].style.getPropertyValue(WIDTH_CSS_VAR);
-          let documentWidth = document.width;
-          if (
-            resizedWidth &&
-            (lastResizedWidth !== resizedWidth || lastDocumentWidth !== documentWidth)
-          ) {
-            this.updateLeftPosAndWidth(resizedWidth);
-            lastResizedWidth = resizedWidth;
-            lastDocumentWidth = documentWidth;
-          }
-        }
-      });
-    });
-
-    documentObserver.observe($(':root')[0], config);
-  }
-
-  updateLeftPosAndWidth(left) {
-    // Update the left position of the notification bar so it stays aligned with the transaction view
-    console.log(left);
-    $('.' + NOTIFICATION_BAR_CSS_KEY).css('left', left);
-    $('.' + NOTIFICATION_BAR_CSS_KEY)
-      .css('width', '100vw')
-      .css('width', '-=' + left);
+    addToolkitEmberHook(this, accountNotificationProto, 'didRender', moveNotification);
   }
 }
