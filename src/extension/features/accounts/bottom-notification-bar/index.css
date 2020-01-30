@@ -1,5 +1,3 @@
 .accounts-notification {
-  position: fixed;
-  bottom: 0;
-  z-index: 99999;
+  order: 1;
 }
