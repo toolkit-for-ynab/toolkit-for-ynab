@@ -95,6 +95,6 @@ export class BottomNotificationBar extends Feature {
     addToolkitEmberHook(this, accountNotificationProto, 'didRender', forcePositionAndWidthUpdate);
 
     // Set initial position and width - works with or without resizer plugin
-    this.updateNotificationBarPositionAndWidth();
+    this.updateNotificationBarPositionAndWidth('force');
   }
 }
