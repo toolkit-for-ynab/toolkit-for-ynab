@@ -22,6 +22,7 @@ export class RunningBalance extends TransactionGridFeature {
 
   shouldInvoke() {
     return (
+      !YNABFEATURES['view-menu'] &&
       isCurrentRouteAccountsPage() &&
       controllerLookup('application').get('selectedAccountId') !== null
     );

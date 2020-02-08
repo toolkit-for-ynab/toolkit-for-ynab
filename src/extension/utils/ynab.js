@@ -56,8 +56,12 @@ export function getSidebarViewModel() {
   return controllerLookup('application').get('sidebarViewModel');
 }
 
+export function getApplicationService() {
+  return controllerLookup('application').get('applicationService');
+}
+
 export function isCurrentMonthSelected() {
-  const today = new ynab.utilities.DateWithoutTime();
+  const today = ynab.utilities.DateWithoutTime.createForToday();
   const selectedMonth = getSelectedMonth();
 
   if (selectedMonth) {

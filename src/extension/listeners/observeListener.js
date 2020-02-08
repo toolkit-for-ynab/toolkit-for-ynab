@@ -14,16 +14,26 @@ export class ObserveListener {
     let observer = new _MutationObserver(mutations => {
       this.changedNodes = new Set();
 
-      mutations.forEach(mutation => {
-        let newNodes = mutation.target;
-        let $nodes = $(newNodes);
-
-        $nodes.each((index, element) => {
+      const addChangedNodes = nodes => {
+        nodes.each((index, element) => {
           var nodeClass = $(element).attr('class');
           if (nodeClass) {
             this.changedNodes.add(nodeClass.replace(/^ember-view /, ''));
           }
         });
+      };
+
+      mutations.forEach(mutation => {
+        let newNodes = mutation.target;
+        let addedNodes = mutation.addedNodes;
+        let $nodes = $(newNodes);
+
+        addChangedNodes($nodes);
+
+        if (addedNodes) {
+          let $addedNodes = $(addedNodes);
+          addChangedNodes($addedNodes);
+        }
       });
 
       // Now we are ready to feed the change digest to the

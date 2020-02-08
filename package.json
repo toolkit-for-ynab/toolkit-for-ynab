@@ -1,6 +1,6 @@
 {
   "name": "toolkit-for-ynab",
-  "version": "2.16.0",
+  "version": "2.20.0",
   "private": true,
   "scripts": {
     "build:check": "yarn && yarn gen && yarn lint",
@@ -38,6 +38,7 @@
     "sentry:upload": "sentry-cli releases -o toolkit-for-ynab -p toolkit-for-ynab files $$npm_package_version upload-sourcemaps ./dist/extension/"
   },
   "jest": {
+    "clearMocks": true,
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
       "/node_modules/",
@@ -91,7 +92,8 @@
     "jquery": "^3.4.0",
     "raven-js": "^3.25.2",
     "react": "^16.10.2",
-    "react-dom": "^16.10.2"
+    "react-dom": "^16.10.2",
+    "react-markdown": "^4.2.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",

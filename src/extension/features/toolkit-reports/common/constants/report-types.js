@@ -4,6 +4,7 @@ export const ReportKeys = {
   SpendingByPayee: 'spending-by-payee',
   IncomeVsExpense: 'income-vs-expense',
   IncomeBreakdown: 'income-breakdown',
+  BalanceOverTime: 'balance-over-time',
 };
 
 export const ReportNames = {
@@ -12,6 +13,7 @@ export const ReportNames = {
   SpendingByPayee: 'Spending By Payee',
   IncomeVsExpense: 'Income vs. Expense',
   IncomeBreakdown: 'Income Breakdown',
+  BalanceOverTime: 'Balance Over Time',
 };
 
 export const REPORT_TYPES = [
@@ -34,5 +36,9 @@ export const REPORT_TYPES = [
   {
     key: ReportKeys.IncomeBreakdown,
     name: ReportNames.IncomeBreakdown,
+  },
+  {
+    key: ReportKeys.BalanceOverTime,
+    name: ReportNames.BalanceOverTime,
   },
 ];

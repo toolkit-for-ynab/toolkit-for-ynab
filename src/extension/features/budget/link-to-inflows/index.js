@@ -52,9 +52,10 @@ export class LinkToInflows extends Feature {
   onClick() {
     const month = getSelectedMonth();
     const controller = controllerLookup('accounts');
+    const filters = controller.get('filters');
 
-    if (controller.filters) {
-      controller.filters.resetFilters();
+    if (filters) {
+      filters.resetFilters();
     }
 
     controller.set('searchText', `Income: ${month.format('MMMM YYYY')}`);

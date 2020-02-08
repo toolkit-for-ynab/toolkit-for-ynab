@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import { ReportKeys, REPORT_TYPES } from 'toolkit-reports/common/constants/report-types';
 import { IncomeVsExpense } from 'toolkit-reports/pages/income-vs-expense';
 import { NetWorth } from 'toolkit-reports/pages/net-worth';
+import { BalanceOverTime } from 'toolkit-reports/pages/balance-over-time';
 import { SpendingByPayee } from 'toolkit-reports/pages/spending-by-payee';
 import { SpendingByCategory } from 'toolkit-reports/pages/spending-by-category';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
@@ -36,6 +37,14 @@ export const FiltersPropType = {
 const ACTIVE_REPORT_KEY = 'active-report';
 
 const REPORT_COMPONENTS = [
+  {
+    component: BalanceOverTime,
+    key: ReportKeys.BalanceOverTime,
+    filterSettings: {
+      disableCategoryFilter: true,
+      includeTrackingAccounts: true,
+    },
+  },
   {
     component: NetWorth,
     key: ReportKeys.NetWorth,

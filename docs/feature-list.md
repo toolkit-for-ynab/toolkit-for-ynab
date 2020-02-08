@@ -102,6 +102,10 @@ Add indicators for subcategories with goals. Types: (M)onthly goal, target by (D
 
 Add a column for 'pacing' which shows you how much money you've spent based on how far you are through the month. Note that clicking on the pacing value will toggle emphasis, allowing you to selectively enable the feature per category.
 
+## Allow Markdown in Notes
+
+Adds Markdown parsing to notes, allowing support for links, bullet points, and other formatting tools. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).
+
 ## Allow Resizing of Inspector
 
 Adds a button to the Budget Toolbar that allows resizing the Budget Inspector to predetermined widths of 33% (YNAB default), 25%, 20%, 15%, or 0%. Note that smaller values maybe not be suitable on small screens.
@@ -110,6 +114,10 @@ Adds a button to the Budget Toolbar that allows resizing the Budget Inspector to
 
 Add progress bars and a vertical bar that shows how far you are through the month to category rows.
 
+## Category Solo Mode and Toggle Master Categories
+
+Keeps only the selected category open collapsing all others and adds a button to the Budget Toolbar to open or close all master categories at once.
+
 ## Credit Card Emoji
 
 Adds a credit card emoji 💳 to the "Credit Card Payments" category.
@@ -117,6 +125,16 @@ Adds a credit card emoji 💳 to the "Credit Card Payments" category.
 ## Current Month Indicator
 
 Changes the header bar's background color to a lighter blue when viewing the current month to better differentiate between months.
+
+## Date Of Money
+
+Hover the mouse over Age of Money to display the date of the income.
+For example, on 11th January with Age of Money = 10, Date of Money would be 1st January.
+
+## Days Of Buffering Metric - Date
+
+Hover the mouse over Days of Buffering to display the equivalent Date for Days of Buffering.
+For example, on 1st January with Days of Buffering = 10, Date of Buffering would be 11th January.
 
 ## Days of Buffering History Lookup
 
@@ -198,10 +216,6 @@ Highlights "Budget Next Month" red when you've gone negative as some point in th
 
 Changes the 'To Be Budgeted' background color to yellow if there is unallocated money left to be budgeted.
 
-## Toggle All Master Categories Open/Close
-
-Adds a button to the Budget Toolbar to open or close all master categories at once.
-
 ## Unhighlight all Positive Category Balances
 
 Removes the highlight colour from positive (or zero) category balances and colours positive balances green instead.
@@ -239,6 +253,10 @@ Clicking the Toggle Splits button shows or hides all sub-transactions within all
 ## Auto Adjust Split Transactions
 
 When entering split transactions, each additional split will be auto-filled with the current remaining amount.
+
+## Automatically Enable Running Balance
+
+Enables YNAB's native "Running Balance" by default for each account register.
 
 ## Automatically Mark Transaction as Cleared
 
@@ -306,7 +324,7 @@ Right clicking on a transaction will show the contextual menu, allowing easy acc
 
 ## Show Running Balance
 
-Adds a running balance column to the accounts page (does not appear on All Accounts View)
+Adds a running balance column to the accounts page (does not appear on All Accounts View). YNAB recently implemented their own native version of Running Balance. If that has been enabled for your account, this setting is ignored.
 
 ## Show Spare Change
 

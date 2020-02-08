@@ -1,9 +1,12 @@
 import Raven from 'raven-js';
-import { getBrowser } from 'toolkit/core/common/web-extensions';
+import { getBrowser, getBrowserName } from 'toolkit/core/common/web-extensions';
 import { ToolkitStorage } from 'toolkit/core/common/storage';
 import { getEnvironment } from 'toolkit/core/common/web-extensions';
+import { Browser } from 'toolkit/core/common/constants';
 
+const ONE_HOUR_MS = 1000 * 60 * 60;
 const TOOLKIT_DISABLED_FEATURE_SETTING = 'DisableToolkit';
+export const NEXT_UPDATE_CHECK_STORAGE_KEY = 'next-update-check';
 
 export class Background {
   _browser = getBrowser();
@@ -17,10 +20,38 @@ export class Background {
 
   initListeners() {
     this._browser.runtime.onMessage.addListener(this._handleMessage);
-    this._storage.onFeatureSettingChanged('DisableToolkit', this._updatePopupIcon);
+    this._browser.runtime.onUpdateAvailable.addListener(this._handleUpdateAvailable);
+    this._storage.onFeatureSettingChanged(TOOLKIT_DISABLED_FEATURE_SETTING, this._updatePopupIcon);
+    this._checkForUpdates();
   }
 
-  _handleMessage = (message, sender, sendResponse) => {
+  _handleUpdateAvailable = () => {
+    this._browser.runtime.reload();
+  };
+
+  _checkForUpdates = async () => {
+    if (getBrowserName() !== Browser.Chrome) {
+      return;
+    }
+
+    const now = Date.now();
+    const nextUpdateCheck = await this._storage.getStorageItem(NEXT_UPDATE_CHECK_STORAGE_KEY);
+
+    if (!nextUpdateCheck || now >= nextUpdateCheck) {
+      this._browser.runtime.requestUpdateCheck(status => {
+        let nextCheck = now + ONE_HOUR_MS;
+        if (status === 'throttled') {
+          nextCheck += ONE_HOUR_MS;
+        }
+
+        this._storage.setStorageItem(NEXT_UPDATE_CHECK_STORAGE_KEY, nextCheck);
+      });
+    }
+
+    setTimeout(this._checkForUpdates, ONE_HOUR_MS);
+  };
+
+  _handleMessage = (message, _sender, sendResponse) => {
     switch (message.type) {
       case 'storage':
         this._handleStorageMessage(message.content, sendResponse);
@@ -57,6 +88,10 @@ export class Background {
       default:
         console.log('unknown storage request', request);
     }
+  };
+
+  _handleUpdateAvailable = () => {
+    this._browser.runtime.reload();
   };
 
   _initializeSentry() {
