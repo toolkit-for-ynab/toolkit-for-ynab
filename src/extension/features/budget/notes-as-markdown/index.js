@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
-import { componentLookup, getEmberView } from 'toolkit/extension/utils/ember';
+import { getEmberView } from 'toolkit/extension/utils/ember';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { componentAppend } from 'toolkit/extension/utils/react';
 import ReactMarkdown from 'react-markdown';
@@ -77,10 +77,6 @@ export class NotesAsMarkdown extends Feature {
   };
 
   invoke() {
-    const accountHeaderProto = Object.getPrototypeOf(
-      componentLookup('budget/inspector/inspector-notes')
-    );
-
-    addToolkitEmberHook(this, accountHeaderProto, 'didRender', this.applyMarkdown);
+    addToolkitEmberHook(this, 'budget/inspector/inspector-notes', 'didRender', this.applyMarkdown);
   }
 }

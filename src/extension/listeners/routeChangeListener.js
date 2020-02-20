@@ -33,12 +33,13 @@ export class RouteChangeListener {
       });
     }
 
-    getRouter().addObserver('currentState', ({ location, router }) => {
-      if (router && router.state && router.state.params && router.state.params.index) {
-        if (location.location.href.includes(router.state.params.index.budgetVersionId)) {
+    getRouter().addObserver('currentState', ({ location, targetState: { routerJsState } }) => {
+      if (routerJsState && routerJsState.params && routerJsState.params.index) {
+        if (location.location.href.includes(routerJsState.params.index.budgetVersionId)) {
           Ember.run.scheduleOnce('afterRender', null, emitSameBudgetRouteChange);
         } else {
           Ember.run.scheduleOnce('afterRender', null, emitBudgetRouteChange);
+          Ember.run.scheduleOnce('afterRender', null, emitSameBudgetRouteChange);
         }
       }
     });

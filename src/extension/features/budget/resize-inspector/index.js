@@ -60,7 +60,7 @@ export class ResizeInspector extends Feature {
     }).append(
       $('<div>', {
         id: 'toolkitInspectorModal',
-        class: 'ynab-u modal-popup modal-resize-inspector ember-view modal-overlay active',
+        class: 'ynab-u modal-popup modal-resize-inspector modal-overlay active ember-view',
       }).append(
         $('<div>', {
           id: 'toolkitInspectorIDiv',
