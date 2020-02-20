@@ -87,6 +87,5 @@ export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn) {
     hooks.push({ context, fn });
   }
 
-  // const viewRegistry = componentProto.renderer._viewRegistry;
   componentLookup(componentKey).rerender();
 }
