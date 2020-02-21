@@ -2,6 +2,7 @@ module.exports = {
   name: 'RunningBalance',
   type: 'select',
   default: '0',
+  hidden: true,
   section: 'accounts',
   title: 'Show Running Balance',
   description:

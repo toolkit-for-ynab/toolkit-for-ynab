@@ -1,6 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { TransactionGridFeature } from './feature';
-import { RunningBalance } from './running-balance';
 import { CheckNumbers } from './check-numbers';
 import { SwapClearedFlagged } from './swap-cleared-flagged';
 import { ReconciledTextColor } from './reconciled-text-color';
@@ -9,9 +8,6 @@ import { controllerLookup, componentLookup } from 'toolkit/extension/utils/ember
 export class TransactionGridFeatures extends Feature {
   features = [
     ynabToolKit.options.CheckNumbers ? new CheckNumbers() : new TransactionGridFeature(),
-    ynabToolKit.options.RunningBalance !== '0'
-      ? new RunningBalance()
-      : new TransactionGridFeature(),
     ynabToolKit.options.ReconciledTextColor !== '0'
       ? new ReconciledTextColor()
       : new TransactionGridFeature(),
@@ -65,14 +61,14 @@ export class TransactionGridFeatures extends Feature {
         didUpdate: function() {
           _this.features.forEach(feature => {
             if (feature.shouldInvoke()) {
-              feature.didUpdate.call(this);
+              Ember.run.next(feature.didUpdate.call(this));
             }
           });
         },
         willInsertElement: function() {
           _this.features.forEach(feature => {
             if (feature.shouldInvoke()) {
-              feature.willInsertColumn.call(this);
+              Ember.run.next(feature.willInsertColumn.bind(this));
             }
           });
         },
@@ -82,14 +78,14 @@ export class TransactionGridFeatures extends Feature {
         didUpdate: function() {
           _this.features.forEach(feature => {
             if (feature.shouldInvoke()) {
-              feature.didUpdate.call(this);
+              Ember.run.next(feature.didUpdate.call(this));
             }
           });
         },
         willInsertElement: function() {
           _this.features.forEach(feature => {
             if (feature.shouldInvoke()) {
-              feature.willInsertColumn.call(this);
+              Ember.run.next(feature.willInsertColumn.bind(this));
             }
           });
         },

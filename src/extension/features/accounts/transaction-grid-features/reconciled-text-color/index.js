@@ -27,15 +27,15 @@ export class ReconciledTextColor extends TransactionGridFeature {
   }
 
   didUpdate() {
-    const isSubGridRow = this.get('_debugContainerKey') === 'component:register/grid-sub';
-    const isGridRow = this.get('_debugContainerKey') === 'component:register/grid-row';
+    const isSubGridRow = this._debugContainerKey === 'component:register/grid-sub';
+    const isGridRow = this._debugContainerKey === 'component:register/grid-row';
 
     // We only care about transaction and sub transaction rows
     if (isGridRow || isSubGridRow) {
-      const content = this.get('content');
+      const content = this.content;
       const $element = $(this.element);
       const isChecked = $element.hasClass(YNAB_IS_CHECKED_CLASS);
-      const isReconciled = content.get('cleared') === ynab.constants.TransactionState.Reconciled;
+      const isReconciled = content.cleared === ynab.constants.TransactionState.Reconciled;
 
       if (isChecked) {
         $element.removeClass(TOOLKIT_RECONCILED_CLASS);
@@ -46,7 +46,7 @@ export class ReconciledTextColor extends TransactionGridFeature {
       // I'm not sure how intensive it would be to go find the IDs of sub transactions in a
       // split so rather than do that, just continue down the line of sub transactions after
       // a split and update the classes accordingly
-      if (content.get('isSplit')) {
+      if (content.isSplit) {
         let $nextTransaction = $element.next();
         while ($nextTransaction.hasClass(YNAB_GRID_BODY_SUB_CLASS)) {
           if (isChecked) {
@@ -63,13 +63,13 @@ export class ReconciledTextColor extends TransactionGridFeature {
 
   // Welcome to the City of Edge Case. Population: this feature.
   willInsertColumn() {
-    const isSubGridRow = this.get('_debugContainerKey') === 'component:register/grid-sub';
-    const isGridRow = this.get('_debugContainerKey') === 'component:register/grid-row';
+    const isSubGridRow = this._debugContainerKey === 'component:register/grid-sub';
+    const isGridRow = this._debugContainerKey === 'component:register/grid-row';
 
     // We only care about transaction and sub transaction rows
     if (isGridRow || isSubGridRow) {
       const $element = $(this.element);
-      let content = this.get('content');
+      let content = this.content;
       let isChecked = $element.hasClass(YNAB_IS_CHECKED_CLASS);
 
       // if we're looking at a sub transaction, we need to find the data for it's parent to
@@ -78,8 +78,8 @@ export class ReconciledTextColor extends TransactionGridFeature {
       // only reason we actually care about "checked" in `willInsertColumn` is because it's
       // possible the user toggles splits while having multiple things selected and we want
       // to make sure to handle the newly inserted rows properly. `willUpdate` won't catch this
-      if (content.get('isSubTransaction')) {
-        const parentEntityId = content.get('parentEntityId');
+      if (content.isSubTransaction) {
+        const parentEntityId = content.parentEntityId;
 
         content = content
           .getEntityManager()
@@ -89,12 +89,14 @@ export class ReconciledTextColor extends TransactionGridFeature {
         );
       }
 
-      const isReconciled = content.get('cleared') === ynab.constants.TransactionState.Reconciled;
-      if (isChecked) {
-        $element.removeClass(TOOLKIT_RECONCILED_CLASS);
-      } else if (!isChecked && isReconciled) {
-        $element.addClass(TOOLKIT_RECONCILED_CLASS);
-      }
+      Ember.run.next(() => {
+        const isReconciled = content.cleared === ynab.constants.TransactionState.Reconciled;
+        if (isChecked) {
+          $element.removeClass(TOOLKIT_RECONCILED_CLASS);
+        } else if (!isChecked && isReconciled) {
+          $element.addClass(TOOLKIT_RECONCILED_CLASS);
+        }
+      });
     }
   }
 }
