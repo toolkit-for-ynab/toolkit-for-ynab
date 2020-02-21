@@ -13,5 +13,4 @@ module.exports = {
     { name: 'Dark gray', value: '3' },
     { name: 'Dark gray with green background', value: '4' },
   ],
-  isSubFeature: true,
 };

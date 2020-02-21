@@ -1,7 +1,8 @@
 .toolkit-is-reconciled {
-	color: #00661d;
+  color: #8e9fb0;
+  background-color: #e7faeb !important;
 }
 .toolkit-is-reconciled .ynab-grid-cell-payeeName svg path,
 .toolkit-is-reconciled .ynab-grid-cell-payeeName svg rect {
-	fill: #00661d;
+  fill: #8e9fb0;
 }
