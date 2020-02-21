@@ -69,7 +69,7 @@ export class CategoryActivityCopy extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
     if (
-      changedNodes.has('ynab-u modal-popup modal-budget-activity ember-view modal-overlay active')
+      changedNodes.has('ynab-u modal-popup modal-budget-activity modal-overlay active ember-view')
     ) {
       this.invoke();
     }

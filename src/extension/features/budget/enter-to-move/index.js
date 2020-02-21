@@ -2,7 +2,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 const MOVE_POPUP =
-  'ynab-u modal-popup modal-budget modal-budget-move-money ember-view modal-overlay active';
+  'ynab-u modal-popup modal-budget modal-budget-move-money modal-overlay active ember-view';
 const CATEGORY_DROPDOWN = 'dropdown-container categories-dropdown-container';
 const BUTTON_PRIMARY = 'button button-primary ';
 const BUTTON_CANCEL = 'button button-cancel';

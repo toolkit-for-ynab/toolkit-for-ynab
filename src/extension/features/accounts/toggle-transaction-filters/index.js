@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Feature } from 'toolkit/extension/features/feature';
-import { componentLookup, controllerLookup } from 'toolkit/extension/utils/ember';
+import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { componentAppend } from 'toolkit/extension/utils/react';
 
@@ -48,9 +48,7 @@ export class ToggleTransactionFilters extends Feature {
   }
 
   invoke() {
-    const accountHeaderProto = Object.getPrototypeOf(componentLookup('accounts/account-header'));
-
-    addToolkitEmberHook(this, accountHeaderProto, 'didRender', this.injectButtons);
+    addToolkitEmberHook(this, 'accounts/account-header', 'didRender', this.injectButtons);
   }
 
   injectButtons = element => {

@@ -45,7 +45,7 @@ function containerLookup(containerName) {
   try {
     container = __ynabapp__.__container__.lookup(containerName);
   } catch (e) {
-    container = __ynabapp__.__container__.factoryCache[containerName];
+    container = __ynabapp__.__container__.cache[containerName];
   }
 
   return container;
