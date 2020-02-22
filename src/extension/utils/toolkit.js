@@ -2,7 +2,7 @@ import {
   EMBER_COMPONENT_TOOLKIT_HOOKS,
   emberComponentToolkitHookKey,
 } from 'toolkit/extension/ynab-toolkit';
-import { componentLookup } from 'toolkit/extension/utils/ember';
+import { componentLookup, forEachRenderedComponent } from 'toolkit/extension/utils/ember';
 
 const MONTHS_SHORT = [
   'Jan',
@@ -87,5 +87,5 @@ export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn) {
     hooks.push({ context, fn });
   }
 
-  componentLookup(componentKey).rerender();
+  forEachRenderedComponent(componentKey, view => view.rerender());
 }
