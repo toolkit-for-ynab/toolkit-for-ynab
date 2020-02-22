@@ -34,7 +34,7 @@ export class POSStyleCurrencyEntryMode extends Feature {
 
     const newCurrencyInputComponent = componentLookup(name);
     const originalNewCurrencyInputComponentActions = Object.getPrototypeOf(
-      Object.getPrototypeOf(newCurrencyInputComponent)
+      newCurrencyInputComponent
     ).actions;
     const originalNewCurrencyInputComponentCallback =
       originalNewCurrencyInputComponentActions.commitValue;
