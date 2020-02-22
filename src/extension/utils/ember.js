@@ -19,6 +19,14 @@ export function componentLookup(componentName) {
   return containerLookup(`component:${componentName}`);
 }
 
+export function forEachRenderedComponent(key, fn) {
+  return Object.values(getViewRegistry()).forEach(view => {
+    if (view._debugContainerKey === `component:${key}`) {
+      fn(view);
+    }
+  });
+}
+
 export function lookupForReopen(name) {
   const appContainer = __ynabapp__.__container__;
 
