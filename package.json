@@ -3,7 +3,7 @@
   "version": "2.20.0",
   "private": true,
   "scripts": {
-    "build:check": "yarn && yarn gen",
+    "build:check": "yarn && yarn gen && yarn lint",
     "build:beta": "yarn build:check && yarn webpack:beta && yarn build:legacy && yarn manifest:beta && yarn compress",
     "build:dev": "yarn build:development",
     "build:development": "yarn build:check && yarn webpack:development && yarn build:legacy && yarn manifest:development",
