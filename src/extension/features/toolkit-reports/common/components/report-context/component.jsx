@@ -6,6 +6,7 @@ import { NetWorth } from 'toolkit-reports/pages/net-worth';
 import { BalanceOverTime } from 'toolkit-reports/pages/balance-over-time';
 import { SpendingByPayee } from 'toolkit-reports/pages/spending-by-payee';
 import { SpendingByCategory } from 'toolkit-reports/pages/spending-by-category';
+import { SpendingCalendar } from 'toolkit-reports/pages/spending-calendar';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import {
   getStoredFilters,
@@ -56,6 +57,14 @@ const REPORT_COMPONENTS = [
   {
     component: SpendingByPayee,
     key: ReportKeys.SpendingByPayee,
+    filterSettings: {
+      disableTrackingAccounts: true,
+      includeTrackingAccounts: false,
+    },
+  },
+  {
+    component: SpendingCalendar,
+    key: ReportKeys.SpendingCalendar,
     filterSettings: {
       disableTrackingAccounts: true,
       includeTrackingAccounts: false,

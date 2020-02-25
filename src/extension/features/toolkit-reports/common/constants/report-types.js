@@ -2,6 +2,7 @@ export const ReportKeys = {
   NetWorth: 'net-worth',
   SpendingByCategory: 'spending-by-category',
   SpendingByPayee: 'spending-by-payee',
+  SpendingCalendar: 'spending-calendar',
   IncomeVsExpense: 'income-vs-expense',
   IncomeBreakdown: 'income-breakdown',
   BalanceOverTime: 'balance-over-time',
@@ -11,6 +12,7 @@ export const ReportNames = {
   NetWorth: 'Net Worth',
   SpendingByCategory: 'Spending By Category',
   SpendingByPayee: 'Spending By Payee',
+  SpendingCalendar: 'Spending Calendar',
   IncomeVsExpense: 'Income vs. Expense',
   IncomeBreakdown: 'Income Breakdown',
   BalanceOverTime: 'Balance Over Time',
@@ -28,6 +30,10 @@ export const REPORT_TYPES = [
   {
     key: ReportKeys.SpendingByPayee,
     name: ReportNames.SpendingByPayee,
+  },
+  {
+    key: ReportKeys.SpendingCalendar,
+    name: ReportNames.SpendingCalendar,
   },
   {
     key: ReportKeys.IncomeVsExpense,
