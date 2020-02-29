@@ -1,0 +1,3 @@
+.budget-table-row.is-sub-category:nth-of-type(even):not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
+  background-color: #fafafa;
+}
