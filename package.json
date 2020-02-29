@@ -76,7 +76,7 @@
     "PrintingImprovements",
     "RightClickToEdit",
     "ShowIntercom",
-    "ShowDebtButton",
+    "ToolkitDebts",
     "ToolkitReports"
   ],
   "husky": {

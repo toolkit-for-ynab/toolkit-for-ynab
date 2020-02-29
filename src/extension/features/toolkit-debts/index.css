@@ -1,0 +1,15 @@
+.nav-main .tk-react-debts-link {
+  cursor: pointer;
+}
+
+.nav-main .tk-react-debts-link.active a .flaticon {
+  color: #fed168;
+}
+
+.nav-main .tk-navlink-debts-link > span {
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  margin-right: 0.9rem;
+}

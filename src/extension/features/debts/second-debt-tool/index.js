@@ -5,7 +5,7 @@ import { getSidebarViewModel } from 'toolkit/extension/utils/ynab';
 
 const YNAB_CONTENT_CONTAINER_SELECTOR = 'div.ynab-u.content';
 
-export class DebtReductionCalculator extends Feature {
+export class SecondDebtTool extends Feature {
   closedAccounts = null;
 
   onBudgetAccounts = null;

@@ -6,8 +6,10 @@ import { l10n } from 'toolkit/extension/utils/toolkit';
 const YNAB_NATIVE_CONTENT_SELECTOR1 = 'div.scroll-wrap';
 const YNAB_NATIVE_CONTENT_SELECTOR2 = 'div.register-flex-columns';
 
-export class ShowDebtButton extends Feature {
-  // injectCSS() { return require('./index.css'); }
+export class ThirdDebtTool extends Feature {
+  // injectCSS() {
+  //   return require('./index.css');
+  // }
 
   // willInvoke() {
   //   if (this.settings.enabled !== '0') {
@@ -49,7 +51,6 @@ export class ShowDebtButton extends Feature {
       // The user has left the Debts page.
       // We're no longer the active page.
       $('.ynabtk-navlink-debts').removeClass('active');
-
       $('.ynabtk-debts').remove();
 
       // And restore the YNAB stuff we hid earlier
@@ -95,6 +96,7 @@ export class ShowDebtButton extends Feature {
     );
 
     $('.ynabtk-navlink-debts-link').click(event => {
+      console.log('setUpDebtsButton');
       event.preventDefault();
     });
 

@@ -165,9 +165,9 @@ jq(() => {
       },
       {
         id: 'debtsSettingsPage',
-        iconClass: 'fa-bar-chart',
+        iconClass: 'fa-money',
         title: 'Debts Screen Settings',
-        showActions: true
+        showActions: true,
       },
       {
         id: 'reportsSettingsPage',
@@ -436,11 +436,13 @@ jq(() => {
       loadPanel('budget');
       e.preventDefault();
     });
-    jq('#debtsMenuItem').click(function (e) {
-      loadPanel('debts'); e.preventDefault();
+    jq('#debtsMenuItem').click(function(e) {
+      loadPanel('debts');
+      e.preventDefault();
     });
-    jq('#reportsMenuItem').click(function (e) {
-      loadPanel('reports'); e.preventDefault();
+    jq('#reportsMenuItem').click(function(e) {
+      loadPanel('reports');
+      e.preventDefault();
     });
     jq('#supportMenuItem').click(function(e) {
       loadPanel('support', false);
