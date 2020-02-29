@@ -262,6 +262,10 @@ Enables YNAB's native "Running Balance" by default for each account register.
 
 Automatically mark transaction as cleared when you enter it manually.
 
+## Bottom Notification Bar
+
+Move the notification bar to the bottom as an overlay. This prevents the transactions from "jumping around."
+
 ## Bulk Manage Payees
 
 Adds an option to the transaction edit drop-down menu to manage payees for the current selection.
@@ -322,13 +326,9 @@ Adds the total available balance to the category tooltip on each row in the Acco
 
 Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit menu options.
 
-## Show Running Balance
-
-Adds a running balance column to the accounts page (does not appear on All Accounts View). YNAB recently implemented their own native version of Running Balance. If that has been enabled for your account, this setting is ignored.
-
 ## Show Spare Change
 
-"Imagine if you paid for all purchases in whole dollars. Shows a total of the spare change you would accumulate for the selected outflow transactions.
+Imagine if you paid for all purchases in whole dollars. Shows a total of the spare change you would accumulate for the selected outflow transactions.
 
 ## Striped Transaction Rows
 

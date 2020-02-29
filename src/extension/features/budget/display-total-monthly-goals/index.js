@@ -1,7 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { componentLookup } from 'toolkit/extension/utils/ember';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class DisplayTotalMonthlyGoals extends Feature {
@@ -84,17 +83,11 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   invoke() {
-    const inspectorComponents = [
+    addToolkitEmberHook(
+      this,
       'budget/inspector/default-inspector',
-      'budget/inspector/multi-select-inspector',
-    ];
-
-    const inspectorPrototypes = inspectorComponents.map(c =>
-      Object.getPrototypeOf(componentLookup(c))
-    );
-
-    inspectorPrototypes.forEach(p =>
-      addToolkitEmberHook(this, p, 'didRender', this.addTotalMonthlyGoals)
+      'didRender',
+      this.addTotalMonthlyGoals
     );
   }
 }

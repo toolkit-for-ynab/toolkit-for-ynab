@@ -1,26 +1,36 @@
-import { TransactionGridFeature } from '../feature';
-import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
+import { Feature } from 'toolkit/extension/features/feature';
+import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
-export class SwapClearedFlagged extends TransactionGridFeature {
+export class SwapClearedFlagged extends Feature {
   injectCSS() {
     return require('./index.css');
   }
 
   shouldInvoke() {
-    return isCurrentRouteAccountsPage();
+    return true;
   }
 
-  insertHeader() {
-    const headerRow = document.querySelector('.ynab-grid-header');
-    if (headerRow) {
-      swapColumns(headerRow);
-    }
+  shouldInvoke() {
+    return true;
   }
 
-  willInsertColumn() {
-    if (this.element) {
-      swapColumns(this.element);
-    }
+  invoke() {
+    const rows = [
+      'register/grid-header',
+      'register/grid-sub',
+      'register/grid-row',
+      'register/grid-scheduled',
+      'register/grid-scheduled-sub',
+      'register/grid-actions',
+      'register/grid-pending',
+      'register/grid-split',
+    ];
+
+    addToolkitEmberHook(this, 'register/grid-header', 'didRender', swapColumns);
+
+    rows.forEach(key => {
+      addToolkitEmberHook(this, key, 'didInsertElement', swapColumns);
+    });
   }
 }
 

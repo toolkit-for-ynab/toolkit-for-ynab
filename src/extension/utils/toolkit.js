@@ -2,6 +2,7 @@ import {
   EMBER_COMPONENT_TOOLKIT_HOOKS,
   emberComponentToolkitHookKey,
 } from 'toolkit/extension/ynab-toolkit';
+import { componentLookup, forEachRenderedComponent } from 'toolkit/extension/utils/ember';
 
 const MONTHS_SHORT = [
   'Jan',
@@ -72,24 +73,19 @@ export function l10nMonth(monthIndex, short = MonthStyle.Long) {
   return l10n(`months.${MONTHS_LONG[monthIndex]}`, MONTHS_LONG[monthIndex]);
 }
 
-export function addToolkitEmberHook(context, proto, lifecycleHook, fn) {
-  const containerKey = proto._debugContainerKey;
+export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn) {
+  const componentProto = Object.getPrototypeOf(componentLookup(componentKey));
 
   if (!EMBER_COMPONENT_TOOLKIT_HOOKS.includes(lifecycleHook)) {
     return;
   }
 
-  const hooks = proto[emberComponentToolkitHookKey(lifecycleHook)];
+  const hooks = componentProto[emberComponentToolkitHookKey(lifecycleHook)];
   if (!hooks) {
-    proto[emberComponentToolkitHookKey(lifecycleHook)] = [{ context, fn }];
+    componentProto[emberComponentToolkitHookKey(lifecycleHook)] = [{ context, fn }];
   } else if (hooks && !hooks.some(({ fn: fnExists }) => fn === fnExists)) {
     hooks.push({ context, fn });
   }
 
-  const viewRegistry = proto.renderer._viewRegistry;
-  for (let key in viewRegistry) {
-    if (viewRegistry[key]._debugContainerKey === containerKey) {
-      viewRegistry[key].rerender();
-    }
-  }
+  forEachRenderedComponent(componentKey, view => view.rerender());
 }

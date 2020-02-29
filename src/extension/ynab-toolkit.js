@@ -8,7 +8,7 @@ import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/wi
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
-export const EMBER_COMPONENT_TOOLKIT_HOOKS = ['didRender'];
+export const EMBER_COMPONENT_TOOLKIT_HOOKS = ['didRender', 'didInsertElement'];
 export const emberComponentToolkitHookKey = hookName => `_tk_${hookName}_hooks_`;
 
 window.__toolkitUtils = {
