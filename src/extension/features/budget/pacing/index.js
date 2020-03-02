@@ -116,7 +116,7 @@ export class Pacing extends Feature {
       <li class="budget-table-cell-available toolkit-cell-pacing">
         <span
           title="${tooltip}"
-          class="toolkit-cell-pacing-display currency ${temperatureClass} ${deemphasizedClass} ${indicatorClass}"
+          class="ynab-new-budget-available-number toolkit-cell-pacing-display currency ${temperatureClass} ${deemphasizedClass} ${indicatorClass}"
           data-sub-category-id="${subCategoryId}"
         />
       </li>
