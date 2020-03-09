@@ -14,7 +14,7 @@ export class HideClosedAccounts extends Feature {
   }
 
   observe(changedNodes) {
-    if (changedNodes.has('ynab-u modal-popup modal-sidebar-menu modal-overlay active ember-view')) {
+    if (changedNodes.has('ynab-u modal-popup modal-sidebar-menu modal-overlay active ember-view') || changedNodes.has('ynab-new-settings-menu')) {
       componentAppend(
         <HideClosedButton toggleHiddenState={this.setHiddenState} />,
         document.getElementsByClassName('modal-list')[0]
