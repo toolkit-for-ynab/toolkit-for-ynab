@@ -4,7 +4,7 @@ import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class AutoEnableRunningBalance extends Feature {
   shouldInvoke() {
-    return YNABFEATURES['view-menu'] && isCurrentRouteAccountsPage();
+    return isCurrentRouteAccountsPage();
   }
 
   invoke() {
