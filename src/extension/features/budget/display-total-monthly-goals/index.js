@@ -15,12 +15,15 @@ export class DisplayTotalMonthlyGoals extends Feature {
       return;
     }
 
-    let monthlyGoalAmount = category.get('monthlySubCategoryBudgetCalculation.goalTarget');
+    let { goalTarget, goalTotalNeededAmount } = category.monthlySubCategoryBudgetCalculation;
+    if (category.goalType === ynab.constants.SubCategoryGoalType.Needed && !goalTarget) {
+      goalTarget = goalTotalNeededAmount;
+    }
 
     // if the user edits a goal amount, it's turned into a string on the `subCategory`
     // object. just convert everything into a number just in case.
     return {
-      monthlyGoalAmount: parseInt(monthlyGoalAmount, 10),
+      monthlyGoalAmount: parseInt(goalTarget, 10),
       isChecked: category.get('isChecked'),
     };
   }

@@ -55,9 +55,17 @@ export class BudgetCategoryFeatures extends Feature {
       }
     }
 
-    ynabToolKit.invokeFeature('DisplayTargetGoalAmount');
-    ynabToolKit.invokeFeature('GoalIndicator');
-    ynabToolKit.invokeFeature('TargetBalanceWarning');
+    // Sometimes, these features depend on calculations which are performed
+    // by the backend and returned to the client. Invoke the features immediately
+    // at first and then again on a delay which will hopefully catch any updates.
+    const invokeFeatures = () => {
+      ynabToolKit.invokeFeature('DisplayTargetGoalAmount');
+      ynabToolKit.invokeFeature('GoalIndicator');
+      ynabToolKit.invokeFeature('TargetBalanceWarning');
+    };
+
+    invokeFeatures();
+    Ember.run.later(invokeFeatures, 500);
   }
 
   observe(changedNodes) {
@@ -66,6 +74,7 @@ export class BudgetCategoryFeatures extends Feature {
     }
 
     if (
+      changedNodes.has('ynab-new-inspector-goals ember-view') ||
       changedNodes.has('budget-number user-data') ||
       changedNodes.has('budget-table-row is-sub-category') ||
       changedNodes.has('budget-inspector') ||
