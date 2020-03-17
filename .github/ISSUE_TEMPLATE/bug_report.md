@@ -27,7 +27,7 @@ If applicable, add screenshots to help explain your problem.
 
 - OS: [e.g. OSX, Windows]
 - Browser [e.g. chrome, firefox]
-- Toolk Version [e.g. 2.22.0]
+- Toolkit Version [e.g. 2.22.0]
 
 **Setting Export**
 Please replace the text below with your exported Toolkit settings. You can export these by going to the Toolkit Options page, click the `Import/Export Settings` button at the bottom left and copying the text in the modal which appears.
