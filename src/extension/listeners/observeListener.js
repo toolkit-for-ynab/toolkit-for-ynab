@@ -18,7 +18,7 @@ export class ObserveListener {
         nodes.each((index, element) => {
           var nodeClass = $(element).attr('class');
           if (nodeClass) {
-            this.changedNodes.add(nodeClass.replace(/^ember-view /, ''));
+            this.changedNodes.add(nodeClass.replace(/ember-view/g, '').trim());
           }
         });
       };

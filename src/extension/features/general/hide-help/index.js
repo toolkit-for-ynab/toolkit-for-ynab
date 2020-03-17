@@ -14,7 +14,7 @@ export class HideHelp extends Feature {
   }
 
   observe(changedNodes) {
-    if (changedNodes.has('ynab-u ynab-new-settings-menu modal-overlay active ember-view')) {
+    if (changedNodes.has('ynab-u ynab-new-settings-menu modal-overlay active')) {
       componentAppend(
         <HideHelpButton toggleHiddenState={this.setHiddenState} />,
         document.getElementsByClassName('modal-list')[0]

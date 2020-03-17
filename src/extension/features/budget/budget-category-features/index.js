@@ -74,7 +74,7 @@ export class BudgetCategoryFeatures extends Feature {
     }
 
     if (
-      changedNodes.has('ynab-new-inspector-goals ember-view') ||
+      changedNodes.has('ynab-new-inspector-goals') ||
       changedNodes.has('budget-number user-data') ||
       changedNodes.has('budget-table-row is-sub-category') ||
       changedNodes.has('budget-inspector') ||
