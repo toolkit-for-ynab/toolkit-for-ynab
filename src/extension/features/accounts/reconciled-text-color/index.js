@@ -30,6 +30,9 @@ export class ReconciledTextColor extends Feature {
   invoke() {
     addToolkitEmberHook(this, 'register/grid-sub', 'didInsertElement', this.addClass);
     addToolkitEmberHook(this, 'register/grid-row', 'didInsertElement', this.addClass);
+
+    addToolkitEmberHook(this, 'register/grid-sub', 'didUpdate', this.addClass);
+    addToolkitEmberHook(this, 'register/grid-row', 'didUpdate', this.addClass);
   }
 
   addClass(element) {

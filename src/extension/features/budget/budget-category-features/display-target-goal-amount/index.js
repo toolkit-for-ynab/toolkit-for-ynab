@@ -56,10 +56,11 @@ export class DisplayTargetGoalAmount extends Feature {
         'monthlyFunding',
         'goalTargetAmount'
       );
-      const { balance, goalTarget } = monthlySubCategoryBudgetCalculation.getProperties(
-        'balance',
-        'goalTarget'
-      );
+      const {
+        goalTarget,
+        goalOverallFunded,
+        goalTotalNeededAmount,
+      } = monthlySubCategoryBudgetCalculation;
       const { budgeted } = monthlySubCategoryBudget.get('budgeted');
 
       let goalAmount = null;
@@ -75,9 +76,19 @@ export class DisplayTargetGoalAmount extends Feature {
           break;
         case ynab.constants.SubCategoryGoalType.Needed:
           goalAmount = goalTargetAmount;
-          if (userSetting === Settings.WarnBudgetOverTarget && balance > goalAmount) {
+          if (goalTarget) {
+            goalAmount = goalTarget;
+          }
+
+          if (
+            userSetting === Settings.WarnBudgetOverTarget &&
+            goalOverallFunded > goalTotalNeededAmount
+          ) {
             applyEmphasis = true;
-          } else if (userSetting === Settings.GreenBudgetOverTarget && balance >= goalAmount) {
+          } else if (
+            userSetting === Settings.GreenBudgetOverTarget &&
+            goalOverallFunded > goalTotalNeededAmount
+          ) {
             applyEmphasis = true;
           }
           break;

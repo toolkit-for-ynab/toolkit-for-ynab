@@ -35,7 +35,7 @@ export class EasyTransactionApproval extends Feature {
     }
 
     // disable keydown watch on creation or editing of transactions
-    if (changedNodes.has('accounts-toolbar-edit-transaction ember-view button button-disabled')) {
+    if (changedNodes.has('accounts-toolbar-edit-transaction button button-disabled')) {
       this.watchForKeys = false;
     }
   }
