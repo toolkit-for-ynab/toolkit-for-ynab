@@ -1,24 +1,16 @@
 .nav-main {
-  padding-bottom: .95em !important;
+  margin-bottom: 0px !important;
 }
 
-.nav-main > li > a {
-  padding: 0 !important;
-  font-size: 1em !important;
-  height: 2rem !important;
-  line-height: 0.9rem !important;
+.nav-main li {
+  height: 2.2rem !important;
 }
 
-.nav-main .svg-icon {
-  width: 2rem;
-  height: 2rem;
-  margin-right: .5rem;
+.nav-main svg {
+  margin-left: 15px !important;
 }
 
-.ynabtk-collapse-link.collapsable > span {
-  padding-bottom: 0.3rem;
-}
-
-.ynabtk-navlink-reports-link.collapsable > span {
-  padding-bottom: 0.3rem;
+.tk-navlink i {
+  padding-left: 15px !important;
+  margin-right: 15px !important;
 }
