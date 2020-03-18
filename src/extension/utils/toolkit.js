@@ -2,7 +2,7 @@ import {
   EMBER_COMPONENT_TOOLKIT_HOOKS,
   emberComponentToolkitHookKey,
 } from 'toolkit/extension/ynab-toolkit';
-import { componentLookup, forEachRenderedComponent } from 'toolkit/extension/utils/ember';
+import { componentLookup } from 'toolkit/extension/utils/ember';
 
 const MONTHS_SHORT = [
   'Jan',
