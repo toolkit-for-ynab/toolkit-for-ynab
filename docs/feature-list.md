@@ -212,7 +212,7 @@ Allows the monthly funding goal to be set as a max spending goal for each catego
 
 Highlights "Budget Next Month" red when you've gone negative as some point in the future.
 
-## Stripped Budget Rows
+## Striped Budget Rows
 
 Shows a light gray background on alternating category rows.
 
