@@ -41,6 +41,15 @@ module.exports = function(env) {
           __dirname,
           path.join(CODE_SOURCE_DIR, 'extension', 'features', 'toolkit-reports')
         ),
+        $reports: path.resolve(
+          __dirname,
+          path.join(CODE_SOURCE_DIR, 'extension', 'features', 'toolkit-reports')
+        ),
+        $toolkit: path.resolve(__dirname, CODE_SOURCE_DIR),
+        $tools: path.resolve(
+          __dirname,
+          path.join(CODE_SOURCE_DIR, 'extension', 'features', 'toolkit-tools')
+        ),
       },
       extensions: ['.js', '.jsx'],
       modules: ['node_modules'],

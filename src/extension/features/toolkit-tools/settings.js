@@ -1,11 +1,11 @@
 module.exports = {
-  name: 'ToolkitDebts',
+  name: 'ToolkitTools',
   type: 'checkbox',
   default: true,
   section: 'general',
-  title: 'Toolkit Debt Tools',
+  title: 'Toolkit Tools',
   description:
-    'Adds Debt Tools to the sidebar. A Debt Reduction Calculator is currently the only available tool on the Debts tab.',
+    'Adds Toolkit Tools to the sidebar. A debt reduction Calculator is currently the only tool available on the tab.',
 };
 
 //

@@ -1,12 +1,12 @@
-.nav-main .tk-react-debts-link {
+.nav-main .tk-react-tools-link {
   cursor: pointer;
 }
 
-.nav-main .tk-react-debts-link.active a .flaticon {
+.nav-main .tk-react-tools-link.active a .flaticon {
   color: #fed168;
 }
 
-.nav-main .tk-navlink-debts-link > span {
+.nav-main .tk-navlink-tools-link > span {
   height: 2.25rem;
   display: flex;
   align-items: center;
