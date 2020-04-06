@@ -212,6 +212,10 @@ Allows the monthly funding goal to be set as a max spending goal for each catego
 
 Highlights "Budget Next Month" red when you've gone negative as some point in the future.
 
+## Striped Budget Rows
+
+Shows a light gray background on alternating category rows.
+
 ## To Be Budgeted Warning
 
 Changes the 'To Be Budgeted' background color to yellow if there is unallocated money left to be budgeted.
@@ -281,6 +285,10 @@ When you press enter on the memo field while adding or editing a transaction, th
 ## Clear Selection
 
 Adds an option to the transaction edit drop-down menu to clear the current selection.
+
+## Confirm keyboard-initiated transaction cancelation
+
+Displays a pop-up confirmation prompt when transaction row's "Cancel" action is triggered by keyboard press ("Enter"). This guards against inadvertent discarding of complex split transaction entries in keyboard driven entry workflows.
 
 ## Deselect Transactions on Save
 

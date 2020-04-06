@@ -2,7 +2,7 @@ import {
   EMBER_COMPONENT_TOOLKIT_HOOKS,
   emberComponentToolkitHookKey,
 } from 'toolkit/extension/ynab-toolkit';
-import { componentLookup, forEachRenderedComponent } from 'toolkit/extension/utils/ember';
+import { componentLookup } from 'toolkit/extension/utils/ember';
 
 const MONTHS_SHORT = [
   'Jan',
@@ -80,12 +80,13 @@ export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn) {
     return;
   }
 
-  const hooks = componentProto[emberComponentToolkitHookKey(lifecycleHook)];
+  let hooks = componentProto[emberComponentToolkitHookKey(lifecycleHook)];
   if (!hooks) {
-    componentProto[emberComponentToolkitHookKey(lifecycleHook)] = [{ context, fn }];
+    hooks = [{ context, fn }];
+    componentProto[emberComponentToolkitHookKey(lifecycleHook)] = hooks;
   } else if (hooks && !hooks.some(({ fn: fnExists }) => fn === fnExists)) {
     hooks.push({ context, fn });
   }
 
-  forEachRenderedComponent(componentKey, view => view.rerender());
+  ynabToolKit.hookedComponents.add(componentKey);
 }

@@ -241,7 +241,7 @@ export class CheckCreditBalances extends Feature {
         // format the calculated value back to selected number format
         input.val(ynab.formatCurrency(newValue));
 
-        if (ynabToolKit.options.QuickBudgetWarning === 0) {
+        if (!ynabToolKit.options.QuickBudgetWarning) {
           // only seems to work if the confirmation doesn't pop up?
           // haven't figured out a way to properly blur otherwise
           input.blur();

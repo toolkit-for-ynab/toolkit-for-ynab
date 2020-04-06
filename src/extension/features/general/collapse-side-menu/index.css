@@ -2,45 +2,36 @@
   cursor: pointer;
 }
 
-.ynabtk-collapse-link {
-  display: flex;
-  align-items: center;
-}
-
-.ynabtk-collapse-link > span {
-  height: 2.25rem;
-  display: flex;
-  align-items: center;
-  margin-left: 1rem;
-  margin-right: .9rem;
+.tk-navlink-width {
+  width: 4.6rem;
 }
 
 .layout.collapsed .content,
 .layout.collapsed .budget-header {
-	left: 40px;
+  left: 40px;
 }
 
 .layout.collapsed .content .scroll-wrap,
 .layout.collapsed .content .register-flex-columns {
-	width: inherit;
-	min-width: 838px;
+  width: inherit;
+  min-width: 838px;
 }
 
 .collapsed-buttons .active button {
-	background-color: #194853;
-	color: #fff;
+  background-color: #194853;
+  color: #fff;
 }
 
 .collapsed-buttons .active .collapsed-budget {
-	color: #ceec00;
+  color: #ceec00;
 }
 
 .collapsed-buttons .active .collapsed-reports {
-	color: #fed168;
+  color: #fed168;
 }
 
 .collapsed-buttons .active .collapsed-account {
-	color: #32dcff;
+  color: #32dcff;
 }
 
 .ynabtk-nav-link-collapsed {
@@ -54,6 +45,5 @@
 
 .nav-main > li > a {
   display: -webkit-box;
-  height: 3rem;
   width: 100%;
 }

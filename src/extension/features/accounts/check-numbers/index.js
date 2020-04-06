@@ -86,6 +86,11 @@ export class CheckNumbers extends Feature {
       transaction = emberView.content;
     }
 
+    if (!transaction) {
+      this.insertDeadColumn(element);
+      return;
+    }
+
     const $currentRow = $(element);
     const checkNumberCell = $('.ynab-grid-cell-memo', $currentRow).clone();
     checkNumberCell.removeClass('ynab-grid-cell-memo');

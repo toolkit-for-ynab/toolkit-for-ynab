@@ -42,7 +42,7 @@ export class BudgetQuickSwitch extends Feature {
   }
 
   observe(changedNodes) {
-    if (changedNodes.has('ynab-u modal-popup modal-sidebar-menu modal-overlay active ember-view')) {
+    if (changedNodes.has('ynab-u ynab-new-settings-menu modal-overlay active')) {
       this.populateBudgetList();
     }
   }

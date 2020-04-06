@@ -1,35 +1,22 @@
 .nav-main {
-  padding-bottom: .5em !important;
+  margin-bottom: 0px !important;
 }
 
-.nav-main > li > a {
-  padding: 0 !important;
-  font-size: .85em !important;
+.nav-main li {
   height: 2rem !important;
+  margin: 0 !important;
 }
 
-.nav-main .svg-icon {
-  width: 1.6rem;
-  height: 1.6rem;
-  margin-right: 0.65rem;
-  margin-left: 0.75rem;
-  margin-top: 0.23rem;
+.nav-main li a {
+  margin: 0 !important;
+  border-radius: 0 !important;
 }
 
-.ynabtk-collapse-link > span {
-  margin-left: 1.1rem !important;
-  margin-right: 1.1rem !important;
+.nav-main svg {
+  margin-left: 15px !important;
 }
 
-.ynabtk-navlink-reports-link > span {
-  margin-left: 1.05rem !important;
-  margin-right: 1.05rem !important;
-}
-
-.ynabtk-collapse-link.collapsable > span {
-  padding-bottom: 0.3rem;
-}
-
-.ynabtk-navlink-reports-link.collapsable > span {
-  padding-bottom: 0.3rem;
+.tk-navlink i {
+  padding-left: 15px !important;
+  margin-right: 15px !important;
 }
