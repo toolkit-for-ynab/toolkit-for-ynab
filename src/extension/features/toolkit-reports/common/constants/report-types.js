@@ -1,5 +1,6 @@
 export const ReportKeys = {
   NetWorth: 'net-worth',
+  InflowOutflow: 'inflow-outflow',
   SpendingByCategory: 'spending-by-category',
   SpendingByPayee: 'spending-by-payee',
   IncomeVsExpense: 'income-vs-expense',
@@ -9,6 +10,7 @@ export const ReportKeys = {
 
 export const ReportNames = {
   NetWorth: 'Net Worth',
+  InflowOutflow: 'Inflow/Outflow',
   SpendingByCategory: 'Spending By Category',
   SpendingByPayee: 'Spending By Payee',
   IncomeVsExpense: 'Income vs. Expense',
@@ -20,6 +22,10 @@ export const REPORT_TYPES = [
   {
     key: ReportKeys.NetWorth,
     name: ReportNames.NetWorth,
+  },
+  {
+    key: ReportKeys.InflowOutflow,
+    name: ReportNames.InflowOutflow,
   },
   {
     key: ReportKeys.SpendingByCategory,
