@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import { ReportKeys, REPORT_TYPES } from 'toolkit-reports/common/constants/report-types';
 import { IncomeVsExpense } from 'toolkit-reports/pages/income-vs-expense';
 import { NetWorth } from 'toolkit-reports/pages/net-worth';
+import { InflowOutflow } from 'toolkit-reports/pages/inflow-outflow';
 import { BalanceOverTime } from 'toolkit-reports/pages/balance-over-time';
 import { SpendingByPayee } from 'toolkit-reports/pages/spending-by-payee';
 import { SpendingByCategory } from 'toolkit-reports/pages/spending-by-category';
@@ -50,6 +51,14 @@ const REPORT_COMPONENTS = [
     key: ReportKeys.NetWorth,
     filterSettings: {
       disableCategoryFilter: true,
+      includeTrackingAccounts: true,
+    },
+  },
+  {
+    component: InflowOutflow,
+    key: ReportKeys.InflowOutflow,
+    filterSettings: {
+      disableCategoryFilter: false,
       includeTrackingAccounts: true,
     },
   },
