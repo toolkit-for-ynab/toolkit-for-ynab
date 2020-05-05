@@ -8,7 +8,7 @@ export class CategoryActivityCopy extends Feature {
   }
 
   invoke() {
-    $('.modal-actions > .button-primary')
+    $('.modal-budget-activity .modal-actions > .button-primary')
       .clone()
       .attr('id', 'toolkit-copy-button')
       .insertAfter('.modal-actions > .button-primary')
