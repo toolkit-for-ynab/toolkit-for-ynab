@@ -90,7 +90,7 @@
     "core-js": "2",
     "fuzzysort": "^1.1.4",
     "highcharts": "7.0.0",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "raven-js": "^3.25.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
