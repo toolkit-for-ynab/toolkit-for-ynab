@@ -8,6 +8,10 @@
 
 Makes the account names smaller so that you can see more of the account names and fit more on the screen.
 
+## Add Copy Transactions to Activity Modals
+
+Adds a button to copy transactions displayed in the various Activity Modals (Budget and Reports pages).
+
 ## Allow Resizing of Side Menu
 
 Allows the Side Menu on the left to be resized. Resizing also allows longer account names to show up completely.
@@ -89,10 +93,6 @@ Adds Toolkit Reports to the sidebar. Current reports include: Net Worth, Spendin
 ## Add "Enter" Shortcut to the Move Popup
 
 Pressing Enter in the Move Popup acts like clicking the OK button, instead of losing focus or doing nothing.
-
-## Add Copy Transactions button to the Category Popup
-
-Adds a button to the category activity popup to allow you to copy the transactions to the clipboard (able to be pasted into a spreadsheet app).
 
 ## Add Goals Indication
 
