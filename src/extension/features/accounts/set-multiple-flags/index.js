@@ -34,7 +34,7 @@ export class SetMultipleFlags extends Feature {
   observe(changedNodes) {
     if (
       changedNodes.has(
-        'ynab-u modal-popup modal-account-edit-transaction-list ember-view modal-overlay active'
+        'ynab-u modal-popup modal-account-edit-transaction-list modal-overlay active'
       )
     ) {
       this.invoke();

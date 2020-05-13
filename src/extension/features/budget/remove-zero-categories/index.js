@@ -44,7 +44,7 @@ export class RemoveZeroCategories extends Feature {
       return;
     }
 
-    if (changedNodes.has('dropdown-container categories-dropdown-container')) {
+    if (changedNodes.has('category-item-container')) {
       this.invoke();
     }
   }

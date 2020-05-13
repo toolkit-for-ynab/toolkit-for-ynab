@@ -31,7 +31,7 @@ const setup = (setupOptions = {}) => {
     ynabToolkit.initializeToolkit();
   }
 
-  const toolkitBootstrap = { options: {} };
+  const toolkitBootstrap = { hookedComponents: new Set(), options: {} };
   allToolkitSettings.forEach(setting => {
     toolkitBootstrap.options[setting.name] = false;
   });

@@ -55,9 +55,7 @@ export class CustomFlagNames extends Feature {
       this.invoke();
     }
 
-    if (
-      changedNodes.has('ynab-u modal-popup modal-account-flags ember-view modal-overlay active')
-    ) {
+    if (changedNodes.has('ynab-u modal-popup modal-account-flags modal-overlay active')) {
       $('.ynab-flag-red .label, .ynab-flag-red .label-bg').text(redFlagLabel);
       $('.ynab-flag-blue .label, .ynab-flag-blue .label-bg').text(blueFlagLabel);
       $('.ynab-flag-orange .label, .ynab-flag-orange .label-bg').text(orangeFlagLabel);

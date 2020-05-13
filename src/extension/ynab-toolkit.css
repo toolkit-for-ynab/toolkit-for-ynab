@@ -5,20 +5,6 @@
   --tk-color-positive: #16a336;
   --tk-color-positive--hover: #138b2e;
   --tk-color-white: #ffffff;
-
-  /* YNAB Chosen Colors */
-  --tk-ynab-budget-balance-negative-background: #f7c1b5;
-  --tk-ynab-budget-balance-negative-text: #651c0b;
-  --tk-ynab-budget-balance-negative-icon: #651c0b;
-  --tk-ynab-budget-balance-positive-background: #c4ecbb;
-  --tk-ynab-budget-balance-positive-text: #1d4913;
-  --tk-ynab-budget-balance-positive-icon: #1d4913;
-  --tk-ynab-budget-balance-warning-background: #f9e1a9;
-  --tk-ynab-budget-balance-warning-text: #70460b;
-  --tk-ynab-budget-balance-warning-icon: #70460b;
-  --tk-ynab-budget-balance-zero-background: #e9eced;
-  --tk-ynab-budget-balance-zero-text: #88979d;
-  --tk-ynab-budget-balance-zero-icon: #88979d;
 }
 
 .accounts-toolbar {
@@ -55,4 +41,9 @@
 .toolkit-budget-toolbar-buttons {
   float: right;
   display: flex;
+}
+
+.tk-navlink i {
+  margin-right: 10px;
+  padding-left: 20px;
 }

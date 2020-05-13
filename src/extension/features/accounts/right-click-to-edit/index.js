@@ -39,19 +39,21 @@ export class RightClickToEdit extends Feature {
       return;
     }
 
-    if (below) {
-      // position below
-      $('.modal-account-edit-transaction-list .modal')
-        .addClass('modal-below')
-        .css('left', event.pageX - 115)
-        .css('top', offset.top + 41);
-    } else {
-      // position above
-      $('.modal-account-edit-transaction-list .modal')
-        .addClass('modal-above')
-        .css('left', event.pageX - 115)
-        .css('top', offset.top - height - 8);
-    }
+    Ember.run.next(() => {
+      if (below) {
+        // position below
+        $('.modal-account-edit-transaction-list .modal')
+          .addClass('modal-below')
+          .css('left', event.pageX - 115)
+          .css('top', offset.top + 41);
+      } else {
+        // position above
+        $('.modal-account-edit-transaction-list .modal')
+          .addClass('modal-above')
+          .css('left', event.pageX - 115)
+          .css('top', offset.top - height - 8);
+      }
+    });
 
     return false;
   }

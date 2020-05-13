@@ -8,6 +8,10 @@
 
 Makes the account names smaller so that you can see more of the account names and fit more on the screen.
 
+## Add Copy Transactions to Activity Modals
+
+Adds a button to copy transactions displayed in the various Activity Modals (Budget and Reports pages).
+
 ## Allow Resizing of Side Menu
 
 Allows the Side Menu on the left to be resized. Resizing also allows longer account names to show up completely.
@@ -90,10 +94,6 @@ Adds Toolkit Reports to the sidebar. Current reports include: Net Worth, Spendin
 
 Pressing Enter in the Move Popup acts like clicking the OK button, instead of losing focus or doing nothing.
 
-## Add Copy Transactions button to the Category Popup
-
-Adds a button to the category activity popup to allow you to copy the transactions to the clipboard (able to be pasted into a spreadsheet app).
-
 ## Add Goals Indication
 
 Add indicators for subcategories with goals. Types: (M)onthly goal, target by (D)ate goal, (T)arget without date, and (U)pcoming transactions.
@@ -101,6 +101,10 @@ Add indicators for subcategories with goals. Types: (M)onthly goal, target by (D
 ## Add Pacing to the Budget
 
 Add a column for 'pacing' which shows you how much money you've spent based on how far you are through the month. Note that clicking on the pacing value will toggle emphasis, allowing you to selectively enable the feature per category.
+
+## Allow Markdown in Notes
+
+Adds Markdown parsing to notes, allowing support for links, bullet points, and other formatting tools. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).
 
 ## Allow Resizing of Inspector
 
@@ -121,6 +125,16 @@ Adds a credit card emoji 💳 to the "Credit Card Payments" category.
 ## Current Month Indicator
 
 Changes the header bar's background color to a lighter blue when viewing the current month to better differentiate between months.
+
+## Date Of Money
+
+Hover the mouse over Age of Money to display the date of the income.
+For example, on 11th January with Age of Money = 10, Date of Money would be 1st January.
+
+## Days Of Buffering Metric - Date
+
+Hover the mouse over Days of Buffering to display the equivalent Date for Days of Buffering.
+For example, on 1st January with Days of Buffering = 10, Date of Buffering would be 11th January.
 
 ## Days of Buffering History Lookup
 
@@ -198,6 +212,10 @@ Allows the monthly funding goal to be set as a max spending goal for each catego
 
 Highlights "Budget Next Month" red when you've gone negative as some point in the future.
 
+## Striped Budget Rows
+
+Shows a light gray background on alternating category rows.
+
 ## To Be Budgeted Warning
 
 Changes the 'To Be Budgeted' background color to yellow if there is unallocated money left to be budgeted.
@@ -248,6 +266,10 @@ Enables YNAB's native "Running Balance" by default for each account register.
 
 Automatically mark transaction as cleared when you enter it manually.
 
+## Bottom Notification Bar
+
+Move the notification bar to the bottom as an overlay. This prevents the transactions from "jumping around."
+
 ## Bulk Manage Payees
 
 Adds an option to the transaction edit drop-down menu to manage payees for the current selection.
@@ -263,6 +285,10 @@ When you press enter on the memo field while adding or editing a transaction, th
 ## Clear Selection
 
 Adds an option to the transaction edit drop-down menu to clear the current selection.
+
+## Confirm keyboard-initiated transaction cancelation
+
+Displays a pop-up confirmation prompt when transaction row's "Cancel" action is triggered by keyboard press ("Enter"). This guards against inadvertent discarding of complex split transaction entries in keyboard driven entry workflows.
 
 ## Deselect Transactions on Save
 
@@ -308,13 +334,9 @@ Adds the total available balance to the category tooltip on each row in the Acco
 
 Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit menu options.
 
-## Show Running Balance
-
-Adds a running balance column to the accounts page (does not appear on All Accounts View). YNAB recently implemented their own native version of Running Balance. If that has been enabled for your account, this setting is ignored.
-
 ## Show Spare Change
 
-"Imagine if you paid for all purchases in whole dollars. Shows a total of the spare change you would accumulate for the selected outflow transactions.
+Imagine if you paid for all purchases in whole dollars. Shows a total of the spare change you would accumulate for the selected outflow transactions.
 
 ## Striped Transaction Rows
 

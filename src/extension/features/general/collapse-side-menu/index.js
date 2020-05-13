@@ -2,6 +2,8 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
 import { getToolkitStorageKey, l10n, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
+const SIDEBAR_COLLAPSED_SIZE = '4.6rem';
+
 export class CollapseSideMenu extends Feature {
   injectCSS() {
     return require('./index.css');
@@ -20,6 +22,7 @@ export class CollapseSideMenu extends Feature {
     if (changedNodes.has('nav-main')) {
       if (getToolkitStorageKey('isCollapsed')) {
         this.getHideElements().hide();
+        this.getNavLinkItems().addClass('tk-navlink-width');
       }
 
       this.invoke();
@@ -29,6 +32,7 @@ export class CollapseSideMenu extends Feature {
   onRouteChanged() {
     if (getToolkitStorageKey('isCollapsed')) {
       this.getHideElements().hide();
+      this.getNavLinkItems().addClass('tk-navlink-width');
     }
 
     this.invoke();
@@ -44,11 +48,11 @@ export class CollapseSideMenu extends Feature {
     })
       .append(
         $('<a>', {
-          class: 'ynabtk-collapse-link',
+          class: 'tk-navlink',
         })
           .append(
-            $('<span>', {
-              class: 'ember-view ynabtk-collapse-icon flaticon stroke left-circle-4',
+            $('<i>', {
+              class: 'ynabtk-collapse-icon flaticon stroke left-circle-4',
             })
           )
           .append(
@@ -76,13 +80,13 @@ export class CollapseSideMenu extends Feature {
     if (isCollapsed) {
       Promise.all([
         $('.ynab-u.sidebar')
-          .animate({ width: '3rem' })
+          .animate({ width: `${SIDEBAR_COLLAPSED_SIZE}` })
           .promise(),
         $('.ynab-u.content')
-          .animate({ left: '3rem' })
+          .animate({ left: `${SIDEBAR_COLLAPSED_SIZE}` })
           .promise(),
         $('.budget-header')
-          .animate({ left: '3rem' })
+          .animate({ left: `${SIDEBAR_COLLAPSED_SIZE}` })
           .promise(),
       ]).then(() => {
         $('.layout.user-logged-in').addClass('collapsed');
@@ -92,6 +96,7 @@ export class CollapseSideMenu extends Feature {
           .removeClass('left-circle-4')
           .addClass('right-circle-4');
         this.getHideElements().hide();
+        this.getNavLinkItems().addClass('tk-navlink-width');
 
         $('.tk-collapse-toggle-text').text(l10n('toolkit.expand', 'Expand'));
 
@@ -118,6 +123,7 @@ export class CollapseSideMenu extends Feature {
           .removeClass('right-circle-4')
           .addClass('left-circle-4');
         this.getHideElements().show();
+        this.getNavLinkItems().removeClass('tk-navlink-width');
 
         $('.tk-collapse-toggle-text').text(l10n('toolkit.collapse', 'Collapse'));
 
@@ -128,12 +134,27 @@ export class CollapseSideMenu extends Feature {
     }
   }
 
+  getNavLinkItems() {
+    return $(`
+      .navlink-budget div,
+      .navlink-reports div,
+      .navlink-accounts div,
+      .tk-react-reports-link div,
+      .tk-collapse-toggle-text
+    `);
+  }
+
   getHideElements() {
     return $(`
       .nav-accounts,
       .button-sidebar.nav-add-account,
       .referral-program,
-      .sidebar-nav-menu
+      .sidebar-nav-menu,
+      .navlink-budget div,
+      .navlink-reports div,
+      .navlink-accounts div,
+      .tk-react-reports-link div,
+      .tk-collapse-toggle-text
     `);
   }
 }

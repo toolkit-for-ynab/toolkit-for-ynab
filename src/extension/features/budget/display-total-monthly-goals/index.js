@@ -1,7 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { componentLookup } from 'toolkit/extension/utils/ember';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class DisplayTotalMonthlyGoals extends Feature {
@@ -10,35 +9,29 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   extractCategoryGoalInformation(element) {
-    const emberId = element.id;
-    const category = getEmberView(emberId, 'category');
+    const category = getEmberView(element.id, 'category');
     if (!category) {
       return;
     }
 
-    const goalType = category.get('subCategory.goalType');
-    const monthlyFunding = category.get('subCategory.monthlyFunding');
-    const targetBalanceDate = category.get('monthlySubCategoryBudgetCalculation.goalTarget');
-
-    let monthlyGoalAmount = 0;
-
-    switch (goalType) {
-      case 'MF': {
-        monthlyGoalAmount = monthlyFunding;
-        break;
-      }
-      case 'TBD': {
-        monthlyGoalAmount = targetBalanceDate;
-        break;
-      }
-    }
-
-    // if the user edits a goal amount, it's turned into a string on the `subCategory`
-    // object. just convert everything into a number just in case.
-    return {
-      monthlyGoalAmount: parseInt(monthlyGoalAmount, 10),
+    const categoryInfo = {
+      monthlyGoalAmount: 0,
       isChecked: category.get('isChecked'),
     };
+
+    switch (category.goalType) {
+      case ynab.constants.SubCategoryGoalType.MonthlyFunding:
+      case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
+        categoryInfo.monthlyGoalAmount = parseInt(category.goalTarget || 0, 10);
+        break;
+      case ynab.constants.SubCategoryGoalType.Needed:
+        categoryInfo.monthlyGoalAmount = parseInt(
+          category.goalTarget || category.goalTargetAmount || 0,
+          10
+        );
+    }
+
+    return categoryInfo;
   }
 
   calculateMonthlyGoals() {
@@ -99,10 +92,11 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   invoke() {
-    const inspectorProto = Object.getPrototypeOf(
-      componentLookup('budget/inspector/default-inspector')
+    addToolkitEmberHook(
+      this,
+      'budget/inspector/default-inspector',
+      'didRender',
+      this.addTotalMonthlyGoals
     );
-
-    addToolkitEmberHook(this, inspectorProto, 'didRender', this.addTotalMonthlyGoals);
   }
 }
