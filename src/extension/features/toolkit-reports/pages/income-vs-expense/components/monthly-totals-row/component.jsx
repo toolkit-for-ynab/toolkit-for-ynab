@@ -6,6 +6,11 @@ import { MonthStyle } from 'toolkit/extension/utils/toolkit';
 import { Currency } from 'toolkit-reports/common/components/currency';
 import './styles.scss';
 
+function getViewZeroAsEmptySetting() {
+  const { ViewZeroAsEmpty } = (window.ynabToolKit && window.ynabToolKit.options) || {};
+  return ViewZeroAsEmpty;
+}
+
 export const MonthlyTotalsRow = props => {
   const allMonthsTotal =
     props.monthlyTotals &&
@@ -14,6 +19,7 @@ export const MonthlyTotalsRow = props => {
   const allMonthsClassName = classnames('tk-monthly-totals-row__data-cell', {
     [`tk-monthly-totals-row__data-cell${allMonthsSuffix}`]: props.emphasizeTotals,
   });
+  const shouldHideZeroCells = getViewZeroAsEmptySetting();
 
   return (
     <div className={`tk-flex tk-monthly-totals-row ${props.className}`} onClick={props.onClick}>
@@ -28,14 +34,15 @@ export const MonthlyTotalsRow = props => {
             const className = classnames('tk-monthly-totals-row__data-cell', {
               [`tk-monthly-totals-row__data-cell${suffix}`]: props.emphasizeTotals,
             });
+            const monthTotal = monthData.get('total');
+            const isTotalZero = monthTotal === 0;
+            const shouldHideCurrency = shouldHideZeroCells && isTotalZero;
 
             return (
               <div key={monthData.get('date').toISOString()} className={className}>
-                {props.titles ? (
-                  localizedMonthAndYear(monthData.get('date'), MonthStyle.Short)
-                ) : (
-                  <Currency value={monthData.get('total')} />
-                )}
+                {props.titles
+                  ? localizedMonthAndYear(monthData.get('date'), MonthStyle.Short)
+                  : !shouldHideCurrency && <Currency value={monthTotal} />}
               </div>
             );
           })}
