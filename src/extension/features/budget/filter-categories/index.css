@@ -1,32 +1,31 @@
-.toolkit-categories-filter-input {
+.tk-categories-filter-input {
   float: right;
-  border-radius: .4em;
+  border-radius: 0.4em;
   border: 1px solid #009cc2;
   color: #009cc2;
   font-style: italic;
   outline: none;
-  padding: .3rem .3rem .3rem 1.6rem;
+  padding: 0.3rem 0.3rem 0.3rem 1.6rem;
   z-index: 10;
 }
 
-.toolkit-categories-filter-input:focus {
+.tk-categories-filter-input:focus {
   border-width: 1px !important;
 }
 
-.toolkit-categories-filter-wrapper {
+.tk-categories-filter-wrapper {
   position: relative;
-  display: inline-flex;
 }
 
-.toolkit-categories-filter-icon {
+.tk-categories-filter-icon {
   color: #009cc2;
-  left: .6em;
+  left: 0.6em;
   position: absolute;
-  top: .55em;
+  top: 0.55em;
   z-index: 11;
 }
 
-.toolkit-categories-filter-cancel-icon {
+.tk-categories-filter-cancel-icon {
   color: #009cc2;
   cursor: pointer;
   position: absolute;
@@ -35,7 +34,6 @@
   z-index: 11;
 }
 
-
-.toolkit-categories-filter-hidden {
-  display: none;
+.tk-categories-filter-hidden {
+  display: none !important;
 }
