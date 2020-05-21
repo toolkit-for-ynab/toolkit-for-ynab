@@ -1,70 +1,27 @@
-.budget-content ul, .budget-table-row.is-dragging {
-  height: 1.8em;
+.budget-table-header {
+  height: 1.5rem !important;
 }
 
-.budget-table-row.is-master-category {
-  margin-top: 0px;
-  height: 1.8em !important;
+.budget-table-cell-available-payment {
+  font-size: 0px;
+  position: absolute;
+  margin-left: 22px;
+  margin-top: 4px;
 }
 
-.budget-table-row.is-master-category .budget-table-cell-name {
-  line-height: 1.8em !important;
-  padding-top: 0 !important;
-  font-size: 1em !important;
-  align-items: center !important;
-}
-
-.budget-table-row.is-master-category .budget-table-cell-add-category .flaticon {
-  top: 0.2em;
-}
-
-.budget-table-row.is-sub-category {
-  height: 1.6em !important;
-}
-
-.budget-table-row.is-sub-category .ynab-new-budget-available-number {
-  top: 0 !important;
-  padding: 0em 0.4em !important;
-  font-size: 1em !important;
-}
-
-.budget-table-row.is-sub-category .budget-table-cell-activity {
-  top: 0 !important;
-}
-
-.budget-table-cell-budgeted .currency-input span {
-  height: 1.45em;
-  padding: 0.05em;
-  border-width: 1px !important;
-}
-
-.budget-table-cell-budgeted .js-edit-currency-input {
-  padding: 0 !important;
-}
-
-.budget-table-cell-budgeted .currency-input input {
-  height: 1.45em !important;
-}
-
-.budget-table .is-debt-payment-category .budget-table-cell-available {
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.budget-table .is-debt-payment-category .budget-table-cell-available .budget-table-cell-available-payment {
-  margin-right: 0.25em;
-}
-
-.icon-calculator {
-  max-width: 1em;
-  max-height: 1em;
-}
-
-.toolkit-goalindicator {
-  line-height: 1.8em !important;
-}
-
+.budget-table-row.is-master-category,
+.budget-table-row.is-sub-category,
+.budget-table-cell-margin,
+.budget-table-cell-checkbox,
+.budget-table-cell-collapse,
+.budget-table-cell-name,
+.budget-table-cell-budgeted,
+.budget-table-cell-activity,
 .budget-table-cell-available {
-  padding: 0 !important;
+  height: 1.6em !important;
+  font-size: 0.9rem !important;
+}
+
+.budget-table-cell-checkbox.ynab-checkbox {
+  font-size: 1rem;
 }
