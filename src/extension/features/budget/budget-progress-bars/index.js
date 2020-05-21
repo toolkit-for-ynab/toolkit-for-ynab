@@ -56,6 +56,7 @@ export class BudgetProgressBars extends Feature {
     let subCat = this.subCats.find(ele => {
       return ele.toolkitName === subCategoryName;
     });
+
     let calculation = null;
     if (subCat) {
       let crazyInternalId = this.internalIdBase + subCat.entityId;
@@ -203,7 +204,6 @@ export class BudgetProgressBars extends Feature {
     let categories = $('.budget-table ul')
       .not('.budget-table-uncategorized-transactions')
       .not('.is-debt-payment-category');
-    let masterCategoryName = '';
 
     if (this.subCats === null || this.subCats.length === 0 || this.loadCategories) {
       this.subCats = getMergedCategories();
@@ -213,29 +213,31 @@ export class BudgetProgressBars extends Feature {
     this.selMonth = getSelectedMonth().format('YYYY-MM');
     this.internalIdBase = 'mcbc/' + this.selMonth + '/';
 
-    $(categories).each((index, element) => {
+    let masterCategoryName = '';
+    $(categories).each((_, element) => {
       let nameCell;
       let budgetedCell;
+
       if ($(element).hasClass('is-master-category')) {
-        masterCategoryName = $(element).find(
-          'div.budget-table-cell-name-row-label-item>div>div[title]'
-        );
-        masterCategoryName =
-          masterCategoryName !== 'undefined' ? $(masterCategoryName).attr('title') + '_' : '';
+        const { category } = getEmberView(element.id);
+        if (!category) {
+          return;
+        }
+
+        masterCategoryName = category.displayName;
       }
 
       if ($(element).hasClass('is-sub-category')) {
         const subCategory = getEmberView(element.id, 'category');
-        let subCategoryName = $(element)
-          .find('li.budget-table-cell-name>div>div')[0]
-          .title.match(/.[^\n]*/);
+        if (!subCategory) {
+          return;
+        }
 
-        subCategoryName = masterCategoryName + subCategoryName;
-
+        const namespacedCategory = `${masterCategoryName}_${subCategory.displayName}`;
         switch (this.settings.enabled) {
           case 'goals':
             $(element).addClass('goal-progress');
-            this.addGoalProgress(subCategoryName, $(element));
+            this.addGoalProgress(namespacedCategory, $(element));
             break;
           case 'pacing':
             $(element).addClass('goal-progress');
@@ -245,7 +247,7 @@ export class BudgetProgressBars extends Feature {
             $(element).addClass('goal-progress-both');
             budgetedCell = $(element).find('li.budget-table-cell-budgeted')[0];
             nameCell = $(element).find('li.budget-table-cell-name')[0];
-            this.addGoalProgress(subCategoryName, budgetedCell);
+            this.addGoalProgress(namespacedCategory, budgetedCell);
             this.addPacingProgress(subCategory, nameCell);
             break;
         }
