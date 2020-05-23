@@ -17,7 +17,8 @@
 .budget-table-cell-name,
 .budget-table-cell-budgeted,
 .budget-table-cell-activity,
-.budget-table-cell-available {
+.budget-table-cell-available,
+.tk-budget-table-cell-pacing {
   height: 1.6em !important;
   font-size: 0.9rem !important;
 }

@@ -5,7 +5,7 @@ import {
   getSelectedMonth,
   isCurrentMonthSelected,
 } from 'toolkit/extension/utils/ynab';
-import { migrateLegacyPacingStorage, pacingForCategory } from 'toolkit/extension/utils/pacing';
+import { pacingForCategory } from 'toolkit/extension/utils/pacing';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
 const progressIndicatorWidth = 0.005; // Current month progress indicator width
@@ -24,10 +24,6 @@ export class BudgetProgressBars extends Feature {
 
   injectCSS() {
     return require('./index.css');
-  }
-
-  willInvoke() {
-    migrateLegacyPacingStorage();
   }
 
   shouldInvoke() {

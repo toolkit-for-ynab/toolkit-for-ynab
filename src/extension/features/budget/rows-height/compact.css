@@ -17,7 +17,8 @@
 .budget-table-cell-name,
 .budget-table-cell-budgeted,
 .budget-table-cell-activity,
-.budget-table-cell-available {
+.budget-table-cell-available,
+.tk-budget-table-cell-pacing {
   height: 1.65em !important;
   font-size: 0.7rem !important;
 }
@@ -26,6 +27,8 @@
   font-size: 1rem;
 }
 
+.tk-budget-table-cell-pacing,
+.ynab-new-budget-available-number,
 .budget-table-cell-available .ynab-new-budget-available-number {
   padding-top: 0px;
   padding-bottom: 0px;
