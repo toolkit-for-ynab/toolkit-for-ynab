@@ -7,43 +7,12 @@
   --tk-color-white: #ffffff;
 }
 
-.accounts-toolbar {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 0;
-}
-
-.accounts-toolbar .accounts-toolbar-left,
-.accounts-toolbar .accounts-toolbar-right,
-.accounts-toolbar.buttons-can-overflow .accounts-toolbar-left {
-  align-items: center;
-  flex-shrink: 0;
-  height: auto;
-}
-
-.accounts-toolbar .accounts-toolbar-right {
-  display: flex;
-  flex-direction: row-reverse;
-}
-
-.accounts-toolbar .accounts-toolbar-right > .button {
-  position: static;
-}
-
-.accounts-toolbar .transaction-search {
-  height: auto;
-}
-
-.accounts-toolbar .transaction-search .transaction-search-input {
-  position: static;
-}
-
-.toolkit-budget-toolbar-buttons {
-  float: right;
-  display: flex;
-}
-
 .tk-navlink i {
   margin-right: 10px;
   padding-left: 20px;
+}
+
+.budget-toolbar {
+  padding: 0px 10px;
+  align-items: center;
 }

@@ -1,19 +1,14 @@
 .budget-table-header .budget-table-cell-name {
-  justify-content: space-between !important;
+  margin-left: auto;
 }
 
-.budget-table-header .toolkit-goal-table-cell {
+.budget-table-header .tk-goal-table-cell {
   padding-right: 1em;
 }
 
-.budget-table-cell-name {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-}
-
-.toolkit-goal-table-cell {
+.tk-goal-table-cell {
   display: flex;
   align-items: center;
-  font-size: .8em;
+  font-size: 0.8em;
+  margin-left: auto;
 }

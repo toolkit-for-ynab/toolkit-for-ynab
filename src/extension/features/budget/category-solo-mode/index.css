@@ -1,3 +1,13 @@
+.tk-toggle-master-categories {
+  display: flex;
+  align-items: center;
+  padding-left: 0.6em;
+}
+
+.tk-toggle-master-categories--first {
+  padding-left: 0px;
+}
+
 .budget-toolbar #all-category-expand-button {
   font-size: 1.2em;
   color: var(--primary_action);

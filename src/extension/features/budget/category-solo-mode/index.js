@@ -1,6 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 export class CategorySoloMode extends Feature {
@@ -13,19 +14,25 @@ export class CategorySoloMode extends Feature {
   }
 
   onRouteChanged() {
-    if (this.shouldInvoke()) this.invoke();
+    if (this.shouldInvoke()) {
+      this.invoke();
+    }
   }
 
   invoke() {
-    if ($('.budget-toolbar #category-toggle-mode-container').length) {
-      $('.budget-toolbar #category-toggle-mode-container').remove();
+    if ($('.budget-toolbar .tk-toggle-master-categories').length) {
+      $('.budget-toolbar .tk-toggle-master-categories').remove();
     }
 
-    const dom = $('<span>', {
-      id: 'category-toggle-mode-container',
+    const isFilterCategoriesEnabled = isFeatureEnabled(window.ynabToolKit.options.FilterCategories);
+    const toggleContainer = $('<div>', {
+      class: `tk-toggle-master-categories${
+        isFilterCategoriesEnabled ? '' : ' tk-toggle-master-categories--first'
+      }`,
     });
+
     if (this.settings.enabled.includes('toggle-all')) {
-      dom.append(
+      toggleContainer.append(
         $('<button>', {
           id: 'all-category-expand-button',
           title: 'Expands / Collapses Master Categories',
@@ -35,14 +42,14 @@ export class CategorySoloMode extends Feature {
     }
 
     if (this.settings.enabled.includes('solo-mode')) {
-      dom.append(
+      toggleContainer.append(
         $('<input>', {
           id: 'cat-solo-mode',
           type: 'checkbox',
           checked: getToolkitStorageKey('catSoloMode') === 'checked',
         }).on('click', this.initializeState)
       );
-      dom.append(
+      toggleContainer.append(
         $('<label>', {
           class: 'button',
           for: 'cat-solo-mode',
@@ -54,7 +61,13 @@ export class CategorySoloMode extends Feature {
       $('.js-budget-table-cell-collapse').on('click', this.toggleCategory);
     }
 
-    $('.budget-toolbar').append(dom);
+    const filterCategoriesWrapper = $('.tk-categories-filter-wrapper');
+    if (filterCategoriesWrapper.length) {
+      $(filterCategoriesWrapper).after(toggleContainer);
+    } else {
+      $('.budget-toolbar').prepend(toggleContainer);
+    }
+
     this.initializeState();
   }
 
