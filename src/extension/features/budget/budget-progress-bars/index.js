@@ -218,7 +218,7 @@ export class BudgetProgressBars extends Feature {
       let budgetedCell;
       if ($(element).hasClass('is-master-category')) {
         masterCategoryName = $(element).find(
-          'div.budget-table-cell-name-row-label-item>div>div[title]'
+            'li.budget-table-cell-name>div:first-child[title]'
         );
         masterCategoryName =
           masterCategoryName !== 'undefined' ? $(masterCategoryName).attr('title') + '_' : '';
@@ -227,7 +227,7 @@ export class BudgetProgressBars extends Feature {
       if ($(element).hasClass('is-sub-category')) {
         const subCategory = getEmberView(element.id, 'category');
         let subCategoryName = $(element)
-          .find('li.budget-table-cell-name>div>div')[0]
+          .find('li.budget-table-cell-name>div')[0]
           .title.match(/.[^\n]*/);
 
         subCategoryName = masterCategoryName + subCategoryName;
