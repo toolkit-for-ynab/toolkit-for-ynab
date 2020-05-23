@@ -11,3 +11,8 @@
   margin-right: 10px;
   padding-left: 20px;
 }
+
+.budget-toolbar {
+  padding: 0px 10px;
+  align-items: center;
+}

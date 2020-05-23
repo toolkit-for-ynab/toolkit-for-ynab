@@ -1,6 +1,5 @@
-export function isFeatureEnabled(feature) {
+export function isFeatureEnabled(setting) {
   return (
-    (typeof feature.settings.enabled === 'boolean' && feature.settings.enabled) ||
-    (typeof feature.settings.enabled === 'string' && feature.settings.enabled !== '0') // assumes '0' means disabled
+    (typeof setting === 'boolean' && setting) || (typeof setting === 'string' && setting !== '0') // assumes '0' means disabled
   );
 }
