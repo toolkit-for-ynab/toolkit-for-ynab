@@ -1,0 +1,4 @@
+/* Fix #1190 */
+#tk-toggle-transaction-filters {
+  display: flex;
+}
