@@ -51,7 +51,7 @@ export class ToggleTransactionFilters extends Feature {
     addToolkitEmberHook(this, 'accounts/account-header', 'didRender', this.injectButtons);
   }
 
-  // Fixes #1190
+  // Fix #1910
   injectCSS() {
     return require('./index.css');
   }
