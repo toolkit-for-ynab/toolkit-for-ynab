@@ -26,7 +26,7 @@ module.exports = [
   {
     name: 'DaysOfBufferingDate',
     type: 'checkbox',
-    default: false,
+    default: true,
     section: 'budget',
     title: 'Days Of Buffering Metric - Date',
     description:
