@@ -3,7 +3,7 @@ import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
 import { Settings as DisplayGoalAmountSettings } from './display-target-goal-amount';
 
-export const GOAL_TABLE_CELL_CLASSNAME = 'toolkit-goal-table-cell';
+export const GOAL_TABLE_CELL_CLASSNAME = 'tk-goal-table-cell';
 export const CategoryAttributes = {
   GoalTarget: 'toolkit-goal-target',
   GoalType: 'toolkit-goal-type',

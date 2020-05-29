@@ -1,11 +1,11 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 
-const HIDEIMAGE = 'toolkit-modal-item-hide-image';
+const HIDEIMAGE = 'tk-modal-item-hide-image';
 const BUTTONDISABLED = 'button-disabled';
-const IMAGECLASSES =
-  'ember-view toolkit-menu-item toolkit-modal-item-hide-image flaticon stroke checkmark-1';
+const IMAGECLASSES = 'tk-modal-item-hide-image flaticon stroke checkmark-1';
 
 export class ResizeInspector extends Feature {
   injectCSS() {
@@ -28,22 +28,20 @@ export class ResizeInspector extends Feature {
 
   addResizeButton() {
     if (!$('#toolkitResizeInspector').length) {
-      let buttonText =
-        (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.InspectorWidth']) ||
-        'Inspector Width';
+      let buttonText = l10n('toolkit.InspectorWidth', 'Inspector Width');
       let $button = $('<button>', {
         id: 'toolkitResizeInspector',
-        class: 'ember-view button',
+        class: 'button tk-resize-button',
       })
-        .append($('<i>', { class: 'ember-view flaticon stroke gear-1' }))
+        .append($('<i>', { class: 'flaticon stroke gear-1', css: { marginRight: '5px' } }))
         .append(' ' + buttonText)
         .click(() => {
           this.showResizeModal();
         });
-      if ($('.toolkit-budget-toolbar-buttons').length === 0) {
-        $('.budget-toolbar').append('<div class="toolkit-budget-toolbar-buttons"></div>');
+
+      if ($('#toolkitResizeInspector').length === 0) {
+        $('.budget-toolbar').append($button);
       }
-      $('.toolkit-budget-toolbar-buttons').append($button);
     }
   }
 
@@ -56,11 +54,10 @@ export class ResizeInspector extends Feature {
     let btnTop = $('.budget-toolbar').outerHeight() + $('.budget-header-flexbox').outerHeight() + 8;
     let $modal = $('<div>', {
       id: 'toolkitInspectorODiv',
-      class: 'ember-view',
     }).append(
       $('<div>', {
         id: 'toolkitInspectorModal',
-        class: 'ynab-u modal-popup modal-resize-inspector modal-overlay active ember-view',
+        class: 'ynab-u modal-popup modal-resize-inspector modal-overlay active',
       }).append(
         $('<div>', {
           id: 'toolkitInspectorIDiv',

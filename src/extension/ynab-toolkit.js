@@ -31,7 +31,7 @@ export class YNABToolkit {
       const wrappedInjectCSS = withToolkitError(feature.injectCSS.bind(feature), feature);
       const featureCSS = wrappedInjectCSS();
 
-      if (isFeatureEnabled(feature) && featureCSS) {
+      if (isFeatureEnabled(feature.settings.enabled) && featureCSS) {
         css += `/* == Injected CSS from feature: ${feature.constructor.name} == */\n${featureCSS}\n\n`;
       }
 
@@ -53,14 +53,14 @@ export class YNABToolkit {
     const feature = this._featureInstances.find(f => f.constructor.name === featureName);
     const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
     const wrappedInvoke = feature.invoke.bind(feature);
-    if (isFeatureEnabled(feature) && wrappedShouldInvoke()) {
+    if (isFeatureEnabled(feature.settings.enabled) && wrappedShouldInvoke()) {
       wrappedInvoke();
     }
   };
 
   _invokeFeatureInstances = async () => {
     this._featureInstances.forEach(async feature => {
-      if (isFeatureEnabled(feature)) {
+      if (isFeatureEnabled(feature.settings.enabled)) {
         feature.applyListeners();
 
         try {

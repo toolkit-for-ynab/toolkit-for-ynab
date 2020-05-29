@@ -13,7 +13,11 @@ section.budget-table-container {
   visibility: var(--toolkit-inspector-visibility);
 }
 
-.toolkit-modal-item-hide-image {
+.tk-resize-button {
+  margin-left: auto;
+}
+
+.tk-modal-item-hide-image {
   visibility: hidden;
 }
 
