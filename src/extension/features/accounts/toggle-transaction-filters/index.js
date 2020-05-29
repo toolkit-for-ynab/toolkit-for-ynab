@@ -51,6 +51,11 @@ export class ToggleTransactionFilters extends Feature {
     addToolkitEmberHook(this, 'accounts/account-header', 'didRender', this.injectButtons);
   }
 
+  // Fix #1910
+  injectCSS() {
+    return require('./index.css');
+  }
+
   injectButtons = element => {
     const toolbarRight = $('.accounts-toolbar-right', element);
     if ($('#tk-toggle-transaction-filters', toolbarRight).length) {
