@@ -78,7 +78,9 @@
     "ShowIntercom",
     "SplitKeyboardShortcut",
     "ToolkitReports",
-    "FilterCategories"
+    "FilterCategories",
+    "DateOfMoney",
+    "DaysOfBufferingDate"
   ],
   "husky": {
     "hooks": {
