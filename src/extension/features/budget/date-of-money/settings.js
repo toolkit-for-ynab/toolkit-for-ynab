@@ -1,7 +1,7 @@
 module.exports = {
   name: 'DateOfMoney',
   type: 'checkbox',
-  default: false,
+  default: true,
   section: 'budget',
   title: 'Date Of Money',
   description:
