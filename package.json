@@ -78,7 +78,8 @@
     "ShowIntercom",
     "SplitKeyboardShortcut",
     "ToolkitReports",
-    "FilterCategories"
+    "FilterCategories",
+    "CtrlEnterCleared"
   ],
   "husky": {
     "hooks": {
