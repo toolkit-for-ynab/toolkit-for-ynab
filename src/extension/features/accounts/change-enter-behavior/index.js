@@ -35,6 +35,17 @@ export class ChangeEnterBehavior extends Feature {
       event.preventDefault();
       event.stopPropagation();
 
+      // Added to support CtrlEnterCleared when ChangeEnterBehavior is enabled
+      if (
+        ynabToolKit.options.CtrlEnterCleared === true &&
+        (event.metaKey === true || event.ctrlKey === true)
+      ) {
+        let $markClearedButton = $('.is-adding .ynab-cleared:not(.is-cleared)');
+        if ($markClearedButton.length !== 0) {
+          $markClearedButton[0].click();
+        }
+      }
+
       const $saveButton = $(
         '.ynab-grid-actions-buttons .button.button-primary:not(.button-another)'
       );
