@@ -7,32 +7,32 @@ export class CtrlEnterCleared extends Feature {
   }
 
   invoke() {
-    const $addRow = $('.ynab-grid-body-row.is-adding');
-    const $memoInput = $('.ynab-grid-cell-memo input', $addRow);
-    const $outflowInput = $('.ynab-grid-cell-outflow input', $addRow);
-    const $inflowInput = $('.ynab-grid-cell-inflow input', $addRow);
+    const addRow = document.querySelector('.ynab-grid-body-row.is-adding');
+    const memoInput = addRow.querySelector('.ynab-grid-cell-memo input');
+    const outflowInput = addRow.querySelector('.ynab-grid-cell-outflow input');
+    const inflowInput = addRow.querySelector('.ynab-grid-cell-inflow input');
 
-    if (!$memoInput[0].getAttribute('data-toolkit-ctrl-behavior')) {
-      $memoInput[0].setAttribute('data-toolkit-ctrl-behavior', true);
-      $memoInput.keydown(this.applyCtrlEnter);
+    if (!memoInput.getAttribute('data-toolkit-ctrl-behavior')) {
+      memoInput.setAttribute('data-toolkit-ctrl-behavior', true);
+      memoInput.addEventListener('keydown', this.applyCtrlEnter);
     }
 
-    if (!$outflowInput[0].getAttribute('data-toolkit-ctrl-behavior')) {
-      $outflowInput[0].setAttribute('data-toolkit-ctrl-behavior', true);
-      $outflowInput.keydown(this.applyCtrlEnter);
+    if (!outflowInput.getAttribute('data-toolkit-ctrl-behavior')) {
+      outflowInput.setAttribute('data-toolkit-ctrl-behavior', true);
+      outflowInput.addEventListener('keydown', this.applyCtrlEnter);
     }
 
-    if (!$inflowInput[0].getAttribute('data-toolkit-ctrl-behavior')) {
-      $inflowInput[0].setAttribute('data-toolkit-ctrl-behavior', true);
-      $inflowInput.keydown(this.applyCtrlEnter);
+    if (!inflowInput.getAttribute('data-toolkit-ctrl-behavior')) {
+      inflowInput.setAttribute('data-toolkit-ctrl-behavior', true);
+      inflowInput.addEventListener('keydown', this.applyCtrlEnter);
     }
   }
 
   applyCtrlEnter(event) {
-    if (event.keyCode === 13 && (event.metaKey === true || event.ctrlKey === true)) {
-      let $markClearedButton = $('.is-adding .ynab-cleared:not(.is-cleared)');
-      if ($markClearedButton.length !== 0) {
-        $markClearedButton[0].click();
+    if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
+      let markClearedButton = document.querySelector('.is-adding .ynab-cleared:not(.is-cleared)');
+      if (markClearedButton) {
+        markClearedButton[0].click();
       }
     }
   }
