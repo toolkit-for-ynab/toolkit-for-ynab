@@ -1,5 +1,9 @@
 .budget-table-header {
-  height: 1.2rem !important;
+  height: auto !important;
+}
+
+.budget-table-header-labels {
+  height: 1.15rem !important;
 }
 
 .budget-table-cell-available-payment {

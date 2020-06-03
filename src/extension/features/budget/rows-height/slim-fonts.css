@@ -1,4 +1,8 @@
 .budget-table-header {
+  height: auto !important;
+}
+
+.budget-table-header-labels {
   height: 1.3rem !important;
 }
 
