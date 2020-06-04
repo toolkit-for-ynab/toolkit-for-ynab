@@ -179,7 +179,7 @@ export class SpendingByPayeeComponent extends React.Component {
       },
       title: {
         align: 'center',
-        verticalAlign: 'middle',
+        verticalAlign: 'top',
         text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
       },
       series: [
