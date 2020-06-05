@@ -5,6 +5,7 @@ import {
   isCurrentRouteBudgetPage,
 } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class CheckCreditBalances extends Feature {
@@ -218,12 +219,12 @@ export class CheckCreditBalances extends Feature {
     let difference = $(this).data('difference');
     let debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
 
-    $(debtPaymentCategories).each(function() {
-      let accountName = $(this)
-        .find('.budget-table-cell-name div.button')
-        .prop('title')
-        .match(/.[^\n]*/)[0];
-      if (accountName === name) {
+    $(debtPaymentCategories).each((_, el) => {
+      const { category } = getEmberView(el.id);
+      if (!category) {
+        return;
+      }
+      if (category.displayName === name) {
         let input = $(this)
           .find('.budget-table-cell-budgeted div.ynab-new-currency-input')
           .click()
