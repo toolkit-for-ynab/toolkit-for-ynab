@@ -220,7 +220,7 @@ export class CheckCreditBalances extends Feature {
 
     $(debtPaymentCategories).each(function() {
       let accountName = $(this)
-        .find('.budget-table-cell-name div.button-truncate')
+        .find('.budget-table-cell-name div.button')
         .prop('title')
         .match(/.[^\n]*/)[0];
       if (accountName === name) {
