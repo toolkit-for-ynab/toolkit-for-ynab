@@ -225,19 +225,12 @@ export class CheckCreditBalances extends Feature {
         return;
       }
       if (category.displayName === name) {
-        let input = $(this)
+        let input = $(el)
           .find('.budget-table-cell-budgeted div.ynab-new-currency-input')
           .click()
           .find('input');
 
-        let oldValue = input.val();
-
-        // If nothing is budgeted, the input will be empty
-        oldValue = oldValue || 0;
-
-        // YNAB stores values *1000 for decimal places, so just
-        // multiple by 1000 to get the actual amount.
-        let newValue = ynab.unformat(oldValue) * 1000 + difference;
+        let newValue = category.budgeted + difference;
 
         // format the calculated value back to selected number format
         input.val(ynab.formatCurrency(newValue));
