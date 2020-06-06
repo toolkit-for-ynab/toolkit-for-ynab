@@ -27,13 +27,7 @@ export const generateRunningBalanceMap = reportedTransactions => {
   accountsToTransactionsMap.forEach((transactionsForAcc, accountId) => {
     calculatedRunningBalanceMap.set(
       accountId,
-      generateDataPointsForAccount(
-        accountId,
-        transactionsForAcc,
-        dateToTransactionsMap,
-        firstTransactionDate,
-        now
-      )
+      generateDataPointsForAccount(accountId, dateToTransactionsMap, firstTransactionDate, now)
     );
   });
   // Want: Account ID -> Map<Date, Object>
@@ -110,25 +104,18 @@ export const generateEmptyDateMap = (startDate, endDate) => {
 };
 
 /**
- * Generate a map of datapoints for the given transactions
+ * Generate a map of datapoints for the given transactions and account
  * Keys: Date (UTC Time)
  * Values: Object
  *    - transactions: All the transactions for the given day
  *    - runningTotal: The current running total based off all transactions given (sum of inflows and outflows up to the current date)
  *    - netChange: How much has changed since the previous day
- *
- * @param {Array<Transactions>} transactions Transactions used to generate datapoints for
- * @param {MomentDate} startDate The starting date
- * @param {MomentDate} endDate The ending date
- * @return Map of dates to datapoints
+ * @param {*} accountId The accountId to filter by
+ * @param {*} dateToAllTransactions Map of dates in utc to transactions
+ * @param {Moment Object} startDate The start date
+ * @param {Moment Object} endDate The end date
  */
-export function generateDataPointsForAccount(
-  accountId,
-  transactionsForAccount,
-  dateToAllTransactions,
-  startDate,
-  endDate
-) {
+export function generateDataPointsForAccount(accountId, dateToAllTransactions, startDate, endDate) {
   let datapoints = generateEmptyDateMap(startDate, endDate);
 
   // Keep track of the relevant dates
@@ -174,7 +161,7 @@ export function generateDataPointsForAccount(
  * @param {Map} dataPointsMap Map of dates in UTC to data
  * @returns {Array} Array containing the HighChart Points
  */
-export function dataPointsToHighChartSeries(dataPointsMap) {
+export const dataPointsToHighChartSeries = dataPointsMap => {
   let resultData = [];
 
   dataPointsMap.forEach((datapoint, date) => {
@@ -186,8 +173,18 @@ export function dataPointsToHighChartSeries(dataPointsMap) {
     });
   });
   return resultData;
-}
+};
 
+export const combineDataPoints = datapointsArray => {
+  let combinedDataPoints = new Map();
+  datapointsArray.forEach(datapoints => {
+    datapoints.forEach((data, dateUTC) => {
+      if (!combinedDataPoints.has(dateUTC)) {
+        combinedDataPoints.set(dateUTC, {});
+      }
+    });
+  });
+};
 /**
  * Generate a date filter to the datapoints and return all datapoints within the date range
  * @param {} fromDate The starting date to filter from

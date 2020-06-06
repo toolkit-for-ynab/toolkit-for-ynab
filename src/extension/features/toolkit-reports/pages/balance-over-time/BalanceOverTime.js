@@ -46,7 +46,17 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
     console.log('Finished Applying filters...');
   }, [runningBalanceMap, filters, shouldGroupAccounts]);
 
-  return <RunningBalanceGraph series={series} />;
+  return (
+    <div className="tk-flex tk-flex-column tk-flex-grow">
+      <div className="tk-flex tk-pd-l-2 tk-pd-t-05">
+        <button onClick={() => setShouldGroupAccounts(!shouldGroupAccounts)}>
+          {' '}
+          Group Accounts{' '}
+        </button>
+      </div>
+      <RunningBalanceGraph series={series} />;
+    </div>
+  );
 };
 
 // Props are given from context
