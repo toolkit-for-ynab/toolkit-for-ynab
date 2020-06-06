@@ -20,7 +20,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
   const [shouldGroupAccounts, setShouldGroupAccounts] = useState(false);
 
   // Whether the graph will be a step graph or not
-  const [useStepGraph, setUseStepGraph] = useState(false);
+  const [useStepGraph, setUseStepGraph] = useState(true);
 
   // The series to be fed into highcharts
   const [series, setSeries] = useState([]);

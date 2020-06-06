@@ -36,7 +36,7 @@ export const RunningBalanceGraph = ({ series, useStep }) => {
       },
       tooltip: {
         useHTML: true,
-        pointFormatter: () => {
+        pointFormatter: function() {
           let coloredPoint = `<span style="color:${this.color}">\u25CF</span>`;
           let totalAmount = formatCurrency(this.y, false);
           let netChange = formatCurrency(this.netChange, false);
