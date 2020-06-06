@@ -19,13 +19,16 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
   // Whether a single graph will be outputted using the selected accounts
   const [shouldGroupAccounts, setShouldGroupAccounts] = useState(false);
 
+  // Whether the graph will be a step graph or not
+  const [useStepGraph, setUseStepGraph] = useState(false);
+
   // The series to be fed into highcharts
   const [series, setSeries] = useState([]);
 
   // Whenver transactions change, update all our datapoints.
   useEffect(() => {
     setRunningBalanceMap(generateRunningBalanceMap(allReportableTransactions));
-  }, [allReportableTransactions.length]);
+  }, [allReportableTransactions]);
 
   // When our filters change, or deciding to group accounts, calculated the new data used for the series.
   useEffect(() => {
@@ -62,19 +65,27 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
     }
 
     setSeries(newSeries);
-  }, [runningBalanceMap, filters, shouldGroupAccounts]);
+  }, [runningBalanceMap, filters, shouldGroupAccounts, useStepGraph]);
 
   return (
     <div className="tk-flex tk-flex-column tk-flex-grow">
       <div className="tk-flex tk-pd-05 tk-border-b">
-        <LabeledCheckbox
-          id="tk-income-breakdown-hide-income-selector"
-          checked={shouldGroupAccounts}
-          label="Group Accounts"
-          onChange={() => setShouldGroupAccounts(!shouldGroupAccounts)}
-        />
+        <div className="tk-pd-x-1">
+          <LabeledCheckbox
+            checked={shouldGroupAccounts}
+            label="Group Accounts"
+            onChange={() => setShouldGroupAccounts(!shouldGroupAccounts)}
+          />
+        </div>
+        <div className="tk-pd-x-1">
+          <LabeledCheckbox
+            checked={useStepGraph}
+            label="Use Step Graph"
+            onChange={() => setUseStepGraph(!useStepGraph)}
+          />
+        </div>
       </div>
-      <RunningBalanceGraph series={series} />;
+      <RunningBalanceGraph series={series} useStep={useStepGraph} />;
     </div>
   );
 };

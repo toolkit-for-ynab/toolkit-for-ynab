@@ -4,7 +4,7 @@ import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-mod
 import Highcharts from 'highcharts';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 
-export const RunningBalanceGraph = ({ series }) => {
+export const RunningBalanceGraph = ({ series, useStep }) => {
   const GRAPH_ID = 'tk-balance-over-time-report-graph';
 
   // On every change of series, rerender our graph to the report container
@@ -36,7 +36,7 @@ export const RunningBalanceGraph = ({ series }) => {
       },
       tooltip: {
         useHTML: true,
-        pointFormatter: function() {
+        pointFormatter: () => {
           let coloredPoint = `<span style="color:${this.color}">\u25CF</span>`;
           let totalAmount = formatCurrency(this.y, false);
           let netChange = formatCurrency(this.netChange, false);
@@ -52,7 +52,7 @@ export const RunningBalanceGraph = ({ series }) => {
           marker: { enabled: false },
         },
         series: {
-          step: true,
+          step: useStep,
           cursor: 'pointer',
           events: {
             click: event => {
@@ -89,4 +89,5 @@ export const RunningBalanceGraph = ({ series }) => {
 
 RunningBalanceGraph.propTypes = {
   series: PropTypes.array.isRequired,
+  useStep: PropTypes.bool.isRequired,
 };
