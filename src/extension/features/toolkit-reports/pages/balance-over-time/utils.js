@@ -1,16 +1,50 @@
+// Common util methods to help generating a running total
+
 /**
- * Generate a Map with keys containing accountIds and value transactions associated with the accountId
+ * Generate a running balance map for each account in the current budget
+ * Keys: Account Ids
+ * Values: Maps of dates (UTC Time) to datapoints (Object containing runningTotal, transactions for the day, netchange for day)
  *
- * @param {*} transactions The sorted list of transactions used to map
+ * @param {*} reportedTransactions The transactions used to calculate the running total
+ */
+export const generateRunningBalanceMap = reportedTransactions => {
+  let calculatedRunningBalanceMap = new Map();
+  if (reportedTransactions.length === 0) return calculatedRunningBalanceMap;
+
+  // Get the date of the very first transaction
+  let sortedTransactions = reportedTransactions.sort(
+    (t1, t2) => t1.date.getUTCTime() - t2.date.getUTCTime()
+  );
+
+  // Add in the datapoints for each of the accounts
+  let firstTransactionDate = moment(sortedTransactions[0].date.getUTCTime()).utc();
+  let now = moment().utc();
+
+  // Map buckets to their respective datapoints
+  let accountsToTransactionsMap = mapAccountsToTransactions(reportedTransactions);
+  accountsToTransactionsMap.forEach((transactions, accountId) => {
+    calculatedRunningBalanceMap.set(
+      accountId,
+      generateDataPointsMap(transactions, firstTransactionDate, now)
+    );
+  });
+  return calculatedRunningBalanceMap;
+};
+
+/**
+ * Generate a Map with:
+ * keys - accountId
+ * values - Array of transactions for that account
+ *
+ * @param {*} transactions The transactions to use
  * @return {Map} accountToTransactionsMap A Map containing account ids and their corresponding transactions in sorted order
  */
-export function mapAccountsToTransactions(transactions) {
-  if (!transactions) return;
+export const mapAccountsToTransactions = transactions => {
+  let accountToTransactionsMap = new Map();
+  if (!transactions) return accountToTransactionsMap;
 
   // Map each transaction to their respective account id. AccountID => [t1, t2, ... , tn]
-  let accountToTransactionsMap = new Map();
-  for (let i = 0; i < transactions.length; i++) {
-    let transaction = transactions[i];
+  transactions.forEach(transaction => {
     if (transaction && transaction.accountId) {
       let accountId = transaction.accountId;
       if (!accountToTransactionsMap.has(accountId)) {
@@ -18,57 +52,76 @@ export function mapAccountsToTransactions(transactions) {
       }
       accountToTransactionsMap.get(accountId).push(transaction);
     }
-  }
+  });
   return accountToTransactionsMap;
-}
+};
 
 /**
- * Given transactions list, generate a map of data points of
- * Key (Date in UTC Time)
- * Value (object containing, transactions and amount total for that date)
- * Each value contains the following:
- *  - runningTotal: The current amount in the account after a transaction has been applied
- *  - netChange: How much was spent on a particular day
- *  - transactions: An array of transactions for the day
+ * Generate a map with keys of all days between the starting date and the end date
  *
- * @param {Array} transaction The list of transactions to convert to data points
- * @returns Map of date to transactions and amount
+ * @param {MomentDate} startDate The starting date (Moment Object)
+ * @param {MomentDate} endDate The end date (Moment Object)
+ * @return {Map} Map containing keys of all days between start and end date, mapping to empty object
  */
-export function generateDataPointsMap(transactions) {
-  let datapoints = new Map();
+export const generateEmptyDateMap = (startDate, endDate) => {
+  let emptyDateMap = new Map();
+  let currDate = startDate.clone();
+  while (currDate.isSameOrBefore(endDate)) {
+    emptyDateMap.set(currDate.utc().valueOf(), {});
+    currDate.add(1, 'days');
+  }
+  return emptyDateMap;
+};
 
-  // Apply the date filters
-  let sortedTransactions = transactions.sort(
-    (t1, t2) => t1.date.getUTCTime() - t2.date.getUTCTime()
-  );
+/**
+ * Generate a map of datapoints for the given transactions
+ * Keys: Date (UTC Time)
+ * Values: Object
+ *    - transactions: All the transactions for the given day
+ *    - runningTotal: The current running total based off all transactions given (sum of inflows and outflows up to the current date)
+ *    - netChange: How much has changed since the previous day
+ *
+ * @param {Array<Transactions>} transactions Transactions used to generate datapoints for
+ * @param {MomentDate} startDate The starting date
+ * @param {MomentDate} endDate The ending date
+ * @return Map of dates to datapoints
+ */
+export function generateDataPointsMap(transactions, startDate, endDate) {
+  if (transactions.length === 0) return new Map();
+  let datapoints = generateEmptyDateMap(startDate, endDate);
 
-  // Keep track of the running total for the graph, the transactions for each date,
-  // along with the amount spend that date
+  // Keep track of the relevant dates
+  let currDate = startDate.clone();
+
+  // Keep track of a running total and prev runningTotal
   let runningTotal = 0;
-  let lastKnownTotal = 0;
-  for (let i = 0; i < sortedTransactions.length; i++) {
-    let transaction = sortedTransactions[i];
-    let date = transaction.date.getUTCTime();
-    lastKnownTotal = runningTotal;
-    runningTotal = runningTotal - transaction.outflow + transaction.inflow;
 
-    // Add the date with empty values if it's a new date
-    if (!datapoints.has(date)) {
-      datapoints.set(date, {
-        lastKnownTotal: 0,
-        runningTotal: 0,
-        netChange: 0,
-        transactions: [],
-      });
-    }
+  // Iterate through all days and populate the datapoints
+  while (currDate.isSameOrBefore(endDate)) {
+    let currDateUTC = currDate.utc();
+    let datapointKey = currDateUTC.valueOf();
 
-    // Update the values of the date with the new values
-    let newValues = datapoints.get(date);
-    newValues.netChange = newValues.netChange + transaction.inflow - transaction.outflow;
-    newValues.transactions.push(transaction);
-    newValues.runningTotal = runningTotal;
-    newValues.lastKnownTotal = lastKnownTotal;
-    datapoints.set(date, newValues);
+    // Get all the transactions for the current day
+    let transactionsForDay = transactions.filter(transaction =>
+      moment(transaction.date.getUTCTime())
+        .utc()
+        .isSame(currDateUTC, 'date')
+    );
+
+    // Sum up all the transactions for the day add it to the running total
+    let totalForDay = transactionsForDay.reduce((accum, transaction) => {
+      return accum - transaction.outflow + transaction.inflow;
+    }, 0);
+    runningTotal += totalForDay;
+
+    // Set the new values
+    let newDataPoint = {
+      transactions: transactionsForDay,
+      runningTotal: runningTotal,
+      netChange: totalForDay,
+    };
+    datapoints.set(datapointKey, newDataPoint);
+    currDate = currDate.add(1, 'days');
   }
   return datapoints;
 }
@@ -81,49 +134,14 @@ export function generateDataPointsMap(transactions) {
 export function dataPointsToHighChartSeries(dataPointsMap) {
   let resultData = [];
 
-  // Keep track of the first and last known dates
-  let firstDataPointDateUTC = Number.MAX_VALUE;
-  let lastDataPointDateUTC = Number.MIN_VALUE;
-
-  dataPointsMap.forEach((values, date) => {
-    firstDataPointDateUTC = Math.min(firstDataPointDateUTC, date);
-    lastDataPointDateUTC = Math.max(lastDataPointDateUTC, date);
+  dataPointsMap.forEach((datapoint, date) => {
     resultData.push({
       x: date,
-      y: values.runningTotal,
-      netChange: values.netChange,
-      transactions: values.transactions,
+      y: datapoint.runningTotal,
+      netChange: datapoint.netChange,
+      transactions: datapoint.transactions,
     });
   });
-
-  // Calculate our boundaries
-  // The first day should be the first day of the month of the first data point
-  // let firstDataPointDate = new Date(firstDataPointDateUTC);
-  // let firstDay = new Date(firstDataPointDate.getFullYear(), firstDataPointDate.getMonth(), 1);
-  // // Add an extra data point on the first day if the first data points starts in mid month
-  // if (
-  //   firstDataPointDate &&
-  //   firstDay &&
-  //   !moment(firstDay).isSame(moment(firstDataPointDate), 'date') &&
-  //   dataPointsMap.size > 0 &&
-  //   dataPointsMap.get(firstDataPointDateUTC).lastKnownTotal !== 0
-  // ) {
-  //   console.log(isSameDay(firstDataPointDate, firstDay));
-  //   console.log('Adding new point' + firstDay);
-  //   resultData.unshift({
-  //     x: moment(firstDay).valueOf(),
-  //     y: dataPointsMap.get(firstDataPointDateUTC).lastKnownTotal,
-  //     netChange: 0,
-  //     transactions: [],
-  //   });
-  // }
-
-  // let lastDataPointDate = new Date(firstDataPointDateUTC);
-  // let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  // compare with the dates first and last dates of the month
-  // case: both first and last date should be applied
-  // case: only first date should be applied
-  // case: only last date should be applied
   return resultData;
 }
 
@@ -131,24 +149,14 @@ export function dataPointsToHighChartSeries(dataPointsMap) {
  * Generate a date filter to the datapoints and return all datapoints within the date range
  * @param {} fromDate The starting date to filter from
  * @param {*} toDate The end date to filter to
- * @param {Map} datapoints Map of dates in UTC to their corresponding datapoints
+ * @param {Map} datapoints Map of dates in UTC to their corresponding datapoint
  */
-export const applyDateFilterToDataPoints = (fromDate, toDate, datapoints) => {
+export const applyDateFiltersToDataPoints = (fromDate, toDate, datapoints) => {
   let filteredDatapoints = new Map();
   datapoints.forEach((data, dateUTC) => {
     if (dateUTC >= fromDate.getUTCTime() && dateUTC <= toDate.getUTCTime()) {
-      console.log('Setting datal');
       filteredDatapoints.set(dateUTC, data);
     }
   });
-  console.log(filteredDatapoints);
   return filteredDatapoints;
-};
-
-const isSameDay = (dayOne, dayTwo) => {
-  return (
-    dayOne.getFullYear() === dayTwo.getFullYear() &&
-    dayOne.getMonth() === dayTwo.getMonth() &&
-    dayOne.getDate() === dayTwo.getDate()
-  );
 };
