@@ -1,5 +1,8 @@
-// Common util methods to help generating a running total
+// Common util methods to help generate a running total
 
+/**
+ * Create a new datapoint
+ */
 export const NEW_DATAPOINT = () => {
   return {
     runningTotal: 0,
@@ -14,6 +17,7 @@ export const NEW_DATAPOINT = () => {
  * Values: Maps of dates (UTC Time) to datapoints (Object containing runningTotal, transactions for the day, netchange for day)
  *
  * @param {*} reportedTransactions The transactions used to calculate the running total
+ * @return {Map} Map of account ids to their datapointsMap (date -> datapoint)
  */
 export const generateRunningBalanceMap = reportedTransactions => {
   let calculatedRunningBalanceMap = new Map();
@@ -32,6 +36,7 @@ export const generateRunningBalanceMap = reportedTransactions => {
   let accountsToTransactionsMap = mapAccountsToTransactions(reportedTransactions);
   let dateToTransactionsMap = mapDateToTransactions(reportedTransactions);
 
+  // Generate datapoints for each of the accounts
   accountsToTransactionsMap.forEach((transactionsForAcc, accountId) => {
     calculatedRunningBalanceMap.set(
       accountId,
@@ -48,7 +53,7 @@ export const generateRunningBalanceMap = reportedTransactions => {
  * values - Array of transactions for that account
  *
  * @param {*} transactions The transactions to use
- * @return {Map} accountToTransactionsMap A Map containing account ids and their corresponding transactions in sorted order
+ * @return {Map} accountToTransactionsMap A Map containing account ids and their corresponding transactions
  */
 export const mapAccountsToTransactions = transactions => {
   let accountToTransactionsMap = new Map();
@@ -69,17 +74,17 @@ export const mapAccountsToTransactions = transactions => {
 
 /**
  * Generate a Map with:
- * keys - accountId
+ * keys - Dates in UTC
  * values - Array of transactions for that account
  *
  * @param {*} transactions The transactions to use
- * @return {Map} accountToTransactionsMap A Map containing account ids and their corresponding transactions in sorted order
+ * @return {Map} dateToTransactionsmap A Map containing dates and their corresponding transactions in that date
  */
 export const mapDateToTransactions = transactions => {
   let dateToTransactionsMap = new Map();
   if (!transactions) return dateToTransactionsMap;
 
-  // Map each transaction to their respective account id. AccountID => [t1, t2, ... , tn]
+  // Map each transaction to their respective dates. DateUTC => [t1, t2, ... , tn]
   transactions.forEach(transaction => {
     if (transaction && transaction.date) {
       let date = moment(transaction.date.getUTCTime())
@@ -125,11 +130,7 @@ export const generateEmptyDateMap = (startDate, endDate) => {
  */
 export function generateDataPointsForAccount(accountId, dateToAllTransactions, startDate, endDate) {
   let datapoints = generateEmptyDateMap(startDate, endDate);
-
-  // Keep track of the relevant dates
   let currDate = startDate.clone();
-
-  // Keep track of a running total and prev runningTotal
   let runningTotal = 0;
 
   // Iterate through all days and populate the datapoints
@@ -171,7 +172,6 @@ export function generateDataPointsForAccount(accountId, dateToAllTransactions, s
  */
 export const dataPointsToHighChartSeries = dataPointsMap => {
   let resultData = [];
-
   dataPointsMap.forEach((datapoint, date) => {
     resultData.push({
       x: date,
@@ -204,11 +204,11 @@ export const combineDataPoints = datapointsArray => {
       combinedDataPoints.set(dateUTC, newDataPoint);
     });
   });
-  console.log(combinedDataPoints);
   return combinedDataPoints;
 };
+
 /**
- * Generate a date filter to the datapoints and return all datapoints within the date range
+ * Apply a date filter to the datapoints and return all datapoints within the date range
  * @param {} fromDate The starting date to filter from
  * @param {*} toDate The end date to filter to
  * @param {Map} datapoints Map of dates in UTC to their corresponding datapoint

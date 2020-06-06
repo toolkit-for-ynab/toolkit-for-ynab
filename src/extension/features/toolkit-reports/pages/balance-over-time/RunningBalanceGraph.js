@@ -88,5 +88,5 @@ export const RunningBalanceGraph = ({ series }) => {
 };
 
 RunningBalanceGraph.propTypes = {
-  series: PropTypes.shape(Array).isRequired,
+  series: PropTypes.array.isRequired,
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { RunningBalanceGraph } from './RunningBalanceGraph';
+import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
 import {
   dataPointsToHighChartSeries,
   generateRunningBalanceMap,
@@ -11,13 +12,14 @@ import {
 import { getEntityManager } from '../../../../utils/ynab';
 export const BalanceOverTimeComponent = ({ allReportableTransactions, filters }) => {
   const GROUPED_LABEL = 'Selected Accounts';
-  // Whether we should group selected accounts together in the graph
-  const [shouldGroupAccounts, setShouldGroupAccounts] = useState(false);
 
   // Map of accounts to their corresponding datapoints for each date
   const [runningBalanceMap, setRunningBalanceMap] = useState(new Map());
 
-  // Array of objects, each object containing name and data to be fed into HighCharts
+  // Whether a single graph will be outputted using the selected accounts
+  const [shouldGroupAccounts, setShouldGroupAccounts] = useState(false);
+
+  // The series to be fed into highcharts
   const [series, setSeries] = useState([]);
 
   // Whenver transactions change, update all our datapoints.
@@ -40,7 +42,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
     });
 
     if (shouldGroupAccounts) {
-      // When grouping accounts, combined all the selected accounts datapoints
+      // When grouping accounts, combined all the selected accounts datapoints to create a single series
       let datapointsToCombine = [];
       filteredData.forEach((datapoints, accountId) => {
         datapointsToCombine.push(datapoints);
@@ -50,6 +52,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
         data: dataPointsToHighChartSeries(combineDataPoints(datapointsToCombine)),
       });
     } else {
+      // Output a series for each account
       filteredData.forEach((datapoints, accountId) => {
         newSeries.push({
           name: getEntityManager().getAccountById(accountId).accountName,
@@ -57,17 +60,19 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
         });
       });
     }
+
     setSeries(newSeries);
-    console.log('Finished Applying filters...');
   }, [runningBalanceMap, filters, shouldGroupAccounts]);
 
   return (
     <div className="tk-flex tk-flex-column tk-flex-grow">
-      <div className="tk-flex tk-pd-l-2 tk-pd-t-05">
-        <button onClick={() => setShouldGroupAccounts(!shouldGroupAccounts)}>
-          {' '}
-          Group Accounts{' '}
-        </button>
+      <div className="tk-flex tk-pd-05 tk-border-b">
+        <LabeledCheckbox
+          id="tk-income-breakdown-hide-income-selector"
+          checked={shouldGroupAccounts}
+          label="Group Accounts"
+          onChange={() => setShouldGroupAccounts(!shouldGroupAccounts)}
+        />
       </div>
       <RunningBalanceGraph series={series} />;
     </div>
