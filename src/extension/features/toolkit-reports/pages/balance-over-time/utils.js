@@ -20,14 +20,23 @@ export const generateRunningBalanceMap = reportedTransactions => {
   let firstTransactionDate = moment(sortedTransactions[0].date.getUTCTime()).utc();
   let now = moment().utc();
 
-  // Map buckets to their respective datapoints
+  // Map accounts to transactions and dates to transactions (Used to cross reference eachother)
   let accountsToTransactionsMap = mapAccountsToTransactions(reportedTransactions);
-  accountsToTransactionsMap.forEach((transactions, accountId) => {
+  let dateToTransactionsMap = mapDateToTransactions(reportedTransactions);
+
+  accountsToTransactionsMap.forEach((transactionsForAcc, accountId) => {
     calculatedRunningBalanceMap.set(
       accountId,
-      generateDataPointsMap(transactions, firstTransactionDate, now)
+      generateDataPointsForAccount(
+        accountId,
+        transactionsForAcc,
+        dateToTransactionsMap,
+        firstTransactionDate,
+        now
+      )
     );
   });
+  // Want: Account ID -> Map<Date, Object>
   return calculatedRunningBalanceMap;
 };
 
@@ -54,6 +63,33 @@ export const mapAccountsToTransactions = transactions => {
     }
   });
   return accountToTransactionsMap;
+};
+
+/**
+ * Generate a Map with:
+ * keys - accountId
+ * values - Array of transactions for that account
+ *
+ * @param {*} transactions The transactions to use
+ * @return {Map} accountToTransactionsMap A Map containing account ids and their corresponding transactions in sorted order
+ */
+export const mapDateToTransactions = transactions => {
+  let dateToTransactionsMap = new Map();
+  if (!transactions) return dateToTransactionsMap;
+
+  // Map each transaction to their respective account id. AccountID => [t1, t2, ... , tn]
+  transactions.forEach(transaction => {
+    if (transaction && transaction.date) {
+      let date = moment(transaction.date.getUTCTime())
+        .utc()
+        .valueOf();
+      if (!dateToTransactionsMap.has(date)) {
+        dateToTransactionsMap.set(date, []);
+      }
+      dateToTransactionsMap.get(date).push(transaction);
+    }
+  });
+  return dateToTransactionsMap;
 };
 
 /**
@@ -86,8 +122,13 @@ export const generateEmptyDateMap = (startDate, endDate) => {
  * @param {MomentDate} endDate The ending date
  * @return Map of dates to datapoints
  */
-export function generateDataPointsMap(transactions, startDate, endDate) {
-  if (transactions.length === 0) return new Map();
+export function generateDataPointsForAccount(
+  accountId,
+  transactionsForAccount,
+  dateToAllTransactions,
+  startDate,
+  endDate
+) {
   let datapoints = generateEmptyDateMap(startDate, endDate);
 
   // Keep track of the relevant dates
@@ -101,22 +142,24 @@ export function generateDataPointsMap(transactions, startDate, endDate) {
     let currDateUTC = currDate.utc();
     let datapointKey = currDateUTC.valueOf();
 
-    // Get all the transactions for the current day
-    let transactionsForDay = transactions.filter(transaction =>
-      moment(transaction.date.getUTCTime())
-        .utc()
-        .isSame(currDateUTC, 'date')
-    );
+    // Get all the transactions for the current day (only search if theres any transactions for the given day)
+    let accountTransactionsForDay = [];
+    if (dateToAllTransactions.has(datapointKey)) {
+      let transactionsOnDate = dateToAllTransactions.get(datapointKey);
+      accountTransactionsForDay = transactionsOnDate.filter(transaction => {
+        return transaction.accountId && transaction.accountId === accountId;
+      });
+    }
 
-    // Sum up all the transactions for the day add it to the running total
-    let totalForDay = transactionsForDay.reduce((accum, transaction) => {
+    // Sum up all the account transactions for the day add it to the running total
+    let totalForDay = accountTransactionsForDay.reduce((accum, transaction) => {
       return accum - transaction.outflow + transaction.inflow;
     }, 0);
     runningTotal += totalForDay;
 
     // Set the new values
     let newDataPoint = {
-      transactions: transactionsForDay,
+      transactions: accountTransactionsForDay,
       runningTotal: runningTotal,
       netChange: totalForDay,
     };

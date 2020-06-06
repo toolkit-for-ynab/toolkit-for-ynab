@@ -21,11 +21,14 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
 
   // Whenver transactions change, update all our datapoints.
   useEffect(() => {
+    console.log('Regnerating overall running balance');
     setRunningBalanceMap(generateRunningBalanceMap(allReportableTransactions));
-  }, [allReportableTransactions]);
+    console.log('Finished Regnerating overall running balance');
+  }, [allReportableTransactions.length]);
 
   // When our filters change, or deciding to group accounts, calculated the new data used for the series.
   useEffect(() => {
+    console.log('Applying filters...');
     const accountFilters = filters.accountFilterIds;
     const { fromDate, toDate } = filters.dateFilter;
     let newSeries = [];
@@ -40,7 +43,8 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
       }
     });
     setSeries(newSeries);
-  }, [allReportableTransactions, filters, shouldGroupAccounts]);
+    console.log('Finished Applying filters...');
+  }, [runningBalanceMap, filters, shouldGroupAccounts]);
 
   return <RunningBalanceGraph series={series} />;
 };
