@@ -1,5 +1,13 @@
 // Common util methods to help generating a running total
 
+export const NEW_DATAPOINT = () => {
+  return {
+    runningTotal: 0,
+    netChange: 0,
+    transactions: [],
+  };
+};
+
 /**
  * Generate a running balance map for each account in the current budget
  * Keys: Account Ids
@@ -97,7 +105,7 @@ export const generateEmptyDateMap = (startDate, endDate) => {
   let emptyDateMap = new Map();
   let currDate = startDate.clone();
   while (currDate.isSameOrBefore(endDate)) {
-    emptyDateMap.set(currDate.utc().valueOf(), {});
+    emptyDateMap.set(currDate.utc().valueOf(), NEW_DATAPOINT());
     currDate.add(1, 'days');
   }
   return emptyDateMap;
@@ -175,15 +183,29 @@ export const dataPointsToHighChartSeries = dataPointsMap => {
   return resultData;
 };
 
+/**
+ * Given an array of maps containing dateUTC to corresponding datapoints,
+ * combine them into a single map.
+ * @param {} datapointsArray
+ * @return {Map}
+ */
 export const combineDataPoints = datapointsArray => {
   let combinedDataPoints = new Map();
   datapointsArray.forEach(datapoints => {
     datapoints.forEach((data, dateUTC) => {
       if (!combinedDataPoints.has(dateUTC)) {
-        combinedDataPoints.set(dateUTC, {});
+        combinedDataPoints.set(dateUTC, NEW_DATAPOINT());
       }
+      let prevDataPoint = combinedDataPoints.get(dateUTC);
+      let newDataPoint = NEW_DATAPOINT();
+      newDataPoint.runningTotal = prevDataPoint.runningTotal + data.runningTotal;
+      newDataPoint.netChange = prevDataPoint.netChange + data.netChange;
+      newDataPoint.transactions = prevDataPoint.transactions.concat(data.transactions);
+      combinedDataPoints.set(dateUTC, newDataPoint);
     });
   });
+  console.log(combinedDataPoints);
+  return combinedDataPoints;
 };
 /**
  * Generate a date filter to the datapoints and return all datapoints within the date range

@@ -6,10 +6,11 @@ import {
   dataPointsToHighChartSeries,
   generateRunningBalanceMap,
   applyDateFiltersToDataPoints,
+  combineDataPoints,
 } from './utils';
 import { getEntityManager } from '../../../../utils/ynab';
-
 export const BalanceOverTimeComponent = ({ allReportableTransactions, filters }) => {
+  const GROUPED_LABEL = 'Selected Accounts';
   // Whether we should group selected accounts together in the graph
   const [shouldGroupAccounts, setShouldGroupAccounts] = useState(false);
 
@@ -21,27 +22,41 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
 
   // Whenver transactions change, update all our datapoints.
   useEffect(() => {
-    console.log('Regnerating overall running balance');
     setRunningBalanceMap(generateRunningBalanceMap(allReportableTransactions));
-    console.log('Finished Regnerating overall running balance');
   }, [allReportableTransactions.length]);
 
   // When our filters change, or deciding to group accounts, calculated the new data used for the series.
   useEffect(() => {
-    console.log('Applying filters...');
     const accountFilters = filters.accountFilterIds;
     const { fromDate, toDate } = filters.dateFilter;
     let newSeries = [];
+
+    // Filter the overall running balance to only the datapoints what we want
+    let filteredData = new Map();
     runningBalanceMap.forEach((datapoints, accountId) => {
       if (!accountFilters.has(accountId)) {
-        newSeries.push({
-          name: getEntityManager().getAccountById(accountId).accountName,
-          data: dataPointsToHighChartSeries(
-            applyDateFiltersToDataPoints(fromDate, toDate, datapoints)
-          ),
-        });
+        filteredData.set(accountId, applyDateFiltersToDataPoints(fromDate, toDate, datapoints));
       }
     });
+
+    if (shouldGroupAccounts) {
+      // When grouping accounts, combined all the selected accounts datapoints
+      let datapointsToCombine = [];
+      filteredData.forEach((datapoints, accountId) => {
+        datapointsToCombine.push(datapoints);
+      });
+      newSeries.push({
+        name: GROUPED_LABEL,
+        data: dataPointsToHighChartSeries(combineDataPoints(datapointsToCombine)),
+      });
+    } else {
+      filteredData.forEach((datapoints, accountId) => {
+        newSeries.push({
+          name: getEntityManager().getAccountById(accountId).accountName,
+          data: dataPointsToHighChartSeries(datapoints),
+        });
+      });
+    }
     setSeries(newSeries);
     console.log('Finished Applying filters...');
   }, [runningBalanceMap, filters, shouldGroupAccounts]);
