@@ -8,20 +8,20 @@ import {
   generateRunningBalanceMap,
   applyDateFiltersToDataPoints,
   combineDataPoints,
+  generateTrendLine,
 } from './utils';
 import { getEntityManager } from '../../../../utils/ynab';
 export const BalanceOverTimeComponent = ({ allReportableTransactions, filters }) => {
   const GROUPED_LABEL = 'Selected Accounts';
+  const TRENDLINE_PREFIX = 'Trendline for ';
+
+  // Options to group accounts, use a step graph and/or generate trendlines
+  const [shouldGroupAccounts, setShouldGroupAccounts] = useState(false);
+  const [useStepGraph, setUseStepGraph] = useState(true);
+  const [useTrendLine, setUseTrendLine] = useState(false);
 
   // Map of accounts to their corresponding datapoints for each date
   const [runningBalanceMap, setRunningBalanceMap] = useState(new Map());
-
-  // Whether a single graph will be outputted using the selected accounts
-  const [shouldGroupAccounts, setShouldGroupAccounts] = useState(false);
-
-  // Whether the graph will be a step graph or not
-  const [useStepGraph, setUseStepGraph] = useState(true);
-
   // The series to be fed into highcharts
   const [series, setSeries] = useState([]);
 
@@ -52,6 +52,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
       });
       newSeries.push({
         name: GROUPED_LABEL,
+        step: useStepGraph ? 'right' : undefined,
         data: dataPointsToHighChartSeries(combineDataPoints(datapointsToCombine)),
       });
     } else {
@@ -59,13 +60,23 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
       filteredData.forEach((datapoints, accountId) => {
         newSeries.push({
           name: getEntityManager().getAccountById(accountId).accountName,
+          step: useStepGraph ? 'right' : undefined,
           data: dataPointsToHighChartSeries(datapoints),
         });
       });
     }
 
+    if (useTrendLine) {
+      newSeries.forEach(seriesData => {
+        newSeries.push({
+          name: `${TRENDLINE_PREFIX}${seriesData.name}`,
+          dashStyle: 'dash',
+          data: generateTrendLine(seriesData.data),
+        });
+      });
+    }
     setSeries(newSeries);
-  }, [runningBalanceMap, filters, shouldGroupAccounts, useStepGraph]);
+  }, [runningBalanceMap, filters, shouldGroupAccounts, useStepGraph, useTrendLine]);
 
   return (
     <div className="tk-flex tk-flex-column tk-flex-grow">
@@ -79,20 +90,25 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
         </div>
         <div className="tk-pd-x-1">
           <LabeledCheckbox
+            checked={useTrendLine}
+            label="Show Trendline"
+            onChange={() => setUseTrendLine(!useTrendLine)}
+          />
+        </div>
+        <div className="tk-pd-x-1">
+          <LabeledCheckbox
             checked={useStepGraph}
             label="Use Step Graph"
             onChange={() => setUseStepGraph(!useStepGraph)}
           />
         </div>
       </div>
-      <RunningBalanceGraph series={series} useStep={useStepGraph} />;
+      <RunningBalanceGraph series={series} />;
     </div>
   );
 };
 
 // Props are given from context
-// reported transactions: from context
-// filters: from context
 BalanceOverTimeComponent.propTypes = {
   filters: PropTypes.shape(FiltersPropType).isRequired,
   allReportableTransactions: PropTypes.array.isRequired,

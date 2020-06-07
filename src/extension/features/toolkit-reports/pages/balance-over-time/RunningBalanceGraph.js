@@ -4,7 +4,7 @@ import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-mod
 import Highcharts from 'highcharts';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 
-export const RunningBalanceGraph = ({ series, useStep }) => {
+export const RunningBalanceGraph = ({ series }) => {
   const GRAPH_ID = 'tk-balance-over-time-report-graph';
 
   // On every change of series, rerender our graph to the report container
@@ -39,11 +39,13 @@ export const RunningBalanceGraph = ({ series, useStep }) => {
         pointFormatter: function() {
           let coloredPoint = `<span style="color:${this.color}">\u25CF</span>`;
           let totalAmount = formatCurrency(this.y, false);
-          let netChange = formatCurrency(this.netChange, false);
-
           let tooltip = `${coloredPoint} ${this.series.name}: <b>${totalAmount}</b><br/>`;
-          let color = this.netChange < 0 ? '#ea5439' : '#16a336'; // Red or Green
-          tooltip += `${coloredPoint} Net Change: <span style="color: ${color}"><b>${netChange}</b> <br/>`;
+
+          if (this.netChange) {
+            let netChange = formatCurrency(this.netChange, false);
+            let color = this.netChange < 0 ? '#ea5439' : '#16a336'; // Red or Green
+            tooltip += `${coloredPoint} Net Change: <span style="color: ${color}"><b>${netChange}</b> <br/>`;
+          }
           return tooltip;
         },
       },
@@ -52,13 +54,14 @@ export const RunningBalanceGraph = ({ series, useStep }) => {
           marker: { enabled: false },
         },
         series: {
-          step: useStep,
           cursor: 'pointer',
           events: {
             click: event => {
-              let date = new Date(event.point.x);
-              let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date);
-              showTransactionModal(formattedDate, event.point.transactions);
+              if (event.point.transactions && event.point.transactions.length > 0) {
+                let date = new Date(event.point.x);
+                let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date);
+                showTransactionModal(formattedDate, event.point.transactions);
+              }
             },
             legendItemClick: event => {
               event.preventDefault(); // Prevent toggling via the legend
@@ -89,5 +92,4 @@ export const RunningBalanceGraph = ({ series, useStep }) => {
 
 RunningBalanceGraph.propTypes = {
   series: PropTypes.array.isRequired,
-  useStep: PropTypes.bool.isRequired,
 };

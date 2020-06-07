@@ -1,4 +1,5 @@
 // Common util methods to help generate a running total
+import regression from 'regression';
 
 /**
  * Create a new datapoint
@@ -184,10 +185,21 @@ export const dataPointsToHighChartSeries = dataPointsMap => {
 };
 
 /**
+ * Use a linear regression to calculate a line of best fit based off the given datapoints
+ * @param {*} datapoints The datapoints to generate the trendline for
+ * @return {Array} array of datapoints for the trendline
+ */
+export const generateTrendLine = datapoints => {
+  let normalizedDataPoints = datapoints.map(datapoint => [datapoint.x, datapoint.y]);
+  let linearRegression = regression.logarithmic(normalizedDataPoints, { precision: 10 });
+  return linearRegression.points;
+};
+
+/**
  * Given an array of maps containing dateUTC to corresponding datapoints,
  * combine them into a single map.
  * @param {} datapointsArray
- * @return {Map}
+ * @return {Map} Single map of dateUTC to corresponding datapoints
  */
 export const combineDataPoints = datapointsArray => {
   let combinedDataPoints = new Map();
