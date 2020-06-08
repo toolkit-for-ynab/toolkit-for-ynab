@@ -191,7 +191,7 @@ export const dataPointsToHighChartSeries = dataPointsMap => {
  */
 export const generateTrendLine = datapoints => {
   let normalizedDataPoints = datapoints.map(datapoint => [datapoint.x, datapoint.y]);
-  let linearRegression = regression.logarithmic(normalizedDataPoints, { precision: 10 });
+  let linearRegression = regression.linear(normalizedDataPoints, { precision: 10 });
   return linearRegression.points;
 };
 
