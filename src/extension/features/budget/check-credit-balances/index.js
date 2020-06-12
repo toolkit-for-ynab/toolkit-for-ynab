@@ -6,6 +6,7 @@ import {
 } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
+import { getEmberView } from 'toolkit/extension/utils/ember';
 
 export class CheckCreditBalances extends Feature {
   injectCSS() {
@@ -219,10 +220,12 @@ export class CheckCreditBalances extends Feature {
     let debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
 
     $(debtPaymentCategories).each(function() {
-      let accountName = $(this)
-        .find('.budget-table-cell-name div.button-truncate')
-        .prop('title')
-        .match(/.[^\n]*/)[0];
+      let view = getEmberView(this.id);
+      if (!view || !view.category) {
+        return;
+      }
+
+      const accountName = view.category.displayName;
       if (accountName === name) {
         let input = $(this)
           .find('.budget-table-cell-budgeted div.ynab-new-currency-input')
