@@ -1,4 +1,4 @@
-[title="Credit Card Payments"] .user-entered-text::before {
-  content: "💳";
-  padding-right: .25em;
+.budget-table-cell-name [title='Credit Card Payments']::before {
+  content: '💳';
+  padding-right: 0.25em;
 }
