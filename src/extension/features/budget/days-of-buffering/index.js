@@ -133,7 +133,7 @@ ${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
     let averageDailyOutflow;
     let totalDays;
     if (this._lookbackDays !== 0) {
-      averageDailyOutflow = Math.abs(totalOutflow / this._lookbackDays);
+      averageDailyOutflow = Math.abs(totalOutflow / Math.min(this._lookbackDays, availableDates));
       totalDays = this._lookbackDays;
     } else {
       averageDailyOutflow = Math.abs(totalOutflow / availableDates);
