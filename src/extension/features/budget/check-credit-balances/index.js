@@ -232,7 +232,7 @@ export class CheckCreditBalances extends Feature {
           .click()
           .find('input');
 
-        let newValue = category.budgeted + difference;
+        let newValue = view.category.budgeted + difference;
 
         // format the calculated value back to selected number format
         input.val(ynab.formatCurrency(newValue));

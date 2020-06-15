@@ -1,8 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import {
-  isCurrentRouteAccountsPage,
-  getAllBudgetMonthsViewModel,
-} from 'toolkit/extension/utils/ynab';
+import { getAllBudgetMonthsViewModel } from 'toolkit/extension/utils/ynab';
 import { getCurrentDate } from 'toolkit/extension/utils/date';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
