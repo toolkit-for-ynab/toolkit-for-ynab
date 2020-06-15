@@ -7,7 +7,6 @@ import {
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 
 export class CheckCreditBalances extends Feature {
   injectCSS() {
