@@ -5,6 +5,7 @@ import {
   isCurrentRouteBudgetPage,
 } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
@@ -232,14 +233,7 @@ export class CheckCreditBalances extends Feature {
           .click()
           .find('input');
 
-        let oldValue = input.val();
-
-        // If nothing is budgeted, the input will be empty
-        oldValue = oldValue || 0;
-
-        // YNAB stores values *1000 for decimal places, so just
-        // multiple by 1000 to get the actual amount.
-        let newValue = ynab.unformat(oldValue) * 1000 + difference;
+        let newValue = category.budgeted + difference;
 
         // format the calculated value back to selected number format
         input.val(ynab.formatCurrency(newValue));
