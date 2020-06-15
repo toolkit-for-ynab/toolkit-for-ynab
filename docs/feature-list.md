@@ -114,10 +114,6 @@ Adds a button to the Budget Toolbar that allows resizing the Budget Inspector to
 
 Add progress bars and a vertical bar that shows how far you are through the month to category rows.
 
-## Category Solo Mode and Toggle Master Categories
-
-Keeps only the selected category open collapsing all others and adds a button to the Budget Toolbar to open or close all master categories at once.
-
 ## Credit Card Emoji
 
 Adds a credit card emoji 💳 to the "Credit Card Payments" category.
@@ -220,6 +216,10 @@ Shows a light gray background on alternating category rows.
 
 Changes the 'To Be Budgeted' background color to yellow if there is unallocated money left to be budgeted.
 
+## Toggle Master Categories
+
+Adds ability to toggle all master categories at once. Alternatively, "Solo Mode" can be used to toggle all but a single category at once.
+
 ## Unhighlight all Positive Category Balances
 
 Removes the highlight colour from positive (or zero) category balances and colours positive balances green instead.
@@ -285,6 +285,10 @@ When you press enter on the memo field while adding or editing a transaction, th
 ## Clear Selection
 
 Adds an option to the transaction edit drop-down menu to clear the current selection.
+
+## Clear new transactions with CTRL+Enter
+
+Automatically clear a new transaction by pressing CTRL+Enter (CMD on Mac).
 
 ## Confirm keyboard-initiated transaction cancelation
 
