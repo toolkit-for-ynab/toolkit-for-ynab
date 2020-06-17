@@ -128,17 +128,12 @@ ${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
 
     const minDate = moment.min(dates);
     const maxDate = moment.max(dates);
-    const availableDates = maxDate.diff(minDate, 'days');
+    const availableDates =
+      this._lookbackDays !== 0
+        ? Math.min(this._lookbackDays, maxDate.diff(minDate, 'days'))
+        : maxDate.diff(minDate, 'days');
 
-    let averageDailyOutflow;
-    let totalDays;
-    if (this._lookbackDays !== 0) {
-      averageDailyOutflow = Math.abs(totalOutflow / this._lookbackDays);
-      totalDays = this._lookbackDays;
-    } else {
-      averageDailyOutflow = Math.abs(totalOutflow / availableDates);
-      totalDays = availableDates;
-    }
+    let averageDailyOutflow = Math.abs(totalOutflow / availableDates);
 
     let daysOfBuffering = balance / averageDailyOutflow;
     if (daysOfBuffering < 10) {
@@ -156,7 +151,7 @@ ${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
       averageDailyOutflow,
       daysOfBuffering,
       notEnoughDates,
-      totalDays,
+      availableDates,
       totalOutflow,
     };
   };
