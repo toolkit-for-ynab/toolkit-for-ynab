@@ -6,11 +6,6 @@
   width: 4.6rem;
 }
 
-.layout.collapsed .content,
-.layout.collapsed .budget-header {
-  left: 40px;
-}
-
 .layout.collapsed .content .scroll-wrap,
 .layout.collapsed .content .register-flex-columns {
   width: inherit;

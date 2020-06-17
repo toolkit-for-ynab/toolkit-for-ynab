@@ -82,12 +82,6 @@ export class CollapseSideMenu extends Feature {
         $('.ynab-u.sidebar')
           .animate({ width: `${SIDEBAR_COLLAPSED_SIZE}` })
           .promise(),
-        $('.ynab-u.content')
-          .animate({ left: `${SIDEBAR_COLLAPSED_SIZE}` })
-          .promise(),
-        $('.budget-header')
-          .animate({ left: `${SIDEBAR_COLLAPSED_SIZE}` })
-          .promise(),
       ]).then(() => {
         $('.layout.user-logged-in').addClass('collapsed');
         $('.ynabtk-navlink-reports-link span').addClass('ynabtk-nav-link-collapsed');
@@ -108,12 +102,6 @@ export class CollapseSideMenu extends Feature {
       Promise.all([
         $('.ynab-u.sidebar')
           .animate({ width: '260px' })
-          .promise(),
-        $('.ynab-u.content')
-          .animate({ left: '260px' })
-          .promise(),
-        $('.budget-header')
-          .animate({ left: '260px' })
           .promise(),
       ]).then(() => {
         $('.layout.user-logged-in').removeClass('collapsed');
