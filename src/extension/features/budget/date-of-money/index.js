@@ -4,12 +4,8 @@ import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class DateOfMoney extends Feature {
   shouldInvoke() {
-    return isCurrentRouteBudgetPage() && document.querySelector('.tk-date-of-money') == null;
+    return isCurrentRouteBudgetPage() && document.querySelector('.tk-date-of-money') === null;
   }
-
-  // injectCSS() {
-  //   return require('./index.css');
-  // }
 
   onRouteChanged() {
     if (this.shouldInvoke()) {
@@ -31,6 +27,10 @@ export class DateOfMoney extends Feature {
      * If enabled, days of buffering has the same class, however AOM will always be the first element.
      */
     const ageOfMoneyContainer = budgetHeaderDaysContainer.firstElementChild;
+    if (!ageOfMoneyContainer) {
+      return;
+    }
+
     ageOfMoneyContainer.addEventListener(
       'mouseover',
       function() {
