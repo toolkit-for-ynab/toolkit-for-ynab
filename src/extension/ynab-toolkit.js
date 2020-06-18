@@ -93,7 +93,6 @@ export class YNABToolkit {
         hookedComponents: new Set(),
       };
 
-      // eslint-disable-next-line
       if (event.data.ynabToolKit.environment === 'development') {
         try {
           Rollbar.impl.instrumenter.deinstrumentConsole(); // eslint-disable-line
