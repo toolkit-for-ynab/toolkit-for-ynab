@@ -2,7 +2,10 @@
 :root {
   --tk-number-resize-sidebar-original-width: 260;
   --tk-number-resize-sidebar-resizer-width: 3;
-  --tk-number-resize-sidebar-width: var(--tk-number-resize-sidebar-width-from-code, var(--tk-number-resize-sidebar-original-width));
+  --tk-number-resize-sidebar-width: var(
+    --tk-number-resize-sidebar-width-from-code,
+    var(--tk-number-resize-sidebar-original-width)
+  );
 }
 /* ReSharper restore UnknownCssVariable */
 
@@ -10,7 +13,9 @@
   position: fixed;
   top: 0;
   bottom: 0;
-  left: calc((var(--tk-number-resize-sidebar-width) - var(--tk-number-resize-sidebar-resizer-width)) * 1px);
+  left: calc(
+    (var(--tk-number-resize-sidebar-width) - var(--tk-number-resize-sidebar-resizer-width)) * 1px
+  );
   width: calc(var(--tk-number-resize-sidebar-resizer-width) * 1px);
   z-index: 999;
   cursor: ew-resize;
@@ -24,13 +29,10 @@
   width: calc(var(--tk-number-resize-sidebar-width) * 1px) !important;
 }
 
-/* Match content left position to the width of the sidebar */
-.content,
-.budget-header {
-  left: calc(var(--tk-number-resize-sidebar-width) * 1px) !important;
-}
-
 /* Change max-width of account name texts accourding to original YNAB value (6.2rem) and the difference how much we have resized the sidebar */
 .sidebar .nav-account-name .nav-account-name-val {
-  max-width: calc(6.2rem + (var(--tk-number-resize-sidebar-width) - var(--tk-number-resize-sidebar-original-width)) * 1px);
+  max-width: calc(
+    6.2rem +
+      (var(--tk-number-resize-sidebar-width) - var(--tk-number-resize-sidebar-original-width)) * 1px
+  );
 }
