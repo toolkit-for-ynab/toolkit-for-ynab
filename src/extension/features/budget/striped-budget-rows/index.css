@@ -1,3 +1,13 @@
+body,
+body.theme-new-default,
+body.theme-classic {
+  --tk-striped-budget-row-color: #fafafa;
+}
+
+body.theme-dark {
+  --tk-striped-budget-row-color: #2b2b2d;
+}
+
 .budget-table-row.is-sub-category:nth-of-type(even):not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
-  background-color: #fafafa;
+  background-color: var(--tk-striped-budget-row-color);
 }
