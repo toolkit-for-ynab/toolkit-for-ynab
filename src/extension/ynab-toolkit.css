@@ -1,10 +1,20 @@
-/* global reusable colors */
-:root {
-  --tk-color-black: #000000;
-  --tk-color-gray: #cfd5d8;
-  --tk-color-positive: #16a336;
-  --tk-color-positive--hover: #138b2e;
-  --tk-color-white: #ffffff;
+body,
+body.theme-new-default {
+  --tk-modal-backdrop: rgba(99, 99, 99, 0.5);
+  --tk-default-background-color: #ffffff;
+  --tk-default-font-color: #000000;
+}
+
+body.theme-classic {
+  --tk-modal-backdrop: rgba(99, 99, 99, 0.5);
+  --tk-default-background-color: #ffffff;
+  --tk-default-font-color: #000000;
+}
+
+body.theme-dark {
+  --tk-modal-backdrop: rgba(99, 99, 99, 0.5);
+  --tk-default-background-color: #909090;
+  --tk-default-font-color: #000000;
 }
 
 .tk-navlink i {
@@ -15,4 +25,17 @@
 .budget-toolbar {
   padding: 0px 10px;
   align-items: center;
+}
+
+#tk-modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  background-color: var(--tk-modal-backdrop);
 }

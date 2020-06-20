@@ -1,10 +1,15 @@
+import * as React from 'react';
 import { features } from 'toolkit/extension/features';
 import * as ynabUtils from 'toolkit/extension/utils/ynab';
 import * as emberUtils from 'toolkit/extension/utils/ember';
 import * as Collections from 'toolkit/extension/utils/collections';
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 import { forEachRenderedComponent } from './utils/ember';
+import { compareSemanticVersion } from './utils/helpers';
+import { componentAppend } from './utils/react';
+import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-modal';
 
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
@@ -156,6 +161,31 @@ export class YNABToolkit {
     });
   };
 
+  _showNewReleaseModal = () => {
+    componentAppend(
+      <div id="tk-modal-container">
+        <ToolkitReleaseModal
+          onClose={() => document.querySelector('#tk-modal-container').remove()}
+        />
+      </div>,
+      document.querySelector('.layout')
+    );
+  };
+
+  _checkReleaseVersion = () => {
+    const latestVersionKey = `latest-version-${ynabToolKit.environment}`;
+    let latestVersion = getToolkitStorageKey(latestVersionKey);
+    if (!latestVersion) {
+      setToolkitStorageKey(latestVersionKey, ynabToolKit.version);
+      return;
+    }
+
+    if (compareSemanticVersion(latestVersion, ynabToolKit.version) === -1) {
+      setToolkitStorageKey(latestVersionKey, ynabToolKit.version);
+      this._showNewReleaseModal();
+    }
+  };
+
   _waitForUserSettings() {
     const self = this;
 
@@ -170,6 +200,8 @@ export class YNABToolkit {
         self._applyGlobalCSS();
 
         self._addToolkitEmberHooks();
+
+        self._checkReleaseVersion();
 
         // Hook up listeners and then invoke any features that are ready to go.
         self._invokeFeatureInstances();
