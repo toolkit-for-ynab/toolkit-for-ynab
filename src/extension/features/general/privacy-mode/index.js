@@ -22,21 +22,28 @@ export class PrivacyMode extends Feature {
   }
 
   invoke() {
+    const self = this;
     let toggle = getToolkitStorageKey('privacy-mode');
     if (typeof toggle === 'undefined') {
       setToolkitStorageKey('privacy-mode', false);
     }
 
     if (ynabToolKit.options.PrivacyMode === Settings.Toggle) {
-      if (!$('#toolkit-togglePrivacy').length) {
-        $('nav.sidebar.logged-in .sidebar-contents').after(
-          '<button id="toolkit-togglePrivacy"><i class="ember-view flaticon stroke lock-1"></i></button>'
+      if (!$('#tk-toggle-privacy').length) {
+        $('.sidebar-bottom').prepend(
+          $('<button>', {
+            id: 'tk-toggle-privacy',
+            class: 'tk-toggle-privacy',
+          })
+            .append(
+              $('<i>', {
+                class: 'tk-toggle-privacy__icon flaticon stroke lock-1',
+              })
+            )
+            .click(() => {
+              self.togglePrivacyMode();
+            })
         );
-
-        let parent = this;
-        $('body').on('click', 'button#toolkit-togglePrivacy', function() {
-          parent.togglePrivacyMode();
-        });
       }
     } else if (ynabToolKit.options.PrivacyMode === Settings.AlwaysOn) {
       setToolkitStorageKey('privacy-mode', true);
@@ -46,7 +53,7 @@ export class PrivacyMode extends Feature {
   }
 
   togglePrivacyMode() {
-    $('button#toolkit-togglePrivacy').toggleClass('active');
+    $('#tk-toggle-privacy').toggleClass('active');
 
     let toggle = getToolkitStorageKey('privacy-mode');
     setToolkitStorageKey('privacy-mode', !toggle);
@@ -57,13 +64,13 @@ export class PrivacyMode extends Feature {
     let toggle = getToolkitStorageKey('privacy-mode');
 
     if (toggle) {
-      $('body').addClass('toolkit-privacyMode');
-      $('#toolkit-togglePrivacy i')
+      $('body').addClass('tk-privacyMode');
+      $('#tk-toggle-privacy i')
         .removeClass('unlock-1')
         .addClass('lock-1');
     } else {
-      $('body').removeClass('toolkit-privacyMode');
-      $('#toolkit-togglePrivacy i')
+      $('body').removeClass('tk-privacyMode');
+      $('#tk-toggle-privacy i')
         .removeClass('lock-1')
         .addClass('unlock-1');
     }

@@ -1,47 +1,47 @@
-.toolkit-privacyMode .currency,          /* global .currency handler */
-.toolkit-privacyMode .button-prefs-user  /* user e-mail */
-{
+.tk-privacy-mode .currency,          /* global .currency handler */
+.tk-privacy-mode .button-prefs-user  /* user e-mail */
+ {
   filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="3" /></filter></svg>#filter');
   -webkit-filter: blur(10px);
   filter: blur(10px);
 }
 
-.toolkit-privacyMode *:hover > .currency,            /* global .currency handler */
-.toolkit-privacyMode *:hover > * > .currency,        /* global .currency handler */
-.toolkit-privacyMode .currency:hover,                /* global .currency handler */
-.toolkit-privacyMode .button-prefs-user:hover,       /* user e-mail */
-.toolkit-privacyMode .c3-tooltip-container .currency /* ynab report tooltips */
-{
+.tk-privacy-mode *:hover > .currency,            /* global .currency handler */
+.tk-privacy-mode *:hover > * > .currency,        /* global .currency handler */
+.tk-privacy-mode .currency:hover,                /* global .currency handler */
+.tk-privacy-mode .button-prefs-user:hover,       /* user e-mail */
+.tk-privacy-mode .c3-tooltip-container .currency /* ynab report tooltips */
+ {
   -webkit-filter: initial;
   filter: initial;
 }
 
 /* YNAB Reports don't use .currency class so we gotta do special stuff for those. */
-.toolkit-privacyMode .c3-chart-arcs .c3-chart-arcs-title tspan:last-child,
-.toolkit-privacyMode .c3-axis-y text tspan {
+.tk-privacy-mode .c3-chart-arcs .c3-chart-arcs-title tspan:last-child,
+.tk-privacy-mode .c3-axis-y text tspan {
   fill: #ffffff !important;
   color: #ffffff !important;
 }
 
-.toolkit-privacyMode .c3-chart-arcs .c3-chart-arcs-title:hover tspan:last-child,
-.toolkit-privacyMode .c3-axis-y:hover text tspan {
+.tk-privacy-mode .c3-chart-arcs .c3-chart-arcs-title:hover tspan:last-child,
+.tk-privacy-mode .c3-axis-y:hover text tspan {
   color: #0d233a !important;
   fill: #0d233a !important;
 }
 
 /* Higcharts doesn't seem to like `filters` so we need to special stuff for those too */
-.toolkit-privacyMode .highcharts-yaxis-labels text tspan,          /* net-worth */
-.toolkit-privacyMode .highcharts-title tspan:last-child,           /* spending */
-.toolkit-privacyMode .highcharts-data-labels text tspan:last-child /* spending */
-{
+.tk-privacy-mode .highcharts-yaxis-labels text tspan,          /* net-worth */
+.tk-privacy-mode .highcharts-title tspan:last-child,           /* spending */
+.tk-privacy-mode .highcharts-data-labels text tspan:last-child /* spending */
+ {
   fill: #ffffff !important;
   color: #ffffff !important;
 }
 
-.toolkit-privacyMode .highcharts-yaxis-labels:hover text tspan,          /* net-worth */
-.toolkit-privacyMode .highcharts-title:hover tspan:last-child,           /* spending */
-.toolkit-privacyMode .highcharts-data-labels text:hover tspan:last-child /* spending */
-{
+.tk-privacy-mode .highcharts-yaxis-labels:hover text tspan,          /* net-worth */
+.tk-privacy-mode .highcharts-title:hover tspan:last-child,           /* spending */
+.tk-privacy-mode .highcharts-data-labels text:hover tspan:last-child /* spending */
+ {
   fill: #606060 !important;
   color: #606060 !important;
 }
