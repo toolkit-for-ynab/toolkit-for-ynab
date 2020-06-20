@@ -51,7 +51,7 @@ function sendToolkitBootstrap(options) {
       type: 'ynab-toolkit-bootstrap',
       ynabToolKit: {
         assets: {
-          logo: browser.runtime.getURL('assets/images/logos/toolkitforynab-logo-400.png'),
+          logo: browser.runtime.getURL('assets/images/logos/toolkitforynab-logo-200.png'),
         },
         environment,
         extensionId: browser.runtime.id,
