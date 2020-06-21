@@ -1,15 +1,21 @@
 .collapsed-buttons {
-	margin-top: 42px;
+  margin-top: 42px;
 }
 
-#toolkit-togglePrivacy {
-  color: #bee6ef;
-  top: 12px;
-  right: 32px;
-  position: absolute;
-  padding: 10px;
+.tk-toggle-privacy {
+  color: var(--sidebar_text_default);
+  padding: 1rem;
 }
 
-#toolkit-togglePrivacy.active {
-	color: #fff;
+.tk-toggle-privacy__icon {
+  font-size: 1rem;
+}
+
+.sidebar.sidebar-resized-collapsed .sidebar-bottom {
+  height: auto;
+  flex-direction: column;
+}
+
+.sidebar.sidebar-resized-collapsed .sidebar-bottom .tk-toggle-privacy {
+  padding: 0.5rem;
 }

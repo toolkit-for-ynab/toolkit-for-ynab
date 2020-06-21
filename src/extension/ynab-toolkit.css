@@ -22,6 +22,15 @@ body.theme-dark {
   padding-left: 20px;
 }
 
+.sidebar.sidebar-resized-collapsed .tk-navlink__label {
+  display: none;
+}
+
+.sidebar.sidebar-resized-collapsed .tk-navlink i {
+  margin-right: 0px;
+  padding-left: 0px;
+}
+
 .budget-toolbar {
   padding: 0px 10px;
   align-items: center;
