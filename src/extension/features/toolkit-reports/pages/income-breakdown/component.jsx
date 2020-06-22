@@ -331,6 +331,7 @@ export class IncomeBreakdownComponent extends React.Component {
         text: '',
       },
       chart: {
+        backgroundColor: 'transparent',
         renderTo: 'tk-income-breakdown',
       },
       plotOptions: {
