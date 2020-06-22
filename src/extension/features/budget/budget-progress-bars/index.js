@@ -82,6 +82,9 @@ export class BudgetProgressBars extends Feature {
 
   addGoalProgress(subCategoryName, target) {
     let calculation = this.getCalculation(subCategoryName);
+    if (!calculation) {
+      return;
+    }
 
     let status = 0;
     let hasGoal = false;

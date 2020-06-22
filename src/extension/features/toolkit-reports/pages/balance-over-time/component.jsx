@@ -162,6 +162,9 @@ export class BalanceOverTimeComponent extends React.Component {
     // Use the series to attach the data to the chart
     Highcharts.chart('tk-balance-over-time-report-graph', {
       title: { text: 'Balance Over Time' },
+      chart: {
+        backgroundColor: 'transparent',
+      },
       series: series,
       yAxis: {
         title: { text: 'Balance' },

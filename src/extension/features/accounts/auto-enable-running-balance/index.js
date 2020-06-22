@@ -10,6 +10,9 @@ export class AutoEnableRunningBalance extends Feature {
   invoke() {
     const { selectedAccountId } = controllerLookup('accounts');
     const registerGridService = serviceLookup('register-grid');
+    if (!registerGridService) {
+      return;
+    }
 
     const { balance } = registerGridService.get('displayColumns');
     if (selectedAccountId && !balance) {
