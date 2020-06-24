@@ -64,12 +64,12 @@ export class PrivacyMode extends Feature {
     let toggle = getToolkitStorageKey('privacy-mode');
 
     if (toggle) {
-      $('body').addClass('tk-privacyMode');
+      $('body').addClass('tk-privacy-mode');
       $('#tk-toggle-privacy i')
         .removeClass('unlock-1')
         .addClass('lock-1');
     } else {
-      $('body').removeClass('tk-privacyMode');
+      $('body').removeClass('tk-privacy-mode');
       $('#tk-toggle-privacy i')
         .removeClass('lock-1')
         .addClass('unlock-1');
