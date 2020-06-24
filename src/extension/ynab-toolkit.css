@@ -1,20 +1,28 @@
 body,
 body.theme-new-default {
+  --tk-color-white: #ffffff;
+
   --tk-modal-backdrop: rgba(99, 99, 99, 0.5);
   --tk-default-background-color: #ffffff;
   --tk-default-font-color: #000000;
+  --tk-positive-currency-color: #16a336;
+  --tk-zero-currency-color: #cfd5d8;
 }
 
 body.theme-classic {
   --tk-modal-backdrop: rgba(99, 99, 99, 0.5);
   --tk-default-background-color: #ffffff;
   --tk-default-font-color: #000000;
+  --tk-positive-currency-color: #16a336;
+  --tk-zero-currency-color: #cfd5d8;
 }
 
 body.theme-dark {
   --tk-modal-backdrop: rgba(99, 99, 99, 0.5);
   --tk-default-background-color: #909090;
   --tk-default-font-color: #000000;
+  --tk-positive-currency-color: #6d9f38;
+  --tk-zero-currency-color: #8e8e93;
 }
 
 .tk-navlink i {
