@@ -47,7 +47,7 @@ export class DaysOfBuffering extends Feature {
   }
 
   _updateDisplay(calculation) {
-    const { averageDailyOutflow, daysOfBuffering, totalDays, totalOutflow } = calculation;
+    const { averageDailyOutflow, daysOfBuffering, availableDates, totalOutflow } = calculation;
     const daysOfBufferingContainer = document.querySelector('.toolkit-days-of-buffering');
     let $displayElement = $(daysOfBufferingContainer);
     if (!daysOfBufferingContainer) {
@@ -89,7 +89,7 @@ export class DaysOfBuffering extends Feature {
       $('.budget-header-days-age', $displayElement).attr(
         'title',
         `${l10n('budget.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}
-${l10n('budget.dob.days', 'Total days of budgeting')}: ${totalDays}
+${l10n('budget.dob.days', 'Total days of budgeting')}: ${availableDates}
 ${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(averageDailyOutflow)}`
       );
 
