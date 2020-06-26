@@ -103,7 +103,7 @@ export class UnreconciledAccountHighlight extends Feature {
   }
 
   observe(changedNodes) {
-    if (this.shouldInvoke()) return;
+    if (!this.shouldInvoke()) return;
 
     // We want to invoke when the user expands the budget account list
     if (changedNodes.has('svg-icon chevronDown')) {
