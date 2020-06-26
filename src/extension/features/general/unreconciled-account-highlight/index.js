@@ -2,7 +2,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 
 const INDICATOR_CLASS = 'tk-unreconciled-account-indicator';
 const INDICATOR_SELECTOR = `div.${INDICATOR_CLASS}`;
-const INDICATOR_ELEMENT = `<div class="${INDICATOR_CLASS}"></div>`;
+const INDICATOR_ELEMENT = `<div class="${INDICATOR_CLASS} flaticon stroke unlock-1"></div>`;
 
 export class UnreconciledAccountHighlight extends Feature {
   injectCSS() {

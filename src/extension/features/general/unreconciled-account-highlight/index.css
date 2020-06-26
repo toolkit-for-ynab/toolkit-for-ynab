@@ -1,7 +1,3 @@
 .tk-unreconciled-account-indicator {
-  width: 8px;
-  height: 8px;
-  background: rgba(232, 103, 74, 0.75);
-  border-radius: 50%;
-  margin-left: 8px;
+  margin-left: 5px;
 }
