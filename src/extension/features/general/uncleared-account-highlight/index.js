@@ -1,10 +1,10 @@
 import { Feature } from 'toolkit/extension/features/feature';
 
-const INDICATOR_CLASS = 'tk-unreconciled-account-indicator';
+const INDICATOR_CLASS = 'tk-uncleared-account-indicator';
 const INDICATOR_SELECTOR = `div.${INDICATOR_CLASS}`;
-const INDICATOR_ELEMENT = `<div class="${INDICATOR_CLASS} flaticon stroke unlock-1"></div>`;
+const INDICATOR_ELEMENT = `<div class="${INDICATOR_CLASS} flaticon solid copyright"></div>`;
 
-export class UnreconciledAccountHighlight extends Feature {
+export class UnclearedAccountHighlight extends Feature {
   injectCSS() {
     return require('./index.css');
   }
@@ -14,10 +14,10 @@ export class UnreconciledAccountHighlight extends Feature {
   }
 
   invoke() {
-    this.updateUnreconciledIndicatorOnSidebarAccounts();
+    this.updateUnclearedIndicatorOnSidebarAccounts();
   }
 
-  async updateUnreconciledIndicatorOnSidebarAccounts() {
+  async updateUnclearedIndicatorOnSidebarAccounts() {
     const accountMap = await this.buildAccountMap();
 
     Object.values(accountMap).forEach(account => {
@@ -26,11 +26,19 @@ export class UnreconciledAccountHighlight extends Feature {
       );
       const sidebarAccountContainer = sidebarAccountNameElement.parent();
       const isIndicatorShowing = sidebarAccountContainer.children(INDICATOR_SELECTOR).length !== 0;
-      const shouldShowIndicator = account.unreconciledTransactions.length > 0;
+      const shouldShowIndicator = account.unclearedTransactions.length > 0;
 
       if (shouldShowIndicator) {
         if (!isIndicatorShowing) {
           sidebarAccountNameElement.after(INDICATOR_ELEMENT);
+        }
+
+        if (
+          sidebarAccountContainer
+            .children('.nav-account-value.user-data')
+            .children('.user-data.currency.negative').length > 0
+        ) {
+          sidebarAccountNameElement.next().addClass('tk-uncleared-account-negative');
         }
       } else {
         sidebarAccountContainer.children(INDICATOR_SELECTOR).remove();
@@ -58,14 +66,14 @@ export class UnreconciledAccountHighlight extends Feature {
 
   /**
    * Returns a map keyed by account IDs, with each element containing an account name,
-   * and a list of unreconciled transactions.
+   * and a list of uncleared transactions.
    *
    * Example:
    *
    * {
    *   '43dcbff6-ccf4-4367-9d13-d6d7e9beec39': {
    *     name: "Bank Account Name",
-   *     unreconciledTransactions: []
+   *     unclearedTransactions: []
    *   }
    * }
    */
@@ -76,23 +84,24 @@ export class UnreconciledAccountHighlight extends Feature {
     accounts.forEach(account => {
       accountMap[account.entityId] = {
         name: account.accountName,
-        unreconciledTransactions: [],
+        unclearedTransactions: [],
       };
     });
 
     const transactions = await this.getAllVisibleTransactions();
     transactions.forEach(transaction => {
-      if (!transaction.account.hidden && this.isUnreconciledTransaction(transaction)) {
-        accountMap[transaction.account.entityId].unreconciledTransactions.push(transaction);
+      if (!transaction.account.hidden && this.isUnclearedTransaction(transaction)) {
+        accountMap[transaction.account.entityId].unclearedTransactions.push(transaction);
       }
     });
 
     return accountMap;
   }
 
-  isUnreconciledTransaction(transaction) {
+  isUnclearedTransaction(transaction) {
     return (
       transaction &&
+      transaction.cleared !== ynab.constants.TransactionState.Cleared &&
       transaction.cleared !== ynab.constants.TransactionState.Reconciled &&
       transaction.displayItemType !== ynab.constants.TransactionDisplayItemType.SubTransaction &&
       transaction.displayItemType !==

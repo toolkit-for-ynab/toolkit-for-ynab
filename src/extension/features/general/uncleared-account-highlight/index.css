@@ -1,0 +1,12 @@
+.tk-uncleared-account-indicator {
+  line-height: 18px;
+  margin-left: 5px;
+  margin-bottom: -1.4px;
+  display: flex;
+  align-items: center;
+}
+
+.tk-uncleared-account-negative {
+  margin-right: -3.2px;
+  margin-bottom: 1px;
+}
