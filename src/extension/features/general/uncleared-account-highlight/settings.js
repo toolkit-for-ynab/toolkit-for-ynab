@@ -5,5 +5,5 @@ module.exports = {
   section: 'general',
   title: 'Uncleared Account Highlight',
   description:
-    'Adds a small indicator next to account names on the sidebar to indicate not all transactions are cleared',
+    'Adds a small indicator next to account balances on the sidebar to indicate not all transactions are cleared',
 };
