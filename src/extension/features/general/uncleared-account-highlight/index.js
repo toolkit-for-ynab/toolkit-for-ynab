@@ -21,27 +21,28 @@ export class UnclearedAccountHighlight extends Feature {
     const accountMap = await this.buildAccountMap();
 
     Object.values(accountMap).forEach(account => {
-      const sidebarAccountNameElement = $(
-        `div.nav-account-name.user-data[title="${account.name}"]`
-      );
-      const sidebarAccountContainer = sidebarAccountNameElement.parent();
-      const isIndicatorShowing = sidebarAccountContainer.children(INDICATOR_SELECTOR).length !== 0;
+      const accountNameElement = $(`div.nav-account-name.user-data[title="${account.name}"]`);
+      const accountContainer = accountNameElement.parent();
+      const accountBalanceElement = accountContainer.children('.nav-account-value.user-data');
+      const isPositiveAccountBalance =
+        accountContainer
+          .children('.nav-account-value.user-data')
+          .children('.user-data.currency.positive').length > 0;
+      const isIndicatorShowing = accountContainer.children(INDICATOR_SELECTOR).length !== 0;
       const shouldShowIndicator = account.unclearedTransactions.length > 0;
 
       if (shouldShowIndicator) {
         if (!isIndicatorShowing) {
-          sidebarAccountNameElement.after(INDICATOR_ELEMENT);
+          accountBalanceElement.after(INDICATOR_ELEMENT);
         }
 
-        if (
-          sidebarAccountContainer
-            .children('.nav-account-value.user-data')
-            .children('.user-data.currency.negative').length > 0
-        ) {
-          sidebarAccountNameElement.next().addClass('tk-uncleared-account-negative');
+        if (isPositiveAccountBalance) {
+          // If the indicator is next to a positive balance, we need to do some layout tweaks
+          accountBalanceElement.next().addClass('tk-uncleared-account-indicator-positive');
         }
       } else {
-        sidebarAccountContainer.children(INDICATOR_SELECTOR).remove();
+        accountContainer.children(INDICATOR_SELECTOR).remove();
+        accountBalanceElement.next().removeClass('tk-uncleared-account-indicator-positive');
       }
     });
   }
