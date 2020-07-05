@@ -76,7 +76,7 @@ jq(() => {
     const element = document.getElementById(elementId);
 
     if (element) {
-      element.value = currentSetting;
+      jq(element.parentElement).colorpicker('setValue', currentSetting);
     } else {
       console.log(
         "WARNING: Tried to restoreColorOption but couldn't find element " +
@@ -264,30 +264,6 @@ jq(() => {
             )
         );
         jq('#' + setting.name + 'HelpBlock').html(markDown);
-      } else if (setting.type === 'color') {
-        jq('#' + setting.section + 'SettingsPage > .content').append(
-          jq('<div>', { class: 'row option-row' })
-            .append(
-              jq('<input>', {
-                type: 'color',
-                id: setting.name,
-                name: setting.name,
-                value: setting.default,
-                'aria-describedby': setting.name + 'HelpBlock',
-              })
-            )
-            .append(
-              jq('<div>', { class: 'option-description' })
-                .append(jq('<label>', { for: setting.name, text: setting.title }))
-                .append(
-                  jq('<span>', {
-                    id: setting.name + 'HelpBlock',
-                    class: 'help-block',
-                  })
-                )
-            )
-        );
-        jq('#' + setting.name + 'HelpBlock').html(markDown);
       } else if (setting.type === 'select') {
         jq('#' + setting.section + 'SettingsPage > .content').append(
           jq('<div>', { class: 'row option-row' })
@@ -307,6 +283,33 @@ jq(() => {
                   });
                 })
               )
+            )
+            .append(
+              jq('<span>', {
+                id: setting.name + 'HelpBlock',
+                class: 'help-block',
+              })
+            )
+        );
+        jq('#' + setting.name + 'HelpBlock').html(markDown);
+      } else if (setting.type === 'color') {
+        jq('#' + setting.section + 'SettingsPage > .content').append(
+          jq('<div>', { class: 'row option-row' })
+            .append(jq('<label>', { for: setting.name, text: setting.title }))
+            .append(
+              jq('<div>', { class: 'input-group colorpicker-element' })
+                .append(
+                  jq('<input>', {
+                    type: 'text',
+                    id: setting.name,
+                    class: 'form-control',
+                    name: setting.name,
+                    value: setting.default,
+                    'aria-describedby': setting.name + 'HelpBlock',
+                  })
+                )
+                .append(jq('<span>', { class: 'input-group-addon' }).append(jq('<i>')))
+                .colorpicker()
             )
             .append(
               jq('<span>', {
