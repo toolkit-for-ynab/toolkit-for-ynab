@@ -38,7 +38,9 @@ jq(() => {
     var element = document.getElementById(elementId);
 
     if (element) {
-      return storage.setFeatureSetting(elementId, element.value);
+      const value = jq(element).colorpicker('getValue');
+      console.log(`Saving setting ${elementId} as ${value}`);
+      return storage.setFeatureSetting(elementId, value);
     }
 
     console.log(
@@ -76,7 +78,7 @@ jq(() => {
     const element = document.getElementById(elementId);
 
     if (element) {
-      jq(element.parentElement).colorpicker('setValue', currentSetting);
+      jq(element).colorpicker('setValue', currentSetting);
     } else {
       console.log(
         "WARNING: Tried to restoreColorOption but couldn't find element " +
@@ -295,21 +297,23 @@ jq(() => {
       } else if (setting.type === 'color') {
         jq('#' + setting.section + 'SettingsPage > .content').append(
           jq('<div>', { class: 'row option-row' })
-            .append(jq('<label>', { for: setting.name, text: setting.title }))
+            .append(jq('<label>', { for: setting.name + 'Input', text: setting.title }))
             .append(
-              jq('<div>', { class: 'input-group colorpicker-element' })
+              jq('<div>', {
+                id: setting.name,
+                class: 'input-group colorpicker-element',
+              })
                 .append(
                   jq('<input>', {
                     type: 'text',
-                    id: setting.name,
+                    id: setting.name + 'Input',
                     class: 'form-control',
                     name: setting.name,
-                    value: setting.default,
                     'aria-describedby': setting.name + 'HelpBlock',
                   })
                 )
                 .append(jq('<span>', { class: 'input-group-addon' }).append(jq('<i>')))
-                .colorpicker()
+                .colorpicker({ color: setting.default })
             )
             .append(
               jq('<span>', {

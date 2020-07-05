@@ -24,6 +24,6 @@ module.exports = [
     section: 'accounts',
     title: 'Color for Striped Transaction Rows - Dark Theme',
     description:
-      'When Striped Transaction Rows feature is enabled, in dark theme, alternating rows use this color as the background. The default is #1e1e1f.',
+      'When the Striped Transaction Rows feature is enabled, in dark theme, alternating rows use this color as the background. The default is #1e1e1f.',
   },
 ];
