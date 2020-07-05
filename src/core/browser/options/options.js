@@ -39,7 +39,6 @@ jq(() => {
 
     if (element) {
       const value = jq(element).colorpicker('getValue');
-      console.log(`Saving setting ${elementId} as ${value}`);
       return storage.setFeatureSetting(elementId, value);
     }
 
