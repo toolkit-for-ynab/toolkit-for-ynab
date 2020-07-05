@@ -5,22 +5,25 @@ module.exports = [
     default: false,
     section: 'accounts',
     title: 'Striped Transaction Rows',
-    description: 'Shows a light gray background on every other transaction row.',
+    description:
+      'Shows a different-color background on every other transaction row. See the Color for Striped Transaction Rows settings to specify the color to be used.',
   },
   {
     name: 'AccountsStripedRowsColor',
     type: 'color',
     default: '#fafafa',
     section: 'accounts',
-    title: 'Default Theme Color for Striped Transaction Rows',
-    description: 'Blah blah blah',
+    title: 'Color for Striped Transaction Rows',
+    description:
+      'When the Striped Transaction Rows feature is enabled, alternating rows use this color as the background. The default is #fafafa.',
   },
   {
     name: 'AccountsStripedRowsDarkColor',
     type: 'color',
     default: '#1e1e1f',
     section: 'accounts',
-    title: 'Dark Theme Color for Striped Transaction Rows',
-    description: 'Blah blah blah',
+    title: 'Color for Striped Transaction Rows - Dark Theme',
+    description:
+      'When Striped Transaction Rows feature is enabled, in dark theme, alternating rows use this color as the background. The default is #1e1e1f.',
   },
 ];
