@@ -81,7 +81,7 @@ export class ToolkitReports extends Feature {
       .first()
       .show();
 
-    // Display the toolkit's report
+    // Unmount and hide the toolkit's report
     const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
     if (container) {
       ReactDOM.unmountComponentAtNode(container);
