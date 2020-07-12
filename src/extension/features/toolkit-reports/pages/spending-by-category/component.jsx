@@ -18,6 +18,7 @@ const createSubCategoryMap = subCategory =>
 
 export class SpendingByCategoryComponent extends React.Component {
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
+
   _subCategoriesCollection = Collections.subCategoriesCollection;
 
   static propTypes = {
@@ -182,6 +183,7 @@ export class SpendingByCategoryComponent extends React.Component {
         height: '70%',
         type: 'pie',
         renderTo: 'tk-spending-by-category',
+        backgroundColor: 'transparent',
         events: {
           drilldown: event => {
             chart.setTitle({ text: `${event.point.name}<br>${formatCurrency(event.point.y)}` });

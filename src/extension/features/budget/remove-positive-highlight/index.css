@@ -1,4 +1,3 @@
-/* default positive color overrides */
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded])
   .inspector-overview-available
   .positive,
@@ -8,7 +7,7 @@
   .positive,
 .budget-inspector:not([data-toolkit-goal-underfunded]) .budget-table-cell-available .positive {
   background-color: transparent;
-  color: var(--tk-color-positive);
+  color: var(--tk-positive-currency-color);
   font-weight: bold;
 }
 
@@ -32,7 +31,7 @@
   .positive
   .icon-goal
   .inner {
-  fill: var(--tk-color-positive);
+  fill: var(--tk-positive-currency-color);
 }
 
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded])
@@ -55,7 +54,7 @@
   .positive
   .icon-goal
   .outer {
-  stroke: var(--tk-color-positive);
+  stroke: var(--tk-positive-currency-color);
 }
 
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded])
@@ -67,7 +66,7 @@
   .zero,
 .budget-inspector:not([data-toolkit-goal-underfunded]) .budget-table-cell-available .zero {
   background-color: transparent;
-  color: var(--tk-color-gray);
+  color: var(--tk-zero-currency-color);
   font-weight: bold;
 }
 
@@ -91,7 +90,7 @@
   .zero
   .icon-goal
   .inner {
-  fill: var(--tk-color-gray);
+  fill: var(--tk-zero-currency-color);
 }
 
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded])
@@ -114,7 +113,7 @@
   .zero
   .icon-goal
   .outer {
-  stroke: var(--tk-color-gray);
+  stroke: var(--tk-zero-currency-color);
 }
 
 .budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded]).is-checked
@@ -184,56 +183,3 @@
   .currency {
   color: var(--tk-color-white);
 }
-
-/* Above CSS generated from the following SASS
-**
-** using: https://www.cssportal.com/scss-to-css/
-**
-.budget-table-row.is-sub-category:not([data-toolkit-goal-underfunded]),
-.budget-inspector:not([data-toolkit-goal-underfunded]) {
-  .inspector-overview-available .positive,
-  .budget-table-cell-available .positive {
-    background-color: transparent;
-    color: var(--tk-color-positive);
-    font-weight: bold;
-    .icon-goal .inner {
-      fill: var(--tk-color-positive);
-    }
-    .icon-goal .outer {
-      stroke: var(--tk-color-positive);
-    }
-  }
-  .inspector-overview-available .zero,
-  .budget-table-cell-available .zero {
-    background-color: transparent;
-    color: var(--tk-color-gray);
-    font-weight: bold;
-    .icon-goal .inner {
-      fill: var(--tk-color-gray);
-    }
-    .icon-goal .outer {
-      stroke: var(--tk-color-gray);
-    }
-  }
-  &.is-checked {
-    .budget-table-cell-available .positive,
-    .budget-table-cell-available .zero {
-      color: var(--tk-color-white);
-      .icon-goal .inner {
-        fill: var(--tk-color-white);
-      }
-      .icon-goal .outer {
-        stroke: var(--tk-color-white);
-      }
-    }
-  }
-}
-.budget-inspector[data-toolkit-pif-assist],
-.budget-table-row.is-sub-category.is-debt-payment-category[data-toolkit-pif-assist] {
-  .ynab-new-budget-available-number .currency {
-    color: var(--tk-color-white);
-  }
-}
-**
-**
-**/

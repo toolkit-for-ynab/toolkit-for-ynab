@@ -41,7 +41,11 @@ export class ToolkitReports extends Feature {
       }).append(
         $('<a>', { class: 'tk-navlink' })
           .append($('<i>', { class: 'flaticon stroke document-4' }))
-          .append($('<div>').text(l10n('toolkit.reports') || 'Toolkit Reports'))
+          .append(
+            $('<div>', { class: 'tk-navlink__label' }).text(
+              l10n('toolkit.reports') || 'Toolkit Reports'
+            )
+          )
       );
 
       $('.nav-main > li:eq(1)').after(toolkitReportsLink);

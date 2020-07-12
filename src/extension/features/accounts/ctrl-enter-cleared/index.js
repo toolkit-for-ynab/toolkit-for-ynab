@@ -32,7 +32,7 @@ export class CtrlEnterCleared extends Feature {
     if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
       let markClearedButton = document.querySelector('.is-adding .ynab-cleared:not(.is-cleared)');
       if (markClearedButton) {
-        markClearedButton[0].click();
+        markClearedButton.click();
       }
     }
   }

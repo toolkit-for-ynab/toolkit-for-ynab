@@ -65,7 +65,10 @@ export class NetWorthComponent extends React.Component {
 
     const chart = new Highcharts.Chart({
       credits: false,
-      chart: { renderTo: 'tk-net-worth-chart' },
+      chart: {
+        backgroundColor: 'transparent',
+        renderTo: 'tk-net-worth-chart',
+      },
       legend: { enabled: false },
       title: { text: '' },
       tooltip: { enabled: false },

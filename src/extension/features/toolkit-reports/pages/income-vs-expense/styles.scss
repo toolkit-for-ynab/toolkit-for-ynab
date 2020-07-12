@@ -1,11 +1,25 @@
+body,
+body.theme-new-default,
+body.theme-classic {
+  --tk-ive-report-header-background-color: var(--header_background);
+  --tk-ive-report-border-color: #d1d1d1;
+  --tk-ive-report-negative-color: #ffecea;
+  --tk-ive-report-positive-color: #edf5e6;
+}
+
+body.theme-dark {
+  --tk-ive-report-border-color: #545458;
+  --tk-ive-report-negative-color: #631f32;
+  --tk-ive-report-positive-color: #265a2c;
+}
+
 .tk-ive {
   flex: 1;
   font-size: 0.85rem;
 
   &__net-income {
-    background-color: white;
-    border-top: 2px solid #000000;
-    border-bottom: 2px solid #000000;
+    border-top: 3px solid var(--tk-ive-report-border-color);
+    border-bottom: 3px solid var(--tk-ive-report-border-color);
     width: fit-content;
 
     .tk-monthly-totals-row {

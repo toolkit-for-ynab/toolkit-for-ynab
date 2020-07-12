@@ -12,10 +12,6 @@ Makes the account names smaller so that you can see more of the account names an
 
 Adds a button to copy transactions displayed in the various Activity Modals (Budget and Reports pages).
 
-## Allow Resizing of Side Menu
-
-Allows the Side Menu on the left to be resized. Resizing also allows longer account names to show up completely.
-
 ## Better scrollbars
 
 Provides smaller and cleaner scrollbars across the application.
@@ -23,10 +19,6 @@ Provides smaller and cleaner scrollbars across the application.
 ## Budget Quick Switch
 
 Adds the list of budgets to the Open Budget dropdown so you don't have to navigate to the 'Open Budget' page to switch budgets.
-
-## Collapsable Side Menu
-
-Adds a button that can collapse the menu on the left so you can see more of your accounts or budget data.
 
 ## Colour Blind Mode
 
@@ -106,17 +98,9 @@ Add a column for 'pacing' which shows you how much money you've spent based on h
 
 Adds Markdown parsing to notes, allowing support for links, bullet points, and other formatting tools. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).
 
-## Allow Resizing of Inspector
-
-Adds a button to the Budget Toolbar that allows resizing the Budget Inspector to predetermined widths of 33% (YNAB default), 25%, 20%, 15%, or 0%. Note that smaller values maybe not be suitable on small screens.
-
 ## Budget Rows Progress Bars
 
 Add progress bars and a vertical bar that shows how far you are through the month to category rows.
-
-## Category Solo Mode and Toggle Master Categories
-
-Keeps only the selected category open collapsing all others and adds a button to the Budget Toolbar to open or close all master categories at once.
 
 ## Credit Card Emoji
 
@@ -220,6 +204,10 @@ Shows a light gray background on alternating category rows.
 
 Changes the 'To Be Budgeted' background color to yellow if there is unallocated money left to be budgeted.
 
+## Toggle Master Categories
+
+Adds ability to toggle all master categories at once. Alternatively, "Solo Mode" can be used to toggle all but a single category at once.
+
 ## Unhighlight all Positive Category Balances
 
 Removes the highlight colour from positive (or zero) category balances and colours positive balances green instead.
@@ -285,6 +273,10 @@ When you press enter on the memo field while adding or editing a transaction, th
 ## Clear Selection
 
 Adds an option to the transaction edit drop-down menu to clear the current selection.
+
+## Clear new transactions with CTRL+Enter
+
+Automatically clear a new transaction by pressing CTRL+Enter (CMD on Mac).
 
 ## Confirm keyboard-initiated transaction cancelation
 

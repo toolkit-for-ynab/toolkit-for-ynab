@@ -1,7 +1,18 @@
-.toolkit-is-reconciled {
-  color: #8e9fb0;
+body,
+body.theme-new-default,
+body.theme-classic {
+  --tk-reconciled-font-color: #8e9fb0;
 }
-.toolkit-is-reconciled .ynab-grid-cell-payeeName svg path,
-.toolkit-is-reconciled .ynab-grid-cell-payeeName svg rect {
-  fill: #8e9fb0;
+
+body.theme-dark {
+  --tk-reconciled-font-color: #5a5a5a;
+}
+
+.tk-is-reconciled {
+  color: var(--tk-reconciled-font-color);
+}
+
+.tk-is-reconciled .ynab-grid-cell-payeeName svg path,
+.tk-is-reconciled .ynab-grid-cell-payeeName svg rect {
+  fill: var(--tk-reconciled-font-color);
 }

@@ -20,7 +20,7 @@ export class Pacing extends Feature {
 
   invoke() {
     if (!isCurrentMonthSelected()) {
-      $('.tk-budget-cell-pacing').remove();
+      $('.tk-budget-table-cell-pacing').remove();
       return;
     }
 

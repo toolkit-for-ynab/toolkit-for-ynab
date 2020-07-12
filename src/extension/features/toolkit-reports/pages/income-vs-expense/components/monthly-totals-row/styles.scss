@@ -1,6 +1,6 @@
 .tk-monthly-totals-row {
   &__data-cell {
-    border-right: 1px dotted #d1d1d1;
+    border-right: 1px solid var(--tk-ive-report-border-color);
     min-width: 8rem;
     max-width: 8rem;
     padding-top: 0.1rem;
@@ -12,8 +12,8 @@
   &__title-cell {
     display: flex;
     align-items: center;
-    border-left: 1px dotted #d1d1d1;
-    border-right: 1px dotted #d1d1d1;
+    border-left: 1px solid var(--tk-ive-report-border-color);
+    border-right: 1px solid var(--tk-ive-report-border-color);
     font-weight: bold;
     min-width: 12rem;
     max-width: 12rem;

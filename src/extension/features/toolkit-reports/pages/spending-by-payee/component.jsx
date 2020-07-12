@@ -13,6 +13,7 @@ const createPayeeMap = payee => new Map([['payee', payee], ['total', 0], ['trans
 
 export class SpendingByPayeeComponent extends React.Component {
   _subCategoriesCollection = Collections.subCategoriesCollection;
+
   _payeesCollection = Collections.payeesCollection;
 
   static propTypes = {
@@ -161,6 +162,7 @@ export class SpendingByPayeeComponent extends React.Component {
         height: '70%',
         type: 'pie',
         renderTo: 'tk-spending-by-payee',
+        backgroundColor: 'transparent',
       },
       plotOptions: {
         series: {
@@ -179,7 +181,7 @@ export class SpendingByPayeeComponent extends React.Component {
       },
       title: {
         align: 'center',
-        verticalAlign: 'middle',
+        verticalAlign: 'top',
         text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
       },
       series: [
