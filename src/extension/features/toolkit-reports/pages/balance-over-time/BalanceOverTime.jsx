@@ -52,7 +52,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
     if (shouldGroupAccounts) {
       // When grouping accounts, combined all the selected accounts datapoints to create a single series
       let datapointsToCombine = [];
-      filteredData.forEach((datapoints, accountId) => {
+      filteredData.forEach(datapoints => {
         datapointsToCombine.push(datapoints);
       });
       newSeries.push({
@@ -99,6 +99,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
       <div className="tk-flex tk-pd-05 tk-border-b">
         <div className="tk-pd-x-1">
           <LabeledCheckbox
+            id="tk-balance-over-time-groupaccounts-option"
             checked={shouldGroupAccounts}
             label="Group Accounts"
             onChange={() => setShouldGroupAccounts(!shouldGroupAccounts)}
@@ -106,6 +107,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
         </div>
         <div className="tk-pd-x-1">
           <LabeledCheckbox
+            id="tk-balance-over-time-trendline-option"
             checked={useTrendLine}
             label="Show Trendline"
             onChange={() => setUseTrendLine(!useTrendLine)}
@@ -113,6 +115,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
         </div>
         <div className="tk-pd-x-1">
           <LabeledCheckbox
+            id="tk-balance-over-time-stepgraph-option"
             checked={useStepGraph}
             label="Use Step Graph"
             onChange={() => setUseStepGraph(!useStepGraph)}
