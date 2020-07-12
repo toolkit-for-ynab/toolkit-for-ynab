@@ -8,6 +8,7 @@ export const NUM_DATAPOINTS_LIMIT = 20000;
 
 /**
  * Create a new datapoint
+ * @return {Object} A new datapoint
  */
 export const NEW_DATAPOINT = () => {
   return {
