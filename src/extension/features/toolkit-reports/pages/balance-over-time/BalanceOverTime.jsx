@@ -84,7 +84,6 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
 
     // Add a check to see if we've reached the max number of datapoints
     setDatapointLimitReached(newSeries.some(checkSeriesLimitReached));
-    console.log(newSeries.some(checkSeriesLimitReached));
     setSeries(newSeries);
   }, [runningBalanceMap, filters, shouldGroupAccounts, useStepGraph, useTrendLine]);
 
