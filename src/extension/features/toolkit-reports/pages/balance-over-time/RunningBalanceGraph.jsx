@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
 import Highcharts from 'highcharts';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { NUM_DATAPOINTS_LIMIT } from './utils';
 
 export const RunningBalanceGraph = ({ series }) => {
   const GRAPH_ID = 'tk-balance-over-time-report-graph';
@@ -54,6 +55,7 @@ export const RunningBalanceGraph = ({ series }) => {
           marker: { enabled: false },
         },
         series: {
+          turboThreshold: NUM_DATAPOINTS_LIMIT,
           cursor: 'pointer',
           events: {
             click: event => {
@@ -90,6 +92,11 @@ export const RunningBalanceGraph = ({ series }) => {
   return <div className="tk-highcharts-report-container" id={GRAPH_ID} />;
 };
 
+// Proptypes to use this component
+// series The array of datapoints to use
+// numDatapointslimit The number of datapoints to control turboThreshold
+// https://api.highcharts.com/highcharts/plotOptions.series.turboThreshold
 RunningBalanceGraph.propTypes = {
   series: PropTypes.array.isRequired,
+  numDatapointsLimit: PropTypes.number.isRequired,
 };

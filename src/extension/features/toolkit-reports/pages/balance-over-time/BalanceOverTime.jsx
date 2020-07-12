@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { RunningBalanceGraph } from './RunningBalanceGraph';
 import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
+import { WarningMessage } from './WarningMessage';
 import {
   dataPointsToHighChartSeries,
   generateRunningBalanceMap,
   applyDateFiltersToDataPoints,
   combineDataPoints,
   generateTrendLine,
+  checkSeriesLimitReached,
+  NUM_DATAPOINTS_LIMIT,
 } from './utils';
+
 import { getEntityManager } from '../../../../utils/ynab';
 export const BalanceOverTimeComponent = ({ allReportableTransactions, filters }) => {
   const GROUPED_LABEL = 'Selected Accounts';
@@ -24,6 +28,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
   const [runningBalanceMap, setRunningBalanceMap] = useState(new Map());
   // The series to be fed into highcharts
   const [series, setSeries] = useState([]);
+  const [datapointLimitReached, setDatapointLimitReached] = useState(false);
 
   // Whenver transactions change, update all our datapoints.
   useEffect(() => {
@@ -66,6 +71,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
       });
     }
 
+    // Trendline option
     if (useTrendLine) {
       newSeries.forEach(seriesData => {
         newSeries.push({
@@ -75,9 +81,20 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
         });
       });
     }
+
+    // Add a check to see if we've reached the max number of datapoints
+    setDatapointLimitReached(newSeries.some(checkSeriesLimitReached));
+    console.log(newSeries.some(checkSeriesLimitReached));
     setSeries(newSeries);
   }, [runningBalanceMap, filters, shouldGroupAccounts, useStepGraph, useTrendLine]);
 
+  if (datapointLimitReached) {
+    return (
+      <WarningMessage
+        message={`You have reached the datapoint limit of ${NUM_DATAPOINTS_LIMIT} datapoints per series. Please try reducing the filter`}
+      />
+    );
+  }
   return (
     <div className="tk-flex tk-flex-column tk-flex-grow">
       <div className="tk-flex tk-pd-05 tk-border-b">
@@ -103,7 +120,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
           />
         </div>
       </div>
-      <RunningBalanceGraph series={series} />;
+      <RunningBalanceGraph series={series} numDatapointsLimit={NUM_DATAPOINTS_LIMIT} />
     </div>
   );
 };

@@ -1,6 +1,11 @@
 // Common util methods to help generate a running total
 import regression from 'regression';
 
+// Constant for how many datapoints to allow per graph line
+// https://api.highcharts.com/highcharts/plotOptions.series.turboThreshold
+// Change this as necessary. There is a datapoint everyday so 365 * Num Years desired
+export const NUM_DATAPOINTS_LIMIT = 20000;
+
 /**
  * Create a new datapoint
  */
@@ -129,7 +134,12 @@ export const generateEmptyDateMap = (startDate, endDate) => {
  * @param {Moment Object} startDate The start date
  * @param {Moment Object} endDate The end date
  */
-export function generateDataPointsForAccount(accountId, dateToAllTransactions, startDate, endDate) {
+export const generateDataPointsForAccount = (
+  accountId,
+  dateToAllTransactions,
+  startDate,
+  endDate
+) => {
   let datapoints = generateEmptyDateMap(startDate, endDate);
   let currDate = startDate.clone();
   let runningTotal = 0;
@@ -164,7 +174,7 @@ export function generateDataPointsForAccount(accountId, dateToAllTransactions, s
     currDate = currDate.add(1, 'days');
   }
   return datapoints;
-}
+};
 
 /**
  * Generate the series to be fed into HighCharts
@@ -233,4 +243,12 @@ export const applyDateFiltersToDataPoints = (fromDate, toDate, datapoints) => {
     }
   });
   return filteredDatapoints;
+};
+
+/**
+ * Check if a given series has reached the number of datapoints limit
+ * @param {Object} series The individual series to check
+ */
+export const checkSeriesLimitReached = series => {
+  return series && series.data && series.data.length >= NUM_DATAPOINTS_LIMIT;
 };
