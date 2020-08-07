@@ -1,5 +1,11 @@
 body,
-body.theme-new-default,
+body.theme-new-default {
+  --tk-ive-report-header-background-color: #3674a7;
+  --tk-ive-report-border-color: #d1d1d1;
+  --tk-ive-report-negative-color: #ffecea;
+  --tk-ive-report-positive-color: #edf5e6;
+}
+
 body.theme-classic {
   --tk-ive-report-header-background-color: var(--header_background);
   --tk-ive-report-border-color: #d1d1d1;
