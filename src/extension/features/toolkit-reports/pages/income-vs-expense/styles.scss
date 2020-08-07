@@ -14,6 +14,7 @@ body.theme-classic {
 }
 
 body.theme-dark {
+  --tk-ive-report-header-background-color: var(--header_background);
   --tk-ive-report-border-color: #545458;
   --tk-ive-report-negative-color: #631f32;
   --tk-ive-report-positive-color: #265a2c;
