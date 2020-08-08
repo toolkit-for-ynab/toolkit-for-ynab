@@ -1,6 +1,6 @@
 {
   "name": "toolkit-for-ynab",
-  "version": "2.25.0",
+  "version": "2.26.0",
   "private": true,
   "scripts": {
     "build:check": "yarn && yarn gen && yarn lint",
@@ -94,7 +94,8 @@
     "raven-js": "^3.25.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
-    "react-markdown": "^4.2.2"
+    "react-markdown": "^4.2.2",
+    "regression": "^2.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",

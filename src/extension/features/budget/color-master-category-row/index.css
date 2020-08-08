@@ -1,0 +1,15 @@
+body,
+body.theme-new-default {
+  --tk-master-category-row-color: var(--primary200);
+}
+body.theme-classic {
+  --tk-master-category-row-color: var(--inspector_background);
+}
+
+body.theme-dark {
+  --tk-master-category-row-color: var(--primary900);
+}
+
+.budget-table-row.is-master-category {
+  background-color: var(--tk-master-category-row-color);
+}
