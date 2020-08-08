@@ -102,6 +102,10 @@ Adds Markdown parsing to notes, allowing support for links, bullet points, and o
 
 Add progress bars and a vertical bar that shows how far you are through the month to category rows.
 
+## Colored Master Category Row
+
+Adds Color to Master Category Row.
+
 ## Credit Card Emoji
 
 Adds a credit card emoji 💳 to the "Credit Card Payments" category.

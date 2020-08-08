@@ -9,8 +9,8 @@
 .budget-table-cell-available-payment {
   font-size: 0px;
   position: absolute;
-  margin-left: 22px;
-  margin-top: 3px;
+  right: -15px;
+  top: 4px;
 }
 
 .budget-table-row.is-master-category,
