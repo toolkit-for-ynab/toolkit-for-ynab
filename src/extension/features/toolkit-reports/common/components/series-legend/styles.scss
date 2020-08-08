@@ -1,14 +1,14 @@
 @import 'toolkit-reports/common/scss/variables.scss';
 
 .tk-series-legend {
-  font-size: .85rem;
-  color: $ynab-blue-3;
-  background-color: $ynab-blue-9;
+  font-size: 0.85rem;
+  color: var(--default-text);
+  background: var(--default_background);
 
   &__legend-icon {
     width: 1rem;
     height: 1rem;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
   }
 
   &__table-row {
