@@ -55,10 +55,10 @@ export class ImportNotification extends Feature {
 
     $('.nav-account-row').each((index, row) => {
       let account = getEmberView($(row).attr('id'), 'data');
-      let accountSpan = $(row).find('.nav-account-name > .nav-account-name-val > span');
-      if (accountSpan.length) {
+      let accountName = $('.nav-account-name', row);
+      if (accountName.length) {
         // Remove the title attribute and our underline class in case the account no longer has txns to be imported
-        $(accountSpan)
+        $(accountName)
           .removeAttr('title')
           .removeClass(this.importClass);
 
@@ -81,7 +81,7 @@ export class ImportNotification extends Feature {
           let transactions = t.getImportTransactionsForAccount(account);
 
           if (transactions.length >= 1) {
-            $(accountSpan)
+            $(accountName)
               .addClass(this.importClass)
               .attr(
                 'title',
