@@ -3,7 +3,6 @@ import { isCurrentRouteBudgetPage, isCurrentMonthSelected } from 'toolkit/extens
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import {
   getDeemphasizedCategories,
-  migrateLegacyPacingStorage,
   pacingForCategory,
   setDeemphasizedCategories,
 } from 'toolkit/extension/utils/pacing';
@@ -15,88 +14,83 @@ export class Pacing extends Feature {
     return require('./index.css');
   }
 
-  willInvoke() {
-    migrateLegacyPacingStorage();
-  }
-
   shouldInvoke() {
-    return isCurrentRouteBudgetPage() && isCurrentMonthSelected();
+    return isCurrentRouteBudgetPage();
   }
 
   invoke() {
-    $('#ynab-toolkit-pacing-style').remove();
-    $('.budget-table-header .budget-table-cell-available').after(`<li class="toolkit-cell-pacing">
-        ${l10n('toolkit.pacing', 'PACING')}
-      </li>`);
+    if (!isCurrentMonthSelected()) {
+      $('.tk-budget-table-cell-pacing').remove();
+      return;
+    }
 
-    $(`<style type="text/css" id="ynab-toolkit-pacing-style">
-      .budget-table-cell-available {
-        width: 10% !important;
+    if (!$('.budget-table-header .tk-budget-table-cell-pacing').length) {
+      $('.budget-table-header .budget-table-cell-available').after(
+        `<li class="tk-budget-table-cell-pacing">${l10n('toolkit.pacing', 'PACING')}</li>`
+      );
+    }
+
+    $('.budget-table-row').each((_, element) => {
+      if (element.classList.contains('is-master-category')) {
+        $('.budget-table-cell-available', element).after(
+          `<li class="tk-budget-table-cell-pacing"></li>`
+        );
+
+        return;
       }
-    </style>`).appendTo('head');
 
-    $('.budget-table-row')
-      .not('.budget-table-uncategorized-transactions')
-      .not('.is-debt-payment-category')
-      .not('.is-master-category')
-      .each((index, element) => {
-        const category = getEmberView(element.id, 'category');
-        if (!category) {
-          return;
-        }
-
-        const pacingCalculation = pacingForCategory(category);
-
-        const $display = this.generateDisplay(
-          category.get('subCategory.entityId'),
-          pacingCalculation
+      if (element.classList.contains('is-debt-payment-category')) {
+        $('.budget-table-cell-available', element).after(
+          `<li class="tk-budget-table-cell-pacing"></li>`
         );
-        $(element).append(
-          $display.click(event => {
-            const deemphasizedCategories = getDeemphasizedCategories();
-            const subCategoryId = event.target.getAttribute('data-sub-category-id');
 
-            if (deemphasizedCategories.contains(subCategoryId)) {
-              $(event.target).removeClass('deemphasized');
-              setDeemphasizedCategories(
-                deemphasizedCategories.filter(id => {
-                  return id !== subCategoryId;
-                })
-              );
-            } else {
-              $(event.target).addClass('deemphasized');
-              deemphasizedCategories.push(subCategoryId);
-              setDeemphasizedCategories(deemphasizedCategories);
-            }
+        return;
+      }
 
-            if (['pacing', 'both'].indexOf(ynabToolKit.options.BudgetProgressBars) !== -1) {
-              ynabToolKit.invokeFeature('BudgetProgressBars');
-            }
+      const category = getEmberView(element.id, 'category');
+      if (!category) {
+        return;
+      }
 
-            event.stopPropagation();
-          })
-        );
-      });
-  }
+      const pacingCalculation = pacingForCategory(category);
 
-  onBudgetChanged() {
-    this.willInvoke();
-    this.onRouteChanged();
+      const $display = this.generateDisplay(
+        category.get('subCategory.entityId'),
+        pacingCalculation
+      );
+
+      $('.budget-table-cell-available', element).after(
+        $display.click(event => {
+          const deemphasizedCategories = getDeemphasizedCategories();
+          const subCategoryId = event.target.getAttribute('data-tk-sub-category-id');
+
+          if (deemphasizedCategories.contains(subCategoryId)) {
+            $(event.target).removeClass('deemphasized');
+            setDeemphasizedCategories(
+              deemphasizedCategories.filter(id => {
+                return id !== subCategoryId;
+              })
+            );
+          } else {
+            $(event.target).addClass('deemphasized');
+            deemphasizedCategories.push(subCategoryId);
+            setDeemphasizedCategories(deemphasizedCategories);
+          }
+
+          if (['pacing', 'both'].indexOf(ynabToolKit.options.BudgetProgressBars) !== -1) {
+            ynabToolKit.invokeFeature('BudgetProgressBars');
+          }
+
+          event.stopPropagation();
+        })
+      );
+    });
   }
 
   onRouteChanged() {
     if (this.shouldInvoke()) {
       this.invoke();
-    } else {
-      this.cleanup();
     }
-  }
-
-  cleanup() {
-    $('#ynab-toolkit-pacing-style').remove();
-    $(
-      '<style type="text/css" id="ynab-toolkit-pacing-style"> .toolkit-cell-pacing { display: none; } </style>'
-    ).appendTo('head');
   }
 
   generateDisplay(subCategoryId, pacingCalculation) {
@@ -113,11 +107,11 @@ export class Pacing extends Feature {
     const tooltip = this.generateTooltip(pacingCalculation);
 
     const $display = $(`
-      <li class="budget-table-cell-available toolkit-cell-pacing">
-        <span
+      <li class="tk-budget-table-cell-pacing">
+        <div
           title="${tooltip}"
-          class="toolkit-cell-pacing-display currency ${temperatureClass} ${deemphasizedClass} ${indicatorClass}"
-          data-sub-category-id="${subCategoryId}"
+          data-tk-sub-category-id="${subCategoryId}"
+          class="ynab-new-budget-available-number tk-pacing-number currency ${temperatureClass} ${deemphasizedClass} ${indicatorClass}"
         />
       </li>
     `);
@@ -126,10 +120,10 @@ export class Pacing extends Feature {
     switch (this.settings.enabled) {
       case '1':
       case '2':
-        $('.toolkit-cell-pacing-display', $display).text(formatCurrency(paceAmount));
+        $('.tk-pacing-number', $display).text(formatCurrency(paceAmount));
         break;
       case '3':
-        $('.toolkit-cell-pacing-display', $display).text(`${daysOffTarget} ${daysFormat}`);
+        $('.tk-pacing-number', $display).text(`${daysOffTarget} ${daysFormat}`);
         break;
     }
 

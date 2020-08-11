@@ -1,58 +1,58 @@
-/* global reusable colors */
-:root {
-  --tk-color-black: #000000;
-  --tk-color-gray: #cfd5d8;
-  --tk-color-positive: #16a336;
-  --tk-color-positive--hover: #138b2e;
+body,
+body.theme-new-default {
   --tk-color-white: #ffffff;
 
-  /* YNAB Chosen Colors */
-  --tk-ynab-budget-balance-negative-background: #f7c1b5;
-  --tk-ynab-budget-balance-negative-text: #651c0b;
-  --tk-ynab-budget-balance-negative-icon: #651c0b;
-  --tk-ynab-budget-balance-positive-background: #c4ecbb;
-  --tk-ynab-budget-balance-positive-text: #1d4913;
-  --tk-ynab-budget-balance-positive-icon: #1d4913;
-  --tk-ynab-budget-balance-warning-background: #f9e1a9;
-  --tk-ynab-budget-balance-warning-text: #70460b;
-  --tk-ynab-budget-balance-warning-icon: #70460b;
-  --tk-ynab-budget-balance-zero-background: #e9eced;
-  --tk-ynab-budget-balance-zero-text: #88979d;
-  --tk-ynab-budget-balance-zero-icon: #88979d;
+  --tk-modal-backdrop: rgba(99, 99, 99, 0.5);
+  --tk-default-background-color: #ffffff;
+  --tk-default-font-color: #000000;
+  --tk-positive-currency-color: #16a336;
+  --tk-zero-currency-color: #cfd5d8;
 }
 
-.accounts-toolbar {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 0;
+body.theme-classic {
+  --tk-modal-backdrop: rgba(99, 99, 99, 0.5);
+  --tk-default-background-color: #ffffff;
+  --tk-default-font-color: #000000;
+  --tk-positive-currency-color: #16a336;
+  --tk-zero-currency-color: #cfd5d8;
 }
 
-.accounts-toolbar .accounts-toolbar-left,
-.accounts-toolbar .accounts-toolbar-right,
-.accounts-toolbar.buttons-can-overflow .accounts-toolbar-left {
+body.theme-dark {
+  --tk-modal-backdrop: rgba(99, 99, 99, 0.5);
+  --tk-default-background-color: #909090;
+  --tk-default-font-color: #000000;
+  --tk-positive-currency-color: #6d9f38;
+  --tk-zero-currency-color: #8e8e93;
+}
+
+.tk-navlink i {
+  margin-right: 10px;
+  padding-left: 20px;
+}
+
+.sidebar.sidebar-resized-collapsed .tk-navlink__label {
+  display: none;
+}
+
+.sidebar.sidebar-resized-collapsed .tk-navlink i {
+  margin-right: 0px;
+  padding-left: 0px;
+}
+
+.budget-toolbar {
+  padding: 0px 10px;
   align-items: center;
-  flex-shrink: 0;
-  height: auto;
 }
 
-.accounts-toolbar .accounts-toolbar-right {
+#tk-modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
-  flex-direction: row-reverse;
-}
-
-.accounts-toolbar .accounts-toolbar-right > .button {
-  position: static;
-}
-
-.accounts-toolbar .transaction-search {
-  height: auto;
-}
-
-.accounts-toolbar .transaction-search .transaction-search-input {
-  position: static;
-}
-
-.toolkit-budget-toolbar-buttons {
-  float: right;
-  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  background-color: var(--tk-modal-backdrop);
 }

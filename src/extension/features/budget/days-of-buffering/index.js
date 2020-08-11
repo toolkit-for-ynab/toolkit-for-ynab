@@ -47,7 +47,7 @@ export class DaysOfBuffering extends Feature {
   }
 
   _updateDisplay(calculation) {
-    const { averageDailyOutflow, daysOfBuffering, totalDays, totalOutflow } = calculation;
+    const { averageDailyOutflow, daysOfBuffering, availableDates, totalOutflow } = calculation;
     const daysOfBufferingContainer = document.querySelector('.toolkit-days-of-buffering');
     let $displayElement = $(daysOfBufferingContainer);
     if (!daysOfBufferingContainer) {
@@ -89,7 +89,7 @@ export class DaysOfBuffering extends Feature {
       $('.budget-header-days-age', $displayElement).attr(
         'title',
         `${l10n('budget.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}
-${l10n('budget.dob.days', 'Total days of budgeting')}: ${totalDays}
+${l10n('budget.dob.days', 'Total days of budgeting')}: ${availableDates}
 ${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(averageDailyOutflow)}`
       );
 
@@ -128,14 +128,12 @@ ${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
 
     const minDate = moment.min(dates);
     const maxDate = moment.max(dates);
-    const availableDates = maxDate.diff(minDate, 'days');
+    const availableDates =
+      this._lookbackDays !== 0
+        ? Math.min(this._lookbackDays, maxDate.diff(minDate, 'days'))
+        : maxDate.diff(minDate, 'days');
 
-    let averageDailyOutflow;
-    if (this._lookbackDays !== 0) {
-      averageDailyOutflow = Math.abs(totalOutflow / this._lookbackDays);
-    } else {
-      averageDailyOutflow = Math.abs(totalOutflow / availableDates);
-    }
+    let averageDailyOutflow = Math.abs(totalOutflow / availableDates);
 
     let daysOfBuffering = balance / averageDailyOutflow;
     if (daysOfBuffering < 10) {
@@ -153,7 +151,7 @@ ${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(ave
       averageDailyOutflow,
       daysOfBuffering,
       notEnoughDates,
-      totalDays: uniqueDates.size,
+      availableDates,
       totalOutflow,
     };
   };

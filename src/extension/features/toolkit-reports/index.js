@@ -9,8 +9,10 @@ const TOOLKIT_REPORTS_CONTAINER_ID = 'toolkit-reports';
 const TOOLKIT_REPORTS_NAVLINK_CLASS = 'tk-react-reports-link';
 const TOOLKIT_REPORTS_NAVLINK_SELECTOR = `.${TOOLKIT_REPORTS_NAVLINK_CLASS}`;
 
+// Note: YNAB_CONTENT_CONTAINER SELECTOR will contain two elements when this is rendered
+//       The current nav's report and then a element containing toolkit reports
+//       When toolkit reports is selected, show the toolkit report element and hide the current ynabs element
 const YNAB_CONTENT_CONTAINER_SELECTOR = '.ynab-u.content';
-const YNAB_APPLICATION_CONTENT_SELECTOR = `${YNAB_CONTENT_CONTAINER_SELECTOR} .scroll-wrap,.register-flex-columns`;
 const YNAB_NAVLINK_CLASSES = ['navlink-budget', 'navlink-accounts', 'navlink-reports'];
 const YNAB_NAVLINK_SELECTOR = `.${YNAB_NAVLINK_CLASSES.join(', .')}`;
 const YNAB_NAVACCOUNT_CLASS = 'nav-account-row';
@@ -39,9 +41,13 @@ export class ToolkitReports extends Feature {
       const toolkitReportsLink = $('<li>', {
         class: TOOLKIT_REPORTS_NAVLINK_CLASS,
       }).append(
-        $('<a>', { class: 'tk-navlink-reports-link' })
-          .append($('<span>', { class: 'flaticon stroke document-4' }))
-          .append(l10n('toolkit.reports') || 'Toolkit Reports')
+        $('<a>', { class: 'tk-navlink' })
+          .append($('<i>', { class: 'flaticon stroke document-4' }))
+          .append(
+            $('<div>', { class: 'tk-navlink__label' }).text(
+              l10n('toolkit.reports') || 'Toolkit Reports'
+            )
+          )
       );
 
       $('.nav-main > li:eq(1)').after(toolkitReportsLink);
@@ -68,13 +74,20 @@ export class ToolkitReports extends Feature {
 
   _removeToolkitReports(event) {
     $(TOOLKIT_REPORTS_NAVLINK_SELECTOR).removeClass('active');
-    $(YNAB_APPLICATION_CONTENT_SELECTOR).show();
 
+    // Show the current ynab report
+    $(YNAB_CONTENT_CONTAINER_SELECTOR)
+      .children()
+      .first()
+      .show();
+
+    // Unmount and hide the toolkit's report
     const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
     if (container) {
       ReactDOM.unmountComponentAtNode(container);
     }
 
+    // Update the nav with the active indicator
     const $currentTarget = $(event.currentTarget);
     if (YNAB_NAVLINK_CLASSES.some(className => $currentTarget.hasClass(className))) {
       $currentTarget.addClass('active');
@@ -85,8 +98,13 @@ export class ToolkitReports extends Feature {
 
   _renderToolkitReports() {
     setTimeout(() => {
-      $(YNAB_APPLICATION_CONTENT_SELECTOR).hide();
+      // Hide the ynab report
+      $(YNAB_CONTENT_CONTAINER_SELECTOR)
+        .children()
+        .first()
+        .hide();
 
+      // Display the toolkit's report
       const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
       if (container) {
         ReactDOM.render(React.createElement(Root), container);

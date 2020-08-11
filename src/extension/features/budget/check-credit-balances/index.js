@@ -5,6 +5,7 @@ import {
   isCurrentRouteBudgetPage,
 } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class CheckCreditBalances extends Feature {
@@ -219,29 +220,24 @@ export class CheckCreditBalances extends Feature {
     let debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
 
     $(debtPaymentCategories).each(function() {
-      let accountName = $(this)
-        .find('.budget-table-cell-name div.button-truncate')
-        .prop('title')
-        .match(/.[^\n]*/)[0];
+      let view = getEmberView(this.id);
+      if (!view || !view.category) {
+        return;
+      }
+
+      const accountName = view.category.displayName;
       if (accountName === name) {
         let input = $(this)
           .find('.budget-table-cell-budgeted div.ynab-new-currency-input')
           .click()
           .find('input');
 
-        let oldValue = input.val();
-
-        // If nothing is budgeted, the input will be empty
-        oldValue = oldValue || 0;
-
-        // YNAB stores values *1000 for decimal places, so just
-        // multiple by 1000 to get the actual amount.
-        let newValue = ynab.unformat(oldValue) * 1000 + difference;
+        let newValue = view.category.budgeted + difference;
 
         // format the calculated value back to selected number format
         input.val(ynab.formatCurrency(newValue));
 
-        if (ynabToolKit.options.QuickBudgetWarning === 0) {
+        if (!ynabToolKit.options.QuickBudgetWarning) {
           // only seems to work if the confirmation doesn't pop up?
           // haven't figured out a way to properly blur otherwise
           input.blur();

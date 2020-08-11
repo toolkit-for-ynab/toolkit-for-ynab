@@ -9,20 +9,29 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   extractCategoryGoalInformation(element) {
-    const emberId = element.id;
-    const category = getEmberView(emberId, 'category');
+    const category = getEmberView(element.id, 'category');
     if (!category) {
       return;
     }
 
-    let monthlyGoalAmount = category.get('monthlySubCategoryBudgetCalculation.goalTarget');
-
-    // if the user edits a goal amount, it's turned into a string on the `subCategory`
-    // object. just convert everything into a number just in case.
-    return {
-      monthlyGoalAmount: parseInt(monthlyGoalAmount, 10),
+    const categoryInfo = {
+      monthlyGoalAmount: 0,
       isChecked: category.get('isChecked'),
     };
+
+    switch (category.goalType) {
+      case ynab.constants.SubCategoryGoalType.MonthlyFunding:
+      case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
+        categoryInfo.monthlyGoalAmount = parseInt(category.goalTarget || 0, 10);
+        break;
+      case ynab.constants.SubCategoryGoalType.Needed:
+        categoryInfo.monthlyGoalAmount = parseInt(
+          category.goalTarget || category.goalTargetAmount || 0,
+          10
+        );
+    }
+
+    return categoryInfo;
   }
 
   calculateMonthlyGoals() {

@@ -24,6 +24,7 @@ export class SwapClearedFlagged extends Feature {
       'register/grid-actions',
       'register/grid-pending',
       'register/grid-split',
+      'register/grid-edit',
     ];
 
     addToolkitEmberHook(this, 'register/grid-header', 'didRender', swapColumns);

@@ -1,4 +1,14 @@
-/* Maybe this should play better with reconciled rows that don't have a background-color */
-.ynab-grid .ynab-grid-body-row:nth-of-type(even):not(.is-scheduled):not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
-	background-color: #fafafa;
+body,
+body.theme-new-default,
+body.theme-classic {
+  --tk-striped-transaction-row-color: #fafafa;
+}
+
+body.theme-dark {
+  --tk-striped-transaction-row-color: #1e1e1f;
+}
+
+.ynab-grid
+  .ynab-grid-body-row:nth-of-type(even):not(.is-scheduled):not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
+  background-color: var(--tk-striped-transaction-row-color);
 }

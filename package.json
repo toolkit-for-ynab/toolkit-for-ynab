@@ -1,6 +1,6 @@
 {
   "name": "toolkit-for-ynab",
-  "version": "2.21.0",
+  "version": "2.26.0",
   "private": true,
   "scripts": {
     "build:check": "yarn && yarn gen && yarn lint",
@@ -90,11 +90,12 @@
     "core-js": "2",
     "fuzzysort": "^1.1.4",
     "highcharts": "7.0.0",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "raven-js": "^3.25.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
-    "react-markdown": "^4.2.2"
+    "react-markdown": "^4.2.2",
+    "regression": "^2.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
@@ -129,7 +130,7 @@
     "jest": "^24.9.0",
     "jest-dot-reporter": "^1.0.3",
     "jest-localstorage-mock": "^2.1.0",
-    "node-sass": "^4.9.3",
+    "node-sass": "^4.9.4",
     "prettier": "^1.16.4",
     "pretty-quick": "^1.10.0",
     "sass-loader": "^8.0.0",

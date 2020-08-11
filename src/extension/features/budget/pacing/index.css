@@ -1,55 +1,26 @@
-.budget-table-header .toolkit-cell-pacing {
-  font-size: .75em;
-}
-.toolkit-cell-pacing {
-  width: 10%;
-  padding: 2px 0px !important;
-  margin-left: 10px;
-}
-.is-master-category .toolkit-cell-pacing {
-  display: none;
-}
-.budget-table-uncategorized-transactions .toolkit-cell-pacing {
-  display: none;
+.tk-budget-table-cell-pacing {
+  width: 8.125rem;
+  justify-content: flex-end !important;
+  padding: 0 0 0 1rem !important;
+  text-align: right !important;
 }
 
-.toolkit-cell-pacing-display {
-  border-radius: 1em;
-  padding: .125em .5em .175em .5em !important;
-  color: #fff !important;
-  font-weight: normal !important;
-  cursor: pointer;
-}
-
-.toolkit-cell-pacing-display.positive {
-	background-color: #16a336 !important;
-}
-.toolkit-cell-pacing-display.positive:hover {
-	background-color: #138b2e !important;
-}
-.toolkit-cell-pacing-display.cautious {
-	background-color: #e59100 !important;
-}
-.toolkit-cell-pacing-display.cautious:hover {
-	background-color: #c37b00 !important;
-}
-
-.toolkit-cell-pacing-display.deemphasized,
-.toolkit-cell-pacing-display.deemphasized:hover {
+.tk-budget-table-cell-pacing .deemphasized,
+.tk-budget-table-cell-pacing .deemphasized:hover {
   color: #cfd5d7 !important;
   background-color: transparent !important;
 }
 
-.toolkit-cell-pacing-display.indicator {
-  border-radius: .5em;
+.tk-budget-table-cell-pacing .indicator {
+  border-radius: 0.5em;
   height: 1em;
   width: 1em;
-  margin-right: .5em;
+  margin-right: 0.5em;
   overflow: hidden;
   text-indent: -9999px;
   text-align: left;
 }
 
-.toolkit-cell-pacing-display.deemphasized.indicator {
+.tk-budget-table-cell-pacing .indicator.deemphasized {
   background-color: #cfd5d7 !important;
 }

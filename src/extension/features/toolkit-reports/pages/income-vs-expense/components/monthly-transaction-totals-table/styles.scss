@@ -4,10 +4,8 @@
   &__child-row,
   &__child-summary-row,
   &__title-row--collapsed {
-    background-color: white;
-
     &:hover {
-      background-color: aliceblue;
+      background-color: var(--table_row_background_selected);
     }
   }
 
@@ -16,22 +14,23 @@
     font-size: 0.85rem;
 
     &--expense {
-      background-color: #ffecea;
+      background-color: var(--tk-ive-report-negative-color);
     }
 
     &--income {
-      background-color: #edf5e6;
+      background-color: var(--tk-ive-report-positive-color);
     }
 
     .tk-monthly-totals-row {
       &__title-cell {
+        background: var(--default_background);
         padding-left: 0.5rem;
       }
     }
   }
 
   &__title-row {
-    border-top: 1px dotted #d1d1d1;
+    border-top: 1px solid var(--tk-ive-report-border-color);
 
     .tk-monthly-totals-row {
       &__title-cell {
@@ -45,10 +44,11 @@
   }
 
   &__child-row {
-    border-top: 1px dotted #d1d1d1;
+    border-top: 1px solid var(--tk-ive-report-border-color);
 
     .tk-monthly-totals-row {
       &__title-cell {
+        background: var(--default_background);
         font-weight: normal;
         padding-left: 1rem;
       }
@@ -56,10 +56,11 @@
   }
 
   &__child-summary-row {
-    border-top: 1px solid #000000;
+    border-top: 2px solid var(--tk-ive-report-border-color);
 
     .tk-monthly-totals-row {
       &__title-cell {
+        background: var(--default_background);
         padding-left: 1rem;
       }
 

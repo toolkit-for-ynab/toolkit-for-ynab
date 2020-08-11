@@ -1,8 +1,21 @@
-.toolkit-is-reconciled {
-  color: #8e9fb0;
-  background-color: #e7faeb !important;
+body,
+body.theme-new-default,
+body.theme-classic {
+  --tk-reconciled-font-color: #8e9fb0;
+  --tk-reconciled-background-color: #e7faeb;
 }
-.toolkit-is-reconciled .ynab-grid-cell-payeeName svg path,
-.toolkit-is-reconciled .ynab-grid-cell-payeeName svg rect {
-  fill: #8e9fb0;
+
+body.theme-dark {
+  --tk-reconciled-font-color: #5a5a5a;
+  --tk-reconciled-background-color: #07190a;
+}
+
+.tk-is-reconciled {
+  color: var(--tk-reconciled-font-color);
+  background-color: var(--tk-reconciled-background-color) !important;
+}
+
+.tk-is-reconciled .ynab-grid-cell-payeeName svg path,
+.tk-is-reconciled .ynab-grid-cell-payeeName svg rect {
+  fill: var(--tk-reconciled-font-color);
 }

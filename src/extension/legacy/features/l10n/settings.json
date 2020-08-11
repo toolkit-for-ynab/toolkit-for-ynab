@@ -30,7 +30,7 @@
       "value": "chinese simplified"
     },
     {
-      "name": "Russian (29%)",
+      "name": "Russian (81%)",
       "value": "russian"
     },
     {
@@ -42,7 +42,7 @@
       "value": "icelandic"
     },
     {
-      "name": "Spanish (66%)",
+      "name": "Spanish (67%)",
       "value": "spanish"
     },
     {
@@ -66,11 +66,11 @@
       "value": "japanese"
     },
     {
-      "name": "German (63%)",
+      "name": "German (71%)",
       "value": "german"
     },
     {
-      "name": "Latvian (7%)",
+      "name": "Latvian (10%)",
       "value": "latvian"
     },
     {
@@ -90,7 +90,7 @@
       "value": "danish"
     },
     {
-      "name": "Polish (60%)",
+      "name": "Polish (63%)",
       "value": "polish"
     },
     {
@@ -98,11 +98,11 @@
       "value": "serbian (cyrillic)"
     },
     {
-      "name": "French (51%)",
+      "name": "French (56%)",
       "value": "french"
     },
     {
-      "name": "Norwegian (36%)",
+      "name": "Norwegian (39%)",
       "value": "norwegian"
     },
     {
@@ -130,7 +130,7 @@
       "value": "lithuanian"
     },
     {
-      "name": "Dutch (44%)",
+      "name": "Dutch (55%)",
       "value": "dutch"
     }
   ],

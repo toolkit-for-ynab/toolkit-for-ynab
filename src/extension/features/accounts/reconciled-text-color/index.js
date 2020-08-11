@@ -2,9 +2,8 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
-const TOOLKIT_RECONCILED_CLASS = 'toolkit-is-reconciled';
+const TOOLKIT_RECONCILED_CLASS = 'tk-is-reconciled';
 const YNAB_IS_CHECKED_CLASS = 'is-checked';
-// const YNAB_GRID_BODY_ROW_CLASS = 'ynab-grid-body-row';
 const YNAB_GRID_BODY_SUB_CLASS = 'ynab-grid-body-sub';
 
 export class ReconciledTextColor extends Feature {
@@ -30,6 +29,9 @@ export class ReconciledTextColor extends Feature {
   invoke() {
     addToolkitEmberHook(this, 'register/grid-sub', 'didInsertElement', this.addClass);
     addToolkitEmberHook(this, 'register/grid-row', 'didInsertElement', this.addClass);
+
+    addToolkitEmberHook(this, 'register/grid-sub', 'didUpdate', this.addClass);
+    addToolkitEmberHook(this, 'register/grid-row', 'didUpdate', this.addClass);
   }
 
   addClass(element) {

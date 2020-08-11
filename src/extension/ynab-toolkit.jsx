@@ -1,14 +1,20 @@
+import * as React from 'react';
 import { features } from 'toolkit/extension/features';
 import * as ynabUtils from 'toolkit/extension/utils/ynab';
 import * as emberUtils from 'toolkit/extension/utils/ember';
 import * as Collections from 'toolkit/extension/utils/collections';
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
+import { forEachRenderedComponent } from './utils/ember';
+import { compareSemanticVersion } from './utils/helpers';
+import { componentAppend } from './utils/react';
+import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-modal';
 
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
-export const EMBER_COMPONENT_TOOLKIT_HOOKS = ['didRender', 'didInsertElement'];
+export const EMBER_COMPONENT_TOOLKIT_HOOKS = ['didRender', 'didInsertElement', 'didUpdate'];
 export const emberComponentToolkitHookKey = hookName => `_tk_${hookName}_hooks_`;
 
 window.__toolkitUtils = {
@@ -30,7 +36,7 @@ export class YNABToolkit {
       const wrappedInjectCSS = withToolkitError(feature.injectCSS.bind(feature), feature);
       const featureCSS = wrappedInjectCSS();
 
-      if (isFeatureEnabled(feature) && featureCSS) {
+      if (isFeatureEnabled(feature.settings.enabled) && featureCSS) {
         css += `/* == Injected CSS from feature: ${feature.constructor.name} == */\n${featureCSS}\n\n`;
       }
 
@@ -52,14 +58,14 @@ export class YNABToolkit {
     const feature = this._featureInstances.find(f => f.constructor.name === featureName);
     const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
     const wrappedInvoke = feature.invoke.bind(feature);
-    if (isFeatureEnabled(feature) && wrappedShouldInvoke()) {
+    if (isFeatureEnabled(feature.settings.enabled) && wrappedShouldInvoke()) {
       wrappedInvoke();
     }
   };
 
   _invokeFeatureInstances = async () => {
     this._featureInstances.forEach(async feature => {
-      if (isFeatureEnabled(feature)) {
+      if (isFeatureEnabled(feature.settings.enabled)) {
         feature.applyListeners();
 
         try {
@@ -89,9 +95,9 @@ export class YNABToolkit {
       window.ynabToolKit = {
         ...window.ynabToolKit,
         ...event.data.ynabToolKit,
+        hookedComponents: new Set(),
       };
 
-      // eslint-disable-next-line
       if (event.data.ynabToolKit.environment === 'development') {
         try {
           Rollbar.impl.instrumenter.deinstrumentConsole(); // eslint-disable-line
@@ -142,6 +148,44 @@ export class YNABToolkit {
     });
   };
 
+  _invokeAllHooks = () => {
+    ynabToolKit.hookedComponents.forEach(key => {
+      forEachRenderedComponent(key, view => {
+        EMBER_COMPONENT_TOOLKIT_HOOKS.forEach(lifecycleName => {
+          const hooks = view[emberComponentToolkitHookKey(lifecycleName)];
+          if (hooks) {
+            hooks.forEach(hook => hook.fn.call(hook.context, view.element));
+          }
+        });
+      });
+    });
+  };
+
+  _showNewReleaseModal = () => {
+    componentAppend(
+      <div id="tk-modal-container">
+        <ToolkitReleaseModal
+          onClose={() => document.querySelector('#tk-modal-container').remove()}
+        />
+      </div>,
+      document.querySelector('.layout')
+    );
+  };
+
+  _checkReleaseVersion = () => {
+    const latestVersionKey = `latest-version-${ynabToolKit.environment}`;
+    let latestVersion = getToolkitStorageKey(latestVersionKey);
+    if (!latestVersion) {
+      setToolkitStorageKey(latestVersionKey, ynabToolKit.version);
+      return;
+    }
+
+    if (compareSemanticVersion(latestVersion, ynabToolKit.version) === -1) {
+      setToolkitStorageKey(latestVersionKey, ynabToolKit.version);
+      this._showNewReleaseModal();
+    }
+  };
+
   _waitForUserSettings() {
     const self = this;
 
@@ -155,10 +199,14 @@ export class YNABToolkit {
         // inject the global css from each feature into the HEAD of the DOM
         self._applyGlobalCSS();
 
+        self._addToolkitEmberHooks();
+
+        self._checkReleaseVersion();
+
         // Hook up listeners and then invoke any features that are ready to go.
         self._invokeFeatureInstances();
 
-        self._addToolkitEmberHooks();
+        Ember.run.later(self._invokeAllHooks, 100);
       } else if (typeof Ember !== 'undefined') {
         Ember.run.later(poll, 250);
       } else {
