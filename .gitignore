@@ -2,6 +2,8 @@
 .DS_Store
 .project
 .idea
+codealike.json
+.wakatime-project
 
 # build/generated files
 node_modules/
