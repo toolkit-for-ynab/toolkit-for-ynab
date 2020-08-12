@@ -1,5 +1,9 @@
 body,
-body.theme-new-default,
+body.theme-new-default{
+  --tk-striped-budget-row-color: #f4f4f4;
+  --table_header_background_default: #efefef;
+}
+
 body.theme-classic {
   --tk-striped-budget-row-color: #fafafa;
 }

@@ -1,0 +1,20 @@
+body,
+body.theme-new-default{
+  --tk-emphasize-inflow-color: #33cc33;
+  --tk-emphasize-inflow-color-selected: #248f24;
+}
+
+body.theme-dark,
+body.theme-classic {
+  --tk-emphasize-inflow-color: #33cc33;
+  --tk-emphasize-inflow-color-selected: #70db70;
+}
+
+.ynab-grid-cell-inflow .currency {
+	color: var(--tk-emphasize-inflow-color);
+}
+
+.ynab-grid-body-row.is-checked .ynab-grid-cell-inflow .currency {
+	color: var(--tk-emphasize-inflow-color-selected);
+	font-weight: bold;
+}
