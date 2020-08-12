@@ -33,11 +33,14 @@ export class BudgetProgressBars extends Feature {
   // Takes N colors and N-1 sorted points from (0, 1) to make color1|color2|color3 bg style.
   generateProgressBarStyle(colors, points) {
     const pointsPercent = [0, ...points, 1].map(p => p * 100);
-    return colors.reduce((reduced, color, index) => {
-      return (reduced += `${color} ${pointsPercent[index]}%, ${color} ${pointsPercent[index + 1]}%${
-        index + 1 === colors.length ? ')' : ', '
-      }`);
-    }, 'linear-gradient(to right, ');
+    return colors.reduce(
+      (reduced, color, index) =>
+        reduced +
+        `${color} ${pointsPercent[index]}%, ${color} ${pointsPercent[index + 1]}%${
+          index + 1 === colors.length ? ')' : ', '
+        }`,
+      'linear-gradient(to right, '
+    );
   }
 
   getCalculation(subCategoryName) {

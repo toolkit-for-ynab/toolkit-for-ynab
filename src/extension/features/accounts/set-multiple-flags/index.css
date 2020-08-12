@@ -2,3 +2,12 @@
   display: flex;
   align-items: center;
 }
+
+.modal-account-flags .modal {
+  height: auto !important;
+}
+
+.modal-account-flags .modal li .label {
+  flex: 1 !important;
+  margin-right: 45px;
+}
