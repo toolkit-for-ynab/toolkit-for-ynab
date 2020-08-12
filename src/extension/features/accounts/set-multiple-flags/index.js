@@ -54,7 +54,7 @@ export class SetMultipleFlags extends Feature {
           $(`
         <li id="tk-add-flags">
           <button class="button-list tk-multi-flags__button">
-            <svg class="ynab-flag ynab-flag-header tk-multi-flags__icon">
+            <svg class="ynab-flag ynab-flag-header ynab-new-icon">
               <g>
                 <path d="M 0,4 16,4 12,9 16,14 0,14 z"></path>
               </g>
@@ -73,7 +73,7 @@ export class SetMultipleFlags extends Feature {
           <button class="button-list tk-multi-flags__button ${
             !this._isAnyCheckedTransactionFlagged ? 'button-disabled' : ''
           }">
-            <svg class="ynab-flag ynab-flag-none tk-multi-flags__icon">
+            <svg class="ynab-flag ynab-flag-none ynab-new-icon">
               <g>
                 <path d="M 0,4 16,4 12,9 16,14 0,14 z"></path>
               </g>

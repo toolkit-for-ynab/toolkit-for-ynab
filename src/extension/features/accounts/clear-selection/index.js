@@ -39,7 +39,7 @@ export class ClearSelection extends Feature {
     $('.modal-account-edit-transaction-list .modal-list').prepend(
       $(`<li>
             <button class="button-list ynab-toolkit-clear-selection">
-              <i class="flaticon stroke minus-2"></i>${menuText}
+              <i class="ynab-new-icon flaticon stroke minus-2"></i>${menuText}
             </button>
           </li>
           <li><hr /><li>`).click(() => {
