@@ -4,14 +4,6 @@ const exec = require('child_process').exec;
 
 const localizationDir = path.resolve(__dirname, '../src/extension/legacy/features/l10n');
 
-let current;
-try {
-  current = JSON.parse(fs.readFileSync(`${localizationDir}/en.json`, { format: 'utf8' }));
-} catch {
-  console.error('Failed to parse en.json');
-  process.exit(1);
-}
-
 let ynab;
 try {
   ynab = JSON.parse(fs.readFileSync(`${localizationDir}/ynab.json`, { format: 'utf8' }));
