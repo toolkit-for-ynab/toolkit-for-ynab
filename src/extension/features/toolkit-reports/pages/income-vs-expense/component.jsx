@@ -161,7 +161,7 @@ export class IncomeVsExpenseComponent extends React.Component {
         return;
       }
 
-      if (transactionSubCategory.isIncomeCategory()) {
+      if (transactionSubCategory.isImmediateIncomeCategory()) {
         const transactionPayeeId =
           transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
         if (!transactionPayeeId) {

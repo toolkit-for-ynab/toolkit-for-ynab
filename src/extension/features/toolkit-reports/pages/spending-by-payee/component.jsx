@@ -68,7 +68,7 @@ export class SpendingByPayeeComponent extends React.Component {
       const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(
         transactionSubCategoryId
       );
-      if (!transactionSubCategory || transactionSubCategory.isIncomeCategory()) {
+      if (!transactionSubCategory || transactionSubCategory.isImmediateIncomeCategory()) {
         return;
       }
 
