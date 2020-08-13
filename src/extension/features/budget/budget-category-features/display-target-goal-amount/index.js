@@ -29,6 +29,7 @@ export class DisplayTargetGoalAmount extends Feature {
   }
 
   invoke() {
+    console.log('MyCoolFeature is working!');
     const userSetting = this.settings.enabled;
     const budgetRows = [...document.getElementsByClassName('budget-table-row')];
     budgetRows.forEach(element => {
@@ -61,7 +62,7 @@ export class DisplayTargetGoalAmount extends Feature {
         goalOverallFunded,
         goalTotalNeededAmount,
       } = monthlySubCategoryBudgetCalculation;
-      const { budgeted } = monthlySubCategoryBudget.get('budgeted');
+      const budgeted = monthlySubCategoryBudget.get('budgeted');
 
       let goalAmount = null;
       let applyEmphasis = false;
@@ -94,6 +95,7 @@ export class DisplayTargetGoalAmount extends Feature {
           break;
         case ynab.constants.SubCategoryGoalType.TargetBalance:
           goalAmount = goalTargetAmount;
+          // this is where the bug could be as well
           if (userSetting === Settings.WarnBudgetOverTarget && budgeted > goalTargetAmount) {
             applyEmphasis = true;
           } else if (
@@ -105,6 +107,7 @@ export class DisplayTargetGoalAmount extends Feature {
           break;
         case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
           goalAmount = goalTarget;
+          // this is the check we are looking for that should turn the text red
           if (userSetting === Settings.WarnBudgetOverTarget && budgeted > goalTarget) {
             applyEmphasis = true;
           } else if (userSetting === Settings.GreenBudgetOverTarget && budgeted >= goalTarget) {
