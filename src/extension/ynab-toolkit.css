@@ -23,6 +23,7 @@ body.theme-dark {
   --tk-default-font-color: #000000;
   --tk-positive-currency-color: #6d9f38;
   --tk-zero-currency-color: #8e8e93;
+  --table_header_background_default: #343437;
 }
 
 .tk-navlink i {
