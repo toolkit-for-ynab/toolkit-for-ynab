@@ -95,7 +95,6 @@ export class DisplayTargetGoalAmount extends Feature {
           break;
         case ynab.constants.SubCategoryGoalType.TargetBalance:
           goalAmount = goalTargetAmount;
-          // this is where the bug could be as well
           if (userSetting === Settings.WarnBudgetOverTarget && budgeted > goalTargetAmount) {
             applyEmphasis = true;
           } else if (
@@ -107,7 +106,6 @@ export class DisplayTargetGoalAmount extends Feature {
           break;
         case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
           goalAmount = goalTarget;
-          // this is the check we are looking for that should turn the text red
           if (userSetting === Settings.WarnBudgetOverTarget && budgeted > goalTarget) {
             applyEmphasis = true;
           } else if (userSetting === Settings.GreenBudgetOverTarget && budgeted >= goalTarget) {
