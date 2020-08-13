@@ -29,7 +29,6 @@ export class DisplayTargetGoalAmount extends Feature {
   }
 
   invoke() {
-    console.log('MyCoolFeature is working!');
     const userSetting = this.settings.enabled;
     const budgetRows = [...document.getElementsByClassName('budget-table-row')];
     budgetRows.forEach(element => {
