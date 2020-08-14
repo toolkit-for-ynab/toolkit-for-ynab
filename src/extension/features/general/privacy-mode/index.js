@@ -52,9 +52,7 @@ export class PrivacyMode extends Feature {
     this.updatePrivacyMode();
   }
 
-  observe() {
-    if (!this.shouldInvoke) return;
-
+  onRouteChanged() {
     this.invoke();
   }
 
