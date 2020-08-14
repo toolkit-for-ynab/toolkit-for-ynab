@@ -52,6 +52,10 @@ export class PrivacyMode extends Feature {
     this.updatePrivacyMode();
   }
 
+  onRouteChanged() {
+    this.invoke();
+  }
+
   togglePrivacyMode() {
     $('#tk-toggle-privacy').toggleClass('active');
 
