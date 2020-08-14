@@ -298,6 +298,10 @@ Quickly approve scheduled or linked transactions by selecting the transaction(s)
 
 Adds a button to the edit dialog which allows you to set the flag. If multiple transactions are selected, all transactions are updated.
 
+## Emphasize Inflows
+
+Make values in the inflow column green.
+
 ## Emphasize Outflows
 
 Make values in the outflow column red and put them in parenthesis.
