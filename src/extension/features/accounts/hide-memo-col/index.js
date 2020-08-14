@@ -6,10 +6,6 @@ export class HideMemoCol extends Feature {
   }
 
   shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    $('body').addClass('toolkit-hide-memo');
+    return false;
   }
 }
