@@ -1,0 +1,9 @@
+user=toolkit-for-ynab
+project=toolkit-for-ynab
+unreleased-only=true
+bug-labels=bug-fix
+enhancement-labels=new-feature
+enhancement_prefix=**New Features:**
+removed_labels=removed-feature
+removed_prefix="**Removed Features:**
+max-issues=0

@@ -1,5 +1,5 @@
 body,
-body.theme-new-default{
+body.theme-new-default {
   --tk-striped-budget-row-color: #f4f4f4;
   --table_header_background_default: #efefef;
 }
@@ -9,7 +9,8 @@ body.theme-classic {
 }
 
 body.theme-dark {
-  --tk-striped-budget-row-color: #2b2b2d;
+  --tk-striped-budget-row-color: #2b2b2e;
+  --table_header_background_default: #343437;
 }
 
 .budget-table-row.is-sub-category:nth-of-type(even):not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
