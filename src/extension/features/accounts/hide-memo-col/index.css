@@ -1,0 +1,4 @@
+body.toolkit-hide-memo [data-column='memo'],
+body.toolkit-hide-memo .ynab-grid-cell-memo {
+  display: none !important;
+}
