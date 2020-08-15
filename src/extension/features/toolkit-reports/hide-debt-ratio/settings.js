@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'ShowDebtRatio',
+  name: 'HideDebtRatio',
   type: 'checkbox',
   default: false,
   section: 'toolkitReports',
