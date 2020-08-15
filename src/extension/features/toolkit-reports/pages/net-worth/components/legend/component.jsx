@@ -23,6 +23,14 @@ export const Legend = props => (
         <Currency value={props.assets} />
       </div>
     </div>
+    <div className="tk-debt-ratio">
+      <div className="tk-mg-05 tk-pd-r-1 tk-border-r">
+        <div className="tk-flex tk-mg-b-05 tk-align-items-center">
+          <div className="tk-mg-0">Debt Ratio</div>
+        </div>
+        <div>{Math.round(props.debtRatio)}%</div>
+      </div>
+    </div>
     <div className="tk-mg-05 tk-pd-r-1">
       <div className="tk-flex tk-mg-b-05 tk-align-items-center">
         <div className="tk-net-worth-legend__icon-net-worths" />
