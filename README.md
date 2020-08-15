@@ -82,13 +82,9 @@ This extension uses three main things in its build process:
       - click on `Load unpacked`
     - Firefox:
 
-      - Install web-ext
+      - make sure PATH is set up. Something like this in ~/.bash_profile
 
-            $ yarn global add web-ext
-
-      - _Also, make sure PATH is set up. Something like this in ~/.bash_profile_
-
-            $ PATH=$PATH:$(yarn global bin)
+             $ PATH=$PATH:$(yarn global bin)
 
       - Build and run in Firefox
 
