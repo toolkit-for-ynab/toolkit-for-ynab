@@ -10,10 +10,6 @@ const EditMemo = () => {
   const [memoInputValue, setMemoInputValue] = useState('');
 
   const handleConfirm = e => {
-    if (!memoInputValue) {
-      return;
-    }
-
     const checkedRows = controllerLookup('accounts').get('areChecked');
     const { transactionsCollection } = getEntityManager();
     getEntityManager().batchChangeProperties(() => {
@@ -24,19 +20,45 @@ const EditMemo = () => {
         }
       });
     });
+    setIsEditMode(false);
   };
 
   return (
-    <li>
-      {isEditMode && (
-        <>
-          <input value={memoInputValue} onChange={e => setMemoInputValue(e.target.value)} />
-          <button onClick={handleConfirm}>Okay</button>
-          <button onClick={() => setIsEditMode(false)}>Cancel</button>
-        </>
-      )}
-      {!isEditMode && <button onClick={() => setIsEditMode(true)}>Edit Memo</button>}
-    </li>
+    <>
+      <li className="tk-bulk-edit-memo">
+        <div className="button-list">
+          {isEditMode && (
+            <>
+              <input
+                autoFocus
+                className="accounts-text-field"
+                value={memoInputValue}
+                onChange={e => setMemoInputValue(e.target.value)}
+              />
+              <div className="ynab-grid-actions tk-grid-actions">
+                <button
+                  className="button button-cancel tk-memo-cancel"
+                  onClick={() => setIsEditMode(false)}
+                >
+                  Cancel
+                </button>
+                <button className="button button-primary tk-memo-save" onClick={handleConfirm}>
+                  Save
+                </button>
+              </div>
+            </>
+          )}
+          {!isEditMode && (
+            <button onClick={() => setIsEditMode(true)}>
+              <i className="flaticon stroke document-1 ynab-new-icon"></i>Edit Memo
+            </button>
+          )}
+        </div>
+      </li>
+      <li>
+        <hr />
+      </li>
+    </>
   );
 };
 
@@ -56,7 +78,11 @@ export class BulkEditMemo extends Feature {
   }
 
   invoke() {
-    const categorizeRow = $('.modal-account-edit-transaction-list li:contains("Categorize")');
-    componentBefore(<EditMemo />, categorizeRow);
+    const approveRow = $('.modal-account-edit-transaction-list li:contains("Approve")');
+    componentBefore(<EditMemo />, approveRow);
+  }
+
+  injectCSS() {
+    return require('./index.css');
   }
 }
