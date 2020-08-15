@@ -82,8 +82,17 @@ This extension uses three main things in its build process:
       - click on `Load unpacked`
     - Firefox:
 
-           run npm install --global web-ext
-           web-ext run --source-dir dist/extension/
+      - Install web-ext
+
+            $ yarn global add web-ext
+
+      - _Also, make sure PATH is set up. Something like this in ~/.bash_profile_
+
+            $ PATH=$PATH:$(yarn global bin)
+
+      - Build and run in Firefox
+
+            $ web-ext run --source-dir dist/extension/
 
       - You can also disable reloading like this:
 
