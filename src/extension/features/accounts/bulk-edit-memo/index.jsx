@@ -12,7 +12,7 @@ const EditMemo = () => {
   const handleConfirm = e => {
     const checkedRows = controllerLookup('accounts').get('areChecked');
     const { transactionsCollection } = getEntityManager();
-    getEntityManager().batchChangeProperties(() => {
+    getEntityManager().performAsSingleChangeSet(() => {
       checkedRows.forEach(transaction => {
         const entity = transactionsCollection.findItemByEntityId(transaction.get('entityId'));
         if (entity) {
