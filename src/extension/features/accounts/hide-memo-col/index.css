@@ -1,4 +1,8 @@
-[data-column='memo'],
 .ynab-grid-cell-memo {
   display: none !important;
+}
+div.ynab-grid-off-budget .ynab-grid-cell-memo {
+  visibility: hidden;
+  border-right: none;
+  display: table-cell !important;
 }
