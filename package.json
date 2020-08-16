@@ -137,7 +137,6 @@
     "style-loader": "^1.0.0",
     "terminate": "^2.1.0",
     "to-string-loader": "^1.1.5",
-    "web-ext": "^5.0.0",
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.9",
     "yargs": "^14.0.0"
