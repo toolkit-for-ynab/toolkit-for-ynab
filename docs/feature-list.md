@@ -66,7 +66,7 @@ Changes print styles so budget and account sections can be easily printed. Due t
 
 ## Privacy Mode
 
-Obscures dollar amounts everywhere until hovered. In toggle mode, a lock icon will appear to the right of your budget name in the top left corner of YNAB. Click to enable or disable privacy mode.
+Obscures dollar amounts everywhere until hovered. In toggle mode, a lock icon will appear in the lower left corner of YNAB. Click to enable or disable privacy mode.
 
 ## Show Import Notifications in Navigation Sidebar
 
@@ -297,6 +297,10 @@ Quickly approve scheduled or linked transactions by selecting the transaction(s)
 ## Edit Multiple Flags at Once
 
 Adds a button to the edit dialog which allows you to set the flag. If multiple transactions are selected, all transactions are updated.
+
+## Emphasize Inflows
+
+Make values in the inflow column green.
 
 ## Emphasize Outflows
 

@@ -24,14 +24,15 @@ console.log('Merging localization files into en.json');
 
 fs.writeFileSync(
   `${localizationDir}/en.json`,
-  JSON.stringify(
+  `${JSON.stringify(
     {
       ...ynab,
       ...toolkit,
     },
     null,
     2
-  )
+  )}
+`
 );
 
 if (process.argv[2]) {
