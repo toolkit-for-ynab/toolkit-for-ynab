@@ -3,6 +3,7 @@
 </p>
 
 [![Build Status](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab.svg?branch=master)](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab)
+[![Chat](https://img.shields.io/discord/743988612382589010?logo=discord)](https://discord.gg/jFKzZR2)
 
 Toolkit for YNAB is a browser extension that enhances your experience with the YNAB Web Application.
 
