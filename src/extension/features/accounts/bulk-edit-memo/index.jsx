@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { l10n } from 'toolkit/extension/utils/toolkit';
-import { componentBefore } from 'toolkit/extension/utils/react';
+import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
+import { componentAfter } from 'toolkit/extension/utils/react';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
 const EditMemo = () => {
@@ -26,34 +26,35 @@ const EditMemo = () => {
   return (
     <>
       <li className="tk-bulk-edit-memo">
-        <div className="button-list">
-          {isEditMode && (
-            <>
-              <input
-                autoFocus
-                className="accounts-text-field"
-                value={memoInputValue}
-                onChange={e => setMemoInputValue(e.target.value)}
-              />
-              <div className="ynab-grid-actions tk-grid-actions">
-                <button
-                  className="button button-cancel tk-memo-cancel"
-                  onClick={() => setIsEditMode(false)}
-                >
-                  Cancel
-                </button>
-                <button className="button button-primary tk-memo-save" onClick={handleConfirm}>
-                  Save
-                </button>
-              </div>
-            </>
-          )}
-          {!isEditMode && (
-            <button onClick={() => setIsEditMode(true)}>
-              <i className="flaticon stroke document-1 ynab-new-icon"></i>Edit Memo
-            </button>
-          )}
-        </div>
+        {isEditMode && (
+          <div className="button-list">
+            <input
+              autoFocus
+              className="accounts-text-field"
+              value={memoInputValue}
+              onChange={e => setMemoInputValue(e.target.value)}
+            />
+            <div className="ynab-grid-actions tk-grid-actions">
+              <button
+                className="button button-cancel tk-memo-cancel"
+                onClick={() => setIsEditMode(false)}
+              >
+                {l10n('toolkit.editMemoCancel', 'Cancel')}
+              </button>
+              <button className="button button-primary tk-memo-save" onClick={handleConfirm}>
+                {l10n('toolkit.editMemoSave', 'Save')}
+              </button>
+            </div>
+          </div>
+        )}
+        {!isEditMode && (
+          <button onClick={() => setIsEditMode(true)}>
+            <i className="flaticon stroke document-1 ynab-new-icon"></i>
+            {controllerLookup('accounts').get('areChecked').length === 1
+              ? l10n('toolkit.editMemo', 'Edit Memo')
+              : l10n('toolkit.editMemoMany', 'Edit Memos')}
+          </button>
+        )}
       </li>
       <li>
         <hr />
@@ -63,26 +64,28 @@ const EditMemo = () => {
 };
 
 export class BulkEditMemo extends Feature {
-  shouldInvoke() {
-    return false;
-  }
-
-  observe(changedNodes) {
-    if (
-      changedNodes.has(
-        'ynab-u modal-popup modal-account-edit-transaction-list modal-overlay active'
-      )
-    ) {
-      this.invoke();
-    }
-  }
-
-  invoke() {
-    const approveRow = $('.modal-account-edit-transaction-list li:contains("Approve")');
-    componentBefore(<EditMemo />, approveRow);
-  }
-
   injectCSS() {
     return require('./index.css');
   }
+
+  shouldInvoke() {
+    return true;
+  }
+
+  invoke() {
+    addToolkitEmberHook(
+      this,
+      'modals/register/edit-transactions',
+      'didInsertElement',
+      this.injectBulkEditMemo
+    );
+  }
+
+  injectBulkEditMemo = element => {
+    const categorizeRow = $(
+      '.modal-account-edit-transaction-list li:contains("Categorize")',
+      element
+    );
+    componentAfter(<EditMemo />, categorizeRow);
+  };
 }
