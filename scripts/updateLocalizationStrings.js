@@ -128,7 +128,7 @@ getLocalizations((toolkitStrings, otherStrings) => {
   }
 
   const allStringsJSON = JSON.stringify(allStrings, null, 2);
-  fs.writeFileSync(`${localizationDir}/en.json`, allStringsJSON);
+  fs.writeFileSync(`${localizationDir}/en.json`, `${allStringsJSON}\n`);
   fs.writeFileSync(
     `${localizationDir}/default.js`,
     `/* eslint-disable */\n// prettier-ignore\nynabToolKit.l10nData = ${allStringsJSON}\n`

@@ -61,7 +61,7 @@ def unpack(lang_completed):
                 with open(os.path.join(DEST_DIR, name), 'r+') as f:
                     content = f.read()
                     f.seek(0, 0)
-                    f.write('/* eslint-disable */\n// prettier-ignore\nynabToolKit.l10nData = ' + content)
+                    f.write('/* eslint-disable */\n// prettier-ignore\nynabToolKit.l10nData = ' + content + '\n')
     for root, dirs, files in os.walk(DEST_DIR):
         for name in dirs:
             shutil.rmtree(os.path.join(root, name))
@@ -100,7 +100,7 @@ def create_settings(lang_completed):
                     "value": value })
                 settings['actions'][value] = ["injectScript", "locales/" + name,
                                               "injectScript", "main.js"]
-    with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'settings.json'), 'w') as f:
+    with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'settings.json'), 'wb') as f:
         json.dump(settings, f, indent=4)
 
 lang_completed = get_l10ns_stats()
