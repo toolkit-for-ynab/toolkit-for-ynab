@@ -1,4 +1,4 @@
-# Hide the Memo Column for Google Chrome
+# Hide the Memo Column
 
 Developed by: [Ryan Valizan](https://github.com/devnetkc/)
 
