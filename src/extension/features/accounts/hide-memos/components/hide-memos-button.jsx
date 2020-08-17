@@ -10,11 +10,8 @@ export const HideMemosButton = ({ toggleHiddenState }) => {
   const toggleHidden = () => {
     toggleHiddenState(!notHidden);
     controllerLookup('application').send('closeModal');
-  };
-
-  if (document.getElementById('ember1434') !== null) {
     document.getElementById('ember1434').remove();
-  }
+  };
 
   return (
     <div
