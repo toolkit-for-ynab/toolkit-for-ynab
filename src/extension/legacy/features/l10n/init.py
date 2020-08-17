@@ -32,7 +32,7 @@ def export_l10ns():
     html = response.read()
     return (html.find('success status') >= 0)
 
-def donwload_l10ns():
+def download_l10ns():
     """Download all l10ns in zip archive."""
     url = API_PREFIX + 'download/' + FILENAME + KEY_SUFFIX
     l10ns_file = urllib2.urlopen(url)
@@ -61,7 +61,7 @@ def unpack(lang_completed):
                 with open(os.path.join(DEST_DIR, name), 'r+') as f:
                     content = f.read()
                     f.seek(0, 0)
-                    f.write('/* eslint-disable */\nynabToolKit.l10nData = ' + content)
+                    f.write('/* eslint-disable */\n// prettier-ignore\nynabToolKit.l10nData = ' + content)
     for root, dirs, files in os.walk(DEST_DIR):
         for name in dirs:
             shutil.rmtree(os.path.join(root, name))
@@ -76,16 +76,20 @@ def rename():
 def create_settings(lang_completed):
     """Generate settings.json file."""
     settings = {
-         "name": "l10n",
-         "type": "select",
-      "default": "0",
-      "section": "general",
+        "name": "l10n",
+        "type": "select",
+        "default": "0",
+        "section": "general",
         "title": "Localization of YNAB",
-  "description": "Localization of interface.",
-      "options": [
-                { "name": "Default", "value": "0" }
-             ],
-      "actions": {}}
+        "description": "Localization of interface.",
+        "options": [{
+            "name": "Default",
+            "value": "0"
+        }],
+        "actions": {
+            "0": ["injectScript", "default.js"]
+        }
+    }
     for root, dirs, files in os.walk(DEST_DIR):
         for name in files:
             if lang_completed[name.split('.')[0]] != 0:
@@ -101,7 +105,7 @@ def create_settings(lang_completed):
 
 lang_completed = get_l10ns_stats()
 export_l10ns()
-donwload_l10ns()
+download_l10ns()
 unpack(lang_completed)
 rename()
 create_settings(lang_completed)

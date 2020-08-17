@@ -1,4 +1,6 @@
-{
+/* eslint-disable */
+// prettier-ignore
+ynabToolKit.l10nData = {
   "app.done": "Done",
   "app.continue": "Continue",
   "app.ok": "OK",
