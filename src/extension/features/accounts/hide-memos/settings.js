@@ -1,8 +1,9 @@
 module.exports = {
   name: 'HideMemos',
   type: 'checkbox',
-  default: false,
+  default: true,
   section: 'accounts',
-  title: 'Hideable Memo Column',
-  description: 'Allows Memo column to be toggle on/off using View filter on the accounts page.',
+  title: 'Hidable Memo Column',
+  description:
+    'Allows memo column to be toggled on/off using the "View" filter on the accounts page.',
 };
