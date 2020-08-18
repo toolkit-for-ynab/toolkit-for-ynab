@@ -71,14 +71,16 @@
   },
   "defaultFeatures": [
     "BudgetBalanceToZero",
+    "BulkEditMemo",
     "EnlargeCategoriesDropdown",
+    "FilterCategories",
     "IncomeVsExpenseHoverHighlight",
     "PrintingImprovements",
     "RightClickToEdit",
     "ShowIntercom",
     "SplitKeyboardShortcut",
-    "ToolkitReports",
-    "FilterCategories"
+    "ToggleAccountColumns",
+    "ToolkitReports"
   ],
   "husky": {
     "hooks": {

@@ -26,8 +26,7 @@ function getLocalizations(callback) {
 
       function handleNode(node) {
         if (node.type === 'CallExpression' && node.callee.name === 'l10n') {
-          const { arguments } = node;
-          const [localizationKeyNode, defaultStringNode] = arguments;
+          const [localizationKeyNode, defaultStringNode] = node.arguments;
           const errors = [];
 
           if (!localizationKeyNode || localizationKeyNode.type !== 'Literal') {
@@ -68,7 +67,7 @@ function getLocalizations(callback) {
           handler(node);
 
           for (let key in node) {
-            if (node.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(node, key)) {
               const value = node[key];
               if (value instanceof acorn.Node) {
                 visit(value);
@@ -96,7 +95,8 @@ getLocalizations((toolkitStrings, otherStrings) => {
     .sort((a, b) => {
       if (a[0] < b[0]) {
         return -1;
-      } else if (a[0] > b[0]) {
+      }
+      if (a[0] > b[0]) {
         return 1;
       }
 
@@ -122,7 +122,7 @@ getLocalizations((toolkitStrings, otherStrings) => {
   };
 
   for (const key in otherStrings) {
-    if (otherStrings.hasOwnProperty(key) && !allStrings[key]) {
+    if (Object.prototype.hasOwnProperty.call(otherStrings, key) && !allStrings[key]) {
       console.error(`No localization key for ${key}. Use a new key with the "toolkit." prefix.`);
     }
   }

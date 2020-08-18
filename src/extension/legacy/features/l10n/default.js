@@ -1138,6 +1138,7 @@ ynabToolKit.l10nData = {
   "toolkit.accountsBulkManagePayees": "Manage Payees",
   "toolkit.assets": "Assets",
   "toolkit.checkCreditBalances": "Rectify Difference:",
+  "toolkit.checkShowMenuColumn": "Check Show Memo Column",
   "toolkit.confirmCancelationOfTransactionChanges": "Discard changes to this transaction?",
   "toolkit.debts": "Debts",
   "toolkit.diff": "Difference",
@@ -1162,5 +1163,6 @@ ynabToolKit.l10nData = {
   "toolkit.outflows": "Outflows",
   "toolkit.pacing": "PACING",
   "toolkit.reports": "Toolkit Reports",
+  "toolkit.showMemoColumn": "Show Memo Column",
   "toolkit.toggleSplits": "Toggle Splits"
 }
