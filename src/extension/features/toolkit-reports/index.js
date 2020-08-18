@@ -45,7 +45,7 @@ export class ToolkitReports extends Feature {
           .append($('<i>', { class: 'flaticon stroke document-4' }))
           .append(
             $('<div>', { class: 'tk-navlink__label' }).text(
-              l10n('toolkit.reports') || 'Toolkit Reports'
+              l10n('toolkit.reports', 'Toolkit Reports')
             )
           )
       );

@@ -22,7 +22,7 @@
       "value": "catalan"
     },
     {
-      "name": "Portuguese, Brazilian (83%)",
+      "name": "Portuguese, Brazilian (82%)",
       "value": "portuguese, brazilian"
     },
     {
@@ -66,7 +66,7 @@
       "value": "japanese"
     },
     {
-      "name": "German (60%)",
+      "name": "German (59%)",
       "value": "german"
     },
     {
@@ -82,7 +82,7 @@
       "value": "italian"
     },
     {
-      "name": "Chinese Traditional (20%)",
+      "name": "Chinese Traditional (28%)",
       "value": "chinese traditional"
     },
     {
@@ -146,7 +146,7 @@
     "vietnamese": ["injectScript", "locales/Vietnamese.js", "injectScript", "main.js"],
     "romanian": ["injectScript", "locales/Romanian.js", "injectScript", "main.js"],
     "slovenian": ["injectScript", "locales/Slovenian.js", "injectScript", "main.js"],
-    "german": ["injectScript", "locales/German.js", "injectScript", "main.js"],
+    "0": ["injectScript", "default.js"],
     "dutch": ["injectScript", "locales/Dutch.js", "injectScript", "main.js"],
     "portuguese, brazilian": [
       "injectScript",
@@ -168,6 +168,7 @@
     "lithuanian": ["injectScript", "locales/Lithuanian.js", "injectScript", "main.js"],
     "french": ["injectScript", "locales/French.js", "injectScript", "main.js"],
     "catalan": ["injectScript", "locales/Catalan.js", "injectScript", "main.js"],
+    "german": ["injectScript", "locales/German.js", "injectScript", "main.js"],
     "russian": ["injectScript", "locales/Russian.js", "injectScript", "main.js"],
     "finnish": ["injectScript", "locales/Finnish.js", "injectScript", "main.js"],
     "norwegian": ["injectScript", "locales/Norwegian.js", "injectScript", "main.js"],
