@@ -19,9 +19,8 @@ export const HideMemosButton = ({ toggleHiddenState }) => {
       <button onClick={toggleHidden} aria-label="Check Hide Memo Column" role="checkbox">
         <div className={`flaticon stroke ynab-checkbox-button-square ${label}`}></div>
       </button>
-      <label className="label-checkbox">
-        {` `}
-        {l10n('toolkit.hideMemoColumn', 'Show Memo Column')}
+      <label onClick={toggleHidden} className="label-checkbox">
+        &nbsp;{l10n('toolkit.hideMemoColumn', 'Show Memo Column')}
       </label>
     </div>
   );
