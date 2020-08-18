@@ -5,7 +5,7 @@ import { l10n, getToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 export const HideMemosButton = ({ toggleHiddenState }) => {
   const notHidden = getToolkitStorageKey('hide-memos', true);
-  const label = notHidden ? l10n('app.show', 'is-checked') : l10n('app.hide', 'not-checked');
+  const label = notHidden ? 'is-checked' : 'not-checked';
 
   const toggleHidden = () => {
     toggleHiddenState(!notHidden);
@@ -30,7 +30,10 @@ export const HideMemosButton = ({ toggleHiddenState }) => {
       >
         <div className={`flaticon stroke ynab-checkbox-button-square ${label}`}></div>
       </button>
-      <label className="label-checkbox">&nbsp;Hide Memo Column</label>
+      <label className="label-checkbox">
+        {` `}
+        {l10n('toolkit.hideMemoColumn', 'Show Memo Column')}
+      </label>
     </div>
   );
 };
