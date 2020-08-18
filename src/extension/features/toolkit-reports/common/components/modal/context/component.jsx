@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ModalContainer } from '../components/modal-container/component';
+import { ModalContainer } from '../components/modal-container';
 
 const { Provider, Consumer } = React.createContext({
   showModal: () => {},
