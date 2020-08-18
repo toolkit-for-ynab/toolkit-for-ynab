@@ -20,7 +20,8 @@ const EditMemo = () => {
         }
       });
     });
-    setIsEditMode(false);
+
+    controllerLookup('accounts').send('closeModal');
   };
 
   return (
@@ -34,7 +35,7 @@ const EditMemo = () => {
               value={memoInputValue}
               onChange={e => setMemoInputValue(e.target.value)}
             />
-            <div className="ynab-grid-actions tk-grid-actions">
+            <div className="tk-grid-actions">
               <button
                 className="button button-cancel tk-memo-cancel"
                 onClick={() => setIsEditMode(false)}
@@ -52,7 +53,7 @@ const EditMemo = () => {
             <i className="flaticon stroke document-1 ynab-new-icon"></i>
             {controllerLookup('accounts').get('areChecked').length === 1
               ? l10n('toolkit.editMemo', 'Edit Memo')
-              : l10n('toolkit.editMemoMany', 'Edit Memos')}
+              : l10n('toolkit.editMemoOther', 'Edit Memos')}
           </button>
         )}
       </li>

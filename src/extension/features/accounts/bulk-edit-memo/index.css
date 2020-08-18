@@ -1,17 +1,10 @@
-.ynab-grid-actions.tk-grid-actions {
-  text-align: right;
-  background-color: inherit;
+.tk-grid-actions {
+  display: flex;
+  justify-content: flex-end;
 }
 
-.tk-bulk-edit-memo .tk-memo-cancel {
-  display: inline !important;
-  width: auto !important;
-  border: 1px solid var(--primary_button_background) !important;
-  padding: 0.2rem 1.1rem !important;
-}
-
-.tk-bulk-edit-memo .tk-memo-save {
-  display: inline !important;
-  width: auto !important;
-  padding: 0.2rem 1.1rem !important;
+.tk-bulk-edit-memo .tk-grid-actions button.tk-memo-cancel {
+  border: 2px solid var(--secondary_action);
+  padding: 0.4em 0.6em;
+  margin-right: 5px;
 }
