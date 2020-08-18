@@ -20,13 +20,8 @@ export class HideTotalAvailable extends Feature {
   }
 
   hideTotalAvailable(element) {
-    // Attempt to target the english string, `TOTAL AVAILABLE`, but if that's not
-    // found, try the localized version of the string.
-    const englishHeading = 'TOTAL AVAILABLE';
-    const localizedHeading = l10n('inspector.totalAvailable', englishHeading);
-    const headingEl =
-      $(element).find(`h3:contains(${englishHeading})`)[0] ||
-      $(element).find(`h3:contains(${localizedHeading})`)[0];
+    const localizedHeading = l10n('inspector.totalAvailable', 'TOTAL AVAILABLE');
+    const headingEl = $(element).find(`h3:contains(${localizedHeading})`)[0];
 
     if ($(headingEl).hasClass('hidden')) {
       return;

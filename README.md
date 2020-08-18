@@ -3,6 +3,7 @@
 </p>
 
 [![Build Status](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab.svg?branch=master)](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab)
+[![Chat](https://img.shields.io/discord/743988612382589010?logo=discord)](https://discord.gg/jFKzZR2)
 
 Toolkit for YNAB is a browser extension that enhances your experience with the YNAB Web Application.
 
@@ -73,11 +74,34 @@ This extension uses three main things in its build process:
 - Whilst developing, you may prefer to run `yarn watch` which will monitor the project
   directory for changes and run `yarn build:development` automatically for you.
 
-5. The built extension will be available in the `dist/extension` folder. Navigate to `chrome://extensions`
-   and select the `dist/extension` folder as the folder that you would like to load.
-   - turn on `Developer mode`
-   - click on `Load unpacked`
-6. You may need to reload the Chrome plugin if it's been already installed. Visit `chrome://extensions` and click the reload icon ![](https://camo.githubusercontent.com/4d41ad79a8241b062ea59fa332b39028c1469703/68747470733a2f2f636c2e6c792f31633167304633443142316f2f496d616765253230323031382d30362d3034253230617425323031362e32302e33342e706e67)
+5.  Deploying the extension:
+
+    - Chrome:
+      - The built extension will be available in the `dist/extension` folder. Navigate to `chrome://extensions`
+        and select the `dist/extension` folder as the folder that you would like to load.
+      - turn on `Developer mode`
+      - click on `Load unpacked`
+    - Firefox:
+
+      - Install web-ext
+
+            $ yarn global add web-ext
+
+      - _Also, make sure PATH is set up. Something like this in ~/.bash_profile_
+
+            $ PATH=$PATH:$(yarn global bin)
+
+      - Build and run in Firefox
+
+            $ web-ext run --source-dir dist/extension/
+
+      - You can also disable reloading like this:
+
+             web-ext run --no-reload --source-dir dist/extension/
+
+_You may need to reload the Chrome plugin if it's been already installed. Visit `chrome://extensions` and click the reload icon_
+
+![](https://camo.githubusercontent.com/4d41ad79a8241b062ea59fa332b39028c1469703/68747470733a2f2f636c2e6c792f31633167304633443142316f2f496d616765253230323031382d30362d3034253230617425323031362e32302e33342e706e67)
 
 # Development Methodology
 

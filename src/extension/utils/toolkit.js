@@ -65,7 +65,9 @@ export function l10n(key, defaultValue) {
   const isDevelopment = ynabToolKit.environment === 'development';
   if (!ynabToolKit.l10nData) {
     if (isDevelopment) {
-      console.log('Make sure to call l10n inside a feature lifecycle method.');
+      console.warn(
+        `Localization data not loaded yet for ${key}!!! Make sure to call l10n within lifecycle or render event!`
+      );
     }
 
     return defaultValue;
