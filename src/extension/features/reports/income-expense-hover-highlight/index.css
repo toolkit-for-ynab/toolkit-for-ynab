@@ -8,7 +8,7 @@ body.theme-dark {
 body.theme-new-default,
 body.theme-classic {
   --tk-expense-rep-hl-currency: rgb(255, 255, 255, 0.4);
-  --tk-expense-rep-hl-neg: #ff3a3a;
+  --tk-expense-rep-hl-neg: #ff5b5b;
 }
 body.theme-new-default {
   --tk-expense-rep-hl-bg: var(--sidebar_background);
