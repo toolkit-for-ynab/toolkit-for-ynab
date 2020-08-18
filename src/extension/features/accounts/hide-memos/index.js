@@ -16,12 +16,7 @@ export const HideMemosButton = ({ toggleHiddenState }) => {
 
   return (
     <div className="modal-account-view-menu">
-      <button
-        onClick={toggleHidden}
-        className={`${label}`}
-        aria-label="Check Hide Memo Column"
-        role="checkbox"
-      >
+      <button onClick={toggleHidden} aria-label="Check Hide Memo Column" role="checkbox">
         <div className={`flaticon stroke ynab-checkbox-button-square ${label}`}></div>
       </button>
       <label className="label-checkbox">
