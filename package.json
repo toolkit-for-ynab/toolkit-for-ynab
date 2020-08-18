@@ -74,12 +74,12 @@
     "BulkEditMemo",
     "EnlargeCategoriesDropdown",
     "FilterCategories",
-    "HideMemos",
     "IncomeVsExpenseHoverHighlight",
     "PrintingImprovements",
     "RightClickToEdit",
     "ShowIntercom",
     "SplitKeyboardShortcut",
+    "ToggleAccountColumns",
     "ToolkitReports"
   ],
   "husky": {
