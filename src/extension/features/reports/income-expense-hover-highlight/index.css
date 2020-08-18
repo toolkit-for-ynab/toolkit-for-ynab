@@ -18,7 +18,7 @@ body.theme-classic {
   --tk-expense-rep-hl-bg: var(--header_background);
 }
 
-body.theme-dark .income-expense-table .income-expense-row:hover {
+body.theme-dark {
   --tk-expense-rep-hl-bg: rgb(252, 255, 255, 0.4);
   --tk-expense-rep-hl-currency: rgb(0, 0, 0, 0.4);
   --tk-expense-rep-hl-neg: #b70000;
