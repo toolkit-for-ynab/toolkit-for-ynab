@@ -67,7 +67,7 @@ function getLocalizations(callback) {
           handler(node);
 
           for (let key in node) {
-            if (node.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(node, key)) {
               const value = node[key];
               if (value instanceof acorn.Node) {
                 visit(value);
