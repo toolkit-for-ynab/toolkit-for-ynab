@@ -37,7 +37,7 @@ ShowMemoButton.propTypes = {
   toggleState: PropTypes.func.isRequired,
 };
 
-export class HideMemos extends Feature {
+export class ToggleAccountColumns extends Feature {
   injectCSS() {
     return require('./index.css');
   }
