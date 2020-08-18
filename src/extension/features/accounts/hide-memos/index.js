@@ -1,8 +1,8 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { componentAppend } from 'toolkit/extension/utils/react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { l10n, getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
-import * as PropTypes from 'prop-types';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export const HideMemosButton = ({ toggleHiddenState }) => {
