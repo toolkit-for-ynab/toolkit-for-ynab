@@ -1,0 +1,11 @@
+body.toolkit-hide-memos .ynab-grid-cell-memo {
+  display: none !important;
+}
+
+@-moz-document url-prefix() {
+  body.toolkit-hide-memos .ynab-grid-cell-memo {
+    visibility: collapse !important;
+    border-right: none;
+    display: table-cell !important;
+  }
+}
