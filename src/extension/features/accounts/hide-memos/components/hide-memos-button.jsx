@@ -12,19 +12,11 @@ export const HideMemosButton = ({ toggleHiddenState }) => {
     controllerLookup('application').send('closeModal');
   };
 
-  if (document.getElementById('ember1434') !== null) {
-    document.getElementById('ember1434').remove();
-  }
-
   return (
-    <div
-      title="Hide Memo Column"
-      id="ember1434"
-      className="modal-account-view-menu ynab-checkbox ember-view"
-    >
+    <div className="modal-account-view-menu">
       <button
         onClick={toggleHidden}
-        className={`ynab-checkbox-button js-ynab-checkbox-button ${label}`}
+        className={`${label}`}
         aria-label="Check Hide Memo Column"
         role="checkbox"
       >
