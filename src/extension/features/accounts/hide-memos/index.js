@@ -23,13 +23,13 @@ export class HideMemos extends Feature {
   }
 
   invoke() {
-    const initialState = getToolkitStorageKey('hide-memos', true);
+    const initialState = getToolkitStorageKey('hide-memos', false);
     this.setHiddenState(initialState);
   }
 
   setHiddenState = state => {
     setToolkitStorageKey('hide-memos', state);
-    if (state) {
+    if (!state) {
       $('body').addClass('toolkit-hide-memos');
     } else {
       $('body').removeClass('toolkit-hide-memos');
