@@ -1,40 +1,28 @@
-body.theme-new-default,
-body.theme-classic,
-body.theme-dark {
+body.theme-dark,
+body.theme-classic {
   --tk-expense-rep-hl-color: #fcffff;
   --tk-expense-rep-hl-pos: #b4d888;
+  --tk-expense-rep-hl-neg: #fff;
+  --tk-text-stroke: 0.779px;
 }
 
-body.theme-new-default,
-body.theme-classic {
-  --tk-expense-rep-hl-currency: rgb(255, 255, 255, 0.4);
-  --tk-expense-rep-hl-neg: #ff5b5b;
-}
 body.theme-new-default {
-  --tk-expense-rep-hl-bg: var(--sidebar_background);
+  --tk-expense-rep-hl-color: var(--default_text);
+  --tk-expense-rep-hl-pos: #577f2c;
+  --tk-expense-rep-hl-neg: #ff6b6b;
+  --tk-text-stroke: 0;
 }
 
 body.theme-classic {
-  --tk-expense-rep-hl-bg: var(--header_background);
-}
-
-body.theme-dark {
-  --tk-expense-rep-hl-bg: rgb(252, 255, 255, 0.4);
-  --tk-expense-rep-hl-currency: rgb(0, 0, 0, 0.4);
-  --tk-expense-rep-hl-neg: #b70000;
+  --tk-text-stroke: 0.579px;
 }
 
 .income-expense-row.income-expense-totals:hover:not(.income-expense-h1) .income-expense-column,
 .income-expense-row:hover:not(.income-expense-h1):not(.income-expense-first-column)
   .income-expense-column,
 .income-expense-row:hover:not(.income-expense-h1) .income-expense-first-column {
-  background: var(--tk-expense-rep-hl-bg) !important;
+  background: var(--table_row_background_selected) !important;
   color: var(--tk-expense-rep-hl-color) !important;
-}
-
-.income-expense-net-income .income-expense-row:hover span.currency:not(.negative):not(.positive),
-.income-expense-row:hover :not(div) span.currency:not(.negative):not(.positive) {
-  color: var(--tk-expense-rep-hl-currency) !important;
 }
 
 .income-expense-row:hover span.positive {
@@ -43,4 +31,5 @@ body.theme-dark {
 
 .income-expense-row:hover span.negative {
   color: var(--tk-expense-rep-hl-neg) !important;
+  -webkit-text-stroke: var(--tk-text-stroke) #c70000;
 }
