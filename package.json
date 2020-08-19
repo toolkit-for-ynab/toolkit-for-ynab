@@ -71,6 +71,7 @@
   },
   "defaultFeatures": [
     "BudgetBalanceToZero",
+    "BulkEditMemo",
     "EnlargeCategoriesDropdown",
     "IncomeVsExpenseHoverHighlight",
     "PrintingImprovements",
