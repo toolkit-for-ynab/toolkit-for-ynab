@@ -1,46 +1,23 @@
-body.theme-new-default,
-body.theme-classic,
-body.theme-dark {
-  --tk-expense-rep-hl-color: #fcffff;
-  --tk-expense-rep-hl-pos: #b4d888;
+body.theme-classic .income-expense-row:hover {
+  color: var(--sidebar_text_default) !important;
 }
 
-body.theme-new-default,
-body.theme-classic {
-  --tk-expense-rep-hl-currency: rgb(255, 255, 255, 0.4);
-  --tk-expense-rep-hl-neg: #ff5b5b;
-}
-body.theme-new-default {
-  --tk-expense-rep-hl-bg: var(--sidebar_background);
+body.theme-classic .income-expense-row:hover .income-expense-first-column {
+  color: var(--sidebar_text_default) !important;
 }
 
-body.theme-classic {
-  --tk-expense-rep-hl-bg: var(--header_background);
+body.theme-classic .income-expense-row.income-expense-totals:hover .income-expense-column {
+  color: var(--sidebar_text_default) !important;
 }
 
-body.theme-dark {
-  --tk-expense-rep-hl-bg: rgb(252, 255, 255, 0.4);
-  --tk-expense-rep-hl-currency: rgb(0, 0, 0, 0.4);
-  --tk-expense-rep-hl-neg: #b70000;
+.income-expense-row:hover {
+  background: var(--table_row_background_selected) !important;
 }
 
-.income-expense-row.income-expense-totals:hover:not(.income-expense-h1) .income-expense-column,
-.income-expense-row:hover:not(.income-expense-h1):not(.income-expense-first-column)
-  .income-expense-column,
-.income-expense-row:hover:not(.income-expense-h1) .income-expense-first-column {
-  background: var(--tk-expense-rep-hl-bg) !important;
-  color: var(--tk-expense-rep-hl-color) !important;
+.income-expense-row:hover .income-expense-first-column {
+  background: var(--table_row_background_selected) !important;
 }
 
-.income-expense-net-income .income-expense-row:hover span.currency:not(.negative):not(.positive),
-.income-expense-row:hover :not(div) span.currency:not(.negative):not(.positive) {
-  color: var(--tk-expense-rep-hl-currency) !important;
-}
-
-.income-expense-row:hover span.positive {
-  color: var(--tk-expense-rep-hl-pos) !important;
-}
-
-.income-expense-row:hover span.negative {
-  color: var(--tk-expense-rep-hl-neg) !important;
+.income-expense-row.income-expense-totals:hover .income-expense-column {
+  background: var(--table_row_background_selected) !important;
 }
