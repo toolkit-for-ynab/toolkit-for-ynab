@@ -87,7 +87,7 @@ export class BudgetProgressBars extends Feature {
         `linear-gradient(
           to right,
           var(--tk-color-goal-fill) ${percent}%,
-          var(--table_row_background_default) ${percent}%
+          var(--table_row_background) ${percent}%
         )`
       );
     } else {
@@ -105,9 +105,9 @@ export class BudgetProgressBars extends Feature {
       'background',
       this.generateProgressBarStyle(
         [
-          'var(--table_header_background_default)',
+          'var(--table_header_background)',
           'var(--tk-color-progress-bar-month-indicator)',
-          'var(--table_header_background_default)',
+          'var(--table_header_background)',
         ],
         [this.monthProgress - progressIndicatorWidth, this.monthProgress]
       )
@@ -135,9 +135,9 @@ export class BudgetProgressBars extends Feature {
             this.generateProgressBarStyle(
               [
                 'var(--tk-color-pacing-fill)',
-                'var(--table_row_background_default)',
+                'var(--table_row_background)',
                 'var(--tk-color-progress-bar-month-indicator)',
-                'var(--table_row_background_default)',
+                'var(--table_row_background)',
               ],
               [cappedBudgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
             )
@@ -150,7 +150,7 @@ export class BudgetProgressBars extends Feature {
                 'var(--tk-color-pacing-fill)',
                 'var(--tk-color-progress-bar-month-indicator)',
                 'var(--tk-color-pacing-fill)',
-                'var(--table_row_background_default)',
+                'var(--table_row_background)',
               ],
               [this.monthProgress - progressIndicatorWidth, this.monthProgress, cappedBudgetedPace]
             )
@@ -161,9 +161,9 @@ export class BudgetProgressBars extends Feature {
           'background',
           this.generateProgressBarStyle(
             [
-              'var(--table_row_background_default)',
+              'var(--table_row_background)',
               'var(--tk-color-progress-bar-month-indicator)',
-              'var(--table_row_background_default)',
+              'var(--table_row_background)',
             ],
             [this.monthProgress - progressIndicatorWidth, this.monthProgress]
           )
