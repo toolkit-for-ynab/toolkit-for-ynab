@@ -1,40 +1,38 @@
 @import './variables.scss';
 
 .tk-button {
-  background-color: $ynab-blue;
-  background: $ynab-blue;
-  border-radius: .4rem;
+  background-color: var(--button_primary_background);
+  background: var(--button_primary_background);
+  border-radius: 0.4rem;
   color: $white;
   cursor: pointer;
   font-size: 1rem;
-  padding: .3rem .6rem;
+  padding: 0.3rem 0.6rem;
   text-align: left;
   white-space: nowrap;
 
   &:hover {
     color: $white;
-    background: $ynab-blue-3;
-    background-color: $ynab-blue-3;
+    background: var(--button_primary_background_active);
+    background-color: var(--button_primary_background_active);
   }
 
   &--medium {
-    font-size: .9rem;
+    font-size: 0.9rem;
   }
 
   &--small {
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
 
   &--hollow {
     background: transparent;
     background-color: transparent;
-    border: 2px solid $grey-8;
-    color: $ynab-blue;
+    border: 2px solid var(--action_secondary_border);
+    color: var(--action_primary);
 
     &:hover {
-      background: transparent;
-      background-color: transparent;
-      color: $ynab-blue-3;
+      border: 2px solid var(--button_primary_background_active);
     }
   }
 
