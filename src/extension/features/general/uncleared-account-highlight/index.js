@@ -1,7 +1,8 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { getEmberView } from 'toolkit/extension/utils/ember';
+import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 const INDICATOR_CLASS = 'tk-uncleared-account-indicator';
-const INDICATOR_SELECTOR = `div.${INDICATOR_CLASS}`;
 const INDICATOR_ELEMENT = `<div class="${INDICATOR_CLASS} flaticon solid copyright"></div>`;
 
 export class UnclearedAccountHighlight extends Feature {
@@ -11,92 +12,6 @@ export class UnclearedAccountHighlight extends Feature {
 
   shouldInvoke() {
     return true;
-  }
-
-  invoke() {
-    this.updateUnclearedIndicatorOnSidebarAccounts();
-  }
-
-  async updateUnclearedIndicatorOnSidebarAccounts() {
-    const accountMap = await this.buildAccountMap();
-
-    Object.values(accountMap).forEach(account => {
-      const accountNameElement = $(`div.nav-account-name.user-data[title="${account.name}"]`);
-      const accountContainer = accountNameElement.parent();
-      const accountBalanceElement = accountContainer.children('.nav-account-value.user-data');
-      const isPositiveAccountBalance =
-        accountContainer
-          .children('.nav-account-value.user-data')
-          .children('.user-data.currency.positive').length > 0;
-      const isIndicatorShowing = accountContainer.children(INDICATOR_SELECTOR).length !== 0;
-      const shouldShowIndicator = account.unclearedTransactions.length > 0;
-
-      if (shouldShowIndicator) {
-        if (!isIndicatorShowing) {
-          accountBalanceElement.after(INDICATOR_ELEMENT);
-        }
-
-        if (isPositiveAccountBalance) {
-          // If the indicator is next to a positive balance, we need to do some layout tweaks
-          accountBalanceElement.next().addClass('tk-uncleared-account-indicator-positive');
-        }
-      } else {
-        accountContainer.children(INDICATOR_SELECTOR).remove();
-        accountBalanceElement.next().removeClass('tk-uncleared-account-indicator-positive');
-      }
-    });
-  }
-
-  async getAllVisibleAccounts() {
-    const sidebarViewModel = await ynab.YNABSharedLib.getBudgetViewModel_SidebarViewModel();
-    const allAccounts = sidebarViewModel.allAccounts;
-
-    if (!allAccounts) return [];
-
-    return allAccounts.filter(account => !account.hidden);
-  }
-
-  async getAllVisibleTransactions() {
-    const allAccountTransactionsViewModel = await ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel();
-    const allVisibleTransactions = allAccountTransactionsViewModel.visibleTransactionDisplayItems;
-
-    if (!allVisibleTransactions) return [];
-
-    return allVisibleTransactions;
-  }
-
-  /**
-   * Returns a map keyed by account IDs, with each element containing an account name,
-   * and a list of uncleared transactions.
-   *
-   * Example:
-   *
-   * {
-   *   '43dcbff6-ccf4-4367-9d13-d6d7e9beec39': {
-   *     name: "Bank Account Name",
-   *     unclearedTransactions: []
-   *   }
-   * }
-   */
-  async buildAccountMap() {
-    let accountMap = {};
-
-    const accounts = await this.getAllVisibleAccounts();
-    accounts.forEach(account => {
-      accountMap[account.entityId] = {
-        name: account.accountName,
-        unclearedTransactions: [],
-      };
-    });
-
-    const transactions = await this.getAllVisibleTransactions();
-    transactions.forEach(transaction => {
-      if (!transaction.account.hidden && this.isUnclearedTransaction(transaction)) {
-        accountMap[transaction.account.entityId].unclearedTransactions.push(transaction);
-      }
-    });
-
-    return accountMap;
   }
 
   isUnclearedTransaction(transaction) {
@@ -112,18 +27,57 @@ export class UnclearedAccountHighlight extends Feature {
     );
   }
 
-  observe(changedNodes) {
-    if (!this.shouldInvoke()) return;
+  getIndicatorState(account) {
+    const accountCalculation = account.getAccountCalculation();
+    console.log(accountCalculation);
+  }
 
-    // We want to invoke when the user expands the budget account list
-    if (changedNodes.has('svg-icon chevronDown')) {
-      this.invoke();
+  updateSidebarIndicator(element) {
+    console.log('rendering');
+    // the nav-account-icons-right container is hard-coded as 1rem, when we add the
+    // cleared icon to it, that's not enough space if there's already an icon in the space
+    // so we need to add a class which overrides it to 2rem.
+    let hasAnyClearedIndicator = false;
+    let hasOtherNavAccountRightIcons = false;
+    const navAccounts = element.querySelectorAll('.nav-account-row');
+
+    navAccounts.forEach(navAccount => {
+      const emberView = getEmberView(navAccount.id);
+      if (!emberView) {
+        return;
+      }
+
+      const account = emberView.data;
+      const accountCalculation = account.getAccountCalculation();
+      const shouldShowIndicator = !!accountCalculation.unclearedBalance;
+      const isIndicatorShowing = navAccount.querySelector(`.${INDICATOR_CLASS}`) !== null;
+      const navAccountIconsRight = navAccount.querySelector('.nav-account-icons-right');
+
+      if ($(navAccountIconsRight).children(`:not(.${INDICATOR_CLASS})`).length) {
+        hasOtherNavAccountRightIcons = true;
+      }
+
+      if (shouldShowIndicator) {
+        hasAnyClearedIndicator = true;
+
+        if (!isIndicatorShowing) {
+          $(navAccountIconsRight).append(INDICATOR_ELEMENT);
+        }
+      } else if (isIndicatorShowing) {
+        navAccount.querySelector(`.${INDICATOR_CLASS}`).remove();
+      }
+    });
+
+    console.log({ hasAnyClearedIndicator, hasOtherNavAccountRightIcons });
+
+    if (hasAnyClearedIndicator && hasOtherNavAccountRightIcons) {
+      element.classList.add('tk-nav-account-icons-right-space');
+    } else {
+      element.classList.remove('tk-nav-account-icons-right-space');
     }
   }
 
-  onRouteChanged() {
-    if (this.shouldInvoke()) {
-      this.invoke();
-    }
+  invoke() {
+    addToolkitEmberHook(this, 'accounts-list', 'didRender', this.updateSidebarIndicator);
   }
 }

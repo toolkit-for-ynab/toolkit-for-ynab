@@ -1,13 +1,14 @@
 .tk-uncleared-account-indicator {
-  line-height: 18px;
-  width: 20px;
-  margin-left: 10.8px;
-  margin-bottom: 0px;
-  margin-right: -8px;
-  display: flex;
-  align-items: center;
+  font-size: 0.8rem;
+  margin-top: 2px;
 }
 
-.tk-uncleared-account-indicator-positive {
-  margin-left: 5.8px;
+.tk-nav-account-icons-right-space .nav-account-icons-right svg {
+  position: static !important;
+}
+
+.tk-nav-account-icons-right-space .nav-account-icons-right {
+  display: flex;
+  align-items: center;
+  width: 2rem;
 }
