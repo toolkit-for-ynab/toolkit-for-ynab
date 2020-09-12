@@ -3845,10 +3845,10 @@ hash.js@^1.0.0, hash.js@^1.0.3:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
 
-highcharts@7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-7.0.0.tgz#07b3d9a23715088a48965f6fae080bc9c20c01dd"
-  integrity sha512-QftoYYE37lURgKT2FAFdze0W7RPDDWLRs1AgFADjz2zAc8SSPFuFNLkifxHAlVvRyTU/09Q1bk2uX1WPxNX3Eg==
+highcharts@7.2.2:
+  version "7.2.2"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-7.2.2.tgz#94d6bae545d7f0fbf49615b28640f5fdbf99d11e"
+  integrity sha512-jRKujQuPKHLgGQd2sByBI9K5m56CInm2augVZnBYqdmyoU88hcI62uuAXHvxC3FW8YY0FJ74A1uw6sxrcmcmvg==
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
