@@ -62,7 +62,25 @@ export function removeToolkitStorageKey(key) {
 }
 
 export function l10n(key, defaultValue) {
-  return (ynabToolKit.l10nData && ynabToolKit.l10nData[key]) || defaultValue;
+  const isDevelopment = ynabToolKit.environment === 'development';
+  if (!ynabToolKit.l10nData) {
+    if (isDevelopment) {
+      console.log('Make sure to call l10n inside a feature lifecycle method.');
+    }
+
+    return defaultValue;
+  }
+
+  const localizedString = ynabToolKit.l10nData[key];
+  if (!localizedString) {
+    if (isDevelopment) {
+      console.warn(`No localization key for ${key}, try running "yarn l10n:update"`);
+    }
+
+    return defaultValue;
+  }
+
+  return localizedString;
 }
 
 export function l10nMonth(monthIndex, short = MonthStyle.Long) {

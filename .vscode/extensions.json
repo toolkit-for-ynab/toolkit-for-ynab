@@ -2,6 +2,6 @@
   "recommendations": [
     "editorconfig.editorconfig",
     "dbaeumer.vscode-eslint",
-    "robinbentley.sass-indented"
+    "syler.sass-indented"    
   ]
 }

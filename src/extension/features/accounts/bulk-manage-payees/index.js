@@ -25,7 +25,7 @@ export class BulkManagePayees extends Feature {
     $('.modal-account-edit-transaction-move').before(
       $(`<li>
             <button class="toolkit-modal-select-budget-manage-payees">
-            <i class="ember-view flaticon stroke group"><!----></i>${menuText}
+            <i class="ynab-new-icon ember-view flaticon stroke group"><!----></i>${menuText}
             </button>
           </li>
           <li><hr /><li>`).click(() => {

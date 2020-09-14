@@ -61,7 +61,7 @@ export class DisplayTargetGoalAmount extends Feature {
         goalOverallFunded,
         goalTotalNeededAmount,
       } = monthlySubCategoryBudgetCalculation;
-      const { budgeted } = monthlySubCategoryBudget.get('budgeted');
+      const budgeted = monthlySubCategoryBudget.get('budgeted');
 
       let goalAmount = null;
       let applyEmphasis = false;

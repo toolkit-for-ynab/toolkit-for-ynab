@@ -5,18 +5,6 @@ import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class FilterCategories extends Feature {
-  TEXTBOX = `<div class="tk-categories-filter-wrapper">
-                <i class="tk-categories-filter-icon flaticon stroke magnifying-glass-1"></i>
-                <input id="tk-categories-filter-input" spellcheck="false"
-                placeholder="${l10n('toolkit.CategoriesFilterPlaceholder', 'Filter categories')}"
-                 title="${l10n(
-                   'toolkit.CategoriesFilterTitle',
-                   "Find the categories you're looking for..."
-                 )}"
-                 autocomplete="off" type="text" class="tk-categories-filter-input ember-view ember-text-field">
-                <button class="flaticon solid x-1 button tk-categories-filter-cancel-icon"></button>
-             </div>`;
-
   shouldInvoke = () => {
     return isCurrentRouteBudgetPage() && $('.tk-categories-filter-wrapper').length === 0;
   };
@@ -74,7 +62,18 @@ export class FilterCategories extends Feature {
   };
 
   invoke = () => {
-    let $textbox = $(this.TEXTBOX);
+    let $textbox = $(`<div class="tk-categories-filter-wrapper">
+        <i class="tk-categories-filter-icon flaticon stroke magnifying-glass-1"></i>
+        <input id="tk-categories-filter-input" spellcheck="false"
+        placeholder="${l10n('toolkit.filterCategories', 'Filter categories...')}"
+        title="${l10n(
+          'toolkit.filterCategoriesTooltip',
+          "Find the categories you're looking for..."
+        )}"
+        autocomplete="off" type="text" class="tk-categories-filter-input ember-view ember-text-field">
+        <button class="flaticon solid x-1 button tk-categories-filter-cancel-icon"></button>
+    </div>`);
+
     $textbox.find('#tk-categories-filter-input').on('keyup', this._keyUpHandler);
     $textbox.find('.tk-categories-filter-cancel-icon').on('click', this._clear);
     $('.budget-toolbar').prepend($textbox);

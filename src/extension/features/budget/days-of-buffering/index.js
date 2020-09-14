@@ -57,14 +57,14 @@ export class DaysOfBuffering extends Feature {
         .append(
           $('<div>', {
             class: 'budget-header-days-age',
-            title: l10n('budget.dob.tooltip', "Don't like AoM? Try this out instead!"),
+            title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
           })
         )
         .append(
           $('<div>', {
             class: 'budget-header-days-label',
-            text: l10n('budget.dob.title', 'Days of Buffering'),
-            title: l10n('budget.dob.tooltip', "Don't like AoM? Try this out instead!"),
+            text: l10n('toolkit.dob.title', 'Days of Buffering'),
+            title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
           })
         );
 
@@ -76,7 +76,7 @@ export class DaysOfBuffering extends Feature {
       $('.budget-header-days-age', $displayElement).attr(
         'title',
         l10n(
-          'budget.dob.noHistory',
+          'toolkit.dob.noHistory',
           'Your budget history is less than 15 days. Go on with YNAB a while.'
         )
       );
@@ -88,9 +88,9 @@ export class DaysOfBuffering extends Feature {
       $('.budget-header-days-age', $displayElement).text(`${daysOfBuffering} ${dayText}`);
       $('.budget-header-days-age', $displayElement).attr(
         'title',
-        `${l10n('budget.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}
-${l10n('budget.dob.days', 'Total days of budgeting')}: ${availableDates}
-${l10n('budget.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(averageDailyOutflow)}`
+        `${l10n('toolkit.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}
+${l10n('toolkit.dob.days', 'Total days of budgeting')}: ${availableDates}
+${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(averageDailyOutflow)}`
       );
 
       // #1475 - add an event listener to $displayElement to show the date on mouseover
