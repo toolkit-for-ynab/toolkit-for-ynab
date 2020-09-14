@@ -1,34 +1,19 @@
-import React, { useEffect } from 'react';
-export const ReconcileInputModal = () => {
-  const [shouldShow, setShouldShow] = useEffect(true);
-  const [amount, setAmount] = useEffect(0.0);
+import React from 'react';
+import '../styles.scss';
 
-  let setAmountWithValidation = e => {
-    let value = e.target.value;
-    setAmount(value);
-    if (numberValidation(value)) {
-      console.log('passed');
-    } else {
-      console.log('error');
-    }
-  };
-
-  let numberValidation = input => {
-    if (input.contains('!')) {
-      return false;
-    }
-    return true;
-  };
-  if (!shouldShow) return;
+export const ReconcileInputModal = ({ isShowing, onClose }) => {
+  if (!isShowing) return null;
   return (
-    <div className={'modal'}>
-      Attempt to auto-reconcile
-      <input type="text" onChange={setAmountWithValidation}>
-        {amount}
-      </input>{' '}
-      amount
-      <button>YES</button>
-      <button onClick={() => setShouldShow(false)}>No</button>
+    <div className="tk-modal-container">
+      <div className="tk-reconcile-modal">
+        <div> Modal Header </div>
+        <div> Modal Content </div>
+        <div>
+          <button className="button button-primary" onClick={onClose}>
+            Close
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

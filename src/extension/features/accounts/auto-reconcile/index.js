@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { AutoReconcileButton } from './components/AutoReconcileButton';
+import { AutoReconcileContainer } from './components/AutoReconcileContainer';
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 
@@ -39,7 +39,7 @@ export class AutoReconcile extends Feature {
       // Render the react component as part of the container
       container = document.getElementById(AUTO_RECONCILE_CONTAINER_ID);
       if (container) {
-        ReactDOM.render(React.createElement(AutoReconcileButton), container);
+        ReactDOM.render(React.createElement(AutoReconcileContainer), container);
       }
     }, 50);
   }
