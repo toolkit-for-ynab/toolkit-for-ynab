@@ -4,6 +4,8 @@
   &__child-row,
   &__child-summary-row,
   &__title-row--collapsed {
+    background: var(--background_primary);
+
     &:hover {
       background-color: var(--table_row_background_selected);
     }
@@ -27,7 +29,7 @@
 
     .tk-monthly-totals-row {
       &__title-cell {
-        background: var(--default_background);
+        background: inherit;
         padding-left: 0.5rem;
       }
     }
@@ -52,7 +54,7 @@
 
     .tk-monthly-totals-row {
       &__title-cell {
-        background: var(--default_background);
+        background: inherit;
         font-weight: normal;
         padding-left: 1rem;
       }
@@ -64,7 +66,7 @@
 
     .tk-monthly-totals-row {
       &__title-cell {
-        background: var(--default_background);
+        background: inherit;
         padding-left: 1rem;
       }
 

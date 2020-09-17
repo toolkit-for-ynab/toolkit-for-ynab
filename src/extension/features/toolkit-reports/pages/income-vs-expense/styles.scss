@@ -25,6 +25,7 @@ body.theme-dark {
   font-size: 0.85rem;
 
   &__net-income {
+    background: var(--background_primary);
     border-top: 3px solid var(--tk-ive-report-border-color);
     border-bottom: 3px solid var(--tk-ive-report-border-color);
     width: fit-content;
