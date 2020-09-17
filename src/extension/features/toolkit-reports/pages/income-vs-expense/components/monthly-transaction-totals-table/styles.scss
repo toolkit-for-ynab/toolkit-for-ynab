@@ -7,6 +7,10 @@
     &:hover {
       background-color: var(--table_row_background_selected);
     }
+
+    body.theme-classic &:hover {
+      color: #ffffff;
+    }
   }
 
   &__header-row,
