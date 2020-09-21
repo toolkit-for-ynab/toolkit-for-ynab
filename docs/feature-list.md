@@ -78,7 +78,11 @@ Changes the round borders on all negative numbers to square. Helps them become m
 
 ## Toolkit Reports
 
-Adds Toolkit Reports to the sidebar. Current reports include: Net Worth, Spending By Category/Payee, and Income vs Expense</details>
+Adds Toolkit Reports to the sidebar. Current reports include: Net Worth, Spending By Category/Payee, and Income vs Expense
+
+## Uncleared Account Highlight
+
+Adds a small indicator next to account balances on the sidebar to indicate not all transactions are cleared.</details>
 
 <details><summary>Budget (Click to Expand/Collapse)</summary>
 
@@ -262,6 +266,10 @@ Automatically mark transaction as cleared when you enter it manually.
 
 Move the notification bar to the bottom as an overlay. This prevents the transactions from "jumping around."
 
+## Bulk Edit Memo
+
+Adds option to edit memo on transactions to the edit menu.
+
 ## Bulk Manage Payees
 
 Adds an option to the transaction edit drop-down menu to manage payees for the current selection.
@@ -345,6 +353,10 @@ Shows a light gray background on every other transaction row.
 ## Swap cleared and flagged columns
 
 Place the Cleared column on the left and the Flagged column on the right sides of an account screen.
+
+## Toggle Memo Column
+
+Adds option to toggle the memo column as visible or not to the account register "View" menu
 
 ## Toggle Scheduled and Reconciled Transaction Buttons
 
