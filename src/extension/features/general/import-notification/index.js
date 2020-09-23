@@ -80,15 +80,15 @@ export class ImportNotification extends Feature {
           );
           let transactions = t.getImportTransactionsForAccount(account);
 
+          const toBeImported =
+            transactions.length === 1
+              ? l10n('toolkit.importNotification', 'transaction to be imported.')
+              : l10n('toolkit.importNotificationMany', 'transactions to be imported.');
+
           if (transactions.length >= 1) {
             $(accountName)
               .addClass(this.importClass)
-              .attr(
-                'title',
-                currentTitle +
-                  ` - ${transactions.length} ` +
-                  l10n('toolkit.import.notification', 'transaction(s) to be imported.')
-              );
+              .attr('title', `${currentTitle} - ${transactions.length} ${toBeImported}`);
           }
         }
       }

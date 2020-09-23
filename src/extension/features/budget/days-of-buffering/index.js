@@ -172,7 +172,8 @@ ${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(av
       !transaction.get('payee.isInternal') &&
       !transaction.isTransferTransaction() &&
       transaction.get('account.onBudget') &&
-      transaction.get('amount') < 0
+      transaction.get('amount') < 0 &&
+      transaction.get('accepted')
     );
   };
 

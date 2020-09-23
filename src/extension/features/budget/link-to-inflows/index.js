@@ -32,11 +32,8 @@ export class LinkToInflows extends Feature {
 
     // Attempt to target the english string, `TOTAL INFLOWS`, but if that's not
     // found, try the localized version of the string.
-    const englishHeading = 'TOTAL INFLOWS';
-    const localizedHeading = l10n('inspector.totalIncome', englishHeading);
-    const inflowsHeadingEl =
-      budgetInspector.find(`h3:contains(${englishHeading})`)[0] ||
-      budgetInspector.find(`h3:contains(${localizedHeading})`)[0];
+    const localizedHeading = l10n('inspector.totalIncome', 'TOTAL INFLOWS');
+    const inflowsHeadingEl = budgetInspector.find(`h3:contains(${localizedHeading})`)[0];
 
     $(inflowsHeadingEl)
       .next()

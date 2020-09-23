@@ -164,6 +164,12 @@ jq(() => {
         showActions: true,
       },
       {
+        id: 'toolkitReportsSettingsPage',
+        iconClass: 'fa-file-text-o',
+        title: 'Toolkit Reports Screen Settings',
+        showActions: true,
+      },
+      {
         id: 'reportsSettingsPage',
         iconClass: 'fa-bar-chart',
         title: 'Reports Screen Settings',
@@ -432,6 +438,10 @@ jq(() => {
     });
     jq('#reportsMenuItem').click(function(e) {
       loadPanel('reports');
+      e.preventDefault();
+    });
+    jq('#toolkitReportsMenuItem').click(function(e) {
+      loadPanel('toolkitReports');
       e.preventDefault();
     });
     jq('#supportMenuItem').click(function(e) {
