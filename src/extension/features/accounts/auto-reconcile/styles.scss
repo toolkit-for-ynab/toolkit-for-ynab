@@ -1,32 +1,26 @@
-.tk-reconcile-modal {
+.tk-auto-reconcile-modal {
   background-color: var(--tk-default-background-color);
   color: var(--tk-default-font-color);
+
+  // Center the modal on the page
   border-radius: 10px;
-  top: 50%;
-  height: 30%;
-  left: 50%;
   position: absolute;
-  padding: 2rem;
-}
-
-.auto-reconcile-input {
-  margin: 1rem;
-}
-
-.tk-reconcileinput-content {
   padding: 1rem;
+
+  // Set the content styling
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 20%;
 }
 
-.auto-reconcile-action {
-  margin-right: 1rem;
-}
-tk-modal-body {
+.auto-reconcile-input {
+  width: 100%;
+  border-radius: 0.4em;
+  border: 2px solid var(--textinput_border_active);
 }
 
-tk-modal-footer-action {
-}
-auto-reconcile-continue {
+.tk-modal-footer-action {
+  margin: 1rem;
+  text-align: center;
 }

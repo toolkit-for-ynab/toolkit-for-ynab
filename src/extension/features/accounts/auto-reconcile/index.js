@@ -16,6 +16,12 @@ export class AutoReconcile extends Feature {
   }
 
   onRouteChanged(currentRoute) {
+    // Unmount and hide the toolkit's report
+    const container = document.getElementById(AUTO_RECONCILE_CONTAINER_ID);
+    if (container) {
+      ReactDOM.unmountComponentAtNode(container);
+    }
+
     if (!this.shouldInvoke()) return;
 
     // Check if the current route is an individual account
