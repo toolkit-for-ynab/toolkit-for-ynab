@@ -205,6 +205,11 @@ export class SpendingByCategoryComponent extends React.Component {
               )}%)</span>`;
             },
           },
+          states: {
+            inactive: {
+              enabled: false,
+            },
+          },
         },
       },
       tooltip: {

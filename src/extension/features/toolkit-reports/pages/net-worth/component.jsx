@@ -83,6 +83,15 @@ export class NetWorthComponent extends React.Component {
           },
         },
       },
+      plotOptions: {
+        series: {
+          states: {
+            inactive: {
+              enabled: false,
+            },
+          },
+        },
+      },
       series: [
         {
           id: 'debts',
