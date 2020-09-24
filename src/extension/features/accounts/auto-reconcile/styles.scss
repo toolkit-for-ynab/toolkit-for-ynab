@@ -14,13 +14,22 @@
   width: 20%;
 }
 
+.auto-reconcile-header {
+  margin: 0.2em 0;
+}
+
 .auto-reconcile-input {
   width: 100%;
   border-radius: 0.4em;
   border: 2px solid var(--textinput_border_active);
 }
 
+.auto-reconcile-prompt {
+  font-size: 0.9em;
+  font-weight: normal;
+}
+
 .tk-modal-footer-action {
-  margin: 1rem;
+  margin-top: 1rem;
   text-align: center;
 }
