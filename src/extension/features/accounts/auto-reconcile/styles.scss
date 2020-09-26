@@ -27,9 +27,17 @@
 .auto-reconcile-prompt {
   font-size: 0.9em;
   font-weight: normal;
+  text-align: center;
 }
 
 .tk-modal-footer-action {
   margin-top: 1rem;
   text-align: center;
+}
+
+.auto-reconcile-error {
+  margin-top: 0.2em;
+  padding: 0.3em;
+  border-radius: 0.4e;
+  border: 2px solid var(--label_negative);
 }

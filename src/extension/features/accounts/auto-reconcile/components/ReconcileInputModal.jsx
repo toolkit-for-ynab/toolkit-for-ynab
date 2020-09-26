@@ -1,11 +1,36 @@
 import React, { useState } from 'react';
 import '../styles.scss';
 
-export const ReconcileInputModal = ({ isShowing, onClose }) => {
-  const [reconcileAmount, setReconcileAmount] = useState('');
-  if (!isShowing) {
+export const ReconcileInputModal = ({
+  isOpen,
+  onSubmit,
+  onClose,
+  reconcileAmount,
+  setReconcileAmount,
+}) => {
+  const [errorMessage, setErrorMessage] = useState('');
+
+  if (!isOpen) {
     return null;
   }
+
+  let onModalClose = () => {
+    setReconcileAmount('');
+    setErrorMessage('');
+    onClose();
+  };
+
+  const handleReconcileSubmit = () => {
+    let errorMessage = '';
+    // Check if the current input is a number
+    if (reconcileAmount.length === 0 || !isFinite(Number(reconcileAmount))) {
+      errorMessage = ' Please enter a valid amount.';
+    }
+    setErrorMessage(errorMessage);
+    if (errorMessage.length === 0) {
+      onSubmit();
+    }
+  };
 
   // Note: Workaround for ynab having an event listener that overrides the backspace.
   // We'll add our own event listener to remove it.
@@ -13,16 +38,6 @@ export const ReconcileInputModal = ({ isShowing, onClose }) => {
     if (event.keyCode === 8 && reconcileAmount && reconcileAmount.length >= 1) {
       setReconcileAmount(reconcileAmount.substring(0, reconcileAmount.length - 1));
     }
-  };
-
-  let handleAutoReconcileSubmit = () => {
-    // Validate that its a valid amount
-    // If any errors, set error on input
-    // Do the calculation:
-    // - Inputs: CurrentAmount, AccountId
-    // __toolkitUtils.getEntityManager().getAccountById('7bbf8e31-6746-46b6-81de-144735bf4c5c').getAccountCalculation()
-    //   - clearedBalance
-    //   - unclearedBalance
   };
 
   return (
@@ -39,17 +54,19 @@ export const ReconcileInputModal = ({ isShowing, onClose }) => {
           onChange={e => setReconcileAmount(e.target.value)}
           onKeyDown={handleKeyDown}
         />
-
+        {errorMessage.length > 0 && (
+          <span className="auto-reconcile-prompt auto-reconcile-error"> {errorMessage} </span>
+        )}
         {/* // Footer */}
         <div className="tk-modal-footer-action">
           <button
             className="auto-reconcile-action button button-primary tk-mg-r-1"
-            onClick={handleAutoReconcileSubmit}
+            onClick={handleReconcileSubmit}
           >
             {' '}
             AutoReconcile{' '}
           </button>
-          <button className="button button-primary" onClick={onClose}>
+          <button className="button button-primary" onClick={onModalClose}>
             {' '}
             Close{' '}
           </button>
