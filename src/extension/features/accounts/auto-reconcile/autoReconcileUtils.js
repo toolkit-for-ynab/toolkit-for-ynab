@@ -1,13 +1,6 @@
 export const calculateTarget = (clearedAmount, currentAmount) => {
   return currentAmount - clearedAmount;
 };
-// Validate that its a valid amount
-// If any errors, set error on input
-// Do the calculation:
-// - Inputs: CurrentAmount, AccountId
-// __toolkitUtils.getEntityManager().getAccountById('7bbf8e31-6746-46b6-81de-144735bf4c5c').getAccountCalculation()
-//   - clearedBalance
-//   - unclearedBalance
 
 export const transactionReducer = (accumulator, txn) => {
   return accumulator + txn.amount;
@@ -17,7 +10,7 @@ export const setTransactionCleared = transaction => {
   if (transaction && transaction.entityId && !transaction.isTombstone) {
     let selector = `[data-row-id='${transaction.entityId}'] .ynab-grid-cell-cleared`;
     let element = document.querySelector(selector);
-    if (element) {
+    if (element && element.querySelector('.is-uncleared-icon')) {
       element.click();
     }
   }

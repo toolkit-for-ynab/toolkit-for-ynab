@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 20%;
+  width: 300px;
 }
 
 .auto-reconcile-header {
@@ -38,6 +38,5 @@
 .auto-reconcile-error {
   margin-top: 0.2em;
   padding: 0.3em;
-  border-radius: 0.4e;
-  border: 2px solid var(--label_negative);
+  color: red;
 }
