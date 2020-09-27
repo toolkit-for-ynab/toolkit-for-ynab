@@ -1,68 +1,45 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useModal } from '../hooks/useModal';
-import { ReconcileInputModal } from './ReconcileInputModal';
-import { ReconcileConfirmationModal } from './ReconcileConfirmationModal';
-import {
-  transactionReducer,
-  generatePowerset,
-  findMatchingSum,
-  setTransactionCleared,
-} from '../autoReconcileUtils';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import { AutoReconcileInputModal } from './AutoReconcileInputModal';
+import { AutoReconcileConfirmationModal } from './AutoReconcileConfirmationModal';
+import { AutoReconcileProvider } from './AutoReconcileContext';
 
+/**
+ * Container for the Auto Reconcile feature wrapping its child components
+ * See AutoReconcileContext for shared state
+ *
+ * Flow:
+ * 1. Click on Auto Reconcile
+ * 2. Show Input Modal
+ * 3. Hide Input Modal, Show Matching Transactions Results
+ * 4. Clear Matching Transactions if any, Hide Result Modal
+ */
 export const AutoReconcileContainer = () => {
   const [isReconcileInputOpen, showReconcileInput, hideReconcileInput] = useModal(false);
   const [isConfirmationOpen, showConfirmationModal, hideConfirmationModal] = useModal(false);
-  const [reconcileAmount, setReconcileAmount] = useState('');
-  const [target, setTarget] = useState('');
-  const [matchedTransactions, setMatchedTransactions] = useState([]);
 
-  let handleInputSubmit = () => {
+  let reconcileSubmitFlow = () => {
     hideReconcileInput();
-    let { selectedAccountId } = controllerLookup('accounts');
-    let account = getEntityManager().getAccountById(selectedAccountId);
-    let transactions = account.getTransactions();
-    let nonreconciledTransactions = transactions.filter(
-      txn => txn.cleared && !txn.isTombstone && !txn.isReconciled()
-    );
-
-    // Sum up all reconciled transactions
-    let reconciledTransactions = transactions.filter(
-      txn => txn.cleared && !txn.isTombstone && txn.isReconciled()
-    );
-
-    // Figure out our target by summing up the reconciled amount
-    let reconciledTotal = reconciledTransactions.reduce(transactionReducer, 0);
-    let target = reconcileAmount * 1000 - reconciledTotal;
-    let transactionPowerset = generatePowerset(nonreconciledTransactions);
-    let possibleMatches = findMatchingSum(transactionPowerset, target);
-    setTarget(target);
-    setMatchedTransactions(possibleMatches);
     showConfirmationModal();
   };
 
   return (
     <>
-      <ReconcileInputModal
-        isOpen={isReconcileInputOpen}
-        onClose={hideReconcileInput}
-        onSubmit={handleInputSubmit}
-        reconcileAmount={reconcileAmount}
-        setReconcileAmount={setReconcileAmount}
-      />
+      <AutoReconcileProvider>
+        <AutoReconcileInputModal
+          isOpen={isReconcileInputOpen}
+          onClose={hideReconcileInput}
+          onSubmit={reconcileSubmitFlow}
+        />
 
-      <ReconcileConfirmationModal
-        isOpen={isConfirmationOpen}
-        onClose={hideConfirmationModal}
-        reconcileAmount={reconcileAmount}
-        setReconcileAmount={setReconcileAmount}
-        target={target}
-        matchedTransactions={matchedTransactions}
-      />
-      <button className={'button'} onClick={showReconcileInput}>
-        Auto Reconcile
-      </button>
+        <AutoReconcileConfirmationModal
+          isOpen={isConfirmationOpen}
+          onClose={hideConfirmationModal}
+        />
+        <button className={'button'} onClick={showReconcileInput}>
+          Auto Reconcile
+        </button>
+      </AutoReconcileProvider>
     </>
   );
 };

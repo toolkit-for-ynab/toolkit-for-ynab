@@ -1,33 +1,37 @@
-import React, { useState } from 'react';
-import '../styles.scss';
+import React, { useContext } from 'react';
 import { setTransactionCleared } from '../autoReconcileUtils';
-import { hidden } from 'ansi-colors';
+import { AutoReconcileContext } from './AutoReconcileContext';
+import '../styles.scss';
 
-export const ReconcileConfirmationModal = ({
-  isOpen,
-  onClose,
-  reconcileAmount,
-  setReconcileAmount,
-  target,
-  matchedTransactions,
-}) => {
+export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) => {
+  const store = useContext(AutoReconcileContext);
+  const [target, setTarget] = store.target;
+  const [reconcileAmount, setReconcileAmount] = store.reconcileAmount;
+  const [matchingTransactions, setMatchingTransactions] = store.matchingTransactions;
+
   if (!isOpen) {
     return null;
   }
 
+  /**
+   * For any matched transactions, toggle them to be cleared.
+   * Reset state and close
+   */
   let handleAutoReconcileConfirmation = () => {
-    if (matchedTransactions.length === 1) {
-      let matchingSet = matchedTransactions[0];
+    if (matchingTransactions.length === 1) {
+      let matchingSet = matchingTransactions[0];
       if (matchingSet.length > 0) {
         matchingSet.forEach(txn => {
           setTransactionCleared(txn);
         });
       }
     }
-    onModalClose();
+    store.resetState();
+    onSubmit();
   };
+
   let onModalClose = () => {
-    setReconcileAmount('');
+    store.resetState();
     onClose();
   };
 
