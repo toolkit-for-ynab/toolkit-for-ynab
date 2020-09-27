@@ -3,7 +3,6 @@ export const useModal = (initialState = false) => {
   const [isOpen, setIsOpen] = useState(initialState);
 
   const show = () => {
-    debugger;
     setIsOpen(true);
   };
 
