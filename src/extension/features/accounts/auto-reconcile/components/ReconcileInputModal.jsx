@@ -21,13 +21,13 @@ export const ReconcileInputModal = ({
   };
 
   const handleReconcileSubmit = () => {
-    let errorMessage = '';
+    let errMsg = '';
     // Check if the current input is a number
     if (reconcileAmount.length === 0 || !isFinite(Number(reconcileAmount))) {
-      errorMessage = ' Please enter a valid amount.';
+      errMsg = ' Please enter a valid amount.';
     }
-    setErrorMessage(errorMessage);
-    if (errorMessage.length === 0) {
+    setErrorMessage(errMsg);
+    if (errMsg.length === 0) {
       onSubmit();
     }
   };

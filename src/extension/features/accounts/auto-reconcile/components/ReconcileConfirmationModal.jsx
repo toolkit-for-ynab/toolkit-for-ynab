@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
 import '../styles.scss';
+import { setTransactionCleared } from '../autoReconcileUtils';
+import { hidden } from 'ansi-colors';
 
 export const ReconcileConfirmationModal = ({
   isOpen,
   onClose,
-  onSubmit,
   reconcileAmount,
   setReconcileAmount,
+  target,
+  matchedTransactions,
 }) => {
   if (!isOpen) {
     return null;
   }
 
+  let handleAutoReconcileConfirmation = () => {
+    if (matchedTransactions.length === 1) {
+      let matchingSet = matchedTransactions[0];
+      if (matchingSet.length > 0) {
+        matchingSet.forEach(txn => {
+          setTransactionCleared(txn);
+        });
+      }
+    }
+    onModalClose();
+  };
   let onModalClose = () => {
     setReconcileAmount('');
     onClose();
@@ -21,14 +35,14 @@ export const ReconcileConfirmationModal = ({
     <div className="tk-modal-container">
       <div className="tk-modal-content tk-auto-reconcile-modal">
         <p className="auto-reconcile-prompt">
-          There is a <strong>${reconcileAmount}</strong> difference.
+          There was a <strong>${target}</strong> difference.
           <br />
-          Do you want to continue?
+          Found 3 matching Transactions. Do you want to continue?
         </p>
         <div className="tk-modal-footer-action">
           <button
             className="auto-reconcile-action button button-primary tk-mg-r-1"
-            onClick={onSubmit}
+            onClick={handleAutoReconcileConfirmation}
           >
             {' '}
             Yes{' '}

@@ -15,13 +15,11 @@ export const AutoReconcileContainer = () => {
   const [isReconcileInputOpen, showReconcileInput, hideReconcileInput] = useModal(false);
   const [isConfirmationOpen, showConfirmationModal, hideConfirmationModal] = useModal(false);
   const [reconcileAmount, setReconcileAmount] = useState('');
+  const [target, setTarget] = useState('');
+  const [matchedTransactions, setMatchedTransactions] = useState([]);
 
-  let handleAutoReconcileSubmit = () => {
+  let handleInputSubmit = () => {
     hideReconcileInput();
-    showConfirmationModal();
-  };
-
-  let handleConfirmationSubmit = () => {
     let { selectedAccountId } = controllerLookup('accounts');
     let account = getEntityManager().getAccountById(selectedAccountId);
     let transactions = account.getTransactions();
@@ -39,10 +37,9 @@ export const AutoReconcileContainer = () => {
     let target = reconcileAmount * 1000 - reconciledTotal;
     let transactionPowerset = generatePowerset(nonreconciledTransactions);
     let possibleMatches = findMatchingSum(transactionPowerset, target);
-    if (possibleMatches.length === 1) {
-      let matchedTransactions = possibleMatches[0];
-      matchedTransactions.forEach(transaction => setTransactionCleared(transaction));
-    }
+    setTarget(target);
+    setMatchedTransactions(possibleMatches);
+    showConfirmationModal();
   };
 
   return (
@@ -50,7 +47,7 @@ export const AutoReconcileContainer = () => {
       <ReconcileInputModal
         isOpen={isReconcileInputOpen}
         onClose={hideReconcileInput}
-        onSubmit={handleAutoReconcileSubmit}
+        onSubmit={handleInputSubmit}
         reconcileAmount={reconcileAmount}
         setReconcileAmount={setReconcileAmount}
       />
@@ -58,9 +55,10 @@ export const AutoReconcileContainer = () => {
       <ReconcileConfirmationModal
         isOpen={isConfirmationOpen}
         onClose={hideConfirmationModal}
-        onSubmit={handleConfirmationSubmit}
         reconcileAmount={reconcileAmount}
         setReconcileAmount={setReconcileAmount}
+        target={target}
+        matchedTransactions={matchedTransactions}
       />
       <button className={'button'} onClick={showReconcileInput}>
         Auto Reconcile
