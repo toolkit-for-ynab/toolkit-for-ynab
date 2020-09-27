@@ -35,6 +35,7 @@ export const AutoReconcileContainer = () => {
         <AutoReconcileConfirmationModal
           isOpen={isConfirmationOpen}
           onClose={hideConfirmationModal}
+          onSubmit={hideConfirmationModal}
         />
         <button className={'button'} onClick={showReconcileInput}>
           Auto Reconcile
