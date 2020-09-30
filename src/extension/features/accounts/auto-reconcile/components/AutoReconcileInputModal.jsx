@@ -77,29 +77,29 @@ export const AutoReconcileInputModal = ({ isOpen, onSubmit, onClose }) => {
 
   return (
     <div className="tk-modal-container">
-      <div className="tk-modal-content tk-auto-reconcile-modal">
-        <h2 className="auto-reconcile-header">Auto Reconcile</h2>
-        <p className="auto-reconcile-prompt">
+      <div className="tk-modal-content tk-modal-stack">
+        <span className="tk-activity-header">Auto Reconcile</span>
+        <p className="tk-modal-message">
           What is your <strong>current</strong> account balance?
         </p>
         <input
           type="text"
-          className="auto-reconcile-input"
+          className="tk-auto-reconcile-input tk-modal-message"
           value={reconcileAmount}
           onChange={e => setReconcileAmount(e.target.value)}
           onKeyDown={handleKeyDown}
         />
         {errorMessage.length > 0 && (
-          <span className="auto-reconcile-prompt auto-reconcile-error"> {errorMessage} </span>
+          <span className="tk-modal-message tk-auto-reconcile-error"> {errorMessage} </span>
         )}
-        {/* // Footer */}
-        <div className="tk-modal-footer-action">
+
+        <div>
           <button
             className="auto-reconcile-action button button-primary tk-mg-r-1"
             onClick={handleReconcileSubmit}
           >
             {' '}
-            AutoReconcile{' '}
+            Continue{' '}
           </button>
           <button className="button button-primary" onClick={onModalClose}>
             {' '}

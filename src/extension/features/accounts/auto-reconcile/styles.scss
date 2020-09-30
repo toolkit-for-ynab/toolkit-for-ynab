@@ -1,42 +1,37 @@
 .tk-auto-reconcile-modal {
-  background-color: var(--tk-default-background-color);
-  color: var(--tk-default-font-color);
-
-  // Center the modal on the page
-  border-radius: 10px;
-  position: absolute;
-  padding: 1rem;
-
-  // Set the content styling
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 300px;
 }
 
-.auto-reconcile-header {
-  margin: 0.2em 0;
-}
-
-.auto-reconcile-input {
+.tk-auto-reconcile-input {
   width: 100%;
   border-radius: 0.4em;
   border: 2px solid var(--textinput_border_active);
+  margin-bottom: 0.5rem;
 }
 
-.auto-reconcile-prompt {
+.tk-modal-message {
   font-size: 0.9em;
   font-weight: normal;
   text-align: center;
 }
 
-.tk-modal-footer-action {
-  margin-top: 1rem;
-  text-align: center;
+.tk-auto-reconcile-error {
+  color: red;
+  margin-bottom: 0.5rem;
 }
 
-.auto-reconcile-error {
-  margin-top: 0.2em;
-  padding: 0.3em;
-  color: red;
+.tk-modal-stack {
+  // Set the content styling
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.tk-confirmation-modal {
+  width: 500px;
+}
+
+.tk-activity-header {
+  font-size: 1.5rem;
 }
