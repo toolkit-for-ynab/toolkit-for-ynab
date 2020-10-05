@@ -103,13 +103,13 @@ export const AutoReconcileInputModal = ({ isOpen, onSubmit, onClose }) => {
 
         <div>
           <button
-            className="auto-reconcile-action button button-primary tk-mg-r-1"
+            className="auto-reconcile-action tk-button tk-mg-r-1"
             onClick={handleReconcileSubmit}
           >
             {' '}
             Continue{' '}
           </button>
-          <button className="button button-primary" onClick={onModalClose}>
+          <button className="tk-button" onClick={onModalClose}>
             {' '}
             Close{' '}
           </button>
