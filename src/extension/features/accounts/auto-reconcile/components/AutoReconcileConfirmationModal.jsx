@@ -67,7 +67,8 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
         <span className="tk-activity-header tk-align-self-start">Auto Reconcile</span>
         <p className="tk-align-self-start">
           {' '}
-          Found <strong>{matchingTransactions.length}</strong> sets of transactions totaling to{' '}
+          Found <strong>{matchingTransactions.length}</strong>{' '}
+          {matchingTransactions.length === 1 ? 'set' : 'sets'} of transactions totaling to{' '}
           <strong>{formatCurrency(target)}</strong>.
         </p>
         <div className="ynab-table-5-col ynab-table has-scrollbar tk-mg-b-1">
