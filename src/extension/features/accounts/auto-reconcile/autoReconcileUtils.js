@@ -28,6 +28,7 @@ export const generatePowerset = array => {
   for (let i = 1; i < powersetSize; i++) {
     let subset = [];
     for (let j = 0; j < array.length; j++) {
+      // eslint-disable-next-line no-bitwise
       if ((i & (1 << j)) > 0) {
         subset.push(array[j]);
       }

@@ -3,38 +3,39 @@ import { setTransactionCleared } from '../autoReconcileUtils';
 import { AutoReconcileContext } from './AutoReconcileContext';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import '../styles.scss';
-import { setState } from 'expect/build/jestMatchersObject';
 
 export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) => {
   const store = useContext(AutoReconcileContext);
-  const [target, setTarget] = store.target;
-  const [reconcileAmount, setReconcileAmount] = store.reconcileAmount;
+  const [target] = store.target;
 
   // There may be multiple sets that matched
-  const [matchingTransactions, setMatchingTransactions] = store.matchingTransactions;
+  const [matchingTransactions] = store.matchingTransactions;
 
-  // Keep track of the chosen one
+  // Keep track of the chosen transaction set
   const [chosenTransactionSet, setChosenSelectionSet] = useState([]);
   const [transactionArrIndex, setTransactionArrIndex] = useState(0);
 
+  // Whenever the index changes, update the chosen transaction set
   useEffect(() => {
-    if (
-      matchingTransactions.length > 0 &&
-      transactionArrIndex >= 0 &&
-      transactionArrIndex < matchingTransactions.length
-    ) {
+    if (matchingTransactions.length > 0) {
       setChosenSelectionSet(matchingTransactions[transactionArrIndex]);
     }
   }, [matchingTransactions, transactionArrIndex]);
 
-  if (!isOpen) {
-    return null;
-  }
-
+  /**
+   * Ensure the new index is within bounds of the matching transaction sets
+   * @param {Integer} newIndex The new index of which transaction set to use
+   */
   let handleIndexChange = newIndex => {
     if (newIndex >= 0 && newIndex < matchingTransactions.length) {
       setTransactionArrIndex(newIndex);
     }
+  };
+
+  let resetState = () => {
+    setChosenSelectionSet([]);
+    setTransactionArrIndex(0);
+    store.resetState();
   };
 
   /**
@@ -47,18 +48,18 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
         setTransactionCleared(txn);
       });
     }
-    setChosenSelectionSet([]);
-    setTransactionArrIndex(0);
-    store.resetState();
+    resetState();
     onSubmit();
   };
 
   let onModalClose = () => {
-    setChosenSelectionSet([]);
-    setTransactionArrIndex(0);
-    store.resetState();
+    resetState();
     onClose();
   };
+
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div className="tk-modal-container">

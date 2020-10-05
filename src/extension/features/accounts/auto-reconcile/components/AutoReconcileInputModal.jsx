@@ -5,6 +5,9 @@ import { transactionReducer, generatePowerset, findMatchingSum } from '../autoRe
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
+/**
+ * The Input Modal for Auto Reconciling.
+ */
 export const AutoReconcileInputModal = ({ isOpen, onSubmit, onClose }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const store = useContext(AutoReconcileContext);
@@ -52,24 +55,27 @@ export const AutoReconcileInputModal = ({ isOpen, onSubmit, onClose }) => {
     let transactionPowerset = generatePowerset(nonreconciledTransactions);
     let possibleMatches = findMatchingSum(transactionPowerset, calculatedTarget);
 
-    // Update our context state
+    // Update context state
     setTarget(calculatedTarget);
     setMatchingTransactions(possibleMatches);
   };
 
+  /**
+   * Reset the state and close the modal
+   */
   let onModalClose = () => {
     store.resetState();
     onClose();
   };
 
+  /**
+   * On submit, validate the input and either continue
+   * or show the error.
+   */
   const handleReconcileSubmit = () => {
-    let errMsg = '';
-    // Check if the current input is a number
     if (reconcileAmount.length === 0 || !isFinite(Number(reconcileAmount))) {
-      errMsg = ' Please enter a valid amount.';
-    }
-    setErrorMessage(errMsg);
-    if (errMsg.length === 0) {
+      setErrorMessage('Please enter a valid amount.');
+    } else {
       autoreconcile();
       onSubmit();
     }
