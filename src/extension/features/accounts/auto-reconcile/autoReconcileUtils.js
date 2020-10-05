@@ -1,7 +1,3 @@
-export const calculateTarget = (clearedAmount, currentAmount) => {
-  return currentAmount - clearedAmount;
-};
-
 export const transactionReducer = (accumulator, txn) => {
   return accumulator + txn.amount;
 };
