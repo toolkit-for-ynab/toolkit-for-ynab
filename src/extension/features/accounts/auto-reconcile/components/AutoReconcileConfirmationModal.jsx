@@ -17,14 +17,13 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
   const [chosenTransactionSet, setChosenSelectionSet] = useState([]);
   const [transactionArrIndex, setTransactionArrIndex] = useState(0);
 
-  // On initial render, select the first one.
   useEffect(() => {
-    if (matchingTransactions.length > 0) {
-      if (transactionArrIndex >= 0 && transactionArrIndex < matchingTransactions.length) {
-        setChosenSelectionSet(matchingTransactions[transactionArrIndex]);
-      }
-    } else {
-      // Handle nothing found
+    if (
+      matchingTransactions.length > 0 &&
+      transactionArrIndex >= 0 &&
+      transactionArrIndex < matchingTransactions.length
+    ) {
+      setChosenSelectionSet(matchingTransactions[transactionArrIndex]);
     }
   }, [matchingTransactions, transactionArrIndex]);
 
@@ -65,6 +64,11 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
     <div className="tk-modal-container">
       <div className="tk-modal-content tk-modal-stack tk-confirmation-modal">
         <span className="tk-activity-header tk-align-self-start">Auto Reconcile</span>
+        <p className="tk-align-self-start">
+          {' '}
+          Found <strong>{matchingTransactions.length}</strong> sets of transactions totaling to{' '}
+          <strong>{formatCurrency(target)}</strong>.
+        </p>
         <div className="ynab-table-5-col ynab-table has-scrollbar tk-mg-b-1">
           <div className="ynab-table-head">
             <div className="ynab-table-col">Account</div>
@@ -89,19 +93,28 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
           </div>
         </div>
         <div className="tk-mg-b-1">
-          <button onClick={() => handleIndexChange(transactionArrIndex - 1)}> Previous </button>
+          <button
+            className="flaticon stroke left-2"
+            onClick={() => handleIndexChange(transactionArrIndex - 1)}
+          />
           <span className="tk-mg-x-1">
-            {transactionArrIndex + 1} of {matchingTransactions.length} sets
+            {matchingTransactions.length === 0 ? 0 : transactionArrIndex + 1} of{' '}
+            {matchingTransactions.length}
           </span>
-          <button onClick={() => handleIndexChange(transactionArrIndex + 1)}> Next </button>
+          <button
+            className="flaticon stroke right-2"
+            onClick={() => handleIndexChange(transactionArrIndex + 1)}
+          />
         </div>
         <div className="tk-align-self-end">
-          <button
-            className="button button-primary button tk-mg-r-1"
-            onClick={handleAutoReconcileConfirmation}
-          >
-            Reconcile
-          </button>
+          {matchingTransactions.length > 0 && (
+            <button
+              className="button button-primary button tk-mg-r-1"
+              onClick={handleAutoReconcileConfirmation}
+            >
+              Reconcile
+            </button>
+          )}
           <button className="button button-primary button" onClick={onModalClose}>
             Close
           </button>
