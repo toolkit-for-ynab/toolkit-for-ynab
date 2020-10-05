@@ -64,6 +64,7 @@ export const AutoReconcileInputModal = ({ isOpen, onSubmit, onClose }) => {
    * Reset the state and close the modal
    */
   let onModalClose = () => {
+    setErrorMessage('');
     store.resetState();
     onClose();
   };
@@ -76,6 +77,7 @@ export const AutoReconcileInputModal = ({ isOpen, onSubmit, onClose }) => {
     if (reconcileAmount.length === 0 || !isFinite(Number(reconcileAmount))) {
       setErrorMessage('Please enter a valid amount.');
     } else {
+      setErrorMessage('');
       autoreconcile();
       onSubmit();
     }
