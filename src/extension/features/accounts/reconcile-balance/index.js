@@ -1,11 +1,10 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import * as ReactDOM from 'react-dom';
-import { ReconcileBalanceComponent } from './ReconcileBalance';
-import React from 'react';
+import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { getEntityManager } from 'toolkit/extension/utils/ynab';
 const YNAB_ACCOUNTS_HEADER_BALANCES = '.accounts-header-balances';
-const TK_RECONCILE_BALANCE_CONTAINER_ID = 'tk-accounts-header-reconcile-container';
+const TK_RECONCILE_BALANCE_ID = 'tk-reconcile-balance';
 
 export class ReconcileBalance extends Feature {
   injectCSS() {
@@ -18,32 +17,68 @@ export class ReconcileBalance extends Feature {
   }
 
   invoke() {
+    // Get the current account id and calculate the current reconciled balance
     let { selectedAccountId } = controllerLookup('accounts');
+    let reconciledBalance = formatCurrency(this._calculateReconciledBalance(selectedAccountId));
 
-    // Find the parent div for the ynab accounts section
-    let parentDiv = document.querySelector(YNAB_ACCOUNTS_HEADER_BALANCES);
-
-    // Append a element to contain our component
-    let container = document.getElementById(TK_RECONCILE_BALANCE_CONTAINER_ID);
-    if (!container) {
-      let reconcileBalanceContainer = document.createElement('span');
-      reconcileBalanceContainer.setAttribute('id', TK_RECONCILE_BALANCE_CONTAINER_ID);
-      parentDiv.prepend(reconcileBalanceContainer);
-      container = reconcileBalanceContainer;
+    // Retrieve or create the reconcile balance container
+    let balanceContainer = $(`#${TK_RECONCILE_BALANCE_ID}`);
+    if (!balanceContainer || balanceContainer.length === 0) {
+      $(YNAB_ACCOUNTS_HEADER_BALANCES).prepend(
+        `<div class="tk-accounts-header-balances-reconciled">
+        <span id="${TK_RECONCILE_BALANCE_ID}">${reconciledBalance}</span>
+        <div class="tk-accounts-header-reconcile-balance-label">Reconciled Balance</div>
+      </div>`
+      );
     }
 
-    // Render the component at the container
-    ReactDOM.render(<ReconcileBalanceComponent selectedAccountId={selectedAccountId} />, container);
+    // Update the reconcile balance with the most up to date balance
+    balanceContainer.text(reconciledBalance);
+    this._setFeatureVisibility(true);
   }
 
   onRouteChanged() {
     if (this.shouldInvoke()) {
       this.invoke();
     } else {
-      let container = document.getElementById(TK_RECONCILE_BALANCE_CONTAINER_ID);
-      if (document.getElementById(TK_RECONCILE_BALANCE_CONTAINER_ID)) {
-        ReactDOM.unmountComponentAtNode(container);
-      }
+      this._setFeatureVisibility(false);
     }
   }
+
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    // When the reconciled balance icon changes, reevaluate our balance
+    if (changedNodes.has('is-reconciled-icon svg-icon lock')) {
+      this.invoke();
+    }
+  }
+
+  /**
+   * Calculate the a given accounts reconciled balance
+   * @param {String} accountId The account id to get the reconciled balance for
+   * @returns {Number} balance The reconciled balance of the account
+   */
+  _calculateReconciledBalance = accountId => {
+    let account = getEntityManager().getAccountById(accountId);
+    let transactions = account.getTransactions();
+    let reconciledTransactions = transactions.filter(
+      txn => txn.cleared && !txn.isTombstone && txn.isReconciled()
+    );
+    let balance = reconciledTransactions.reduce((accum, txn) => {
+      return accum + txn.amount;
+    }, 0);
+    return balance;
+  };
+
+  /**
+   * Helper method to show and hide the reconcile balance container
+   * @param {Boolean} visible True to show the container, false to hide
+   */
+  _setFeatureVisibility = visible => {
+    let featureContainer = $('.tk-accounts-header-balances-reconciled');
+    if (featureContainer && featureContainer.length) {
+      featureContainer.toggle(visible);
+    }
+  };
 }

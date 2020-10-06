@@ -6,11 +6,11 @@
   padding-right: 0.5rem;
   border-right: solid grey 2px;
   margin-right: 0.5rem;
-  font-style: italic;
 }
 
 .tk-accounts-header-reconcile-balance-label {
   font-size: 0.75rem;
   color: var(--header_label_primary);
   font-weight: 400;
+  font-style: italic;
 }
