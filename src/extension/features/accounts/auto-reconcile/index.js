@@ -36,6 +36,7 @@ export class AutoReconcile extends Feature {
       if (!container) {
         // Create the container for our React Button
         let autoReconcileContainer = document.createElement('span');
+        autoReconcileContainer.setAttribute('class', 'tk-mg-r-1');
         autoReconcileContainer.setAttribute('id', AUTO_RECONCILE_CONTAINER_ID);
 
         // Append it as a child of the parent
