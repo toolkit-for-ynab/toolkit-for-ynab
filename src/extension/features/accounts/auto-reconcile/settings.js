@@ -4,5 +4,5 @@ module.exports = {
   default: false,
   section: 'accounts',
   title: 'Auto Reconcile',
-  description: 'Try to auto reconcile by finding which transactions add up to a current ammount',
+  description: 'Auto reconcile by finding which entered transactions add up to a given amount',
 };
