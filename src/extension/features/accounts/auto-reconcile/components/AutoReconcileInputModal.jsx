@@ -4,6 +4,8 @@ import { AutoReconcileContext } from './AutoReconcileContext';
 import { transactionReducer, generatePowerset, findMatchingSum } from '../autoReconcileUtils';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import * as ReactDOM from 'react-dom';
+import { AUTO_RECONCILE_MODAL_PORTAL } from '../index';
 
 /**
  * The Input Modal for Auto Reconciling.
@@ -83,7 +85,7 @@ export const AutoReconcileInputModal = ({ isOpen, onSubmit, onClose }) => {
     }
   };
 
-  return (
+  return ReactDOM.createPortal(
     <div className="tk-modal-container">
       <div className="tk-modal-content tk-modal-stack">
         <span className="tk-activity-header">Auto Reconcile</span>
@@ -115,6 +117,7 @@ export const AutoReconcileInputModal = ({ isOpen, onSubmit, onClose }) => {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.getElementById(AUTO_RECONCILE_MODAL_PORTAL)
   );
 };

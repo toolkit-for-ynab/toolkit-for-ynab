@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
+import * as ReactDOM from 'react-dom';
 import { setTransactionCleared } from '../autoReconcileUtils';
 import { AutoReconcileContext } from './AutoReconcileContext';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { AUTO_RECONCILE_MODAL_PORTAL } from '../index';
 import '../styles.scss';
 
 export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) => {
@@ -61,7 +63,7 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
     return null;
   }
 
-  return (
+  return ReactDOM.createPortal(
     <div className="tk-modal-container">
       <div className="tk-modal-content tk-modal-stack tk-confirmation-modal">
         <span className="tk-activity-header tk-align-self-start">Auto Reconcile</span>
@@ -119,6 +121,7 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.getElementById(AUTO_RECONCILE_MODAL_PORTAL)
   );
 };
