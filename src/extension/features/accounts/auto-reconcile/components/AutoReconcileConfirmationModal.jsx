@@ -89,7 +89,9 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
                   <div className="ynab-table-col">
                     {ynab.YNABSharedLib.dateFormatter.formatDate(txn.date.getUTCTime())}
                   </div>
-                  <div className="ynab-table-col">{txn.payee.name}</div>
+                  <div className="ynab-table-col">
+                    {txn.payee && txn.payee.name ? txn.payee.name : 'Split Transaction'}
+                  </div>
                   <div className="ynab-table-col">{txn.memo}</div>
                   <div className="ynab-table-col amount-column">{formatCurrency(txn.amount)}</div>
                 </div>
