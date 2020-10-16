@@ -181,8 +181,9 @@ export class SpendingByPayeeComponent extends React.Component {
       },
       title: {
         align: 'center',
-        verticalAlign: 'top',
+        verticalAlign: 'middle',
         text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
+        style: { color: 'var(--header_label_primary)' },
       },
       series: [
         {
