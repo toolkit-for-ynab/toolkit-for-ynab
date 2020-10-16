@@ -7,33 +7,53 @@ import { NUM_DATAPOINTS_LIMIT } from './utils';
 
 export const RunningBalanceGraph = ({ series }) => {
   const GRAPH_ID = 'tk-balance-over-time-report-graph';
+  let textColor = 'var(--label_primary)';
 
   // On every change of series, rerender our graph to the report container
   useEffect(() => {
     Highcharts.chart(GRAPH_ID, {
-      title: { text: 'Balance Over Time' },
+      title: {
+        text: 'Balance Over Time',
+        style: { color: textColor },
+      },
       series: series,
       yAxis: {
-        title: { text: 'Balance' },
+        title: {
+          text: 'Balance',
+          style: { color: textColor },
+        },
         labels: {
           formatter: e => {
             return formatCurrency(e.value, false);
           },
+          style: { color: textColor },
         },
       },
+      chart: {
+        backgroundColor: 'transparent',
+      },
       xAxis: {
-        title: { text: 'Time' },
+        title: {
+          text: 'Time',
+          style: { color: textColor },
+        },
         type: 'datetime',
         dateTimeLabelFormats: {
           day: '%b %d',
           week: '%b %d, %y',
           month: '%b %Y',
         },
+        labels: {
+          style: { color: textColor },
+        },
       },
       legend: {
         layout: 'vertical',
         align: 'right',
         verticalAlign: 'middle',
+        itemStyle: {
+          color: textColor,
+        },
       },
       tooltip: {
         useHTML: true,
