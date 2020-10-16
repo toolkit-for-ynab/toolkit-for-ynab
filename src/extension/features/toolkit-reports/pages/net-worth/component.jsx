@@ -74,13 +74,19 @@ export class NetWorthComponent extends React.Component {
       legend: { enabled: false },
       title: { text: '' },
       tooltip: { enabled: false },
-      xAxis: { categories: labels },
+      xAxis: {
+        categories: labels,
+        labels: {
+          style: { color: 'var(--label_primary)' },
+        },
+      },
       yAxis: {
         title: { text: '' },
         labels: {
           formatter: function() {
             return formatCurrency(this.value);
           },
+          style: { color: 'var(--label_primary)' },
         },
       },
       series: [
