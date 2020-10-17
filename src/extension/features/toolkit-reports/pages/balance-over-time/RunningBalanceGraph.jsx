@@ -7,10 +7,10 @@ import { NUM_DATAPOINTS_LIMIT } from './utils';
 
 export const RunningBalanceGraph = ({ series }) => {
   const GRAPH_ID = 'tk-balance-over-time-report-graph';
-  let textColor = 'var(--label_primary)';
 
   // On every change of series, rerender our graph to the report container
   useEffect(() => {
+    let textColor = 'var(--label_primary)';
     Highcharts.chart(GRAPH_ID, {
       title: {
         text: 'Balance Over Time',
