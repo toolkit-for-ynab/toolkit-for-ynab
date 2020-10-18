@@ -60,15 +60,15 @@ export class ReconcileBalance extends Feature {
    * @returns {Number} balance The reconciled balance of the account
    */
   _calculateReconciledBalance = accountId => {
-    let account = getEntityManager().getAccountById(accountId);
-    let transactions = account.getTransactions();
-    let reconciledTransactions = transactions.filter(
-      txn => txn.cleared && !txn.isTombstone && txn.isReconciled()
-    );
-    let balance = reconciledTransactions.reduce((accum, txn) => {
-      return accum + txn.amount;
+    const account = getEntityManager().getAccountById(accountId);
+
+    return account.getTransactions().reduce((reduced, transaction) => {
+      if (transaction.cleared && !transaction.isTombstone && transaction.isReconciled()) {
+        return reduced + transaction.amount;
+      }
+
+      return reduced;
     }, 0);
-    return balance;
   };
 
   /**
