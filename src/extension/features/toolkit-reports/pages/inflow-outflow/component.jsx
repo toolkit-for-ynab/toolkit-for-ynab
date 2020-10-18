@@ -91,6 +91,13 @@ export class InflowOutflowComponent extends React.Component {
         column: {
           grouping: false,
         },
+        series: {
+          states: {
+            inactive: {
+              enabled: false,
+            },
+          },
+        },
       },
       series: [
         {

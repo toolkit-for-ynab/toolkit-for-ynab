@@ -174,6 +174,11 @@ export class SpendingByPayeeComponent extends React.Component {
               )}%)</span>`;
             },
           },
+          states: {
+            inactive: {
+              enabled: false,
+            },
+          },
         },
       },
       tooltip: {

@@ -89,6 +89,11 @@ export const RunningBalanceGraph = ({ series }) => {
               event.preventDefault(); // Prevent toggling via the legend
             },
           },
+          states: {
+            inactive: {
+              enabled: false,
+            },
+          },
         },
       },
       responsive: {

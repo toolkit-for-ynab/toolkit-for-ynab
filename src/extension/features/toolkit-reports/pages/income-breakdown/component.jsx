@@ -361,6 +361,13 @@ export class IncomeBreakdownComponent extends React.Component {
             },
           },
         },
+        series: {
+          states: {
+            inactive: {
+              enabled: false,
+            },
+          },
+        },
       },
       series: [
         {
