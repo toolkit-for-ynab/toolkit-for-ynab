@@ -1,0 +1,7 @@
+.tk-markdown-memo {
+  display: inline-block;
+}
+
+.tk-markdown-memo p {
+  margin: 0 !important;
+}
