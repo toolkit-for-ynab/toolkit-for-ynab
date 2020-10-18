@@ -27,16 +27,11 @@ export class SetMultipleFlags extends Feature {
     if (!$editModal.length) {
       return;
     }
-
     this._injectButtons($editModal);
   }
 
   observe(changedNodes) {
-    if (
-      changedNodes.has(
-        'ynab-u modal-popup modal-account-edit-transaction-list modal-overlay active'
-      )
-    ) {
+    if (changedNodes.has('modal-overlay  ynab-u modal-popup modal-account-edit-transaction-list')) {
       this.invoke();
     }
   }
