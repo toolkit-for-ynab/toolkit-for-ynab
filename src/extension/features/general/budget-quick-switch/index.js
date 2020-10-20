@@ -42,7 +42,7 @@ export class BudgetQuickSwitch extends Feature {
   }
 
   observe(changedNodes) {
-    if (changedNodes.has('ynab-u ynab-new-settings-menu modal-overlay active')) {
+    if (changedNodes.has('modal-overlay  ynab-u ynab-new-settings-menu')) {
       this.populateBudgetList();
     }
   }
