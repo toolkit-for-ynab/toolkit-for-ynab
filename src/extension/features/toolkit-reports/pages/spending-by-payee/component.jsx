@@ -173,6 +173,10 @@ export class SpendingByPayeeComponent extends React.Component {
                 this.percentage
               )}%)</span>`;
             },
+            style: {
+              color: 'var(--label_primary)',
+              textOutline: 'none',
+            },
           },
           states: {
             inactive: {
