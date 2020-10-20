@@ -204,6 +204,10 @@ export class SpendingByCategoryComponent extends React.Component {
                 this.percentage
               )}%)</span>`;
             },
+            style: {
+              color: 'var(--label_primary)',
+              textOutline: 'none',
+            },
           },
           states: {
             inactive: {
@@ -231,6 +235,9 @@ export class SpendingByCategoryComponent extends React.Component {
       ],
       drilldown: {
         series: drillDownData,
+        activeDataLabelStyle: {
+          color: 'var(--label_primary)',
+        },
       },
     });
 
