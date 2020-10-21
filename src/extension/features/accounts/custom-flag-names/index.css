@@ -1,0 +1,16 @@
+.modal-account-flags .modal .modal-list button .label {
+  flex: 1 !important;
+  margin-right: 3em;
+}
+
+.modal-account-flags input.tk-flag-input {
+  color: white;
+  height: 30px;
+  padding: 0 0.7em;
+  margin-bottom: 0.3em;
+  border: none;
+}
+
+.modal-account-flags input.tk-flag-input:focus {
+  color: black;
+}
