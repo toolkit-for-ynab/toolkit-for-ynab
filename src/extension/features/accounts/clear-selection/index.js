@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
 
 export class ClearSelection extends Feature {
   uncheckTransactions = () => {
@@ -15,20 +16,25 @@ export class ClearSelection extends Feature {
     }
   };
 
-  observe = changedNodes => {
-    if (
-      changedNodes.has(
-        'ynab-u modal-popup modal-account-edit-transaction-list modal-overlay active'
-      )
-    ) {
-      this.invoke();
-    }
-  };
+  shouldInvoke() {
+    return true;
+  }
 
-  invoke = () => {
-    const menuText =
-      (ynabToolKit.l10nData && ynabToolKit.l10nData['toolkit.accountsClearSelection']) ||
-      'Clear Selection';
+  invoke() {
+    addToolkitEmberHook(
+      this,
+      'modals/register/edit-transactions',
+      'didRender',
+      this.insertClearSelection
+    );
+  }
+
+  insertClearSelection = element => {
+    if (element.querySelector('#tk-clear-selection') !== null) {
+      return;
+    }
+
+    const menuText = l10n('toolkit.accountsClearSelection', 'Clear Selection');
 
     // Note that ${menuText} was intentionally placed on the same line as the <i> tag to
     // prevent the leading space that occurs as a result of using a multi-line string.
@@ -37,7 +43,7 @@ export class ClearSelection extends Feature {
     //
     // The second <li> functions as a separator on the menu after the feature menu item.
     $('.modal-account-edit-transaction-list .modal-list').prepend(
-      $(`<li>
+      $(`<li id="tk-clear-selection">
             <button class="button-list ynab-toolkit-clear-selection">
               <i class="ynab-new-icon flaticon stroke minus-2"></i>${menuText}
             </button>

@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
-import { isCurrentRouteAccountsPage, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { addToolkitEmberHook, getToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 const FLAG_COLORS = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Purple'];
@@ -19,28 +19,25 @@ export class SetMultipleFlags extends Feature {
   }
 
   shouldInvoke() {
-    return isCurrentRouteAccountsPage();
+    return true;
   }
 
   invoke() {
-    const $editModal = $('.modal-account-edit-transaction-list');
-    if (!$editModal.length) {
-      return;
-    }
-    this._injectButtons($editModal);
-  }
-
-  observe(changedNodes) {
-    if (changedNodes.has('modal-overlay  ynab-u modal-popup modal-account-edit-transaction-list')) {
-      this.invoke();
-    }
+    addToolkitEmberHook(
+      this,
+      'modals/register/edit-transactions',
+      'didInsertElement',
+      this._injectButtons
+    );
   }
 
   _closeModal() {
     controllerLookup('application').send('closeModal');
   }
 
-  _injectButtons($editModal) {
+  _injectButtons(element) {
+    const $editModal = $('.modal-account-edit-transaction-list', element);
+
     if (!$('#tk-add-flags', $editModal).length) {
       $('hr', $editModal)
         .first()

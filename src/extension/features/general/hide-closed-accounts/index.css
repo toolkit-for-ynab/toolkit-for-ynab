@@ -1,3 +1,3 @@
-body.toolkit-hide-closed .sidebar .nav-accounts .nav-account.closed {
+body.tk-hide-closed .sidebar .nav-accounts .nav-account.closed {
   display: none !important;
 }
