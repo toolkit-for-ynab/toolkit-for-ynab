@@ -3,10 +3,23 @@ import { componentPrepend } from 'toolkit/extension/utils/react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { BudgetListItem } from './components/budget-list-item';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class BudgetQuickSwitch extends Feature {
-  populateBudgetList() {
-    const modalList = $('.modal-list')[0];
+  shouldInvoke() {
+    return true;
+  }
+
+  invoke() {
+    addToolkitEmberHook(this, 'settings-menu', 'didRender', this.injectQuickSwitch);
+  }
+
+  injectQuickSwitch(element) {
+    if (element.querySelector('#tk-quick-switch') !== null) {
+      return;
+    }
+
+    const modalList = $('.modal-list', element)[0];
     let activeBudgetVersionId = controllerLookup('application').get('budgetVersionId');
 
     ynab.YNABSharedLib.getCatalogViewModel_UserViewModel().then(({ userBudgetDisplayItems }) => {
@@ -22,7 +35,7 @@ export class BudgetQuickSwitch extends Feature {
 
           if (i === 0) {
             componentPrepend(
-              <li>
+              <li id="tk-quick-switch">
                 <hr />
               </li>,
               modalList
@@ -39,11 +52,5 @@ export class BudgetQuickSwitch extends Feature {
           );
         });
     });
-  }
-
-  observe(changedNodes) {
-    if (changedNodes.has('modal-overlay  ynab-u ynab-new-settings-menu')) {
-      this.populateBudgetList();
-    }
   }
 }
