@@ -46,6 +46,7 @@ export class AutoReconcile extends Feature {
       let parent = document.querySelector(YNAB_RECONCILE_INPUT_MODAL);
       if (parent) {
         let okButton = parent.getElementsByTagName('button')[0];
+        okButton.textContent = 'Reconcile';
         parent.insertBefore(autoReconcileContainer, okButton);
       }
     }
