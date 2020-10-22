@@ -174,6 +174,11 @@ export class SpendingByPayeeComponent extends React.Component {
               )}%)</span>`;
             },
           },
+          states: {
+            inactive: {
+              enabled: false,
+            },
+          },
         },
       },
       tooltip: {
@@ -181,8 +186,9 @@ export class SpendingByPayeeComponent extends React.Component {
       },
       title: {
         align: 'center',
-        verticalAlign: 'top',
+        verticalAlign: 'middle',
         text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
+        style: { color: 'var(--label_primary)' },
       },
       series: [
         {

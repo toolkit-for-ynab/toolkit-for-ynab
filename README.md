@@ -68,8 +68,9 @@ This extension uses three main things in its build process:
    - On **macOS** both prerequisites can be setup using `brew`. Ensure command line developer tools (`xcode-select --install`) are also installed.
    - On **Windows** `node` and `yarn` can be installed via Chocolatey (`choco`) package manager.
 
-3. Run `yarn install` within the folder you cloned. This will install all the dependencies needed for the project.
-4. Run `yarn build:development` from within the folder you cloned which will build the Toolkit.
+3. If on VS Code you can Run Task Setup to skip steps 4 & 5. Other Tasks to run are available in the Command Pallet.
+4. Run `yarn install` within the folder you cloned. This will install all the dependencies needed for the project.
+5. Run `yarn build:development` from within the folder you cloned which will build the Toolkit.
 
 - Whilst developing, you may prefer to run `yarn watch` which will monitor the project
   directory for changes and run `yarn build:development` automatically for you.

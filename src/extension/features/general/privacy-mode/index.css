@@ -1,47 +1,32 @@
 .tk-privacy-mode .currency,          /* global .currency handler */
+.tk-privacy-mode .highcharts-data-label .highcharts-text-outline~.highcharts-text-outline, /* outlining in Toolkit Pie Chart, only the highlight of currency */
 .tk-privacy-mode .button-prefs-user  /* user e-mail */
  {
-  filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="3" /></filter></svg>#filter');
-  -webkit-filter: blur(10px);
-  filter: blur(10px);
+  filter: url('#text-blur');
 }
 
 .tk-privacy-mode *:hover > .currency,            /* global .currency handler */
 .tk-privacy-mode *:hover > * > .currency,        /* global .currency handler */
 .tk-privacy-mode .currency:hover,                /* global .currency handler */
 .tk-privacy-mode .button-prefs-user:hover,       /* user e-mail */
-.tk-privacy-mode .c3-tooltip-container .currency /* ynab report tooltips */
+.tk-privacy-mode .c3-tooltip-container .currency, /* ynab report tooltips */
+.tk-privacy-mode .highcharts-data-label:hover .highcharts-text-outline, /* currency highlight in Toolkit Pie Chart */
+.tk-privacy-mode .highcharts-data-label:hover .currency /* currency in Toolkit Pie Chart */
  {
   -webkit-filter: initial;
   filter: initial;
 }
 
-/* YNAB Reports don't use .currency class so we gotta do special stuff for those. */
-.tk-privacy-mode .c3-chart-arcs .c3-chart-arcs-title tspan:last-child,
-.tk-privacy-mode .c3-axis-y text tspan {
-  fill: #ffffff !important;
-  color: #ffffff !important;
+.tk-privacy-mode .c3-axis-y text tspan, /* Default report bar chart */
+.tk-privacy-mode .c3-chart-arcs-title .c3-chart-total-spending, /* Default report pie chart */
+.tk-privacy-mode .highcharts-yaxis-labels text {
+  filter: url('#text-blur');
+  -webkit-filter: url('#text-blur');
 }
 
-.tk-privacy-mode .c3-chart-arcs .c3-chart-arcs-title:hover tspan:last-child,
-.tk-privacy-mode .c3-axis-y:hover text tspan {
-  color: #0d233a !important;
-  fill: #0d233a !important;
-}
-
-/* Higcharts doesn't seem to like `filters` so we need to special stuff for those too */
-.tk-privacy-mode .highcharts-yaxis-labels text tspan,          /* net-worth */
-.tk-privacy-mode .highcharts-title tspan:last-child,           /* spending */
-.tk-privacy-mode .highcharts-data-labels text tspan:last-child /* spending */
- {
-  fill: #ffffff !important;
-  color: #ffffff !important;
-}
-
-.tk-privacy-mode .highcharts-yaxis-labels:hover text tspan,          /* net-worth */
-.tk-privacy-mode .highcharts-title:hover tspan:last-child,           /* spending */
-.tk-privacy-mode .highcharts-data-labels text:hover tspan:last-child /* spending */
- {
-  fill: #606060 !important;
-  color: #606060 !important;
+.tk-privacy-mode .c3-axis-y text tspan:hover,
+.tk-privacy-mode .c3-chart-arcs-title .c3-chart-total-spending:hover,
+.tk-privacy-mode .highcharts-yaxis-labels text:hover {
+  filter: initial;
+  -webkit-filter: initial;
 }
