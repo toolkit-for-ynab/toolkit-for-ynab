@@ -9,6 +9,13 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "port": 9229
+    },
+    {
+      "name": "Launch TK4YNAB in Chrome",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "https://app.youneedabudget.com/",
+      "webRoot": "${workspaceFolder}"
     }
   ]
 }

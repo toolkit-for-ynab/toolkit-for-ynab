@@ -6,8 +6,6 @@ import * as ReactDOM from 'react-dom';
 
 const YNAB_RECONCILE_SELECTOR = '.accounts-header-reconcile';
 const YNAB_APPLICATION_BODY = '.ember-application';
-const INDIVIDUAL_ACCOUNT_ROUTE = 'accounts.select';
-const AUTO_RECONCILE_PARENT = '.accounts-header-actions';
 const AUTO_RECONCILE_CONTAINER_ID = 'tk-auto-reconcile-container';
 export const AUTO_RECONCILE_MODAL_PORTAL = 'tk-auto-reconcile-portal';
 
@@ -17,19 +15,8 @@ export class AutoReconcile extends Feature {
     return $(YNAB_RECONCILE_SELECTOR).length > 0 && isCurrentRouteAccountsPage();
   }
 
-  onRouteChanged(currentRoute) {
-    // Note: Overlay prevents changing routes before closing modal
-    // Unmount if the component if not on an indiviudal accounts tab
-    if (!this.shouldInvoke()) {
-      const container = document.getElementById(AUTO_RECONCILE_CONTAINER_ID);
-      if (container) {
-        ReactDOM.unmountComponentAtNode(container);
-      }
-      return;
-    }
-
-    // Render the container for auto reconcile
-    if (currentRoute === INDIVIDUAL_ACCOUNT_ROUTE) {
+  observe(changedNodes) {
+    if (changedNodes.has('modal-account-reconcile-enter-balance')) {
       this.invoke();
     }
   }
@@ -55,7 +42,11 @@ export class AutoReconcile extends Feature {
       autoReconcileContainer.setAttribute('id', AUTO_RECONCILE_CONTAINER_ID);
 
       // Append it as a child of the parent
-      document.querySelector(AUTO_RECONCILE_PARENT).prepend(autoReconcileContainer);
+      let parent = document.querySelector('.modal-account-reconcile-enter-balance');
+      if (parent) {
+        let okButton = parent.getElementsByTagName('button')[0];
+        parent.insertBefore(autoReconcileContainer, okButton);
+      }
     }
   }
 

@@ -1,18 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import { setTransactionCleared } from '../autoReconcileUtils';
-import { AutoReconcileContext } from './AutoReconcileContext';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { AUTO_RECONCILE_MODAL_PORTAL } from '../index';
 import '../styles.scss';
 
-export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) => {
-  const store = useContext(AutoReconcileContext);
-  const [target] = store.target;
-
+export const AutoReconcileConfirmationModal = ({
+  isOpen,
+  setModalOpened,
+  matchingTransactions,
+  target,
+}) => {
   // There may be multiple sets that matched
-  const [matchingTransactions] = store.matchingTransactions;
-
   // Keep track of the chosen transaction set
   const [chosenTransactionSet, setChosenSelectionSet] = useState([]);
   const [transactionArrIndex, setTransactionArrIndex] = useState(0);
@@ -34,12 +33,6 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
     }
   };
 
-  let resetState = () => {
-    setChosenSelectionSet([]);
-    setTransactionArrIndex(0);
-    store.resetState();
-  };
-
   /**
    * For any matched transactions, toggle them to be cleared.
    * Reset state and close
@@ -50,21 +43,22 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
         setTransactionCleared(txn);
       });
     }
-    resetState();
-    onSubmit();
-  };
-
-  let onModalClose = () => {
-    resetState();
-    onClose();
+    onModalClose();
   };
 
   if (!isOpen) {
     return null;
   }
 
+  let onModalClose = () => {
+    setChosenSelectionSet([]);
+    setTransactionArrIndex(0);
+    setModalOpened(false);
+  };
+
   return ReactDOM.createPortal(
-    <div className="tk-modal-container">
+    // Note: YNAB has their zIndex at 9998. Keep the current ynab modal from disappearing.
+    <div className="tk-modal-container" style={{ zIndex: 10000 }}>
       <div className="tk-modal-content tk-modal-stack tk-confirmation-modal">
         <span className="tk-activity-header tk-align-self-start">Auto Reconcile</span>
         <p className="tk-align-self-start">
@@ -115,7 +109,7 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
         <div className="tk-align-self-end">
           {matchingTransactions.length > 0 && (
             <button className="tk-button tk-mg-r-1" onClick={handleAutoReconcileConfirmation}>
-              Reconcile
+              Clear
             </button>
           )}
           <button className="tk-button" onClick={onModalClose}>

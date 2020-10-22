@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "yarn build:development",
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "build-prod",
+      "command": "yarn build:production",
+      "type": "shell"
+    },
+    {
+      "label": "install",
+      "command": "yarn install",
+      "type": "shell"
+    },
+    {
+      "label": "lint",
+      "command": "yarn lint",
+      "type": "shell"
+    },
+    {
+      "label": "lint-fix",
+      "command": "yarn lint:fix",
+      "type": "shell"
+    },
+    {
+      "label": "setup",
+      "command": "yarn install && yarn build:development",
+      "type": "shell"
+    },
+    {
+      "label": "test",
+      "command": "yarn test",
+      "type": "shell",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "watch",
+      "command": "yarn watch",
+      "type": "shell"
+    }
+  ]
+}

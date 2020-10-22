@@ -205,6 +205,11 @@ export class SpendingByCategoryComponent extends React.Component {
               )}%)</span>`;
             },
           },
+          states: {
+            inactive: {
+              enabled: false,
+            },
+          },
         },
       },
       tooltip: {
@@ -214,6 +219,7 @@ export class SpendingByCategoryComponent extends React.Component {
         align: 'center',
         verticalAlign: 'middle',
         text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
+        style: { color: 'var(--label_primary)' },
       },
       series: [
         {
