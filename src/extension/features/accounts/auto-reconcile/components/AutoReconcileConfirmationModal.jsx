@@ -43,15 +43,21 @@ export const AutoReconcileConfirmationModal = ({
         setTransactionCleared(txn);
       });
     }
-    onClose();
+    onModalClose();
   };
 
   if (!isOpen) {
     return null;
   }
 
+  let onModalClose = () => {
+    setChosenSelectionSet([]);
+    setTransactionArrIndex(0);
+    onClose();
+  };
+
   return ReactDOM.createPortal(
-    <div className="tk-modal-container">
+    <div className="tk-modal-container" style={{ zIndex: 10000 }}>
       <div className="tk-modal-content tk-modal-stack tk-confirmation-modal">
         <span className="tk-activity-header tk-align-self-start">Auto Reconcile</span>
         <p className="tk-align-self-start">
@@ -105,7 +111,7 @@ export const AutoReconcileConfirmationModal = ({
               Reconcile
             </button>
           )}
-          <button className="tk-button" onClick={onClose}>
+          <button className="tk-button" onClick={onModalClose}>
             Close
           </button>
         </div>

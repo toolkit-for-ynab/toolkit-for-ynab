@@ -18,6 +18,7 @@ export const AutoReconcileContainer = () => {
     let reconcileAmount = $('.modal-account-reconcile-enter-balance')
       .find('input')
       .val();
+
     let { selectedAccountId } = controllerLookup('accounts');
     let account = getEntityManager().getAccountById(selectedAccountId);
     let transactions = account.getTransactions();
@@ -54,7 +55,7 @@ export const AutoReconcileContainer = () => {
         target={target}
         matchingTransactions={matchingTransactions}
       />
-      <button className={'button'} onClick={onSubmit}>
+      <button className={'button-primary button'} onClick={onSubmit}>
         Clear
       </button>
     </>
