@@ -19,7 +19,7 @@ export const AutoReconcileContainer = () => {
       .val();
 
     // Exit early and do nothing if the input is invalid
-    if (isNaN(reconcileAmount)) {
+    if (!reconcileAmount.length || isNaN(reconcileAmount)) {
       return;
     }
 
