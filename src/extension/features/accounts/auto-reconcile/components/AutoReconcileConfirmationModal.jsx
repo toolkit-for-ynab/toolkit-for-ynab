@@ -1,18 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import { setTransactionCleared } from '../autoReconcileUtils';
-import { AutoReconcileContext } from './AutoReconcileContext';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { AUTO_RECONCILE_MODAL_PORTAL } from '../index';
 import '../styles.scss';
 
-export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) => {
-  const store = useContext(AutoReconcileContext);
-  const [target] = store.target;
-
+export const AutoReconcileConfirmationModal = ({
+  isOpen,
+  onClose,
+  matchingTransactions,
+  target,
+}) => {
   // There may be multiple sets that matched
-  const [matchingTransactions] = store.matchingTransactions;
-
   // Keep track of the chosen transaction set
   const [chosenTransactionSet, setChosenSelectionSet] = useState([]);
   const [transactionArrIndex, setTransactionArrIndex] = useState(0);
@@ -34,12 +33,6 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
     }
   };
 
-  let resetState = () => {
-    setChosenSelectionSet([]);
-    setTransactionArrIndex(0);
-    store.resetState();
-  };
-
   /**
    * For any matched transactions, toggle them to be cleared.
    * Reset state and close
@@ -50,12 +43,6 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
         setTransactionCleared(txn);
       });
     }
-    resetState();
-    onSubmit();
-  };
-
-  let onModalClose = () => {
-    resetState();
     onClose();
   };
 
@@ -118,7 +105,7 @@ export const AutoReconcileConfirmationModal = ({ isOpen, onSubmit, onClose }) =>
               Reconcile
             </button>
           )}
-          <button className="tk-button" onClick={onModalClose}>
+          <button className="tk-button" onClick={onClose}>
             Close
           </button>
         </div>
