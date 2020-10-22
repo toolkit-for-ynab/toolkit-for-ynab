@@ -18,6 +18,11 @@ export const AutoReconcileContainer = () => {
       .find('input')
       .val();
 
+    // Exit early and do nothing if the input is invalid
+    if (isNaN(reconcileAmount)) {
+      return;
+    }
+
     let { selectedAccountId } = controllerLookup('accounts');
     let account = getEntityManager().getAccountById(selectedAccountId);
     let transactions = account.getTransactions();

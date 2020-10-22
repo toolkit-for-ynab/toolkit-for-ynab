@@ -43,8 +43,10 @@ export class AutoReconcile extends Feature {
 
       // Append it as a child of the parent
       let parent = document.querySelector('.modal-account-reconcile-enter-balance');
-      let okButton = parent.getElementsByTagName('button')[0];
-      parent.insertBefore(autoReconcileContainer, okButton);
+      if (parent) {
+        let okButton = parent.getElementsByTagName('button')[0];
+        parent.insertBefore(autoReconcileContainer, okButton);
+      }
     }
   }
 
