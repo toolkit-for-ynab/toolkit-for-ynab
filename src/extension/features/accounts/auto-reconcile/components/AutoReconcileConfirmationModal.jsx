@@ -7,7 +7,7 @@ import '../styles.scss';
 
 export const AutoReconcileConfirmationModal = ({
   isOpen,
-  onClose,
+  setModalOpened,
   matchingTransactions,
   target,
 }) => {
@@ -53,7 +53,7 @@ export const AutoReconcileConfirmationModal = ({
   let onModalClose = () => {
     setChosenSelectionSet([]);
     setTransactionArrIndex(0);
-    onClose();
+    setModalOpened(false);
   };
 
   return ReactDOM.createPortal(
@@ -108,7 +108,7 @@ export const AutoReconcileConfirmationModal = ({
         <div className="tk-align-self-end">
           {matchingTransactions.length > 0 && (
             <button className="tk-button tk-mg-r-1" onClick={handleAutoReconcileConfirmation}>
-              Reconcile
+              Clear
             </button>
           )}
           <button className="tk-button" onClick={onModalClose}>

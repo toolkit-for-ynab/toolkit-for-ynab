@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { useModal } from '../hooks/useModal';
 import { transactionReducer, generatePowerset, findMatchingSum } from '../autoReconcileUtils';
 import { AutoReconcileConfirmationModal } from './AutoReconcileConfirmationModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export const AutoReconcileContainer = () => {
-  const [isConfirmationOpen, showConfirmationModal, hideConfirmationModal] = useModal(false);
-  const [target, setTarget] = useState(0);
+  const [isModalOpened, setModalOpened] = useState(false);
   const [matchingTransactions, setMatchingTransactions] = useState([]);
+  const [target, setTarget] = useState(0);
 
   /**
    * Figure out which transactions add up to a specific target
@@ -44,14 +43,14 @@ export const AutoReconcileContainer = () => {
     // Update context state
     setTarget(calculatedTarget);
     setMatchingTransactions(possibleMatches);
-    showConfirmationModal();
+    setModalOpened(true);
   };
 
   return (
     <>
       <AutoReconcileConfirmationModal
-        isOpen={isConfirmationOpen}
-        onClose={hideConfirmationModal}
+        isOpen={isModalOpened}
+        setModalOpened={setModalOpened}
         target={target}
         matchingTransactions={matchingTransactions}
       />

@@ -16,7 +16,6 @@ export class AutoReconcile extends Feature {
   }
 
   observe(changedNodes) {
-    console.log(changedNodes);
     if (changedNodes.has('modal-account-reconcile-enter-balance')) {
       this.invoke();
     }
@@ -50,7 +49,6 @@ export class AutoReconcile extends Feature {
   }
 
   invoke() {
-    debugger;
     setTimeout(() => {
       // Create the elements for the reconcile button and modal portal
       this._createAutoReconcileContainer();
