@@ -7,6 +7,7 @@ import * as ReactDOM from 'react-dom';
 const YNAB_RECONCILE_SELECTOR = '.accounts-header-reconcile';
 const YNAB_APPLICATION_BODY = '.ember-application';
 const AUTO_RECONCILE_CONTAINER_ID = 'tk-auto-reconcile-container';
+export const YNAB_RECONCILE_INPUT_MODAL = '.modal-account-reconcile-enter-balance';
 export const AUTO_RECONCILE_MODAL_PORTAL = 'tk-auto-reconcile-portal';
 
 export class AutoReconcile extends Feature {
@@ -24,7 +25,7 @@ export class AutoReconcile extends Feature {
   _createModalPortal() {
     let portal = document.getElementById(AUTO_RECONCILE_MODAL_PORTAL);
     if (!portal) {
-      // Create the container for our React Button
+      // Create the container for our React Modal
       let portalDiv = document.createElement('div');
       portalDiv.setAttribute('id', AUTO_RECONCILE_MODAL_PORTAL);
 
@@ -41,8 +42,8 @@ export class AutoReconcile extends Feature {
       autoReconcileContainer.setAttribute('class', 'tk-mg-r-1');
       autoReconcileContainer.setAttribute('id', AUTO_RECONCILE_CONTAINER_ID);
 
-      // Append it as a child of the parent
-      let parent = document.querySelector('.modal-account-reconcile-enter-balance');
+      // Append the button next to the ok button
+      let parent = document.querySelector(YNAB_RECONCILE_INPUT_MODAL);
       if (parent) {
         let okButton = parent.getElementsByTagName('button')[0];
         parent.insertBefore(autoReconcileContainer, okButton);

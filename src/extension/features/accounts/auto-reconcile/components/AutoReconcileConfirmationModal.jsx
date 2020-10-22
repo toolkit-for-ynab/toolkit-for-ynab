@@ -67,7 +67,7 @@ export const AutoReconcileConfirmationModal = ({
           {matchingTransactions.length === 1 ? 'set' : 'sets'} of transactions totaling to{' '}
           <strong>{formatCurrency(target)}</strong>.
         </p>
-        <div className="ynab-table-5-col ynab-table has-scrollbar tk-mg-b-1">
+        <div className="ynab-table-5-col ynab-table tk-mg-b-1">
           <div className="ynab-table-head">
             <div className="ynab-table-col">Account</div>
             <div className="ynab-table-col">Date</div>

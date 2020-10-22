@@ -3,7 +3,7 @@ import { transactionReducer, generatePowerset, findMatchingSum } from '../autoRe
 import { AutoReconcileConfirmationModal } from './AutoReconcileConfirmationModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
-
+import { YNAB_RECONCILE_INPUT_MODAL } from '../index';
 export const AutoReconcileContainer = () => {
   const [isModalOpened, setModalOpened] = useState(false);
   const [matchingTransactions, setMatchingTransactions] = useState([]);
@@ -14,7 +14,7 @@ export const AutoReconcileContainer = () => {
    * Update the state to update target and any matched transactions
    */
   let onSubmit = () => {
-    let reconcileAmount = $('.modal-account-reconcile-enter-balance')
+    let reconcileAmount = $(YNAB_RECONCILE_INPUT_MODAL)
       .find('input')
       .val();
 
