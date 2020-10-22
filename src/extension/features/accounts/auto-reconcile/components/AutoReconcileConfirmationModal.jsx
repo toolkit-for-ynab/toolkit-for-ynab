@@ -57,6 +57,7 @@ export const AutoReconcileConfirmationModal = ({
   };
 
   return ReactDOM.createPortal(
+    // Note: YNAB has their zIndex at 9998. Keep the current ynab modal from disappearing.
     <div className="tk-modal-container" style={{ zIndex: 10000 }}>
       <div className="tk-modal-content tk-modal-stack tk-confirmation-modal">
         <span className="tk-activity-header tk-align-self-start">Auto Reconcile</span>
