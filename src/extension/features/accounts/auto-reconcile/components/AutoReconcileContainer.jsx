@@ -3,30 +3,11 @@ import { transactionReducer, generatePowerset, findMatchingSum } from '../autoRe
 import { AutoReconcileConfirmationModal } from './AutoReconcileConfirmationModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
-import { YNAB_RECONCILE_INPUT_MODAL } from '../index';
 
-export const AutoReconcileContainer = () => {
+export const AutoReconcileContainer = ({ reconcileInputValue }) => {
   const [isModalOpened, setModalOpened] = useState(false);
   const [matchingTransactions, setMatchingTransactions] = useState([]);
-  const [reconileInputValue, setReconcileInputValue] = useState('');
   const [target, setTarget] = useState(0);
-
-  /**
-   * Get the input for the modal
-   * @return {JQuery Element} Element of the input field
-   */
-  let getReconcileInputField = () => {
-    return $(YNAB_RECONCILE_INPUT_MODAL).find('input');
-  };
-
-  // Listen to changes of the input field
-  useEffect(() => {
-    getReconcileInputField().on('input', e => setReconcileInputValue(e.target.value));
-
-    return () => {
-      getReconcileInputField().off();
-    };
-  }, []);
 
   /**
    * Figure out which transactions add up to a specific target
@@ -34,7 +15,7 @@ export const AutoReconcileContainer = () => {
    */
   let onSubmit = () => {
     // Exit early and do nothing if the input is invalid
-    if (!reconileInputValue.length || isNaN(reconileInputValue)) {
+    if (!reconcileInputValue.length || isNaN(reconcileInputValue)) {
       return;
     }
 
@@ -42,22 +23,22 @@ export const AutoReconcileContainer = () => {
     let account = getEntityManager().getAccountById(selectedAccountId);
     let transactions = account.getTransactions();
 
-    // Get all the non reconciled transactions
-    let nonreconciledTransactions = transactions.filter(
-      txn => txn.cleared && !txn.isTombstone && !txn.isReconciled()
+    // Get all the uncleared transactions
+    let unclearedTransactions = transactions.filter(
+      txn => txn.cleared && txn.isUncleared() && !txn.isTombstone
     );
 
     // Sum up all reconciled transactions
     let reconciledTransactions = transactions.filter(
-      txn => txn.cleared && !txn.isTombstone && txn.isReconciled()
+      txn => txn.cleared && !txn.isTombstone && (txn.isReconciled() || txn.isCleared())
     );
 
     // Figure out our target by summing up the reconciled amount
     let reconciledTotal = reconciledTransactions.reduce(transactionReducer, 0);
-    let calculatedTarget = reconileInputValue * 1000 - reconciledTotal;
+    let calculatedTarget = reconcileInputValue * 1000 - reconciledTotal;
 
     // Figure out which of the non reconciled transactions add up to our target
-    let transactionPowerset = generatePowerset(nonreconciledTransactions);
+    let transactionPowerset = generatePowerset(unclearedTransactions);
     let possibleMatches = findMatchingSum(transactionPowerset, calculatedTarget);
 
     // Update context state
@@ -75,10 +56,10 @@ export const AutoReconcileContainer = () => {
         matchingTransactions={matchingTransactions}
       />
       <button
-        className={`button-primary button${reconileInputValue.length ? '' : ' button-disabled'}`}
+        className={`button-primary button${reconcileInputValue.length ? '' : ' button-disabled'}`}
         onClick={onSubmit}
       >
-        Clear
+        Use Assisted Clear
       </button>
     </>
   );
