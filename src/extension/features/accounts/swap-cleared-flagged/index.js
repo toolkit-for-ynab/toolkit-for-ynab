@@ -2,14 +2,6 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class SwapClearedFlagged extends Feature {
-  injectCSS() {
-    return require('./index.css');
-  }
-
-  shouldInvoke() {
-    return true;
-  }
-
   shouldInvoke() {
     return true;
   }
