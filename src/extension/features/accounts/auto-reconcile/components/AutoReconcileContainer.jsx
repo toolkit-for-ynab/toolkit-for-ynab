@@ -3,7 +3,6 @@ import { transactionReducer, generatePowerset, findMatchingSum } from '../autoRe
 import { AutoReconcileConfirmationModal } from './AutoReconcileConfirmationModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
-import { YNAB_RECONCILE_INPUT_MODAL } from '../index';
 
 export const AutoReconcileContainer = ({ reconcileInputValue }) => {
   const [isModalOpened, setModalOpened] = useState(false);
@@ -24,14 +23,14 @@ export const AutoReconcileContainer = ({ reconcileInputValue }) => {
     let account = getEntityManager().getAccountById(selectedAccountId);
     let transactions = account.getTransactions();
 
-    // Get all the non reconciled transactions
-    let nonreconciledTransactions = transactions.filter(
-      txn => txn.cleared && !txn.isTombstone && !txn.isReconciled()
+    // Get all the uncleared transactions
+    let unclearedTransactions = transactions.filter(
+      txn => txn.cleared && txn.isUncleared() && !txn.isTombstone
     );
 
     // Sum up all reconciled transactions
     let reconciledTransactions = transactions.filter(
-      txn => txn.cleared && !txn.isTombstone && txn.isReconciled()
+      txn => txn.cleared && !txn.isTombstone && (txn.isReconciled() || txn.isCleared())
     );
 
     // Figure out our target by summing up the reconciled amount
@@ -39,7 +38,7 @@ export const AutoReconcileContainer = ({ reconcileInputValue }) => {
     let calculatedTarget = reconcileInputValue * 1000 - reconciledTotal;
 
     // Figure out which of the non reconciled transactions add up to our target
-    let transactionPowerset = generatePowerset(nonreconciledTransactions);
+    let transactionPowerset = generatePowerset(unclearedTransactions);
     let possibleMatches = findMatchingSum(transactionPowerset, calculatedTarget);
 
     // Update context state
