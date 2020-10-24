@@ -99,7 +99,7 @@ function copyTransactionsToClipboard(transactions) {
 
     return {
       Account: transaction.get('accountName'),
-      Date: ynab.formatDateLong(transaction.get('date').toNativeDate()),
+      Date: ynab.formatDateLong(transaction.get('date').toString()),
       Payee: payee && payee.get('name') ? payee.get('name') : 'Unknown',
       Category: transaction.get('subCategoryNameWrapped'),
       Memo: transaction.get('memo'),
