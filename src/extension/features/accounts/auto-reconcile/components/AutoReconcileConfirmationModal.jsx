@@ -109,7 +109,7 @@ export const AutoReconcileConfirmationModal = ({
         <div className="tk-align-self-end">
           {matchingTransactions.length > 0 && (
             <button className="tk-button tk-mg-r-1" onClick={handleAutoReconcileConfirmation}>
-              Clear
+              Clear Transactions
             </button>
           )}
           <button className="tk-button" onClick={onModalClose}>
