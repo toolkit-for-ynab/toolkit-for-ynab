@@ -1,7 +1,7 @@
-export const transactionReducer = (accumulator, txn) => {
-  return accumulator + txn.amount;
-};
-
+/**
+ * Clear a transaction by clicking on the clear button
+ * @param {Transaction} transaction The transaction to clear
+ */
 export const setTransactionCleared = transaction => {
   if (transaction && transaction.entityId && !transaction.isTombstone) {
     let selector = `[data-row-id='${transaction.entityId}'] .ynab-grid-cell-cleared`;
@@ -50,4 +50,14 @@ export const findMatchingSum = (transactionsPowerset, target) => {
     }
   });
   return matchingTargets;
+};
+
+/**
+ * Reducer method to sum up all transactions
+ * @param {Number} accumulator The current accumulator
+ * @param {Transaction} txn The current transaction
+ * @returns {Number} The combined sum
+ */
+export const transactionReducer = (accumulator, txn) => {
+  return accumulator + txn.amount;
 };

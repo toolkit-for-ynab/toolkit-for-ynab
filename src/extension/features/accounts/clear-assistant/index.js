@@ -11,7 +11,7 @@ export const YNAB_ADJUSTMENT_SELECTOR = '.accounts-adjustment.account-flash-noti
 export const CLEAR_ASSISTANT_MODAL_PORTAL = 'tk-clear-assistant-portal';
 export const YNAB_RECONCILE_INPUT_MODAL = '.modal-account-reconcile-enter-balance';
 
-export class AutoReconcile extends Feature {
+export class ClearAssistant extends Feature {
   constructor() {
     super();
     this._reconcileInputValue = 0;
