@@ -38,7 +38,7 @@ export const AutoReconcileConfirmationModal = ({
    * For any matched transactions, toggle them to be cleared.
    * Reset state and close
    */
-  let handleAutoReconcileConfirmation = () => {
+  let handleConfirmation = () => {
     if (chosenTransactionSet.length > 0) {
       chosenTransactionSet.forEach(txn => {
         setTransactionCleared(txn);
@@ -121,21 +121,25 @@ export const AutoReconcileConfirmationModal = ({
     // Note: YNAB has their zIndex at 9998. Keep the current ynab modal from disappearing.
     <div className="tk-modal-container" style={{ zIndex: 10000 }}>
       <div className="tk-modal-content tk-modal-stack tk-confirmation-modal">
-        {/* Modal Title*/}
+        {/* Modal Title */}
         <span className="tk-align-self-start" style={{ fontSize: '1.5rem' }}>
-          Assisted Clear
+          Clear Assistant
         </span>
 
         {/* Modal Content */}
         {/* Result text appears only if we have any matching clearable matching transaction */}
         <p className="tk-align-self-start">
           {isTargetAlreadyReached() ? (
-            "This account's cleared balance in YNAB matches your actual account. You're all set to finish reconciling!"
+            "This account's cleared balance in YNAB matches your actual account balance. You're all set to finish reconciling!"
           ) : (
             <>
+              YNAB Cleared Balance: <strong>{formatCurrency(clearedTotal)}</strong> <br />
+              Current Account Balance: <strong>{formatCurrency(clearedTotal + target)}</strong>
+              <br />
+              <br />
               Found <strong>{matchingTransactions.length}</strong>{' '}
-              {matchingTransactions.length === 1 ? 'set' : 'sets'} of transactions totaling to{' '}
-              <strong>{formatCurrency(target)}</strong>.
+              {matchingTransactions.length === 1 ? 'set' : 'sets'} of uncleared transactions
+              totaling to <strong>{formatCurrency(target)}</strong>.
             </>
           )}
         </p>
@@ -148,7 +152,7 @@ export const AutoReconcileConfirmationModal = ({
           {matchingTransactions.length > 0 &&
             chosenTransactionSet.length > 0 &&
             !isTargetAlreadyReached() && (
-              <button className="tk-button tk-mg-r-05" onClick={handleAutoReconcileConfirmation}>
+              <button className="tk-button tk-mg-r-05" onClick={handleConfirmation}>
                 Clear Transactions
               </button>
             )}
