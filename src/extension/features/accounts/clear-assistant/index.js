@@ -1,17 +1,17 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { AutoReconcileContainer } from './components/AutoReconcileContainer';
+import { ClearAssistantContainer } from './components/ClearAssistantContainer';
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 
 const YNAB_RECONCILE_BUTTON = '.accounts-header-reconcile';
 const YNAB_APPLICATION_BODY = '.ember-application';
-const AUTO_RECONCILE_CONTAINER_ID = 'tk-auto-reconcile-container';
+const CLEAR_ASSISTANT_CONTAINER_ID = 'tk-clear-assistant-container';
 export const YNAB_ADJUSTMENT_SELECTOR = '.accounts-adjustment.account-flash-notification';
-export const AUTO_RECONCILE_MODAL_PORTAL = 'tk-auto-reconcile-portal';
+export const CLEAR_ASSISTANT_MODAL_PORTAL = 'tk-clear-assistant-portal';
 export const YNAB_RECONCILE_INPUT_MODAL = '.modal-account-reconcile-enter-balance';
 
-export class AutoReconcile extends Feature {
+export class ClearAssistant extends Feature {
   constructor() {
     super();
     this._reconcileInputValue = 0;
@@ -40,10 +40,10 @@ export class AutoReconcile extends Feature {
       this._createModalPortal();
 
       // Render the react component as part of the container
-      let container = document.getElementById(AUTO_RECONCILE_CONTAINER_ID);
+      let container = document.getElementById(CLEAR_ASSISTANT_CONTAINER_ID);
       if (container) {
         ReactDOM.render(
-          <AutoReconcileContainer reconcileInputValue={this._reconcileInputValue} />,
+          <ClearAssistantContainer reconcileInputValue={this._reconcileInputValue} />,
           container
         );
       }
@@ -68,12 +68,12 @@ export class AutoReconcile extends Feature {
    * Create the react modal portal in the DOM if its not already present
    */
   _createModalPortal() {
-    let portal = $(`#${AUTO_RECONCILE_MODAL_PORTAL}`);
+    let portal = $(`#${CLEAR_ASSISTANT_MODAL_PORTAL}`);
     if (!portal.length) {
       // Append it as a child of the ynab application
       let ynabApp = $(YNAB_APPLICATION_BODY);
       if (ynabApp.length) {
-        ynabApp.append(`<div id='${AUTO_RECONCILE_MODAL_PORTAL}'></div>`);
+        ynabApp.append(`<div id='${CLEAR_ASSISTANT_MODAL_PORTAL}'></div>`);
       }
     }
   }
@@ -82,13 +82,13 @@ export class AutoReconcile extends Feature {
    * Create the feature container in the DOM if its not already present
    */
   _createFeatureContainer() {
-    let container = $(`#${AUTO_RECONCILE_CONTAINER_ID}`);
+    let container = $(`#${CLEAR_ASSISTANT_CONTAINER_ID}`);
     if (!container.length) {
       // Append the container next to the create adjustment button
       let parent = $(YNAB_ADJUSTMENT_SELECTOR);
 
       if (parent) {
-        parent.append(`<span class='tk-mg-r-1' id='${AUTO_RECONCILE_CONTAINER_ID}'></span>`);
+        parent.append(`<span class='tk-mg-r-1' id='${CLEAR_ASSISTANT_CONTAINER_ID}'></span>`);
       }
     }
   }

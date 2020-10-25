@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { transactionReducer, generatePowerset, findMatchingSum } from '../autoReconcileUtils';
-import { AutoReconcileConfirmationModal } from './AutoReconcileConfirmationModal';
+import React, { useState } from 'react';
+import { generatePowerset, findMatchingSum } from '../clearAssistantUtils';
+import { ClearAssistantModal } from './ClearAssistantModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
-export const AutoReconcileContainer = ({ reconcileInputValue }) => {
+export const ClearAssistantContainer = ({ reconcileInputValue }) => {
   const [isModalOpened, setModalOpened] = useState(false);
   const [matchingTransactions, setMatchingTransactions] = useState([]);
+  const [clearedTotal, setClearedTotal] = useState(0);
   const [target, setTarget] = useState(0);
 
   /**
@@ -18,30 +19,23 @@ export const AutoReconcileContainer = ({ reconcileInputValue }) => {
     if (!reconcileInputValue.length || isNaN(reconcileInputValue)) {
       return;
     }
-
     let { selectedAccountId } = controllerLookup('accounts');
     let account = getEntityManager().getAccountById(selectedAccountId);
     let transactions = account.getTransactions();
+    let { clearedBalance } = account.getAccountCalculation();
 
     // Get all the uncleared transactions
     let unclearedTransactions = transactions.filter(
       txn => txn.cleared && txn.isUncleared() && !txn.isTombstone
     );
-
-    // Sum up all reconciled transactions
-    let reconciledTransactions = transactions.filter(
-      txn => txn.cleared && !txn.isTombstone && (txn.isReconciled() || txn.isCleared())
-    );
-
-    // Figure out our target by summing up the reconciled amount
-    let reconciledTotal = reconciledTransactions.reduce(transactionReducer, 0);
-    let calculatedTarget = reconcileInputValue * 1000 - reconciledTotal;
+    let calculatedTarget = Number(reconcileInputValue) * 1000 - clearedBalance;
 
     // Figure out which of the non reconciled transactions add up to our target
     let transactionPowerset = generatePowerset(unclearedTransactions);
     let possibleMatches = findMatchingSum(transactionPowerset, calculatedTarget);
 
     // Update context state
+    setClearedTotal(clearedBalance);
     setTarget(calculatedTarget);
     setMatchingTransactions(possibleMatches);
     setModalOpened(true);
@@ -49,9 +43,10 @@ export const AutoReconcileContainer = ({ reconcileInputValue }) => {
 
   return (
     <>
-      <AutoReconcileConfirmationModal
+      <ClearAssistantModal
         isOpen={isModalOpened}
         setModalOpened={setModalOpened}
+        clearedTotal={clearedTotal}
         target={target}
         matchingTransactions={matchingTransactions}
       />
@@ -59,7 +54,7 @@ export const AutoReconcileContainer = ({ reconcileInputValue }) => {
         className={`button-primary button${reconcileInputValue.length ? '' : ' button-disabled'}`}
         onClick={onSubmit}
       >
-        Use Assisted Clear
+        Use Clear Assistant
       </button>
     </>
   );
