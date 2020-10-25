@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { transactionReducer, generatePowerset, findMatchingSum } from '../autoReconcileUtils';
-import { AutoReconcileConfirmationModal } from './AutoReconcileConfirmationModal';
+import { generatePowerset, findMatchingSum } from '../clearAssistantUtils';
+import { ClearAssistantModal } from './ClearAssistantModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
-export const AutoReconcileContainer = ({ reconcileInputValue }) => {
+export const ClearAssistantContainer = ({ reconcileInputValue }) => {
   const [isModalOpened, setModalOpened] = useState(false);
   const [matchingTransactions, setMatchingTransactions] = useState([]);
   const [clearedTotal, setClearedTotal] = useState(0);
@@ -43,7 +43,7 @@ export const AutoReconcileContainer = ({ reconcileInputValue }) => {
 
   return (
     <>
-      <AutoReconcileConfirmationModal
+      <ClearAssistantModal
         isOpen={isModalOpened}
         setModalOpened={setModalOpened}
         clearedTotal={clearedTotal}

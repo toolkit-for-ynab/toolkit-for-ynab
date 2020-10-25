@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { setTransactionCleared } from '../autoReconcileUtils';
+import { setTransactionCleared } from '../clearAssistantUtils';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { AUTO_RECONCILE_MODAL_PORTAL } from '../index';
+import { CLEAR_ASSISTANT_MODAL_PORTAL } from '../index';
 import '../styles.scss';
 
-export const AutoReconcileConfirmationModal = ({
+export const ClearAssistantModal = ({
   isOpen,
   setModalOpened,
   matchingTransactions,
@@ -162,6 +162,6 @@ export const AutoReconcileConfirmationModal = ({
         </div>
       </div>
     </div>,
-    document.getElementById(AUTO_RECONCILE_MODAL_PORTAL)
+    document.getElementById(CLEAR_ASSISTANT_MODAL_PORTAL)
   );
 };
