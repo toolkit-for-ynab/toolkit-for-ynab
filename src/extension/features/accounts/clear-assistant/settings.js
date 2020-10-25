@@ -5,5 +5,5 @@ module.exports = {
   section: 'accounts',
   title: 'Clear Assistant',
   description:
-    'Instead of creating an adjustment transaction in the account reconcilation process, determine if any of uncleared transactions sum up to your desired reconciled balance.',
+    'In addition of creating an adjustment transaction in the account reconcilation process, add an option to determine if any of the uncleared transactions sum up to the desired reconciled balance.',
 };
