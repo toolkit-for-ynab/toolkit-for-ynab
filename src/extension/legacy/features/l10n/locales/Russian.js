@@ -1133,6 +1133,7 @@ ynabToolKit.l10nData = {
   "accountWidget.skipLinking": "Пропустить Привязку",
   "accountWidget.ifYouSkipLinking": "Если вы пропустите привязку этого аккаунта, добавьте ваш текущий баланс и введите свои собственные транзакции вместо этого.<br/><br/>Если вы передумаете, у вас есть возможность в любое время привязать или отвязать аккаунт.",
   "toolkit.accountsBulkManagePayees": "Manage Payees",
+  "toolkit.accountsClearSelection": "Clear Selection",
   "toolkit.assets": "Активы",
   "toolkit.checkCreditBalances": "Rectify Difference:",
   "toolkit.checkShowMenuColumn": "Check Show Memo Column",

@@ -1131,6 +1131,7 @@
   "accountWidget.skipLinking": "Skip Linking",
   "accountWidget.ifYouSkipLinking": "If you skip linking this account, add your current balance and enter your own transactions instead.<br/><br/>If you change your mind, you have the option to link or unlink an account at any time.",
   "toolkit.accountsBulkManagePayees": "Manage Payees",
+  "toolkit.accountsClearSelection": "Clear Selection",
   "toolkit.assets": "Assets",
   "toolkit.checkCreditBalances": "Rectify Difference:",
   "toolkit.checkShowMenuColumn": "Check Show Memo Column",

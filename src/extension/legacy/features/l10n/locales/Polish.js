@@ -1133,6 +1133,7 @@ ynabToolKit.l10nData = {
   "accountWidget.skipLinking": "Pomiń powiązanie",
   "accountWidget.ifYouSkipLinking": "Jeśli pominiesz powiązanie z tym kontem, dodaj swoje obecne saldo i wprowadź własne transakcje.<br/><br/>Jeśli zmienisz zdanie, masz możliwość połączenia lub odłączenia konta w dowolnym momencie.",
   "toolkit.accountsBulkManagePayees": "Zarządzanie odbiorcami",
+  "toolkit.accountsClearSelection": "Clear Selection",
   "toolkit.assets": "Aktywa",
   "toolkit.checkCreditBalances": "Różnica w klasyfikacji:",
   "toolkit.checkShowMenuColumn": "Check Show Memo Column",

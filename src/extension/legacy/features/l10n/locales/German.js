@@ -1133,6 +1133,7 @@ ynabToolKit.l10nData = {
   "accountWidget.skipLinking": "Verknüpfen überspringen",
   "accountWidget.ifYouSkipLinking": "Wenn du dein Konto nicht verknüpfen möchtest, gebe stattdessen deinen aktuellen Kontostand ein und füge Transaktionen manuell hinzu.",
   "toolkit.accountsBulkManagePayees": "Manage Payees",
+  "toolkit.accountsClearSelection": "Clear Selection",
   "toolkit.assets": "Vermögen",
   "toolkit.checkCreditBalances": "Rectify Difference:",
   "toolkit.checkShowMenuColumn": "Check Show Memo Column",

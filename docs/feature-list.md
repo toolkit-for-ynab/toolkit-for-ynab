@@ -86,10 +86,6 @@ Adds a small indicator next to account balances on the sidebar to indicate not a
 
 <details><summary>Budget (Click to Expand/Collapse)</summary>
 
-## Add "Enter" Shortcut to the Move Popup
-
-Pressing Enter in the Move Popup acts like clicking the OK button, instead of losing focus or doing nothing.
-
 ## Add Goals Indication
 
 Add indicators for subcategories with goals. Types: (M)onthly goal, target by (D)ate goal, (T)arget without date, and (U)pcoming transactions.
@@ -250,6 +246,10 @@ Adds the check number column to your account view.
 
 Clicking the Toggle Splits button shows or hides all sub-transactions within all split transactions.
 
+## Allow Markdown in Memo
+
+Adds Markdown parsing to memos, allowing support for links and other formatting tools. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).
+
 ## Auto Adjust Split Transactions
 
 When entering split transactions, each additional split will be auto-filled with the current remaining amount.
@@ -341,6 +341,10 @@ Adds the total available balance to the category tooltip on each row in the Acco
 ## Show Menu When Right Clicking On Transaction
 
 Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit menu options.
+
+## Show Reconciled Balance
+
+Show the current reconciled balance excluding cleared and non-reconciled transactions
 
 ## Show Spare Change
 
