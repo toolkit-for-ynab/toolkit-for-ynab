@@ -7,6 +7,7 @@ import { getEntityManager } from 'toolkit/extension/utils/ynab';
 export const AutoReconcileContainer = ({ reconcileInputValue }) => {
   const [isModalOpened, setModalOpened] = useState(false);
   const [matchingTransactions, setMatchingTransactions] = useState([]);
+  const [clearedTotal, setClearedTotal] = useState(0);
   const [target, setTarget] = useState(0);
 
   /**
@@ -18,7 +19,6 @@ export const AutoReconcileContainer = ({ reconcileInputValue }) => {
     if (!reconcileInputValue.length || isNaN(reconcileInputValue)) {
       return;
     }
-
     let { selectedAccountId } = controllerLookup('accounts');
     let account = getEntityManager().getAccountById(selectedAccountId);
     let transactions = account.getTransactions();
@@ -28,20 +28,19 @@ export const AutoReconcileContainer = ({ reconcileInputValue }) => {
       txn => txn.cleared && txn.isUncleared() && !txn.isTombstone
     );
 
-    // Sum up all reconciled transactions
+    // Sum up all cleared and reconciled transactions
     let reconciledTransactions = transactions.filter(
       txn => txn.cleared && !txn.isTombstone && (txn.isReconciled() || txn.isCleared())
     );
-
-    // Figure out our target by summing up the reconciled amount
-    let reconciledTotal = reconciledTransactions.reduce(transactionReducer, 0);
-    let calculatedTarget = reconcileInputValue * 1000 - reconciledTotal;
+    let clearedTotal = reconciledTransactions.reduce(transactionReducer, 0);
+    let calculatedTarget = Number(reconcileInputValue) * 1000 - clearedTotal;
 
     // Figure out which of the non reconciled transactions add up to our target
     let transactionPowerset = generatePowerset(unclearedTransactions);
     let possibleMatches = findMatchingSum(transactionPowerset, calculatedTarget);
 
     // Update context state
+    setClearedTotal(clearedTotal);
     setTarget(calculatedTarget);
     setMatchingTransactions(possibleMatches);
     setModalOpened(true);
@@ -52,6 +51,7 @@ export const AutoReconcileContainer = ({ reconcileInputValue }) => {
       <AutoReconcileConfirmationModal
         isOpen={isModalOpened}
         setModalOpened={setModalOpened}
+        clearedTotal={clearedTotal}
         target={target}
         matchingTransactions={matchingTransactions}
       />
