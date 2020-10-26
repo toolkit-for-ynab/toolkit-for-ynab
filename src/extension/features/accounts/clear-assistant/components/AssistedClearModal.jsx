@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
-import { setTransactionCleared } from '../clearAssistantUtils';
+import { setTransactionCleared } from '../assistedClearUtils';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { CLEAR_ASSISTANT_MODAL_PORTAL } from '../index';
+import { ASSISTED_CLEAR_MODAL_PORTAL } from '../index';
 import '../styles.scss';
 
 export const ClearAssistantModal = ({
@@ -123,9 +123,8 @@ export const ClearAssistantModal = ({
       <div className="tk-modal-content tk-modal-stack tk-confirmation-modal">
         {/* Modal Title */}
         <span className="tk-align-self-start" style={{ fontSize: '1.5rem' }}>
-          Clear Assistant
+          Assisted Clear
         </span>
-
         {/* Modal Content */}
         {/* Result text appears only if we have any matching clearable matching transaction */}
         <p className="tk-align-self-start">
@@ -162,6 +161,6 @@ export const ClearAssistantModal = ({
         </div>
       </div>
     </div>,
-    document.getElementById(CLEAR_ASSISTANT_MODAL_PORTAL)
+    document.getElementById(ASSISTED_CLEAR_MODAL_PORTAL)
   );
 };
