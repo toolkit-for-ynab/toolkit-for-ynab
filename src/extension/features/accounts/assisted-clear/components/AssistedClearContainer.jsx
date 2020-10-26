@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { generatePowerset, findMatchingSum } from '../clearAssistantUtils';
-import { ClearAssistantModal } from './ClearAssistantModal';
+import { generatePowerset, findMatchingSum } from '../assistedClearUtils';
+import { ClearAssistantModal } from './AssistedClearModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
@@ -9,6 +9,7 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
   const [matchingTransactions, setMatchingTransactions] = useState([]);
   const [clearedTotal, setClearedTotal] = useState(0);
   const [target, setTarget] = useState(0);
+  const [isToolTipVisible, setIsToolTipVisible] = useState(false);
 
   /**
    * Figure out which transactions add up to a specific target
@@ -53,9 +54,21 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
       <button
         className={`button-primary button${reconcileInputValue.length ? '' : ' button-disabled'}`}
         onClick={onSubmit}
+        onMouseEnter={() => {
+          setIsToolTipVisible(true);
+        }}
+        onMouseLeave={() => {
+          setIsToolTipVisible(false);
+        }}
       >
-        Use Clear Assistant
+        Use Assisted Clear
       </button>
+      {isToolTipVisible && (
+        <span className="tk-tooltip">
+          Determine if any combination of uncleared transactions add up to the difference between
+          your YNAB's account balance and your actual account balance.
+        </span>
+      )}
     </>
   );
 };
