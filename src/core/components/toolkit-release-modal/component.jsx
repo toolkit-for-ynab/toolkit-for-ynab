@@ -16,6 +16,7 @@ export function ToolkitReleaseModal({ onClose }) {
           You are now using version{' '}
           <a
             href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/releases"
+            target="_blank"
             rel="noopener noreferrer"
           >
             {version}
