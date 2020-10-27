@@ -65,8 +65,8 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
       </button>
       {isToolTipVisible && (
         <span className="tk-tooltip">
-          Determine if any combination of uncleared transactions add up to the difference between
-          your YNAB's account balance and your actual account balance.
+          Determine if any combination of uncleared transactions adds up to the difference between
+          the YNAB account balance and the actual account balance
         </span>
       )}
     </>
