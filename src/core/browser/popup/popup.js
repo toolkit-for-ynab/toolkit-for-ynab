@@ -25,7 +25,9 @@ export class Popup {
   }
 
   initListeners() {
-    $('#reportBug').click(() => window.close());
+    $('#reportBug').click(() => {
+      setTimeout(() => window.close(), 50);
+    });
     $('#openSettings').click(this._openOptionsPage);
     $('#logo').click(this._toggleToolkitDisabledSetting);
     $('#toggleToolkit').click(this._toggleToolkitDisabledSetting);
