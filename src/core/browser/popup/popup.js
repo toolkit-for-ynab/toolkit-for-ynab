@@ -14,7 +14,7 @@ export class Popup {
     $('.toolkit-name').text(manifest.name);
 
     Promise.all([
-      this._storage.getStorageItem('options.dark-mode', { default: false }),
+      this._storage.getFeatureSetting('options.dark-mode', { default: false }),
       this._storage.getFeatureSetting(TOOLKIT_DISABLED_FEATURE_SETTING, {
         default: false,
       }),
