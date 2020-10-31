@@ -1133,6 +1133,7 @@ ynabToolKit.l10nData = {
   "accountWidget.skipLinking": "Pular vinculação de conta",
   "accountWidget.ifYouSkipLinking": "Se você pular vincular esta conta, adicione seu saldo atual e digite suas próprias transações.<br/><br/>Se você mudar de ideia, você tem a opção de vincular ou desvincular uma conta a qualquer momento.",
   "toolkit.accountsBulkManagePayees": "Manage Payees",
+  "toolkit.accountsClearSelection": "Clear Selection",
   "toolkit.assets": "Ativos",
   "toolkit.checkCreditBalances": "Rectify Difference:",
   "toolkit.checkShowMenuColumn": "Check Show Memo Column",

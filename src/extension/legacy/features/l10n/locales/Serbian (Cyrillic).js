@@ -1133,6 +1133,7 @@ ynabToolKit.l10nData = {
   "accountWidget.skipLinking": "Прескочи повезивање",
   "accountWidget.ifYouSkipLinking": "Ако прескочите повезивање овог рачуна, унесите ваш тренутни салдо и унесите своје сопствене трансакције.<br/><br/>Ако се предомислите, имате могућност да повежете или равежете рачун у било ком тренутку.",
   "toolkit.accountsBulkManagePayees": "Manage Payees",
+  "toolkit.accountsClearSelection": "Clear Selection",
   "toolkit.assets": "Assets",
   "toolkit.checkCreditBalances": "Rectify Difference:",
   "toolkit.checkShowMenuColumn": "Check Show Memo Column",
