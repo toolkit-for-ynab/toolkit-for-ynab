@@ -1,4 +1,4 @@
-import { AssistedClear } from './index';
+import { AssistedClear, ASSISTED_CLEAR_MODAL_PORTAL } from './index';
 describe('Assisted Clear', () => {
   it('should invoke correctly', () => {
     let extension = new AssistedClear();
@@ -21,6 +21,36 @@ describe('Assisted Clear', () => {
       expect(element.length).toBe(1);
       expect(element.find('input').length).toBe(0);
       expect(feature._reconcileInputValue).toBe(0);
+    });
+  });
+
+  describe('_createModalPortal()', () => {
+    let feature;
+    beforeEach(() => {
+      feature = new AssistedClear();
+    });
+
+    it('should do nothing if ynab not found', () => {
+      document.body.innerHTML = "<div class='not-ember-application''>Invalid<div>";
+      let portal = $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`);
+      feature._createModalPortal();
+      portal = $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`);
+      expect(portal.length).toBe(0);
+    });
+
+    it('should do add only once if ynab is found', () => {
+      document.body.innerHTML = "<div class='ember-application''>Valid<div>";
+
+      // Add it once
+      let portal = $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`);
+      feature._createModalPortal();
+      portal = $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`);
+      expect(portal.length).toBe(1);
+
+      // Add it again
+      feature._createModalPortal();
+      portal = $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`);
+      expect(portal.length).toBe(1);
     });
   });
 
