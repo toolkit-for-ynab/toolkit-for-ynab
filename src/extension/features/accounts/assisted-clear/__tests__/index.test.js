@@ -1,4 +1,4 @@
-import { AssistedClear, ASSISTED_CLEAR_MODAL_PORTAL } from './index';
+import { AssistedClear, ASSISTED_CLEAR_MODAL_PORTAL } from '../index';
 describe('Assisted Clear', () => {
   it('should invoke correctly', () => {
     let extension = new AssistedClear();
