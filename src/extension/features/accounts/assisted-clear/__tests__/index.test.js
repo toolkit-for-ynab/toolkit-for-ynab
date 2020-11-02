@@ -1,9 +1,49 @@
 import { AssistedClear, ASSISTED_CLEAR_MODAL_PORTAL } from '../index';
+
 describe('Assisted Clear', () => {
   it('should invoke correctly', () => {
     let extension = new AssistedClear();
     expect(extension).toBeTruthy();
     expect(extension).toBeInstanceOf(AssistedClear);
+  });
+
+  describe('invoke()', () => {
+    let feature;
+    jest.useFakeTimers();
+    beforeEach(() => {
+      feature = new AssistedClear();
+    });
+
+    it('should invoke the correct methods', () => {
+      // Mock out the functions
+      let shouldInvoke = jest.spyOn(feature, 'shouldInvoke').mockImplementation(() => {
+        return true;
+      });
+      let _createFeatureContainerMock = jest.spyOn(feature, '_createFeatureContainer');
+      let _createModalPortalMock = jest.spyOn(feature, '_createModalPortal');
+      document.body.innerHTML = '<div id="tk-assisted-clear-container"></div>';
+      expect(document.getElementById('tk-assisted-clear-container').children.length).toBe(0);
+
+      // Ensure each method has been called
+      feature.invoke();
+      expect(shouldInvoke).toHaveBeenCalledTimes(1);
+      expect(shouldInvoke).toBeTruthy();
+
+      // Resolve the set timeout
+      expect(setTimeout).toHaveBeenCalledTimes(1);
+      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 50);
+      jest.runOnlyPendingTimers();
+      expect(_createFeatureContainerMock).toHaveBeenCalledTimes(1);
+      expect(_createModalPortalMock).toHaveBeenCalledTimes(1);
+      expect(document.querySelector('.button-primary.button')).toBeTruthy();
+
+      // Ensure our component rendered with our button
+      let container = document.getElementById('tk-assisted-clear-container');
+      expect(container.children.length).toBeTruthy();
+      expect(container.children.length).toBe(1);
+      expect(container.children[0].tagName).toBe('BUTTON');
+      expect(container.children[0].textContent).toBe('Use Assisted Clear');
+    });
   });
 
   describe('_createFeatureContainer()', () => {
