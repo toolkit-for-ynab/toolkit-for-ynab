@@ -6,6 +6,36 @@ describe('Assisted Clear', () => {
     expect(extension).toBeInstanceOf(AssistedClear);
   });
 
+  describe('_createFeatureContainer()', () => {
+    let feature;
+    beforeEach(() => {
+      feature = new AssistedClear();
+    });
+
+    it('should append if not found', () => {
+      document.body.innerHTML =
+        "<div class='accounts-adjustment account-flash-notification'></div>";
+      expect(document.getElementById('tk-assisted-clear-container')).toBeFalsy();
+      let element = document.querySelector('.accounts-adjustment.account-flash-notification');
+      expect(element).toBeTruthy();
+      expect(element.children.length).toBe(0);
+
+      // Create the container
+      feature._createFeatureContainer();
+      let container = document.getElementById('tk-assisted-clear-container');
+      expect(container).toBeTruthy();
+      expect(element.children.length).toBe(1);
+      expect(container.className).toBe('tk-mg-r-1');
+
+      // Call it again and check that we did not create again
+      feature._createFeatureContainer();
+      container = document.getElementById('tk-assisted-clear-container');
+      expect(container).toBeTruthy();
+      expect(element.children.length).toBe(1);
+      expect(container.className).toBe('tk-mg-r-1');
+    });
+  });
+
   describe('_attachInputListener()', () => {
     let feature;
     beforeEach(() => {
