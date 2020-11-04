@@ -4,7 +4,7 @@
  */
 export const setTransactionCleared = transaction => {
   if (transaction && transaction.entityId && !transaction.isTombstone) {
-    let selector = `[data-row-id='${transaction.entityId}'].ynab-grid-cell-cleared`;
+    let selector = `[data-row-id='${transaction.entityId}'] .ynab-grid-cell-cleared`;
     let element = document.querySelector(selector);
     if (element && element.querySelector('.is-uncleared-icon')) {
       element.click();
