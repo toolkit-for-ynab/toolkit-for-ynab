@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
 import { setTransactionCleared } from '../assistedClearUtils';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
