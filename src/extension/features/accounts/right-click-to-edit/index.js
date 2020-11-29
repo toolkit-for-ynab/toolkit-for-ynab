@@ -35,11 +35,11 @@ export class RightClickToEdit extends Feature {
     $('.accounts-toolbar-edit-transaction').click();
 
     // determine if modal needs to be positioned above or below clicked element
-    const $modal =  $('.modal-account-edit-transaction-list .modal');
+    const $modal = $('.modal-account-edit-transaction-list .modal');
     const modalHeight = $modal.outerHeight();
     const modalWidth = $modal.outerWidth();
     const halfModalWidth = modalWidth / 2;
-    const $modalArrow =  $modal.find('.modal-arrow');
+    const $modalArrow = $modal.find('.modal-arrow');
     const modalArrowHeight = $modalArrow.outerHeight();
     const modalArrowWidth = $modalArrow.outerWidth();
     const halfModalArrowWidth = modalArrowWidth / 2;
@@ -62,7 +62,7 @@ export class RightClickToEdit extends Feature {
       let left = event.pageX - halfModalWidth;
       let arrowLeft = halfModalWidth - halfModalArrowWidth;
       let arrowBottom = '100%';
-      let cls
+      let cls;
       if (!modalClipsBottom) {
         cls = 'modal-below';
         top = offset.top + modalArrowHeight + ROW_ARROW_DOWN_START;
@@ -75,7 +75,9 @@ export class RightClickToEdit extends Feature {
         top = windowHeight - modalHeight - SCREEN_PADDING;
         arrowBottom = modalHeight - event.pageY + top - halfModalArrowWidth;
         if (top > event.pageY - halfModalArrowWidth) {
-          top = `calc(${event.pageY}px - ${$modal.css('border-top-left-radius')} - ${halfModalArrowWidth}px`;
+          top = `calc(${event.pageY}px - ${$modal.css(
+            'border-top-left-radius'
+          )} - ${halfModalArrowWidth}px`;
         }
         if (!modalClipsRight) {
           cls = 'modal-right';
@@ -103,17 +105,17 @@ export class RightClickToEdit extends Feature {
 
       // Re-position any sub lists that would open to the right of the right edge
       const modalRight = left + modalWidth;
-      $modal.find('.modal-list>li>ul')
+      $modal
+        .find('.modal-list>li>ul')
         .filter((_, subList) => modalRight + $(subList).outerWidth() > windowWidth)
         .addClass('modal-sub-left');
 
-      $modal.addClass(cls)
+      $modal
+        .addClass(cls)
         .css('left', left)
         .css('top', top);
 
-      $modalArrow
-        .css('left', arrowLeft)
-        .css('bottom', arrowBottom);
+      $modalArrow.css('left', arrowLeft).css('bottom', arrowBottom);
     });
 
     return false;
