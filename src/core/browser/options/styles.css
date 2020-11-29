@@ -125,12 +125,14 @@ i {
   width: 70%;
 }
 
+.option-row > .colorpicker-element,
 .option-row > label,
 .option-row > select,
 .option-row > span {
   margin-left: 143px;
 }
 
+.option-row > .colorpicker-element,
 .option-row > .form-control {
   width: 70%;
 }
@@ -174,14 +176,14 @@ i {
 
 .page-header.sticky-header {
   position: fixed;
-  top:0;
+  top: 0;
   margin-top: 0;
   margin-bottom: 0;
   width: 77%;
   z-index: 5;
   padding-top: 1em;
-  background: #F4F4F4;
-  transition: padding-top 0.15s linear;  
+  background: #f4f4f4;
+  transition: padding-top 0.15s linear;
 }
 
 #settingsSaved.sticky-header {
@@ -249,7 +251,8 @@ i {
   float: right;
 }
 
-.modal .modal-body, .modal .modal-footer{ 
+.modal .modal-body,
+.modal .modal-footer {
   text-align: center;
 }
 
@@ -272,7 +275,11 @@ span.warning {
   border-color: rgb(212, 63, 58);
 }
 
-.btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open .dropdown-toggle.btn-danger {
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active,
+.btn-danger.active,
+.open .dropdown-toggle.btn-danger {
   color: #fff;
   background-color: #d2322d;
   border-color: #ac2925;

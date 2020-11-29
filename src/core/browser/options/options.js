@@ -34,6 +34,19 @@ jq(() => {
     );
   }
 
+  function saveColorOption(elementId) {
+    var element = document.getElementById(elementId);
+
+    if (element) {
+      const value = jq(element).colorpicker('getValue');
+      return storage.setFeatureSetting(elementId, value);
+    }
+
+    console.log(
+      "WARNING: Tried to saveColorOption but couldn't find element " + elementId + ' on the page.'
+    );
+  }
+
   function saveSelectOption(elementId) {
     var select = document.getElementById(elementId);
 
@@ -54,6 +67,20 @@ jq(() => {
     } else {
       console.log(
         "WARNING: Tried to restoreCheckboxOption but couldn't find element " +
+          elementId +
+          ' on the page.'
+      );
+    }
+  }
+
+  function restoreColorOption(elementId, currentSetting) {
+    const element = document.getElementById(elementId);
+
+    if (element) {
+      jq(element).colorpicker('setValue', currentSetting);
+    } else {
+      console.log(
+        "WARNING: Tried to restoreColorOption but couldn't find element " +
           elementId +
           ' on the page.'
       );
@@ -107,6 +134,8 @@ jq(() => {
     allToolkitSettings.forEach(setting => {
       if (setting.type === 'checkbox') {
         promises.push(saveCheckboxOption(setting.name));
+      } else if (setting.type === 'color') {
+        promises.push(saveColorOption(setting.name));
       } else if (setting.type === 'select') {
         promises.push(saveSelectOption(setting.name));
       }
@@ -126,6 +155,8 @@ jq(() => {
     allToolkitSettings.forEach(setting => {
       if (setting.type === 'checkbox') {
         restoreCheckboxOption(setting.name, userSettings[setting.name]);
+      } else if (setting.type === 'color') {
+        restoreColorOption(setting.name, userSettings[setting.name]);
       } else if (setting.type === 'select') {
         restoreSelectOption(setting.name, userSettings[setting.name]);
       }
@@ -259,6 +290,35 @@ jq(() => {
                   });
                 })
               )
+            )
+            .append(
+              jq('<span>', {
+                id: setting.name + 'HelpBlock',
+                class: 'help-block',
+              })
+            )
+        );
+        jq('#' + setting.name + 'HelpBlock').html(markDown);
+      } else if (setting.type === 'color') {
+        jq('#' + setting.section + 'SettingsPage > .content').append(
+          jq('<div>', { class: 'row option-row' })
+            .append(jq('<label>', { for: setting.name + 'Input', text: setting.title }))
+            .append(
+              jq('<div>', {
+                id: setting.name,
+                class: 'input-group colorpicker-element',
+              })
+                .append(
+                  jq('<input>', {
+                    type: 'text',
+                    id: setting.name + 'Input',
+                    class: 'form-control',
+                    name: setting.name,
+                    'aria-describedby': setting.name + 'HelpBlock',
+                  })
+                )
+                .append(jq('<span>', { class: 'input-group-addon' }).append(jq('<i>')))
+                .colorpicker({ color: setting.default })
             )
             .append(
               jq('<span>', {

@@ -176,10 +176,12 @@ function validateSetting(settingObj) {
         );
       }
       break;
+    case 'color':
+      break;
     default:
       logFatal(
         settingFilename,
-        `type "${featureSettings.type}" is invalid. Allowed types are: "select" and "checkbox"`
+        `type "${featureSettings.type}" is invalid. Allowed types are: "select", "checkbox", and "color"`
       );
   }
 
