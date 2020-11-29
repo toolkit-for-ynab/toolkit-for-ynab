@@ -250,6 +250,10 @@ Clicking the Toggle Splits button shows or hides all sub-transactions within all
 
 Adds Markdown parsing to memos, allowing support for links and other formatting tools. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).
 
+## Assisted Clear
+
+This feature assists you in the reconcilation process by locating uncleared transactions that should be cleared based on the desired reconcile amount.
+
 ## Auto Adjust Split Transactions
 
 When entering split transactions, each additional split will be auto-filled with the current remaining amount.
@@ -289,6 +293,14 @@ Adds an option to the transaction edit drop-down menu to clear the current selec
 ## Clear new transactions with CTRL+Enter
 
 Automatically clear a new transaction by pressing CTRL+Enter (CMD on Mac).
+
+## Color for Striped Transaction Rows
+
+When the Striped Transaction Rows feature is enabled, alternating rows use this color as the background. The default is #fafafa.
+
+## Color for Striped Transaction Rows - Dark Theme
+
+When the Striped Transaction Rows feature is enabled, in dark theme, alternating rows use this color as the background. The default is #1e1e1f.
 
 ## Confirm keyboard-initiated transaction cancelation
 
@@ -352,7 +364,7 @@ Imagine if you paid for all purchases in whole dollars. Shows a total of the spa
 
 ## Striped Transaction Rows
 
-Shows a light gray background on every other transaction row.
+Shows a different-color background on every other transaction row. See the Color for Striped Transaction Rows settings to specify the color to be used.
 
 ## Swap cleared and flagged columns
 

@@ -10,7 +10,7 @@
       "value": "0"
     },
     {
-      "name": "Czech (47%)",
+      "name": "Czech (44%)",
       "value": "czech"
     },
     {
@@ -22,7 +22,7 @@
       "value": "catalan"
     },
     {
-      "name": "Portuguese, Brazilian (82%)",
+      "name": "Portuguese, Brazilian (76%)",
       "value": "portuguese, brazilian"
     },
     {
@@ -30,11 +30,11 @@
       "value": "chinese simplified"
     },
     {
-      "name": "Russian (65%)",
+      "name": "Russian (61%)",
       "value": "russian"
     },
     {
-      "name": "Finnish (29%)",
+      "name": "Finnish (27%)",
       "value": "finnish"
     },
     {
@@ -42,7 +42,7 @@
       "value": "icelandic"
     },
     {
-      "name": "Spanish (56%)",
+      "name": "Spanish (52%)",
       "value": "spanish"
     },
     {
@@ -50,15 +50,15 @@
       "value": "vietnamese"
     },
     {
-      "name": "Hungarian (30%)",
+      "name": "Hungarian (28%)",
       "value": "hungarian"
     },
     {
-      "name": "Turkish (46%)",
+      "name": "Turkish (44%)",
       "value": "turkish"
     },
     {
-      "name": "Swedish (26%)",
+      "name": "Swedish (25%)",
       "value": "swedish"
     },
     {
@@ -66,7 +66,7 @@
       "value": "japanese"
     },
     {
-      "name": "German (60%)",
+      "name": "German (57%)",
       "value": "german"
     },
     {
@@ -78,31 +78,31 @@
       "value": "ukrainian"
     },
     {
-      "name": "Italian (8%)",
+      "name": "Italian (9%)",
       "value": "italian"
     },
     {
-      "name": "Chinese Traditional (28%)",
+      "name": "Chinese Traditional (27%)",
       "value": "chinese traditional"
     },
     {
-      "name": "Danish (25%)",
+      "name": "Danish (23%)",
       "value": "danish"
     },
     {
-      "name": "Polish (98%)",
+      "name": "Polish (91%)",
       "value": "polish"
     },
     {
-      "name": "Serbian (Cyrillic) (72%)",
+      "name": "Serbian (Cyrillic) (68%)",
       "value": "serbian (cyrillic)"
     },
     {
-      "name": "French (49%)",
+      "name": "French (46%)",
       "value": "french"
     },
     {
-      "name": "Norwegian (35%)",
+      "name": "Norwegian (33%)",
       "value": "norwegian"
     },
     {
@@ -110,11 +110,11 @@
       "value": "romanian"
     },
     {
-      "name": "Portuguese (20%)",
+      "name": "Portuguese (19%)",
       "value": "portuguese"
     },
     {
-      "name": "Indonesian (46%)",
+      "name": "Indonesian (44%)",
       "value": "indonesian"
     },
     {
@@ -122,7 +122,7 @@
       "value": "slovenian"
     },
     {
-      "name": "Arabic (15%)",
+      "name": "Arabic (14%)",
       "value": "arabic"
     },
     {
@@ -130,7 +130,7 @@
       "value": "lithuanian"
     },
     {
-      "name": "Dutch (47%)",
+      "name": "Dutch (45%)",
       "value": "dutch"
     }
   ],
