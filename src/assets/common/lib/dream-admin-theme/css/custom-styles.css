@@ -67,6 +67,10 @@ padding-bottom: 9px;
 margin: 10px 0 45px;
 border-bottom: 1px solid #C7D1DD;
 }
+.settingsPage .page-header.sticky-header {
+  position:sticky;
+  width: 100%;
+}
 .panel-back {
     background-color:#fff;
 
@@ -318,7 +322,8 @@ padding-top: 4px;
 	background:none;
 }
 .sidebar-collapse .nav {
-	padding:0;
+  padding:0;
+  flex: 1;
 }
 .sidebar-collapse .nav > li > a {
 	color:black;
@@ -345,10 +350,25 @@ background: #172D44;
 	outline:0;
 }
 
-.navbar-side {
+nav.navbar-side {
 	border:none;
 	background-color: transparent;
-
+  height: calc(100vh - 120px);
+  position: sticky;
+  float: left;
+  top: 120px;
+}
+.navbar-side .sidebar-collapse {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+.navbar-side .options {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  margin-bottom: 15px;
 }
 .top-navbar {
 	border-bottom:none;
