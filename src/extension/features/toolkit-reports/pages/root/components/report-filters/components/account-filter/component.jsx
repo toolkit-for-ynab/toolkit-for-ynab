@@ -30,7 +30,7 @@ export class AccountFilterComponent extends React.Component {
       return [];
     }
 
-    const offBudgetAccounts = this._accountsCollection.getOffBudgetAccounts();
+    const offBudgetAccounts = this._accountsCollection.getTrackingAccounts();
     return offBudgetAccounts ? offBudgetAccounts.toArray() : [];
   }
 
