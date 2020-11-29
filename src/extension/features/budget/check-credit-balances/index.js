@@ -34,7 +34,9 @@ export class CheckCreditBalances extends Feature {
       changedNodes.has('budget-number user-data') ||
       changedNodes.has('navlink-budget active') ||
       changedNodes.has('budget-inspector') ||
-      changedNodes.has('budget-table-row js-budget-table-row is-sub-category is-debt-payment-category is-checked') ||
+      changedNodes.has(
+        'budget-table-row js-budget-table-row is-sub-category is-debt-payment-category is-checked'
+      ) ||
       changedNodes.has('budget-header-totals-cell-value user-data')
     ) {
       this.invoke();
@@ -165,14 +167,7 @@ export class CheckCreditBalances extends Feature {
       if (!button.length) {
         button = $('<a>', {
           class: 'budget-inspector-button toolkit-rectify-difference',
-        })
-          .css({
-            'text-align': 'center',
-            'line-height': '30px',
-            display: 'block',
-            cursor: 'pointer',
-          })
-          .click(this.updateCreditBalances);
+        }).on('click', this.updateCreditBalances);
 
         $('.inspector-quick-budget').append(button);
       }
@@ -181,11 +176,12 @@ export class CheckCreditBalances extends Feature {
         .data('name', name)
         .data('difference', difference)
         .empty()
-        .append(l10n('toolkit.checkCreditBalances', 'Rectify Difference:'))
-        .append(' ' + positive)
+        .append(l10n('toolkit.checkCreditBalances', 'Rectify Difference'))
         .append(
           $('<strong>', { class: 'user-data', title: fDifference }).append(
-            $('<span>', { class: 'user-data currency zero' }).text(formatCurrency(difference))
+            $('<span>', { class: 'user-data currency zero' }).text(
+              `${positive}${formatCurrency(difference)}`
+            )
           )
         );
 
