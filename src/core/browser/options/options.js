@@ -412,7 +412,7 @@ jq(() => {
 
     restoreOptions(userSettings);
 
-    storage.getStorageItem('options.dark-mode').then(function(data) {
+    storage.getFeatureSetting('options.dark-mode').then(function(data) {
       applyDarkMode(data);
 
       jq('#darkMode').bootstrapSwitch('state', data);
