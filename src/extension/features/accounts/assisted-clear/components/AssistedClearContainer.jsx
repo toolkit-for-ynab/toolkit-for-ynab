@@ -29,6 +29,11 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
     let unclearedTransactions = transactions.filter(
       txn => txn.cleared && txn.isUncleared() && !txn.isTombstone
     );
+
+    // Note: For credit cards, we'll automatically invert to follow ynab's behavior
+    if (reconcileInputValue > 0 && account.getAccountType() == 'CreditCard') {
+      reconcileInputValue *= -1;
+    }
     let calculatedTarget = Number(reconcileInputValue) * 1000 - clearedBalance;
 
     // Figure out which of the non reconciled transactions add up to our target
