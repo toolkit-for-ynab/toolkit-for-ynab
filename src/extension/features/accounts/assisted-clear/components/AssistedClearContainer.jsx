@@ -28,7 +28,6 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
     let { clearedBalance } = account.getAccountCalculation();
 
     // Get all the uncleared transactions
-
     let unclearedTransactions = transactions.filter(
       txn => txn.cleared && txn.isUncleared() && !txn.isTombstone
     );
