@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { generatePowerset, findMatchingSum } from '../assistedClearUtils';
-import { ClearAssistantModal } from './AssistedClearModal';
+import { AssistedClearModal } from './AssistedClearModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import { stripCurrency } from 'toolkit/extension/utils/currency';
+import PropTypes from 'prop-types';
 
 export const ClearAssistantContainer = ({ reconcileInputValue }) => {
   const [isModalOpened, setModalOpened] = useState(false);
@@ -16,46 +18,54 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
    * Update the state to update target and any matched transactions
    */
   let onSubmit = () => {
-    // Exit early and do nothing if the input is invalid
-    if (!reconcileInputValue.length || isNaN(reconcileInputValue)) {
-      return;
-    }
+    // Parse the input value for the converted normalized amount
+    // If get an invalid number such as a string, 0 will be returned and will match ynab's functionality
+    let convertedInputValue = stripCurrency(reconcileInputValue);
+
     let { selectedAccountId } = controllerLookup('accounts');
     let account = getEntityManager().getAccountById(selectedAccountId);
     let transactions = account.getTransactions();
     let { clearedBalance } = account.getAccountCalculation();
 
     // Get all the uncleared transactions
+
     let unclearedTransactions = transactions.filter(
       txn => txn.cleared && txn.isUncleared() && !txn.isTombstone
     );
 
     // Note: For credit cards, we'll automatically invert to follow ynab's behavior
-    if (reconcileInputValue > 0 && account.getAccountType() == 'CreditCard') {
-      reconcileInputValue *= -1;
+    if (convertedInputValue > 0 && account.getAccountType() === 'CreditCard') {
+      convertedInputValue *= -1;
     }
-    let calculatedTarget = Number(reconcileInputValue) * 1000 - clearedBalance;
+    let calculatedTarget = convertedInputValue - clearedBalance;
 
     // Figure out which of the non reconciled transactions add up to our target
+
     let transactionPowerset = generatePowerset(unclearedTransactions);
+
     let possibleMatches = findMatchingSum(transactionPowerset, calculatedTarget);
 
     // Update context state
+
     setClearedTotal(clearedBalance);
+
     setTarget(calculatedTarget);
+
     setMatchingTransactions(possibleMatches);
+
     setModalOpened(true);
   };
 
   return (
     <>
-      <ClearAssistantModal
+      <AssistedClearModal
         isOpen={isModalOpened}
         setModalOpened={setModalOpened}
         clearedTotal={clearedTotal}
         target={target}
         matchingTransactions={matchingTransactions}
       />
+
       <button
         className={`button-primary button${reconcileInputValue.length ? '' : ' button-disabled'}`}
         onClick={onSubmit}
@@ -68,6 +78,7 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
       >
         Use Assisted Clear
       </button>
+
       {isToolTipVisible && (
         <span className="tk-tooltip">
           Determine if any combination of uncleared transactions adds up to the difference between
@@ -76,4 +87,8 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
       )}
     </>
   );
+};
+
+ClearAssistantContainer.propTypes = {
+  reconcileInputValue: PropTypes.string.isRequired,
 };
