@@ -40,19 +40,13 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
     let calculatedTarget = convertedInputValue - clearedBalance;
 
     // Figure out which of the non reconciled transactions add up to our target
-
     let transactionPowerset = generatePowerset(unclearedTransactions);
-
     let possibleMatches = findMatchingSum(transactionPowerset, calculatedTarget);
 
     // Update context state
-
     setClearedTotal(clearedBalance);
-
     setTarget(calculatedTarget);
-
     setMatchingTransactions(possibleMatches);
-
     setModalOpened(true);
   };
 
