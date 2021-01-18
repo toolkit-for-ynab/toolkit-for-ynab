@@ -1,12 +1,17 @@
 module.exports = [
   {
     name: 'DaysOfBuffering',
-    type: 'checkbox',
-    default: false,
+    type: 'select',
+    default: '0',
     section: 'budget',
     title: 'Days of Buffering Metric',
     description:
-      "This calculation shows how long your money would likely last if you never earned another cent based on your average spending. We know that no month is 'average' but this should give you some idea of how much of a buffer you have. Equal to budget accounts total divided by the average daily outflow. That comes from sum of all outflow transactions from on budget accounts only divided by the age of budget in days. You can also change the number of days taken into account by this metric with the 'Days of Buffering History Lookup' setting.",
+      "This calculation shows how long your money would likely last if you never earned another cent based on your average spending. We know that no month is 'average' but this should give you some idea of how much of a buffer you have. Equal to budget accounts total divided by the average daily outflow. That comes from sum of all outflow transactions from on budget accounts only divided by the age of budget in days. You can also change the number of days taken into account by this metric with the 'Days of Buffering History Lookup' setting. Optionally, can exclude negative credit card balances. (better accuracy when carrying credit debt)",
+    options: [
+      { name: 'Disabled', value: '0' },
+      { name: 'Days of Buffering', value: '1' },
+      { name: 'Days of Buffering (no credit cards)', value: '2' },
+    ],
   },
   {
     name: 'DaysOfBufferingHistoryLookup',
