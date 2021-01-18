@@ -1,9 +1,19 @@
-.modal-account-edit-transaction-list .modal-above .modal-arrow
-{
-	bottom: auto !important;
-	top: 100% !important;
-	border-bottom-color: transparent !important;
-	border-top-color: #fff !important;
+.modal-account-edit-transaction-list .modal-arrow {
+  transform-origin: top center;
+}
+.modal-account-edit-transaction-list .modal-above .modal-arrow {
+  transform: rotate(180deg);
+  transform-origin: center;
+}
+.modal-account-edit-transaction-list .modal-right .modal-arrow {
+  transform: rotate(270deg);
+}
+.modal-account-edit-transaction-list .modal-left .modal-arrow {
+  transform: rotate(90deg);
+}
+
+.modal-account-edit-transaction-list .modal-list .modal-sub-left {
+  left: calc(4% - 256px);
 }
 
 .modal-account-edit-transaction-list .modal-above li ul {

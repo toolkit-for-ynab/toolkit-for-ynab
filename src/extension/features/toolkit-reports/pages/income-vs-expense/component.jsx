@@ -59,8 +59,8 @@ export class IncomeVsExpenseComponent extends React.Component {
     }
 
     return (
-      <div className="tk-ive tk-mg-r-1 tk-mg-b-1 tk-mg-l-1 tk-overflow-scroll">
-        <div className="tk-flex">
+      <>
+        <div className="tk-flex tk-mg-l-1">
           <button
             className="tk-button tk-button--small tk-button--text"
             onClick={this._collapseAll}
@@ -71,29 +71,31 @@ export class IncomeVsExpenseComponent extends React.Component {
             Expand All
           </button>
         </div>
-        <div className="tk-mg-b-1">
-          <MonthlyTransactionTotalsTable
-            type={TableType.Income}
-            data={incomes}
-            collapsedSources={this.state.collapsedSources}
-            onCollapseSource={this._collapseSourceRow}
+        <div className="tk-ive tk-mg-r-1 tk-mg-b-1 tk-mg-l-1 tk-overflow-scroll">
+          <div className="tk-mg-b-1">
+            <MonthlyTransactionTotalsTable
+              type={TableType.Income}
+              data={incomes}
+              collapsedSources={this.state.collapsedSources}
+              onCollapseSource={this._collapseSourceRow}
+            />
+          </div>
+          <div className="tk-mg-b-1">
+            <MonthlyTransactionTotalsTable
+              type={TableType.Expense}
+              data={expenses}
+              collapsedSources={this.state.collapsedSources}
+              onCollapseSource={this._collapseSourceRow}
+            />
+          </div>
+          <MonthlyTotalsRow
+            className="tk-ive__net-income"
+            monthlyTotals={netIncome}
+            titleCell="Net Income"
+            emphasizeTotals
           />
         </div>
-        <div className="tk-mg-b-1">
-          <MonthlyTransactionTotalsTable
-            type={TableType.Expense}
-            data={expenses}
-            collapsedSources={this.state.collapsedSources}
-            onCollapseSource={this._collapseSourceRow}
-          />
-        </div>
-        <MonthlyTotalsRow
-          className="tk-ive__net-income"
-          monthlyTotals={netIncome}
-          titleCell="Net Income"
-          emphasizeTotals
-        />
-      </div>
+      </>
     );
   }
 
@@ -159,7 +161,7 @@ export class IncomeVsExpenseComponent extends React.Component {
         return;
       }
 
-      if (transactionSubCategory.isIncomeCategory()) {
+      if (transactionSubCategory.isImmediateIncomeCategory()) {
         const transactionPayeeId =
           transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
         if (!transactionPayeeId) {

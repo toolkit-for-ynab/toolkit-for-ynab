@@ -36,6 +36,7 @@ export class NetWorthComponent extends React.Component {
             <Legend
               assets={this.state.hoveredData.assets}
               debts={this.state.hoveredData.debts}
+              debtRatio={this.state.hoveredData.debtRatio}
               netWorth={this.state.hoveredData.netWorth}
             />
           )}
@@ -47,7 +48,7 @@ export class NetWorthComponent extends React.Component {
 
   _renderReport = () => {
     const _this = this;
-    const { labels, debts, assets, netWorths } = this.state.reportData;
+    const { labels, debts, assets, debtRatios, netWorths } = this.state.reportData;
 
     const pointHover = {
       events: {
@@ -56,6 +57,7 @@ export class NetWorthComponent extends React.Component {
             hoveredData: {
               assets: assets[this.index],
               debts: debts[this.index],
+              debtRatio: debtRatios[this.index],
               netWorth: netWorths[this.index],
             },
           });
@@ -72,12 +74,27 @@ export class NetWorthComponent extends React.Component {
       legend: { enabled: false },
       title: { text: '' },
       tooltip: { enabled: false },
-      xAxis: { categories: labels },
+      xAxis: {
+        categories: labels,
+        labels: {
+          style: { color: 'var(--label_primary)' },
+        },
+      },
       yAxis: {
         title: { text: '' },
         labels: {
           formatter: function() {
             return formatCurrency(this.value);
+          },
+          style: { color: 'var(--label_primary)' },
+        },
+      },
+      plotOptions: {
+        series: {
+          states: {
+            inactive: {
+              enabled: false,
+            },
           },
         },
       },
@@ -121,7 +138,7 @@ export class NetWorthComponent extends React.Component {
     }
 
     const accounts = new Map();
-    const allReportData = { assets: [], labels: [], debts: [], netWorths: [] };
+    const allReportData = { assets: [], labels: [], debts: [], netWorths: [], debtRatios: [] };
     const transactions = this.props.allReportableTransactions.slice().sort(sortByGettableDate);
 
     let lastMonth = null;
@@ -139,6 +156,8 @@ export class NetWorthComponent extends React.Component {
       allReportData.assets.push(assets);
       allReportData.debts.push(debts);
       allReportData.netWorths.push(assets - debts);
+      // for debtRatio: if any assets are $0, it will safely display 'Infinity'
+      allReportData.debtRatios.push((debts / assets) * 100);
       allReportData.labels.push(localizedMonthAndYear(lastMonth));
     }
 
@@ -191,10 +210,11 @@ export class NetWorthComponent extends React.Component {
         .startOfMonth();
       while (transactionMonth.isBefore(lastFilterMonth)) {
         if (!allReportData.labels.includes(localizedMonthAndYear(transactionMonth))) {
-          const { assets, debts, netWorths, labels } = allReportData;
+          const { assets, debts, debtRatios, netWorths, labels } = allReportData;
           labels.splice(currentIndex, 0, localizedMonthAndYear(transactionMonth));
           assets.splice(currentIndex, 0, assets[currentIndex - 1] || 0);
           debts.splice(currentIndex, 0, debts[currentIndex - 1] || 0);
+          debtRatios.splice(currentIndex, 0, debtRatios[currentIndex - 1] || 0);
           netWorths.splice(currentIndex, 0, netWorths[currentIndex - 1] || 0);
         }
 
@@ -205,7 +225,7 @@ export class NetWorthComponent extends React.Component {
 
     // Net Worth is calculated from the start of time so we need to handle "filters" here
     // rather than using `filteredTransactions` from context.
-    const { labels, assets, debts, netWorths } = allReportData;
+    const { labels, assets, debts, netWorths, debtRatios } = allReportData;
     let startIndex = labels.findIndex(label => label === localizedMonthAndYear(fromDate));
     startIndex = startIndex === -1 ? 0 : startIndex;
     let endIndex = labels.findIndex(label => label === localizedMonthAndYear(toDate));
@@ -214,6 +234,7 @@ export class NetWorthComponent extends React.Component {
     const filteredLabels = labels.slice(startIndex, endIndex);
     const filteredDebts = debts.slice(startIndex, endIndex);
     const filteredAssets = assets.slice(startIndex, endIndex);
+    const filteredDebtRatios = debtRatios.slice(startIndex, endIndex);
     const filteredNetWorths = netWorths.slice(startIndex, endIndex);
 
     this.setState(
@@ -221,6 +242,7 @@ export class NetWorthComponent extends React.Component {
         hoveredData: {
           assets: assets[assets.length - 1] || 0,
           debts: debts[debts.length - 1] || 0,
+          debtRatio: debtRatios[debtRatios.length - 1] || 0,
           netWorth: netWorths[netWorths.length - 1] || 0,
         },
         reportData: {
@@ -228,6 +250,7 @@ export class NetWorthComponent extends React.Component {
           debts: filteredDebts,
           assets: filteredAssets,
           netWorths: filteredNetWorths,
+          debtRatios: filteredDebtRatios,
         },
       },
       this._renderReport

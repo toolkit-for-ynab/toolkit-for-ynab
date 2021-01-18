@@ -37,7 +37,7 @@ export class IncomeFromLastMonth extends Feature {
           return reduced;
         }
 
-        if (transactionSubCategory.isIncomeCategory()) {
+        if (transactionSubCategory.isImmediateIncomeCategory()) {
           return reduced + transactionAmount;
         }
         if (isSplit) {
@@ -50,7 +50,7 @@ export class IncomeFromLastMonth extends Feature {
               return;
             }
 
-            if (subTransactionSubCategory.isIncomeCategory()) {
+            if (subTransactionSubCategory.isImmediateIncomeCategory()) {
               subTransactionIncomes += subTransactionAmount;
             }
           });

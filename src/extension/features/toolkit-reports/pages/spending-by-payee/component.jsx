@@ -68,7 +68,7 @@ export class SpendingByPayeeComponent extends React.Component {
       const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(
         transactionSubCategoryId
       );
-      if (!transactionSubCategory || transactionSubCategory.isIncomeCategory()) {
+      if (!transactionSubCategory || transactionSubCategory.isImmediateIncomeCategory()) {
         return;
       }
 
@@ -173,6 +173,15 @@ export class SpendingByPayeeComponent extends React.Component {
                 this.percentage
               )}%)</span>`;
             },
+            style: {
+              color: 'var(--label_primary)',
+              textOutline: 'none',
+            },
+          },
+          states: {
+            inactive: {
+              enabled: false,
+            },
           },
         },
       },
@@ -181,8 +190,9 @@ export class SpendingByPayeeComponent extends React.Component {
       },
       title: {
         align: 'center',
-        verticalAlign: 'top',
+        verticalAlign: 'middle',
         text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
+        style: { color: 'var(--label_primary)' },
       },
       series: [
         {

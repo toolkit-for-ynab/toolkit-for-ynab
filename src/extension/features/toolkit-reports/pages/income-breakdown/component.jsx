@@ -131,7 +131,7 @@ export class IncomeBreakdownComponent extends React.Component {
         return;
       }
 
-      if (transactionSubCategory.isIncomeCategory()) {
+      if (transactionSubCategory.isImmediateIncomeCategory()) {
         const transactionPayeeId =
           transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
         if (!transactionPayeeId) {
@@ -358,6 +358,13 @@ export class IncomeBreakdownComponent extends React.Component {
             nodeFormatter: function() {
               let formattedNumber = formatCurrency(this.sum);
               return `${this.name}: <b>${formattedNumber}</b>`;
+            },
+          },
+        },
+        series: {
+          states: {
+            inactive: {
+              enabled: false,
             },
           },
         },

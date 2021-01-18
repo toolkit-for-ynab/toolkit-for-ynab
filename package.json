@@ -1,6 +1,6 @@
 {
   "name": "toolkit-for-ynab",
-  "version": "2.25.0",
+  "version": "2.30.0",
   "private": true,
   "scripts": {
     "build:check": "yarn && yarn gen && yarn lint",
@@ -32,7 +32,7 @@
     "gen:feedChanges": "node scripts/generateFeedChanges",
     "gen:settings": "node scripts/generateSettings",
     "gen:docs": "yarn gen:settings && node scripts/generateDocs",
-    "l10n:push": "scripts/update_l10n_strings",
+    "l10n:update": "node scripts/updateLocalizationStrings.js",
     "l10n:pull": "scripts/get_l10ns",
     "sentry:create": "sentry-cli releases -o toolkit-for-ynab -p toolkit-for-ynab new $npm_package_version",
     "sentry:upload": "sentry-cli releases -o toolkit-for-ynab -p toolkit-for-ynab files $$npm_package_version upload-sourcemaps ./dist/extension/"
@@ -71,14 +71,16 @@
   },
   "defaultFeatures": [
     "BudgetBalanceToZero",
+    "BulkEditMemo",
     "EnlargeCategoriesDropdown",
+    "FilterCategories",
     "IncomeVsExpenseHoverHighlight",
     "PrintingImprovements",
     "RightClickToEdit",
     "ShowIntercom",
     "SplitKeyboardShortcut",
-    "ToolkitReports",
-    "FilterCategories"
+    "ToggleAccountColumns",
+    "ToolkitReports"
   ],
   "husky": {
     "hooks": {
@@ -89,12 +91,13 @@
     "classnames": "^2.2.6",
     "core-js": "2",
     "fuzzysort": "^1.1.4",
-    "highcharts": "7.0.0",
+    "highcharts": "7.2.2",
     "jquery": "^3.5.0",
     "raven-js": "^3.25.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
-    "react-markdown": "^4.2.2"
+    "react-markdown": "^4.2.2",
+    "regression": "^2.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",
@@ -104,6 +107,10 @@
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
+    "acorn": "^8.0.1",
+    "acorn-class-fields": "^0.3.7",
+    "acorn-jsx": "^5.2.0",
+    "acorn-static-class-features": "^0.2.4",
     "archiver": "^3.1.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",

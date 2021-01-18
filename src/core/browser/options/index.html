@@ -9,6 +9,10 @@
     <link href="../assets/lib/dream-admin-theme/css/font-awesome.css" rel="stylesheet" />
     <link href="../assets/lib/dream-admin-theme/css/custom-styles.css" rel="stylesheet" />
     <link href="../assets/lib/bootstrap-switch/bootstrap-switch.css" rel="stylesheet" />
+    <link
+      href="../assets/lib/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css"
+      rel="stylesheet"
+    />
     <link href="../assets/fonts/montserrat.css" rel="stylesheet" />
     <link href="styles.css" rel="stylesheet" />
   </head>
@@ -38,6 +42,7 @@
           </button>
         </div>
       </nav>
+      <div class="clearfix"></div>
       <!--/. NAV TOP  -->
       <nav class="navbar-default navbar-side" role="navigation">
         <div class="sidebar-collapse">
@@ -55,6 +60,11 @@
             </li>
             <li>
               <a href="#" id="reportsMenuItem"> <i class="fa fa-bar-chart"></i> Reports Screen</a>
+            </li>
+            <li>
+              <a href="#" id="toolkitReportsMenuItem">
+                <i class="fa fa-file-text-o"></i> Toolkit Reports</a
+              >
             </li>
             <li>
               <a href="#" id="supportMenuItem"> <i class="fa fa-support"></i> Support</a>
@@ -108,6 +118,9 @@
 
               <!-- ======= REPORTS SETTINGS ======= -->
               <div id="reportsSettingsPage" class="settingsPage"></div>
+
+              <!-- ======= TOOLKIT REPORTS SETTINGS ======= -->
+              <div id="toolkitReportsSettingsPage" class="settingsPage"></div>
 
               <!-- ======= SUPPORT ======= -->
               <div id="supportSettingsPage" class="settingsPage">
@@ -274,6 +287,10 @@
     <script
       type="text/javascript"
       src="../assets/lib/bootstrap-switch/bootstrap-switch.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="../assets/lib/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"
     ></script>
     <script type="text/javascript" src="../assets/lib/marked/marked.min.js"></script>
     <script type="text/javascript" src="options.js"></script>

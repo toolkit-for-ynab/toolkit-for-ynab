@@ -1,0 +1,45 @@
+.tk-modal-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.tk-confirmation-modal {
+  width: 550px;
+  font-weight: 400;
+}
+
+#tk-assisted-clear-container {
+  float: right;
+}
+
+.tk-tooltip {
+  // Positioning
+  margin-top: 3rem;
+  display: block;
+  position: absolute;
+  z-index: 1;
+
+  // Colors
+  background: var(--modal_background_primary);
+  box-shadow: 0 0 4em 0 rgba(0, 0, 0, 0.25);
+  border-radius: 0.4rem;
+  padding: 0.75rem;
+
+  // Content
+  text-align: center;
+  max-width: 300px;
+  font-size: 0.9rem;
+}
+
+.tk-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 20%;
+  margin-left: -5px;
+  border-width: 15px;
+  border-style: solid;
+  border-color: transparent transparent var(--modal_background_primary) transparent;
+}

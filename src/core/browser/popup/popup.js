@@ -14,7 +14,7 @@ export class Popup {
     $('.toolkit-name').text(manifest.name);
 
     Promise.all([
-      this._storage.getStorageItem('options.dark-mode', { default: false }),
+      this._storage.getFeatureSetting('options.dark-mode', { default: false }),
       this._storage.getFeatureSetting(TOOLKIT_DISABLED_FEATURE_SETTING, {
         default: false,
       }),
@@ -25,7 +25,9 @@ export class Popup {
   }
 
   initListeners() {
-    $('#reportBug').click(() => window.close());
+    $('#reportBug').click(() => {
+      setTimeout(() => window.close(), 50);
+    });
     $('#openSettings').click(this._openOptionsPage);
     $('#logo').click(this._toggleToolkitDisabledSetting);
     $('#toggleToolkit').click(this._toggleToolkitDisabledSetting);

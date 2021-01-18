@@ -1,33 +1,50 @@
+body,
+body.theme-new-default {
+  --tk-current-month-background-color: var(--sidebar_button_background_selected);
+  --tk-current-month-control-color: #bee6ef;
+  --tk-current-month-header-color: #ffffff;
+  --tk-current-month-note-color: #rgba(255, 255, 255, 0.4);
+}
+
+body.theme-classic {
+  --tk-current-month-control-color: var(--primary_action);
+  --tk-current-month-header-color: #ffffff;
+  --tk-current-month-note-color: #rgba(255, 255, 255, 0.4);
+}
+
+body.theme-dark {
+  --tk-current-month-control-color: #ffffff;
+  --tk-current-month-header-color: #ffffff;
+  --tk-current-month-note-color: #rgba(255, 255, 255, 0.4);
+}
+
 /* add transitions */
 .budget-header .budget-header-item {
-	padding: .7em .6em .6em;
-	-moz-transition: background-color .3s linear;
-	-webkit-transition: background-color .3s linear;
-	-o-transition: background-color .3s linear;
-	transition: background-color .3s linear;
+  padding: 0.7em 0.6em 0.6em;
+  -moz-transition: background-color 0.3s linear;
+  -webkit-transition: background-color 0.3s linear;
+  -o-transition: background-color 0.3s linear;
+  transition: background-color 0.3s linear;
 }
 .budget-header .budget-header-item .budget-header-calendar-prev,
 .budget-header .budget-header-item .budget-header-calendar-next,
 .budget-header .budget-header-item .flaticon,
 .budget-header .budget-header-item .budget-header-calendar-note {
-	-moz-transition: color .2s linear;
-	-webkit-transition: color .2s linear;
-	-o-transition: color .2s linear;
-	transition: color .2s linear;
+  -moz-transition: color 0.2s linear;
+  -webkit-transition: color 0.2s linear;
+  -o-transition: color 0.2s linear;
+  transition: color 0.2s linear;
 }
 
 /* current month styles */
 .toolkit-highlight-current-month {
-	background: #00596f !important;
+  background: var(--tk-current-month-background-color) !important;
 }
-.budget-header .toolkit-highlight-current-month .budget-header-calendar-prev, 
+.budget-header .toolkit-highlight-current-month .budget-header-calendar-prev,
 .budget-header .toolkit-highlight-current-month .budget-header-calendar-next,
 .budget-header .toolkit-highlight-current-month .flaticon {
-	color: #bee6ef;
-}
-.budget-header .toolkit-highlight-current-month:hover .flaticon:not(.disabled) {
-	color: #fff;
+  color: var(--tk-current-month-control-color);
 }
 .budget-header .toolkit-highlight-current-month .budget-header-calendar-note {
-	color: rgba(255,255,255,0.4);
+  color: var(--tk-current-month-note-color);
 }

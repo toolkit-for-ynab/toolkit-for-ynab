@@ -1,0 +1,10 @@
+.tk-grid-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tk-bulk-edit-memo .tk-grid-actions button.tk-memo-cancel {
+  border: 2px solid var(--secondary_action);
+  padding: 0.4em 0.6em;
+  margin-right: 5px;
+}

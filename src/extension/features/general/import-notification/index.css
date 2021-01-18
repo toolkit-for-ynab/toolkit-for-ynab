@@ -1,9 +1,11 @@
 .ynabtk-import-notification-underline {
   text-decoration: none;
   border-bottom: 1.75px solid white;
+  line-height: 1.6 !important;
 }
 
 .ynabtk-import-notification-underline-red {
   text-decoration: none;
   border-bottom: 1.75px solid red;
+  line-height: 1.6 !important;
 }

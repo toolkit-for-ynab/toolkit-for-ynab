@@ -66,7 +66,7 @@ Changes print styles so budget and account sections can be easily printed. Due t
 
 ## Privacy Mode
 
-Obscures dollar amounts everywhere until hovered. In toggle mode, a lock icon will appear to the right of your budget name in the top left corner of YNAB. Click to enable or disable privacy mode.
+Obscures dollar amounts everywhere until hovered. In toggle mode, a lock icon will appear in the lower left corner of YNAB. Click to enable or disable privacy mode.
 
 ## Show Import Notifications in Navigation Sidebar
 
@@ -78,13 +78,13 @@ Changes the round borders on all negative numbers to square. Helps them become m
 
 ## Toolkit Reports
 
-Adds Toolkit Reports to the sidebar. Current reports include: Net Worth, Spending By Category/Payee, and Income vs Expense</details>
+Adds Toolkit Reports to the sidebar. Current reports include: Net Worth, Spending By Category/Payee, and Income vs Expense
+
+## Uncleared Account Highlight
+
+Adds a small indicator next to account balances on the sidebar to indicate not all transactions are cleared.</details>
 
 <details><summary>Budget (Click to Expand/Collapse)</summary>
-
-## Add "Enter" Shortcut to the Move Popup
-
-Pressing Enter in the Move Popup acts like clicking the OK button, instead of losing focus or doing nothing.
 
 ## Add Goals Indication
 
@@ -101,6 +101,10 @@ Adds Markdown parsing to notes, allowing support for links, bullet points, and o
 ## Budget Rows Progress Bars
 
 Add progress bars and a vertical bar that shows how far you are through the month to category rows.
+
+## Colored Master Category Row
+
+Adds Color to Master Category Row.
 
 ## Credit Card Emoji
 
@@ -242,6 +246,14 @@ Adds the check number column to your account view.
 
 Clicking the Toggle Splits button shows or hides all sub-transactions within all split transactions.
 
+## Allow Markdown in Memo
+
+Adds Markdown parsing to memos, allowing support for links and other formatting tools. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).
+
+## Assisted Clear
+
+This feature assists you in the reconcilation process by locating uncleared transactions that should be cleared based on the desired reconcile amount.
+
 ## Auto Adjust Split Transactions
 
 When entering split transactions, each additional split will be auto-filled with the current remaining amount.
@@ -257,6 +269,10 @@ Automatically mark transaction as cleared when you enter it manually.
 ## Bottom Notification Bar
 
 Move the notification bar to the bottom as an overlay. This prevents the transactions from "jumping around."
+
+## Bulk Edit Memo
+
+Adds option to edit memo on transactions to the edit menu.
 
 ## Bulk Manage Payees
 
@@ -278,6 +294,14 @@ Adds an option to the transaction edit drop-down menu to clear the current selec
 
 Automatically clear a new transaction by pressing CTRL+Enter (CMD on Mac).
 
+## Color for Striped Transaction Rows
+
+When the Striped Transaction Rows feature is enabled, alternating rows use this color as the background. The default is #fafafa.
+
+## Color for Striped Transaction Rows - Dark Theme
+
+When the Striped Transaction Rows feature is enabled, in dark theme, alternating rows use this color as the background. The default is #1e1e1f.
+
 ## Confirm keyboard-initiated transaction cancelation
 
 Displays a pop-up confirmation prompt when transaction row's "Cancel" action is triggered by keyboard press ("Enter"). This guards against inadvertent discarding of complex split transaction entries in keyboard driven entry workflows.
@@ -293,6 +317,10 @@ Quickly approve scheduled or linked transactions by selecting the transaction(s)
 ## Edit Multiple Flags at Once
 
 Adds a button to the edit dialog which allows you to set the flag. If multiple transactions are selected, all transactions are updated.
+
+## Emphasize Inflows
+
+Make values in the inflow column green.
 
 ## Emphasize Outflows
 
@@ -326,17 +354,25 @@ Adds the total available balance to the category tooltip on each row in the Acco
 
 Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit menu options.
 
+## Show Reconciled Balance
+
+Show the current reconciled balance excluding cleared and non-reconciled transactions
+
 ## Show Spare Change
 
 Imagine if you paid for all purchases in whole dollars. Shows a total of the spare change you would accumulate for the selected outflow transactions.
 
 ## Striped Transaction Rows
 
-Shows a light gray background on every other transaction row.
+Shows a different-color background on every other transaction row. See the Color for Striped Transaction Rows settings to specify the color to be used.
 
 ## Swap cleared and flagged columns
 
 Place the Cleared column on the left and the Flagged column on the right sides of an account screen.
+
+## Toggle Memo Column
+
+Adds option to toggle the memo column as visible or not to the account register "View" menu
 
 ## Toggle Scheduled and Reconciled Transaction Buttons
 

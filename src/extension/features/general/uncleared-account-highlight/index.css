@@ -1,0 +1,14 @@
+.tk-uncleared-account-indicator {
+  font-size: 0.8rem;
+  margin-top: 2px;
+}
+
+.tk-nav-account-icons-right-space .nav-account-icons-right svg {
+  position: static !important;
+}
+
+.tk-nav-account-icons-right-space .nav-account-icons-right {
+  display: flex;
+  align-items: center;
+  width: 2rem;
+}

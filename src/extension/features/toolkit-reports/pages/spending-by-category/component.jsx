@@ -82,7 +82,7 @@ export class SpendingByCategoryComponent extends React.Component {
       const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(
         transactionSubCategoryId
       );
-      if (!transactionSubCategory || transactionSubCategory.isIncomeCategory()) {
+      if (!transactionSubCategory || transactionSubCategory.isImmediateIncomeCategory()) {
         return;
       }
 
@@ -204,6 +204,15 @@ export class SpendingByCategoryComponent extends React.Component {
                 this.percentage
               )}%)</span>`;
             },
+            style: {
+              color: 'var(--label_primary)',
+              textOutline: 'none',
+            },
+          },
+          states: {
+            inactive: {
+              enabled: false,
+            },
           },
         },
       },
@@ -214,6 +223,7 @@ export class SpendingByCategoryComponent extends React.Component {
         align: 'center',
         verticalAlign: 'middle',
         text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
+        style: { color: 'var(--label_primary)' },
       },
       series: [
         {
@@ -225,6 +235,9 @@ export class SpendingByCategoryComponent extends React.Component {
       ],
       drilldown: {
         series: drillDownData,
+        activeDataLabelStyle: {
+          color: 'var(--label_primary)',
+        },
       },
     });
 

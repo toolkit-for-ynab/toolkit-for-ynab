@@ -32,41 +32,35 @@ export class BudgetProgressBars extends Feature {
 
   // Takes N colors and N-1 sorted points from (0, 1) to make color1|color2|color3 bg style.
   generateProgressBarStyle(colors, points) {
-    points.unshift(0);
-    points.push(1);
-    let pointsPercent = Array.from(points, function(p) {
-      return p * 100;
-    });
-
-    let style = 'linear-gradient(to right, ';
-    for (let i = 0; i < colors.length; i++) {
-      style += colors[i] + ' ' + pointsPercent[i] + '%, ';
-      style += colors[i] + ' ' + pointsPercent[i + 1] + '%';
-      style += i + 1 === colors.length ? ')' : ', ';
-    }
-
-    return style;
+    const pointsPercent = [0, ...points, 1].map(p => p * 100);
+    return colors.reduce(
+      (reduced, color, index) =>
+        reduced +
+        `${color} ${pointsPercent[index]}%, ${color} ${pointsPercent[index + 1]}%${
+          index + 1 === colors.length ? ')' : ', '
+        }`,
+      'linear-gradient(to right, '
+    );
   }
 
   getCalculation(subCategoryName) {
-    let subCat = this.subCats.find(ele => {
-      return ele.toolkitName === subCategoryName;
-    });
+    const subCategory = this.subCats.find(ele => ele.toolkitName === subCategoryName);
 
-    let calculation = null;
-    if (subCat) {
-      let crazyInternalId = this.internalIdBase + subCat.entityId;
-      calculation = getEntityManager().getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
+    if (subCategory) {
+      const crazyInternalId = this.internalIdBase + subCategory.entityId;
+      const calculation = getEntityManager().getMonthlySubCategoryBudgetCalculationById(
+        crazyInternalId
+      );
       if (!calculation) {
         return;
       }
       /**
-       * Add a few values from the subCat object to the calculation object.
+       * Add a few values from the subCategory object to the calculation object.
        */
-      calculation.targetBalance = subCat.getGoalTargetAmount();
-      calculation.goalType = subCat.getGoalType();
-      calculation.goalCreationMonth = subCat.goalCreationMonth
-        ? subCat.goalCreationMonth.toString().substr(0, 7)
+      calculation.targetBalance = subCategory.getGoalTargetAmount();
+      calculation.goalType = subCategory.getGoalType();
+      calculation.goalCreationMonth = subCategory.goalCreationMonth
+        ? subCategory.goalCreationMonth.toString().substr(0, 7)
         : '';
       /**
        * If the month the goal was created in is greater than the selected month, null the goal type to prevent further
@@ -75,42 +69,26 @@ export class BudgetProgressBars extends Feature {
       if (calculation.goalCreationMonth && calculation.goalCreationMonth > this.selMonth) {
         calculation.goalType = null;
       }
-    }
 
-    return calculation;
+      return calculation;
+    }
   }
 
   addGoalProgress(subCategoryName, target) {
-    let calculation = this.getCalculation(subCategoryName);
+    const calculation = this.getCalculation(subCategoryName);
     if (!calculation) {
       return;
     }
 
-    let status = 0;
-    let hasGoal = false;
-
-    if (calculation !== null) {
-      switch (calculation.goalType) {
-        case 'TB':
-        case 'TBD':
-        case 'MF':
-          hasGoal = true;
-          status = calculation.get('goalPercentageComplete');
-
-          break;
-        default:
-      }
-    }
-
-    if (hasGoal) {
-      let percent = Math.round(parseFloat(status));
+    if (['TB', 'TBD', 'MF'].includes(calculation && calculation.goalType)) {
+      const percent = Math.round(parseFloat(calculation.get('goalPercentageComplete')));
       $(target).css(
         'background',
-        'linear-gradient(to right, var(--tk-color-progress-bar-goal) ' +
-          percent +
-          '%, var(--tk-color-progress-bar-goal-spacing) ' +
-          percent +
-          '%)'
+        `linear-gradient(
+          to right,
+          var(--tk-color-goal-fill) ${percent}%,
+          var(--table_row_background) ${percent}%
+        )`
       );
     } else {
       $(target).css('background', '');
@@ -127,9 +105,9 @@ export class BudgetProgressBars extends Feature {
       'background',
       this.generateProgressBarStyle(
         [
-          'var(--tk-color-progress-bar-pacing-master-spacing)',
-          'var(--tk-color-progress-bar-pacing-month-progress-indicator)',
-          'var(--tk-color-progress-bar-pacing-master-spacing)',
+          'var(--table_header_background)',
+          'var(--tk-color-progress-bar-month-indicator)',
+          'var(--table_header_background)',
         ],
         [this.monthProgress - progressIndicatorWidth, this.monthProgress]
       )
@@ -156,10 +134,10 @@ export class BudgetProgressBars extends Feature {
             'background',
             this.generateProgressBarStyle(
               [
-                'var(--tk-color-progress-bar-pacing)',
-                'var(--tk-color-progress-bar-pacing-spacing)',
-                'var(--tk-color-progress-bar-pacing-month-progress-indicator)',
-                'var(--tk-color-progress-bar-pacing-spacing)',
+                'var(--tk-color-pacing-fill)',
+                'var(--table_row_background)',
+                'var(--tk-color-progress-bar-month-indicator)',
+                'var(--table_row_background)',
               ],
               [cappedBudgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
             )
@@ -169,10 +147,10 @@ export class BudgetProgressBars extends Feature {
             'background',
             this.generateProgressBarStyle(
               [
-                'var(--tk-color-progress-bar-pacing)',
-                'var(--tk-color-progress-bar-pacing-month-progress-indicator)',
-                'var(--tk-color-progress-bar-pacing)',
-                'var(--tk-color-progress-bar-pacing-spacing)',
+                'var(--tk-color-pacing-fill)',
+                'var(--tk-color-progress-bar-month-indicator)',
+                'var(--tk-color-pacing-fill)',
+                'var(--table_row_background)',
               ],
               [this.monthProgress - progressIndicatorWidth, this.monthProgress, cappedBudgetedPace]
             )
@@ -183,9 +161,9 @@ export class BudgetProgressBars extends Feature {
           'background',
           this.generateProgressBarStyle(
             [
-              'var(--tk-color-progress-bar-pacing-spacing)',
-              'var(--tk-color-progress-bar-pacing-month-progress-indicator)',
-              'var(--tk-color-progress-bar-pacing-spacing)',
+              'var(--table_row_background)',
+              'var(--tk-color-progress-bar-month-indicator)',
+              'var(--table_row_background)',
             ],
             [this.monthProgress - progressIndicatorWidth, this.monthProgress]
           )

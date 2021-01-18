@@ -73,13 +73,13 @@ export class CalendarFirstDay extends Feature {
 
   observe(changedNodes) {
     if (
-      changedNodes.has('modal-account-calendar js-ynab-new-calendar-overlay modal-overlay active')
+      changedNodes.has('modal-overlay active  modal-account-calendar js-ynab-new-calendar-overlay')
     ) {
       this.isCalendarOpen = true;
       this.reRenderHeader();
     } else if (
       changedNodes.has(
-        'modal-account-calendar js-ynab-new-calendar-overlay modal-overlay active closing'
+        'modal-overlay active  modal-account-calendar js-ynab-new-calendar-overlay closing'
       )
     ) {
       this.isCalendarOpen = false;
