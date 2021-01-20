@@ -18,18 +18,19 @@ export class CalculateIRR extends Feature {
     let { selectedAccountId, filters } = controllerLookup('accounts');
     let { filterFrom, filterTo } = this._getFilterDates(filters);
     let totalIrr = (100 * this._calculateIRR(selectedAccountId)).toFixed(2) + ' %';
+    let filteredIrr = '';
+    let irrYear;
     if (filterFrom.getYear() === filterTo.getYear()) {
-      var filteredIrr =
+      filteredIrr =
         (
           100 * this._calculateIRR(selectedAccountId, { fromDate: filterFrom, toDate: filterTo })
         ).toFixed(2) + ' %';
-      var irrYear = filterTo.getYear();
-    } else {
-      var irrYear = null;
+      irrYear = filterTo.getYear();
     }
     let headerIrr = $(`.tk-accounts-header-irr`);
     let totalIrrContainer = $(`#tk-total-irr`);
     let filteredIrrContainer = $(`#tk-filtered-irr`);
+
     if (!headerIrr || headerIrr.length === 0) {
       $('.accounts-header-balances').append(
         `<div class="tk-accounts-header-irr">
@@ -50,7 +51,7 @@ export class CalculateIRR extends Feature {
     $(`#tk-accounts-header-filtered-irr-label`).text(irrYear + ' Annualized Return');
     $(`#tk-accounts-header-filtered-irr-label`)
       .parent()
-      .toggle(irrYear != null ? true : false);
+      .toggle(irrYear != null);
     this._setFeatureVisibility(true);
   }
 
@@ -89,13 +90,13 @@ export class CalculateIRR extends Feature {
     var fromDate = transactions
       .reduce((date, transaction) => {
         if (transaction.date.isBefore(date)) return transaction.date;
-        else return date;
+        return date;
       }, transactions[0].date)
       .setDate(1)
       .setMonth(0);
     var toDate = transactions.reduce((date, transaction) => {
       if (transaction.date.isAfter(date)) return transaction.date;
-      else return date;
+      return date;
     }, transactions[0].date);
 
     if (options && options.fromDate && fromDate.isBefore(options.fromDate)) {
