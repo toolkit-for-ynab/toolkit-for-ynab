@@ -4,6 +4,8 @@ import { FiltersPropType } from 'toolkit-reports/common/components/report-contex
 import { RunningBalanceGraph } from './RunningBalanceGraph';
 import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
 import { WarningMessage } from './WarningMessage';
+import { useLocalStorage } from '../../../../hooks/useLocalStorage';
+import { getEntityManager } from '../../../../utils/ynab';
 import {
   dataPointsToHighChartSeries,
   generateRunningBalanceMap,
@@ -14,15 +16,24 @@ import {
   NUM_DATAPOINTS_LIMIT,
 } from './utils';
 
-import { getEntityManager } from '../../../../utils/ynab';
 export const BalanceOverTimeComponent = ({ allReportableTransactions, filters }) => {
+  const LOCALSTORAGE_PREFIX = 'tk-balance-over-time';
   const GROUPED_LABEL = 'Selected Accounts';
   const TRENDLINE_PREFIX = 'Trendline for ';
 
   // Options to group accounts, use a step graph and/or generate trendlines
-  const [shouldGroupAccounts, setShouldGroupAccounts] = useState(false);
-  const [useStepGraph, setUseStepGraph] = useState(true);
-  const [useTrendLine, setUseTrendLine] = useState(false);
+  const [shouldGroupAccounts, setShouldGroupAccounts] = useLocalStorage(
+    `${LOCALSTORAGE_PREFIX}.shouldGroupAccounts`,
+    false
+  );
+  const [useStepGraph, setUseStepGraph] = useLocalStorage(
+    `${LOCALSTORAGE_PREFIX}.useStepGraph`,
+    true
+  );
+  const [useTrendLine, setUseTrendLine] = useLocalStorage(
+    `${LOCALSTORAGE_PREFIX}.useTrendline`,
+    false
+  );
 
   // Map of accounts to their corresponding datapoints for each date
   const [runningBalanceMap, setRunningBalanceMap] = useState(new Map());
