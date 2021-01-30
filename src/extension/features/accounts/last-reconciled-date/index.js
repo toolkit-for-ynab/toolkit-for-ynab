@@ -2,7 +2,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
-const YNAB_ACCOUNTS_HEADER_BALANCES = '.accounts-header-balances-right';
+const YNAB_ACCOUNTS_HEADER_RIGHT = '.accounts-header-balances-right';
 const TK_LAST_RECONCILED_ID = 'tk-last-reconciled-date';
 
 export class LastReconciledDate extends Feature {
@@ -26,7 +26,7 @@ export class LastReconciledDate extends Feature {
     // Retrieve or create the reconcile date container
     let balanceContainer = $(`#${TK_LAST_RECONCILED_ID}`);
     if (!balanceContainer || balanceContainer.length === 0) {
-      $(YNAB_ACCOUNTS_HEADER_BALANCES).append(
+      $(YNAB_ACCOUNTS_HEADER_RIGHT).append(
         `<div class="tk-accounts-header-last-reconciled">
         <span id="${TK_LAST_RECONCILED_ID}">${textToShow}</span>
         <div class="tk-accounts-header-last-reconciled-label">Last Reconciled Date</div>
@@ -34,7 +34,7 @@ export class LastReconciledDate extends Feature {
       );
     }
 
-    // Update the reconcile balance with the most up to date balance
+    // Update the reconcile date in the element
     balanceContainer.text(textToShow);
     this._setFeatureVisibility(true);
   }
@@ -50,7 +50,7 @@ export class LastReconciledDate extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    // When the reconciled balance icon changes, reevaluate our date
+    // When the reconciled icon changes, reevaluate our date
     if (changedNodes.has('is-reconciled-icon svg-icon lock')) {
       this.invoke();
     }
@@ -58,7 +58,7 @@ export class LastReconciledDate extends Feature {
 
   /**
    * Calculate the last reconciled date
-   * @param {String} accountId The account id to get the reconciled balance for
+   * @param {String} accountId The account id to get the reconciled date for
    * @returns {Moment} the latest date, null otherwise
    */
   _calculateLastReconciledDate = accountId => {
@@ -73,7 +73,7 @@ export class LastReconciledDate extends Feature {
   };
 
   /**
-   * Helper method to show and hide the reconcile balance container
+   * Helper method to show and hide the reconcile date container
    * @param {Boolean} visible True to show the container, false to hide
    */
   _setFeatureVisibility = visible => {

@@ -32,7 +32,7 @@ export class ReconcileBalance extends Feature {
       );
     }
 
-    // Update the reconcile balance with the most up to date balance
+    // Update the reconcile date
     balanceContainer.text(reconciledBalance);
     this._setFeatureVisibility(true);
   }
