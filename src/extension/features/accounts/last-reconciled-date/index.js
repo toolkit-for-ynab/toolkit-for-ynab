@@ -24,8 +24,8 @@ export class LastReconciledDate extends Feature {
       textToShow = ynab.YNABSharedLib.dateFormatter.formatDateExpanded(latestDate.utc());
     }
     // Retrieve or create the reconcile date container
-    let balanceContainer = $(`#${TK_LAST_RECONCILED_ID}`);
-    if (!balanceContainer || balanceContainer.length === 0) {
+    let dateContainer = $(`#${TK_LAST_RECONCILED_ID}`);
+    if (!dateContainer || dateContainer.length === 0) {
       $(YNAB_ACCOUNTS_HEADER_RIGHT).append(
         `<div class="tk-accounts-header-last-reconciled">
         <span id="${TK_LAST_RECONCILED_ID}">${textToShow}</span>
@@ -35,7 +35,7 @@ export class LastReconciledDate extends Feature {
     }
 
     // Update the reconcile date in the element
-    balanceContainer.text(textToShow);
+    dateContainer.text(textToShow);
     this._setFeatureVisibility(true);
   }
 
