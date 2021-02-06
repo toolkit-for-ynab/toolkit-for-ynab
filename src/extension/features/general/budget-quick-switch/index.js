@@ -20,7 +20,7 @@ export class BudgetQuickSwitch extends Feature {
     }
 
     const modalList = $('.modal-list', element)[0];
-    let activeBudgetVersionId = controllerLookup('application').get('budgetVersionId');
+    const activeBudgetVersionId = controllerLookup('application').get('budgetVersionId');
 
     ynab.YNABSharedLib.getCatalogViewModel_UserViewModel().then(({ userBudgetDisplayItems }) => {
       userBudgetDisplayItems
@@ -29,6 +29,8 @@ export class BudgetQuickSwitch extends Feature {
             !budget.get('isTombstone') && budget.get('budgetVersionId') !== activeBudgetVersionId
           );
         })
+        // Sort in ascending order as we're prepending the component
+        .sort((a, b) => a.get('lastModifiedAt') - b.get('lastModifiedAt'))
         .forEach((budget, i) => {
           const budgetVersionName = budget.get('budgetVersionName');
           const budgetVersionId = budget.get('budgetVersionId');
@@ -44,7 +46,7 @@ export class BudgetQuickSwitch extends Feature {
 
           componentPrepend(
             <BudgetListItem
-              key={budget.get('budgetVersionId')}
+              key={budgetVersionId}
               budgetVersionId={budgetVersionId}
               budgetVersionName={budgetVersionName}
             />,
