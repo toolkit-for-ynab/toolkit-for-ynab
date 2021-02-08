@@ -6,7 +6,8 @@ export function useLocalStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(() => {
     // Get the saved value if any, otherwise use the initial value
     try {
-      const item = window.localStorage.getItem(key);
+      let localStorageKey = `${STORAGE_KEY_PREFIX}${key}`;
+      const item = window.localStorage.getItem(localStorageKey);
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
       return initialValue;
