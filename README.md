@@ -53,6 +53,10 @@ When your code is ready, submit a pull request.
 
 For documentation on how to build a feature, [see the documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/docs/building-features.md).
 
+#### Help with translations
+If you would like to help with translations, you will find the relevant files [here](https://github.com/toolkit-for-ynab/toolkit-for-ynab/tree/452e0ee09c6e04082468bd1ba59abced55f400a2/src/extension/legacy/features/l10n/locales).
+We currently need help translating: Arabic, Catalan, Chinese, Czech, Danish, Dutch, Finnish, French, German, Hungarian, Icelandic, Indonesian, Italian, Japanese, Latvian, Lithuanian, Norwegian, Polish, Portuguese, Portuguese (Brazilia), Romanian, Russian, Serbian, Slovenian, Spanish, Swedish, Tagalog, Turkish, Ukranian and Vietnamese.
+
 ### Building the Code
 
 This extension uses three main things in its build process:
