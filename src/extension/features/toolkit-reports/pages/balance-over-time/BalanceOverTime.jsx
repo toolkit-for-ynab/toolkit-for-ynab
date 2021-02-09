@@ -5,6 +5,7 @@ import { RunningBalanceGraph } from './RunningBalanceGraph';
 import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
 import { WarningMessage } from './WarningMessage';
 import { useLocalStorage } from 'toolkit/extension/hooks/useLocalStorage';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import {
   dataPointsToHighChartSeries,
@@ -19,22 +20,6 @@ import {
 export const BalanceOverTimeComponent = ({ allReportableTransactions, filters }) => {
   const GROUPED_LABEL = 'Selected Accounts';
   const TRENDLINE_PREFIX = 'Trendline for ';
-  const GROUPED_BY_TYPE_LABELS = {
-    Checking: 'Checking',
-    Savings: 'Savings',
-    Cash: 'Cash',
-    CreditCard: 'Credit Card',
-    LineOfCredit: 'Line of Credit',
-    Mortgage: 'Mortgage',
-    CarLoan: 'Car Loan',
-    StudentLoan: 'Student Loan',
-    PersonalLoan: 'Personal Loan',
-    ConsumerLoan: 'Consumer Loan',
-    MedicalDebt: 'Medical Debt',
-    OtherDebt: 'Other Debt',
-    OtherAsset: 'Asset (e.g. Investment)',
-    OtherLiability: 'Liability (e.g. Mortgage)',
-  };
 
   // Options to group accounts, use a step graph and/or generate trendlines
   const [shouldGroupAccounts, setShouldGroupAccounts] = useLocalStorage(
@@ -43,7 +28,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
   );
   const [shouldGroupAccountsByType, setShouldGroupAccountsByType] = useLocalStorage(
     'balance-over-time-shouldGroupAccountsByType',
-     false
+    false
   );
   const [useStepGraph, setUseStepGraph] = useLocalStorage('balance-over-time-useStepGraph', true);
   const [useTrendLine, setUseTrendLine] = useLocalStorage('balance-over-time-useTrendline', false);
@@ -92,7 +77,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
 
       groupedData.ids.forEach(accountType => {
         newSeries.push({
-          name: GROUPED_BY_TYPE_LABELS[accountType],
+          name: l10n(`accountTypes.${accountType}`),
           step: useStepGraph ? 'right' : undefined,
           data: dataPointsToHighChartSeries(combineDataPoints(groupedData.entities[accountType])),
         });
