@@ -11,6 +11,7 @@ export const setTransactionCleared = transaction => {
     }
   }
 };
+
 /**
  * Generate all subsets for an array
  * @param {Array} array Array to generate powerset for
