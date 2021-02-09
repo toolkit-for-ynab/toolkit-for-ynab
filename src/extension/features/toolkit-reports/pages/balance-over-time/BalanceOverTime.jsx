@@ -5,6 +5,7 @@ import { RunningBalanceGraph } from './RunningBalanceGraph';
 import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
 import { WarningMessage } from './WarningMessage';
 import { useLocalStorage } from 'toolkit/extension/hooks/useLocalStorage';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import {
   dataPointsToHighChartSeries,
@@ -23,6 +24,10 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
   // Options to group accounts, use a step graph and/or generate trendlines
   const [shouldGroupAccounts, setShouldGroupAccounts] = useLocalStorage(
     'balance-over-time-shouldGroupAccounts',
+    false
+  );
+  const [shouldGroupAccountsByType, setShouldGroupAccountsByType] = useLocalStorage(
+    'balance-over-time-shouldGroupAccountsByType',
     false
   );
   const [useStepGraph, setUseStepGraph] = useLocalStorage('balance-over-time-useStepGraph', true);
@@ -53,7 +58,31 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
       }
     });
 
-    if (shouldGroupAccounts) {
+    if (shouldGroupAccounts && shouldGroupAccountsByType) {
+      // Group datapoints by account type
+      let groupedData = {
+        entities: {},
+        ids: [],
+      };
+      filteredData.forEach((datapoints, accountId) => {
+        const { accountType } = getEntityManager().getAccountById(accountId);
+
+        if (!groupedData.entities[accountType]) {
+          groupedData.entities[accountType] = [];
+          groupedData.ids.push(accountType);
+        }
+
+        groupedData.entities[accountType].push(datapoints);
+      });
+
+      groupedData.ids.forEach(accountType => {
+        newSeries.push({
+          name: l10n(`accountTypes.${accountType}`),
+          step: useStepGraph ? 'right' : undefined,
+          data: dataPointsToHighChartSeries(combineDataPoints(groupedData.entities[accountType])),
+        });
+      });
+    } else if (shouldGroupAccounts) {
       // When grouping accounts, combined all the selected accounts datapoints to create a single series
       let datapointsToCombine = [];
       filteredData.forEach(datapoints => {
@@ -89,7 +118,14 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
     // Add a check to see if we've reached the max number of datapoints
     setDatapointLimitReached(newSeries.some(checkSeriesLimitReached));
     setSeries(newSeries);
-  }, [runningBalanceMap, filters, shouldGroupAccounts, useStepGraph, useTrendLine]);
+  }, [
+    runningBalanceMap,
+    filters,
+    shouldGroupAccounts,
+    shouldGroupAccountsByType,
+    useStepGraph,
+    useTrendLine,
+  ]);
 
   if (datapointLimitReached) {
     return (
@@ -109,6 +145,16 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
             onChange={() => setShouldGroupAccounts(!shouldGroupAccounts)}
           />
         </div>
+        {shouldGroupAccounts && (
+          <div className="tk-pd-x-1">
+            <LabeledCheckbox
+              id="tk-balance-over-time-groupaccounts-option"
+              checked={shouldGroupAccountsByType}
+              label="by type"
+              onChange={() => setShouldGroupAccountsByType(!shouldGroupAccountsByType)}
+            />
+          </div>
+        )}
         <div className="tk-pd-x-1">
           <LabeledCheckbox
             id="tk-balance-over-time-trendline-option"
