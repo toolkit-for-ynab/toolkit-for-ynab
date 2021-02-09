@@ -238,3 +238,11 @@
 	}
 
 }
+
+/* ======== Toolkit Reports -> Income vs Expense	Printing Improvements ======== */
+@media print {
+	/* Hide Scrollbars when printing income vs expense reports. */
+	.tk-overflow-scroll::-webkit-scrollbar {
+		display: none;
+	}
+}
