@@ -1,13 +1,13 @@
 body,
 body.theme-new-default {
-  --tk-master-category-row-color: var(--primary200);
+  --tk-master-category-row-color: var(--primary300);
 }
 body.theme-classic {
   --tk-master-category-row-color: var(--inspector_background);
 }
 
 body.theme-dark {
-  --tk-master-category-row-color: var(--primary900);
+  --tk-master-category-row-color: var(--primary1000);
 }
 
 .budget-table-row.is-master-category {
