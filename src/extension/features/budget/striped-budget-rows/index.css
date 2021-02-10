@@ -1,18 +1,25 @@
 body,
 body.theme-new-default {
   --tk-striped-budget-row-color: #f4f4f4;
+  --tk-striped-budget-row-selected-color: #bbd2e4;
   --table_header_background_default: #efefef;
 }
 
 body.theme-classic {
   --tk-striped-budget-row-color: #fafafa;
+  --tk-striped-budget-row-selected-color: #094e5f;
 }
 
 body.theme-dark {
   --tk-striped-budget-row-color: #2b2b2e;
+  --tk-striped-budget-row-selected-color: #2f4969;
   --table_header_background_default: #343437;
 }
 
 .budget-table-row.is-sub-category:nth-of-type(even):not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
   background-color: var(--tk-striped-budget-row-color);
+}
+
+.budget-table-row.is-sub-category:nth-of-type(even):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
+  background-color: var(--tk-striped-budget-row-selected-color);
 }
