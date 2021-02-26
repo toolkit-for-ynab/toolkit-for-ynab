@@ -98,5 +98,12 @@ export class DisplayTotalMonthlyGoals extends Feature {
       'didRender',
       this.addTotalMonthlyGoals
     );
+
+    addToolkitEmberHook(
+      this,
+      'budget/inspector/multi-select-inspector',
+      'didRender',
+      this.addTotalMonthlyGoals
+    );
   }
 }
