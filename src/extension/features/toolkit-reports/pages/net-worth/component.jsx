@@ -6,6 +6,7 @@ import { localizedMonthAndYear, sortByGettableDate } from 'toolkit/extension/uti
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { Legend } from './components/legend';
+import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
 
 export class NetWorthComponent extends React.Component {
   static propTypes = {
@@ -30,18 +31,30 @@ export class NetWorthComponent extends React.Component {
 
   render() {
     return (
-      <div className="tk-flex tk-flex-column tk-flex-grow">
-        <div className="tk-flex tk-justify-content-end">
-          {this.state.hoveredData && (
-            <Legend
-              assets={this.state.hoveredData.assets}
-              debts={this.state.hoveredData.debts}
-              debtRatio={this.state.hoveredData.debtRatio}
-              netWorth={this.state.hoveredData.netWorth}
+      <div className="tk-flex-grow tk-flex tk-flex-column">
+        <div className="tk-flex tk-pd-05 tk-border-b">
+          <div>
+            <LabeledCheckbox
+              id="someId"
+              checked={true}
+              label="Flip Debt"
+              // onChange={this.toggleIncome}
             />
-          )}
+          </div>
         </div>
-        <div className="tk-highcharts-report-container" id="tk-net-worth-chart" />
+        <div className="tk-flex tk-flex-column tk-flex-grow">
+          <div className="tk-flex tk-justify-content-end">
+            {this.state.hoveredData && (
+              <Legend
+                assets={this.state.hoveredData.assets}
+                debts={this.state.hoveredData.debts}
+                debtRatio={this.state.hoveredData.debtRatio}
+                netWorth={this.state.hoveredData.netWorth}
+              />
+            )}
+          </div>
+          <div className="tk-highcharts-report-container" id="tk-net-worth-chart" />
+        </div>
       </div>
     );
   }
