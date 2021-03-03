@@ -14,7 +14,9 @@ export class NetWorthComponent extends React.Component {
     allReportableTransactions: PropTypes.array.isRequired,
   };
 
-  state = {};
+  state = {
+    inverseDebt: false,
+  };
 
   componentDidMount() {
     this._calculateData();
@@ -36,9 +38,9 @@ export class NetWorthComponent extends React.Component {
           <div>
             <LabeledCheckbox
               id="someId"
-              checked={true}
+              checked={this.state.inverseDebt}
               label="Flip Debt"
-              // onChange={this.toggleIncome}
+              onChange={this.toggleDebtDirection}
             />
           </div>
         </div>
@@ -58,6 +60,11 @@ export class NetWorthComponent extends React.Component {
       </div>
     );
   }
+
+  toggleDebtDirection = () => {
+    this.setState(prevState => ({ inverseDebt: !prevState.inverseDebt }));
+    this._calculateData();
+  };
 
   _renderReport = () => {
     const _this = this;
@@ -117,7 +124,7 @@ export class NetWorthComponent extends React.Component {
           type: 'column',
           name: l10n('toolkit.debts', 'Debts'),
           color: 'rgba(234,106,81,1)',
-          data: debts,
+          data: this.state.inverseDebt ? debts.map(item => -item) : debts,
           pointPadding: 0,
           point: pointHover,
         },
