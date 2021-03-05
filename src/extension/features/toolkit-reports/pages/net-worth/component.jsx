@@ -42,7 +42,7 @@ export class NetWorthComponent extends React.Component {
         <div className="tk-flex tk-pd-05 tk-border-b">
           <div>
             <LabeledCheckbox
-              id="tk-net-worth-invserse-debt-selector"
+              id="tk-net-worth-inverse-debt-selector"
               checked={this.state.inverseDebt}
               label="Flip Debt"
               onChange={this.toggleDebtDirection}
