@@ -7,6 +7,11 @@ import { l10n } from 'toolkit/extension/utils/toolkit';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { Legend } from './components/legend';
 import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+
+const STORAGE_KEYS = {
+  inverseDebt: 'net-worth-inverse-debt',
+};
 
 export class NetWorthComponent extends React.Component {
   static propTypes = {
@@ -15,7 +20,7 @@ export class NetWorthComponent extends React.Component {
   };
 
   state = {
-    inverseDebt: false,
+    inverseDebt: getToolkitStorageKey(STORAGE_KEYS.inverseDebt, false),
   };
 
   componentDidMount() {
@@ -37,7 +42,7 @@ export class NetWorthComponent extends React.Component {
         <div className="tk-flex tk-pd-05 tk-border-b">
           <div>
             <LabeledCheckbox
-              id="someId"
+              id="tk-net-worth-invserse-debt-selector"
               checked={this.state.inverseDebt}
               label="Flip Debt"
               onChange={this.toggleDebtDirection}
@@ -62,7 +67,11 @@ export class NetWorthComponent extends React.Component {
   }
 
   toggleDebtDirection = () => {
-    this.setState(prevState => ({ inverseDebt: !prevState.inverseDebt }));
+    this.setState(prevState => {
+      const inverseDebt = !prevState.inverseDebt;
+      setToolkitStorageKey(STORAGE_KEYS.inverseDebt, inverseDebt);
+      return { inverseDebt };
+    });
     this._calculateData();
   };
 
