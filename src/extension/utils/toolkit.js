@@ -93,6 +93,39 @@ export function l10nMonth(monthIndex, short = MonthStyle.Long) {
   return l10n(`months.${MONTHS_LONG[monthIndex]}`, MONTHS_LONG[monthIndex]);
 }
 
+export function l10nAccountType(accountType) {
+  switch (accountType) {
+    case ynab.enums.accountTypes.Checking:
+      return l10n('Checking', 'Checking');
+    case ynab.enums.accountTypes.Savings:
+      return l10n('Savings', 'Savings');
+    case ynab.enums.accountTypes.Cash:
+      return l10n('Cash', 'Credit Card');
+    case ynab.enums.accountTypes.CreditCard:
+      return l10n('CreditCard', 'Cash');
+    case ynab.enums.accountTypes.LineOfCredit:
+      return l10n('LineOfCredit', 'Line of Credit');
+    case ynab.enums.accountTypes.Mortgage:
+      return l10n('Mortgage', 'Mortgage');
+    case ynab.enums.accountTypes.CarLoan:
+      return l10n('CarLoan', 'Car Loan');
+    case ynab.enums.accountTypes.StudentLoan:
+      return l10n('StudentLoan', 'Student Loan');
+    case ynab.enums.accountTypes.PersonalLoan:
+      return l10n('PersonalLoan', 'Personal Loan');
+    case ynab.enums.accountTypes.ConsumerLoan:
+      return l10n('ConsumerLoan', 'Consumer Loan');
+    case ynab.enums.accountTypes.MedicalDebt:
+      return l10n('MedicalDebt', 'Medical Debt');
+    case ynab.enums.accountTypes.OtherDebt:
+      return l10n('OtherDebt', 'Other Debt');
+    case ynab.enums.accountTypes.OtherAsset:
+      return l10n('OtherAsset', 'Asset (e.g. Investment)');
+    case ynab.enums.accountTypes.OtherLiability:
+      return l10n('OtherLiability', 'Liability (e.g. Mortgage)');
+  }
+}
+
 export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn) {
   const componentProto = Object.getPrototypeOf(componentLookup(componentKey));
 

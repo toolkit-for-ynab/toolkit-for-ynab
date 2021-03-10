@@ -5,7 +5,7 @@ import { RunningBalanceGraph } from './RunningBalanceGraph';
 import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
 import { WarningMessage } from './WarningMessage';
 import { useLocalStorage } from 'toolkit/extension/hooks/useLocalStorage';
-import { l10n } from 'toolkit/extension/utils/toolkit';
+import { l10nAccountType } from 'toolkit/extension/utils/toolkit';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import {
   dataPointsToHighChartSeries,
@@ -77,7 +77,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
 
       groupedData.ids.forEach(accountType => {
         newSeries.push({
-          name: l10n(`accountTypes.${accountType}`),
+          name: l10nAccountType(accountType),
           step: useStepGraph ? 'right' : undefined,
           data: dataPointsToHighChartSeries(combineDataPoints(groupedData.entities[accountType])),
         });

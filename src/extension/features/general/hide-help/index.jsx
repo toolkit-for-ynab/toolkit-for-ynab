@@ -12,7 +12,7 @@ import {
 
 const HideHelpButton = ({ toggleHiddenState }) => {
   const isHidden = getToolkitStorageKey('hide-help', true);
-  const label = isHidden ? l10n('app.show', 'Show') : l10n('app.hide', 'Hide');
+  const label = isHidden ? l10n('toolkit.show', 'Show') : l10n('app.hide', 'Hide');
 
   const toggleHidden = () => {
     toggleHiddenState(!isHidden);
