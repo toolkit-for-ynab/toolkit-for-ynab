@@ -6,6 +6,12 @@ import { localizedMonthAndYear, sortByGettableDate } from 'toolkit/extension/uti
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { Legend } from './components/legend';
+import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+
+const STORAGE_KEYS = {
+  inverseDebt: 'net-worth-inverse-debt',
+};
 
 export class NetWorthComponent extends React.Component {
   static propTypes = {
@@ -13,7 +19,9 @@ export class NetWorthComponent extends React.Component {
     allReportableTransactions: PropTypes.array.isRequired,
   };
 
-  state = {};
+  state = {
+    inverseDebt: getToolkitStorageKey(STORAGE_KEYS.inverseDebt, false),
+  };
 
   componentDidMount() {
     this._calculateData();
@@ -30,21 +38,42 @@ export class NetWorthComponent extends React.Component {
 
   render() {
     return (
-      <div className="tk-flex tk-flex-column tk-flex-grow">
-        <div className="tk-flex tk-justify-content-end">
-          {this.state.hoveredData && (
-            <Legend
-              assets={this.state.hoveredData.assets}
-              debts={this.state.hoveredData.debts}
-              debtRatio={this.state.hoveredData.debtRatio}
-              netWorth={this.state.hoveredData.netWorth}
+      <div className="tk-flex-grow tk-flex tk-flex-column">
+        <div className="tk-flex tk-pd-05 tk-border-b">
+          <div>
+            <LabeledCheckbox
+              id="tk-net-worth-inverse-debt-selector"
+              checked={this.state.inverseDebt}
+              label="Flip Debt"
+              onChange={this.toggleDebtDirection}
             />
-          )}
+          </div>
         </div>
-        <div className="tk-highcharts-report-container" id="tk-net-worth-chart" />
+        <div className="tk-flex tk-flex-column tk-flex-grow">
+          <div className="tk-flex tk-justify-content-end">
+            {this.state.hoveredData && (
+              <Legend
+                assets={this.state.hoveredData.assets}
+                debts={this.state.hoveredData.debts}
+                debtRatio={this.state.hoveredData.debtRatio}
+                netWorth={this.state.hoveredData.netWorth}
+              />
+            )}
+          </div>
+          <div className="tk-highcharts-report-container" id="tk-net-worth-chart" />
+        </div>
       </div>
     );
   }
+
+  toggleDebtDirection = () => {
+    this.setState(prevState => {
+      const inverseDebt = !prevState.inverseDebt;
+      setToolkitStorageKey(STORAGE_KEYS.inverseDebt, inverseDebt);
+      return { inverseDebt };
+    });
+    this._calculateData();
+  };
 
   _renderReport = () => {
     const _this = this;
@@ -104,7 +133,7 @@ export class NetWorthComponent extends React.Component {
           type: 'column',
           name: l10n('toolkit.debts', 'Debts'),
           color: 'rgba(234,106,81,1)',
-          data: debts,
+          data: this.state.inverseDebt ? debts.map(item => -item) : debts,
           pointPadding: 0,
           point: pointHover,
         },
