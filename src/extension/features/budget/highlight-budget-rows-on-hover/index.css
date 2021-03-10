@@ -1,0 +1,18 @@
+body,
+body.theme-new-default {
+  --tk-hovered-budget-row-color: #e3e3e3;
+}
+
+body.theme-classic {
+  --tk-hovered-budget-row-color: #e3e3e3;
+}
+
+body.theme-dark {
+  --tk-hovered-budget-row-color: #3f3f43;
+}
+
+.budget-table-row.is-sub-category:hover:not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
+  background-color: var(
+    --tk-hovered-budget-row-color
+  ) !important; /* We have to use !important here to avoid conflicts with "striped budget rows" */
+}
