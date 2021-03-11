@@ -95,33 +95,33 @@ export function l10nMonth(monthIndex, short = MonthStyle.Long) {
 
 export function l10nAccountType(accountType) {
   switch (accountType) {
-    case ynab.enums.accountTypes.Checking:
+    case ynab.enums.AccountType.Checking:
       return l10n('Checking', 'Checking');
-    case ynab.enums.accountTypes.Savings:
+    case ynab.enums.AccountType.Savings:
       return l10n('Savings', 'Savings');
-    case ynab.enums.accountTypes.Cash:
+    case ynab.enums.AccountType.Cash:
       return l10n('Cash', 'Credit Card');
-    case ynab.enums.accountTypes.CreditCard:
+    case ynab.enums.AccountType.CreditCard:
       return l10n('CreditCard', 'Cash');
-    case ynab.enums.accountTypes.LineOfCredit:
+    case ynab.enums.AccountType.LineOfCredit:
       return l10n('LineOfCredit', 'Line of Credit');
-    case ynab.enums.accountTypes.Mortgage:
+    case ynab.enums.AccountType.Mortgage:
       return l10n('Mortgage', 'Mortgage');
-    case ynab.enums.accountTypes.CarLoan:
+    case ynab.enums.AccountType.CarLoan:
       return l10n('CarLoan', 'Car Loan');
-    case ynab.enums.accountTypes.StudentLoan:
+    case ynab.enums.AccountType.StudentLoan:
       return l10n('StudentLoan', 'Student Loan');
-    case ynab.enums.accountTypes.PersonalLoan:
+    case ynab.enums.AccountType.PersonalLoan:
       return l10n('PersonalLoan', 'Personal Loan');
-    case ynab.enums.accountTypes.ConsumerLoan:
+    case ynab.enums.AccountType.ConsumerLoan:
       return l10n('ConsumerLoan', 'Consumer Loan');
-    case ynab.enums.accountTypes.MedicalDebt:
+    case ynab.enums.AccountType.MedicalDebt:
       return l10n('MedicalDebt', 'Medical Debt');
-    case ynab.enums.accountTypes.OtherDebt:
+    case ynab.enums.AccountType.OtherDebt:
       return l10n('OtherDebt', 'Other Debt');
-    case ynab.enums.accountTypes.OtherAsset:
+    case ynab.enums.AccountType.OtherAsset:
       return l10n('OtherAsset', 'Asset (e.g. Investment)');
-    case ynab.enums.accountTypes.OtherLiability:
+    case ynab.enums.AccountType.OtherLiability:
       return l10n('OtherLiability', 'Liability (e.g. Mortgage)');
   }
 }
