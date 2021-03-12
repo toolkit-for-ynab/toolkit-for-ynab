@@ -94,7 +94,7 @@ export function l10nMonth(monthIndex, short = MonthStyle.Long) {
 }
 
 export function l10nAccountType(accountType) {
-  switch (accountType) {
+  switch (ynab.enums.AccountType[accountType]) {
     case ynab.enums.AccountType.Checking:
       return l10n('Checking', 'Checking');
     case ynab.enums.AccountType.Savings:
