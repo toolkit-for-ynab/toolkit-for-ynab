@@ -100,9 +100,9 @@ export function l10nAccountType(accountType) {
     case ynab.enums.AccountType.Savings:
       return l10n('Savings', 'Savings');
     case ynab.enums.AccountType.Cash:
-      return l10n('Cash', 'Credit Card');
-    case ynab.enums.AccountType.CreditCard:
       return l10n('CreditCard', 'Cash');
+    case ynab.enums.AccountType.CreditCard:
+      return l10n('Cash', 'Credit Card');
     case ynab.enums.AccountType.LineOfCredit:
       return l10n('LineOfCredit', 'Line of Credit');
     case ynab.enums.AccountType.Mortgage:
