@@ -30,7 +30,9 @@ const createMonthlyTotalsMap = date =>
 
 export class IncomeVsExpenseComponent extends React.Component {
   _payeesCollection = Collections.payeesCollection;
+
   _subCategoriesCollection = Collections.subCategoriesCollection;
+
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
 
   static propTypes = {
@@ -308,7 +310,8 @@ export class IncomeVsExpenseComponent extends React.Component {
         const nameB = b.get('payee').get('name');
         if (nameA < nameB) {
           return -1;
-        } else if (nameA > nameB) {
+        }
+        if (nameA > nameB) {
           return 1;
         }
 
