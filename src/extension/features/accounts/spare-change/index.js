@@ -67,9 +67,8 @@ export class SpareChange extends Feature {
   }
 
   setSelectedTransactions() {
-    let visibleTransactionDisplayItems = this.accountsController.get(
-      'visibleTransactionDisplayItems'
-    );
+    let visibleTransactionDisplayItems =
+      this.accountsController.get('visibleTransactionDisplayItems') || [];
     this.selectedTransactions = visibleTransactionDisplayItems.filter(
       i => i.isChecked && i.get('outflow')
     );
