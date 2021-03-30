@@ -32,7 +32,7 @@ export class BudgetQuickSwitch extends Feature {
         // Sort in ascending order as we're prepending the component
         .sort((a, b) => a.get('lastModifiedAt') - b.get('lastModifiedAt'))
         .forEach((budget, i) => {
-          const budgetVersionName = budget.get('budgetVersionName');
+          const budgetName = budget.get('budgetName');
           const budgetVersionId = budget.get('budgetVersionId');
 
           if (i === 0) {
@@ -48,7 +48,7 @@ export class BudgetQuickSwitch extends Feature {
             <BudgetListItem
               key={budgetVersionId}
               budgetVersionId={budgetVersionId}
-              budgetVersionName={budgetVersionName}
+              budgetName={budgetName}
             />,
             modalList
           );
