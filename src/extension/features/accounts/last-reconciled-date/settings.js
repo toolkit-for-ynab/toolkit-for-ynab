@@ -8,8 +8,8 @@ module.exports = {
     'Show the last reconciled date and or days since last reconciled of the current account in the header',
   options: [
     { name: 'Disabled', value: '0' },
-    { name: 'Date Last Reconciled', value: '1' },
-    { name: 'Days Since Reconciled', value: '2' },
-    { name: 'Both', value: '3' },
+    { name: 'Date Last Reconciled', value: 'last-date' },
+    { name: 'Days Since Reconciled', value: 'days-since' },
+    { name: 'Both', value: 'last-date-days-since' },
   ],
 };
