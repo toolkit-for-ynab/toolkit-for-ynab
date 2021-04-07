@@ -3,19 +3,19 @@ body.theme-new-default {
   --tk-current-month-background-color: var(--sidebar_button_background_selected);
   --tk-current-month-control-color: #bee6ef;
   --tk-current-month-header-color: #ffffff;
-  --tk-current-month-note-color: #rgba(255, 255, 255, 0.4);
+  --tk-current-month-note-color: rgba(255, 255, 255, 0.6);
 }
 
 body.theme-classic {
   --tk-current-month-control-color: var(--primary_action);
   --tk-current-month-header-color: #ffffff;
-  --tk-current-month-note-color: #rgba(255, 255, 255, 0.4);
+  --tk-current-month-note-color: rgba(255, 255, 255, 0.6);
 }
 
 body.theme-dark {
   --tk-current-month-control-color: #ffffff;
   --tk-current-month-header-color: #ffffff;
-  --tk-current-month-note-color: #rgba(255, 255, 255, 0.4);
+  --tk-current-month-note-color: rgba(255, 255, 255, 0.6);
 }
 
 /* add transitions */
@@ -45,6 +45,11 @@ body.theme-dark {
 .budget-header .toolkit-highlight-current-month .flaticon {
   color: var(--tk-current-month-control-color);
 }
+
+.budget-header .toolkit-highlight-current-month .budget-header-calendar-date-button {
+  color: var(--tk-current-month-header-color);
+}
+
 .budget-header .toolkit-highlight-current-month .budget-header-calendar-note {
   color: var(--tk-current-month-note-color);
 }
