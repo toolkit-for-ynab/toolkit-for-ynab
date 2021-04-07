@@ -1,7 +1,7 @@
 module.exports = {
   name: 'LastReconciledDate',
   type: 'select',
-  default: '0',
+  default: 'disabled',
   section: 'accounts',
   title: 'Show Last Reconciliation Details',
   description:
