@@ -23,20 +23,28 @@ export class LastReconciledDate extends Feature {
     if (latestDate) {
       textToShow = ynab.YNABSharedLib.dateFormatter.formatDateExpanded(latestDate.utc());
     }
-    // Retrieve or create the reconcile date container
-    let dateContainer = $(`#${TK_LAST_RECONCILED_ID}`);
-    if (!dateContainer || dateContainer.length === 0) {
-      $(YNAB_ACCOUNTS_HEADER_RIGHT).append(
-        `<div class="tk-accounts-header-last-reconciled">
-        <span id="${TK_LAST_RECONCILED_ID}">${textToShow}</span>
-        <div class="tk-accounts-header-last-reconciled-label">Last Reconciled Date</div>
-      </div>`
-      );
-    }
 
-    // Update the reconcile date in the element
-    dateContainer.text(textToShow);
-    this._setFeatureVisibility(true);
+    if (this.settings.enabled === '1') {
+      // Handle date last reconciled
+
+      // Retrieve or create the reconcile date container
+      let dateContainer = $(`#${TK_LAST_RECONCILED_ID}`);
+      if (!dateContainer || dateContainer.length === 0) {
+        $(YNAB_ACCOUNTS_HEADER_RIGHT).append(
+          `<div class="tk-accounts-header-last-reconciled">
+          <span id="${TK_LAST_RECONCILED_ID}">${textToShow}</span>
+          <div class="tk-accounts-header-last-reconciled-label">Last Reconciled Date</div>
+        </div>`
+        );
+      }
+
+      // Update the reconcile date in the element
+      dateContainer.text(textToShow);
+      this._setFeatureVisibility(true);
+    }
+    if (this.settings.enabled === '2') {
+      // Handle days since reconciled
+    }
   }
 
   onRouteChanged() {
