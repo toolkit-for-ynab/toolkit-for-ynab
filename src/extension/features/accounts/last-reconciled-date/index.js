@@ -45,7 +45,7 @@ export class LastReconciledDate extends Feature {
 
       // Update the days sinces reconciled in the element
       daysSinceContainer.text(daysSinceTextToShow);
-      this._setFeatureVisibility($('.tk-accounts-header-days-since-reconciled'), true);
+      this._setFeatureVisibility('.tk-accounts-header-days-since-reconciled', true);
     }
 
     // Handle date last reconciled
@@ -78,8 +78,8 @@ export class LastReconciledDate extends Feature {
     if (this.shouldInvoke()) {
       this.invoke();
     } else {
-      this._setFeatureVisibility($('.tk-accounts-header-last-reconciled'), false);
-      this._setFeatureVisibility($('.tk-accounts-header-days-since-reconciled'), false);
+      this._setFeatureVisibility('.tk-accounts-header-last-reconciled', false);
+      this._setFeatureVisibility('.tk-accounts-header-days-since-reconciled', false);
     }
   }
 
@@ -113,7 +113,8 @@ export class LastReconciledDate extends Feature {
    * @param {Container} featureContainer container to hide or show
    * @param {Boolean} visible True to show the container, false to hide
    */
-  _setFeatureVisibility = (featureContainer, visible) => {
+  _setFeatureVisibility = (featureSelector, visible) => {
+    let featureContainer = $(featureSelector);
     if (featureContainer && featureContainer.length) {
       featureContainer.toggle(visible);
     }
