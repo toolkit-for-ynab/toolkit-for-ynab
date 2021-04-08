@@ -27,10 +27,8 @@ export class LastReconciledDate extends Feature {
 
       // Get the current account id and calculate the last reconciled date
       if (latestDate) {
-        // Calculate number of days since last reconciled
-        const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-        let todaysDate = new Date();
-        let differenceInDays = Math.trunc(Math.abs((todaysDate - latestDate) / oneDay));
+        let todaysDate = moment();
+        let differenceInDays = todaysDate.diff(latestDate, 'days');
         daysSinceTextToShow = differenceInDays + ' days';
       }
 
