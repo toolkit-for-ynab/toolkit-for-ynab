@@ -5,6 +5,7 @@ import { getEntityManager } from 'toolkit/extension/utils/ynab';
 const YNAB_ACCOUNTS_HEADER_RIGHT = '.accounts-header-balances-right';
 const TK_LAST_RECONCILED_ID = 'tk-last-reconciled-date';
 const TK_DAYS_SINCE_RECONCILED_ID = 'tk-days-since-reconciled';
+
 export class LastReconciledDate extends Feature {
   injectCSS() {
     return require('./styles.css');
