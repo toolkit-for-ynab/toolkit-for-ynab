@@ -1,8 +1,15 @@
 module.exports = {
   name: 'LastReconciledDate',
-  type: 'checkbox',
-  default: false,
+  type: 'select',
+  default: 'disabled',
   section: 'accounts',
-  title: 'Show Last Reconciled Date',
-  description: 'Show the last reconciled date of the current account in the header',
+  title: 'Show Last Reconciliation Details',
+  description:
+    'Show the last reconciled date and or days since last reconciled of the current account in the header',
+  options: [
+    { name: 'Disabled', value: 'disabled' },
+    { name: 'Date Last Reconciled', value: 'last-date' },
+    { name: 'Days Since Reconciled', value: 'days-since' },
+    { name: 'Both', value: 'last-date-days-since' },
+  ],
 };
