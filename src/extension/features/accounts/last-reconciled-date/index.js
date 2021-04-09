@@ -28,7 +28,11 @@ export class LastReconciledDate extends Feature {
       if (latestDate) {
         let todaysDate = moment();
         let differenceInDays = todaysDate.diff(latestDate, 'days');
-        daysSinceTextToShow = differenceInDays + ' days';
+        if (differenceInDays === 1) {
+          daysSinceTextToShow = differenceInDays + ' day';
+        } else {
+          daysSinceTextToShow = differenceInDays + ' days';
+        }
       }
 
       let daysSinceContainer = this._createReconciledContainer(
@@ -37,11 +41,6 @@ export class LastReconciledDate extends Feature {
         'Since Last Reconciled'
       );
       daysSinceContainer.children('span').text(daysSinceTextToShow);
-
-      // Add some margin between if we have both
-      if (this.settings.enabled.includes('last-date')) {
-        daysSinceContainer.addClass('tk-mg-r-1');
-      }
 
       this._setFeatureVisibility(`#${TK_DAYS_SINCE_RECONCILED_ID}`, true);
     }
