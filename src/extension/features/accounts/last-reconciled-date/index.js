@@ -25,27 +25,24 @@ export class LastReconciledDate extends Feature {
     if (this.settings.enabled.includes('days-since')) {
       let daysSinceTextToShow = 'NA days';
 
-      // Get the current account id and calculate the last reconciled date
       if (latestDate) {
         let todaysDate = moment();
         let differenceInDays = todaysDate.diff(latestDate, 'days');
         daysSinceTextToShow = differenceInDays + ' days';
       }
 
-      // Retrieve or create the days since reconciled container
-      let daysSinceContainer = $(`#${TK_DAYS_SINCE_RECONCILED_ID}`);
-      if (!daysSinceContainer || daysSinceContainer.length === 0) {
-        $(YNAB_ACCOUNTS_HEADER_RIGHT).append(
-          `<div class="tk-accounts-header-days-since-reconciled">
-          <span id="${TK_DAYS_SINCE_RECONCILED_ID}">${daysSinceTextToShow}</span>
-          <div class="tk-accounts-header-days-since-reconciled-label">Since Last Reconciled</div>
-        </div>`
-        );
+      let daysSinceContainer = this._createReconciledContainer(
+        TK_DAYS_SINCE_RECONCILED_ID,
+        daysSinceTextToShow
+      );
+      daysSinceContainer.text(daysSinceTextToShow);
+
+      // Add some margin between if we have both
+      if (this.settings.enabled.includes('last-date')) {
+        daysSinceContainer.addClass('tk-mg-r-1');
       }
 
-      // Update the days sinces reconciled in the element
-      daysSinceContainer.text(daysSinceTextToShow);
-      this._setFeatureVisibility('.tk-accounts-header-days-since-reconciled', true);
+      this._setFeatureVisibility(`#${TK_DAYS_SINCE_RECONCILED_ID}`, true);
     }
 
     // Handle date last reconciled
@@ -57,20 +54,13 @@ export class LastReconciledDate extends Feature {
         );
       }
 
-      // Retrieve or create the reconcile date container
-      let dateContainer = $(`#${TK_LAST_RECONCILED_ID}`);
-      if (!dateContainer || dateContainer.length === 0) {
-        $(YNAB_ACCOUNTS_HEADER_RIGHT).append(
-          `<div class="tk-accounts-header-last-reconciled">
-          <span id="${TK_LAST_RECONCILED_ID}">${latestDateTextToShow}</span>
-          <div class="tk-accounts-header-last-reconciled-label">Last Reconciled Date</div>
-        </div>`
-        );
-      }
+      let latestDateContainer = this._createReconciledContainer(
+        TK_LAST_RECONCILED_ID,
+        latestDateTextToShow
+      );
 
-      // Update the reconcile date in the element
-      dateContainer.text(latestDateTextToShow);
-      this._setFeatureVisibility($('.tk-accounts-header-last-reconciled'), true);
+      latestDateContainer.text(latestDateTextToShow);
+      this._setFeatureVisibility(`#${TK_LAST_RECONCILED_ID}`, true);
     }
   }
 
@@ -78,18 +68,40 @@ export class LastReconciledDate extends Feature {
     if (this.shouldInvoke()) {
       this.invoke();
     } else {
-      this._setFeatureVisibility('.tk-accounts-header-last-reconciled', false);
-      this._setFeatureVisibility('.tk-accounts-header-days-since-reconciled', false);
+      this._setFeatureVisibility(`#${TK_LAST_RECONCILED_ID}`, false);
+      this._setFeatureVisibility(`#${TK_DAYS_SINCE_RECONCILED_ID}`, false);
     }
   }
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    // When the reconciled icon changes, reevaluate our date
-    if (changedNodes.has('is-reconciled-icon svg-icon lock')) {
+    if (
+      changedNodes.has('modal-account-reconcile-reconciled') ||
+      changedNodes.has('nav-account-value user-data') ||
+      changedNodes.has('is-reconciled-icon svg-icon lock')
+    ) {
       this.invoke();
     }
+  }
+
+  /**
+   * Create the Reconciled Info Container
+   * @param {String} id The id of the element
+   * @param {String} text The Text to Show
+   * @returns JQuery Element
+   */
+  _createReconciledContainer(id, text) {
+    let reconciledInfoContainer = $(`#${id}`);
+    if (!reconciledInfoContainer || reconciledInfoContainer.length === 0) {
+      $(YNAB_ACCOUNTS_HEADER_RIGHT).append(
+        `<div class="tk-accounts-header-reconciled-info">
+          <span id="${id}">${text}</span>
+          <div class="tk-accounts-header-reconciled-info-label">Last Reconciled Date</div>
+        </div>`
+      );
+    }
+    return reconciledInfoContainer;
   }
 
   /**
