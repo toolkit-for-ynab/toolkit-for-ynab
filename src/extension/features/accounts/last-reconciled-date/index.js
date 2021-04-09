@@ -91,7 +91,7 @@ export class LastReconciledDate extends Feature {
    * Create the Reconciled Info Container
    * @param {String} id The id of the element
    * @param {String} text The Text to Show
-   * @param {Label} label The Label to Show
+   * @param {String} label The Label to Show
    * @returns JQuery Element
    */
   _createReconciledContainer(id, text, label) {
