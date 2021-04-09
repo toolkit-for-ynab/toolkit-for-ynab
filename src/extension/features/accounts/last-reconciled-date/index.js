@@ -33,9 +33,10 @@ export class LastReconciledDate extends Feature {
 
       let daysSinceContainer = this._createReconciledContainer(
         TK_DAYS_SINCE_RECONCILED_ID,
-        daysSinceTextToShow
+        daysSinceTextToShow,
+        'Since Last Reconciled'
       );
-      daysSinceContainer.text(daysSinceTextToShow);
+      daysSinceContainer.children('span').text(daysSinceTextToShow);
 
       // Add some margin between if we have both
       if (this.settings.enabled.includes('last-date')) {
@@ -56,10 +57,11 @@ export class LastReconciledDate extends Feature {
 
       let latestDateContainer = this._createReconciledContainer(
         TK_LAST_RECONCILED_ID,
-        latestDateTextToShow
+        latestDateTextToShow,
+        'Last Reconciled Date'
       );
 
-      latestDateContainer.text(latestDateTextToShow);
+      latestDateContainer.children('span').text(latestDateTextToShow);
       this._setFeatureVisibility(`#${TK_LAST_RECONCILED_ID}`, true);
     }
   }
@@ -89,15 +91,16 @@ export class LastReconciledDate extends Feature {
    * Create the Reconciled Info Container
    * @param {String} id The id of the element
    * @param {String} text The Text to Show
+   * @param {Label} label The Label to Show
    * @returns JQuery Element
    */
-  _createReconciledContainer(id, text) {
+  _createReconciledContainer(id, text, label) {
     let reconciledInfoContainer = $(`#${id}`);
     if (!reconciledInfoContainer || reconciledInfoContainer.length === 0) {
       $(YNAB_ACCOUNTS_HEADER_RIGHT).append(
-        `<div class="tk-accounts-header-reconciled-info">
-          <span id="${id}">${text}</span>
-          <div class="tk-accounts-header-reconciled-info-label">Last Reconciled Date</div>
+        `<div id="${id}" class="tk-accounts-header-reconciled-info">
+          <span>${text}</span>
+          <div class="tk-accounts-header-reconciled-info-label">${label}</div>
         </div>`
       );
     }
