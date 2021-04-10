@@ -28,11 +28,7 @@ export class LastReconciledDate extends Feature {
       if (latestDate) {
         let todaysDate = moment();
         let differenceInDays = todaysDate.diff(latestDate, 'days');
-        if (differenceInDays === 1) {
-          daysSinceTextToShow = differenceInDays + ' day';
-        } else {
-          daysSinceTextToShow = differenceInDays + ' days';
-        }
+        daysSinceTextToShow = differenceInDays + (differenceInDays === 1 ? ' day' : ' days');
       }
 
       let daysSinceContainer = this._createReconciledContainer(
@@ -41,7 +37,6 @@ export class LastReconciledDate extends Feature {
         'Since Last Reconciled'
       );
       daysSinceContainer.children('span').text(daysSinceTextToShow);
-
       this._setFeatureVisibility(`#${TK_DAYS_SINCE_RECONCILED_ID}`, true);
     }
 
