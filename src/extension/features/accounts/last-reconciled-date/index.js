@@ -44,9 +44,7 @@ export class LastReconciledDate extends Feature {
     if (this.settings.enabled.includes('last-date')) {
       let latestDateTextToShow = 'NA';
       if (latestDate) {
-        latestDateTextToShow = ynab.YNABSharedLib.dateFormatter.formatDateExpanded(
-          latestDate.utc()
-        );
+        latestDateTextToShow = ynab.YNABSharedLib.dateFormatter.formatDateExpanded(latestDate);
       }
 
       let latestDateContainer = this._createReconciledContainer(
@@ -108,13 +106,20 @@ export class LastReconciledDate extends Feature {
    */
   _calculateLastReconciledDate = accountId => {
     const account = getEntityManager().getAccountById(accountId);
+    let lastReconciledDate = account.getLastReconciledAt();
 
-    let reconciledDates = account
-      .getTransactions()
-      .filter(transaction => transaction.date && transaction.isReconciled())
-      .map(transaction => moment(transaction.date.getUTCTime()));
+    // Manually calculate it if one doesn't exist
+    if (!lastReconciledDate) {
+      let reconciledDates = account
+        .getTransactions()
+        .filter(transaction => transaction.date && transaction.isReconciled())
+        .map(transaction => moment(transaction.date.getUTCTime()));
+      lastReconciledDate = reconciledDates.length ? moment.max(reconciledDates) : null;
+    } else {
+      lastReconciledDate = moment(lastReconciledDate);
+    }
 
-    return reconciledDates.length ? moment.max(reconciledDates) : null;
+    return lastReconciledDate;
   };
 
   /**
