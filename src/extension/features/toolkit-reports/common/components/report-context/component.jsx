@@ -124,29 +124,27 @@ export function withReportContextProvider(InnerComponent) {
     }
 
     componentDidMount() {
-      ynab.YNABSharedLib.getBudgetViewModel_AllAccountTransactionsViewModel().then(
-        transactionsViewModel => {
-          const visibleTransactionDisplayItems = transactionsViewModel.get(
-            'visibleTransactionDisplayItems'
-          );
-          const allReportableTransactions = visibleTransactionDisplayItems.filter(
-            transaction =>
-              !transaction.get('isSplit') &&
-              !transaction.get('isScheduledTransaction') &&
-              !transaction.get('isScheduledSubTransaction')
-          );
+      ynab.YNABSharedLib.getBudgetViewModel_AllAccountsViewModel().then(transactionsViewModel => {
+        const visibleTransactionDisplayItems = transactionsViewModel.get(
+          'visibleTransactionDisplayItems'
+        );
+        const allReportableTransactions = visibleTransactionDisplayItems.filter(
+          transaction =>
+            !transaction.get('isSplit') &&
+            !transaction.get('isScheduledTransaction') &&
+            !transaction.get('isScheduledSubTransaction')
+        );
 
-          this.setState(
-            {
-              filteredTransactions: [],
-              allReportableTransactions,
-            },
-            () => {
-              this._applyFilters(this.state.activeReportKey);
-            }
-          );
-        }
-      );
+        this.setState(
+          {
+            filteredTransactions: [],
+            allReportableTransactions,
+          },
+          () => {
+            this._applyFilters(this.state.activeReportKey);
+          }
+        );
+      });
     }
 
     render() {

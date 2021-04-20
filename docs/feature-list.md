@@ -160,6 +160,10 @@ Hides the Age of Money calculation. Some users find it's not relevant or helpful
 
 Hides the "Total Available" section in the budget inspector.
 
+## Highlight Budget Rows On Hover
+
+Shows a light gray background on category rows when hovered over.
+
 ## Highlight all Negative Category Balances Red
 
 Ensure all negative balances are highlighted red instead of yellow, even with credit card spending.
@@ -350,9 +354,17 @@ Adds the ability to set custom flag names. Tooltip for the flag name will only b
 
 Adds the total available balance to the category tooltip on each row in the Accounts register.
 
+## Show Last Reconciliation Details
+
+Show the last reconciled date and or days since last reconciled of the current account in the header
+
 ## Show Menu When Right Clicking On Transaction
 
 Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit menu options.
+
+## Show Reconcile Confetti
+
+When an account is successfully reconciled, show a fun confetti animation to mark your tremendous achievement.
 
 ## Show Reconciled Balance
 

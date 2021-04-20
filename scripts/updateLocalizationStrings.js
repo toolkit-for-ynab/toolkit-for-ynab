@@ -38,9 +38,7 @@ function getLocalizations(callback) {
           }
 
           if (errors.length) {
-            console.error(
-              `Localization Errors in ${fileName}\n${errors.map(error => `\t${error}`)}\n`
-            );
+            console.error(`Localization Errors in ${fileName}\n\t${errors.join('\n\t')}\n`);
           } else {
             const localizationKeyValue = localizationKeyNode.value;
             const defaultStringValue = defaultStringNode.value;

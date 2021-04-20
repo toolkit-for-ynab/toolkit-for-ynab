@@ -1,0 +1,23 @@
+@keyframes confetti {
+  from {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes falldown {
+  to {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+i.confetti {
+  position: absolute;
+  display: block;
+  border-radius: 15%;
+  left: 50%;
+  top: 50%;
+  width: 5px;
+  height: 10px;
+}

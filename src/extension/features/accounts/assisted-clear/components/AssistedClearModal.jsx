@@ -3,9 +3,10 @@ import * as ReactDOM from 'react-dom';
 import { setTransactionCleared } from '../assistedClearUtils';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { ASSISTED_CLEAR_MODAL_PORTAL } from '../index';
+import PropTypes from 'prop-types';
 import '../styles.scss';
 
-export const ClearAssistantModal = ({
+export const AssistedClearModal = ({
   isOpen,
   setModalOpened,
   matchingTransactions,
@@ -163,4 +164,12 @@ export const ClearAssistantModal = ({
     </div>,
     document.getElementById(ASSISTED_CLEAR_MODAL_PORTAL)
   );
+};
+
+AssistedClearModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  setModalOpened: PropTypes.func.isRequired,
+  matchingTransactions: PropTypes.array.isRequired,
+  clearedTotal: PropTypes.number.isRequired,
+  target: PropTypes.number.isRequired,
 };

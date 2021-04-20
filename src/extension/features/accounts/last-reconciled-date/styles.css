@@ -1,0 +1,17 @@
+.tk-accounts-header-reconciled-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 1rem;
+  flex: 0 1 auto;
+  align-self: flex-end;
+  margin-right: 1rem;
+}
+
+.tk-accounts-header-reconciled-info-label {
+  font-size: 0.75rem;
+  color: var(--header_label_primary);
+  font-weight: 400;
+  margin-top: 0.1rem;
+}

@@ -12,7 +12,7 @@ import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 const HideClosedButton = ({ toggleHiddenState }) => {
   const isHidden = getToolkitStorageKey('hide-closed', true);
-  const label = isHidden ? l10n('app.show', 'Show') : l10n('app.hide', 'Hide');
+  const label = isHidden ? l10n('toolkit.show', 'Show') : l10n('app.hide', 'Hide');
 
   const toggleHidden = () => {
     toggleHiddenState(!isHidden);
