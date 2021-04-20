@@ -9,12 +9,16 @@ export class CalculateIRR extends Feature {
   }
 
   shouldInvoke() {
-    let { selectedAccount, selectedAccountId } = controllerLookup('accounts');
-    return selectedAccountId && isCurrentRouteAccountsPage() && !selectedAccount.onBudget;
+    let { selectedAccount } = controllerLookup('accounts');
+    return (
+      isCurrentRouteAccountsPage() &&
+      selectedAccount &&
+      !selectedAccount.onBudget &&
+      ynabToolKit.options.CalculateIRR !== 'disabled'
+    );
   }
 
   invoke() {
-    this._flagColor = ynabToolKit.options.CalculateIRRflagColor;
     let { selectedAccountId, filters } = controllerLookup('accounts');
     let { filterFrom, filterTo } = this._getFilterDates(filters);
     let totalIrr = (100 * this._calculateIRR(selectedAccountId)).toFixed(2) + ' %';
@@ -73,13 +77,16 @@ export class CalculateIRR extends Feature {
 
   _calculateIRR = (accountId, options) => {
     const account = getEntityManager().getAccountById(accountId);
-    const epsMax = 1e-10;
+    const maxApproximationEpsilon = 1e-10;
     const iterMax = 50;
     let transactions = account.getTransactions();
 
     if (
       transactions.reduce((reduced, transaction) => {
-        if (transaction.flag === this._flagColor && transaction.cleared !== 'Uncleared') {
+        if (
+          transaction.flag === ynabToolKit.options.CalculateIRR &&
+          transaction.cleared !== 'Uncleared'
+        ) {
           return reduced + transaction.amount;
         }
         return reduced;
@@ -130,80 +137,93 @@ export class CalculateIRR extends Feature {
 
     let contributions = transactions.filter(trans => {
       return (
-        trans.flag === this._flagColor &&
+        trans.flag === ynabToolKit.options.CalculateIRR &&
         trans.cleared !== 'Uncleared' &&
         (trans.date.isAfter(fromDate) || trans.date.equalsDateWithoutTime(fromDate)) &&
         (trans.date.isBefore(toDate) || trans.date.equalsDateWithoutTime(toDate))
       );
     });
 
-    var resultRate = 0.1;
-    var newRate;
-    var epsRate;
-    var resultValue;
+    var contributionsTotal = contributions.reduce((reduced, transaction) => {
+      return reduced + transaction.amount;
+    }, 0);
+    var resultRate;
+    var approximatedRate = contributionsTotal / currentValue;
+    var npv;
     var iteration = 0;
-    var contLoop = true;
-    do {
-      resultValue = this._irrResult({
-        startingValue,
-        fromDate,
-        transaction: contributions,
-        rate: resultRate,
-        currentValue,
-        toDate,
-      });
-      var deriv = this._irrFirstDeriv({
-        startingValue,
-        fromDate,
-        transaction: contributions,
-        rate: resultRate,
-        currentValue,
-        toDate,
-      });
-      newRate = resultRate - resultValue / deriv;
-      epsRate = Math.abs(newRate - resultRate);
-      resultRate = newRate;
-      contLoop = epsRate > epsMax && Math.abs(resultValue) > epsMax;
-    } while (contLoop && ++iteration < iterMax);
+    var continueLoop = true;
+    var iterationLog = [];
 
-    if (contLoop) {
-      console.log('Max Iterations Exceeded');
+    do {
+      resultRate = approximatedRate;
+      npv = this._npv({
+        startingValue,
+        fromDate,
+        transaction: contributions,
+        rate: resultRate,
+        currentValue,
+        toDate,
+      });
+      var npv1 = this._npvFirstDeriv({
+        startingValue,
+        fromDate,
+        transaction: contributions,
+        rate: resultRate,
+        currentValue,
+        toDate,
+      });
+      approximatedRate = resultRate - npv / npv1;
+      continueLoop = Math.abs(approximatedRate - resultRate) > maxApproximationEpsilon;
+      iterationLog.push({
+        iteration,
+        rate: resultRate,
+        npv,
+        npv1,
+        approximatedRate,
+        eps: Math.abs(approximatedRate - resultRate),
+      });
+    } while (continueLoop && ++iteration < iterMax);
+
+    if (continueLoop) {
+      console.log('Calculate IRR -- Max Iterations Exceeded');
+      console.log(iterationLog);
       return NaN;
     }
 
-    return resultRate;
+    return approximatedRate;
   };
 
-  _irrResult = ob => {
-    let rate = ob.rate + 1;
-    let result = ob.startingValue / 1000;
+  _npv = inputs => {
+    let rate = inputs.rate + 1;
+    let npv = inputs.currentValue / 1000;
     let currentDate = ynab.utilities.DateWithoutTime.createForToday();
-    if (currentDate.isAfter(ob.toDate)) currentDate = ob.toDate;
+    if (currentDate.isAfter(inputs.toDate)) currentDate = inputs.toDate;
 
-    for (var i = 0; i < ob.transaction.length; i++) {
-      let frac = ob.transaction[i].date.daysApart(ob.fromDate) / 365;
-      result += ob.transaction[i].amount / 1000 / Math.pow(rate, frac);
+    for (var i = 0; i < inputs.transaction.length; i++) {
+      let yearFraction = inputs.transaction[i].date.daysApart(currentDate) / 365;
+      npv -= (inputs.transaction[i].amount / 1000) * Math.pow(rate, yearFraction);
     }
-    let frac = currentDate.daysApart(ob.fromDate) / 365;
-    result += -ob.currentValue / 1000 / Math.pow(rate, frac);
+    let yearFraction = currentDate.daysApart(inputs.fromDate) / 365;
+    npv -= (inputs.startingValue / 1000) * Math.pow(rate, yearFraction);
 
-    return result;
+    return npv;
   };
 
-  _irrFirstDeriv = ob => {
-    let rate = ob.rate + 1;
-    let result = 0;
+  _npvFirstDeriv = inputs => {
+    let rate = inputs.rate + 1;
+    let npv1 = 0;
     let currentDate = ynab.utilities.DateWithoutTime.createForToday();
-    if (currentDate.isAfter(ob.toDate)) currentDate = ob.toDate;
+    if (currentDate.isAfter(inputs.toDate)) currentDate = inputs.toDate;
 
-    for (var i = 0; i < ob.transaction.length; i++) {
-      let frac = ob.transaction[i].date.daysApart(ob.fromDate) / 365;
-      result -= (frac * (ob.transaction[i].amount / 1000)) / Math.pow(rate, frac + 1);
+    for (var i = 0; i < inputs.transaction.length; i++) {
+      let yearFraction = inputs.transaction[i].date.daysApart(currentDate) / 365;
+      npv1 -=
+        yearFraction * (inputs.transaction[i].amount / 1000) * Math.pow(rate, yearFraction - 1);
     }
-    let frac = currentDate.daysApart(ob.fromDate) / 365;
-    result -= (frac * (-ob.currentValue / 1000)) / Math.pow(rate, frac + 1);
+    let yearFraction = currentDate.daysApart(inputs.fromDate) / 365;
+    npv1 -= yearFraction * (inputs.startingValue / 1000) * Math.pow(rate, yearFraction - 1);
 
-    return result;
+    return npv1;
   };
 
   _getFilterDates = filter => {
