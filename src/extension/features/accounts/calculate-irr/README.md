@@ -30,6 +30,6 @@ Converting these functions for our specific purposes gives:
 
 ## How To Use
 
-In the toolkit select a flag color that will represent transation contributions/cashflow into investments. In the investment account (off-budget only) flag any transactions that are contribution money into the account. Transactions that are not flagged with be assumed as gain/loss. Calculate IRR will calculate the rate of return for flagged contributions using gain/loss from unflagged transactions.
+In the toolkit select a flag color that will represent transaction contributions/cashflow into investments. In the investment account (off-budget only) flag any transactions that are contribution money into the account. Transactions that are not flagged with be assumed as gain/loss. Calculate IRR will calculate the rate of return for flagged contributions using gain/loss from unflagged transactions.
 
 If a date range filter is applied for 1 calendar year or less (ie 2021-03 to 2021-06) then the Internal Rate of Return will be calculated for both the entire timeframe and the year of the date range filter. Otherwise the IRR is only calculated for the accounts entire timeframe (first transaction to last transaction).
