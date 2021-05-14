@@ -52,65 +52,36 @@ export class DisplayTargetGoalAmount extends Feature {
         return;
       }
 
-      const { monthlyFunding, goalTargetAmount } = subCategory.getProperties(
-        'monthlyFunding',
-        'goalTargetAmount'
-      );
-      const {
-        goalTarget,
-        goalOverallFunded,
-        goalTotalNeededAmount,
-      } = monthlySubCategoryBudgetCalculation;
-      const budgeted = monthlySubCategoryBudget.get('budgeted');
+      const goalTargetAmount = subCategory.get('goalTargetAmount');
+      const { budgeted, goalTarget, isGoalValidForMonth } = monthlySubCategoryBudgetCalculation;
 
       let goalAmount = null;
+      let goalFundedThreshold = null;
       let applyEmphasis = false;
-      switch (goalType) {
-        case ynab.constants.SubCategoryGoalType.MonthlyFunding:
-          goalAmount = monthlyFunding;
-          if (userSetting === Settings.WarnBudgetOverTarget && budgeted > monthlyFunding) {
-            applyEmphasis = true;
-          } else if (userSetting === Settings.GreenBudgetOverTarget && budgeted >= monthlyFunding) {
-            applyEmphasis = true;
-          }
-          break;
-        case ynab.constants.SubCategoryGoalType.Needed:
-          goalAmount = goalTargetAmount;
-          if (goalTarget) {
+      if (isGoalValidForMonth) {
+        switch (goalType) {
+          case ynab.constants.SubCategoryGoalType.TargetBalance:
+            goalAmount = goalTargetAmount;
+            goalFundedThreshold = goalTargetAmount;
+            break;
+          case ynab.constants.SubCategoryGoalType.MonthlyFunding:
+          case ynab.constants.SubCategoryGoalType.Needed:
+          case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
             goalAmount = goalTarget;
-          }
+            goalFundedThreshold = goalTarget;
+            break;
+        }
 
-          if (
-            userSetting === Settings.WarnBudgetOverTarget &&
-            goalOverallFunded > goalTotalNeededAmount
-          ) {
+        if (goalAmount) {
+          if (userSetting === Settings.WarnBudgetOverTarget && budgeted > goalFundedThreshold) {
             applyEmphasis = true;
           } else if (
             userSetting === Settings.GreenBudgetOverTarget &&
-            goalOverallFunded > goalTotalNeededAmount
+            budgeted >= goalFundedThreshold
           ) {
             applyEmphasis = true;
           }
-          break;
-        case ynab.constants.SubCategoryGoalType.TargetBalance:
-          goalAmount = goalTargetAmount;
-          if (userSetting === Settings.WarnBudgetOverTarget && budgeted > goalTargetAmount) {
-            applyEmphasis = true;
-          } else if (
-            userSetting === Settings.GreenBudgetOverTarget &&
-            budgeted >= goalTargetAmount
-          ) {
-            applyEmphasis = true;
-          }
-          break;
-        case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
-          goalAmount = goalTarget;
-          if (userSetting === Settings.WarnBudgetOverTarget && budgeted > goalTarget) {
-            applyEmphasis = true;
-          } else if (userSetting === Settings.GreenBudgetOverTarget && budgeted >= goalTarget) {
-            applyEmphasis = true;
-          }
-          break;
+        }
       }
 
       const goalAmountElement = element.querySelector('.toolkit-target-goal-amount');
