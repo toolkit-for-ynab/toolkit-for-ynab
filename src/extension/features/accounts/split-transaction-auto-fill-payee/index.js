@@ -9,7 +9,8 @@ export class SplitTransactionAutoFillPayee extends Feature {
   invoke() {
     const cells = $('.is-editing .ynab-grid-cell-payeeName .ember-text-field').toArray();
     cells.forEach((cell, i) => {
-      if (i !== 0 && cell.value === '') {
+      if (i !== 0 && !$(cell).data('tk-auto-filled-payee')) {
+        $(cell).data('tk-auto-filled-payee', true);
         $(cell).val(cells[0].value);
         $(cell).trigger('change');
         $(cell).trigger('blur');
