@@ -1,24 +1,96 @@
 body {
+  --tk-colour-blind-positive-lightest: #dbfff5;
+  --tk-colour-blind-positive-lighter: #00b887;
   --tk-colour-blind-positive: #009e73;
-  --tk-colour-blind-positive-active: #00b887;
+  --tk-colour-blind-positive-darker: #0d4a3a;
+  --tk-colour-blind-positive-darkest: #082b22;
+
+  --tk-colour-blind-warning-lightest: #e8e9fc;
+  --tk-colour-blind-warning-lighter: #8e91f0;
   --tk-colour-blind-warning: #797dec;
-  --tk-colour-blind-warning-active: #8e91f0;
+  --tk-colour-blind-warning-darker: #191fb3;
+  --tk-colour-blind-warning-darkest: #151637;
+
+  --tk-colour-blind-negative-lightest: #fff4eb;
+  --tk-colour-blind-negative-lighter: #f07000;
   --tk-colour-blind-negative: #d55e00;
-  --tk-colour-blind-negative-active: #f07000;
+  --tk-colour-blind-negative-darker: #803700;
+  --tk-colour-blind-negative-darkest: #321f11;
 
   --header_label_positive: var(--tk-colour-blind-positive) !important;
-  --header_tbb_positive_background: var(--tk-colour-blind-positive) !important;
-  --budget_balance_positive_background: var(--tk-colour-blind-positive) !important;
-  --budget_balance_positive_background_active: var(--tk-colour-blind-positive-active) !important;
-
   --header_label_warning: var(--tk-colour-blind-warning) !important;
-  --budget_balance_warning_background: var(--tk-colour-blind-warning) !important;
-  --budget_balance_warning_background_active: var(--tk-colour-blind-warning-active) !important;
-
   --header_label_negative: var(--tk-colour-blind-negative) !important;
+
+  --header_tbb_positive_background: var(--tk-colour-blind-positive) !important;
   --header_tbb_negative_background: var(--tk-colour-blind-negative) !important;
+
+  /* Budget balance backgrounds */
+  --budget_balance_positive_background: var(--tk-colour-blind-positive-lighter) !important;
+  --budget_balance_positive_background_active: var(--tk-colour-blind-positive) !important;
+  --budget_balance_warning_background: var(--tk-colour-blind-warning-lighter) !important;
+  --budget_balance_warning_background_active: var(--tk-colour-blind-warning) !important;
+  --budget_balance_negative_background: var(--tk-colour-blind-negative-lighter) !important;
+  --budget_balance_negative_background_active: var(--tk-colour-blind-negative) !important;
+
+  /* Budget bars */
+  --budget_bar_funded: var(--tk-colour-blind-positive) !important;
+  --budget_bar_funded_spending: var(--tk-colour-blind-positive-lighter) !important;
+  --budget_bar_funded_spending_stripe: var(--tk-colour-blind-positive-lightest) !important;
+
+  --budget_bar_underfunded: var(--tk-colour-blind-warning) !important;
+  --budget_bar_underfunded_spending: var(--tk-colour-blind-warning-lighter) !important;
+  --budget_bar_underfunded_spending_stripe: var(--tk-colour-blind-warning-lightest) !important;
+
+  --budget_bar_overspending: var(--tk-colour-blind-negative) !important;
+  --budget_bar_overspending_stripe: var(--tk-colour-blind-negative-lighter) !important;
+
+  /* Inspector messages */
+  --inspector_message_positive_background: var(--tk-colour-blind-positive-lighter) !important;
+  --inspector_message_positive_border: var(--tk-colour-blind-positive) !important;
+  --inspector_message_positive_label: var(--tk-colour-blind-positive-darkest) !important;
+
+  --inspector_message_warning_background: var(--tk-colour-blind-warning-lighter) !important;
+  --inspector_message_warning_border: var(--tk-colour-blind-warning) !important;
+  --inspector_message_warning_label: var(--tk-colour-blind-warning-darkest) !important;
+
+  --inspector_message_negative_background: var(--tk-colour-blind-negative-lighter) !important;
+  --inspector_message_negative_border: var(--tk-colour-blind-negative) !important;
+  --inspector_message_negative_label: var(--tk-colour-blind-negative-darkest) !important;
+}
+
+body.theme-dark {
+  /* Budget balance backgrounds */
+  --budget_balance_positive_background: var(--tk-colour-blind-positive) !important;
+  --budget_balance_positive_background_active: var(--tk-colour-blind-positive-lighter) !important;
+  --budget_balance_warning_background: var(--tk-colour-blind-warning) !important;
+  --budget_balance_warning_background_active: var(--tk-colour-blind-warning-lighter) !important;
   --budget_balance_negative_background: var(--tk-colour-blind-negative) !important;
-  --budget_balance_negative_background_active: var(--tk-colour-blind-negative-active) !important;
+  --budget_balance_negative_background_active: var(--tk-colour-blind-negative-lighter) !important;
+
+  /* Budget bars */
+  --budget_bar_funded: var(--tk-colour-blind-positive) !important;
+  --budget_bar_funded_spending: var(--tk-colour-blind-positive-darker) !important;
+  --budget_bar_funded_spending_stripe: var(--tk-colour-blind-positive-darkest) !important;
+
+  --budget_bar_underfunded: var(--tk-colour-blind-warning) !important;
+  --budget_bar_underfunded_spending: var(--tk-colour-blind-warning-darker) !important;
+  --budget_bar_underfunded_spending_stripe: var(--tk-colour-blind-warning-darkest) !important;
+
+  --budget_bar_overspending: var(--tk-colour-blind-negative) !important;
+  --budget_bar_overspending_stripe: var(--tk-colour-blind-negative-darker) !important;
+
+  /* Inspector messages */
+  --inspector_message_positive_background: var(--tk-colour-blind-positive-darkest) !important;
+  --inspector_message_positive_border: var(--tk-colour-blind-positive) !important;
+  --inspector_message_positive_label: var(--tk-colour-blind-positive) !important;
+
+  --inspector_message_warning_background: var(--tk-colour-blind-warning-darkest) !important;
+  --inspector_message_warning_border: var(--tk-colour-blind-warning) !important;
+  --inspector_message_warning_label: var(--tk-colour-blind-warning) !important;
+
+  --inspector_message_negative_background: var(--tk-colour-blind-negative-darkest) !important;
+  --inspector_message_negative_border: var(--tk-colour-blind-negative) !important;
+  --inspector_message_negative_label: var(--tk-colour-blind-negative) !important;
 }
 
 /* Square edges for negative values */
