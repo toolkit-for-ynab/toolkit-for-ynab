@@ -1,45 +1,28 @@
-/* ======== General colours / shapes ======== */
-.inspector dt {
-  color: black !important;
+body {
+  --tk-colour-blind-positive: #009e73;
+  --tk-colour-blind-positive-active: #00b887;
+  --tk-colour-blind-warning: #797dec;
+  --tk-colour-blind-warning-active: #8e91f0;
+  --tk-colour-blind-negative: #d55e00;
+  --tk-colour-blind-negative-active: #f07000;
+
+  --header_label_positive: var(--tk-colour-blind-positive) !important;
+  --header_tbb_positive_background: var(--tk-colour-blind-positive) !important;
+  --budget_balance_positive_background: var(--tk-colour-blind-positive) !important;
+  --budget_balance_positive_background_active: var(--tk-colour-blind-positive-active) !important;
+
+  --header_label_warning: var(--tk-colour-blind-warning) !important;
+  --budget_balance_warning_background: var(--tk-colour-blind-warning) !important;
+  --budget_balance_warning_background_active: var(--tk-colour-blind-warning-active) !important;
+
+  --header_label_negative: var(--tk-colour-blind-negative) !important;
+  --header_tbb_negative_background: var(--tk-colour-blind-negative) !important;
+  --budget_balance_negative_background: var(--tk-colour-blind-negative) !important;
+  --budget_balance_negative_background_active: var(--tk-colour-blind-negative-active) !important;
 }
 
-/* ======== Cautious colours / shapes ======== */
-.budget-table-row.is-sub-category > .budget-table-cell-available .cautious {
-  background-color: #19a3c5 !important;
-}
-
-.inspector-overview-available .currency.cautious {
-  background-color: #19a3c5 !important;
-}
-
-.budget-table-row.is-sub-category > .budget-table-cell-available .cautious:hover {
-  background-color: #14839e !important;
-}
-
-/* ======== Goal-related colours / shapes ======== */
-.toolkit-row-goal.toolkit-row-availablepositive .budget-table-cell-available .cautious,
-.toolkit-row-goal.toolkit-row-availablezero .budget-table-cell-available .cautious {
-  background: #1282a0 !important;
-}
-.toolkit-row-goal.toolkit-row-availablepositive .budget-table-cell-available .cautious:hover,
-.toolkit-row-goal.toolkit-row-availablezero .budget-table-cell-available .cautious:hover {
-  background: #0e6c85 !important;
-}
-
-.toolkit-row-goal.toolkit-row-availablepositive dd .cautious,
-.toolkit-row-goal.toolkit-row-availablezero dd .cautious {
-  background: #1282a0 !important;
-}
-.toolkit-row-goal.toolkit-row-availablepositive dd .cautious:hover,
-.toolkit-row-goal.toolkit-row-availablezero dd .cautious:hover {
-  background: #0e6c85 !important;
-}
-
-/* ======== Negative colours / shapes ======== */
-ul.is-sub-category
-  > li.budget-table-cell-available
-  > div.ynab-new-budget-available-number
-  > span.negative {
+/* Square edges for negative values */
+.ynab-new-budget-available-number.negative {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
   background-color: #d55e00 !important;
