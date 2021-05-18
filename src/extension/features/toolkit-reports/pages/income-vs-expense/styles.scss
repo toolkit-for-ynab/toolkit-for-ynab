@@ -29,6 +29,7 @@ body.theme-dark {
     border-top: 3px solid var(--tk-ive-report-border-color);
     border-bottom: 3px solid var(--tk-ive-report-border-color);
     width: fit-content;
+    width: -moz-fit-content;
 
     .tk-monthly-totals-row {
       &__title-cell {
