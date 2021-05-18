@@ -28,3 +28,8 @@
     text-align: center;
   }
 }
+
+body.theme-dark .tk-release-modal__logo {
+  -webkit-filter: invert(1) hue-rotate(180deg) brightness(1.2);
+  filter: invert(1) hue-rotate(180deg) brightness(1.2);
+}
