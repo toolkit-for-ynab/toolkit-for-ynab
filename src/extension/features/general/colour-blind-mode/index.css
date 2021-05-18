@@ -17,10 +17,20 @@ body {
   --tk-colour-blind-negative-darker: #803700;
   --tk-colour-blind-negative-darkest: #321f11;
 
+  --label_positive: var(--tk-colour-blind-positive) !important;
+  --label_warning: var(--tk-colour-blind-warning) !important;
+  --label_negative: var(--tk-colour-blind-negative) !important;
+  --label_negative_disabled: var(--tk-colour-blind-negative-lighter) !important;
+
+  --label_positive_active: var(--tk-colour-blind-positive-darker) !important;
+  --label_warning_active: var(--tk-colour-blind-warning-darker) !important;
+  --label_negative_active: var(--tk-colour-blind-negative-darker) !important;
+
   --header_label_positive: var(--tk-colour-blind-positive) !important;
   --header_label_warning: var(--tk-colour-blind-warning) !important;
   --header_label_negative: var(--tk-colour-blind-negative) !important;
 
+  /* To be budgeted box */
   --header_tbb_positive_background: var(--tk-colour-blind-positive) !important;
   --header_tbb_negative_background: var(--tk-colour-blind-negative) !important;
 
@@ -59,6 +69,10 @@ body {
 }
 
 body.theme-dark {
+  --label_positive_active: var(--tk-colour-blind-positive-lighter) !important;
+  --label_warning_active: var(--tk-colour-blind-warning-lighter) !important;
+  --label_negative_active: var(--tk-colour-blind-negative-lighter) !important;
+
   /* Budget balance backgrounds */
   --budget_balance_positive_background: var(--tk-colour-blind-positive) !important;
   --budget_balance_positive_background_active: var(--tk-colour-blind-positive-lighter) !important;
