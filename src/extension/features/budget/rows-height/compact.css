@@ -22,7 +22,8 @@
 .budget-table-cell-budgeted,
 .budget-table-cell-activity,
 .budget-table-cell-available,
-.tk-budget-table-cell-pacing {
+.tk-budget-table-cell-pacing,
+.tk-budget-table-cell-goal {
   height: 1.65em !important;
   font-size: 0.7rem !important;
 }
@@ -32,6 +33,7 @@
 }
 
 .tk-budget-table-cell-pacing,
+.tk-budget-table-cell-goal,
 .ynab-new-budget-available-number,
 .budget-table-cell-available .ynab-new-budget-available-number {
   padding-top: 0px;
