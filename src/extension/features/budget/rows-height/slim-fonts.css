@@ -45,6 +45,7 @@
   align-items: center;
 }
 
-.budget-table .currency {
+.budget-table .currency,
+.budget-table .budget-table-cell-goal-status {
   font-size: 0.8rem !important;
 }
