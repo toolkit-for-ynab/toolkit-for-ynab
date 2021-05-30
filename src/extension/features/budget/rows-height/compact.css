@@ -49,3 +49,7 @@
 .budget-table .budget-table-cell-goal-status {
   font-size: 0.7rem !important;
 }
+
+.budget-table .ynab-new-budget-bar-v2 {
+  margin-top: -0.025rem !important;
+}
