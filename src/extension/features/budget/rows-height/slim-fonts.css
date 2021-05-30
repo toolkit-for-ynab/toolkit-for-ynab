@@ -44,3 +44,7 @@
   height: 1.3rem;
   align-items: center;
 }
+
+.budget-table .currency {
+  font-size: 0.8rem !important;
+}

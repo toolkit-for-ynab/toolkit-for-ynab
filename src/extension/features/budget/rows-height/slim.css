@@ -31,3 +31,7 @@
 .budget-table-cell-checkbox.ynab-checkbox {
   font-size: 1rem;
 }
+
+.budget-table .currency {
+  font-size: 0.9rem !important;
+}
