@@ -3,7 +3,7 @@ import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
 import { Settings as DisplayGoalAmountSettings } from './display-target-goal-amount';
 
-export const GOAL_TABLE_CELL_CLASSNAME = 'tk-goal-table-cell';
+export const GOAL_TABLE_CELL_CLASSNAME = 'tk-budget-table-cell-goal';
 export const CategoryAttributes = {
   GoalTarget: 'toolkit-goal-target',
   GoalType: 'toolkit-goal-type',
@@ -96,15 +96,15 @@ export class BudgetCategoryFeatures extends Feature {
     if (this.shouldCreateGoalContainer) {
       const rowsExistQuery = `.budget-table-row:not(.budget-table-hidden-row) .${GOAL_TABLE_CELL_CLASSNAME}`;
       if (document.querySelectorAll(rowsExistQuery).length === 0) {
-        $('.budget-table-row .budget-table-cell-name').append(
-          $('<div>', { class: GOAL_TABLE_CELL_CLASSNAME })
+        $('.budget-table-row .budget-table-cell-name').after(
+          $('<li>', { class: GOAL_TABLE_CELL_CLASSNAME })
         );
       }
 
       const headerExistsQuery = `.budget-table-header .${GOAL_TABLE_CELL_CLASSNAME}`;
       if (!document.querySelector(headerExistsQuery)) {
-        $('.budget-table-header .budget-table-cell-name').append(
-          $('<div>', { class: GOAL_TABLE_CELL_CLASSNAME }).text('GOAL')
+        $('.budget-table-header .budget-table-cell-name').after(
+          $('<li>', { class: GOAL_TABLE_CELL_CLASSNAME }).text('GOAL')
         );
       }
     }

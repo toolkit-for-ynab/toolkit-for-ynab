@@ -2,13 +2,16 @@
   margin-left: auto;
 }
 
-.budget-table-header .tk-goal-table-cell {
+.budget-table-header .tk-budget-table-cell-goal {
   padding-right: 1em;
 }
 
-.tk-goal-table-cell {
+.tk-budget-table-cell-goal {
   display: flex;
   align-items: center;
   font-size: 0.8em;
   margin-left: auto;
+
+  width: 15%;
+  justify-content: flex-end !important;
 }
