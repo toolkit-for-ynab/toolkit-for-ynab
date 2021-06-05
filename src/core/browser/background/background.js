@@ -38,7 +38,7 @@ export class Background {
     const nextUpdateCheck = await this._storage.getStorageItem(NEXT_UPDATE_CHECK_STORAGE_KEY);
 
     if (!nextUpdateCheck || now >= nextUpdateCheck) {
-      this._browser.runtime.requestUpdateCheck(status => {
+      this._browser.runtime.requestUpdateCheck((status) => {
         let nextCheck = now + ONE_HOUR_MS;
         if (status === 'throttled') {
           nextCheck += ONE_HOUR_MS;
@@ -64,7 +64,7 @@ export class Background {
     }
   };
 
-  _handleException = context => {
+  _handleException = (context) => {
     Raven.captureException(new Error(context.serializedError), {
       tags: {
         featureName: context.featureName,
@@ -107,7 +107,7 @@ export class Background {
     }
   }
 
-  _updatePopupIcon = isToolkitDisabled => {
+  _updatePopupIcon = (isToolkitDisabled) => {
     const imagePath = `assets/images/icons/button${isToolkitDisabled ? '-disabled' : ''}.png`;
     const imageURL = this._browser.runtime.getURL(imagePath);
     this._browser.browserAction.setIcon({ path: imageURL });

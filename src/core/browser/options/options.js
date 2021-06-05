@@ -131,7 +131,7 @@ jq(() => {
   function saveOptions() {
     var promises = [];
 
-    allToolkitSettings.forEach(setting => {
+    allToolkitSettings.forEach((setting) => {
       if (setting.type === 'checkbox') {
         promises.push(saveCheckboxOption(setting.name));
       } else if (setting.type === 'color') {
@@ -142,17 +142,14 @@ jq(() => {
     });
 
     Promise.all(promises).then(() => {
-      jq('#settingsSaved')
-        .fadeIn()
-        .delay(1500)
-        .fadeOut();
+      jq('#settingsSaved').fadeIn().delay(1500).fadeOut();
     });
   }
 
   // Restores select box and checkbox state using the preferences
   // stored in chrome.storage.
   function restoreOptions(userSettings) {
-    allToolkitSettings.forEach(setting => {
+    allToolkitSettings.forEach((setting) => {
       if (setting.type === 'checkbox') {
         restoreCheckboxOption(setting.name, userSettings[setting.name]);
       } else if (setting.type === 'color') {
@@ -208,7 +205,7 @@ jq(() => {
       },
     ];
 
-    pages.forEach(page => {
+    pages.forEach((page) => {
       const genericSettingsPage = document.querySelector(selectors.pageContent).cloneNode(true);
 
       genericSettingsPage.querySelector(selectors.icon).classList.add(page.iconClass);
@@ -229,9 +226,9 @@ jq(() => {
     initializeSettingPages();
 
     // Order by section, then type, then name.
-    var settings = allToolkitSettings.slice().filter(setting => setting.section !== 'system');
+    var settings = allToolkitSettings.slice().filter((setting) => setting.section !== 'system');
 
-    settings.sort(function(a, b) {
+    settings.sort(function (a, b) {
       if (a.section !== b.section) {
         return a.section.localeCompare(b.section);
       }
@@ -243,7 +240,7 @@ jq(() => {
       return a.title.localeCompare(b.title);
     });
 
-    settings.forEach(function(setting) {
+    settings.forEach(function (setting) {
       if (setting.section === 'system') return;
 
       let markDown = marked(setting.description);
@@ -282,7 +279,7 @@ jq(() => {
                 class: 'form-control',
                 'aria-describedby': setting.name + 'HelpBlock',
               }).append(
-                setting.options.map(function(option) {
+                setting.options.map(function (option) {
                   return jq('<option>', {
                     value: option.value,
                     style: option.style || '',
@@ -364,21 +361,21 @@ jq(() => {
   }
 
   function importExportModal() {
-    storage.getStoredFeatureSettings().then(function(keys) {
-      const promises = keys.map(settingKey => {
-        return storage.getFeatureSetting(settingKey).then(settingValue => {
+    storage.getStoredFeatureSettings().then(function (keys) {
+      const promises = keys.map((settingKey) => {
+        return storage.getFeatureSetting(settingKey).then((settingValue) => {
           return { key: settingKey, value: settingValue };
         });
       });
 
-      Promise.all(promises).then(allSettings => {
+      Promise.all(promises).then((allSettings) => {
         jq('#importExportContent').val(JSON.stringify(allSettings));
 
         jq('#importExportModal').modal();
-        jq('#importExportModal').one('shown.bs.modal', function() {
+        jq('#importExportModal').one('shown.bs.modal', function () {
           jq('#importExportContent').select();
 
-          jq('#importExportContent').click(function() {
+          jq('#importExportContent').click(function () {
             jq(this).select();
           });
 
@@ -389,11 +386,11 @@ jq(() => {
 
     function applySettings() {
       const newSettings = JSON.parse(jq('#importExportContent').val());
-      const promises = newSettings.map(function(setting) {
+      const promises = newSettings.map(function (setting) {
         return storage.setFeatureSetting(setting.key, setting.value);
       });
 
-      Promise.all(promises).then(function() {
+      Promise.all(promises).then(function () {
         window.location.reload();
       });
     }
@@ -409,7 +406,7 @@ jq(() => {
     jq(`${modalSelector} .modal-body`).html(content);
 
     jq(modalSelector).modal();
-    jq(modalSelector).one('shown.bs.modal', function() {
+    jq(modalSelector).one('shown.bs.modal', function () {
       jq(`${modalSelector} .confirmationButton`).click(fn);
     });
   }
@@ -418,9 +415,9 @@ jq(() => {
     // ensure there aren't any pre-web-extensions feature settings stored
     localStorage.clear();
 
-    return storage.getStoredFeatureSettings().then(settings => {
+    return storage.getStoredFeatureSettings().then((settings) => {
       localStorage.clear();
-      const promises = settings.map(settingKey => {
+      const promises = settings.map((settingKey) => {
         return storage.removeFeatureSetting(settingKey);
       });
 
@@ -437,7 +434,7 @@ jq(() => {
     const topHeaderHeight = jq('nav.top-navbar').height();
     const preferredClass = 'sticky-header';
 
-    jq(window).scroll(function() {
+    jq(window).scroll(function () {
       if (jq(window).scrollTop() >= topHeaderHeight) {
         jq(pageHeaderSelector).addClass(preferredClass);
         jq(successSelector).addClass(preferredClass);
@@ -456,7 +453,7 @@ jq(() => {
   }
 
   function toggleToolkit() {
-    storage.getFeatureSetting('DisableToolkit').then(isDisabled => {
+    storage.getFeatureSetting('DisableToolkit').then((isDisabled) => {
       storage.setFeatureSetting('DisableToolkit', !isDisabled);
     });
   }
@@ -464,7 +461,7 @@ jq(() => {
   storage.onFeatureSettingChanged('DisableToolkit', updateToolkitLogo);
   jq('#logo').click(toggleToolkit);
 
-  getUserSettings().then(userSettings => {
+  getUserSettings().then((userSettings) => {
     updateToolkitLogo(userSettings.DisableToolkit);
 
     buildOptionsPage();
@@ -472,43 +469,43 @@ jq(() => {
 
     restoreOptions(userSettings);
 
-    storage.getFeatureSetting('options.dark-mode').then(function(data) {
+    storage.getFeatureSetting('options.dark-mode').then(function (data) {
       applyDarkMode(data);
 
       jq('#darkMode').bootstrapSwitch('state', data);
     });
 
-    jq('#darkMode').on('switchChange.bootstrapSwitch', function(event, state) {
-      storage.setFeatureSetting('options.dark-mode', state).then(function() {
+    jq('#darkMode').on('switchChange.bootstrapSwitch', function (event, state) {
+      storage.setFeatureSetting('options.dark-mode', state).then(function () {
         applyDarkMode(state);
       });
     });
 
-    jq('#generalMenuItem').click(function(e) {
+    jq('#generalMenuItem').click(function (e) {
       loadPanel('general');
       e.preventDefault();
     });
-    jq('#accountsMenuItem').click(function(e) {
+    jq('#accountsMenuItem').click(function (e) {
       loadPanel('accounts');
       e.preventDefault();
     });
-    jq('#budgetMenuItem').click(function(e) {
+    jq('#budgetMenuItem').click(function (e) {
       loadPanel('budget');
       e.preventDefault();
     });
-    jq('#reportsMenuItem').click(function(e) {
+    jq('#reportsMenuItem').click(function (e) {
       loadPanel('reports');
       e.preventDefault();
     });
-    jq('#toolkitReportsMenuItem').click(function(e) {
+    jq('#toolkitReportsMenuItem').click(function (e) {
       loadPanel('toolkitReports');
       e.preventDefault();
     });
-    jq('#supportMenuItem').click(function(e) {
+    jq('#supportMenuItem').click(function (e) {
       loadPanel('support', false);
       e.preventDefault();
     });
-    jq('#advancedMenuItem').click(function(e) {
+    jq('#advancedMenuItem').click(function (e) {
       loadPanel('advanced');
       e.preventDefault();
       jq('#footer-buttons').hide();

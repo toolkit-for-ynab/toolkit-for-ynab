@@ -31,7 +31,7 @@ export class GoalIndicator extends Feature {
     };
 
     const budgetRows = [...document.getElementsByClassName('budget-table-row')];
-    budgetRows.forEach(element => {
+    budgetRows.forEach((element) => {
       const goalContainer = element.querySelector(`.${GOAL_TABLE_CELL_CLASSNAME}`);
       const goalType = element.getAttribute(`data-${CategoryAttributes.GoalType}`);
       const hasUpcomingTransactions =

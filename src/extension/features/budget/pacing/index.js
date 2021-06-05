@@ -60,14 +60,14 @@ export class Pacing extends Feature {
       );
 
       $('.budget-table-cell-available', element).after(
-        $display.click(event => {
+        $display.click((event) => {
           const deemphasizedCategories = getDeemphasizedCategories();
           const subCategoryId = event.target.getAttribute('data-tk-sub-category-id');
 
           if (deemphasizedCategories.contains(subCategoryId)) {
             $(event.target).removeClass('deemphasized');
             setDeemphasizedCategories(
-              deemphasizedCategories.filter(id => {
+              deemphasizedCategories.filter((id) => {
                 return id !== subCategoryId;
               })
             );
@@ -94,13 +94,8 @@ export class Pacing extends Feature {
   }
 
   generateDisplay(subCategoryId, pacingCalculation) {
-    const {
-      budgetedPace,
-      daysOffTarget,
-      isDeemphasized,
-      monthPace,
-      paceAmount,
-    } = pacingCalculation;
+    const { budgetedPace, daysOffTarget, isDeemphasized, monthPace, paceAmount } =
+      pacingCalculation;
     const deemphasizedClass = isDeemphasized ? 'deemphasized' : '';
     const indicatorClass = this.settings.enabled === '2' ? 'indicator' : '';
     const temperatureClass = budgetedPace / monthPace > 1 ? 'cautious' : 'positive';
@@ -131,13 +126,8 @@ export class Pacing extends Feature {
   }
 
   generateTooltip(pacingCalculation) {
-    const {
-      daysOffTarget,
-      isDeemphasized,
-      monthPace,
-      paceAmount,
-      transactions,
-    } = pacingCalculation;
+    const { daysOffTarget, isDeemphasized, monthPace, paceAmount, transactions } =
+      pacingCalculation;
 
     const moreOrLess = paceAmount >= 0 ? 'less' : 'more';
     const aheadOrBehind = paceAmount >= 0 ? 'ahead of' : 'behind';
@@ -147,7 +137,7 @@ export class Pacing extends Feature {
     const days = formattedDisplayInDays === 1 ? 'day' : 'days';
     const transactionsFormat = transactions.length === 1 ? 'transaction' : 'transactions';
     const percentOfMonth = Math.round(monthPace * 100);
-    const trimWords = paragraph => paragraph.replace(/\s+/g, ' ').trim();
+    const trimWords = (paragraph) => paragraph.replace(/\s+/g, ' ').trim();
 
     return trimWords(`
       In ${transactions.length} ${transactionsFormat}, you have spent ${formattedDisplay} ${moreOrLess} than

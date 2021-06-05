@@ -31,11 +31,11 @@ export class ModalContainer extends React.Component {
     );
   }
 
-  _saveModalContentNode = node => {
+  _saveModalContentNode = (node) => {
     this.modalContentNode = node;
   };
 
-  _handleClick = event => {
+  _handleClick = (event) => {
     if (this.modalContentNode && this.modalContentNode.contains(event.target)) {
       return;
     }

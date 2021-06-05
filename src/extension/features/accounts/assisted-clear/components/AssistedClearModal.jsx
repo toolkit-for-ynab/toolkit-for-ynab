@@ -29,7 +29,7 @@ export const AssistedClearModal = ({
    * Ensure the new index is within bounds of the matching transaction sets
    * @param {Integer} newIndex The new index of which transaction set to use
    */
-  let handleIndexChange = newIndex => {
+  let handleIndexChange = (newIndex) => {
     if (newIndex >= 0 && newIndex < matchingTransactions.length) {
       setTransactionArrIndex(newIndex);
     }
@@ -41,7 +41,7 @@ export const AssistedClearModal = ({
    */
   let handleConfirmation = () => {
     if (chosenTransactionSet.length > 0) {
-      chosenTransactionSet.forEach(txn => {
+      chosenTransactionSet.forEach((txn) => {
         setTransactionCleared(txn);
       });
     }

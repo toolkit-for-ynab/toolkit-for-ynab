@@ -59,7 +59,7 @@ export class HideHelp extends Feature {
     addToolkitEmberHook(this, 'settings-menu', 'didRender', this.insertHideHelp);
   }
 
-  setHiddenState = state => {
+  setHiddenState = (state) => {
     setToolkitStorageKey('hide-help', state);
     if (state) {
       $('body').addClass('toolkit-hide-help');

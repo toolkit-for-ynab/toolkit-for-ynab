@@ -109,7 +109,7 @@ describe('Background', () => {
       describe('requestUpdateCheck callback', () => {
         it('sets the next update check appropriately', async () => {
           mockToolkitStorage.getStorageItem.mockResolvedValueOnce(999);
-          chrome.runtime.requestUpdateCheck.mockImplementation(cb => cb());
+          chrome.runtime.requestUpdateCheck.mockImplementation((cb) => cb());
 
           const { background } = setup();
           background.initListeners();
@@ -122,7 +122,7 @@ describe('Background', () => {
 
         it('adds an hour if the requestUpdateCheck status is throttled', async () => {
           mockToolkitStorage.getStorageItem.mockResolvedValueOnce(999);
-          chrome.runtime.requestUpdateCheck.mockImplementation(cb => cb('throttled'));
+          chrome.runtime.requestUpdateCheck.mockImplementation((cb) => cb('throttled'));
 
           const { background } = setup();
           background.initListeners();

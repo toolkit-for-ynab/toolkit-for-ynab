@@ -19,7 +19,7 @@ export class FilterCategories extends Feature {
     }
   };
 
-  filterCategories = text => {
+  filterCategories = (text) => {
     $('.tk-categories-filter-hidden').removeClass('tk-categories-filter-hidden');
     if (!text) {
       return;
@@ -40,10 +40,7 @@ export class FilterCategories extends Feature {
       if (searchResult.total === 0) {
         el.classList.add('tk-categories-filter-hidden');
       } else {
-        const masterCategoryRow = $(el)
-          .prevUntil('.is-master-category')
-          .last()
-          .prev();
+        const masterCategoryRow = $(el).prevUntil('.is-master-category').last().prev();
 
         if (masterCategoryRow) {
           masterCategoryRow.removeClass('tk-categories-filter-hidden');
@@ -52,7 +49,7 @@ export class FilterCategories extends Feature {
     });
   };
 
-  _keyUpHandler = e => {
+  _keyUpHandler = (e) => {
     this.filterCategories(e.target.value);
   };
 

@@ -13,11 +13,11 @@ const watcher = require('chokidar').watch(['src/**'], {
   ],
 });
 
-watcher.on('all', function(event, path) {
+watcher.on('all', function (event, path) {
   console.log(`Changes detected (${path}), rebuilding...`);
 
   if (buildProcesses.length) {
-    buildProcesses.forEach(proc => {
+    buildProcesses.forEach((proc) => {
       terminate(proc.pid);
     });
   }

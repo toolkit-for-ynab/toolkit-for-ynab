@@ -5,7 +5,7 @@
     ynabToolKit.pageReady === true &&
     typeof Ember !== 'undefined'
   ) {
-    ynabToolKit.l10n = (function() {
+    ynabToolKit.l10n = (function () {
       // Supporting functions,
       // or variables, etc
 
@@ -13,11 +13,11 @@
       var l10n = ynabToolKit.l10nData;
       ynabToolKit.l10nMissingStrings = {};
 
-      ynabToolKit.shared.monthsShort = ynabToolKit.shared.monthsShort.map(function(month) {
+      ynabToolKit.shared.monthsShort = ynabToolKit.shared.monthsShort.map(function (month) {
         return l10n['months.' + month];
       });
 
-      ynabToolKit.shared.monthsFull = ynabToolKit.shared.monthsFull.map(function(month) {
+      ynabToolKit.shared.monthsFull = ynabToolKit.shared.monthsFull.map(function (month) {
         return l10n['months.' + month];
       });
 
@@ -39,7 +39,7 @@
       }
 
       // Tool for setting content.
-      var contentSetter = (function() {
+      var contentSetter = (function () {
         return {
           selectorPrefix: '',
           resetPrefix() {
@@ -76,7 +76,7 @@
             ynabToolKit.l10nEmberData = Ember.I18n.translations;
             var toolkitStrings = new Set(Object.keys(ynabToolKit.l10nData));
             var emberStrings = new Set(Object.keys(ynabToolKit.l10nEmberData));
-            emberStrings.forEach(function(s) {
+            emberStrings.forEach(function (s) {
               if (!toolkitStrings.has(s)) {
                 ynabToolKit.l10nMissingStrings[s] = ynabToolKit.l10nEmberData[s];
               }
@@ -145,7 +145,7 @@
           // New transaction fields modals
           if (changedNodes.has('modal-overlay ynab-u modal-popup modal-account-flags active')) {
             contentSetter.selectorPrefix = '.modal-account-flags';
-            var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'].map(function(
+            var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'].map(function (
               color
             ) {
               return l10n['toolkit.' + color];
@@ -181,7 +181,7 @@
             changedNodes.has('accounts-calendar')
           ) {
             contentSetter.selectorPrefix = '.modal-account-calendar';
-            var days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(function(day) {
+            var days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(function (day) {
               return l10n['toolkit.dayOfWeek' + day];
             });
 
@@ -205,21 +205,21 @@
           if (changedNodes.has('ynab-grid-body')) {
             $('.ynab-grid-cell-payeeName[title="Starting Balance"]')
               .contents()
-              .each(function() {
+              .each(function () {
                 if (this.textContent === 'Starting Balance')
                   this.textContent = l10n['toolkit.startingBalance'];
               });
 
             $('.ynab-grid-cell-subCategoryName[title="Inflow: To be Budgeted"]')
               .contents()
-              .each(function() {
+              .each(function () {
                 if (this.textContent === 'Inflow: To be Budgeted')
                   this.textContent = l10n['toolkit.inflowTBB'];
               });
 
             $('.ynab-grid-cell-subCategoryName[title="Split (Multiple Categories)..."]')
               .contents()
-              .each(function() {
+              .each(function () {
                 if (this.textContent === 'Split (Multiple Categories)...')
                   this.textContent = l10n['toolkit.splitMultipleCategories'];
               });

@@ -36,7 +36,7 @@ export class AccountFilterComponent extends React.Component {
 
   get closedAccounts() {
     const closedAccounts = this._accountsCollection.getClosedAccounts();
-    return closedAccounts.toArray().filter(account => {
+    return closedAccounts.toArray().filter((account) => {
       if (account.get('onBudget') === false && !this.props.includeTrackingAccounts) {
         return false;
       }
@@ -181,13 +181,13 @@ export class AccountFilterComponent extends React.Component {
 
   _handleSelectNone = () => {
     const { accountFilterIds } = this.state;
-    this.onBudgetAccounts.forEach(function({ entityId }) {
+    this.onBudgetAccounts.forEach(function ({ entityId }) {
       accountFilterIds.add(entityId);
     });
-    this.offBudgetAccounts.forEach(function({ entityId }) {
+    this.offBudgetAccounts.forEach(function ({ entityId }) {
       accountFilterIds.add(entityId);
     });
-    this.closedAccounts.forEach(function({ entityId }) {
+    this.closedAccounts.forEach(function ({ entityId }) {
       accountFilterIds.add(entityId);
     });
 

@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 // import { getRouter } from 'toolkit/extension/utils/ember';
 import { getApplicationService } from 'toolkit/extension/utils/ynab';
 
-export const BudgetListItem = props => {
+export const BudgetListItem = (props) => {
   const handleClick = () => {
     const appService = getApplicationService();
     appService.loadBudget(props.budgetVersionId, props.budgetName);

@@ -10,11 +10,19 @@ import { PIE_CHART_COLORS } from 'toolkit-reports/common/constants/colors';
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
 import './styles.scss';
 
-const createMasterCategoryMap = masterCategory =>
-  new Map([['masterCategory', masterCategory], ['subCategories', new Map()], ['total', 0]]);
+const createMasterCategoryMap = (masterCategory) =>
+  new Map([
+    ['masterCategory', masterCategory],
+    ['subCategories', new Map()],
+    ['total', 0],
+  ]);
 
-const createSubCategoryMap = subCategory =>
-  new Map([['subCategory', subCategory], ['total', 0], ['transactions', []]]);
+const createSubCategoryMap = (subCategory) =>
+  new Map([
+    ['subCategory', subCategory],
+    ['total', 0],
+    ['transactions', []],
+  ]);
 
 export class SpendingByCategoryComponent extends React.Component {
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
@@ -73,15 +81,14 @@ export class SpendingByCategoryComponent extends React.Component {
   _calculateData() {
     const spendingByMasterCategory = new Map();
 
-    this.props.filteredTransactions.forEach(transaction => {
+    this.props.filteredTransactions.forEach((transaction) => {
       if (transaction.getIsOnBudgetTransfer()) {
         return;
       }
 
       const transactionSubCategoryId = transaction.get('subCategoryId');
-      const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(
-        transactionSubCategoryId
-      );
+      const transactionSubCategory =
+        this._subCategoriesCollection.findItemByEntityId(transactionSubCategoryId);
       if (!transactionSubCategory || transactionSubCategory.isImmediateIncomeCategory()) {
         return;
       }
@@ -115,7 +122,7 @@ export class SpendingByCategoryComponent extends React.Component {
     );
   }
 
-  _onLegendDataHover = hoveredId => {
+  _onLegendDataHover = (hoveredId) => {
     const { chart } = this.state;
     if (!chart) {
       return;
@@ -125,7 +132,7 @@ export class SpendingByCategoryComponent extends React.Component {
       return;
     }
 
-    chart.series[0].points.forEach(point => {
+    chart.series[0].points.forEach((point) => {
       if (point.id === hoveredId) {
         point.setState('hover');
       } else {
@@ -166,7 +173,7 @@ export class SpendingByCategoryComponent extends React.Component {
           transactions: subCategoryData.get('transactions'),
         })),
         events: {
-          click: event => {
+          click: (event) => {
             showTransactionModal(event.point.name, event.point.transactions);
           },
         },
@@ -185,7 +192,7 @@ export class SpendingByCategoryComponent extends React.Component {
         renderTo: 'tk-spending-by-category',
         backgroundColor: 'transparent',
         events: {
-          drilldown: event => {
+          drilldown: (event) => {
             chart.setTitle({ text: `${event.point.name}<br>${formatCurrency(event.point.y)}` });
             _this.setState({ currentDrillDownId: event.point.id });
           },
@@ -198,7 +205,7 @@ export class SpendingByCategoryComponent extends React.Component {
       plotOptions: {
         series: {
           dataLabels: {
-            formatter: function() {
+            formatter: function () {
               let formattedNumber = formatCurrency(this.y);
               return `${this.point.name}<br><span class="currency">${formattedNumber} (${Math.round(
                 this.percentage
@@ -251,7 +258,7 @@ export class SpendingByCategoryComponent extends React.Component {
       .sort((a, b) => {
         return a.get('total') - b.get('total');
       })
-      .map(masterCategoryData => {
+      .map((masterCategoryData) => {
         const subCategoriesArray = mapToArray(masterCategoryData.get('subCategories'));
 
         const normalizedSubCategories = subCategoriesArray
@@ -259,7 +266,7 @@ export class SpendingByCategoryComponent extends React.Component {
             return b.get('total') - a.get('total');
           })
           .map(
-            subCategoryData =>
+            (subCategoryData) =>
               new Map([
                 ['source', subCategoryData.get('subCategory')],
                 ['total', subCategoryData.get('total') * -1],

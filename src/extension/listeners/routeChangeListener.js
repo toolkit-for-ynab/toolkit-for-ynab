@@ -16,7 +16,7 @@ export class RouteChangeListener {
     function emitSameBudgetRouteChange() {
       const applicationController = controllerLookup('application');
       const currentRoute = applicationController.get('currentRouteName');
-      routeChangeListener.features.forEach(feature => {
+      routeChangeListener.features.forEach((feature) => {
         const observe = feature.onRouteChanged.bind(feature, currentRoute);
         const wrapped = withToolkitError(observe, feature);
         Ember.run.later(wrapped, 0);
@@ -26,7 +26,7 @@ export class RouteChangeListener {
     function emitBudgetRouteChange() {
       const applicationController = controllerLookup('application');
       const currentRoute = applicationController.get('currentRouteName');
-      routeChangeListener.features.forEach(feature => {
+      routeChangeListener.features.forEach((feature) => {
         const observe = feature.onBudgetChanged.bind(feature, currentRoute);
         const wrapped = withToolkitError(observe, feature);
         Ember.run.later(wrapped, 0);

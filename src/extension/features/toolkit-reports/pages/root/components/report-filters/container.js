@@ -16,9 +16,9 @@ function mapReportContextToProps(context) {
 function mapModalContextToProps({ closeModal, showModal }) {
   return {
     closeModal,
-    showAccountFilterModal: props => showModal(AccountFilter, props),
-    showDateSelectorModal: props => showModal(DateFilter, props),
-    showCategoryFilterModal: props => showModal(CategoryFilter, props),
+    showAccountFilterModal: (props) => showModal(AccountFilter, props),
+    showDateSelectorModal: (props) => showModal(DateFilter, props),
+    showCategoryFilterModal: (props) => showModal(CategoryFilter, props),
   };
 }
 

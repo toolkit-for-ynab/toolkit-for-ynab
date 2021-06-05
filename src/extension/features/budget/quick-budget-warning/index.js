@@ -19,7 +19,7 @@ export class QuickBudgetWarning extends Feature {
     let allZero = true;
     $(
       'div.budget-table ul.budget-table-row.is-checked li.budget-table-cell-budgeted .currency'
-    ).each(function() {
+    ).each(function () {
       if (!$(this).hasClass('zero')) {
         allZero = false;
       }
