@@ -262,6 +262,10 @@ This feature assists you in the reconcilation process by locating uncleared tran
 
 When entering split transactions, each additional split will be auto-filled with the current remaining amount.
 
+## Auto-Fill Split Transactions' Payee
+
+When entering split transactions, each additional split will be auto-filled with the first Payee.
+
 ## Automatically Enable Running Balance
 
 Enables YNAB's native "Running Balance" by default for each account register.
@@ -381,6 +385,10 @@ Shows a different-color background on every other transaction row. See the Color
 ## Swap cleared and flagged columns
 
 Place the Cleared column on the left and the Flagged column on the right sides of an account screen.
+
+## Tab Expands Split Transactions
+
+When entering a split transaction, add a new split automatically when tabbing past the last split (a la YNAB4).
 
 ## Toggle Memo Column
 
