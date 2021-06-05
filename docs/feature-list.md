@@ -358,10 +358,6 @@ Adds the ability to set custom flag names. Tooltip for the flag name will only b
 
 Adds the total available balance to the category tooltip on each row in the Accounts register.
 
-## Show Last Reconciliation Details
-
-Show the last reconciled date and or days since last reconciled of the current account in the header
-
 ## Show Menu When Right Clicking On Transaction
 
 Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit menu options.
