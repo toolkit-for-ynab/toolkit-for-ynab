@@ -32,7 +32,7 @@ export class NotesAsMarkdown extends Feature {
     }
 
     if (view.isEditing) {
-      ynabNoteContainer.classList.remove('hidden');
+      ynabNoteContainer.classList.remove('tk-hidden');
 
       const textarea = ynabNoteContainer.querySelector('textarea');
       if (textarea) {
@@ -54,25 +54,26 @@ export class NotesAsMarkdown extends Feature {
 
     const note = view.get('activeCategory.subCategory.note');
     if (note) {
-      ynabNoteContainer.classList.add('hidden');
+      ynabNoteContainer.classList.add('tk-hidden');
       componentAppend(
         <div className="tk-markdown-note" onClick={handleClick}>
           <ReactMarkdown
-            source={note}
             linkTarget="_blank"
-            renderers={{
+            components={{
               link: ({ href, children }) => (
                 <a href={href} target="_blank" rel="noopener noreferrer">
                   {children}
                 </a>
               ),
             }}
-          />
+          >
+            {note}
+          </ReactMarkdown>
         </div>,
         element
       );
     } else {
-      ynabNoteContainer.classList.remove('hidden');
+      ynabNoteContainer.classList.remove('tk-hidden');
     }
   };
 

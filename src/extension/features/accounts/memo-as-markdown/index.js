@@ -39,16 +39,17 @@ export class MemoAsMarkdown extends Feature {
       componentPrepend(
         <div className="tk-markdown-memo" onClick={handleClick}>
           <ReactMarkdown
-            source={note}
             linkTarget="_blank"
-            renderers={{
+            components={{
               link: ({ href, children }) => (
                 <a href={href} target="_blank" rel="noopener noreferrer">
                   {children}
                 </a>
               ),
             }}
-          />
+          >
+            {note}
+          </ReactMarkdown>
         </div>,
         element.querySelector('.ynab-grid-cell-memo')
       );

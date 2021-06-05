@@ -97,7 +97,7 @@
     "raven-js": "^3.25.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
-    "react-markdown": "^4.2.2",
+    "react-markdown": "^6.0.2",
     "regression": "^2.0.1"
   },
   "devDependencies": {
