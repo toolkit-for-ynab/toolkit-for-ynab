@@ -53,20 +53,22 @@ export class DaysOfBuffering extends Feature {
     if (!daysOfBufferingContainer) {
       $displayElement = $('<div>', {
         class: 'budget-header-item budget-header-days toolkit-days-of-buffering',
-      })
-        .append(
-          $('<div>', {
-            class: 'budget-header-days-age',
-            title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
-          })
-        )
-        .append(
-          $('<div>', {
-            class: 'budget-header-days-label',
-            text: l10n('toolkit.dob.title', 'Days of Buffering'),
-            title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
-          })
-        );
+      }).append(
+        $('<div>')
+          .append(
+            $('<div>', {
+              class: 'budget-header-days-age',
+              title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
+            })
+          )
+          .append(
+            $('<div>', {
+              class: 'budget-header-days-label',
+              text: l10n('toolkit.dob.title', 'Days of Buffering'),
+              title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
+            })
+          )
+      );
 
       $('.budget-header-flexbox').append($displayElement);
     }
