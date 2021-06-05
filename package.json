@@ -62,7 +62,7 @@
       "/node_modules/"
     ],
     "reporters": [
-      "jest-dot-reporter"
+      "jest-progress-bar-reporter"
     ],
     "testURL": "https://app.youneedabudget.com/aaaaaaaa-bbbb-cccc-dddd-000000000000/budget/201802",
     "transform": {
@@ -92,6 +92,7 @@
     "core-js": "2",
     "fuzzysort": "^1.1.4",
     "highcharts": "9.0.0",
+    "jest-progress-bar-reporter": "^1.0.21",
     "jquery": "^3.5.0",
     "raven-js": "^3.25.2",
     "react": "^16.10.2",
@@ -131,18 +132,17 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.14.3",
     "fs-extra": "^8.1.0",
-    "glob": "^7.1.2",
+    "glob": "^7.1.7",
     "husky": "^3.0.5",
     "jest": "^24.9.0",
-    "jest-dot-reporter": "^1.0.3",
-    "jest-localstorage-mock": "^2.1.0",
+    "jest-localstorage-mock": "^2.4.14",
     "node-sass": "^4.9.4",
     "prettier": "^1.16.4",
     "pretty-quick": "^1.10.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "terminate": "^2.1.0",
-    "to-string-loader": "^1.1.5",
+    "to-string-loader": "^1.1.6",
     "webpack": "^4.40.2",
     "webpack-cli": "^3.3.9",
     "yargs": "^14.0.0"
