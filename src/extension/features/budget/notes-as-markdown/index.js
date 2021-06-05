@@ -14,7 +14,7 @@ export class NotesAsMarkdown extends Feature {
     return true;
   }
 
-  applyMarkdown = element => {
+  applyMarkdown = (element) => {
     const view = getEmberView(element.getAttribute('id'));
     const ynabNoteContainer = element.querySelector('.inspector-category-note');
     if (!view || !ynabNoteContainer) {
@@ -43,7 +43,7 @@ export class NotesAsMarkdown extends Feature {
       return;
     }
 
-    const handleClick = event => {
+    const handleClick = (event) => {
       if (event.target.tagName === 'A') {
         event.stopPropagation();
         return;

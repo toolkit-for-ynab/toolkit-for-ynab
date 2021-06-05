@@ -37,7 +37,7 @@ export class DateOfMoney extends Feature {
 
     ageOfMoneyContainer.addEventListener(
       'mouseover',
-      function() {
+      function () {
         this._showDateOfMoney(budgetHeaderDaysContainer, ageOfMoneyContainer);
       }.bind(this)
     );
@@ -69,7 +69,7 @@ export class DateOfMoney extends Feature {
     // Add the event listener to hide Date Of Money and display Age Of Money
     dateOfMoneyContainer.addEventListener(
       'mouseout',
-      function() {
+      function () {
         this._hideDateOfMoney(ageOfMoneyContainer, dateOfMoneyContainer);
       }.bind(this)
     );

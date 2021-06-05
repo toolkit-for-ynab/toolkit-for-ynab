@@ -44,8 +44,8 @@ export class EasyTransactionApproval extends Feature {
     var _this = this;
 
     var applicationController = controllerLookup('application');
-    applicationController.addObserver('budgetVersionId', function() {
-      Ember.run.scheduleOnce('afterRender', this, function() {
+    applicationController.addObserver('budgetVersionId', function () {
+      Ember.run.scheduleOnce('afterRender', this, function () {
         _this.initKeyLoop = true;
         _this.initClickLoop = true;
       });
@@ -63,7 +63,7 @@ export class EasyTransactionApproval extends Feature {
     const visibleTransactionDisplayItems = accountController.get('visibleTransactionDisplayItems');
     if (visibleTransactionDisplayItems) {
       this.selectedTransactions = visibleTransactionDisplayItems.filter(
-        i => i.isChecked && i.get('accepted') === false
+        (i) => i.isChecked && i.get('accepted') === false
       );
     }
 
@@ -86,7 +86,7 @@ export class EasyTransactionApproval extends Feature {
   watchForKeyInput() {
     var _this = this;
 
-    $('body').on('keydown', function(e) {
+    $('body').on('keydown', function (e) {
       if ((e.which === 13 || e.which === 65) && _this.watchForKeys) {
         // approve selected transactions when 'a' or 'enter is pressed'
         _this.approveTransactions();
@@ -104,11 +104,11 @@ export class EasyTransactionApproval extends Feature {
     var _this = this;
 
     // call approveTransactions if the notification 'i' icon is right clicked on
-    Ember.run.next(function() {
+    Ember.run.next(function () {
       $('.ynab-grid').off(
         'contextmenu',
         '.ynab-grid-body-row .ynab-grid-cell-notification button.transaction-notification-info',
-        function(event) {
+        function (event) {
           // prevent defaults
           event.preventDefault();
           event.stopPropagation();
@@ -126,7 +126,7 @@ export class EasyTransactionApproval extends Feature {
       $('.ynab-grid').on(
         'contextmenu',
         '.ynab-grid-body-row .ynab-grid-cell-notification button.transaction-notification-info',
-        function(event) {
+        function (event) {
           // prevent defaults
           event.preventDefault();
           event.stopPropagation();
@@ -162,8 +162,6 @@ export class EasyTransactionApproval extends Feature {
     $('body').trigger(keycode2);
 
     // unselect transactions after approval
-    $('.ynab-grid-body-row.is-checked')
-      .find('.ynab-grid-cell-checkbox button')
-      .click();
+    $('.ynab-grid-body-row.is-checked').find('.ynab-grid-cell-checkbox button').click();
   }
 }

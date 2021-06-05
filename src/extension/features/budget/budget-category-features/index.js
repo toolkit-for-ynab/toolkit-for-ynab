@@ -32,7 +32,7 @@ export class BudgetCategoryFeatures extends Feature {
     this.ensureGoalContainer();
 
     const categories = [...document.getElementsByClassName('budget-table-row')];
-    categories.forEach(element => {
+    categories.forEach((element) => {
       const category = getEmberView(element.id, 'category');
       if (category) {
         const { isMasterCategory, subCategory } = category.getProperties(
@@ -141,7 +141,7 @@ function getCategoryAttributes(category) {
 }
 
 function applyCategoryAttributes(element, attributes) {
-  Object.keys(attributes).forEach(key => {
+  Object.keys(attributes).forEach((key) => {
     if (typeof attributes[key] === 'boolean' && attributes[key] === false) {
       element.removeAttribute(`data-${key}`);
     } else {

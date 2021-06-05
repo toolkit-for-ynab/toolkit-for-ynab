@@ -10,7 +10,7 @@ glob(`${LEGACY_FEATURES_DIR}/*/**/main.js`, (error, files) => {
     process.exit(1);
   }
 
-  const featureNamePromises = files.map(file => {
+  const featureNamePromises = files.map((file) => {
     return new Promise((resolve, reject) => {
       fs.readFile(file, 'utf8', (error, fileData) => {
         if (error) return reject(error);
@@ -28,8 +28,8 @@ glob(`${LEGACY_FEATURES_DIR}/*/**/main.js`, (error, files) => {
     });
   });
 
-  Promise.all(featureNamePromises).then(featureNames => {
-    const features = featureNames.filter(name => name && !name.includes('shared'));
+  Promise.all(featureNamePromises).then((featureNames) => {
+    const features = featureNames.filter((name) => name && !name.includes('shared'));
     writeFeedChanges(features);
   });
 });
@@ -65,7 +65,7 @@ function writeFeedChanges(features) {
 }());
 `;
 
-  fs.writeFile(FEED_CHANGES_PATH, fileContents, error => {
+  fs.writeFile(FEED_CHANGES_PATH, fileContents, (error) => {
     if (error) process.exit(1);
     process.exit();
   });

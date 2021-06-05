@@ -99,7 +99,7 @@ ${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(av
       if (ynabToolKit.options.DaysOfBufferingDate) {
         $('.budget-header-days-age', $displayElement).mouseover(
           null,
-          function() {
+          function () {
             this._showDateOfBuffering(daysOfBuffering);
           }.bind(this)
         );
@@ -158,7 +158,7 @@ ${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(av
     };
   };
 
-  _eligibleTransactionFilter = transaction => {
+  _eligibleTransactionFilter = (transaction) => {
     const today = ynab.utilities.DateWithoutTime.createForToday();
 
     let isEligibleDate = false;
@@ -217,7 +217,7 @@ ${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(av
     // Add the event listener to hide Date Of Money and display Age Of Money
     dateOfBufferingContainer.addEventListener(
       'mouseout',
-      function() {
+      function () {
         this._hideDateOfBuffering(daysContainer, dateOfBufferingContainer);
       }.bind(this)
     );

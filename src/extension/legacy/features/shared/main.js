@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary, one-var-declaration-per-line, one-var */
 
-ynabToolKit.shared = (function() {
+ynabToolKit.shared = (function () {
   return {
     parseSelectedMonth() {
       // TODO: There's probably a better way to reference this view, but this works better than DOM scraping which seems to fail in Firefox

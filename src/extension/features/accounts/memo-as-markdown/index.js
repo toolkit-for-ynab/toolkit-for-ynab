@@ -14,7 +14,7 @@ export class MemoAsMarkdown extends Feature {
     return true;
   }
 
-  applyMarkdown = element => {
+  applyMarkdown = (element) => {
     const view = getEmberView(element.getAttribute('id'));
     if (!view) {
       return;
@@ -25,7 +25,7 @@ export class MemoAsMarkdown extends Feature {
       return;
     }
 
-    const handleClick = event => {
+    const handleClick = (event) => {
       if (event.target.tagName === 'A') {
         event.stopPropagation();
       }

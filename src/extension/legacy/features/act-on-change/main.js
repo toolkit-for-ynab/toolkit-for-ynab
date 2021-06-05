@@ -6,20 +6,20 @@
     // Set 'ynabToolKit.debugNodes = true' to print changes the mutationObserver sees
     // during page interactions and updates to the developer tools console.
     // ynabToolKit.debugNodes = true;
-    ynabToolKit.actOnChange = function() {
+    ynabToolKit.actOnChange = function () {
       var _MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-      var observer = new _MutationObserver(function(mutations) {
+      var observer = new _MutationObserver(function (mutations) {
         if (ynabToolKit.debugNodes) {
           console.log('MODIFIED NODES');
         }
 
         ynabToolKit.changedNodes = new Set();
 
-        mutations.forEach(function(mutation) {
+        mutations.forEach(function (mutation) {
           var newNodes = mutation.target;
 
           var $nodes = $(newNodes); // jQuery set
-          $nodes.each(function() {
+          $nodes.each(function () {
             var nodeClass = $(this).attr('class');
             if (nodeClass) ynabToolKit.changedNodes.add(nodeClass.replace(/^ember-view /, ''));
           }); // each node mutation event

@@ -9,11 +9,11 @@ const EditMemo = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [memoInputValue, setMemoInputValue] = useState('');
 
-  const handleConfirm = e => {
+  const handleConfirm = (e) => {
     const checkedRows = controllerLookup('accounts').get('areChecked');
     const { transactionsCollection } = getEntityManager();
     getEntityManager().performAsSingleChangeSet(() => {
-      checkedRows.forEach(transaction => {
+      checkedRows.forEach((transaction) => {
         const entity = transactionsCollection.findItemByEntityId(transaction.get('entityId'));
         if (entity) {
           entity.set('memo', memoInputValue);
@@ -33,7 +33,7 @@ const EditMemo = () => {
               autoFocus
               className="accounts-text-field"
               value={memoInputValue}
-              onChange={e => setMemoInputValue(e.target.value)}
+              onChange={(e) => setMemoInputValue(e.target.value)}
             />
             <div className="tk-grid-actions">
               <button
@@ -82,7 +82,7 @@ export class BulkEditMemo extends Feature {
     );
   }
 
-  injectBulkEditMemo = element => {
+  injectBulkEditMemo = (element) => {
     const categorizeRow = $(
       '.modal-account-edit-transaction-list li:contains("Categorize")',
       element

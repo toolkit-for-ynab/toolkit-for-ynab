@@ -79,7 +79,7 @@ export class AutoDistributeSplits extends Feature {
 
   getCellsAndValues() {
     const cells = $('.is-editing .ynab-grid-cell-outflow input').toArray();
-    const values = cells.map(node => stripCurrency(node.value));
+    const values = cells.map((node) => stripCurrency(node.value));
     return [cells, values];
   }
 

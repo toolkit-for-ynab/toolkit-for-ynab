@@ -32,7 +32,7 @@ const setup = (setupOptions = {}) => {
   }
 
   const toolkitBootstrap = { hookedComponents: new Set(), options: {} };
-  allToolkitSettings.forEach(setting => {
+  allToolkitSettings.forEach((setting) => {
     toolkitBootstrap.options[setting.name] = false;
   });
 

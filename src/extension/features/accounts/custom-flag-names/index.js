@@ -56,7 +56,7 @@ export class CustomFlagNames extends Feature {
   applyFlagTitle(element) {
     const flags = getToolkitStorageKey('flags', defaultFlags);
 
-    ['red', 'blue', 'orange', 'yellow', 'green', 'purple'].forEach(color => {
+    ['red', 'blue', 'orange', 'yellow', 'green', 'purple'].forEach((color) => {
       const flag = element.querySelector(`.ynab-flag-${color}`);
       if (flag === null) {
         return;
@@ -112,7 +112,7 @@ export class CustomFlagNames extends Feature {
               fill: flag.color,
               'background-color': flag.color,
             })
-            .on('change', event => {
+            .on('change', (event) => {
               const { value } = event.currentTarget;
 
               if (value) {
@@ -142,10 +142,8 @@ export class CustomFlagNames extends Feature {
             setToolkitStorageKey('flags', flags);
             controllerLookup('application').send('closeModal');
 
-            ['red', 'blue', 'orange', 'yellow', 'green', 'purple'].forEach(color => {
-              $(`.ynab-flag-${color}`)
-                .parent()
-                .attr('title', flags[color].label);
+            ['red', 'blue', 'orange', 'yellow', 'green', 'purple'].forEach((color) => {
+              $(`.ynab-flag-${color}`).parent().attr('title', flags[color].label);
             });
           })
       );

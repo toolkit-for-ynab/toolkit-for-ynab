@@ -12,7 +12,7 @@ export const mockToolkitStorage = {
   offFeatureSettingChanged: jest.fn(),
   mock: {
     clearMock: () => {
-      Object.values(mockToolkitStorage).forEach(value => {
+      Object.values(mockToolkitStorage).forEach((value) => {
         if (jest.isMockFunction(value)) {
           value.mockClear();
         }

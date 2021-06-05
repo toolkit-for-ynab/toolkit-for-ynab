@@ -7,7 +7,7 @@ const BUILD_ROOT = './dist';
 const BUILD_PATH = `${BUILD_ROOT}/extension`;
 const CODE_SOURCE_DIR = './src';
 
-module.exports = function(env) {
+module.exports = function (env) {
   const validBuildTypes = ['beta', 'development', 'production'];
   if (!env || !validBuildTypes.includes(env.buildType)) {
     console.log(`Invalid --env.buildType provided. Must be one of: [${validBuildTypes.join('|')}]`);
