@@ -3,6 +3,10 @@ import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export class DateOfMoney extends Feature {
+  injectCSS() {
+    return require('./index.css');
+  }
+
   shouldInvoke() {
     return isCurrentRouteBudgetPage() && document.querySelector('.tk-date-of-money') === null;
   }
