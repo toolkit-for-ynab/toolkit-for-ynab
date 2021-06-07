@@ -20,7 +20,7 @@ export class DateOfMoney extends Feature {
      * 		1. To get the Age Of Money (AOM)
      * 		2. Display the Date of Money to the user
      */
-    const budgetHeaderDaysContainer = document.querySelector('.budget-header-days');
+    const budgetHeaderDaysContainer = document.querySelector('.budget-header-days > div');
 
     /*
      * Get the div containing the Age Of Money (AOM) and add a mouse over function to display date of money.
