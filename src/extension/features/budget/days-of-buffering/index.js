@@ -191,7 +191,7 @@ ${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(av
      *    1. To get the Days Of Buffering
      *    2. Display the Date of Buffering to the user
      */
-    const toolkitDaysOfBuffering = document.querySelector('.toolkit-days-of-buffering');
+    const toolkitDaysOfBuffering = document.querySelector('.toolkit-days-of-buffering > div');
 
     /*
      * Get the div containing the Age Of Money (AOM)
