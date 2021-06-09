@@ -51,7 +51,7 @@ export class InflowOutflowComponent extends React.Component {
 
     const pointHover = {
       events: {
-        mouseOver: function() {
+        mouseOver: function () {
           _this.setState({
             hoveredData: {
               inflows: inflows[this.index],
@@ -81,7 +81,7 @@ export class InflowOutflowComponent extends React.Component {
       yAxis: {
         title: { text: '' },
         labels: {
-          formatter: function() {
+          formatter: function () {
             return formatCurrency(this.value);
           },
           style: { color: 'var(--label_primary)' },
@@ -147,10 +147,10 @@ export class InflowOutflowComponent extends React.Component {
     function pushCurrentAccountData() {
       let inflows = 0;
       let outflows = 0;
-      accountInflows.forEach(total => {
+      accountInflows.forEach((total) => {
         inflows += total;
       });
-      accountOutflows.forEach(total => {
+      accountOutflows.forEach((total) => {
         outflows += total;
       });
 
@@ -162,11 +162,8 @@ export class InflowOutflowComponent extends React.Component {
       accountOutflows = new Map();
     }
 
-    transactions.forEach(transaction => {
-      const transactionMonth = transaction
-        .get('date')
-        .clone()
-        .startOfMonth();
+    transactions.forEach((transaction) => {
+      const transactionMonth = transaction.get('date').clone().startOfMonth();
       if (lastMonth === null) {
         lastMonth = transactionMonth;
       }
@@ -208,14 +205,8 @@ export class InflowOutflowComponent extends React.Component {
     const { fromDate, toDate } = this.props.filters.dateFilter;
     if (transactions.length) {
       let currentIndex = 0;
-      const transactionMonth = transactions[0]
-        .get('date')
-        .clone()
-        .startOfMonth();
-      const lastFilterMonth = toDate
-        .clone()
-        .addMonths(1)
-        .startOfMonth();
+      const transactionMonth = transactions[0].get('date').clone().startOfMonth();
+      const lastFilterMonth = toDate.clone().addMonths(1).startOfMonth();
       while (transactionMonth.isBefore(lastFilterMonth)) {
         if (!allReportData.labels.includes(localizedMonthAndYear(transactionMonth))) {
           const { inflows, outflows, labels } = allReportData;
@@ -232,9 +223,9 @@ export class InflowOutflowComponent extends React.Component {
     // Net Worth is calculated from the start of time so we need to handle "filters" here
     // rather than using `filteredTransactions` from context.
     const { labels, inflows, outflows } = allReportData;
-    let startIndex = labels.findIndex(label => label === localizedMonthAndYear(fromDate));
+    let startIndex = labels.findIndex((label) => label === localizedMonthAndYear(fromDate));
     startIndex = startIndex === -1 ? 0 : startIndex;
-    let endIndex = labels.findIndex(label => label === localizedMonthAndYear(toDate));
+    let endIndex = labels.findIndex((label) => label === localizedMonthAndYear(toDate));
     endIndex = endIndex === -1 ? labels.length + 1 : endIndex + 1;
 
     const filteredLabels = labels.slice(startIndex, endIndex);

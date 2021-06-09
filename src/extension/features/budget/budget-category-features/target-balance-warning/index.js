@@ -17,7 +17,7 @@ export class TargetBalanceWarning extends Feature {
         `.budget-table-row[data-${CategoryAttributes.GoalType}="${targetBalance}"`
       ),
     ];
-    targetBalanceRows.forEach(element => {
+    targetBalanceRows.forEach((element) => {
       const inspectorSelectors = [
         '.budget-inspector .inspector-overview-available dt',
         '.budget-inspector .inspector-overview-available .ynab-new-budget-available-number',
@@ -31,7 +31,7 @@ export class TargetBalanceWarning extends Feature {
       const inspectorElements = $(inspectorSelectors);
 
       if (element.hasAttribute(`data-${CategoryAttributes.GoalUnderFunded}`)) {
-        REMOVE_CLASSES.forEach(className => {
+        REMOVE_CLASSES.forEach((className) => {
           availableNumberElement.removeClass(className);
         });
 
@@ -47,7 +47,7 @@ export class TargetBalanceWarning extends Feature {
       );
       if (activeCategoryId && activeCategoryId === element.dataset.entityId) {
         if ($(`.budget-inspector[data-${CategoryAttributes.GoalUnderFunded}]`).length) {
-          REMOVE_CLASSES.forEach(className => {
+          REMOVE_CLASSES.forEach((className) => {
             inspectorElements.removeClass(className);
           });
 

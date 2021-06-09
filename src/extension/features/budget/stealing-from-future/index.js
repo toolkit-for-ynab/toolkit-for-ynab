@@ -19,8 +19,8 @@ export class StealingFromFuture extends Feature {
   isMonthABeforeB(a, b) {
     if (b === null) return true;
 
-    const [yearA, monthA] = a.split('-').map(val => parseInt(val));
-    const [yearB, monthB] = b.split('-').map(val => parseInt(val));
+    const [yearA, monthA] = a.split('-').map((val) => parseInt(val));
+    const [yearB, monthB] = b.split('-').map((val) => parseInt(val));
     if (yearA >= yearB && monthA >= monthB) {
       return false;
     }
@@ -34,10 +34,10 @@ export class StealingFromFuture extends Feature {
     let earliestNegativeMonthCalculation = null;
     budgetViewModel
       .get('allBudgetMonthsViewModel.monthlyBudgetCalculationsCollection')
-      .forEach(monthCalculation => {
+      .forEach((monthCalculation) => {
         if (!this.isMonthEntityIdPast(monthCalculation.get('entityId'))) {
           const entityDate = monthCalculation.get('entityId').match(/mbc\/(.*)\/.*/)[1];
-          const entityMonth = entityDate.split('-').map(val => parseInt(val))[1];
+          const entityMonth = entityDate.split('-').map((val) => parseInt(val))[1];
 
           if (
             monthCalculation.get('availableToBudget') < 0 &&
@@ -88,7 +88,7 @@ export class StealingFromFuture extends Feature {
         </strong>
       )</span>`);
 
-    $('.ynabtk-month-link', name).click(event => {
+    $('.ynabtk-month-link', name).click((event) => {
       event.preventDefault();
       const applicationController = controllerLookup('application');
       const budgetVersionId = applicationController.get('budgetVersionId');
@@ -100,7 +100,7 @@ export class StealingFromFuture extends Feature {
     const currentYear = parseInt(moment().format('YYYY'));
     const currentMonth = parseInt(moment().format('MM'));
     const entityDate = entityId.match(/mbc\/(.*)\/.*/)[1];
-    const [entityYear, entityMonth] = entityDate.split('-').map(val => parseInt(val));
+    const [entityYear, entityMonth] = entityDate.split('-').map((val) => parseInt(val));
 
     const isNextYear = entityYear > currentYear;
     const isCurrentYearFutureMonth = entityYear === currentYear && entityMonth >= currentMonth;
@@ -116,7 +116,7 @@ export class StealingFromFuture extends Feature {
     if (budgetViewModel) {
       budgetViewModel
         .get('allBudgetMonthsViewModel.monthlyBudgetCalculationsCollection')
-        .forEach(month => {
+        .forEach((month) => {
           month.addObserver(
             'availableToBudget',
             this.onAvailableToBudgetChange.bind(this, budgetViewModel)

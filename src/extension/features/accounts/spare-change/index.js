@@ -39,7 +39,7 @@ export class SpareChange extends Feature {
 
     Ember.run.debounce(
       this,
-      function() {
+      function () {
         this.accountsController.addObserver('areChecked', this, 'onYnabSelectionChanged');
 
         if (isCurrentRouteAccountsPage()) {
@@ -70,7 +70,7 @@ export class SpareChange extends Feature {
     let visibleTransactionDisplayItems =
       this.accountsController.get('visibleTransactionDisplayItems') || [];
     this.selectedTransactions = visibleTransactionDisplayItems.filter(
-      i => i.isChecked && i.get('outflow')
+      (i) => i.isChecked && i.get('outflow')
     );
   }
 
@@ -79,7 +79,7 @@ export class SpareChange extends Feature {
 
     if (selectedAccountId) {
       let selectedAccounts = this.accountsController.get('activeAccounts');
-      let selectedAccount = selectedAccounts.find(a => a.itemId === selectedAccountId);
+      let selectedAccount = selectedAccounts.find((a) => a.itemId === selectedAccountId);
 
       return selectedAccount;
     }
@@ -175,7 +175,7 @@ export class SpareChange extends Feature {
   onYnabGridBodyChanged() {
     Ember.run.debounce(
       this,
-      function() {
+      function () {
         this.setSelectedTransactions();
         this.updateSpareChangeCalculation();
         this.updateSpareChangeHeader();

@@ -27,17 +27,23 @@ export class DisplayUpcomingAmount extends Feature {
         monthlySubCategoryBudgetCalculation &&
         monthlySubCategoryBudgetCalculation.upcomingTransactions
       ) {
-        $('.budget-table-cell-activity', element)
-          .addClass('toolkit-activity-upcoming')
-          .prepend(
-            $('<div>', {
-              class: 'toolkit-activity-upcoming-amount currency',
-              title: `Total upcoming transaction amount in this month for ${subCategory.get(
-                'name'
-              )}`,
-              text: formatCurrency(monthlySubCategoryBudgetCalculation.upcomingTransactions),
-            })
-          );
+        let activity = $('.budget-table-cell-activity', element);
+        activity.addClass('toolkit-activity-upcoming');
+
+        let upcoming = $('<div>', {
+          class: 'toolkit-activity-upcoming-amount currency',
+          title: `Total upcoming transaction amount in this month for ${subCategory.get('name')}`,
+          text: formatCurrency(monthlySubCategoryBudgetCalculation.upcomingTransactions),
+        });
+
+        let moneyMoves = $('.budget-table-cell-category-moves', activity);
+        if (moneyMoves.length === 0) {
+          // Shouldn't happen as of time of writing, even when not applicable the element exists
+          // Included only to make feature slightly less brittle
+          activity.prepend(upcoming);
+        } else {
+          moneyMoves.after(upcoming);
+        }
       }
     });
   }

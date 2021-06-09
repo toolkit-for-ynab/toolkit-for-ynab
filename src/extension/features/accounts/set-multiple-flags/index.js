@@ -11,7 +11,7 @@ export class SetMultipleFlags extends Feature {
   }
 
   get _isAnyCheckedTransactionFlagged() {
-    return this._checkedRows.some(transaction => transaction.get('flag'));
+    return this._checkedRows.some((transaction) => transaction.get('flag'));
   }
 
   injectCSS() {
@@ -89,7 +89,7 @@ export class SetMultipleFlags extends Feature {
       .removeClass('modal-account-edit-transaction-list')
       .addClass('modal-account-flags');
     const $modalList = $('.modal-list').empty();
-    FLAG_COLORS.forEach(color => {
+    FLAG_COLORS.forEach((color) => {
       let colorDisplayName = color;
       if (ynabToolKit.options.CustomFlagNames) {
         colorDisplayName = customColorNames[color.toLowerCase()].label;
@@ -114,10 +114,10 @@ export class SetMultipleFlags extends Feature {
     this._applyColor('');
   };
 
-  _applyColor = color => {
+  _applyColor = (color) => {
     const { transactionsCollection } = getEntityManager();
     getEntityManager().batchChangeProperties(() => {
-      this._checkedRows.forEach(transaction => {
+      this._checkedRows.forEach((transaction) => {
         const entity = transactionsCollection.findItemByEntityId(transaction.get('entityId'));
         if (entity) {
           entity.set('flag', color);

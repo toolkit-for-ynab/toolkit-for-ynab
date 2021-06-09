@@ -15,7 +15,7 @@ export function useLocalStorage(key, initialValue) {
   });
 
   // Wrapper function around setStoredValue to save into Local Storage
-  const setValue = value => {
+  const setValue = (value) => {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);

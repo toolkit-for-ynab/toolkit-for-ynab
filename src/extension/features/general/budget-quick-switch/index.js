@@ -24,7 +24,7 @@ export class BudgetQuickSwitch extends Feature {
 
     ynab.YNABSharedLib.getCatalogViewModel_UserViewModel().then(({ userBudgetDisplayItems }) => {
       userBudgetDisplayItems
-        .filter(budget => {
+        .filter((budget) => {
           return (
             !budget.get('isTombstone') && budget.get('budgetVersionId') !== activeBudgetVersionId
           );

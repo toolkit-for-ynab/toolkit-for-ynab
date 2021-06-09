@@ -58,7 +58,7 @@ export class AssistedClear extends Feature {
   _attachInputListener() {
     let inputElement = $(YNAB_RECONCILE_INPUT_MODAL).find('input');
     if (inputElement.length) {
-      inputElement.on('input', e => {
+      inputElement.on('input', (e) => {
         this._reconcileInputValue = e.target.value;
       });
     }

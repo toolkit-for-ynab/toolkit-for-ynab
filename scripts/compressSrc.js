@@ -25,7 +25,7 @@ output.on('close', () => {
   console.log('Archive sucessfully created.');
 });
 
-archive.on('warning', error => {
+archive.on('warning', (error) => {
   if (error.code === 'ENOENT') {
     console.warn('Warning while archiving: ', error);
   } else {
@@ -34,7 +34,7 @@ archive.on('warning', error => {
 });
 
 archive.pipe(output);
-archive.on('error', error => {
+archive.on('error', (error) => {
   throw error;
 });
 

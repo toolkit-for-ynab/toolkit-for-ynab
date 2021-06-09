@@ -81,7 +81,7 @@ describe('ToolkitStorage', () => {
       const results = await storage.getFeatureSettings(['test', 'setting']);
       expect(Array.isArray(results)).toEqual(true);
       expect(results).toHaveLength(2);
-      results.forEach(result => {
+      results.forEach((result) => {
         expect(result).toEqual('result');
       });
     });

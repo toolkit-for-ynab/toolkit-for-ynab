@@ -14,7 +14,7 @@ function run(callback) {
     let errorCheckingLines = [];
     let featureNames = [];
 
-    files.forEach(filePath => {
+    files.forEach((filePath) => {
       const filePathSplit = filePath.split('/');
       const projectFeaturePath = filePathSplit.slice(0, filePathSplit.length - 1).join(path.sep);
 
@@ -67,7 +67,7 @@ export const features = [
   fs.writeFile(featureIndexPath, fileContents, callback);
 }
 
-run(error => {
+run((error) => {
   if (error) {
     console.log(`Error: ${error}`.red);
     process.exit(1);

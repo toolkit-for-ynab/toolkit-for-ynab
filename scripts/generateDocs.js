@@ -49,6 +49,6 @@ docOutput += docSettingsOrder
   })
   .join('\n');
 
-fs.writeFile(outputFile, docOutput, error => {
+fs.writeFile(outputFile, docOutput, (error) => {
   if (error) process.exit(1);
 });

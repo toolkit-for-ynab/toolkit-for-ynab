@@ -1,7 +1,7 @@
 .toolkit-display-goal-warn {
-  color: #ff4545;
+  color: var(--label_negative);
 }
 
 .toolkit-display-goal-highlight {
-  color: #00b300;
+  color: var(--label_positive);
 }

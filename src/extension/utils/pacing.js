@@ -47,15 +47,12 @@ export function pacingForCategory(budgetMonthDisplayItem) {
   const allTransactions = entityManager.getTransactionsBySubCategoryId(subCategoryId);
   const allSubTransactions = entityManager.getSubTransactionsBySubCategoryId(subCategoryId);
   const transactions = allTransactions
-    .filter(transaction => {
+    .filter((transaction) => {
       return transaction.get('date').equalsByMonth(today);
     })
     .concat(
-      allSubTransactions.filter(transaction => {
-        return transaction
-          .get('transaction')
-          .get('date')
-          .equalsByMonth(today);
+      allSubTransactions.filter((transaction) => {
+        return transaction.get('transaction').get('date').equalsByMonth(today);
       })
     );
 

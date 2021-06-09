@@ -48,12 +48,12 @@ export function withModalContextProvider(InnerComponent) {
 }
 
 export function withModalContext(mapContextToProps) {
-  return function(InnerComponent) {
+  return function (InnerComponent) {
     return class WithModalContextProvider extends React.Component {
       render() {
         return (
           <Consumer>
-            {value => <InnerComponent {...this.props} {...mapContextToProps(value)} />}
+            {(value) => <InnerComponent {...this.props} {...mapContextToProps(value)} />}
           </Consumer>
         );
       }

@@ -15,7 +15,7 @@ export function withToolkitError(wrappedFunction, feature) {
     );
   }
 
-  return function() {
+  return function () {
     try {
       return wrappedFunction();
     } catch (exception) {

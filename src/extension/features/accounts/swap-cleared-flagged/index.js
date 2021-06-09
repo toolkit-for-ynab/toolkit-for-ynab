@@ -21,7 +21,7 @@ export class SwapClearedFlagged extends Feature {
 
     addToolkitEmberHook(this, 'register/grid-header', 'didRender', swapColumns);
 
-    rows.forEach(key => {
+    rows.forEach((key) => {
       addToolkitEmberHook(this, key, 'didInsertElement', swapColumns);
     });
   }

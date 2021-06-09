@@ -7,7 +7,7 @@ export class AccountsStripedRows extends Feature {
     const darkThemeColor = ynabToolKit.options.AccountsStripedRowsDarkColor;
 
     let defaultThemePatched = false;
-    const patchedCSS = css.replace(/#[A-Fa-f0-9]{6}/gi, match => {
+    const patchedCSS = css.replace(/#[A-Fa-f0-9]{6}/gi, (match) => {
       if (!defaultThemePatched) {
         defaultThemePatched = true;
         return defaultThemeColor || match;

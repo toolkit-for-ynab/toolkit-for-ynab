@@ -2,8 +2,9 @@ require('colors');
 const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
-const defaultFeatures = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json')))
-  .defaultFeatures;
+const defaultFeatures = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '..', 'package.json'))
+).defaultFeatures;
 
 const LEAGACY_SETTINGS_PROJECT_DIR = 'src/extension/legacy/features';
 const NEW_SETTINGS_PROJECT_DIR = 'src/extension/features';
@@ -34,12 +35,12 @@ function run(callback) {
   previousSettings = new Set();
   Promise.all([gatherLegacySettings(), gatherNewSettings()])
     .then(
-      values => {
+      (values) => {
         let validatedSettings = [];
         let settingsConcatenated = values[0].concat(values[1]);
-        settingsConcatenated.forEach(setting => {
+        settingsConcatenated.forEach((setting) => {
           if (Array.isArray(setting.setting)) {
-            setting.setting.forEach(subSetting => {
+            setting.setting.forEach((subSetting) => {
               let validatedSetting = validateSetting({
                 setting: subSetting,
                 file: setting.file,
@@ -64,11 +65,11 @@ function run(callback) {
           fs.writeFile(SETTINGS_JSON, JSON.stringify(validatedSettings), callback);
         });
       },
-      reason => {
+      (reason) => {
         callback(reason);
       }
     )
-    .catch(exception => {
+    .catch((exception) => {
       callback(exception.stack);
     });
 }
@@ -80,7 +81,7 @@ function gatherLegacySettings() {
 
       let legacySettingsPromises = [];
 
-      files.forEach(file => {
+      files.forEach((file) => {
         legacySettingsPromises.push(
           new Promise((resolve, reject) => {
             let setting;
@@ -110,7 +111,7 @@ function gatherNewSettings() {
       if (error) return reject(error);
 
       resolve(
-        files.map(file => {
+        files.map((file) => {
           const setting = require(path.join(__dirname, '..', file)); // eslint-disable-line global-require
           return { file, setting };
         })
@@ -127,7 +128,7 @@ function validateSetting(settingObj) {
     return featureSettings;
   }
 
-  REQUIRED_SETTINGS.forEach(requiredSetting => {
+  REQUIRED_SETTINGS.forEach((requiredSetting) => {
     if (
       typeof featureSettings[requiredSetting] === 'undefined' ||
       featureSettings[requiredSetting] === null
@@ -266,7 +267,7 @@ Object.seal(window.ynabToolKit.settings);
 `;
 }
 
-run(error => {
+run((error) => {
   if (error) {
     console.log(`Error: ${error}`.red);
     process.exit(1);

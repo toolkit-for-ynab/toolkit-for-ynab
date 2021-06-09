@@ -29,7 +29,7 @@ export class ClearSelection extends Feature {
     );
   }
 
-  insertClearSelection = element => {
+  insertClearSelection = (element) => {
     if (element.querySelector('#tk-clear-selection') !== null) {
       return;
     }

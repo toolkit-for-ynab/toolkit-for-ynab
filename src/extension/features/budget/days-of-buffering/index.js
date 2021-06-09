@@ -53,20 +53,22 @@ export class DaysOfBuffering extends Feature {
     if (!daysOfBufferingContainer) {
       $displayElement = $('<div>', {
         class: 'budget-header-item budget-header-days toolkit-days-of-buffering',
-      })
-        .append(
-          $('<div>', {
-            class: 'budget-header-days-age',
-            title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
-          })
-        )
-        .append(
-          $('<div>', {
-            class: 'budget-header-days-label',
-            text: l10n('toolkit.dob.title', 'Days of Buffering'),
-            title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
-          })
-        );
+      }).append(
+        $('<div>')
+          .append(
+            $('<div>', {
+              class: 'budget-header-days-age',
+              title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
+            })
+          )
+          .append(
+            $('<div>', {
+              class: 'budget-header-days-label',
+              text: l10n('toolkit.dob.title', 'Days of Buffering'),
+              title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
+            })
+          )
+      );
 
       $('.budget-header-flexbox').append($displayElement);
     }
@@ -97,7 +99,7 @@ ${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(av
       if (ynabToolKit.options.DaysOfBufferingDate) {
         $('.budget-header-days-age', $displayElement).mouseover(
           null,
-          function() {
+          function () {
             this._showDateOfBuffering(daysOfBuffering);
           }.bind(this)
         );
@@ -156,7 +158,7 @@ ${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(av
     };
   };
 
-  _eligibleTransactionFilter = transaction => {
+  _eligibleTransactionFilter = (transaction) => {
     const today = ynab.utilities.DateWithoutTime.createForToday();
 
     let isEligibleDate = false;
@@ -189,7 +191,7 @@ ${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(av
      *    1. To get the Days Of Buffering
      *    2. Display the Date of Buffering to the user
      */
-    const toolkitDaysOfBuffering = document.querySelector('.toolkit-days-of-buffering');
+    const toolkitDaysOfBuffering = document.querySelector('.toolkit-days-of-buffering > div');
 
     /*
      * Get the div containing the Age Of Money (AOM)
@@ -215,7 +217,7 @@ ${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(av
     // Add the event listener to hide Date Of Money and display Age Of Money
     dateOfBufferingContainer.addEventListener(
       'mouseout',
-      function() {
+      function () {
         this._hideDateOfBuffering(daysContainer, dateOfBufferingContainer);
       }.bind(this)
     );

@@ -15,7 +15,7 @@ export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
 export const EMBER_COMPONENT_TOOLKIT_HOOKS = ['didRender', 'didInsertElement', 'didUpdate'];
-export const emberComponentToolkitHookKey = hookName => `_tk_${hookName}_hooks_`;
+export const emberComponentToolkitHookKey = (hookName) => `_tk_${hookName}_hooks_`;
 
 window.__toolkitUtils = {
   ...ynabUtils,
@@ -49,13 +49,13 @@ export class YNABToolkit {
   }
 
   _createFeatureInstances() {
-    features.forEach(Feature => {
+    features.forEach((Feature) => {
       this._featureInstances.push(new Feature());
     });
   }
 
-  _invokeFeature = featureName => {
-    const feature = this._featureInstances.find(f => f.constructor.name === featureName);
+  _invokeFeature = (featureName) => {
+    const feature = this._featureInstances.find((f) => f.constructor.name === featureName);
     const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
     const wrappedInvoke = feature.invoke.bind(feature);
     if (isFeatureEnabled(feature.settings.enabled) && wrappedShouldInvoke()) {
@@ -64,7 +64,7 @@ export class YNABToolkit {
   };
 
   _invokeFeatureInstances = async () => {
-    this._featureInstances.forEach(async feature => {
+    this._featureInstances.forEach(async (feature) => {
       if (isFeatureEnabled(feature.settings.enabled)) {
         feature.applyListeners();
 
@@ -90,7 +90,7 @@ export class YNABToolkit {
     });
   };
 
-  _onBackgroundMessage = event => {
+  _onBackgroundMessage = (event) => {
     if (event.source === window && event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE) {
       window.ynabToolKit = {
         ...window.ynabToolKit,
@@ -138,8 +138,8 @@ export class YNABToolkit {
   };
 
   _addToolkitEmberHooks = () => {
-    EMBER_COMPONENT_TOOLKIT_HOOKS.forEach(lifecycleName => {
-      Ember.Component.prototype[lifecycleName] = function() {
+    EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
+      Ember.Component.prototype[lifecycleName] = function () {
         const hooks = this[emberComponentToolkitHookKey(lifecycleName)];
         if (hooks) {
           hooks.forEach(({ context, fn }) => fn.call(context, this.element));
@@ -149,12 +149,12 @@ export class YNABToolkit {
   };
 
   _invokeAllHooks = () => {
-    ynabToolKit.hookedComponents.forEach(key => {
-      forEachRenderedComponent(key, view => {
-        EMBER_COMPONENT_TOOLKIT_HOOKS.forEach(lifecycleName => {
+    ynabToolKit.hookedComponents.forEach((key) => {
+      forEachRenderedComponent(key, (view) => {
+        EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
           const hooks = view[emberComponentToolkitHookKey(lifecycleName)];
           if (hooks) {
-            hooks.forEach(hook => hook.fn.call(hook.context, view.element));
+            hooks.forEach((hook) => hook.fn.call(hook.context, view.element));
           }
         });
       });

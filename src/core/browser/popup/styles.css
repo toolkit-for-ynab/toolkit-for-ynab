@@ -6,7 +6,7 @@ body {
 .inverted {
   -webkit-filter: invert(1) hue-rotate(180deg) brightness(1.2);
   filter: invert(1) hue-rotate(180deg) brightness(1.2);
-  background: #0D0D0D;
+  background: #0d0d0d;
 }
 
 .brandBar {
@@ -42,17 +42,18 @@ body {
   outline: 0 !important;
 }
 
-.btn-primary,.btn-primary:focus {
-  background: #3CB54A;
+.btn-primary,
+.btn-primary:focus {
+  background: #3cb54a;
   color: #ffffff;
 }
 
 .btn-primary:hover {
-  background: #66CC72;
+  background: #66cc72;
 }
 
 .text-small {
-  font-size: .8rem;
+  font-size: 0.8rem;
 }
 
 .fa-toggle-on {
