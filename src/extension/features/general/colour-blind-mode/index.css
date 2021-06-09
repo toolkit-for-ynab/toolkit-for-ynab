@@ -54,18 +54,31 @@ body {
   --budget_bar_overspending: var(--tk-colour-blind-negative) !important;
   --budget_bar_overspending_stripe: var(--tk-colour-blind-negative-lighter) !important;
 
-  /* Inspector messages */
-  --inspector_message_positive_background: var(--tk-colour-blind-positive-lighter) !important;
-  --inspector_message_positive_border: var(--tk-colour-blind-positive) !important;
-  --inspector_message_positive_label: var(--tk-colour-blind-positive-darkest) !important;
+  /* General messages */
+  --message_positive_background: var(--tk-colour-blind-positive-lighter) !important;
+  --message_positive_accent: var(--tk-colour-blind-positive) !important;
+  --message_positive_label: var(--tk-colour-blind-positive-darkest) !important;
 
-  --inspector_message_warning_background: var(--tk-colour-blind-warning-lighter) !important;
-  --inspector_message_warning_border: var(--tk-colour-blind-warning) !important;
-  --inspector_message_warning_label: var(--tk-colour-blind-warning-darkest) !important;
+  --message_warning_background: var(--tk-colour-blind-warning-lighter) !important;
+  --message_warning_accent: var(--tk-colour-blind-warning) !important;
+  --message_warning_label: var(--tk-colour-blind-warning-darkest) !important;
 
-  --inspector_message_negative_background: var(--tk-colour-blind-negative-lighter) !important;
-  --inspector_message_negative_border: var(--tk-colour-blind-negative) !important;
-  --inspector_message_negative_label: var(--tk-colour-blind-negative-darkest) !important;
+  --message_negative_background: var(--tk-colour-blind-negative-lighter) !important;
+  --message_negative_accent: var(--tk-colour-blind-negative) !important;
+  --message_negative_label: var(--tk-colour-blind-negative-darkest) !important;
+
+  /* Inspector messages - recently replaced with above as of time of writing but still in YNAB stylesheet */
+  --inspector_message_positive_background: var(--message_positive_background) !important;
+  --inspector_message_positive_border: var(--message_positive_accent) !important;
+  --inspector_message_positive_label: var(--message_positive_label) !important;
+
+  --inspector_message_warning_background: var(--message_warning_background) !important;
+  --inspector_message_warning_border: var(--message_warning_accent) !important;
+  --inspector_message_warning_label: var(--message_warning_label) !important;
+
+  --inspector_message_negative_background: var(--message_negative_background) !important;
+  --inspector_message_negative_border: var(--message_negative_accent) !important;
+  --inspector_message_negative_label: var(--message_negative_label) !important;
 }
 
 body.theme-dark {
@@ -93,18 +106,18 @@ body.theme-dark {
   --budget_bar_overspending: var(--tk-colour-blind-negative) !important;
   --budget_bar_overspending_stripe: var(--tk-colour-blind-negative-darker) !important;
 
-  /* Inspector messages */
-  --inspector_message_positive_background: var(--tk-colour-blind-positive-darkest) !important;
-  --inspector_message_positive_border: var(--tk-colour-blind-positive) !important;
-  --inspector_message_positive_label: var(--tk-colour-blind-positive) !important;
+  /* General messages */
+  --message_positive_background: var(--tk-colour-blind-positive-darkest) !important;
+  --message_positive_accent: var(--tk-colour-blind-positive) !important;
+  --message_positive_label: var(--tk-colour-blind-positive) !important;
 
-  --inspector_message_warning_background: var(--tk-colour-blind-warning-darkest) !important;
-  --inspector_message_warning_border: var(--tk-colour-blind-warning) !important;
-  --inspector_message_warning_label: var(--tk-colour-blind-warning) !important;
+  --message_warning_background: var(--tk-colour-blind-warning-darkest) !important;
+  --message_warning_accent: var(--tk-colour-blind-warning) !important;
+  --message_warning_label: var(--tk-colour-blind-warning) !important;
 
-  --inspector_message_negative_background: var(--tk-colour-blind-negative-darkest) !important;
-  --inspector_message_negative_border: var(--tk-colour-blind-negative) !important;
-  --inspector_message_negative_label: var(--tk-colour-blind-negative) !important;
+  --message_negative_background: var(--tk-colour-blind-negative-darkest) !important;
+  --message_negative_accent: var(--tk-colour-blind-negative) !important;
+  --message_negative_label: var(--tk-colour-blind-negative) !important;
 }
 
 /* Square edges for negative values */
