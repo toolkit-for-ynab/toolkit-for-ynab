@@ -57,10 +57,7 @@ export class BudgetSpendingGoal extends Feature {
       if ($(goalstate).hasClass('positive')) {
         this.udpateGoalChart('positive');
         if ($(goalElement).hasClass(this.tkSpendingGoal)) {
-          $('.goal-progress-chart')
-            .find('.percent-label')
-            .addClass('tk-spent-label')
-            .text('Spent');
+          $('.goal-progress-chart').find('.percent-label').addClass('tk-spent-label').text('Spent');
         }
       } else if ($(goalstate).hasClass('cautious')) {
         // TODO: update goal chart to reflect percent of overspending.
@@ -69,9 +66,7 @@ export class BudgetSpendingGoal extends Feature {
         this.udpateGoalChart('positive');
       }
     } else {
-      $(goalElement)
-        .find('.tk-spent-label')
-        .removeClass('tk-spent-label');
+      $(goalElement).find('.tk-spent-label').removeClass('tk-spent-label');
     }
 
     // When the goal inspector button is cliecked update the available UI.
@@ -159,26 +154,22 @@ export class BudgetSpendingGoal extends Feature {
   udpateGoalChart(chart) {
     const element = document.getElementsByClassName('goal-progress-container');
     if (chart === 'positive') {
-      $(element)
-        .removeClass('goal-warning')
-        .addClass(this.tkSpendingGoal);
+      $(element).removeClass('goal-warning').addClass(this.tkSpendingGoal);
     } else if (chart === 'cautious') {
-      $(element)
-        .addClass('goal-warning')
-        .addClass(this.tkSpendingGoal);
+      $(element).addClass('goal-warning').addClass(this.tkSpendingGoal);
     }
   }
 
   updateCategorySpendGoal() {
     const subcategoryID = $('.budget-table-row.is-sub-category.is-checked').attr('data-entity-id');
-    $('.tk-spend-goal').on('click', function() {
+    $('.tk-spend-goal').on('click', function () {
       const spendingGoals = getSpendingGoals();
       if ($(this).is(':checked')) {
         spendingGoals.push(subcategoryID);
         setSpendingGoals(spendingGoals);
       } else {
         setSpendingGoals(
-          spendingGoals.filter(id => {
+          spendingGoals.filter((id) => {
             return id !== subcategoryID;
           })
         );

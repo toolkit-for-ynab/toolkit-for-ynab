@@ -18,12 +18,12 @@ export class StorageArea {
     callback();
   });
 
-  remove = jest.fn(key => {
+  remove = jest.fn((key) => {
     delete this.data[key];
   });
 
   mock = {
-    setData: data => {
+    setData: (data) => {
       this.data = data;
     },
   };

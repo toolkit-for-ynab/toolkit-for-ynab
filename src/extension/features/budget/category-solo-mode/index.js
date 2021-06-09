@@ -76,19 +76,16 @@ export class CategorySoloMode extends Feature {
     $('#all-category-expand-button').attr('disabled', checked);
     if (checked) {
       setToolkitStorageKey('catSoloMode', 'checked');
-      $('.js-budget-table-cell-collapse.down')
-        .first()
-        .click()
-        .click();
+      $('.js-budget-table-cell-collapse.down').first().click().click();
     } else {
       setToolkitStorageKey('catSoloMode', '');
     }
   };
 
-  toggleCategory = event => {
+  toggleCategory = (event) => {
     if ($('.budget-toolbar #cat-solo-mode').prop('checked')) {
       if ($(event.target).hasClass('right')) {
-        $('.js-budget-table-cell-collapse.down').each(function() {
+        $('.js-budget-table-cell-collapse.down').each(function () {
           if ($(this).id !== event.target.id) $(this).click();
         });
       }

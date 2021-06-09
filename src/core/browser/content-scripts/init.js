@@ -7,7 +7,7 @@ import { getEnvironment } from 'toolkit/core/common/web-extensions';
 const storage = new ToolkitStorage();
 
 function applySettingsToDom(userSettings) {
-  allToolkitSettings.forEach(setting => {
+  allToolkitSettings.forEach((setting) => {
     let userSettingValue = userSettings[setting.name];
     // Check for specific upgrade path where a boolean setting gets
     // changed to a select. Previous value will be 'true' but

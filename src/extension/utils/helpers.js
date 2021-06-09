@@ -8,8 +8,8 @@ export function mapToArray(map) {
 }
 
 export function compareSemanticVersion(left, right) {
-  const leftSplit = left.split('.').map(val => parseInt(val, 10));
-  const rightSplit = right.split('.').map(val => parseInt(val, 10));
+  const leftSplit = left.split('.').map((val) => parseInt(val, 10));
+  const rightSplit = right.split('.').map((val) => parseInt(val, 10));
 
   while (leftSplit.length < rightSplit.length) {
     leftSplit.push(0);

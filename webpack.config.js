@@ -7,7 +7,7 @@ const BUILD_ROOT = './dist';
 const BUILD_PATH = `${BUILD_ROOT}/extension`;
 const CODE_SOURCE_DIR = './src';
 
-module.exports = function(env) {
+module.exports = function (env) {
   const validBuildTypes = ['beta', 'development', 'production'];
   if (!env || !validBuildTypes.includes(env.buildType)) {
     console.log(`Invalid --env.buildType provided. Must be one of: [${validBuildTypes.join('|')}]`);
@@ -61,7 +61,17 @@ module.exports = function(env) {
         {
           test: /\.css$/,
           include: [path.resolve(__dirname, CODE_SOURCE_DIR)],
-          use: ['to-string-loader', 'css-loader'],
+          use: [
+            {
+              loader: 'to-string-loader',
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                esModule: false,
+              },
+            },
+          ],
         },
         {
           test: /\.scss$/,
@@ -72,49 +82,54 @@ module.exports = function(env) {
 
     plugins: [
       new webpack.ProgressPlugin(),
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(env.buildType),
+      }),
       new CleanWebpackPlugin(),
-      new CopyWebpackPlugin([
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/assets/common`),
-          to: path.join(__dirname, `${BUILD_PATH}/assets`),
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/assets/environment/${env.buildType}`),
-          to: path.join(__dirname, `${BUILD_PATH}/assets`),
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/manifest.json`),
-          to: path.join(__dirname, `${BUILD_PATH}`),
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/background`),
-          to: path.join(__dirname, `${BUILD_PATH}/background`),
-          ignore: '**/*.js',
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/options`),
-          to: path.join(__dirname, `${BUILD_PATH}/options`),
-          ignore: '**/*.js',
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/popup`),
-          to: path.join(__dirname, `${BUILD_PATH}/popup`),
-          ignore: '**/*.js',
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/extension/legacy/**/*.css`),
-          to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`),
-          context: 'src/extension',
-        },
-        {
-          from: path.join(
-            __dirname,
-            `${CODE_SOURCE_DIR}/extension/legacy/features/l10n/locales/*.js`
-          ),
-          to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`),
-          context: 'src/extension',
-        },
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/assets/common`),
+            to: path.join(__dirname, `${BUILD_PATH}/assets`),
+          },
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/assets/environment/${env.buildType}`),
+            to: path.join(__dirname, `${BUILD_PATH}/assets`),
+          },
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/manifest.json`),
+            to: path.join(__dirname, `${BUILD_PATH}`),
+          },
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/background`),
+            to: path.join(__dirname, `${BUILD_PATH}/background`),
+            globOptions: { ignore: '**/*.js' },
+          },
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/options`),
+            to: path.join(__dirname, `${BUILD_PATH}/options`),
+            globOptions: { ignore: '**/*.js' },
+          },
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/popup`),
+            to: path.join(__dirname, `${BUILD_PATH}/popup`),
+            globOptions: { ignore: '**/*.js' },
+          },
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/extension/legacy/**/*.css`),
+            to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`),
+            context: 'src/extension',
+          },
+          {
+            from: path.join(
+              __dirname,
+              `${CODE_SOURCE_DIR}/extension/legacy/features/l10n/locales/*.js`
+            ),
+            to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`),
+            context: 'src/extension',
+          },
+        ],
+      }),
     ],
   };
 

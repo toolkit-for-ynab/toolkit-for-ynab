@@ -58,7 +58,7 @@ export class CategoryActivityCopy extends Feature {
     );
   }
 
-  handleBudgetActivityModal = element => {
+  handleBudgetActivityModal = (element) => {
     if ($('#tk-copy-transactions').length) {
       return;
     }
@@ -71,7 +71,7 @@ export class CategoryActivityCopy extends Feature {
     );
   };
 
-  handleReportActivityModal = element => {
+  handleReportActivityModal = (element) => {
     if ($('#tk-copy-transactions').length) {
       return;
     }
@@ -85,7 +85,7 @@ export class CategoryActivityCopy extends Feature {
 
 function copyTransactionsToClipboard(transactions) {
   const entityManager = getEntityManager();
-  const activities = transactions.map(transaction => {
+  const activities = transactions.map((transaction) => {
     const parentEntityId = transaction.get('parentEntityId');
     let payeeId = transaction.get('payeeId');
 
@@ -109,8 +109,8 @@ function copyTransactionsToClipboard(transactions) {
 
   const replacer = (key, value) => (value === null ? '' : value);
   const header = Object.keys(activities[0]);
-  let csv = activities.map(row =>
-    header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t')
+  let csv = activities.map((row) =>
+    header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join('\t')
   );
   csv.unshift(header.join('\t'));
   csv = csv.join('\r\n');

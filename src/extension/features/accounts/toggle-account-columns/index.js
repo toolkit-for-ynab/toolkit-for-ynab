@@ -78,7 +78,7 @@ export class ToggleAccountColumns extends Feature {
     return getToolkitStorageKey(`show-memo-column-${selectedAccountId}`, true);
   };
 
-  updateShowMemoState = state => {
+  updateShowMemoState = (state) => {
     const { selectedAccountId } = controllerLookup('accounts');
     if (!selectedAccountId) {
       return;

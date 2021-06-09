@@ -14,7 +14,7 @@ export class MemoAsMarkdown extends Feature {
     return true;
   }
 
-  applyMarkdown = element => {
+  applyMarkdown = (element) => {
     const view = getEmberView(element.getAttribute('id'));
     if (!view) {
       return;
@@ -25,7 +25,7 @@ export class MemoAsMarkdown extends Feature {
       return;
     }
 
-    const handleClick = event => {
+    const handleClick = (event) => {
       if (event.target.tagName === 'A') {
         event.stopPropagation();
       }
@@ -39,16 +39,17 @@ export class MemoAsMarkdown extends Feature {
       componentPrepend(
         <div className="tk-markdown-memo" onClick={handleClick}>
           <ReactMarkdown
-            source={note}
             linkTarget="_blank"
-            renderers={{
+            components={{
               link: ({ href, children }) => (
                 <a href={href} target="_blank" rel="noopener noreferrer">
                   {children}
                 </a>
               ),
             }}
-          />
+          >
+            {note}
+          </ReactMarkdown>
         </div>,
         element.querySelector('.ynab-grid-cell-memo')
       );

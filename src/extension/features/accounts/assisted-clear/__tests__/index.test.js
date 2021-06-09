@@ -9,8 +9,9 @@ describe('Assisted Clear', () => {
 
   describe('invoke()', () => {
     let feature;
-    jest.useFakeTimers();
+
     beforeEach(() => {
+      jest.useFakeTimers();
       feature = new AssistedClear();
     });
 
@@ -30,8 +31,6 @@ describe('Assisted Clear', () => {
       expect(shouldInvoke).toBeTruthy();
 
       // Resolve the set timeout
-      expect(setTimeout).toHaveBeenCalledTimes(1);
-      expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 50);
       jest.runOnlyPendingTimers();
       expect(_createFeatureContainerMock).toHaveBeenCalledTimes(1);
       expect(_createModalPortalMock).toHaveBeenCalledTimes(1);

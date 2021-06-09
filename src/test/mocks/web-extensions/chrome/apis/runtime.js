@@ -7,18 +7,18 @@ export class Runtime {
     return {};
   });
 
-  getURL = jest.fn(path => {
+  getURL = jest.fn((path) => {
     return `chrome-extension://${path}`;
   });
 
   onMessage = {
-    addListener: jest.fn(callback => {
+    addListener: jest.fn((callback) => {
       this.onMessageListeners.push(callback);
     }),
   };
 
   onUpdateAvailable = {
-    addListener: jest.fn(callback => {
+    addListener: jest.fn((callback) => {
       this.onUpdateAvailableListeners.push(callback);
     }),
   };
@@ -26,14 +26,14 @@ export class Runtime {
   requestUpdateCheck = jest.fn();
 
   mock = {
-    triggerOnMessage: message => {
+    triggerOnMessage: (message) => {
       const responseSpy = jest.fn();
-      this.onMessageListeners.forEach(listener => listener(message, {}, responseSpy));
+      this.onMessageListeners.forEach((listener) => listener(message, {}, responseSpy));
       return responseSpy;
     },
 
-    triggerOnUpdateAvailable: status => {
-      this.onUpdateAvailableListeners.forEach(listener => listener(status));
+    triggerOnUpdateAvailable: (status) => {
+      this.onUpdateAvailableListeners.forEach((listener) => listener(status));
     },
   };
 }

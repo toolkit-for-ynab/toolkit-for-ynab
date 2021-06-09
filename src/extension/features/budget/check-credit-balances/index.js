@@ -51,13 +51,13 @@ export class CheckCreditBalances extends Feature {
 
   getDebtCategories() {
     const entityManager = getEntityManager();
-    const debtMasterCategory = entityManager.masterCategoriesCollection.find(c => {
+    const debtMasterCategory = entityManager.masterCategoriesCollection.find((c) => {
       return c.get('internalName') === ynab.constants.InternalCategories.DebtPaymentMasterCategory;
     });
 
     const debtAccounts = getEntityManager()
       .getAllSubCategories()
-      .filter(c => {
+      .filter((c) => {
         return (
           !c.get('isTombstone') && c.get('masterCategoryId') === debtMasterCategory.get('entityId')
         );
@@ -70,11 +70,9 @@ export class CheckCreditBalances extends Feature {
     const debtCategories = this.getDebtCategories();
     let foundButton = false;
 
-    debtCategories.forEach(debtCategory => {
-      const {
-        accountCalculationsCollection,
-        monthlySubCategoryBudgetCalculationsCollection,
-      } = getEntityManager();
+    debtCategories.forEach((debtCategory) => {
+      const { accountCalculationsCollection, monthlySubCategoryBudgetCalculationsCollection } =
+        getEntityManager();
 
       // Not sure why but sometimes on a reload (F5 or CTRL-R) of YNAB, the accountId field
       // is null which if not handled throws an error and kills the feature.
@@ -87,7 +85,7 @@ export class CheckCreditBalances extends Feature {
           `mcbc/${currentMonth}/${debtCategoryId}`
         );
         const calculation = accountCalculationsCollection.find(
-          c => c.get('accountId') === debtAccountId
+          (c) => c.get('accountId') === debtAccountId
         );
         if (!calculation) {
           return;
@@ -152,9 +150,7 @@ export class CheckCreditBalances extends Feature {
   }
 
   updateInspectorButton(name, difference) {
-    let inspectorName = $('.inspector-category-name.user-data')
-      .text()
-      .trim();
+    let inspectorName = $('.inspector-category-name.user-data').text().trim();
 
     if (name && name === inspectorName) {
       let fDifference = formatCurrency(difference);
@@ -215,7 +211,7 @@ export class CheckCreditBalances extends Feature {
     let difference = $(this).data('difference');
     let debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
 
-    $(debtPaymentCategories).each(function() {
+    $(debtPaymentCategories).each(function () {
       let view = getEmberView(this.id);
       if (!view || !view.category) {
         return;

@@ -32,7 +32,7 @@ export class BudgetProgressBars extends Feature {
 
   // Takes N colors and N-1 sorted points from (0, 1) to make color1|color2|color3 bg style.
   generateProgressBarStyle(colors, points) {
-    const pointsPercent = [0, ...points, 1].map(p => p * 100);
+    const pointsPercent = [0, ...points, 1].map((p) => p * 100);
     return colors.reduce(
       (reduced, color, index) =>
         reduced +
@@ -44,13 +44,12 @@ export class BudgetProgressBars extends Feature {
   }
 
   getCalculation(subCategoryName) {
-    const subCategory = this.subCats.find(ele => ele.toolkitName === subCategoryName);
+    const subCategory = this.subCats.find((ele) => ele.toolkitName === subCategoryName);
 
     if (subCategory) {
       const crazyInternalId = this.internalIdBase + subCategory.entityId;
-      const calculation = getEntityManager().getMonthlySubCategoryBudgetCalculationById(
-        crazyInternalId
-      );
+      const calculation =
+        getEntityManager().getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
       if (!calculation) {
         return;
       }
@@ -294,13 +293,13 @@ function getMergedCategories() {
   const masterCategories = entityManager.getAllNonTombstonedMasterCategories();
   const mergedCategories = [];
 
-  masterCategories.forEach(masterCategory => {
+  masterCategories.forEach((masterCategory) => {
     // Ignore certain categories!
     if (masterCategory.isHidden !== true && masterCategory.name !== 'Internal Master Category') {
       const subCategories = entityManager.getSubCategoriesByMasterCategoryId(
         masterCategory.getEntityId()
       );
-      subCategories.forEach(subCategory => {
+      subCategories.forEach((subCategory) => {
         // Ignore certain categories!
         if (
           subCategory.isHidden !== true &&

@@ -31,22 +31,19 @@ export class DisplayTargetGoalAmount extends Feature {
   invoke() {
     const userSetting = this.settings.enabled;
     const budgetRows = [...document.getElementsByClassName('budget-table-row')];
-    budgetRows.forEach(element => {
+    budgetRows.forEach((element) => {
       const category = getEmberView(element.id, 'category');
       if (!category) {
         return;
       }
 
       const goalType = element.getAttribute(`data-${CategoryAttributes.GoalType}`);
-      const {
-        subCategory,
-        monthlySubCategoryBudget,
-        monthlySubCategoryBudgetCalculation,
-      } = category.getProperties(
-        'subCategory',
-        'monthlySubCategoryBudget',
-        'monthlySubCategoryBudgetCalculation'
-      );
+      const { subCategory, monthlySubCategoryBudget, monthlySubCategoryBudgetCalculation } =
+        category.getProperties(
+          'subCategory',
+          'monthlySubCategoryBudget',
+          'monthlySubCategoryBudgetCalculation'
+        );
 
       if (!subCategory || !monthlySubCategoryBudgetCalculation || !monthlySubCategoryBudget) {
         return;

@@ -15,7 +15,7 @@ export class ConfirmKeyboardCancelationOfTransactionChanges extends Feature {
     );
     const guardedKeydownEventCode = 'Enter';
 
-    $cancelButton.on('keydown', e => {
+    $cancelButton.on('keydown', (e) => {
       if (e.code !== guardedKeydownEventCode) return;
       if (window.confirm(confirmationText)) return;
 

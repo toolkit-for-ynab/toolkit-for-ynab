@@ -24,13 +24,13 @@ export class CheckNumbers extends Feature {
       'register/grid-split',
     ];
 
-    valueColumns.forEach(key => {
+    valueColumns.forEach((key) => {
       addToolkitEmberHook(this, key, 'didInsertElement', this.insertValueColumn);
     });
 
     const inputColumns = ['register/grid-edit'];
 
-    inputColumns.forEach(key => {
+    inputColumns.forEach((key) => {
       addToolkitEmberHook(this, key, 'didInsertElement', this.insertInputColumn);
     });
   }
@@ -44,7 +44,7 @@ export class CheckNumbers extends Feature {
     checkNumberHeader.addClass('ynab-grid-cell-toolkit-check-number');
     checkNumberHeader.text('CHECK NUMBER').css('font-weight', 'normal');
     checkNumberHeader.insertAfter($('.ynab-grid-cell-memo', $headerRow));
-    checkNumberHeader.click(event => {
+    checkNumberHeader.click((event) => {
       event.preventDefault();
       event.stopPropagation();
     });
@@ -69,7 +69,7 @@ export class CheckNumbers extends Feature {
     const $inputBox = $('<input placeholder="check number">')
       .addClass('accounts-text-field')
       .addClass('ynab-grid-cell-toolkit-check-number-input')
-      .blur(function() {
+      .blur(function () {
         transaction.set('checkNumber', $(this).val());
       });
 

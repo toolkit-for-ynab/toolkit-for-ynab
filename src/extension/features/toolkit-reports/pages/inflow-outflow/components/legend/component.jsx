@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { Currency } from 'toolkit-reports/common/components/currency';
 import './styles.scss';
 
-export const Legend = props => (
+export const Legend = (props) => (
   <React.Fragment>
     <div className="tk-mg-05 tk-pd-r-1 tk-border-r">
       <div className="tk-flex tk-mg-b-05 tk-align-items-center">

@@ -27,11 +27,6 @@ export class HideTotalAvailable extends Feature {
       return;
     }
 
-    $(headingEl)
-      .nextUntil('hr')
-      .addBack()
-      .next()
-      .addBack()
-      .addClass('hidden');
+    $(headingEl).nextUntil('hr').addBack().next().addBack().addClass('hidden');
   }
 }

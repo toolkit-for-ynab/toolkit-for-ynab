@@ -9,7 +9,12 @@ import { ALL_OTHER_DATA_COLOR, PIE_CHART_COLORS } from 'toolkit-reports/common/c
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
 import './styles.scss';
 
-const createPayeeMap = payee => new Map([['payee', payee], ['total', 0], ['transactions', []]]);
+const createPayeeMap = (payee) =>
+  new Map([
+    ['payee', payee],
+    ['total', 0],
+    ['transactions', []],
+  ]);
 
 export class SpendingByPayeeComponent extends React.Component {
   _subCategoriesCollection = Collections.subCategoriesCollection;
@@ -59,15 +64,14 @@ export class SpendingByPayeeComponent extends React.Component {
   _calculateData() {
     const spendingByPayeeData = new Map();
 
-    this.props.filteredTransactions.forEach(transaction => {
+    this.props.filteredTransactions.forEach((transaction) => {
       if (transaction.getIsOnBudgetTransfer()) {
         return;
       }
 
       const transactionSubCategoryId = transaction.get('subCategoryId');
-      const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(
-        transactionSubCategoryId
-      );
+      const transactionSubCategory =
+        this._subCategoriesCollection.findItemByEntityId(transactionSubCategoryId);
       if (!transactionSubCategory || transactionSubCategory.isImmediateIncomeCategory()) {
         return;
       }
@@ -97,7 +101,7 @@ export class SpendingByPayeeComponent extends React.Component {
     );
   }
 
-  _onLegendDataHover = hoveredId => {
+  _onLegendDataHover = (hoveredId) => {
     const { chart } = this.state;
     if (!chart) {
       return;
@@ -107,7 +111,7 @@ export class SpendingByPayeeComponent extends React.Component {
       return;
     }
 
-    chart.series[0].points.forEach(point => {
+    chart.series[0].points.forEach((point) => {
       if (point.id === hoveredId) {
         point.setState('hover');
       } else {
@@ -140,7 +144,7 @@ export class SpendingByPayeeComponent extends React.Component {
         seriesData.push({
           color: PIE_CHART_COLORS[payeeIndex % PIE_CHART_COLORS.length],
           events: {
-            click: event => {
+            click: (event) => {
               showTransactionModal(event.point.name, event.point.transactions);
             },
           },
@@ -167,7 +171,7 @@ export class SpendingByPayeeComponent extends React.Component {
       plotOptions: {
         series: {
           dataLabels: {
-            formatter: function() {
+            formatter: function () {
               let formattedNumber = formatCurrency(this.y);
               return `${this.point.name}<br><span class="currency">${formattedNumber} (${Math.round(
                 this.percentage
@@ -214,7 +218,7 @@ export class SpendingByPayeeComponent extends React.Component {
       .sort((a, b) => {
         return a.get('total') - b.get('total');
       })
-      .map(payeeData => {
+      .map((payeeData) => {
         return new Map([
           ['source', payeeData.get('payee')],
           ['total', payeeData.get('total') * -1],

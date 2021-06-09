@@ -2,7 +2,7 @@
  * Clear a transaction by clicking on the clear button
  * @param {Transaction} transaction The transaction to clear
  */
-export const setTransactionCleared = transaction => {
+export const setTransactionCleared = (transaction) => {
   if (transaction && transaction.entityId && !transaction.isTombstone) {
     let selector = `[data-row-id='${transaction.entityId}'] .ynab-grid-cell-cleared`;
     let element = document.querySelector(selector);
@@ -17,7 +17,7 @@ export const setTransactionCleared = transaction => {
  * @param {Array} array Array to generate powerset for
  * @return {Array<Array>} Array of a all possible subsets
  */
-export const generatePowerset = array => {
+export const generatePowerset = (array) => {
   let result = [];
   result.push([]);
 
@@ -43,7 +43,7 @@ export const generatePowerset = array => {
  */
 export const findMatchingSum = (transactionsPowerset, target) => {
   let matchingTargets = [];
-  transactionsPowerset.forEach(transactionArray => {
+  transactionsPowerset.forEach((transactionArray) => {
     let sum = transactionArray.reduce(transactionReducer, 0);
     let precision = 0.001;
     if (Math.abs(sum - target) < precision) {

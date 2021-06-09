@@ -31,7 +31,7 @@ async function uploadToWebStore(environmentVariables) {
   let results = glob.sync(path.join(extensionDistPath, '*.zip'));
 
   // Remove our 'source' zip.
-  results = results.filter(result => result.indexOf('source') < 0);
+  results = results.filter((result) => result.indexOf('source') < 0);
 
   if (results.length < 1) {
     console.error("Found no extension to upload, ensure you've built first.");
@@ -104,7 +104,7 @@ async function uploadSourcemapsToSentry({ sentryAuthToken }) {
   glob(`${extensionDistPath}/**/*.{js,map}`, async (_, files) => {
     try {
       await Promise.all(
-        files.map(filePath => {
+        files.map((filePath) => {
           return new Promise((resolve, reject) => {
             request(
               {
@@ -119,7 +119,7 @@ async function uploadSourcemapsToSentry({ sentryAuthToken }) {
                 method: 'POST',
                 url: `https://sentry.io/api/0/projects/toolkit-for-ynab/toolkit-for-ynab/releases/${version}/files/`,
               },
-              error => {
+              (error) => {
                 if (error) {
                   console.log(`${filePath}: failure`);
                   return reject();
