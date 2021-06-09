@@ -26,7 +26,7 @@ export const NEW_DATAPOINT = () => {
  * @param {*} reportedTransactions The transactions used to calculate the running total
  * @return {Map} Map of account ids to their datapointsMap (date -> datapoint)
  */
-export const generateRunningBalanceMap = reportedTransactions => {
+export const generateRunningBalanceMap = (reportedTransactions) => {
   let calculatedRunningBalanceMap = new Map();
   if (reportedTransactions.length === 0) return calculatedRunningBalanceMap;
 
@@ -62,12 +62,12 @@ export const generateRunningBalanceMap = reportedTransactions => {
  * @param {*} transactions The transactions to use
  * @return {Map} accountToTransactionsMap A Map containing account ids and their corresponding transactions
  */
-export const mapAccountsToTransactions = transactions => {
+export const mapAccountsToTransactions = (transactions) => {
   let accountToTransactionsMap = new Map();
   if (!transactions) return accountToTransactionsMap;
 
   // Map each transaction to their respective account id. AccountID => [t1, t2, ... , tn]
-  transactions.forEach(transaction => {
+  transactions.forEach((transaction) => {
     if (transaction && transaction.accountId) {
       let accountId = transaction.accountId;
       if (!accountToTransactionsMap.has(accountId)) {
@@ -87,16 +87,14 @@ export const mapAccountsToTransactions = transactions => {
  * @param {*} transactions The transactions to use
  * @return {Map} dateToTransactionsmap A Map containing dates and their corresponding transactions in that date
  */
-export const mapDateToTransactions = transactions => {
+export const mapDateToTransactions = (transactions) => {
   let dateToTransactionsMap = new Map();
   if (!transactions) return dateToTransactionsMap;
 
   // Map each transaction to their respective dates. DateUTC => [t1, t2, ... , tn]
-  transactions.forEach(transaction => {
+  transactions.forEach((transaction) => {
     if (transaction && transaction.date) {
-      let date = moment(transaction.date.getUTCTime())
-        .utc()
-        .valueOf();
+      let date = moment(transaction.date.getUTCTime()).utc().valueOf();
       if (!dateToTransactionsMap.has(date)) {
         dateToTransactionsMap.set(date, []);
       }
@@ -154,7 +152,7 @@ export const generateDataPointsForAccount = (
     let accountTransactionsForDay = [];
     if (dateToAllTransactions.has(datapointKey)) {
       let transactionsOnDate = dateToAllTransactions.get(datapointKey);
-      accountTransactionsForDay = transactionsOnDate.filter(transaction => {
+      accountTransactionsForDay = transactionsOnDate.filter((transaction) => {
         return transaction.accountId && transaction.accountId === accountId;
       });
     }
@@ -182,7 +180,7 @@ export const generateDataPointsForAccount = (
  * @param {Map} dataPointsMap Map of dates in UTC to data
  * @returns {Array} Array containing the HighChart Points
  */
-export const dataPointsToHighChartSeries = dataPointsMap => {
+export const dataPointsToHighChartSeries = (dataPointsMap) => {
   let resultData = [];
   dataPointsMap.forEach((datapoint, date) => {
     resultData.push({
@@ -200,8 +198,8 @@ export const dataPointsToHighChartSeries = dataPointsMap => {
  * @param {*} datapoints The datapoints to generate the trendline for
  * @return {Array} array of datapoints for the trendline
  */
-export const generateTrendLine = datapoints => {
-  let normalizedDataPoints = datapoints.map(datapoint => [datapoint.x, datapoint.y]);
+export const generateTrendLine = (datapoints) => {
+  let normalizedDataPoints = datapoints.map((datapoint) => [datapoint.x, datapoint.y]);
   let linearRegression = regression.linear(normalizedDataPoints, { precision: 10 });
   return linearRegression.points;
 };
@@ -212,9 +210,9 @@ export const generateTrendLine = datapoints => {
  * @param {} datapointsArray
  * @return {Map} Single map of dateUTC to corresponding datapoints
  */
-export const combineDataPoints = datapointsArray => {
+export const combineDataPoints = (datapointsArray) => {
   let combinedDataPoints = new Map();
-  datapointsArray.forEach(datapoints => {
+  datapointsArray.forEach((datapoints) => {
     datapoints.forEach((data, dateUTC) => {
       if (!combinedDataPoints.has(dateUTC)) {
         combinedDataPoints.set(dateUTC, NEW_DATAPOINT());
@@ -250,6 +248,6 @@ export const applyDateFiltersToDataPoints = (fromDate, toDate, datapoints) => {
  * Check if a given series has reached the number of datapoints limit
  * @param {Object} series The individual series to check
  */
-export const checkSeriesLimitReached = series => {
+export const checkSeriesLimitReached = (series) => {
   return series && series.data && series.data.length >= NUM_DATAPOINTS_LIMIT;
 };

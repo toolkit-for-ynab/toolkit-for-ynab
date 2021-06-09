@@ -15,21 +15,21 @@ function ensureSettingIsValid(name, value) {
 }
 
 export function getUserSettings() {
-  return new Promise(function(resolve) {
-    storage.getStoredFeatureSettings().then(storedFeatureSettings => {
-      const settingPromises = allToolkitSettings.map(setting => {
+  return new Promise(function (resolve) {
+    storage.getStoredFeatureSettings().then((storedFeatureSettings) => {
+      const settingPromises = allToolkitSettings.map((setting) => {
         const settingIsPersisted = storedFeatureSettings.includes(setting.name);
 
         if (settingIsPersisted) {
           return storage
             .getFeatureSetting(setting.name)
-            .then(persistedValue => ensureSettingIsValid(setting.name, persistedValue));
+            .then((persistedValue) => ensureSettingIsValid(setting.name, persistedValue));
         }
 
         const migrationSetting = settingMigrationMap[setting.name];
         if (migrationSetting && storedFeatureSettings.includes(migrationSetting.oldSettingName)) {
           const { oldSettingName, settingMapping } = migrationSetting;
-          return storage.getFeatureSetting(oldSettingName).then(oldPersistedValue => {
+          return storage.getFeatureSetting(oldSettingName).then((oldPersistedValue) => {
             let newSetting = oldPersistedValue;
             if (settingMapping) {
               newSetting = settingMapping[oldPersistedValue];
@@ -46,7 +46,7 @@ export function getUserSettings() {
           .then(() => storage.getFeatureSetting(setting.name));
       });
 
-      Promise.all(settingPromises).then(persistedSettings => {
+      Promise.all(settingPromises).then((persistedSettings) => {
         const userSettings = allToolkitSettings.reduce((allSettings, currentSetting, index) => {
           allSettings[currentSetting.name] = persistedSettings[index];
           return allSettings;

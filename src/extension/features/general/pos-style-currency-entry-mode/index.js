@@ -13,9 +13,8 @@ export class POSStyleCurrencyEntryMode extends Feature {
   }
 
   shouldInvoke() {
-    const {
-      currencyFormatter,
-    } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
+    const { currencyFormatter } =
+      ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
 
     this.currencyFormatter = currencyFormatter;
     this.accountCurrency = currencyFormatter.getCurrency();
@@ -33,13 +32,12 @@ export class POSStyleCurrencyEntryMode extends Feature {
     const self = this;
 
     const newCurrencyInputComponent = componentLookup(name);
-    const originalNewCurrencyInputComponentActions = Object.getPrototypeOf(
-      newCurrencyInputComponent
-    ).actions;
+    const originalNewCurrencyInputComponentActions =
+      Object.getPrototypeOf(newCurrencyInputComponent).actions;
     const originalNewCurrencyInputComponentCallback =
       originalNewCurrencyInputComponentActions.commitValue;
 
-    originalNewCurrencyInputComponentActions.commitValue = function() {
+    originalNewCurrencyInputComponentActions.commitValue = function () {
       const newArgs = [].slice.call(arguments);
       newArgs.push(self, originalNewCurrencyInputComponentCallback);
       self.commitValueWrapper.apply(this, newArgs);

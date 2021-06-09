@@ -22,7 +22,7 @@ export class CompactIncomeVsExpense extends Feature {
     $('.reports-income-expense').off('scroll');
 
     // Re-implement default behavior, but with modifications to the fixed-position header
-    $('.reports-income-expense').scroll(function(e) {
+    $('.reports-income-expense').scroll(function (e) {
       var r = $('.income-expense-header');
       var scrollTop = $('.ember-view.reports-income-expense').scrollTop();
       var scrollLeft = $('.ember-view.reports-income-expense').scrollLeft();

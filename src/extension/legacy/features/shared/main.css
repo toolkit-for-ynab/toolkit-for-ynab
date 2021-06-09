@@ -93,8 +93,8 @@
 .toolkit-modal-actions button {
   background: #009cc2;
   color: #fff;
-  padding: .5em 1em;
-  border-radius: .5em;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
 }
 
 .toolkit-modal-actions button:hover {

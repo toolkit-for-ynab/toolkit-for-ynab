@@ -59,7 +59,7 @@ export class HideClosedAccounts extends Feature {
     addToolkitEmberHook(this, 'settings-menu', 'didRender', this.insertHideClosed);
   }
 
-  setHiddenState = state => {
+  setHiddenState = (state) => {
     setToolkitStorageKey('hide-closed', state);
     if (state) {
       $('body').addClass('tk-hide-closed');

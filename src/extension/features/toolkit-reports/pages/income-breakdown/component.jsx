@@ -43,13 +43,8 @@ export class IncomeBreakdownComponent extends React.Component {
   }
 
   render() {
-    const {
-      showIncome,
-      showExpense,
-      showSubCategories,
-      showLossGain,
-      groupPositiveCategories,
-    } = this.state;
+    const { showIncome, showExpense, showSubCategories, showLossGain, groupPositiveCategories } =
+      this.state;
     return (
       <div className="tk-flex-grow tk-flex tk-flex-column">
         <div className="tk-flex tk-pd-05 tk-border-b">
@@ -140,15 +135,14 @@ export class IncomeBreakdownComponent extends React.Component {
     const incomes = new Map();
     const expenses = new Map();
 
-    this.props.filteredTransactions.forEach(transaction => {
+    this.props.filteredTransactions.forEach((transaction) => {
       const transactionSubCategoryId = transaction.get('subCategoryId');
       if (!transactionSubCategoryId) {
         return;
       }
 
-      const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(
-        transactionSubCategoryId
-      );
+      const transactionSubCategory =
+        this._subCategoriesCollection.findItemByEntityId(transactionSubCategoryId);
       if (!transactionSubCategory) {
         return;
       }
@@ -287,7 +281,7 @@ export class IncomeBreakdownComponent extends React.Component {
     }
     if (showExpense) {
       categorySeries = categorySeries.sort((a, b) => b.masterEntry.weight - a.masterEntry.weight);
-      categorySeries.forEach(categorySerie => {
+      categorySeries.forEach((categorySerie) => {
         seriesData.push(categorySerie.masterEntry);
         if (showSubCategories) {
           seriesData.push(...categorySerie.subEntries);
@@ -342,10 +336,10 @@ export class IncomeBreakdownComponent extends React.Component {
     const { totalIncome, seriesData } = this._getSeriesData();
     const linksHover = (point, state) => {
       if (point.isNode) {
-        point.linksTo.forEach(l => {
+        point.linksTo.forEach((l) => {
           l.setState(state);
         });
-        point.linksFrom.forEach(l => {
+        point.linksFrom.forEach((l) => {
           l.setState(state);
         });
       }
@@ -363,24 +357,24 @@ export class IncomeBreakdownComponent extends React.Component {
         sankey: {
           point: {
             events: {
-              mouseOut: function() {
+              mouseOut: function () {
                 linksHover(this, '');
               },
-              mouseOver: function() {
+              mouseOver: function () {
                 linksHover(this, 'hover');
               },
             },
           },
           tooltip: {
             headerFormat: '',
-            pointFormatter: function() {
+            pointFormatter: function () {
               const formattedNumber = formatCurrency(this.weight);
               const percentage = (this.weight / totalIncome) * 100;
               return `${this.fromNode.name} → ${
                 this.toNode.name
               }: <b>${formattedNumber} (${percentage.toFixed(2)}%)</b>`;
             },
-            nodeFormatter: function() {
+            nodeFormatter: function () {
               let formattedNumber = formatCurrency(this.sum);
               return `${this.name}: <b>${formattedNumber}</b>`;
             },

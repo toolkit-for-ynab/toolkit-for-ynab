@@ -56,3 +56,7 @@ body.theme-dark {
   z-index: 9999;
   background-color: var(--tk-modal-backdrop);
 }
+
+.tk-hidden {
+  display: none !important;
+}

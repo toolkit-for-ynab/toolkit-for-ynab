@@ -23,7 +23,7 @@ export const RunningBalanceGraph = ({ series }) => {
           style: { color: textColor },
         },
         labels: {
-          formatter: e => {
+          formatter: (e) => {
             return formatCurrency(e.value, false);
           },
           style: { color: textColor },
@@ -57,7 +57,7 @@ export const RunningBalanceGraph = ({ series }) => {
       },
       tooltip: {
         useHTML: true,
-        pointFormatter: function() {
+        pointFormatter: function () {
           let coloredPoint = `<span style="color:${this.color}">\u25CF</span>`;
           let totalAmount = formatCurrency(this.y, false);
           let tooltip = `${coloredPoint} ${this.series.name}: <b>${totalAmount}</b><br/>`;
@@ -78,14 +78,14 @@ export const RunningBalanceGraph = ({ series }) => {
           turboThreshold: NUM_DATAPOINTS_LIMIT,
           cursor: 'pointer',
           events: {
-            click: event => {
+            click: (event) => {
               if (event.point.transactions && event.point.transactions.length > 0) {
                 let date = new Date(event.point.x);
                 let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date);
                 showTransactionModal(formattedDate, event.point.transactions);
               }
             },
-            legendItemClick: event => {
+            legendItemClick: (event) => {
               event.preventDefault(); // Prevent toggling via the legend
             },
           },

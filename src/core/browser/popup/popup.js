@@ -38,7 +38,7 @@ export class Popup {
     );
   }
 
-  _applyDarkMode = isDarkMode => {
+  _applyDarkMode = (isDarkMode) => {
     if (isDarkMode) {
       $('body').addClass('inverted');
     } else {
@@ -56,7 +56,7 @@ export class Popup {
     }
   };
 
-  _toggleToolkitDisabledUI = isToolkitDisabled => {
+  _toggleToolkitDisabledUI = (isToolkitDisabled) => {
     const logoPath = `assets/images/logos/toolkitforynab-logo-200${
       isToolkitDisabled ? '-disabled' : ''
     }.png`;
@@ -70,7 +70,7 @@ export class Popup {
   _toggleToolkitDisabledSetting = () => {
     this._storage
       .getFeatureSetting(TOOLKIT_DISABLED_FEATURE_SETTING, { default: false })
-      .then(isDisabled => {
+      .then((isDisabled) => {
         this._storage.setFeatureSetting(TOOLKIT_DISABLED_FEATURE_SETTING, !isDisabled);
       });
   };

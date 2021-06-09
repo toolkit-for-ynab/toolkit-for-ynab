@@ -1,8 +1,8 @@
 ::-webkit-scrollbar {
-   width: 6px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-   border-radius: 3px;
-   background: rgba(0,89,111,0.6);
+  border-radius: 3px;
+  background: rgba(0, 89, 111, 0.6);
 }

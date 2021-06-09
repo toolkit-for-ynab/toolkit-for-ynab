@@ -42,7 +42,7 @@ export class IncomeFromLastMonth extends Feature {
         }
         if (isSplit) {
           let subTransactionIncomes = 0;
-          transaction.get('subTransactions').forEach(subTransaction => {
+          transaction.get('subTransactions').forEach((subTransaction) => {
             const subTransactionSubCategory = subTransaction.get('subCategory');
             const subTransactionAmount = subTransaction.get('amount');
 

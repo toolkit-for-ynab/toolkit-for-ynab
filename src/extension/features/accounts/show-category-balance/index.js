@@ -20,7 +20,7 @@ export class ShowCategoryBalance extends Feature {
       'register/grid-split',
     ];
 
-    valueColumns.forEach(key => {
+    valueColumns.forEach((key) => {
       addToolkitEmberHook(this, key, 'didRender', this.addCategoryBalance);
     });
   }

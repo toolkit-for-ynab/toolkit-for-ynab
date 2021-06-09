@@ -76,10 +76,7 @@ export class ToolkitReports extends Feature {
     $(TOOLKIT_REPORTS_NAVLINK_SELECTOR).removeClass('active');
 
     // Show the current ynab report
-    $(YNAB_CONTENT_CONTAINER_SELECTOR)
-      .children()
-      .first()
-      .show();
+    $(YNAB_CONTENT_CONTAINER_SELECTOR).children().first().show();
 
     // Unmount and hide the toolkit's report
     const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
@@ -89,7 +86,7 @@ export class ToolkitReports extends Feature {
 
     // Update the nav with the active indicator
     const $currentTarget = $(event.currentTarget);
-    if (YNAB_NAVLINK_CLASSES.some(className => $currentTarget.hasClass(className))) {
+    if (YNAB_NAVLINK_CLASSES.some((className) => $currentTarget.hasClass(className))) {
       $currentTarget.addClass('active');
     } else if ($currentTarget.hasClass(YNAB_NAVACCOUNT_CLASS)) {
       $currentTarget.addClass('is-selected');
@@ -99,10 +96,7 @@ export class ToolkitReports extends Feature {
   _renderToolkitReports() {
     setTimeout(() => {
       // Hide the ynab report
-      $(YNAB_CONTENT_CONTAINER_SELECTOR)
-        .children()
-        .first()
-        .hide();
+      $(YNAB_CONTENT_CONTAINER_SELECTOR).children().first().hide();
 
       // Display the toolkit's report
       const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);

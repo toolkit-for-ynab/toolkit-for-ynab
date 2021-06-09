@@ -18,12 +18,8 @@ export class CalendarFirstDay extends Feature {
     let shiftDays = this.shiftDays();
     // Shift the header items by number of days (only needs to happen once)
     for (var i = 0; i < shiftDays; i++) {
-      let first = $('.accounts-calendar-weekdays')
-        .children()
-        .first();
-      let last = $('.accounts-calendar-weekdays')
-        .children()
-        .last();
+      let first = $('.accounts-calendar-weekdays').children().first();
+      let last = $('.accounts-calendar-weekdays').children().last();
       first.insertAfter(last);
     }
     this.reRenderWeekdays();
@@ -40,9 +36,7 @@ export class CalendarFirstDay extends Feature {
 
     if ($('.accounts-calendar-empty', $originalAccountsCalendarGrid).length >= shiftDays) {
       // Remove specific # of empty elements
-      $('.accounts-calendar-empty', $originalAccountsCalendarGrid)
-        .slice(-shiftDays)
-        .remove();
+      $('.accounts-calendar-empty', $originalAccountsCalendarGrid).slice(-shiftDays).remove();
     } else {
       // Add 'shift' empty elements
       for (var j = 0; j < 7 - shiftDays; j++) {

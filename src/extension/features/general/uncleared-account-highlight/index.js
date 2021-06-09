@@ -40,7 +40,7 @@ export class UnclearedAccountHighlight extends Feature {
     let hasOtherNavAccountRightIcons = false;
     const navAccounts = element.querySelectorAll('.nav-account-row');
 
-    navAccounts.forEach(navAccount => {
+    navAccounts.forEach((navAccount) => {
       const emberView = getEmberView(navAccount.id);
       if (!emberView) {
         return;

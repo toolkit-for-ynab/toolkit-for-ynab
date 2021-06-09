@@ -11,7 +11,7 @@ function getViewZeroAsEmptySetting() {
   return ViewZeroAsEmpty;
 }
 
-export const MonthlyTotalsRow = props => {
+export const MonthlyTotalsRow = (props) => {
   const allMonthsTotal =
     props.monthlyTotals &&
     props.monthlyTotals.reduce((reduced, monthData) => reduced + monthData.get('total'), 0);
@@ -28,7 +28,7 @@ export const MonthlyTotalsRow = props => {
       )}
       {props.monthlyTotals && (
         <React.Fragment>
-          {props.monthlyTotals.map(monthData => {
+          {props.monthlyTotals.map((monthData) => {
             const total = monthData.get('total');
             const suffix = total < 0 ? '--negative' : '--positive';
             const className = classnames('tk-monthly-totals-row__data-cell', {

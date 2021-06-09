@@ -35,10 +35,7 @@ export class LinkToInflows extends Feature {
     const localizedHeading = l10n('inspector.totalIncome', 'TOTAL INFLOWS');
     const inflowsHeadingEl = budgetInspector.find(`h3:contains(${localizedHeading})`)[0];
 
-    $(inflowsHeadingEl)
-      .next()
-      .addBack()
-      .wrapAll('<span class="toolkit-total-inflows" />');
+    $(inflowsHeadingEl).next().addBack().wrapAll('<span class="toolkit-total-inflows" />');
 
     $('.toolkit-total-inflows').click(this.onClick);
   }

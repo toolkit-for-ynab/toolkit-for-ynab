@@ -9,7 +9,7 @@ const ToggleButton = ({ longTitle, stateField }) => {
   const accountsController = controllerLookup('accounts');
   const [isToggled, setIsToggled] = React.useState(accountsController.get(`filters.${stateField}`));
 
-  const observer = React.useCallback(filters => {
+  const observer = React.useCallback((filters) => {
     setIsToggled(filters.get(stateField));
   });
 
@@ -56,7 +56,7 @@ export class ToggleTransactionFilters extends Feature {
     return require('./index.css');
   }
 
-  injectButtons = element => {
+  injectButtons = (element) => {
     const toolbarRight = $('.accounts-toolbar-right', element);
     if ($('#tk-toggle-transaction-filters', toolbarRight).length) {
       return;

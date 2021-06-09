@@ -59,7 +59,7 @@ export class ReconcileBalance extends Feature {
    * @param {String} accountId The account id to get the reconciled balance for
    * @returns {Number} balance The reconciled balance of the account
    */
-  _calculateReconciledBalance = accountId => {
+  _calculateReconciledBalance = (accountId) => {
     const account = getEntityManager().getAccountById(accountId);
 
     return account.getTransactions().reduce((reduced, transaction) => {
@@ -75,7 +75,7 @@ export class ReconcileBalance extends Feature {
    * Helper method to show and hide the reconcile balance container
    * @param {Boolean} visible True to show the container, false to hide
    */
-  _setFeatureVisibility = visible => {
+  _setFeatureVisibility = (visible) => {
     let featureContainer = $('.tk-accounts-header-balances-reconciled');
     if (featureContainer && featureContainer.length) {
       featureContainer.toggle(visible);
