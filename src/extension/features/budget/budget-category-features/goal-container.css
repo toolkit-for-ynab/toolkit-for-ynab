@@ -12,6 +12,15 @@
   font-size: 0.8em;
   margin-left: auto;
 
-  width: 15%;
+  width: 18%;
   justify-content: flex-end !important;
+}
+
+@media only screen and (max-width: 1650px) {
+  .tk-budget-table-cell-goal,
+  .budget-table-container .budget-table-cell-activity,
+  .budget-table-container .budget-table-cell-available,
+  .budget-table-container .budget-table-cell-budgeted {
+    width: 15%;
+  }
 }
