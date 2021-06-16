@@ -119,16 +119,20 @@ export class ColourBlindMode extends Feature {
   calculateAccents(hex) {
     var hsl = hexToHsl(hex);
 
-    var darkest = hslToHex(hsl[0], hsl[1], hsl[2] * 0.2);
-    var darker = hslToHex(hsl[0], hsl[1], hsl[2] * 0.6);
-    var lighter = hslToHex(hsl[0], hsl[1], Math.min(hsl[2] + 0.05, 1));
-    var lightest = hslToHex(hsl[0], hsl[1], hsl[2] + (1 - hsl[2]) * 0.85);
+    var dark3 = hslToHex(hsl[0], hsl[1], hsl[2] * 0.2);
+    var dark2 = hslToHex(hsl[0], hsl[1], hsl[2] * 0.4);
+    var dark1 = hslToHex(hsl[0], hsl[1], hsl[2] * 0.6);
+    var light1 = hslToHex(hsl[0], hsl[1], hsl[2] + (1 - hsl[2]) * 0.4);
+    var light2 = hslToHex(hsl[0], hsl[1], hsl[2] + (1 - hsl[2]) * 0.6);
+    var light3 = hslToHex(hsl[0], hsl[1], hsl[2] + (1 - hsl[2]) * 0.8);
 
     return {
-      darkest: darkest,
-      darker: darker,
-      lighter: lighter,
-      lightest: lightest,
+      dark3: dark3,
+      dark2: dark2,
+      dark1: dark1,
+      light1: light1,
+      light2: light2,
+      light3: light3,
     };
   }
 
@@ -136,23 +140,25 @@ export class ColourBlindMode extends Feature {
     if (hex) {
       var accents = this.calculateAccents(hex);
       document.body.style.setProperty(`--tk-colour-blind-${name}`, hex);
-      document.body.style.setProperty(`--tk-colour-blind-${name}-darkest`, accents.darkest);
-      document.body.style.setProperty(`--tk-colour-blind-${name}-darker`, accents.darker);
-      document.body.style.setProperty(`--tk-colour-blind-${name}-lighter`, accents.lighter);
-      document.body.style.setProperty(`--tk-colour-blind-${name}-lightest`, accents.lightest);
+      document.body.style.setProperty(`--tk-colour-blind-${name}-dark3`, accents.dark3);
+      document.body.style.setProperty(`--tk-colour-blind-${name}-dark2`, accents.dark2);
+      document.body.style.setProperty(`--tk-colour-blind-${name}-dark1`, accents.dark1);
+      document.body.style.setProperty(`--tk-colour-blind-${name}-light1`, accents.light1);
+      document.body.style.setProperty(`--tk-colour-blind-${name}-light2`, accents.light2);
+      document.body.style.setProperty(`--tk-colour-blind-${name}-light3`, accents.light3);
     } else {
       document.body.style.removeProperty(`--tk-colour-blind-${name}`);
-      document.body.style.removeProperty(`--tk-colour-blind-${name}-darkest`);
-      document.body.style.removeProperty(`--tk-colour-blind-${name}-darker`);
-      document.body.style.removeProperty(`--tk-colour-blind-${name}-lighter`);
-      document.body.style.removeProperty(`--tk-colour-blind-${name}-lightest`);
+      document.body.style.removeProperty(`--tk-colour-blind-${name}-dark3`);
+      document.body.style.removeProperty(`--tk-colour-blind-${name}-dark2`);
+      document.body.style.removeProperty(`--tk-colour-blind-${name}-dark1`);
+      document.body.style.removeProperty(`--tk-colour-blind-${name}-light1`);
+      document.body.style.removeProperty(`--tk-colour-blind-${name}-light2`);
+      document.body.style.removeProperty(`--tk-colour-blind-${name}-light3`);
     }
   }
 
   getColour(name) {
-    return getComputedStyle(document.body)
-      .getPropertyValue(`--tk-colour-blind-${name}`)
-      .trim();
+    return getComputedStyle(document.body).getPropertyValue(`--tk-colour-blind-${name}`).trim();
   }
 
   saveColour(name, hex) {
@@ -197,21 +203,23 @@ export class ColourBlindMode extends Feature {
         <div class="tk-colour-blind-${name}">
           <input type="color" value="${value}" style="background-color: ${value};"></input>
           <div class="tk-colour-blind-accents">
-            <div style="background-color: var(--tk-colour-blind-${name}-lightest);"></div>
-            <div style="background-color: var(--tk-colour-blind-${name}-lighter);"></div>
-            <div style="background-color: var(--tk-colour-blind-${name}-darker);"></div>
-            <div style="background-color: var(--tk-colour-blind-${name}-darkest);"></div>
+            <div style="background-color: var(--tk-colour-blind-${name}-light3);"></div>
+            <div style="background-color: var(--tk-colour-blind-${name}-light2);"></div>
+            <div style="background-color: var(--tk-colour-blind-${name}-light1);"></div>
+            <div style="background-color: var(--tk-colour-blind-${name}-dark1);"></div>
+            <div style="background-color: var(--tk-colour-blind-${name}-dark2);"></div>
+            <div style="background-color: var(--tk-colour-blind-${name}-dark3);"></div>
           </div>
         </div>
         <div class="ynab-new-theme-switcher-label">${label}</div>
       </button>`
     );
 
-    $('input', button).on('input', e => {
+    $('input', button).on('input', (e) => {
       this.setColour(name, e.target.value);
     });
 
-    button.on('click', e => {
+    button.on('click', (e) => {
       let input = $('input', button);
       if (e.target !== input.get(0)) {
         input.trigger('click');
