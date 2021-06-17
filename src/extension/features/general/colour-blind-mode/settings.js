@@ -5,5 +5,5 @@ module.exports = {
   section: 'general',
   title: 'Colour Blind Mode',
   description:
-    'Changes colours like red, yellow and green in the interface to colours and shapes that are more easily distinguishable by colourblind people.',
+    'Changes colours like red, yellow and green in the interface to colours and shapes that are more easily distinguishable by colourblind people. Colours and shapes are configurable in YNAB Display Options.',
 };
