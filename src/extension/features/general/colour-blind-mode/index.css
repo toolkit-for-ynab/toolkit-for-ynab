@@ -1,81 +1,8 @@
 body {
-  /* Accents here are fallback values - they should be overwritten */
-  /* by generated values when the feature loads */
-
-  /* light3 is the lightest, dark3 is the darkest - smaller numbers are closer to the main colour */
-  --tk-colour-blind-positive-light3: #dbfff5;
-  --tk-colour-blind-positive-light2: #00d69d;
-  --tk-colour-blind-positive-light1: #00b887;
+  /* Default values */
   --tk-colour-blind-positive: #009e73;
-  --tk-colour-blind-positive-dark1: #0d4a3a;
-  --tk-colour-blind-positive-dark2: #004d38;
-  --tk-colour-blind-positive-dark3: #082b22;
-
-  --tk-colour-blind-warning-light3: #e8e9fc;
-  --tk-colour-blind-warning-light2: #c9cbf7;
-  --tk-colour-blind-warning-light1: #8e91f0;
   --tk-colour-blind-warning: #797dec;
-  --tk-colour-blind-warning-dark1: #191fb3;
-  --tk-colour-blind-warning-dark2: #12157d;
-  --tk-colour-blind-warning-dark3: #151637;
-
-  --tk-colour-blind-negative-light3: #fff4eb;
-  --tk-colour-blind-negative-light2: #ffbd88;
-  --tk-colour-blind-negative-light1: #f07000;
   --tk-colour-blind-negative: #d55e00;
-  --tk-colour-blind-negative-dark1: #803700;
-  --tk-colour-blind-negative-dark2: #552600;
-  --tk-colour-blind-negative-dark3: #321f11;
-
-  --label_positive: var(--tk-colour-blind-positive) !important;
-  --label_warning: var(--tk-colour-blind-warning) !important;
-  --label_negative: var(--tk-colour-blind-negative) !important;
-  --label_negative_disabled: var(--tk-colour-blind-negative-light1) !important;
-
-  --label_positive_active: var(--tk-colour-blind-positive-dark1) !important;
-  --label_warning_active: var(--tk-colour-blind-warning-dark1) !important;
-  --label_negative_active: var(--tk-colour-blind-negative-dark1) !important;
-
-  --header_label_positive: var(--tk-colour-blind-positive) !important;
-  --header_label_warning: var(--tk-colour-blind-warning) !important;
-  --header_label_negative: var(--tk-colour-blind-negative) !important;
-
-  /* To be budgeted box */
-  --header_tbb_positive_background: var(--tk-colour-blind-positive) !important;
-  --header_tbb_negative_background: var(--tk-colour-blind-negative) !important;
-
-  /* Budget balance backgrounds */
-  --budget_balance_positive_background: var(--tk-colour-blind-positive-light2) !important;
-  --budget_balance_positive_background_active: var(--tk-colour-blind-positive) !important;
-  --budget_balance_warning_background: var(--tk-colour-blind-warning-light2) !important;
-  --budget_balance_warning_background_active: var(--tk-colour-blind-warning) !important;
-  --budget_balance_negative_background: var(--tk-colour-blind-negative-light2) !important;
-  --budget_balance_negative_background_active: var(--tk-colour-blind-negative) !important;
-
-  /* Budget bars */
-  --budget_bar_funded: var(--tk-colour-blind-positive) !important;
-  --budget_bar_funded_spending: var(--tk-colour-blind-positive-light2) !important;
-  --budget_bar_funded_spending_stripe: var(--tk-colour-blind-positive-light3) !important;
-
-  --budget_bar_underfunded: var(--tk-colour-blind-warning) !important;
-  --budget_bar_underfunded_spending: var(--tk-colour-blind-warning-light2) !important;
-  --budget_bar_underfunded_spending_stripe: var(--tk-colour-blind-warning-light3) !important;
-
-  --budget_bar_overspending: var(--tk-colour-blind-negative) !important;
-  --budget_bar_overspending_stripe: var(--tk-colour-blind-negative-light1) !important;
-
-  /* General messages */
-  --message_positive_background: var(--tk-colour-blind-positive-light2) !important;
-  --message_positive_accent: var(--tk-colour-blind-positive-dark1) !important;
-  --message_positive_label: var(--tk-colour-blind-positive-dark3) !important;
-
-  --message_warning_background: var(--tk-colour-blind-warning-light2) !important;
-  --message_warning_accent: var(--tk-colour-blind-warning-dark1) !important;
-  --message_warning_label: var(--tk-colour-blind-warning-dark3) !important;
-
-  --message_negative_background: var(--tk-colour-blind-negative-light2) !important;
-  --message_negative_accent: var(--tk-colour-blind-negative-dark1) !important;
-  --message_negative_label: var(--tk-colour-blind-negative-dark3) !important;
 
   /* Inspector messages - recently replaced with general messages above but still in YNAB stylesheet */
   --inspector_message_positive_background: var(--message_positive_background) !important;
@@ -91,43 +18,106 @@ body {
   --inspector_message_negative_label: var(--message_negative_label) !important;
 }
 
-body.theme-dark {
-  --label_positive_active: var(--tk-colour-blind-positive-light1) !important;
-  --label_warning_active: var(--tk-colour-blind-warning-light1) !important;
-  --label_negative_active: var(--tk-colour-blind-negative-light1) !important;
+/* Default theme */
+body {
+  /*
+    Each accent colour is defined by scaling the base colour in the LCH colour space
+    The accent variables are named --tk-colour-blind-{base}-l{% lightness}c{% chroma}
+    If a new accent variable is referenced it needs to be added to the array in the
+    calculateAccents function in index.js in order to be defined and updated
+  */
 
-  /* Budget balance backgrounds */
-  --budget_balance_positive_background: var(--tk-colour-blind-positive) !important;
-  --budget_balance_positive_background_active: var(--tk-colour-blind-positive-light1) !important;
-  --budget_balance_warning_background: var(--tk-colour-blind-warning) !important;
-  --budget_balance_warning_background_active: var(--tk-colour-blind-warning-light1) !important;
-  --budget_balance_negative_background: var(--tk-colour-blind-negative) !important;
-  --budget_balance_negative_background_active: var(--tk-colour-blind-negative-light1) !important;
-
-  /* Budget bars */
-  --budget_bar_funded: var(--tk-colour-blind-positive) !important;
-  --budget_bar_funded_spending: var(--tk-colour-blind-positive-dark2) !important;
-  --budget_bar_funded_spending_stripe: var(--tk-colour-blind-positive-dark3) !important;
-
-  --budget_bar_underfunded: var(--tk-colour-blind-warning) !important;
-  --budget_bar_underfunded_spending: var(--tk-colour-blind-warning-dark2) !important;
-  --budget_bar_underfunded_spending_stripe: var(--tk-colour-blind-warning-dark3) !important;
-
+  /* Negative */
+  --budget_balance_negative_background: var(--tk-colour-blind-negative-l150c060) !important; 
+  --budget_balance_negative_background_active: var(--tk-colour-blind-negative-l140c075) !important; 
+  --budget_balance_negative_icon: var(--tk-colour-blind-negative-l030c045) !important;
+  --budget_balance_negative_text: var(--tk-colour-blind-negative-l030c045) !important;
   --budget_bar_overspending: var(--tk-colour-blind-negative) !important;
-  --budget_bar_overspending_stripe: var(--tk-colour-blind-negative-dark1) !important;
-
-  /* General messages */
-  --message_positive_background: var(--tk-colour-blind-positive-dark3) !important;
-  --message_positive_accent: var(--tk-colour-blind-positive) !important;
-  --message_positive_label: var(--tk-colour-blind-positive) !important;
-
-  --message_warning_background: var(--tk-colour-blind-warning-dark3) !important;
-  --message_warning_accent: var(--tk-colour-blind-warning) !important;
-  --message_warning_label: var(--tk-colour-blind-warning) !important;
-
-  --message_negative_background: var(--tk-colour-blind-negative-dark3) !important;
+  --budget_bar_overspending_stripe: var(--tk-colour-blind-negative-l150c060) !important;
+  --header_label_negative: var(--tk-colour-blind-negative) !important;
+  --header_tbb_negative_background: var(--tk-colour-blind-negative) !important;
+  --label_negative: var(--tk-colour-blind-negative) !important;
+  --label_negative_active: var(--tk-colour-blind-negative-l045c055) !important;
+  --label_negative_disabled: var(--tk-colour-blind-negative-l150c060) !important;
   --message_negative_accent: var(--tk-colour-blind-negative) !important;
+  --message_negative_background: var(--tk-colour-blind-negative-l160c015) !important;
+  --message_negative_label: var(--tk-colour-blind-negative-l030c045) !important;
+
+  /* Positive */
+  --budget_balance_positive_background: var(--tk-colour-blind-positive-l150c060) !important;
+  --budget_balance_positive_background_active: var(--tk-colour-blind-positive-l140c075) !important;
+  --budget_balance_positive_icon: var(--tk-colour-blind-positive-l030c045) !important;
+  --budget_balance_positive_text: var(--tk-colour-blind-positive-l030c045) !important;
+  --budget_bar_funded: var(--tk-colour-blind-positive) !important;
+  --budget_bar_funded_spending: var(--tk-colour-blind-positive-l140c075) !important;
+  --budget_bar_funded_spending_stripe: var(--tk-colour-blind-positive-l160c015) !important;
+  --header_label_positive: var(--tk-colour-blind-positive) !important;
+  --header_tbb_positive_background: var(--tk-colour-blind-positive) !important; 
+  --label_positive: var(--tk-colour-blind-positive) !important;
+  --label_positive_active: var(--tk-colour-blind-positive-l045c055) !important;
+  --message_positive_accent: var(--tk-colour-blind-positive) !important;
+  --message_positive_background: var(--tk-colour-blind-positive-l160c015) !important;
+  --message_positive_label: var(--tk-colour-blind-positive-l030c045) !important;
+
+  /* Warning */
+  --budget_balance_warning_background: var(--tk-colour-blind-warning-l150c060) !important;
+  --budget_balance_warning_background_active: var(--tk-colour-blind-warning-l140c075) !important;
+  --budget_balance_warning_icon: var(--tk-colour-blind-warning-l030c045) !important;
+  --budget_balance_warning_text: var(--tk-colour-blind-warning-l030c045) !important;
+  --budget_bar_underfunded: var(--tk-colour-blind-warning) !important;
+  --budget_bar_underfunded_spending: var(--tk-colour-blind-warning-l150c060) !important;
+  --budget_bar_underfunded_spending_stripe: var(--tk-colour-blind-warning-l160c015);
+  --label_warning: var(--tk-colour-blind-warning-l045c055) !important;
+  --message_warning_accent: var(--tk-colour-blind-warning) !important;
+  --message_warning_background: var(--tk-colour-blind-warning-l160c015);
+  --message_warning_label: var(--tk-colour-blind-warning-l030c045) !important;
+}
+
+body.theme-dark {
+  /* Negative */
+  --budget_balance_negative_background: var(--tk-colour-blind-negative) !important;
+  --budget_balance_negative_background_active: var(--tk-colour-blind-negative-l110c100) !important;
+  --budget_balance_negative_icon: #232325;
+  --budget_balance_negative_text: #232325;
+  --budget_bar_overspending: var(--tk-colour-blind-negative-l055c090) !important;
+  --budget_bar_overspending_stripe: var(--tk-colour-blind-negative-l025c020) !important;
+  --header_label_negative: var(--tk-colour-blind-negative) !important;
+  --header_tbb_negative_background: var(--tk-colour-blind-negative) !important;
+  --label_negative: var(--tk-colour-blind-negative) !important;
+  --label_negative_active: var(--tk-colour-blind-negative-l110c100) !important;
+  --label_negative_disabled: var(--tk-colour-blind-negative-l120c050) !important;
+  --message_negative_accent: var(--tk-colour-blind-negative) !important;
+  --message_negative_background: var(--tk-colour-blind-negative-l025c020) !important;
   --message_negative_label: var(--tk-colour-blind-negative) !important;
+
+  /* Positive */
+  --budget_balance_positive_background: var(--tk-colour-blind-positive) !important;
+  --budget_balance_positive_background_active: var(--tk-colour-blind-positive-l110c100) !important;
+  --budget_balance_positive_icon: #232325;
+  --budget_balance_positive_text: #232325;
+  --budget_bar_funded: var(--tk-colour-blind-positive) !important;
+  --budget_bar_funded_spending: var(--tk-colour-blind-positive-l045c055) !important; 
+  --budget_bar_funded_spending_stripe: var(--tk-colour-blind-positive-l025c020) !important;
+  --header_label_positive: var(--tk-colour-blind-positive) !important;
+  --header_tbb_positive_background: var(--tk-colour-blind-positive) !important;
+  --label_positive: var(--tk-colour-blind-positive) !important;
+  --label_positive_active: var(--tk-colour-blind-positive-l110c100) !important; 
+  --message_positive_accent: var(--tk-colour-blind-positive) !important; 
+  --message_positive_background: var(--tk-colour-blind-positive-l025c020) !important;
+  --message_positive_label: var(--tk-colour-blind-positive-l110c100) !important; 
+
+  /* Warning */
+  --budget_balance_warning_background: var(--tk-colour-blind-warning) !important;
+  --budget_balance_warning_background_active: var(--tk-colour-blind-warning-l110c100) !important;
+  --budget_balance_warning_icon: #232325;
+  --budget_balance_warning_text: #232325;
+  --budget_bar_underfunded_spending: var(--tk-colour-blind-warning-l045c055) !important;
+  --budget_bar_underfunded_spending_stripe: var(--tk-colour-blind-warning-l025c020) !important;
+  --budget_bar_underfunded: var(--tk-colour-blind-warning) !important;
+  --label_warning: var(--tk-colour-blind-warning-l110c100) !important;
+  --message_warning_accent: var(--tk-colour-blind-warning) !important;
+  --message_warning_background: var(--tk-colour-blind-warning-l025c020) !important;
+  --message_warning_label: var(--tk-colour-blind-warning-l110c100) !important;
 }
 
 /* Square edges for negative values */
@@ -154,19 +144,9 @@ body.theme-dark {
   overflow: hidden;
 }
 
-.tk-colour-blind-accents {
-  display: flex;
-  flex-direction: row;
-}
-
-.tk-colour-blind-accents div {
-  flex-grow: 1;
-  height: 20px;
-}
-
 .tk-colour-blind-option input {
   width: 100%;
-  height: 96px;
+  height: 116px;
   margin: 0px;
   border: 0px;
   border-radius: 0px;

@@ -4,89 +4,83 @@ import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/ut
 const YNAB_THEME_SWITCHER = 'js-ynab-new-theme-switcher-themes';
 const TK_COLOUR_BLIND_OPTION = 'tk-colour-blind-option';
 
-function hslToRgb(h, s, l) {
-  var c = (1 - Math.abs(l * 2 - 1)) * s;
-  var x = c * (1 - Math.abs(((h * 6) % 2) - 1));
-  var m = l - c / 2;
+/*
+MIT License
 
-  var r = 0;
-  var g = 0;
-  var b = 0;
+Copyright (c) 2014 Kevin Kwok <antimatter15@gmail.com>
 
-  h = (h * 6) % 6;
-  if (h >= 0 && h < 1) {
-    r = c;
-    g = x;
-  } else if (h >= 1 && h < 2) {
-    r = x;
-    g = c;
-  } else if (h >= 2 && h < 3) {
-    g = c;
-    b = x;
-  } else if (h >= 3 && h < 4) {
-    g = x;
-    b = c;
-  } else if (h >= 4 && h < 5) {
-    r = x;
-    b = c;
-  } else if (h >= 5 && h < 6) {
-    r = c;
-    b = x;
-  }
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-  return [Math.round((r + m) * 255), Math.round((g + m) * 255), Math.round((b + m) * 255)];
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+function lab2rgb(lab) {
+  var y = (lab[0] + 16) / 116;
+  var x = lab[1] / 500 + y;
+  var z = y - lab[2] / 200;
+  var r;
+  var g;
+  var b;
+
+  x = 0.95047 * (x * x * x > 0.008856 ? x * x * x : (x - 16 / 116) / 7.787);
+  y = 1.0 * (y * y * y > 0.008856 ? y * y * y : (y - 16 / 116) / 7.787);
+  z = 1.08883 * (z * z * z > 0.008856 ? z * z * z : (z - 16 / 116) / 7.787);
+
+  r = x * 3.2406 + y * -1.5372 + z * -0.4986;
+  g = x * -0.9689 + y * 1.8758 + z * 0.0415;
+  b = x * 0.0557 + y * -0.204 + z * 1.057;
+
+  r = r > 0.0031308 ? 1.055 * Math.pow(r, 1 / 2.4) - 0.055 : 12.92 * r;
+  g = g > 0.0031308 ? 1.055 * Math.pow(g, 1 / 2.4) - 0.055 : 12.92 * g;
+  b = b > 0.0031308 ? 1.055 * Math.pow(b, 1 / 2.4) - 0.055 : 12.92 * b;
+
+  return [
+    Math.max(0, Math.min(1, r)) * 255,
+    Math.max(0, Math.min(1, g)) * 255,
+    Math.max(0, Math.min(1, b)) * 255,
+  ];
 }
 
-function rgbToHsl(r, g, b) {
-  r /= 255;
-  g /= 255;
-  b /= 255;
+function rgb2lab(rgb) {
+  var r = rgb[0] / 255;
+  var g = rgb[1] / 255;
+  var b = rgb[2] / 255;
+  var x;
+  var y;
+  var z;
 
-  var max = Math.max(r, g, b);
-  var min = Math.min(r, g, b);
-  var chroma = max - min;
+  r = r > 0.04045 ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
+  g = g > 0.04045 ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
+  b = b > 0.04045 ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
 
-  var h = 0;
-  if (chroma !== 0) {
-    switch (max) {
-      case r:
-        h = ((g - b) / chroma) % 6;
-        if (h < 0) h += 6;
-        break;
-      case g:
-        h = (b - r) / chroma + 2;
-        break;
-      case b:
-        h = (r - g) / chroma + 4;
-        break;
-    }
-    h /= 6;
-  }
+  x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047;
+  y = (r * 0.2126 + g * 0.7152 + b * 0.0722) / 1.0;
+  z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
 
-  var l = (max + min) / 2;
+  x = x > 0.008856 ? Math.pow(x, 1 / 3) : 7.787 * x + 16 / 116;
+  y = y > 0.008856 ? Math.pow(y, 1 / 3) : 7.787 * y + 16 / 116;
+  z = z > 0.008856 ? Math.pow(z, 1 / 3) : 7.787 * z + 16 / 116;
 
-  var s = 0;
-  if (l !== 0 && l !== 1) {
-    s = chroma / (1 - Math.abs(2 * l - 1));
-  }
-
-  return [h, s, l];
+  return [116 * y - 16, 500 * (x - y), 200 * (y - z)];
 }
 
-function rgbToHex(r, g, b) {
-  r = r.toString(16);
-  g = g.toString(16);
-  b = b.toString(16);
+/* END OF LICENSE */
 
-  return (
-    '#' +
-    (r.length === 2 ? r : '0' + r) +
-    (g.length === 2 ? g : '0' + g) +
-    (b.length === 2 ? b : '0' + b)
-  );
-}
-
-function hexToRgb(hex) {
+function hex2rgb(hex) {
   if (hex.length !== 7) {
     return [0, 0, 0];
   }
@@ -98,12 +92,42 @@ function hexToRgb(hex) {
   return [Number.isNaN(r) ? 0 : r, Number.isNaN(g) ? 0 : g, Number.isNaN(b) ? 0 : b];
 }
 
-function hexToHsl(hex) {
-  return rgbToHsl(...hexToRgb(hex));
+function rgb2hex(rgb) {
+  var r = Math.round(rgb[0]).toString(16);
+  var g = Math.round(rgb[1]).toString(16);
+  var b = Math.round(rgb[2]).toString(16);
+
+  return (
+    '#' +
+    (r.length === 2 ? r : '0' + r) +
+    (g.length === 2 ? g : '0' + g) +
+    (b.length === 2 ? b : '0' + b)
+  );
 }
 
-function hslToHex(h, s, l) {
-  return rgbToHex(...hslToRgb(h, s, l));
+function lab2lch(lab) {
+  var c = Math.sqrt(lab[1] * lab[1] + lab[2] * lab[2]);
+  var h = Math.atan2(lab[2], lab[1]);
+  if (h > 0) {
+    h = (h / Math.PI) * 180;
+  } else {
+    h = 360 - (Math.abs(h) / Math.PI) * 180;
+  }
+  return [lab[0], c, h];
+}
+
+function lch2lab(lch) {
+  var a = Math.cos((lch[2] / 180) * Math.PI) * lch[1];
+  var b = Math.sin((lch[2] / 180) * Math.PI) * lch[1];
+  return [lch[0], a, b];
+}
+
+function hexToLch(hex) {
+  return lab2lch(rgb2lab(hex2rgb(hex)));
+}
+
+function lchToHex(l, c, h) {
+  return rgb2hex(lab2rgb(lch2lab([l, c, h])));
 }
 
 export class ColourBlindMode extends Feature {
@@ -116,45 +140,43 @@ export class ColourBlindMode extends Feature {
     return optionMenu.length === 0;
   }
 
-  calculateAccents(hex) {
-    var hsl = hexToHsl(hex);
+  calculateAccentsLch(hex) {
+    var lch = hexToLch(hex);
 
-    var dark3 = hslToHex(hsl[0], hsl[1], hsl[2] * 0.2);
-    var dark2 = hslToHex(hsl[0], hsl[1], hsl[2] * 0.4);
-    var dark1 = hslToHex(hsl[0], hsl[1], hsl[2] * 0.6);
-    var light1 = hslToHex(hsl[0], hsl[1], hsl[2] + (1 - hsl[2]) * 0.4);
-    var light2 = hslToHex(hsl[0], hsl[1], hsl[2] + (1 - hsl[2]) * 0.6);
-    var light3 = hslToHex(hsl[0], hsl[1], hsl[2] + (1 - hsl[2]) * 0.8);
+    var accents = [
+      'l030c045',
+      'l045c055',
+      'l100c100',
+      'l140c075',
+      'l150c060',
+      'l160c015',
+      'l025c020',
+      'l110c100',
+      'l120c050',
+    ];
+    var out = {};
 
-    return {
-      dark3: dark3,
-      dark2: dark2,
-      dark1: dark1,
-      light1: light1,
-      light2: light2,
-      light3: light3,
-    };
+    accents.forEach((val) => {
+      var l = parseInt(val.substr(1, 3)) / 100;
+      var c = parseInt(val.substr(5, 3)) / 100;
+      out[val] = lchToHex(lch[0] * l, lch[1] * c, lch[2]);
+    });
+
+    return out;
   }
 
   setColour(name, hex) {
-    if (hex) {
-      var accents = this.calculateAccents(hex);
-      document.body.style.setProperty(`--tk-colour-blind-${name}`, hex);
-      document.body.style.setProperty(`--tk-colour-blind-${name}-dark3`, accents.dark3);
-      document.body.style.setProperty(`--tk-colour-blind-${name}-dark2`, accents.dark2);
-      document.body.style.setProperty(`--tk-colour-blind-${name}-dark1`, accents.dark1);
-      document.body.style.setProperty(`--tk-colour-blind-${name}-light1`, accents.light1);
-      document.body.style.setProperty(`--tk-colour-blind-${name}-light2`, accents.light2);
-      document.body.style.setProperty(`--tk-colour-blind-${name}-light3`, accents.light3);
-    } else {
-      document.body.style.removeProperty(`--tk-colour-blind-${name}`);
-      document.body.style.removeProperty(`--tk-colour-blind-${name}-dark3`);
-      document.body.style.removeProperty(`--tk-colour-blind-${name}-dark2`);
-      document.body.style.removeProperty(`--tk-colour-blind-${name}-dark1`);
-      document.body.style.removeProperty(`--tk-colour-blind-${name}-light1`);
-      document.body.style.removeProperty(`--tk-colour-blind-${name}-light2`);
-      document.body.style.removeProperty(`--tk-colour-blind-${name}-light3`);
+    if (!hex) {
+      hex = this.getColour(name);
     }
+
+    document.body.style.setProperty(`--tk-colour-blind-${name}`, hex);
+
+    var accents = this.calculateAccentsLch(hex);
+    var keys = Object.keys(accents);
+    keys.forEach((key) => {
+      document.body.style.setProperty(`--tk-colour-blind-${name}-${key}`, accents[key]);
+    });
   }
 
   getColour(name) {
@@ -202,14 +224,6 @@ export class ColourBlindMode extends Feature {
       `<button>
         <div class="tk-colour-blind-${name}">
           <input type="color" value="${value}" style="background-color: ${value};"></input>
-          <div class="tk-colour-blind-accents">
-            <div style="background-color: var(--tk-colour-blind-${name}-light3);"></div>
-            <div style="background-color: var(--tk-colour-blind-${name}-light2);"></div>
-            <div style="background-color: var(--tk-colour-blind-${name}-light1);"></div>
-            <div style="background-color: var(--tk-colour-blind-${name}-dark1);"></div>
-            <div style="background-color: var(--tk-colour-blind-${name}-dark2);"></div>
-            <div style="background-color: var(--tk-colour-blind-${name}-dark3);"></div>
-          </div>
         </div>
         <div class="ynab-new-theme-switcher-label">${label}</div>
       </button>`
@@ -257,6 +271,9 @@ export class ColourBlindMode extends Feature {
       this.saveChanges();
     });
     $('.ynab-new-theme-switcher .modal-actions button:last-child').on('click', () => {
+      this.cancelChanges();
+    });
+    $('.ynab-new-theme-switcher .modal-close').on('click', () => {
       this.cancelChanges();
     });
   }
