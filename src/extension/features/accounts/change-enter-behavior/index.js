@@ -14,19 +14,19 @@ export class ChangeEnterBehavior extends Feature {
       const $outflowInput = $('.ynab-grid-cell-outflow input', $addRow);
       const $inflowInput = $('.ynab-grid-cell-inflow input', $addRow);
 
-      if (!$memoInput[0].getAttribute('data-toolkit-save-behavior')) {
+      if ($memoInput.length && !$memoInput[0].getAttribute('data-toolkit-save-behavior')) {
         $memoInput[0].setAttribute('data-toolkit-save-behavior', true);
-        $memoInput.keydown(this.applyNewEnterBehavior);
+        $memoInput.on('keydown', this.applyNewEnterBehavior);
       }
 
-      if (!$outflowInput[0].getAttribute('data-toolkit-save-behavior')) {
+      if ($outflowInput.length && !$outflowInput[0].getAttribute('data-toolkit-save-behavior')) {
         $outflowInput[0].setAttribute('data-toolkit-save-behavior', true);
-        $outflowInput.keydown(this.applyNewEnterBehavior);
+        $outflowInput.on('keydown', this.applyNewEnterBehavior);
       }
 
-      if (!$inflowInput[0].getAttribute('data-toolkit-save-behavior')) {
+      if ($inflowInput.length && !$inflowInput[0].getAttribute('data-toolkit-save-behavior')) {
         $inflowInput[0].setAttribute('data-toolkit-save-behavior', true);
-        $inflowInput.keydown(this.applyNewEnterBehavior);
+        $inflowInput.on('keydown', this.applyNewEnterBehavior);
       }
     });
   }
