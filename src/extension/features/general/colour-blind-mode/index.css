@@ -43,6 +43,7 @@ body {
   --message_negative_accent: var(--tk-colour-blind-negative) !important;
   --message_negative_background: var(--tk-colour-blind-negative-l160c015) !important;
   --message_negative_label: var(--tk-colour-blind-negative-l030c045) !important;
+  --status_negative: var(--tk-colour-blind-negative) !important;
 
   /* Positive */
   --budget_balance_positive_background: var(--tk-colour-blind-positive-l150c060) !important;
@@ -59,6 +60,7 @@ body {
   --message_positive_accent: var(--tk-colour-blind-positive) !important;
   --message_positive_background: var(--tk-colour-blind-positive-l160c015) !important;
   --message_positive_label: var(--tk-colour-blind-positive-l030c045) !important;
+  --status_positive: var(--tk-colour-blind-positive) !important;
 
   /* Warning */
   --budget_balance_warning_background: var(--tk-colour-blind-warning-l150c060) !important;
@@ -72,6 +74,7 @@ body {
   --message_warning_accent: var(--tk-colour-blind-warning) !important;
   --message_warning_background: var(--tk-colour-blind-warning-l160c015);
   --message_warning_label: var(--tk-colour-blind-warning-l030c045) !important;
+  --status_cautious: var(--tk-colour-blind-warning) !important;
 }
 
 /* Dark theme */
@@ -91,6 +94,7 @@ body.theme-dark {
   --message_negative_accent: var(--tk-colour-blind-negative) !important;
   --message_negative_background: var(--tk-colour-blind-negative-l025c020) !important;
   --message_negative_label: var(--tk-colour-blind-negative) !important;
+  --status_negative: var(--tk-colour-blind-negative-l055c090);
 
   /* Positive */
   --budget_balance_positive_background: var(--tk-colour-blind-positive) !important;
@@ -107,6 +111,7 @@ body.theme-dark {
   --message_positive_accent: var(--tk-colour-blind-positive) !important;
   --message_positive_background: var(--tk-colour-blind-positive-l025c020) !important;
   --message_positive_label: var(--tk-colour-blind-positive-l110c100) !important;
+  --status_positive: var(--tk-colour-blind-positive) !important;
 
   /* Warning */
   --budget_balance_warning_background: var(--tk-colour-blind-warning) !important;
@@ -120,6 +125,7 @@ body.theme-dark {
   --message_warning_accent: var(--tk-colour-blind-warning) !important;
   --message_warning_background: var(--tk-colour-blind-warning-l025c020) !important;
   --message_warning_label: var(--tk-colour-blind-warning-l110c100) !important;
+  --status_cautious: var(--tk-colour-blind-warning) !important;
 }
 
 /* Classic theme */
@@ -139,6 +145,7 @@ body.theme-classic {
   --message_negative_accent: var(--tk-colour-blind-negative-l090c090) !important;
   --message_negative_background: var(--tk-colour-blind-negative-l160c015) !important;
   --message_negative_label: var(--tk-colour-blind-negative-l030c045) !important;
+  --status_negative: var(--tk-colour-blind-negative) !important;
 
   /* Positive */
   --budget_balance_positive_background: var(--tk-colour-blind-positive) !important;
@@ -155,6 +162,7 @@ body.theme-classic {
   --message_positive_accent: var(--tk-colour-blind-positive-l090c090) !important;
   --message_positive_background: var(--tk-colour-blind-positive-l160c015) !important;
   --message_positive_label: var(--tk-colour-blind-positive-l030c045) !important;
+  --status_positive: var(--tk-colour-blind-positive) !important;
 
   /* Warning */
   --budget_balance_warning_background: var(--tk-colour-blind-warning) !important;
@@ -168,6 +176,7 @@ body.theme-classic {
   --message_warning_accent: var(--tk-colour-blind-warning) !important;
   --message_warning_background: var(--tk-colour-blind-warning-l160c015) !important;
   --message_warning_label: var(--tk-colour-blind-warning-l030c045) !important;
+  --status_cautious: var(--tk-colour-blind-warning) !important;
 }
 
 /* Square corners */
