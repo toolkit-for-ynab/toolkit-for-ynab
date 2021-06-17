@@ -140,7 +140,7 @@ export class ColourBlindMode extends Feature {
     return optionMenu.length === 0;
   }
 
-  calculateAccentsLch(hex) {
+  calculateAccents(hex) {
     var lch = hexToLch(hex);
 
     var accents = [
@@ -170,12 +170,13 @@ export class ColourBlindMode extends Feature {
 
   setColour(name, hex) {
     if (!hex) {
-      hex = this.getColour(name);
+      return;
     }
 
     document.body.style.setProperty(`--tk-colour-blind-${name}`, hex);
 
-    var accents = this.calculateAccentsLch(hex);
+    var accents = this.calculateAccents(hex);
+
     var keys = Object.keys(accents);
     keys.forEach((key) => {
       document.body.style.setProperty(`--tk-colour-blind-${name}-${key}`, accents[key]);
@@ -184,6 +185,10 @@ export class ColourBlindMode extends Feature {
 
   getColour(name) {
     return getComputedStyle(document.body).getPropertyValue(`--tk-colour-blind-${name}`).trim();
+  }
+
+  resetColour(name) {
+    document.body.style.removeProperty(`--tk-colour-blind-${name}`);
   }
 
   saveColour(name, hex) {
@@ -195,9 +200,9 @@ export class ColourBlindMode extends Feature {
   }
 
   loadColours() {
-    var positive = this.loadColour('positive');
-    var warning = this.loadColour('warning');
-    var negative = this.loadColour('negative');
+    var positive = this.loadColour('positive', this.getColour('positive'));
+    var warning = this.loadColour('warning', this.getColour('warning'));
+    var negative = this.loadColour('negative', this.getColour('negative'));
 
     this.setColour('positive', positive);
     this.setColour('warning', warning);
@@ -215,6 +220,10 @@ export class ColourBlindMode extends Feature {
   }
 
   cancelChanges() {
+    this.resetColour('positive');
+    this.resetColour('warning');
+    this.resetColour('negative');
+
     this.loadColours();
   }
 
