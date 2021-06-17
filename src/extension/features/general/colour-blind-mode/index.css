@@ -1,10 +1,14 @@
 body {
   /* Default values */
+  --tk-colour-blind-negative: #d55e00;
   --tk-colour-blind-positive: #009e73;
   --tk-colour-blind-warning: #797dec;
-  --tk-colour-blind-negative: #d55e00;
 
   /* Inspector messages - recently replaced with general messages above but still in YNAB stylesheet */
+  --inspector_message_negative_background: var(--message_negative_background) !important;
+  --inspector_message_negative_border: var(--message_negative_accent) !important;
+  --inspector_message_negative_label: var(--message_negative_label) !important;
+
   --inspector_message_positive_background: var(--message_positive_background) !important;
   --inspector_message_positive_border: var(--message_positive_accent) !important;
   --inspector_message_positive_label: var(--message_positive_label) !important;
@@ -13,9 +17,6 @@ body {
   --inspector_message_warning_border: var(--message_warning_accent) !important;
   --inspector_message_warning_label: var(--message_warning_label) !important;
 
-  --inspector_message_negative_background: var(--message_negative_background) !important;
-  --inspector_message_negative_border: var(--message_negative_accent) !important;
-  --inspector_message_negative_label: var(--message_negative_label) !important;
 }
 
 /* Default theme */

@@ -2,7 +2,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 const YNAB_THEME_SWITCHER = 'js-ynab-new-theme-switcher-themes';
-const TK_COLOUR_BLIND_OPTION = 'tk-colour-blind-option';
+const TK_COLOUR_BLIND_OPTION_MENU = 'tk-colour-blind-option';
 
 /*
 MIT License
@@ -136,7 +136,7 @@ export class ColourBlindMode extends Feature {
   }
 
   shouldInvoke() {
-    var optionMenu = $(`.${TK_COLOUR_BLIND_OPTION}`);
+    var optionMenu = $(`.${TK_COLOUR_BLIND_OPTION_MENU}`);
     return optionMenu.length === 0;
   }
 
@@ -199,70 +199,6 @@ export class ColourBlindMode extends Feature {
     return getToolkitStorageKey(`colour-blind-${name}`, def);
   }
 
-  loadColours() {
-    var positive = this.loadColour('positive', this.getColour('positive'));
-    var warning = this.loadColour('warning', this.getColour('warning'));
-    var negative = this.loadColour('negative', this.getColour('negative'));
-
-    this.setColour('positive', positive);
-    this.setColour('warning', warning);
-    this.setColour('negative', negative);
-
-    this.setSquare('positive', this.loadSquare('positive', false));
-    this.setSquare('warning', this.loadSquare('warning', false));
-    this.setSquare('negative', this.loadSquare('negative', true));
-  }
-
-  saveChanges() {
-    this.saveColour('positive');
-    this.saveColour('warning');
-    this.saveColour('negative');
-
-    this.saveSquare('positive');
-    this.saveSquare('warning');
-    this.saveSquare('negative');
-  }
-
-  cancelChanges() {
-    this.resetColour('positive');
-    this.resetColour('warning');
-    this.resetColour('negative');
-
-    this.loadColours();
-  }
-
-  invoke() {
-    this.loadColours();
-  }
-
-  createOptionButton(name, label, value) {
-    var button = $(
-      `<button>
-        <div class="tk-colour-blind-${name}">
-          <input type="color" value="${value}" class="tk-colour-blind-picker" style="background-color: ${value};"></input>
-        </div>
-        <div class="ynab-new-theme-switcher-label">${label}</div>
-      </button>`
-    );
-
-    $('input', button).on('input', (e) => {
-      this.setColour(name, e.target.value);
-    });
-
-    button.on('click', (e) => {
-      let input = $('input', button);
-      if (e.target !== input.get(0)) {
-        input.trigger('click');
-      }
-    });
-
-    return button;
-  }
-
-  getSquare(name) {
-    return !!document.body.getAttribute(`tk-colour-blind-${name}-square`);
-  }
-
   setSquare(name, value) {
     if (value) {
       if (!this.getSquare(name)) {
@@ -273,12 +209,83 @@ export class ColourBlindMode extends Feature {
     }
   }
 
+  getSquare(name) {
+    return !!document.body.getAttribute(`tk-colour-blind-${name}-square`);
+  }
+
   saveSquare(name) {
     setToolkitStorageKey(`colour-blind-${name}-square`, this.getSquare(name));
   }
 
   loadSquare(name, def) {
     return getToolkitStorageKey(`colour-blind-${name}-square`, def);
+  }
+
+  loadSettings() {
+    // Load colours from storage - otherwise use values from style sheet
+    var positive = this.loadColour('positive', this.getColour('positive'));
+    var warning = this.loadColour('warning', this.getColour('warning'));
+    var negative = this.loadColour('negative', this.getColour('negative'));
+
+    this.setColour('positive', positive);
+    this.setColour('warning', warning);
+    this.setColour('negative', negative);
+
+    this.setSquare('positive', this.loadSquare('positive', false));
+    this.setSquare('warning', this.loadSquare('warning', false));
+    this.setSquare('negative', this.loadSquare('negative', true)); // On by default
+  }
+
+  saveSettings() {
+    this.saveColour('positive');
+    this.saveColour('warning');
+    this.saveColour('negative');
+
+    this.saveSquare('positive');
+    this.saveSquare('warning');
+    this.saveSquare('negative');
+  }
+
+  cancelChanges() {
+    // Reset the live colour preview - this is necessary because if the user has
+    // no saved settings the default colour otherwise can't be read
+    this.resetColour('positive');
+    this.resetColour('warning');
+    this.resetColour('negative');
+
+    this.loadSettings();
+  }
+
+  invoke() {
+    this.loadSettings();
+  }
+
+  createColourOption(name, label) {
+    var value = this.getColour(name);
+
+    var button = $(
+      `<button>
+        <div class="tk-colour-blind-${name}">
+          <input type="color" value="${value}" class="tk-colour-blind-picker" style="background-color: ${value};"></input>
+        </div>
+        <div class="ynab-new-theme-switcher-label">${label}</div>
+      </button>`
+    );
+
+    // Live update colours as they are selected
+    $('input', button).on('input', (e) => {
+      this.setColour(name, e.target.value);
+    });
+
+    // If the user clicks on the button, redirect it to the input
+    button.on('click', (e) => {
+      let input = $('input', button);
+      if (e.target !== input.get(0)) {
+        input.trigger('click');
+      }
+    });
+
+    return button;
   }
 
   createSquareOption(name) {
@@ -302,32 +309,32 @@ export class ColourBlindMode extends Feature {
       return;
     }
 
-    let colourOptions = $(
-      `<div class="ynab-new-theme-switcher-option ${TK_COLOUR_BLIND_OPTION}">
+    let optionsMenu = $(
+      `<div class="ynab-new-theme-switcher-option ${TK_COLOUR_BLIND_OPTION_MENU}">
         <h3>Colour Blind Mode</h3>
       </div>`
     );
 
-    let grid = $(`<div class="ynab-new-theme-switcher-grid"></div>`);
-    grid.append(this.createOptionButton('positive', 'Positive', this.getColour('positive')));
-    grid.append(this.createOptionButton('warning', 'Warning', this.getColour('warning')));
-    grid.append(this.createOptionButton('negative', 'Negative', this.getColour('negative')));
+    let pickerGrid = $(`<div class="ynab-new-theme-switcher-grid"></div>`);
+    pickerGrid.append(this.createColourOption('positive', 'Positive'));
+    pickerGrid.append(this.createColourOption('warning', 'Warning'));
+    pickerGrid.append(this.createColourOption('negative', 'Negative'));
 
     let squareGrid = $(`<div class="ynab-new-theme-switcher-grid tk-colour-blind-square"></div>`);
     squareGrid.append(this.createSquareOption('positive'));
     squareGrid.append(this.createSquareOption('warning'));
     squareGrid.append(this.createSquareOption('negative'));
 
-    colourOptions.append(grid);
-    colourOptions.append(squareGrid);
-    themeSwitcher.append(colourOptions);
+    optionsMenu.append(pickerGrid);
+    optionsMenu.append(squareGrid);
+    themeSwitcher.append(optionsMenu);
 
     // Trigger a resize event so the modal adjusts position for its new height
     $(window).trigger('resize');
 
     // Todo: not this
     $('.ynab-new-theme-switcher .modal-actions .button-primary').on('click', () => {
-      this.saveChanges();
+      this.saveSettings();
     });
     $('.ynab-new-theme-switcher .modal-actions button:last-child').on('click', () => {
       this.cancelChanges();
