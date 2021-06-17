@@ -191,8 +191,8 @@ export class ColourBlindMode extends Feature {
     document.body.style.removeProperty(`--tk-colour-blind-${name}`);
   }
 
-  saveColour(name, hex) {
-    setToolkitStorageKey(`colour-blind-${name}`, hex);
+  saveColour(name) {
+    setToolkitStorageKey(`colour-blind-${name}`, this.getColour(name));
   }
 
   loadColour(name, def) {
@@ -207,16 +207,20 @@ export class ColourBlindMode extends Feature {
     this.setColour('positive', positive);
     this.setColour('warning', warning);
     this.setColour('negative', negative);
+
+    this.setSquare('positive', this.loadSquare('positive', false));
+    this.setSquare('warning', this.loadSquare('warning', false));
+    this.setSquare('negative', this.loadSquare('negative', true));
   }
 
   saveChanges() {
-    var positive = $('.tk-colour-blind-positive input').val();
-    var warning = $('.tk-colour-blind-warning input').val();
-    var negative = $('.tk-colour-blind-negative input').val();
+    this.saveColour('positive');
+    this.saveColour('warning');
+    this.saveColour('negative');
 
-    this.saveColour('positive', positive);
-    this.saveColour('warning', warning);
-    this.saveColour('negative', negative);
+    this.saveSquare('positive');
+    this.saveSquare('warning');
+    this.saveSquare('negative');
   }
 
   cancelChanges() {
@@ -235,7 +239,7 @@ export class ColourBlindMode extends Feature {
     var button = $(
       `<button>
         <div class="tk-colour-blind-${name}">
-          <input type="color" value="${value}" style="background-color: ${value};"></input>
+          <input type="color" value="${value}" class="tk-colour-blind-picker" style="background-color: ${value};"></input>
         </div>
         <div class="ynab-new-theme-switcher-label">${label}</div>
       </button>`
@@ -255,6 +259,43 @@ export class ColourBlindMode extends Feature {
     return button;
   }
 
+  getSquare(name) {
+    return !!document.body.getAttribute(`tk-colour-blind-${name}-square`);
+  }
+
+  setSquare(name, value) {
+    if (value) {
+      if (!this.getSquare(name)) {
+        document.body.setAttribute(`tk-colour-blind-${name}-square`, true);
+      }
+    } else if (this.getSquare(name)) {
+      document.body.removeAttribute(`tk-colour-blind-${name}-square`);
+    }
+  }
+
+  saveSquare(name) {
+    setToolkitStorageKey(`colour-blind-${name}-square`, this.getSquare(name));
+  }
+
+  loadSquare(name, def) {
+    return getToolkitStorageKey(`colour-blind-${name}-square`, def);
+  }
+
+  createSquareOption(name) {
+    var square = this.getSquare(name);
+
+    var option = $(
+      `<div>
+        <input type="checkbox" id="tk-colour-blind-${name}-square" ${square ? 'checked' : ''}>
+        <label for="tk-colour-blind-${name}-square">Square Corners</label>
+      </div>`
+    );
+    $('input', option).on('click', (e) => {
+      this.setSquare(name, e.target.checked);
+    });
+    return option;
+  }
+
   buildOptionsMenu() {
     let themeSwitcher = $(`.${YNAB_THEME_SWITCHER}`);
     if (themeSwitcher.length === 0) {
@@ -272,7 +313,13 @@ export class ColourBlindMode extends Feature {
     grid.append(this.createOptionButton('warning', 'Warning', this.getColour('warning')));
     grid.append(this.createOptionButton('negative', 'Negative', this.getColour('negative')));
 
+    let squareGrid = $(`<div class="ynab-new-theme-switcher-grid tk-colour-blind-square"></div>`);
+    squareGrid.append(this.createSquareOption('positive'));
+    squareGrid.append(this.createSquareOption('warning'));
+    squareGrid.append(this.createSquareOption('negative'));
+
     colourOptions.append(grid);
+    colourOptions.append(squareGrid);
     themeSwitcher.append(colourOptions);
 
     // Trigger a resize event so the modal adjusts position for its new height
