@@ -211,7 +211,7 @@ body[tk-colour-blind-positive-square] .left-to-budget-is-positive .budget-header
 
 .tk-colour-blind-option .tk-colour-blind-picker {
   width: 100%;
-  height: 116px;
+  height: 100px;
   margin: 0px;
   border: 0px;
   border-radius: 0px;
@@ -220,11 +220,13 @@ body[tk-colour-blind-positive-square] .left-to-budget-is-positive .budget-header
 .tk-colour-blind-square div {
   width: 219px;
   text-align: center;
+  padding-bottom: 0.5em;
 }
 
 .tk-colour-blind-square input, .tk-colour-blind-square label {
   width: auto;
   display: inline;
+  font-weight: normal;
 }
 
 .tk-colour-blind-square input {

@@ -325,8 +325,8 @@ export class ColourBlindMode extends Feature {
     squareGrid.append(this.createSquareOption('warning'));
     squareGrid.append(this.createSquareOption('negative'));
 
-    optionsMenu.append(pickerGrid);
     optionsMenu.append(squareGrid);
+    optionsMenu.append(pickerGrid);
     themeSwitcher.append(optionsMenu);
 
     // Trigger a resize event so the modal adjusts position for its new height
