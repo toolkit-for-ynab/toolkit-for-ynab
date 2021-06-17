@@ -6,16 +6,16 @@
 }
 .budget-table-row.is-sub-category.is-debt-payment-category[data-toolkit-pif-assist]
   .ynab-new-budget-available-number:hover {
-  background-color: var(--budget_balance_warning_background_active) !important;
+  background-color: var(--budget_balance_warning_background) !important;
   color: var(--budget_balance_warning_text) !important;
 }
 
 /* inspector */
-.budget-inspector[data-toolkit-pif-assist] .ynab-new-budget-available-number {
-  background: var(--budget_balance_warning_background) !important;
+.budget-inspector[data-toolkit-pif-assist] .inspector-overview-available dt {
+  color: var(--budget_balance_warning_background) !important;
   color: var(--budget_balance_warning_text) !important;
 }
-.budget-inspector[data-toolkit-pif-assist] .ynab-new-budget-available-number .currency {
+.budget-inspector[data-toolkit-pif-assist] .ynab-new-budget-available-number {
   background: var(--budget_balance_warning_background) !important;
   color: var(--budget_balance_warning_text) !important;
 }
