@@ -144,15 +144,18 @@ export class ColourBlindMode extends Feature {
     var lch = hexToLch(hex);
 
     var accents = [
+      'l025c020',
       'l030c045',
       'l045c055',
+      'l090c090',
       'l100c100',
+      'l110c100',
+      'l120c050',
+      'l125c065',
+      'l140c060',
       'l140c075',
       'l150c060',
       'l160c015',
-      'l025c020',
-      'l110c100',
-      'l120c050',
     ];
     var out = {};
 
