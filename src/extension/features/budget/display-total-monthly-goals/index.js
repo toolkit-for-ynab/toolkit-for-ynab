@@ -14,24 +14,10 @@ export class DisplayTotalMonthlyGoals extends Feature {
       return;
     }
 
-    const categoryInfo = {
-      monthlyGoalAmount: 0,
+    return {
+      monthlyGoalAmount: parseInt(category.goalTarget || 0, 10),
       isChecked: category.get('isChecked'),
     };
-
-    switch (category.goalType) {
-      case ynab.constants.SubCategoryGoalType.MonthlyFunding:
-      case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
-        categoryInfo.monthlyGoalAmount = parseInt(category.goalTarget || 0, 10);
-        break;
-      case ynab.constants.SubCategoryGoalType.Needed:
-        categoryInfo.monthlyGoalAmount = parseInt(
-          category.goalTarget || category.goalTargetAmount || 0,
-          10
-        );
-    }
-
-    return categoryInfo;
   }
 
   calculateMonthlyGoals() {
