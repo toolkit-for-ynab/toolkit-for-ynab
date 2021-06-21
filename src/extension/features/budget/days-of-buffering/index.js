@@ -22,10 +22,15 @@ export class DaysOfBuffering extends Feature {
     const eligibleTransactions = getEntityManager()
       .getAllTransactions()
       .filter(this._eligibleTransactionFilter);
-    const onBudgetAccounts = Collections.accountsCollection.getOnBudgetAccounts();
+    let onBudgetAccounts = Collections.accountsCollection.getOnBudgetAccounts();
 
     let onBudgetBalance = 0;
     if (onBudgetAccounts) {
+      // filter credit card accounts if enabled option is '2'
+      if (this.settings.enabled === '2') {
+        onBudgetAccounts = onBudgetAccounts.filter(acc => acc.accountType !== 'CreditCard');
+      }
+
       onBudgetBalance = onBudgetAccounts.reduce((reduced, current) => {
         const calculation = current.getAccountCalculation();
         if (calculation && !calculation.getAccountIsTombstone()) {
