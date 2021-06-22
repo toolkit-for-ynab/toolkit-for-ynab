@@ -115,19 +115,6 @@ module.exports = function (env) {
             to: path.join(__dirname, `${BUILD_PATH}/popup`),
             globOptions: { ignore: '**/*.js' },
           },
-          {
-            from: path.join(__dirname, `${CODE_SOURCE_DIR}/extension/legacy/**/*.css`).replace(/\\/g, '/'),
-            to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`),
-            context: 'src/extension',
-          },
-          {
-            from: path.join(
-              __dirname,
-              `${CODE_SOURCE_DIR}/extension/legacy/features/l10n/locales/*.js`
-            ).replace(/\\/g, '/'),
-            to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`),
-            context: 'src/extension',
-          },
         ],
       }),
     ],

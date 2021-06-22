@@ -22,7 +22,7 @@ const output = fs.createWriteStream(zipFile);
 const archive = archiver('zip', { zlib: { level: 9 } });
 
 output.on('close', () => {
-  console.log('Archive sucessfully created.');
+  console.log('Archive successfully created.');
 });
 
 archive.on('warning', (error) => {

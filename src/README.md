@@ -7,7 +7,6 @@ The folder structure is as such:
 ```
 src/extension/
 ├── features/
-├── legacy/
 ├── listeners/
 └── utils/
 ```
@@ -15,10 +14,6 @@ src/extension/
 `features/`: Contains sub-directories for each section of the YNAB application
 and house the source code for each individual feature. This is where most
 development will take place.
-
-`legacy/`: Is a deprecated folder where features used to be developed for the toolkit.
-The only remaining feature here is the localization feature. Once that feature has
-been converted, this folder will be deleted.
 
 `listeners/`: Contains some of the base functionality for triggering life-cycle methods
 of a Toolkit Feature which can be tapped into by implementing the `Feature` class.

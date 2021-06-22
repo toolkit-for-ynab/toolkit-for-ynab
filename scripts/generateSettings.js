@@ -6,7 +6,6 @@ const defaultFeatures = JSON.parse(
   fs.readFileSync(path.join(__dirname, '..', 'package.json'))
 ).defaultFeatures;
 
-const LEAGACY_SETTINGS_PROJECT_DIR = 'src/extension/legacy/features';
 const NEW_SETTINGS_PROJECT_DIR = 'src/extension/features';
 const ALL_SETTINGS_OUTPUT = 'src/core/settings/settings.js';
 const SETTINGS_JSON = 'scripts/settings.json';
@@ -33,18 +32,16 @@ let previousSettings;
 
 function run(callback) {
   previousSettings = new Set();
-  Promise.all([gatherLegacySettings(), gatherNewSettings()])
+  gatherNewSettings()
     .then(
-      (values) => {
+      (settings) => {
         let validatedSettings = [];
-        let settingsConcatenated = values[0].concat(values[1]);
-        settingsConcatenated.forEach((setting) => {
+        settings.forEach((setting) => {
           if (Array.isArray(setting.setting)) {
             setting.setting.forEach((subSetting) => {
               let validatedSetting = validateSetting({
                 setting: subSetting,
                 file: setting.file,
-                legacy: setting.legacy,
               });
 
               if (validatedSetting.hidden !== true) {
@@ -72,37 +69,6 @@ function run(callback) {
     .catch((exception) => {
       callback(exception.stack);
     });
-}
-
-function gatherLegacySettings() {
-  return new Promise((resolve, reject) => {
-    glob(`${LEAGACY_SETTINGS_PROJECT_DIR}/**/settings.js*`, (error, files) => {
-      if (error) return reject(error);
-
-      let legacySettingsPromises = [];
-
-      files.forEach((file) => {
-        legacySettingsPromises.push(
-          new Promise((resolve, reject) => {
-            let setting;
-            const filePath = `${__dirname}/../${file}`;
-            try {
-              setting = require(filePath); // eslint-disable-line global-require
-            } catch (e) {
-              fs.readFile(filePath, 'utf8', (error, data) => {
-                if (error) return reject(error);
-                setting = JSON.parse(data);
-              });
-            }
-
-            resolve({ file, setting, legacy: true });
-          })
-        );
-      });
-
-      Promise.all(legacySettingsPromises).then(resolve, reject);
-    });
-  });
 }
 
 function gatherNewSettings() {
@@ -139,10 +105,6 @@ function validateSetting(settingObj) {
 
   featureSettings.description = featureSettings.description || '';
 
-  if (settingObj.legacy) {
-    validateActions(settingObj);
-  }
-
   if (previousSettings.has(featureSettings.name)) {
     logFatal(settingFilename, `Duplicate Setting: ${featureSettings.name}`);
   }
@@ -157,25 +119,8 @@ function validateSetting(settingObj) {
           `${featureSettings.name} is not expected to be defaulted to on. If this default was intentional, add the feature name to the defaultFeatures array found in package.json`
         );
       }
-
-      if (
-        settingObj.legacy &&
-        typeof featureSettings.actions.true === 'undefined' &&
-        typeof featureSettings.actions.false === 'undefined'
-      ) {
-        logFatal(
-          settingFilename,
-          'Checkbox settings must declare an action for "true" or "false" to have any effect.'
-        );
-      }
       break;
     case 'select':
-      if (settingObj.legacy && featureSettings.length < 2) {
-        logFatal(
-          settingFilename,
-          'Select settings must have more than one action associated with them.'
-        );
-      }
       break;
     case 'color':
       break;
@@ -187,48 +132,6 @@ function validateSetting(settingObj) {
   }
 
   return featureSettings;
-}
-
-function validateActions(settingObj) {
-  const featureSettings = settingObj.setting;
-  const settingFilename = settingObj.file;
-
-  if (typeof featureSettings.actions === 'undefined') {
-    logFatal(settingFilename, 'Setting "actions" is required');
-  }
-
-  for (const actionKey in featureSettings.actions) {
-    const action = featureSettings.actions[actionKey];
-    if (!Array.isArray(action)) {
-      logFatal(
-        settingFilename,
-        'Actions must be declared as an array, for example ["injectCSS", "main.css"].'
-      );
-    }
-
-    if (action.length % 2 !== 0) {
-      logFatal(
-        settingFilename,
-        'Actions must have an even number of elements, for example ["injectCSS", "main.css"].'
-      );
-    }
-  }
-
-  for (const actionKey in featureSettings.actions) {
-    let i = 0;
-    while (i < featureSettings.actions[actionKey].length) {
-      let currentAction = featureSettings.actions[actionKey][i];
-      let featureDir = settingFilename.replace(/settings.js(on)?/, ''); // handle old & new style settings files
-
-      if (currentAction === 'injectCSS' || currentAction === 'injectScript') {
-        let fullPath = path.join(featureDir, featureSettings.actions[actionKey][i + 1]);
-        fullPath = path.relative('src/extension', fullPath);
-        featureSettings.actions[actionKey][i + 1] = fullPath;
-      }
-
-      i += 2;
-    }
-  }
 }
 
 function logFatal(settingFilename, message) {
