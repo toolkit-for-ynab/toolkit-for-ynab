@@ -3,7 +3,7 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class SplitTransactionTabExpand extends Feature {
   shouldInvoke() {
-    return isCurrentRouteAccountsPage();
+    return isCurrentRouteAccountsPage() && $('.ynab-grid-split-add-sub-transaction').length;
   }
 
   invoke() {}
@@ -22,10 +22,8 @@ export class SplitTransactionTabExpand extends Feature {
 
   observe() {
     if (!this.shouldInvoke()) return;
-    if ($('.ynab-grid-split-add-sub-transaction').length === 0) return;
 
-    const addTransactionGrid = $('.ynab-grid-add-rows');
-    const lastInput = $('input', addTransactionGrid).last();
+    const lastInput = $('.ynab-grid-body-row.is-editing input').last();
 
     if (!lastInput.attr('data-toolkit-tab-expand')) {
       lastInput.attr('data-toolkit-tab-expand', true);
