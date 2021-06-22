@@ -7,7 +7,6 @@
     "build:beta": "yarn build:check && yarn webpack:beta && yarn build:legacy && yarn manifest:beta && yarn compress",
     "build:dev": "yarn build:development",
     "build:development": "yarn build:check && yarn webpack:development && yarn build:legacy && yarn manifest:development",
-    "build:quickdev": "yarn && yarn gen && yarn webpack:development && yarn build:legacy && yarn manifest:development",
     "build:prod": "yarn build:production",
     "build:production": "yarn build:check && yarn webpack:production && yarn build:legacy && yarn compress",
     "build:legacy": "babel src/extension/legacy --quiet --no-babelrc --compact false --config-file ./.babelrc-legacy --out-dir dist/extension/web-accessibles/legacy",
