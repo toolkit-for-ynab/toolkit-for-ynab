@@ -18,6 +18,15 @@ export class SubtractUpcomingFromAvailable extends Feature {
         return;
       }
 
+    addToolkitEmberHook(this, 'budget/inspector/default-inspector', 'didRender', () => {
+      if (!this.shouldInvoke()) return;
+      this.addTotalAvailableAfterUpcoming(totalUpcoming);
+    });
+
+    addToolkitEmberHook(this, 'budget/inspector/multi-select-inspector', 'didRender', () => {
+      if (!this.shouldInvoke()) return;
+      this.addTotalAvailableAfterUpcoming(totalUpcoming);
+    });
       if (category.upcomingTransactions) {
         const availableObject = $(`#${element.id} .ynab-new-budget-available-number`);
         const availableElement = availableObject[0];
