@@ -1,10 +1,12 @@
 body {
   /* Default values */
-  --tk-colour-blind-negative: #d55e00;
-  --tk-colour-blind-positive: #009e73;
-  --tk-colour-blind-warning: #797dec;
+  --tk-custom-colours-negative: #d55e00;
+  --tk-custom-colours-positive: #009e73;
+  --tk-custom-colours-warning: #797dec;
+}
 
-  /* Inspector messages - recently replaced with general messages above but still in YNAB stylesheet */
+body.tk-custom-colours-enabled {
+  /* Inspector messages - recently replaced with general messages but still in YNAB stylesheet */
   --inspector_message_negative_background: var(--message_negative_background) !important;
   --inspector_message_negative_border: var(--message_negative_accent) !important;
   --inspector_message_negative_label: var(--message_negative_label) !important;
@@ -16,199 +18,219 @@ body {
   --inspector_message_warning_background: var(--message_warning_background) !important;
   --inspector_message_warning_border: var(--message_warning_accent) !important;
   --inspector_message_warning_label: var(--message_warning_label) !important;
-
 }
 
 /* Default theme */
-body {
+body.tk-custom-colours-enabled {
   /*
     Each accent colour is defined by scaling the base colour in the LCH colour space
-    The accent variables are named --tk-colour-blind-{base}-l{% lightness}c{% chroma}
-    If a new accent variable is referenced it needs to be added to the array in the
-    calculateAccents function in index.js in order to be defined and updated
+    The accent variables are named --tk-custom-colours-{base}-l{% lightness}c{% chroma}
+    If a new accent variable is referenced it needs to be added to the
+    TK_CUSTOMIZE_COLOUR_ACCENTS at the top of index.js to be defined and updated
   */
 
   /* Negative */
-  --budget_balance_negative_background: var(--tk-colour-blind-negative-l150c060) !important; 
-  --budget_balance_negative_background_active: var(--tk-colour-blind-negative-l140c075) !important; 
-  --budget_balance_negative_icon: var(--tk-colour-blind-negative-l030c045) !important;
-  --budget_balance_negative_text: var(--tk-colour-blind-negative-l030c045) !important;
-  --budget_bar_overspending: var(--tk-colour-blind-negative) !important;
-  --budget_bar_overspending_stripe: var(--tk-colour-blind-negative-l150c060) !important;
-  --header_label_negative: var(--tk-colour-blind-negative) !important;
-  --header_tbb_negative_background: var(--tk-colour-blind-negative) !important;
-  --label_negative: var(--tk-colour-blind-negative) !important;
-  --label_negative_active: var(--tk-colour-blind-negative-l045c055) !important;
-  --label_negative_disabled: var(--tk-colour-blind-negative-l150c060) !important;
-  --message_negative_accent: var(--tk-colour-blind-negative) !important;
-  --message_negative_background: var(--tk-colour-blind-negative-l160c015) !important;
-  --message_negative_label: var(--tk-colour-blind-negative-l030c045) !important;
-  --status_negative: var(--tk-colour-blind-negative) !important;
+  --budget_balance_negative_background: var(--tk-custom-colours-negative-l150c060) !important; 
+  --budget_balance_negative_background_active: var(--tk-custom-colours-negative-l140c075) !important; 
+  --budget_balance_negative_icon: var(--tk-custom-colours-negative-l030c045) !important;
+  --budget_balance_negative_text: var(--tk-custom-colours-negative-l030c045) !important;
+  --budget_bar_overspending: var(--tk-custom-colours-negative) !important;
+  --budget_bar_overspending_stripe: var(--tk-custom-colours-negative-l150c060) !important;
+  --header_label_negative: var(--tk-custom-colours-negative) !important;
+  --header_tbb_negative_background: var(--tk-custom-colours-negative) !important;
+  --label_negative: var(--tk-custom-colours-negative) !important;
+  --label_negative_active: var(--tk-custom-colours-negative-l045c055) !important;
+  --label_negative_disabled: var(--tk-custom-colours-negative-l150c060) !important;
+  --message_negative_accent: var(--tk-custom-colours-negative) !important;
+  --message_negative_background: var(--tk-custom-colours-negative-l160c015) !important;
+  --message_negative_label: var(--tk-custom-colours-negative-l030c045) !important;
+  --status_negative: var(--tk-custom-colours-negative) !important;
 
   /* Positive */
-  --budget_balance_positive_background: var(--tk-colour-blind-positive-l150c060) !important;
-  --budget_balance_positive_background_active: var(--tk-colour-blind-positive-l140c075) !important;
-  --budget_balance_positive_icon: var(--tk-colour-blind-positive-l030c045) !important;
-  --budget_balance_positive_text: var(--tk-colour-blind-positive-l030c045) !important;
-  --budget_bar_funded: var(--tk-colour-blind-positive) !important;
-  --budget_bar_funded_spending: var(--tk-colour-blind-positive-l140c075) !important;
-  --budget_bar_funded_spending_stripe: var(--tk-colour-blind-positive-l160c015) !important;
-  --header_label_positive: var(--tk-colour-blind-positive) !important;
-  --header_tbb_positive_background: var(--tk-colour-blind-positive) !important; 
-  --label_positive: var(--tk-colour-blind-positive) !important;
-  --label_positive_active: var(--tk-colour-blind-positive-l045c055) !important;
-  --message_positive_accent: var(--tk-colour-blind-positive) !important;
-  --message_positive_background: var(--tk-colour-blind-positive-l160c015) !important;
-  --message_positive_label: var(--tk-colour-blind-positive-l030c045) !important;
-  --status_positive: var(--tk-colour-blind-positive) !important;
+  --budget_balance_positive_background: var(--tk-custom-colours-positive-l150c060) !important;
+  --budget_balance_positive_background_active: var(--tk-custom-colours-positive-l140c075) !important;
+  --budget_balance_positive_icon: var(--tk-custom-colours-positive-l030c045) !important;
+  --budget_balance_positive_text: var(--tk-custom-colours-positive-l030c045) !important;
+  --budget_bar_funded: var(--tk-custom-colours-positive) !important;
+  --budget_bar_funded_spending: var(--tk-custom-colours-positive-l140c075) !important;
+  --budget_bar_funded_spending_stripe: var(--tk-custom-colours-positive-l160c015) !important;
+  --header_label_positive: var(--tk-custom-colours-positive) !important;
+  --header_tbb_positive_background: var(--tk-custom-colours-positive) !important; 
+  --label_positive: var(--tk-custom-colours-positive) !important;
+  --label_positive_active: var(--tk-custom-colours-positive-l045c055) !important;
+  --message_positive_accent: var(--tk-custom-colours-positive) !important;
+  --message_positive_background: var(--tk-custom-colours-positive-l160c015) !important;
+  --message_positive_label: var(--tk-custom-colours-positive-l030c045) !important;
+  --status_positive: var(--tk-custom-colours-positive) !important;
 
   /* Warning */
-  --budget_balance_warning_background: var(--tk-colour-blind-warning-l150c060) !important;
-  --budget_balance_warning_background_active: var(--tk-colour-blind-warning-l140c075) !important;
-  --budget_balance_warning_icon: var(--tk-colour-blind-warning-l030c045) !important;
-  --budget_balance_warning_text: var(--tk-colour-blind-warning-l030c045) !important;
-  --budget_bar_underfunded: var(--tk-colour-blind-warning) !important;
-  --budget_bar_underfunded_spending: var(--tk-colour-blind-warning-l150c060) !important;
-  --budget_bar_underfunded_spending_stripe: var(--tk-colour-blind-warning-l160c015);
-  --label_warning: var(--tk-colour-blind-warning-l045c055) !important;
-  --message_warning_accent: var(--tk-colour-blind-warning) !important;
-  --message_warning_background: var(--tk-colour-blind-warning-l160c015);
-  --message_warning_label: var(--tk-colour-blind-warning-l030c045) !important;
-  --status_cautious: var(--tk-colour-blind-warning) !important;
+  --budget_balance_warning_background: var(--tk-custom-colours-warning-l150c060) !important;
+  --budget_balance_warning_background_active: var(--tk-custom-colours-warning-l140c075) !important;
+  --budget_balance_warning_icon: var(--tk-custom-colours-warning-l030c045) !important;
+  --budget_balance_warning_text: var(--tk-custom-colours-warning-l030c045) !important;
+  --budget_bar_underfunded: var(--tk-custom-colours-warning) !important;
+  --budget_bar_underfunded_spending: var(--tk-custom-colours-warning-l150c060) !important;
+  --budget_bar_underfunded_spending_stripe: var(--tk-custom-colours-warning-l160c015);
+  --label_warning: var(--tk-custom-colours-warning-l045c055) !important;
+  --message_warning_accent: var(--tk-custom-colours-warning) !important;
+  --message_warning_background: var(--tk-custom-colours-warning-l160c015);
+  --message_warning_label: var(--tk-custom-colours-warning-l030c045) !important;
+  --status_cautious: var(--tk-custom-colours-warning) !important;
 }
 
 /* Dark theme */
-body.theme-dark {
+body.tk-custom-colours-enabled.theme-dark {
   /* Negative */
-  --budget_balance_negative_background: var(--tk-colour-blind-negative) !important;
-  --budget_balance_negative_background_active: var(--tk-colour-blind-negative-l110c100) !important;
+  --budget_balance_negative_background: var(--tk-custom-colours-negative) !important;
+  --budget_balance_negative_background_active: var(--tk-custom-colours-negative-l110c100) !important;
   --budget_balance_negative_icon: #232325 !important;
   --budget_balance_negative_text: #232325 !important;
-  --budget_bar_overspending: var(--tk-colour-blind-negative-l055c090) !important;
-  --budget_bar_overspending_stripe: var(--tk-colour-blind-negative-l025c020) !important;
-  --header_label_negative: var(--tk-colour-blind-negative) !important;
-  --header_tbb_negative_background: var(--tk-colour-blind-negative) !important;
-  --label_negative: var(--tk-colour-blind-negative) !important;
-  --label_negative_active: var(--tk-colour-blind-negative-l110c100) !important;
-  --label_negative_disabled: var(--tk-colour-blind-negative-l120c050) !important;
-  --message_negative_accent: var(--tk-colour-blind-negative) !important;
-  --message_negative_background: var(--tk-colour-blind-negative-l025c020) !important;
-  --message_negative_label: var(--tk-colour-blind-negative) !important;
-  --status_negative: var(--tk-colour-blind-negative-l055c090);
+  --budget_bar_overspending: var(--tk-custom-colours-negative-l055c090) !important;
+  --budget_bar_overspending_stripe: var(--tk-custom-colours-negative-l025c020) !important;
+  --header_label_negative: var(--tk-custom-colours-negative) !important;
+  --header_tbb_negative_background: var(--tk-custom-colours-negative) !important;
+  --label_negative: var(--tk-custom-colours-negative) !important;
+  --label_negative_active: var(--tk-custom-colours-negative-l110c100) !important;
+  --label_negative_disabled: var(--tk-custom-colours-negative-l120c050) !important;
+  --message_negative_accent: var(--tk-custom-colours-negative) !important;
+  --message_negative_background: var(--tk-custom-colours-negative-l025c020) !important;
+  --message_negative_label: var(--tk-custom-colours-negative) !important;
+  --status_negative: var(--tk-custom-colours-negative-l055c090);
 
   /* Positive */
-  --budget_balance_positive_background: var(--tk-colour-blind-positive) !important;
-  --budget_balance_positive_background_active: var(--tk-colour-blind-positive-l110c100) !important;
+  --budget_balance_positive_background: var(--tk-custom-colours-positive) !important;
+  --budget_balance_positive_background_active: var(--tk-custom-colours-positive-l110c100) !important;
   --budget_balance_positive_icon: #232325 !important;
   --budget_balance_positive_text: #232325 !important;
-  --budget_bar_funded: var(--tk-colour-blind-positive) !important;
-  --budget_bar_funded_spending: var(--tk-colour-blind-positive-l045c055) !important;
-  --budget_bar_funded_spending_stripe: var(--tk-colour-blind-positive-l025c020) !important;
-  --header_label_positive: var(--tk-colour-blind-positive) !important;
-  --header_tbb_positive_background: var(--tk-colour-blind-positive) !important;
-  --label_positive: var(--tk-colour-blind-positive) !important;
-  --label_positive_active: var(--tk-colour-blind-positive-l110c100) !important;
-  --message_positive_accent: var(--tk-colour-blind-positive) !important;
-  --message_positive_background: var(--tk-colour-blind-positive-l025c020) !important;
-  --message_positive_label: var(--tk-colour-blind-positive-l110c100) !important;
-  --status_positive: var(--tk-colour-blind-positive) !important;
+  --budget_bar_funded: var(--tk-custom-colours-positive) !important;
+  --budget_bar_funded_spending: var(--tk-custom-colours-positive-l045c055) !important;
+  --budget_bar_funded_spending_stripe: var(--tk-custom-colours-positive-l025c020) !important;
+  --header_label_positive: var(--tk-custom-colours-positive) !important;
+  --header_tbb_positive_background: var(--tk-custom-colours-positive) !important;
+  --label_positive: var(--tk-custom-colours-positive) !important;
+  --label_positive_active: var(--tk-custom-colours-positive-l110c100) !important;
+  --message_positive_accent: var(--tk-custom-colours-positive) !important;
+  --message_positive_background: var(--tk-custom-colours-positive-l025c020) !important;
+  --message_positive_label: var(--tk-custom-colours-positive-l110c100) !important;
+  --status_positive: var(--tk-custom-colours-positive) !important;
 
   /* Warning */
-  --budget_balance_warning_background: var(--tk-colour-blind-warning) !important;
-  --budget_balance_warning_background_active: var(--tk-colour-blind-warning-l110c100) !important;
+  --budget_balance_warning_background: var(--tk-custom-colours-warning) !important;
+  --budget_balance_warning_background_active: var(--tk-custom-colours-warning-l110c100) !important;
   --budget_balance_warning_icon: #232325 !important;
   --budget_balance_warning_text: #232325 !important;
-  --budget_bar_underfunded_spending: var(--tk-colour-blind-warning-l045c055) !important;
-  --budget_bar_underfunded_spending_stripe: var(--tk-colour-blind-warning-l025c020) !important;
-  --budget_bar_underfunded: var(--tk-colour-blind-warning) !important;
-  --label_warning: var(--tk-colour-blind-warning-l110c100) !important;
-  --message_warning_accent: var(--tk-colour-blind-warning) !important;
-  --message_warning_background: var(--tk-colour-blind-warning-l025c020) !important;
-  --message_warning_label: var(--tk-colour-blind-warning-l110c100) !important;
-  --status_cautious: var(--tk-colour-blind-warning) !important;
+  --budget_bar_underfunded_spending: var(--tk-custom-colours-warning-l045c055) !important;
+  --budget_bar_underfunded_spending_stripe: var(--tk-custom-colours-warning-l025c020) !important;
+  --budget_bar_underfunded: var(--tk-custom-colours-warning) !important;
+  --label_warning: var(--tk-custom-colours-warning-l110c100) !important;
+  --message_warning_accent: var(--tk-custom-colours-warning) !important;
+  --message_warning_background: var(--tk-custom-colours-warning-l025c020) !important;
+  --message_warning_label: var(--tk-custom-colours-warning-l110c100) !important;
+  --status_cautious: var(--tk-custom-colours-warning) !important;
 }
 
 /* Classic theme */
-body.theme-classic {
+body.tk-custom-colours-enabled.theme-classic {
   /* Negative */
-  --budget_balance_negative_background: var(--tk-colour-blind-negative) !important;
-  --budget_balance_negative_background_active: var(--tk-colour-blind-negative-l090c090) !important;
+  --budget_balance_negative_background: var(--tk-custom-colours-negative) !important;
+  --budget_balance_negative_background_active: var(--tk-custom-colours-negative-l090c090) !important;
   --budget_balance_negative_icon: #fff !important;
   --budget_balance_negative_text: #fff !important;
-  --budget_bar_overspending: var(--tk-colour-blind-negative) !important;
-  --budget_bar_overspending_stripe: var(--tk-colour-blind-negative-l140c060) !important;
-  --header_label_negative: var(--tk-colour-blind-negative-l140c060) !important;
-  --header_tbb_negative_background: var(--tk-colour-blind-negative) !important;
-  --label_negative: var(--tk-colour-blind-negative) !important;
-  --label_negative_active: var(--tk-colour-blind-negative-l090c090) !important;
-  --label_negative_disabled: var(--tk-colour-blind-negative-l140c060) !important;
-  --message_negative_accent: var(--tk-colour-blind-negative-l090c090) !important;
-  --message_negative_background: var(--tk-colour-blind-negative-l160c015) !important;
-  --message_negative_label: var(--tk-colour-blind-negative-l030c045) !important;
-  --status_negative: var(--tk-colour-blind-negative) !important;
+  --budget_bar_overspending: var(--tk-custom-colours-negative) !important;
+  --budget_bar_overspending_stripe: var(--tk-custom-colours-negative-l140c060) !important;
+  --header_label_negative: var(--tk-custom-colours-negative-l140c060) !important;
+  --header_tbb_negative_background: var(--tk-custom-colours-negative) !important;
+  --label_negative: var(--tk-custom-colours-negative) !important;
+  --label_negative_active: var(--tk-custom-colours-negative-l090c090) !important;
+  --label_negative_disabled: var(--tk-custom-colours-negative-l140c060) !important;
+  --message_negative_accent: var(--tk-custom-colours-negative-l090c090) !important;
+  --message_negative_background: var(--tk-custom-colours-negative-l160c015) !important;
+  --message_negative_label: var(--tk-custom-colours-negative-l030c045) !important;
+  --status_negative: var(--tk-custom-colours-negative) !important;
 
   /* Positive */
-  --budget_balance_positive_background: var(--tk-colour-blind-positive) !important;
-  --budget_balance_positive_background_active: var(--tk-colour-blind-positive-l090c090) !important;
+  --budget_balance_positive_background: var(--tk-custom-colours-positive) !important;
+  --budget_balance_positive_background_active: var(--tk-custom-colours-positive-l090c090) !important;
   --budget_balance_positive_icon: #fff !important;
   --budget_balance_positive_text: #fff !important;
-  --budget_bar_funded: var(--tk-colour-blind-positive) !important;
-  --budget_bar_funded_spending: var(--tk-colour-blind-positive-l140c060) !important;
-  --budget_bar_funded_spending_stripe: var(--tk-colour-blind-positive-l160c015) !important;
-  --header_label_positive: var(--tk-colour-blind-positive-l125c065) !important;
-  --header_tbb_positive_background: var(--tk-colour-blind-positive) !important;
-  --label_positive: var(--tk-colour-blind-positive) !important;
-  --label_positive_active: var(--tk-colour-blind-positive-l090c090) !important;
-  --message_positive_accent: var(--tk-colour-blind-positive-l090c090) !important;
-  --message_positive_background: var(--tk-colour-blind-positive-l160c015) !important;
-  --message_positive_label: var(--tk-colour-blind-positive-l030c045) !important;
-  --status_positive: var(--tk-colour-blind-positive) !important;
+  --budget_bar_funded: var(--tk-custom-colours-positive) !important;
+  --budget_bar_funded_spending: var(--tk-custom-colours-positive-l140c060) !important;
+  --budget_bar_funded_spending_stripe: var(--tk-custom-colours-positive-l160c015) !important;
+  --header_label_positive: var(--tk-custom-colours-positive-l125c065) !important;
+  --header_tbb_positive_background: var(--tk-custom-colours-positive) !important;
+  --label_positive: var(--tk-custom-colours-positive) !important;
+  --label_positive_active: var(--tk-custom-colours-positive-l090c090) !important;
+  --message_positive_accent: var(--tk-custom-colours-positive-l090c090) !important;
+  --message_positive_background: var(--tk-custom-colours-positive-l160c015) !important;
+  --message_positive_label: var(--tk-custom-colours-positive-l030c045) !important;
+  --status_positive: var(--tk-custom-colours-positive) !important;
 
   /* Warning */
-  --budget_balance_warning_background: var(--tk-colour-blind-warning) !important;
-  --budget_balance_warning_background_active: var(--tk-colour-blind-warning-l090c090) !important;
+  --budget_balance_warning_background: var(--tk-custom-colours-warning) !important;
+  --budget_balance_warning_background_active: var(--tk-custom-colours-warning-l090c090) !important;
   --budget_balance_warning_icon: #fff !important;
   --budget_balance_warning_text: #fff !important;
-  --budget_bar_underfunded: var(--tk-colour-blind-warning) !important;
-  --budget_bar_underfunded_spending: var(--tk-colour-blind-warning-l125c065) !important;
-  --budget_bar_underfunded_spending_stripe: var(--tk-colour-blind-warning-l160c015) !important;
-  --label_warning: var(--tk-colour-blind-warning-l045c055) !important;
-  --message_warning_accent: var(--tk-colour-blind-warning) !important;
-  --message_warning_background: var(--tk-colour-blind-warning-l160c015) !important;
-  --message_warning_label: var(--tk-colour-blind-warning-l030c045) !important;
-  --status_cautious: var(--tk-colour-blind-warning) !important;
+  --budget_bar_underfunded: var(--tk-custom-colours-warning) !important;
+  --budget_bar_underfunded_spending: var(--tk-custom-colours-warning-l125c065) !important;
+  --budget_bar_underfunded_spending_stripe: var(--tk-custom-colours-warning-l160c015) !important;
+  --label_warning: var(--tk-custom-colours-warning-l045c055) !important;
+  --message_warning_accent: var(--tk-custom-colours-warning) !important;
+  --message_warning_background: var(--tk-custom-colours-warning-l160c015) !important;
+  --message_warning_label: var(--tk-custom-colours-warning-l030c045) !important;
+  --status_cautious: var(--tk-custom-colours-warning) !important;
 }
 
 /* Square corners */
-body[tk-colour-blind-negative-square] .ynab-new-budget-available-number.negative {
+body.tk-custom-colours-enabled[tk-custom-colours-negative-square] .ynab-new-budget-available-number.negative {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
 }
 
-body[tk-colour-blind-positive-square] .ynab-new-budget-available-number.positive {
+body.tk-custom-colours-enabled[tk-custom-colours-positive-square] .ynab-new-budget-available-number.positive {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
 }
 
-body[tk-colour-blind-warning-square] .ynab-new-budget-available-number.cautious {
+body.tk-custom-colours-enabled[tk-custom-colours-warning-square] .ynab-new-budget-available-number.cautious {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
 }
 
-body[tk-colour-blind-negative-square] .left-to-budget-is-negative .budget-header-totals-amount {
+body.tk-custom-colours-enabled[tk-custom-colours-negative-square] .left-to-budget-is-negative .budget-header-totals-amount {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
 }
 
-body[tk-colour-blind-positive-square] .left-to-budget-is-positive .budget-header-totals-amount {
+body.tk-custom-colours-enabled[tk-custom-colours-positive-square] .left-to-budget-is-positive .budget-header-totals-amount {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
 }
 
 /* Options menu */
-.tk-colour-blind-positive,
-.tk-colour-blind-warning,
-.tk-colour-blind-negative {
+.tk-custom-colours-option-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.tk-custom-colours-option-title h3 {
+  width: auto !important;
+}
+.tk-custom-colours-option-title input {
+  width: auto;
+  border: var(--background_tertiary);
+}
+
+.tk-custom-colours-option .ynab-new-theme-switcher-grid {
+  display: none;
+}
+body.tk-custom-colours-enabled .tk-custom-colours-option .ynab-new-theme-switcher-grid {
+  display: flex;
+}
+
+.tk-custom-colours-positive,
+.tk-custom-colours-warning,
+.tk-custom-colours-negative {
   border-color: var(--divider-standard);
   border-radius: 0.5rem;
   border-width: 0.125rem;
@@ -218,7 +240,7 @@ body[tk-colour-blind-positive-square] .left-to-budget-is-positive .budget-header
   overflow: hidden;
 }
 
-.tk-colour-blind-option .tk-colour-blind-picker {
+.tk-custom-colours-option .tk-custom-colours-picker {
   width: 100%;
   height: 100px;
   margin: 0px;
@@ -226,18 +248,18 @@ body[tk-colour-blind-positive-square] .left-to-budget-is-positive .budget-header
   border-radius: 0px;
 }
 
-.tk-colour-blind-square div {
+.tk-custom-colours-square div {
   width: 219px;
   text-align: center;
   padding-bottom: 0.5em;
 }
 
-.tk-colour-blind-square input, .tk-colour-blind-square label {
+.tk-custom-colours-square input, .tk-custom-colours-square label {
   width: auto;
   display: inline;
   font-weight: normal;
 }
 
-.tk-colour-blind-square input {
+.tk-custom-colours-square input {
   margin: 0 0.3em 0 0;
 }

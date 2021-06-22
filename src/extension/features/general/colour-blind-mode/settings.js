@@ -1,9 +1,9 @@
 module.exports = {
-  name: 'ColourBlindMode',
+  name: 'CustomizeColourScheme',
   type: 'checkbox',
-  default: false,
+  default: true,
   section: 'general',
-  title: 'Colour Blind Mode',
+  title: 'Customize Colour Scheme',
   description:
-    'Changes colours like red, yellow and green in the interface to colours and shapes that are more easily distinguishable by colourblind people. Colours and shapes are configurable in YNAB Display Options.',
+    "Adds an option in YNAB's Display Menu to customize the default green/orange/red colour scheme to whatever you wish.",
 };

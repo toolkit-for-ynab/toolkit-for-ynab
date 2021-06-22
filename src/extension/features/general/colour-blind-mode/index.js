@@ -2,7 +2,21 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 const YNAB_THEME_SWITCHER = 'js-ynab-new-theme-switcher-themes';
-const TK_COLOUR_BLIND_OPTION_MENU = 'tk-colour-blind-option';
+
+const TK_CUSTOMIZE_COLOUR_ACCENTS = [
+  'l025c020',
+  'l030c045',
+  'l045c055',
+  'l090c090',
+  'l100c100',
+  'l110c100',
+  'l120c050',
+  'l125c065',
+  'l140c060',
+  'l140c075',
+  'l150c060',
+  'l160c015',
+];
 
 /*
 MIT License
@@ -126,36 +140,22 @@ function lchToHex(l, c, h) {
   return rgb2hex(lab2rgb(lch2lab([l, c, h])));
 }
 
-export class ColourBlindMode extends Feature {
+export class CustomizeColourScheme extends Feature {
   injectCSS() {
     return require('./index.css');
   }
 
   shouldInvoke() {
-    const optionMenu = $(`.${TK_COLOUR_BLIND_OPTION_MENU}`);
+    const optionMenu = $(`.tk-custom-colours-option`);
     return optionMenu.length === 0;
   }
 
   calculateAccents(hex) {
     const lch = hexToLch(hex);
 
-    const accents = [
-      'l025c020',
-      'l030c045',
-      'l045c055',
-      'l090c090',
-      'l100c100',
-      'l110c100',
-      'l120c050',
-      'l125c065',
-      'l140c060',
-      'l140c075',
-      'l150c060',
-      'l160c015',
-    ];
     let out = {};
 
-    accents.forEach((val) => {
+    TK_CUSTOMIZE_COLOUR_ACCENTS.forEach((val) => {
       const l = parseInt(val.substr(1, 3)) / 100;
       const c = parseInt(val.substr(5, 3)) / 100;
       out[val] = lchToHex(lch[0] * l, lch[1] * c, lch[2]);
@@ -164,82 +164,91 @@ export class ColourBlindMode extends Feature {
     return out;
   }
 
+  setEnabled(enabled) {
+    if (enabled) {
+      document.body.classList.add('tk-custom-colours-enabled');
+    } else {
+      document.body.classList.remove('tk-custom-colours-enabled');
+    }
+  }
+
+  getEnabled() {
+    return document.body.classList.contains('tk-custom-colours-enabled');
+  }
+
   setColour(name, hex) {
     if (!hex) {
       return;
     }
 
-    document.body.style.setProperty(`--tk-colour-blind-${name}`, hex);
+    document.body.style.setProperty(`--tk-custom-colours-${name}`, hex);
 
     const accents = this.calculateAccents(hex);
 
     const keys = Object.keys(accents);
     keys.forEach((key) => {
-      document.body.style.setProperty(`--tk-colour-blind-${name}-${key}`, accents[key]);
+      document.body.style.setProperty(`--tk-custom-colours-${name}-${key}`, accents[key]);
     });
   }
 
   getColour(name) {
-    return getComputedStyle(document.body).getPropertyValue(`--tk-colour-blind-${name}`).trim();
+    return getComputedStyle(document.body).getPropertyValue(`--tk-custom-colours-${name}`).trim();
   }
 
   resetColour(name) {
-    document.body.style.removeProperty(`--tk-colour-blind-${name}`);
-  }
-
-  saveColour(name) {
-    setToolkitStorageKey(`colour-blind-${name}`, this.getColour(name));
-  }
-
-  loadColour(name, def) {
-    return getToolkitStorageKey(`colour-blind-${name}`, def);
+    document.body.style.removeProperty(`--tk-custom-colours-${name}`);
   }
 
   setSquare(name, value) {
     if (value) {
       if (!this.getSquare(name)) {
-        document.body.setAttribute(`tk-colour-blind-${name}-square`, true);
+        document.body.setAttribute(`tk-custom-colours-${name}-square`, true);
       }
     } else if (this.getSquare(name)) {
-      document.body.removeAttribute(`tk-colour-blind-${name}-square`);
+      document.body.removeAttribute(`tk-custom-colours-${name}-square`);
     }
   }
 
   getSquare(name) {
-    return !!document.body.getAttribute(`tk-colour-blind-${name}-square`);
+    return !!document.body.getAttribute(`tk-custom-colours-${name}-square`);
   }
 
-  saveSquare(name) {
-    setToolkitStorageKey(`colour-blind-${name}-square`, this.getSquare(name));
+  loadSetting(name, def) {
+    return getToolkitStorageKey(`custom-colours-${name}`, def);
   }
 
-  loadSquare(name, def) {
-    return getToolkitStorageKey(`colour-blind-${name}-square`, def);
+  saveSetting(name, value) {
+    setToolkitStorageKey(`custom-colours-${name}`, value);
   }
 
   loadSettings() {
+    const enabled = this.loadSetting('enabled', false);
+    this.setEnabled(enabled);
+
     // Load colours from storage - otherwise use values from style sheet
-    const positive = this.loadColour('positive', this.getColour('positive'));
-    const warning = this.loadColour('warning', this.getColour('warning'));
-    const negative = this.loadColour('negative', this.getColour('negative'));
+    const positive = this.loadSetting('colour-positive', this.getColour('positive'));
+    const warning = this.loadSetting('colour-warning', this.getColour('warning'));
+    const negative = this.loadSetting('colour-negative', this.getColour('negative'));
 
     this.setColour('positive', positive);
     this.setColour('warning', warning);
     this.setColour('negative', negative);
 
-    this.setSquare('positive', this.loadSquare('positive', false));
-    this.setSquare('warning', this.loadSquare('warning', false));
-    this.setSquare('negative', this.loadSquare('negative', true)); // On by default
+    this.setSquare('positive', this.loadSetting('square-positive', false));
+    this.setSquare('warning', this.loadSetting('square-warning', false));
+    this.setSquare('negative', this.loadSetting('square-negative', true)); // On by default
   }
 
   saveSettings() {
-    this.saveColour('positive');
-    this.saveColour('warning');
-    this.saveColour('negative');
+    this.saveSetting('enabled', this.getEnabled());
 
-    this.saveSquare('positive');
-    this.saveSquare('warning');
-    this.saveSquare('negative');
+    this.saveSetting('colour-positive', this.getColour('positive'));
+    this.saveSetting('colour-warning', this.getColour('warning'));
+    this.saveSetting('colour-negative', this.getColour('negative'));
+
+    this.saveSetting('square-positive', this.getSquare('positive'));
+    this.saveSetting('square-warning', this.getSquare('warning'));
+    this.saveSetting('square-negative', this.getSquare('negative'));
   }
 
   cancelChanges() {
@@ -261,8 +270,8 @@ export class ColourBlindMode extends Feature {
 
     const button = $(
       `<button>
-        <div class="tk-colour-blind-${name}">
-          <input type="color" value="${value}" class="tk-colour-blind-picker" style="background-color: ${value};"></input>
+        <div class="tk-custom-colours-${name}">
+          <input type="color" value="${value}" class="tk-custom-colours-picker" style="background-color: ${value};"></input>
         </div>
         <div class="ynab-new-theme-switcher-label">${label}</div>
       </button>`
@@ -289,8 +298,8 @@ export class ColourBlindMode extends Feature {
 
     const option = $(
       `<div>
-        <input type="checkbox" id="tk-colour-blind-${name}-square" ${square ? 'checked' : ''}>
-        <label for="tk-colour-blind-${name}-square">Square Corners</label>
+        <input type="checkbox" id="tk-custom-colours-${name}-square" ${square ? 'checked' : ''}>
+        <label for="tk-custom-colours-${name}-square">Square Corners</label>
       </div>`
     );
     $('input', option).on('click', (e) => {
@@ -307,17 +316,27 @@ export class ColourBlindMode extends Feature {
     }
 
     const optionsMenu = $(
-      `<div class="ynab-new-theme-switcher-option ${TK_COLOUR_BLIND_OPTION_MENU}">
-        <h3>Colour Blind Mode</h3>
+      `<div class="ynab-new-theme-switcher-option tk-custom-colours-option">
+        <div class="tk-custom-colours-option-title"><h3>Customize Colour Scheme</h3>
+        <input type="checkbox" class="tk-custom-colours-option-enable" ${
+          this.getEnabled() ? 'checked' : ''
+        }></div>
       </div>`
     );
+
+    $('input', optionsMenu).on('click', (e) => {
+      this.setEnabled(e.target.checked);
+      $(window).trigger('resize');
+    });
 
     const pickerGrid = $(`<div class="ynab-new-theme-switcher-grid"></div>`);
     pickerGrid.append(this.createColourOption('positive', 'Positive'));
     pickerGrid.append(this.createColourOption('warning', 'Warning'));
     pickerGrid.append(this.createColourOption('negative', 'Negative'));
 
-    const squareGrid = $(`<div class="ynab-new-theme-switcher-grid tk-colour-blind-square"></div>`);
+    const squareGrid = $(
+      `<div class="ynab-new-theme-switcher-grid tk-custom-colours-square"></div>`
+    );
     squareGrid.append(this.createSquareOption('positive'));
     squareGrid.append(this.createSquareOption('warning'));
     squareGrid.append(this.createSquareOption('negative'));
