@@ -1,8 +1,10 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import * as currency from 'toolkit/extension/utils/currency';
+import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
+
+let totalUpcoming = 0;
 
 export class SubtractUpcomingFromAvailable extends Feature {
   shouldInvoke() {
@@ -10,7 +12,21 @@ export class SubtractUpcomingFromAvailable extends Feature {
   }
 
   invoke() {
-    let totalUpcoming = 0;
+    addToolkitEmberHook(this, 'budget-bar-v2', 'didRender', this.run);
+    addToolkitEmberHook(this, 'budget-bar-v2', 'didUpdate', this.run);
+
+    addToolkitEmberHook(this, 'budget/inspector/default-inspector', 'didRender', this.run);
+    addToolkitEmberHook(this, 'budget/inspector/multi-select-inspector', 'didRender', this.run);
+  }
+
+  run() {
+    if (!this.shouldInvoke()) return;
+    this.updateAvailableBalance();
+    this.addTotalAvailableAfterUpcoming();
+  }
+
+  updateAvailableBalance() {
+    totalUpcoming = 0;
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
       const category = getEmberView(element.id, 'category');
@@ -18,27 +34,17 @@ export class SubtractUpcomingFromAvailable extends Feature {
         return;
       }
 
-    addToolkitEmberHook(this, 'budget/inspector/default-inspector', 'didRender', () => {
-      if (!this.shouldInvoke()) return;
-      this.addTotalAvailableAfterUpcoming(totalUpcoming);
-    });
-
-    addToolkitEmberHook(this, 'budget/inspector/multi-select-inspector', 'didRender', () => {
-      if (!this.shouldInvoke()) return;
-      this.addTotalAvailableAfterUpcoming(totalUpcoming);
-    });
       if (category.upcomingTransactions) {
-        const availableObject = $(`#${element.id} .ynab-new-budget-available-number`);
-        const availableElement = availableObject[0];
+        const categoryRow = $(`[data-entity-id=${category.subCategoryId}]`);
 
-        const availableTextObject = $(`#${availableElement.id} .user-data`);
-        const availableTextElement = availableTextObject[0];
+        const availableObject = $(`.ynab-new-budget-available-number`, categoryRow);
+        const availableTextObject = $(`.user-data`, availableObject);
 
-        const available = Number(currency.stripCurrency(availableTextElement.innerText));
-        const upcoming = Number(category.upcomingTransactions);
+        const available = category.available;
+        const upcoming = category.upcomingTransactions;
         const availableAfterUpcoming = available + upcoming;
 
-        $(availableTextObject).text(currency.formatCurrency(availableAfterUpcoming));
+        availableTextObject.text(formatCurrency(availableAfterUpcoming));
 
         availableObject.children('svg.icon-upcoming').remove();
 
@@ -59,32 +65,31 @@ export class SubtractUpcomingFromAvailable extends Feature {
         totalUpcoming += upcoming;
       }
     });
-
-    addToolkitEmberHook(this, 'budget/inspector/default-inspector', 'didRender', () =>
-      this.addTotalAvailableAfterUpcoming(totalUpcoming)
-    );
-
-    addToolkitEmberHook(this, 'budget/inspector/multi-select-inspector', 'didRender', () =>
-      this.addTotalAvailableAfterUpcoming(totalUpcoming)
-    );
   }
 
-  determineCurrencyClass(amount) {
-    let currencyClass = 'positive';
+  addTotalAvailableAfterUpcoming() {
+    const budgetInspectorObject = $('.budget-inspector-content').children().first();
+    if (!budgetInspectorObject.length) return;
+    const budgetInspectorElement = budgetInspectorObject[0];
+    const budgetInspector = getEmberView(budgetInspectorElement.id);
+    if (!budgetInspector) return;
 
-    if (amount < 0) {
-      currencyClass = 'negative';
-    } else if (amount === 0) {
-      currencyClass = 'zero';
-    }
+    const totalAvailable = budgetInspector.budgetTotals.available;
+    const totalAvailableAfterUpcoming = totalAvailable + totalUpcoming;
 
-    return currencyClass;
+    const totalAvailableHeader = budgetInspectorObject.find('h3').filter(function () {
+      return $(this).text() === 'TOTAL AVAILABLE';
+    });
+    const endOfTotalAvailable = totalAvailableHeader.nextAll('hr')[0];
+
+    $('.total-available-after-upcoming-inspector').remove();
+    this.createInspectorElement(totalAvailableAfterUpcoming).insertAfter(endOfTotalAvailable);
   }
 
   createInspectorElement(totalAvailableAfterUpcoming) {
     const currencyClass = this.determineCurrencyClass(totalAvailableAfterUpcoming);
 
-    totalAvailableAfterUpcoming = currency.formatCurrency(totalAvailableAfterUpcoming);
+    totalAvailableAfterUpcoming = formatCurrency(totalAvailableAfterUpcoming);
 
     return $(`
       <div class="total-available-after-upcoming-inspector">
@@ -99,23 +104,16 @@ export class SubtractUpcomingFromAvailable extends Feature {
     `);
   }
 
-  addTotalAvailableAfterUpcoming(totalUpcoming) {
-    $('.total-available-after-upcoming-inspector').remove();
+  determineCurrencyClass(amount) {
+    let currencyClass = 'positive';
 
-    const totalAvailableHeader = $('.budget-inspector-content')
-      .find('h3')
-      .filter(function() {
-        return $(this).text() === 'TOTAL AVAILABLE';
-      });
+    if (amount < 0) {
+      currencyClass = 'negative';
+    } else if (amount === 0) {
+      currencyClass = 'zero';
+    }
 
-    const endOfTotalAvailable = totalAvailableHeader.nextAll('hr')[0];
-    const totalAvailableData = totalAvailableHeader.next();
-
-    const totalAvailableElement = totalAvailableData.find('span.user-data')[0];
-    const totalAvailable = Number(currency.stripCurrency(totalAvailableElement.innerText));
-    const totalAvailableAfterUpcoming = totalAvailable + totalUpcoming;
-
-    this.createInspectorElement(totalAvailableAfterUpcoming).insertAfter(endOfTotalAvailable);
+    return currencyClass;
   }
 
   onRouteChanged() {
