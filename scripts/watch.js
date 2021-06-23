@@ -9,7 +9,6 @@ const watcher = require('chokidar').watch(['src/**'], {
     // all generated files need to be ignored
     'src/extension/features/index.js',
     'src/core/settings/settings.js',
-    'src/**/feedChanges.js',
   ],
 });
 
