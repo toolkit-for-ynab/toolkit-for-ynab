@@ -1,6 +1,20 @@
 const spawn = require('child_process').spawn;
 const terminate = require('terminate');
 
+function debounce(fn, timeout = 50) {
+  let timer;
+
+  return (...args) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, timeout);
+  };
+}
+
+const debounceSpawn = debounce(spawnBuildProcess, spawnBuildProcess);
+
 const buildProcesses = [];
 const watcher = require('chokidar').watch(['src/**'], {
   persistent: true,
@@ -21,7 +35,7 @@ watcher.on('all', function (event, path) {
     });
   }
 
-  spawnBuildProcess();
+  debounceSpawn();
 });
 
 function spawnBuildProcess() {
