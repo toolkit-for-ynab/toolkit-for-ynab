@@ -159,6 +159,12 @@ function generateAllSettingsFile(allSettings) {
 if (typeof window.ynabToolKit === 'undefined') { window.ynabToolKit = {}; }
 
 export const settingMigrationMap = ${JSON.stringify(settingMigrationMap)};
+export const settingsMap = ${JSON.stringify(
+    allSettings.reduce((settings, current) => {
+      settings[current.name] = current;
+      return settings;
+    }, {})
+  )};
 export const allToolkitSettings = ${JSON.stringify(allSettings)};
 
 // eslint-disable-next-line quotes, object-curly-spacing, quote-props

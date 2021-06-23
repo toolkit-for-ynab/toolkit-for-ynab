@@ -65,7 +65,8 @@
     ],
     "testURL": "https://app.youneedabudget.com/aaaaaaaa-bbbb-cccc-dddd-000000000000/budget/201802",
     "transform": {
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.tsx?$": "ts-jest"
     }
   },
   "defaultFeatures": [
@@ -107,6 +108,10 @@
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
     "@babel/preset-env": "^7.14.4",
     "@babel/preset-react": "^7.13.13",
+    "@types/ember": "^3.16.0",
+    "@types/jest": "^26.0.23",
+    "@types/jquery": "^3.5.5",
+    "@types/react": "^17.0.11",
     "acorn": "^8.3.0",
     "acorn-class-fields": "^1.0.0",
     "acorn-jsx": "^5.3.1",
@@ -140,6 +145,9 @@
     "style-loader": "^2.0.0",
     "terminate": "^2.2.0",
     "to-string-loader": "^1.1.6",
+    "ts-jest": "^27.0.3",
+    "ts-loader": "^9.2.3",
+    "typescript": "^4.3.4",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0",
     "yargs": "^17.0.1"

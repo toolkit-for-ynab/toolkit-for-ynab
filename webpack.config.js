@@ -40,12 +40,22 @@ module.exports = function (env) {
           path.join(CODE_SOURCE_DIR, 'extension', 'features', 'toolkit-reports')
         ),
       },
-      extensions: ['.js', '.jsx'],
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
       modules: ['node_modules'],
     },
 
     module: {
       rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          include: [path.resolve(__dirname, CODE_SOURCE_DIR)],
+          use: [
+            {
+              loader: 'ts-loader',
+            },
+          ],
+        },
         {
           test: /\.jsx?$/,
           exclude: /node_modules/,

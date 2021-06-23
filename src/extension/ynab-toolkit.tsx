@@ -10,12 +10,15 @@ import { forEachRenderedComponent } from './utils/ember';
 import { compareSemanticVersion } from './utils/helpers';
 import { componentAppend } from './utils/react';
 import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-modal';
+import { Feature } from './features/feature';
 
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
-export const EMBER_COMPONENT_TOOLKIT_HOOKS = ['didRender', 'didInsertElement', 'didUpdate'];
-export const emberComponentToolkitHookKey = (hookName) => `_tk_${hookName}_hooks_`;
+type SupportedEmberHook = 'didRender' | 'didInsertElement' | 'didUpdate';
+
+export const EMBER_COMPONENT_TOOLKIT_HOOKS: SupportedEmberHook[] = ['didRender', 'didInsertElement', 'didUpdate'];
+export const emberComponentToolkitHookKey = (hookName: SupportedEmberHook): `_tk_${SupportedEmberHook}_hooks_` => `_tk_${hookName}_hooks_`;
 
 window.__toolkitUtils = {
   ...ynabUtils,
@@ -23,8 +26,20 @@ window.__toolkitUtils = {
   ...Collections,
 };
 
+interface ToolkitEmberHook {
+  context: Feature;
+  fn(element: Element): void;
+}
+
+type ToolkitEnabledComponent = Ember['Component'] & {
+  element?: Element;
+  _tk_didRender_hooks_?: ToolkitEmberHook[]
+  _tk_didInsertElement_hooks_?: ToolkitEmberHook[];
+  _tk_didUpdate_hooks_?: ToolkitEmberHook[];
+}
+
 export class YNABToolkit {
-  _featureInstances = [];
+  _featureInstances: Feature[] = [];
 
   initializeToolkit() {
     window.addEventListener('message', this._onBackgroundMessage);
@@ -54,7 +69,7 @@ export class YNABToolkit {
     });
   }
 
-  _invokeFeature = (featureName) => {
+  _invokeFeature = (featureName: FeatureName) => {
     const feature = this._featureInstances.find((f) => f.constructor.name === featureName);
     const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
     const wrappedInvoke = feature.invoke.bind(feature);
@@ -71,8 +86,8 @@ export class YNABToolkit {
         try {
           await feature.willInvoke();
         } catch (exception) {
-          const featureName = feature.constructor.name;
-          const featureSetting = ynabToolKit.options[featureName];
+          const featureName = feature.constructor.name as FeatureName;
+          const featureSetting = window.ynabToolKit.options[featureName];
           logToolkitError({
             exception,
             featureName,
@@ -90,21 +105,13 @@ export class YNABToolkit {
     });
   };
 
-  _onBackgroundMessage = (event) => {
+  _onBackgroundMessage = (event: MessageEvent) => {
     if (event.source === window && event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE) {
       window.ynabToolKit = {
         ...window.ynabToolKit,
         ...event.data.ynabToolKit,
         hookedComponents: new Set(),
       };
-
-      if (event.data.ynabToolKit.environment === 'development') {
-        try {
-          Rollbar.impl.instrumenter.deinstrumentConsole(); // eslint-disable-line
-        } catch (e) {
-          /* ignore */
-        }
-      }
 
       this._setupErrorTracking();
       this._createFeatureInstances();
@@ -140,17 +147,18 @@ export class YNABToolkit {
   _addToolkitEmberHooks = () => {
     EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
       Ember.Component.prototype[lifecycleName] = function () {
-        const hooks = this[emberComponentToolkitHookKey(lifecycleName)];
+        const self = this as ToolkitEnabledComponent;
+        const hooks = self[emberComponentToolkitHookKey(lifecycleName)];
         if (hooks) {
-          hooks.forEach(({ context, fn }) => fn.call(context, this.element));
+          hooks.forEach(({ context, fn }) => fn.call(context, self.element));
         }
       };
     });
   };
 
   _invokeAllHooks = () => {
-    ynabToolKit.hookedComponents.forEach((key) => {
-      forEachRenderedComponent(key, (view) => {
+    window.ynabToolKit.hookedComponents.forEach((key) => {
+      forEachRenderedComponent(key, (view: ToolkitEnabledComponent) => {
         EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
           const hooks = view[emberComponentToolkitHookKey(lifecycleName)];
           if (hooks) {
