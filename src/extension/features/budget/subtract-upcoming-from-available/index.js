@@ -30,9 +30,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
       const category = getEmberView(element.id, 'category');
-      if (!category) {
-        return;
-      }
+      if (!category) return;
 
       if (category.upcomingTransactions) {
         const categoryRow = $(`[data-entity-id=${category.subCategoryId}]`);
@@ -70,7 +68,10 @@ export class SubtractUpcomingFromAvailable extends Feature {
   addTotalAvailableAfterUpcoming() {
     const budgetInspectorObject = $('.budget-inspector-content').children().first();
     if (!budgetInspectorObject.length) return;
+
     const budgetInspectorElement = budgetInspectorObject[0];
+    if (!budgetInspectorElement.id) return;
+
     const budgetInspector = getEmberView(budgetInspectorElement.id);
     if (!budgetInspector) return;
 
