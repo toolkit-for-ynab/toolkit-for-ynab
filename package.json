@@ -3,6 +3,7 @@
   "version": "2.33.0",
   "private": true,
   "scripts": {
+    "prepare": "husky install",
     "build:check": "yarn && yarn gen && yarn lint",
     "build:beta": "yarn build:check && yarn webpack:beta && yarn manifest:beta && yarn compress",
     "build:dev": "yarn build:development",
