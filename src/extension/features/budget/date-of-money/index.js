@@ -20,30 +20,33 @@ export class DateOfMoney extends Feature {
   invoke() {
     /*
      * Get the parent div from ageOfMoneyContainer.
+     * If enabled, days of buffering has the same class, however AOM will always be the first element.
      * This is used to:
      * 		1. To get the Age Of Money (AOM)
      * 		2. Display the Date of Money to the user
      */
-    const budgetHeaderDaysContainer = document.querySelector('.budget-header-days > div');
-
-    /*
-     * Get the div containing the Age Of Money (AOM) and add a mouse over function to display date of money.
-     * If enabled, days of buffering has the same class, however AOM will always be the first element.
-     */
-    const ageOfMoneyContainer = budgetHeaderDaysContainer.firstElementChild;
-    if (!ageOfMoneyContainer) {
+    const ageOfMoneyLabel = document.querySelector('.budget-header-days-label');
+    if (!ageOfMoneyLabel) {
       return;
     }
+
+    const originalText = ageOfMoneyLabel.innerText;
 
     ageOfMoneyContainer.addEventListener(
       'mouseover',
       function () {
-        this._showDateOfMoney(budgetHeaderDaysContainer, ageOfMoneyContainer);
+        this._showDateOfMoney(ageOfMoneyLabel);
+      }.bind(this)
+    );
+    ageOfMoneyContainer.addEventListener(
+      'mouseout',
+      function () {
+        this._hideDateOfMoney(originalText, ageOfMoneyLabel);
       }.bind(this)
     );
   }
 
-  _showDateOfMoney(budgetHeaderDaysContainer, ageOfMoneyContainer) {
+  _showDateOfMoney(ageOfMoneyLabel) {
     // Get the Age Of Money
     const budgetController = controllerLookup('budget');
     const ageOfMoney = budgetController.get(
@@ -57,27 +60,12 @@ export class DateOfMoney extends Feature {
     // Apply the user's date format
     const dateOfMoneyFormatted = ynab.formatDate(dateOfMoney.format());
 
-    // Create and style the node to display
-    let dateOfMoneyContainer = ageOfMoneyContainer.cloneNode();
-    dateOfMoneyContainer.innerText = dateOfMoneyFormatted;
-    dateOfMoneyContainer.classList.add('tk-date-of-money');
-
-    // Display the Date Of Money to the user
-    ageOfMoneyContainer.style.display = 'none';
-    budgetHeaderDaysContainer.insertBefore(dateOfMoneyContainer, ageOfMoneyContainer);
-
-    // Add the event listener to hide Date Of Money and display Age Of Money
-    dateOfMoneyContainer.addEventListener(
-      'mouseout',
-      function () {
-        this._hideDateOfMoney(ageOfMoneyContainer, dateOfMoneyContainer);
-      }.bind(this)
-    );
+    // Change ageOfMoneyLabel content for date of money
+    ageOfMoneyLabel.innerText = dateOfMoneyFormatted;
   }
 
-  _hideDateOfMoney(ageOfMoneyContainer, dateOfMoneyContainer) {
-    // Delete Date Of Money div from the dom and display Age Of Money again
-    dateOfMoneyContainer.remove();
-    ageOfMoneyContainer.style.display = '';
+  _hideDateOfMoney(originalText, ageOfMoneyLabel) {
+    // Change ageOfMoneyLabel content for original text
+    ageOfMoneyLabel.innerText = originalText;
   }
 }
