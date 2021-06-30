@@ -25,28 +25,16 @@ export class DateOfMoney extends Feature {
      * 		1. To get the Age Of Money (AOM)
      * 		2. Display the Date of Money to the user
      */
-    const ageOfMoneyLabel = document.querySelector('.budget-header-days-label');
-    if (!ageOfMoneyLabel) {
+    const budgetHeaderDaysAgeContainer = document.querySelector('.budget-header-days-age');
+    if (!budgetHeaderDaysAgeContainer) {
       return;
     }
 
-    const originalText = ageOfMoneyLabel.innerText;
-
-    ageOfMoneyContainer.addEventListener(
-      'mouseover',
-      function () {
-        this._showDateOfMoney(ageOfMoneyLabel);
-      }.bind(this)
-    );
-    ageOfMoneyContainer.addEventListener(
-      'mouseout',
-      function () {
-        this._hideDateOfMoney(originalText, ageOfMoneyLabel);
-      }.bind(this)
-    );
+    const dateOfMoneyFormatted = this._getDateOfMoney();
+    budgetHeaderDaysAgeContainer.setAttribute('title', dateOfMoneyFormatted);
   }
 
-  _showDateOfMoney(ageOfMoneyLabel) {
+  _getDateOfMoney(ageOfMoneyLabel) {
     // Get the Age Of Money
     const budgetController = controllerLookup('budget');
     const ageOfMoney = budgetController.get(
@@ -58,14 +46,6 @@ export class DateOfMoney extends Feature {
     const dateOfMoney = today.subtractDays(ageOfMoney);
 
     // Apply the user's date format
-    const dateOfMoneyFormatted = ynab.formatDate(dateOfMoney.format());
-
-    // Change ageOfMoneyLabel content for date of money
-    ageOfMoneyLabel.innerText = dateOfMoneyFormatted;
-  }
-
-  _hideDateOfMoney(originalText, ageOfMoneyLabel) {
-    // Change ageOfMoneyLabel content for original text
-    ageOfMoneyLabel.innerText = originalText;
+    return ynab.formatDate(dateOfMoney.format());
   }
 }
