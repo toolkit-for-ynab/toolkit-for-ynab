@@ -73,38 +73,31 @@ export class DaysOfBuffering extends Feature {
       $('.budget-header-flexbox').append($displayElement);
     }
 
-    if (calculation.notEnoughDates) {
-      $('.budget-header-days-age', $displayElement).text('???');
-      $('.budget-header-days-age', $displayElement).attr(
-        'title',
-        l10n(
-          'toolkit.dob.noHistory',
-          'Your budget history is less than 15 days. Go on with YNAB a while.'
-        )
-      );
-    } else {
-      const dayText =
-        daysOfBuffering === 1.0
-          ? l10n('budget.ageOfMoneyDays.one', 'day')
-          : l10n('budget.ageOfMoneyDays.other', 'days');
-      $('.budget-header-days-age', $displayElement).text(`${daysOfBuffering} ${dayText}`);
-      $('.budget-header-days-age', $displayElement).attr(
-        'title',
-        `${l10n('toolkit.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}
-${l10n('toolkit.dob.days', 'Total days of budgeting')}: ${availableDates}
-${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(averageDailyOutflow)}`
-      );
+    let text = '???';
+    let title = l10n(
+      'toolkit.dob.noHistory',
+      'Your budget history is less than 15 days. Go on with YNAB a while.'
+    );
 
-      // #1475 - add an event listener to $displayElement to show the date on mouseover
+    if (!calculation.notEnoughDates) {
+      const dayText = daysOfBuffering === 1.0
+        ? l10n('budget.ageOfMoneyDays.one', 'day')
+        : l10n('budget.ageOfMoneyDays.other', 'days');
+      text = `${daysOfBuffering} ${dayText}`;
+
+      title = `${l10n('toolkit.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}`;
+      title += `\n${l10n('toolkit.dob.days', 'Total days of budgeting')}: ${availableDates}`;
+      title += `\n${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(averageDailyOutflow)}`;
+
+      // #1745 - Display the date of buffering
       if (ynabToolKit.options.DaysOfBufferingDate) {
-        $('.budget-header-days-age', $displayElement).mouseover(
-          null,
-          function () {
-            this._showDateOfBuffering(daysOfBuffering);
-          }.bind(this)
-        );
+        const dateOfBuffering = this._getDateOfBuffering(daysOfBuffering);
+        title += `\n${l10n('toolkit.dob.dateOfBuffering', 'Date of buffering')}: ${dateOfBuffering}`;
       }
     }
+
+    $('.budget-header-days-age', $displayElement).text(text);
+    $('.budget-header-days-age', $displayElement).attr('title',title);
   }
 
   /**
@@ -180,55 +173,16 @@ ${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(av
   };
 
   /**
-   * #1745 - Display the date of buffering on mouseover
+   * #1745 - Display the date of buffering
    *
    * Date of Buffering is calculated from todays date + days of buffering
    */
-  _showDateOfBuffering(daysOfBuffering) {
-    /*
-     * Get the parent div for the daysContainer.
-     * This is used to:
-     *    1. To get the Days Of Buffering
-     *    2. Display the Date of Buffering to the user
-     */
-    const toolkitDaysOfBuffering = document.querySelector('.toolkit-days-of-buffering > div');
-
-    /*
-     * Get the div containing the Age Of Money (AOM)
-     * If enabled, days of buffering has the same class, however AOM will always be the first element
-     */
-    const daysContainer = toolkitDaysOfBuffering.firstElementChild;
-
+  _getDateOfBuffering(daysOfBuffering) {
     // Calculate the Date Of Buffering by adding Days Of Buffering to today's date
     const today = ynab.utilities.DateWithoutTime.createForToday();
     const dateOfBuffering = today.addDays(daysOfBuffering);
 
     // Apply the user's date format
-    const dateOfBufferingFormatted = ynab.formatDate(dateOfBuffering.format());
-
-    // Create and style the node to display
-    let dateOfBufferingContainer = daysContainer.cloneNode();
-    dateOfBufferingContainer.innerText = dateOfBufferingFormatted;
-
-    // Display the Date Of Money to the user
-    daysContainer.style.display = 'none';
-    toolkitDaysOfBuffering.insertBefore(dateOfBufferingContainer, daysContainer);
-
-    // Add the event listener to hide Date Of Money and display Age Of Money
-    dateOfBufferingContainer.addEventListener(
-      'mouseout',
-      function () {
-        this._hideDateOfBuffering(daysContainer, dateOfBufferingContainer);
-      }.bind(this)
-    );
-  }
-
-  /**
-   * #1745 - Hide the Date of Buffering on mouseout. Display Days of Buffering again.
-   */
-  _hideDateOfBuffering(daysContainer, dateOfBufferingContainer) {
-    // Delete Date Of Money div from the dom and display Age Of Money again
-    dateOfBufferingContainer.remove();
-    daysContainer.style.display = '';
+    return ynab.formatDate(dateOfBuffering.format());
   }
 }
