@@ -14,13 +14,6 @@ export function setDeemphasizedCategories(categories) {
 }
 
 export function pacingForCategory(budgetMonthDisplayItem) {
-  if (
-    budgetMonthDisplayItem.getEntityType() !==
-    ynab.constants.DisplayEntityType.BudgetMonthDisplayItem
-  ) {
-    throw new Error('Invalid Argument to calculate pacing. Expected BudgetMonthDisplayItem');
-  }
-
   const subCategory = budgetMonthDisplayItem.get('subCategory');
   if (!subCategory) {
     throw new Error('Pacing can only be calculated for subCategories.');
