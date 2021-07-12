@@ -231,6 +231,7 @@ body.tk-custom-colours-enabled .tk-custom-colours-option .ynab-new-theme-switche
 .tk-custom-colours-positive,
 .tk-custom-colours-warning,
 .tk-custom-colours-negative {
+  position: relative;
   border-color: var(--divider-standard);
   border-radius: 0.5rem;
   border-width: 0.125rem;
@@ -246,6 +247,18 @@ body.tk-custom-colours-enabled .tk-custom-colours-option .ynab-new-theme-switche
   margin: 0px;
   border: 0px;
   border-radius: 0px;
+  cursor: pointer;
+}
+
+.tk-custom-colours-picker-icon {
+  width: 16px;
+  height: 16px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M92 8c-5-4-12-4-17 0L62 22l-4-4a5 5 0 10-7 7l4 4-42 41c-2 2-3 5-3 8a81 81 0 01-1 6l-3 3v4l3 3h4l3-3h1l5-1c3 0 6-1 8-3l41-42 4 4a5 5 0 107-7L70 29l9 8 13-12c4-5 4-12 0-17zM65 43L45 63h-4l-3-3h-4l-1 1-14 14h-1v-1l24-23 15-16h4l4 4v4z"/></svg>');
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
 
 .tk-custom-colours-square div {

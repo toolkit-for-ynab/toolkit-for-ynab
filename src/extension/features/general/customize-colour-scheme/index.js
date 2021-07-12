@@ -271,6 +271,7 @@ export class CustomizeColourScheme extends Feature {
     const button = $(
       `<button>
         <div class="tk-custom-colours-${name}">
+          <div class="tk-custom-colours-picker-icon"></div>
           <input type="color" value="${value}" class="tk-custom-colours-picker" style="background-color: ${value};"></input>
         </div>
         <div class="ynab-new-theme-switcher-label">${label}</div>
