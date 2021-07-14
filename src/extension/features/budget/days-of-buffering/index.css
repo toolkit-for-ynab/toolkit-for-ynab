@@ -3,7 +3,7 @@
   min-width: 6em;
 }
 
-.toolkit-days-of-buffering.div {
+.toolkit-days-of-buffering > div {
   display: flex;
   flex-direction: column;
   justify-content: center;
