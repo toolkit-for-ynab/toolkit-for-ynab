@@ -2,9 +2,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
-
-let totalUpcoming = 0;
+import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
 
 export class SubtractUpcomingFromAvailable extends Feature {
   shouldInvoke() {
@@ -12,97 +10,120 @@ export class SubtractUpcomingFromAvailable extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'budget-bar-v2', 'didRender', this.run);
-    addToolkitEmberHook(this, 'budget-bar-v2', 'didUpdate', this.run);
-
-    addToolkitEmberHook(this, 'budget/inspector/default-inspector', 'didRender', this.run);
-    addToolkitEmberHook(this, 'budget/inspector/multi-select-inspector', 'didRender', this.run);
+    addToolkitEmberHook(this, 'budget-table-row', 'didRender', this.run);
+    addToolkitEmberHook(this, 'budget/budget-inspector', 'didRender', this.run);
   }
 
-  run() {
+  run(element) {
     if (!this.shouldInvoke()) return;
-    this.updateAvailableBalance();
-    this.addTotalAvailableAfterUpcoming();
+    this.updateAvailableBalance(element);
+    this.addTotalAvailableAfterUpcoming(element);
   }
 
-  updateAvailableBalance() {
-    totalUpcoming = 0;
+  updateAvailableBalance(element) {
+    const elementObject = $(element);
+    const subCategoryObject = elementObject.hasClass('is-sub-category') ? elementObject : undefined;
+    if (!subCategoryObject) return;
 
-    $('.budget-table-row.is-sub-category').each((_, element) => {
-      const category = getEmberView(element.id, 'category');
-      if (!category) return;
+    const subCategory = getEmberView(element.id, 'category');
+    if (!subCategory) return;
 
-      if (category.upcomingTransactions) {
-        const categoryRow = $(`[data-entity-id=${category.subCategoryId}]`);
+    if (subCategory.upcomingTransactions) {
+      const availableObject = $(`.ynab-new-budget-available-number`, subCategoryObject);
+      const availableTextObject = $(`.user-data`, availableObject);
 
-        const availableObject = $(`.ynab-new-budget-available-number`, categoryRow);
-        const availableTextObject = $(`.user-data`, availableObject);
+      const available = subCategory.available;
+      const upcoming = subCategory.upcomingTransactions;
+      const availableAfterUpcoming = available + upcoming;
 
-        const available = category.available;
-        const upcoming = category.upcomingTransactions;
-        const availableAfterUpcoming = available + upcoming;
+      availableTextObject.text(formatCurrency(availableAfterUpcoming));
 
-        availableTextObject.text(formatCurrency(availableAfterUpcoming));
+      availableObject.children('svg.icon-upcoming').remove();
 
-        availableObject.children('svg.icon-upcoming').remove();
+      const classes = 'upcoming positive zero negative';
+      availableObject.removeClass(classes);
+      availableTextObject.removeClass(classes);
 
-        const hasCautiousCredit =
-          availableObject.hasClass('cautious') && availableObject.hasClass('credit');
+      const currencyClass = this.determineCurrencyClass(availableAfterUpcoming);
+      availableObject.addClass(currencyClass);
+      availableTextObject.addClass(currencyClass);
 
-        if (!hasCautiousCredit) {
-          const classes = 'cautious upcoming credit positive zero negative';
+      if (availableAfterUpcoming >= 0) {
+        subCategoryObject.removeAttr('data-toolkit-negative-available');
 
-          availableObject.removeClass(classes);
-          availableTextObject.removeClass(classes);
-
-          const currencyClass = this.determineCurrencyClass(availableAfterUpcoming);
-          availableObject.addClass(currencyClass);
-          availableTextObject.addClass(currencyClass);
+        if (subCategory.isOverSpent) {
+          availableObject.addClass('cautious');
+          availableTextObject.addClass('cautious');
         }
-
-        totalUpcoming += upcoming;
       }
-    });
+    }
   }
 
-  addTotalAvailableAfterUpcoming() {
-    const budgetInspectorObject = $('.budget-inspector-content').children().first();
-    if (!budgetInspectorObject.length) return;
+  addTotalAvailableAfterUpcoming(element) {
+    $('#total-available-after-upcoming').remove();
 
-    const budgetInspectorElement = budgetInspectorObject[0];
-    if (!budgetInspectorElement.id) return;
+    const elementObject = $(element);
+    const budgetInspectorObject = elementObject.hasClass('budget-inspector')
+      ? elementObject
+      : undefined;
+    if (!budgetInspectorObject) return;
 
-    const budgetInspector = getEmberView(budgetInspectorElement.id);
+    const budgetInspector = getEmberView(element.id);
     if (!budgetInspector) return;
 
-    const totalAvailable = budgetInspector.budgetTotals.available;
-    const totalAvailableAfterUpcoming = totalAvailable + totalUpcoming;
-
-    const totalAvailableHeader = budgetInspectorObject.find('h3').filter(function () {
-      return $(this).text() === 'TOTAL AVAILABLE';
+    // When one category is selected, YNAB provides their own "Available After Upcoming" so we don't need ours.
+    const localizedMessage = l10n(
+      'inspector.availableMessage.afterUpcoming',
+      'Available After Upcoming'
+    );
+    const availableAfterUpcomingMessage = $(
+      '.inspector-message-label',
+      budgetInspectorObject
+    ).filter(function () {
+      return this.innerText === localizedMessage;
     });
-    const endOfTotalAvailable = totalAvailableHeader.nextAll('hr')[0];
+    if (availableAfterUpcomingMessage.length) return;
 
-    $('.total-available-after-upcoming-inspector').remove();
-    this.createInspectorElement(totalAvailableAfterUpcoming).insertAfter(endOfTotalAvailable);
+    const totalAvailable = budgetInspector.budgetTotals.available;
+    const totalUpcoming = this.getTotalUpcoming(budgetInspector);
+    if (totalUpcoming === 0) return;
+
+    const totalAvailableAfterUpcoming = totalAvailable + totalUpcoming;
+    const availableBreakdownObject = $('.ynab-breakdown', budgetInspectorObject);
+
+    this.createInspectorElement(totalAvailableAfterUpcoming).prependTo(availableBreakdownObject);
   }
 
   createInspectorElement(totalAvailableAfterUpcoming) {
+    const localizedTitle = l10n(
+      'toolkit.availableAfterUpcoming',
+      'Available After Upcoming Transactions'
+    );
+
     const currencyClass = this.determineCurrencyClass(totalAvailableAfterUpcoming);
 
     totalAvailableAfterUpcoming = formatCurrency(totalAvailableAfterUpcoming);
 
     return $(`
-      <div class="total-available-after-upcoming-inspector">
-        <h3>TOTAL AVAILABLE AFTER UPCOMING TRANSACTIONS</h3>
-        <h1 title>
+      <div id="total-available-after-upcoming">
+        <div>${localizedTitle}</div>
+        <div class="user-data">
           <span class="user-data currency ${currencyClass}">
             ${totalAvailableAfterUpcoming}
           </span>
-        </h1>
-        <hr />
+        </div>
       </div>
     `);
+  }
+
+  getTotalUpcoming(budgetInspector) {
+    let totalUpcoming = 0;
+
+    for (const category of budgetInspector.inspectorCategories) {
+      totalUpcoming += category.upcomingTransactions;
+    }
+
+    return totalUpcoming;
   }
 
   determineCurrencyClass(amount) {
