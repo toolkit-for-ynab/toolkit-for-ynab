@@ -193,11 +193,11 @@ export class SpendingByCategoryComponent extends React.Component {
         backgroundColor: 'transparent',
         events: {
           drilldown: (event) => {
-            chart.setTitle({ text: `${event.point.name}<br>${formatCurrency(event.point.y)}` });
+            chart.setTitle({ text: `${event.point.name}<br><span class="currency">${formatCurrency(event.point.y)}</span>` });
             _this.setState({ currentDrillDownId: event.point.id });
           },
           drillup: () => {
-            chart.setTitle({ text: `Total Spending<br>${formatCurrency(totalSpending)}` });
+            chart.setTitle({ text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>` });
             _this.setState({ currentDrillDownId: null });
           },
         },
