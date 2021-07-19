@@ -55,6 +55,9 @@ export class SubtractUpcomingFromAvailable extends Feature {
           availableObject.addClass('cautious');
           availableTextObject.addClass('cautious');
         }
+      } else if (!subCategory.isOverSpent) {
+        availableObject.removeClass('cautious');
+        availableTextObject.removeClass('cautious');
       }
     }
   }
