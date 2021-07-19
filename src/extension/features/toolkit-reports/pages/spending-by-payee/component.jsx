@@ -173,9 +173,9 @@ export class SpendingByPayeeComponent extends React.Component {
           dataLabels: {
             formatter: function () {
               let formattedNumber = formatCurrency(this.y);
-              return `${this.point.name}<br><span class="currency">${formattedNumber} (${Math.round(
+              return `${this.point.name}<br><span class="currency">${formattedNumber}</span> (${Math.round(
                 this.percentage
-              )}%)</span>`;
+              )}%)`;
             },
             style: {
               color: 'var(--label_primary)',
