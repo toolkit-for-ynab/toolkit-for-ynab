@@ -2,7 +2,8 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { l10n } from 'toolkit/extension/utils/toolkit';
+import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
+import { getTotalSavings } from 'toolkit/extension/features/budget/subtract-savings-from-available/index';
 
 export class SubtractUpcomingFromAvailable extends Feature {
   shouldInvoke() {
@@ -44,7 +45,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
       availableObject.removeClass(classes);
       availableTextObject.removeClass(classes);
 
-      const currencyClass = this.getCurrencyClass(availableAfterUpcoming);
+      const currencyClass = getCurrencyClass(availableAfterUpcoming);
       availableObject.addClass(currencyClass);
       availableTextObject.addClass(currencyClass);
 
@@ -84,9 +85,12 @@ export class SubtractUpcomingFromAvailable extends Feature {
     });
     if (ynabAvailableAfterUpcomingMessageObject.length) return;
 
-    const totalAvailable = budgetBreakdown.budgetTotals.available;
+    let totalAvailable = budgetBreakdown.budgetTotals.available;
     const totalUpcoming = this.getTotalUpcoming(budgetBreakdown);
     const totalOfCCBalances = this.getTotalOfCCBalances(budgetBreakdown);
+
+    if (ynabToolKit.options.SubtractSavingsFromAvailable)
+      totalAvailable -= getTotalSavings(budgetBreakdown);
 
     let totalAvailableAfterUpcoming = totalAvailable;
 
@@ -108,7 +112,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
       'Available After Upcoming Transactions'
     );
 
-    const currencyClass = this.getCurrencyClass(totalAvailableAfterUpcoming);
+    const currencyClass = getCurrencyClass(totalAvailableAfterUpcoming);
 
     totalAvailableAfterUpcoming = formatCurrency(totalAvailableAfterUpcoming);
 
@@ -144,20 +148,20 @@ export class SubtractUpcomingFromAvailable extends Feature {
     return totalOfCCBalances;
   }
 
-  getCurrencyClass(amount) {
-    let currencyClass = 'positive';
-
-    if (amount < 0) {
-      currencyClass = 'negative';
-    } else if (amount === 0) {
-      currencyClass = 'zero';
-    }
-
-    return currencyClass;
-  }
-
   onRouteChanged() {
     if (!this.shouldInvoke()) return;
     this.invoke();
   }
+}
+
+export function getCurrencyClass(amount) {
+  let currencyClass = 'positive';
+
+  if (amount < 0) {
+    currencyClass = 'negative';
+  } else if (amount === 0) {
+    currencyClass = 'zero';
+  }
+
+  return currencyClass;
 }
