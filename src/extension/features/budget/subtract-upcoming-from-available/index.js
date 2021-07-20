@@ -63,8 +63,6 @@ export class SubtractUpcomingFromAvailable extends Feature {
   }
 
   addTotalAvailableAfterUpcoming(element) {
-    $('#total-available-after-upcoming').remove();
-
     const elementObject = $(element);
     const budgetInspectorObject = elementObject.hasClass('budget-inspector')
       ? elementObject
@@ -73,6 +71,8 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
     const budgetInspector = getEmberView(element.id);
     if (!budgetInspector) return;
+
+    $('#total-available-after-upcoming').remove();
 
     // When one category is selected, YNAB provides their own "Available After Upcoming" so we don't need ours.
     const localizedMessage = l10n(
