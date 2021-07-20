@@ -11,7 +11,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
   invoke() {
     addToolkitEmberHook(this, 'budget-table-row', 'didRender', this.run);
-    addToolkitEmberHook(this, 'budget/budget-inspector', 'didRender', this.run);
+    addToolkitEmberHook(this, 'budget-breakdown', 'didRender', this.run);
   }
 
   run(element) {
@@ -22,18 +22,18 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
   updateAvailableBalance(element) {
     const elementObject = $(element);
-    const subCategoryObject = elementObject.hasClass('is-sub-category') ? elementObject : undefined;
-    if (!subCategoryObject) return;
+    const categoryObject = elementObject.hasClass('is-sub-category') ? elementObject : undefined;
+    if (!categoryObject) return;
 
-    const subCategory = getEmberView(element.id, 'category');
-    if (!subCategory) return;
+    const category = getEmberView(element.id, 'category');
+    if (!category) return;
 
-    if (subCategory.upcomingTransactions) {
-      const availableObject = $(`.ynab-new-budget-available-number`, subCategoryObject);
+    if (category.upcomingTransactions) {
+      const availableObject = $(`.ynab-new-budget-available-number`, categoryObject);
       const availableTextObject = $(`.user-data`, availableObject);
 
-      const available = subCategory.available;
-      const upcoming = subCategory.upcomingTransactions;
+      const available = category.available;
+      const upcoming = category.upcomingTransactions;
       const availableAfterUpcoming = available + upcoming;
 
       availableTextObject.text(formatCurrency(availableAfterUpcoming));
@@ -44,18 +44,18 @@ export class SubtractUpcomingFromAvailable extends Feature {
       availableObject.removeClass(classes);
       availableTextObject.removeClass(classes);
 
-      const currencyClass = this.determineCurrencyClass(availableAfterUpcoming);
+      const currencyClass = this.getCurrencyClass(availableAfterUpcoming);
       availableObject.addClass(currencyClass);
       availableTextObject.addClass(currencyClass);
 
       if (availableAfterUpcoming >= 0) {
-        subCategoryObject.removeAttr('data-toolkit-negative-available');
+        categoryObject.removeAttr('data-toolkit-negative-available');
 
-        if (subCategory.isOverSpent) {
+        if (category.isOverSpent) {
           availableObject.addClass('cautious');
           availableTextObject.addClass('cautious');
         }
-      } else if (!subCategory.isOverSpent) {
+      } else if (!category.isOverSpent) {
         availableObject.removeClass('cautious');
         availableTextObject.removeClass('cautious');
       }
@@ -64,32 +64,32 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
   addTotalAvailableAfterUpcoming(element) {
     const elementObject = $(element);
-    const budgetInspectorObject = elementObject.hasClass('budget-inspector')
+    const budgetBreakdownObject = elementObject.hasClass('budget-breakdown')
       ? elementObject
       : undefined;
-    if (!budgetInspectorObject) return;
+    if (!budgetBreakdownObject) return;
 
-    const budgetInspector = getEmberView(element.id);
-    if (!budgetInspector) return;
+    const budgetBreakdown = getEmberView(element.id);
+    if (!budgetBreakdown) return;
 
     $('#total-available-after-upcoming').remove();
 
     // When one category is selected, YNAB provides their own "Available After Upcoming" so we don't need ours.
-    const localizedMessage = l10n(
+    const localizedMessageText = l10n(
       'inspector.availableMessage.afterUpcoming',
       'Available After Upcoming'
     );
-    const availableAfterUpcomingMessage = $(
+    const ynabAvailableAfterUpcomingMessageObject = $(
       '.inspector-message-label',
-      budgetInspectorObject
+      budgetBreakdownObject
     ).filter(function () {
-      return this.innerText === localizedMessage;
+      return this.innerText === localizedMessageText;
     });
-    if (availableAfterUpcomingMessage.length) return;
+    if (ynabAvailableAfterUpcomingMessageObject.length) return;
 
-    const totalAvailable = budgetInspector.budgetTotals.available;
-    const totalUpcoming = this.getTotalUpcoming(budgetInspector);
-    const totalOfCCBalances = this.getTotalOfCCBalances(budgetInspector);
+    const totalAvailable = budgetBreakdown.budgetTotals.available;
+    const totalUpcoming = this.getTotalUpcoming(budgetBreakdown);
+    const totalOfCCBalances = this.getTotalOfCCBalances(budgetBreakdown);
 
     let totalAvailableAfterUpcoming = totalAvailable;
 
@@ -100,9 +100,9 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
     if (totalAvailableAfterUpcoming === totalAvailable) return;
 
-    const availableBreakdownObject = $('.ynab-breakdown', budgetInspectorObject);
+    const ynabBreakdownObject = $('.ynab-breakdown', budgetBreakdownObject);
 
-    this.createInspectorElement(totalAvailableAfterUpcoming).prependTo(availableBreakdownObject);
+    this.createInspectorElement(totalAvailableAfterUpcoming).prependTo(ynabBreakdownObject);
   }
 
   createInspectorElement(totalAvailableAfterUpcoming) {
@@ -111,7 +111,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
       'Available After Upcoming Transactions'
     );
 
-    const currencyClass = this.determineCurrencyClass(totalAvailableAfterUpcoming);
+    const currencyClass = this.getCurrencyClass(totalAvailableAfterUpcoming);
 
     totalAvailableAfterUpcoming = formatCurrency(totalAvailableAfterUpcoming);
 
@@ -127,27 +127,27 @@ export class SubtractUpcomingFromAvailable extends Feature {
     `);
   }
 
-  getTotalUpcoming(budgetInspector) {
+  getTotalUpcoming(budgetBreakdown) {
     let totalUpcoming = 0;
 
-    for (const category of budgetInspector.inspectorCategories) {
+    for (const category of budgetBreakdown.inspectorCategories) {
       totalUpcoming += category.upcomingTransactions;
     }
 
     return totalUpcoming;
   }
 
-  getTotalOfCCBalances(budgetInspector) {
+  getTotalOfCCBalances(budgetBreakdown) {
     let totalOfCCBalances = 0;
 
-    for (const category of budgetInspector.inspectorCategories) {
+    for (const category of budgetBreakdown.inspectorCategories) {
       if (category.isCreditCardPaymentCategory) totalOfCCBalances -= category.available;
     }
 
     return totalOfCCBalances;
   }
 
-  determineCurrencyClass(amount) {
+  getCurrencyClass(amount) {
     let currencyClass = 'positive';
 
     if (amount < 0) {
