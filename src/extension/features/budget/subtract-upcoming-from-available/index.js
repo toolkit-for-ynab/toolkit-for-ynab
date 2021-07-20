@@ -89,9 +89,17 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
     const totalAvailable = budgetInspector.budgetTotals.available;
     const totalUpcoming = this.getTotalUpcoming(budgetInspector);
-    if (totalUpcoming === 0) return;
+    const totalOfCCBalances = this.getTotalOfCCBalances(budgetInspector);
 
-    const totalAvailableAfterUpcoming = totalAvailable + totalUpcoming;
+    let totalAvailableAfterUpcoming = totalAvailable;
+
+    if (this.settings.enabled === 'upcoming-only') totalAvailableAfterUpcoming += totalUpcoming;
+    if (this.settings.enabled === 'cc-only') totalAvailableAfterUpcoming += totalOfCCBalances;
+    if (this.settings.enabled === 'both')
+      totalAvailableAfterUpcoming += totalUpcoming + totalOfCCBalances;
+
+    if (totalAvailableAfterUpcoming === totalAvailable) return;
+
     const availableBreakdownObject = $('.ynab-breakdown', budgetInspectorObject);
 
     this.createInspectorElement(totalAvailableAfterUpcoming).prependTo(availableBreakdownObject);
@@ -127,6 +135,16 @@ export class SubtractUpcomingFromAvailable extends Feature {
     }
 
     return totalUpcoming;
+  }
+
+  getTotalOfCCBalances(budgetInspector) {
+    let totalOfCCBalances = 0;
+
+    for (const category of budgetInspector.inspectorCategories) {
+      if (category.isCreditCardPaymentCategory) totalOfCCBalances -= category.available;
+    }
+
+    return totalOfCCBalances;
   }
 
   determineCurrencyClass(amount) {
