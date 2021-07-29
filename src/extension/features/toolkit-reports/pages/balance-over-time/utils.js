@@ -1,5 +1,6 @@
 // Common util methods to help generate a running total
 import regression from 'regression';
+import moment from 'moment';
 
 // Constant for how many datapoints to allow per graph line
 // https://api.highcharts.com/highcharts/plotOptions.series.turboThreshold
