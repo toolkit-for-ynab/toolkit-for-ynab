@@ -3,30 +3,19 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class ChangeEnterBehavior extends Feature {
   shouldInvoke() {
-    return isCurrentRouteAccountsPage() && $('.ynab-grid-add-rows').length;
+    return isCurrentRouteAccountsPage() && $('.ynab-grid-body-row.is-editing').length;
   }
 
   invoke() {
-    const $addRows = $('.ynab-grid-add-rows');
-    const $editRows = $('.ynab-grid-body-row.is-editing', $addRows);
-    $editRows.each((index, $addRow) => {
-      const $memoInput = $('.ynab-grid-cell-memo input', $addRow);
-      const $outflowInput = $('.ynab-grid-cell-outflow input', $addRow);
-      const $inflowInput = $('.ynab-grid-cell-inflow input', $addRow);
-
-      if ($memoInput.length && !$memoInput[0].getAttribute('data-toolkit-save-behavior')) {
-        $memoInput[0].setAttribute('data-toolkit-save-behavior', true);
-        $memoInput.on('keydown', this.applyNewEnterBehavior);
-      }
-
-      if ($outflowInput.length && !$outflowInput[0].getAttribute('data-toolkit-save-behavior')) {
-        $outflowInput[0].setAttribute('data-toolkit-save-behavior', true);
-        $outflowInput.on('keydown', this.applyNewEnterBehavior);
-      }
-
-      if ($inflowInput.length && !$inflowInput[0].getAttribute('data-toolkit-save-behavior')) {
-        $inflowInput[0].setAttribute('data-toolkit-save-behavior', true);
-        $inflowInput.on('keydown', this.applyNewEnterBehavior);
+    const $editRows = $('.ynab-grid-body-row.is-editing');
+    const $editInputs = $(
+      '.ynab-grid-cell-memo input, .ynab-grid-cell-outflow input, .ynab-grid-cell-inflow input',
+      $editRows
+    );
+    $editInputs.each((index, input) => {
+      if (!input.getAttribute('data-toolkit-ctrl-behavior')) {
+        input.setAttribute('data-toolkit-ctrl-behavior', true);
+        input.addEventListener('keydown', this.applyNewEnterBehavior);
       }
     });
   }
@@ -43,7 +32,7 @@ export class ChangeEnterBehavior extends Feature {
         ynabToolKit.options.CtrlEnterCleared === true &&
         (event.metaKey === true || event.ctrlKey === true)
       ) {
-        let $markClearedButton = $('.is-adding .ynab-cleared:not(.is-cleared)');
+        let $markClearedButton = $('.is-editing .ynab-cleared:not(.is-cleared)');
         if ($markClearedButton.length !== 0) {
           $markClearedButton[0].click();
         }
@@ -55,7 +44,7 @@ export class ChangeEnterBehavior extends Feature {
   }
 
   observe(changedNodes) {
-    if (!changedNodes.has('ynab-grid-add-rows')) return;
+    if (!changedNodes.has('ynab-grid-body')) return;
 
     if (this.shouldInvoke()) {
       this.invoke();
