@@ -4,6 +4,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { Collections } from 'toolkit/extension/utils/collections';
+import moment from 'moment';
 
 export class DaysOfBuffering extends Feature {
   _lookbackMonths = parseInt(ynabToolKit.options.DaysOfBufferingHistoryLookup);

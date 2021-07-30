@@ -31,6 +31,3 @@ scripts/settings.json
 
 # created at build time with tasks/generateFeatureIndex.js
 src/extension/features/index.js
-
-# created at build time with tasks/generateFeedChanges.js
-src/extension/legacy/features/act-on-change/feedChanges.js

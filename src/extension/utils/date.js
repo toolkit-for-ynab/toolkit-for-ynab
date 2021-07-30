@@ -1,5 +1,6 @@
 import { l10nMonth, MonthStyle } from './toolkit';
 import { getEntityManager } from './ynab';
+import moment from 'moment';
 
 export function getCurrentDate(format) {
   return ynabDate(format, false);

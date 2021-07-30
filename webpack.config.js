@@ -18,12 +18,10 @@ module.exports = function (env) {
     mode: 'none',
 
     entry: {
-      'background/background': path.resolve(`${CODE_SOURCE_DIR}/core/browser/background/index.js`),
-      'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/browser/options/options.js`),
-      'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/browser/popup/index.js`),
-      'content-scripts/init': path.resolve(
-        `${CODE_SOURCE_DIR}/core/browser/content-scripts/init.js`
-      ),
+      'background/background': path.resolve(`${CODE_SOURCE_DIR}/core/background/index.js`),
+      'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/options/options.js`),
+      'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/popup/index.js`),
+      'content-scripts/init': path.resolve(`${CODE_SOURCE_DIR}/core/content-scripts/init.js`),
       'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`),
     },
 
@@ -42,12 +40,22 @@ module.exports = function (env) {
           path.join(CODE_SOURCE_DIR, 'extension', 'features', 'toolkit-reports')
         ),
       },
-      extensions: ['.js', '.jsx'],
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
       modules: ['node_modules'],
     },
 
     module: {
       rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          include: [path.resolve(__dirname, CODE_SOURCE_DIR)],
+          use: [
+            {
+              loader: 'ts-loader',
+            },
+          ],
+        },
         {
           test: /\.jsx?$/,
           exclude: /node_modules/,
@@ -101,32 +109,19 @@ module.exports = function (env) {
             to: path.join(__dirname, `${BUILD_PATH}`),
           },
           {
-            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/background`),
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/background`),
             to: path.join(__dirname, `${BUILD_PATH}/background`),
             globOptions: { ignore: '**/*.js' },
           },
           {
-            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/options`),
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/options`),
             to: path.join(__dirname, `${BUILD_PATH}/options`),
             globOptions: { ignore: '**/*.js' },
           },
           {
-            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/popup`),
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/popup`),
             to: path.join(__dirname, `${BUILD_PATH}/popup`),
             globOptions: { ignore: '**/*.js' },
-          },
-          {
-            from: path.join(__dirname, `${CODE_SOURCE_DIR}/extension/legacy/**/*.css`),
-            to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`),
-            context: 'src/extension',
-          },
-          {
-            from: path.join(
-              __dirname,
-              `${CODE_SOURCE_DIR}/extension/legacy/features/l10n/locales/*.js`
-            ),
-            to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`),
-            context: 'src/extension',
           },
         ],
       }),
