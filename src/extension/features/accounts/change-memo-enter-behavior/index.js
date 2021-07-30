@@ -37,7 +37,7 @@ export class ChangeMemoEnterBehavior extends Feature {
 
   observe(changedNodes) {
     if (
-      !changedNodes.has('ynab-grid-body-row is-editing') &&
+      !changedNodes.has('ynab-grid-body-row is-editing is-checked') &&
       !changedNodes.has('ynab-grid-add-rows')
     )
       return;
