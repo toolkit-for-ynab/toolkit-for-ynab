@@ -17,13 +17,13 @@ describe('toolkit error utils', () => {
   describe('withToolkitError', () => {
     it('should error if the first argument is not a function', () => {
       expect(() => {
-        withToolkitError('not a function', 'test');
+        withToolkitError('not a function' as any, 'test' as FeatureName);
       }).toThrowErrorMatchingSnapshot();
     });
 
     it('should log a warning if the second argument is not a feature instance or feature name', () => {
       const innerFunction = jest.fn();
-      const wrappedFunc = withToolkitError(innerFunction, 'doesntexist');
+      const wrappedFunc = withToolkitError(innerFunction, 'doesntexist' as FeatureName);
       expect(console.warn).toHaveBeenCalledWith(
         "Second argument to withToolkitError should either be Feature Class or Feature Name as found in the feature's settings.js file"
       );
@@ -37,7 +37,7 @@ describe('toolkit error utils', () => {
 
       it('should return a wrappedFunction', () => {
         const innerFunction = jest.fn();
-        const wrappedFunc = withToolkitError(innerFunction, 'mockSetting');
+        const wrappedFunc = withToolkitError(innerFunction, 'mockSetting' as FeatureName);
         expect(console.warn).not.toHaveBeenCalled();
         expect(wrappedFunc).toEqual(expect.any(Function));
       });
@@ -48,7 +48,7 @@ describe('toolkit error utils', () => {
             throw Error('mock error');
           });
 
-          const wrappedFunc = withToolkitError(innerFunction, 'mockSetting');
+          const wrappedFunc = withToolkitError(innerFunction, 'mockSetting' as FeatureName);
           expect(() => {
             wrappedFunc();
           }).not.toThrow();
@@ -58,7 +58,7 @@ describe('toolkit error utils', () => {
         it('should return the return value of the wrapped function', () => {
           const mockReturn = 'mock return';
           const innerFunction = jest.fn().mockReturnValue(mockReturn);
-          const wrappedFunc = withToolkitError(innerFunction, 'mockSetting');
+          const wrappedFunc = withToolkitError(innerFunction, 'mockSetting' as FeatureName);
           expect(wrappedFunc()).toEqual(mockReturn);
         });
       });
@@ -70,7 +70,7 @@ describe('toolkit error utils', () => {
       const mockError = new Error('mock error');
       logToolkitError({
         exception: mockError,
-        featureName: 'mock feature',
+        featureName: 'mock feature' as FeatureName,
         featureSetting: 'false',
         functionName: 'observe',
       });
@@ -90,7 +90,7 @@ describe('toolkit error utils', () => {
       const mockError = new Error('mock error');
       logToolkitError({
         exception: mockError,
-        featureName: 'mock feature',
+        featureName: 'mock feature' as FeatureName,
         featureSetting: 'false',
         functionName: 'observe',
       });

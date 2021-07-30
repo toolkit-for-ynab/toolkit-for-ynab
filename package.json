@@ -3,13 +3,13 @@
   "version": "2.33.0",
   "private": true,
   "scripts": {
+    "prepare": "husky install",
     "build:check": "yarn && yarn gen && yarn lint",
-    "build:beta": "yarn build:check && yarn webpack:beta && yarn build:legacy && yarn manifest:beta && yarn compress",
+    "build:beta": "yarn build:check && yarn webpack:beta && yarn manifest:beta && yarn compress",
     "build:dev": "yarn build:development",
-    "build:development": "yarn build:check && yarn webpack:development && yarn build:legacy && yarn manifest:development",
+    "build:development": "yarn build:check && yarn webpack:development && yarn manifest:development",
     "build:prod": "yarn build:production",
-    "build:production": "yarn build:check && yarn webpack:production && yarn build:legacy && yarn compress",
-    "build:legacy": "babel src/extension/legacy --quiet --no-babelrc --compact false --config-file ./.babelrc-legacy --out-dir dist/extension/web-accessibles/legacy",
+    "build:production": "yarn build:check && yarn webpack:production && yarn compress",
     "build:webpack": "webpack",
     "compress": "yarn compress:dist && yarn compress:src",
     "compress:dist": "node scripts/compressDist.js",
@@ -27,9 +27,8 @@
     "prettier": "prettier --write \"{src,scripts}/**/*.{js,jsx}\"",
     "test": "yarn && yarn gen && jest",
     "watch": "yarn && node scripts/watch.js",
-    "gen": "yarn gen:settings && yarn gen:featureIndex && yarn gen:feedChanges",
+    "gen": "yarn gen:settings && yarn gen:featureIndex",
     "gen:featureIndex": "node scripts/generateFeatureIndex",
-    "gen:feedChanges": "node scripts/generateFeedChanges",
     "gen:settings": "node scripts/generateSettings",
     "gen:docs": "yarn gen:settings && node scripts/generateDocs",
     "l10n:update": "node scripts/updateLocalizationStrings.js",
@@ -67,7 +66,8 @@
     ],
     "testURL": "https://app.youneedabudget.com/aaaaaaaa-bbbb-cccc-dddd-000000000000/budget/201802",
     "transform": {
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.jsx?$": "babel-jest",
+      "^.+\\.tsx?$": "ts-jest"
     }
   },
   "defaultFeatures": [
@@ -96,6 +96,7 @@
     "highcharts": "^9.1.1",
     "jest-progress-bar-reporter": "^1.0.21",
     "jquery": "^3.6.0",
+    "moment": "^2.29.1",
     "raven-js": "^3.25.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
@@ -110,6 +111,10 @@
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
     "@babel/preset-env": "^7.14.4",
     "@babel/preset-react": "^7.13.13",
+    "@types/ember": "^3.16.0",
+    "@types/jest": "^26.0.23",
+    "@types/jquery": "^3.5.5",
+    "@types/react": "^17.0.11",
     "acorn": "^8.3.0",
     "acorn-class-fields": "^1.0.0",
     "acorn-jsx": "^5.3.1",
@@ -143,6 +148,9 @@
     "style-loader": "^2.0.0",
     "terminate": "^2.2.0",
     "to-string-loader": "^1.1.6",
+    "ts-jest": "^27.0.3",
+    "ts-loader": "^9.2.3",
+    "typescript": "^4.3.4",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0",
     "yargs": "^17.0.1"

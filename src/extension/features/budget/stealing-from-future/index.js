@@ -2,6 +2,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage, transitionTo } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { l10nMonth, MonthStyle } from 'toolkit/extension/utils/toolkit';
+import moment from 'moment';
 
 // TODO: move income-from-last-month to the new framework and just export this
 // variable from that feature

@@ -3,4 +3,3 @@ node_modules
 **/*/lib/
 **/assets
 **/extension/features/index.js
-**/extension/legacy/features/act-on-change/feedChanges.js

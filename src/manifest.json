@@ -20,8 +20,7 @@
   },
   "web_accessible_resources": ["assets/*", "web-accessibles/*"],
   "background": {
-    "page": "background/index.html",
-    "persistent": true
+    "scripts": ["background/background.js"]
   },
   "homepage_url": "https://github.com/toolkit-for-ynab/toolkit-for-ynab/",
   "options_ui": {
