@@ -3,20 +3,18 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class ChangeMemoEnterBehavior extends Feature {
   shouldInvoke() {
-    return (
-      isCurrentRouteAccountsPage() &&
-      $('.ynab-grid-body-row.is-adding, .ynab-grid-body-row.is-editing').length
-    );
+    return isCurrentRouteAccountsPage() && $('.ynab-grid-body-row.is-editing').length;
   }
 
   invoke() {
-    const $addEditRow = $('.ynab-grid-body-row.is-adding, .ynab-grid-body-row.is-editing');
-    const $memoInput = $('.ynab-grid-cell-memo input', $addEditRow);
-
-    if (!$memoInput[0].getAttribute('data-toolkit-memo-behavior')) {
-      $memoInput[0].setAttribute('data-toolkit-memo-behavior', true);
-      $memoInput.keydown(this.applyNewEnterBehavior);
-    }
+    const editRows = $('.ynab-grid-body-row.is-editing');
+    const memoInputs = $('.ynab-grid-cell-memo input', editRows);
+    memoInputs.each((index, input) => {
+      if (!input.getAttribute('data-toolkit-memo-behavior')) {
+        input.setAttribute('data-toolkit-memo-behavior', true);
+        input.addEventListener('keydown', this.applyNewEnterBehavior);
+      }
+    });
   }
 
   applyNewEnterBehavior(event) {
