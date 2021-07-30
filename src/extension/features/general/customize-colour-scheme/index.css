@@ -30,8 +30,10 @@ body.tk-custom-colours-enabled {
   */
 
   /* Negative */
-  --budget_balance_negative_background: var(--tk-custom-colours-negative-l150c060) !important; 
-  --budget_balance_negative_background_active: var(--tk-custom-colours-negative-l140c075) !important; 
+  --budget_balance_negative_background: var(--tk-custom-colours-negative-l150c060) !important;
+  --budget_balance_negative_background_active: var(
+    --tk-custom-colours-negative-l140c075
+  ) !important;
   --budget_balance_negative_icon: var(--tk-custom-colours-negative-l030c045) !important;
   --budget_balance_negative_text: var(--tk-custom-colours-negative-l030c045) !important;
   --budget_bar_overspending: var(--tk-custom-colours-negative) !important;
@@ -48,14 +50,16 @@ body.tk-custom-colours-enabled {
 
   /* Positive */
   --budget_balance_positive_background: var(--tk-custom-colours-positive-l150c060) !important;
-  --budget_balance_positive_background_active: var(--tk-custom-colours-positive-l140c075) !important;
+  --budget_balance_positive_background_active: var(
+    --tk-custom-colours-positive-l140c075
+  ) !important;
   --budget_balance_positive_icon: var(--tk-custom-colours-positive-l030c045) !important;
   --budget_balance_positive_text: var(--tk-custom-colours-positive-l030c045) !important;
   --budget_bar_funded: var(--tk-custom-colours-positive) !important;
   --budget_bar_funded_spending: var(--tk-custom-colours-positive-l140c075) !important;
   --budget_bar_funded_spending_stripe: var(--tk-custom-colours-positive-l160c015) !important;
   --header_label_positive: var(--tk-custom-colours-positive) !important;
-  --header_tbb_positive_background: var(--tk-custom-colours-positive) !important; 
+  --header_tbb_positive_background: var(--tk-custom-colours-positive) !important;
   --label_positive: var(--tk-custom-colours-positive) !important;
   --label_positive_active: var(--tk-custom-colours-positive-l045c055) !important;
   --message_positive_accent: var(--tk-custom-colours-positive) !important;
@@ -82,7 +86,9 @@ body.tk-custom-colours-enabled {
 body.tk-custom-colours-enabled.theme-dark {
   /* Negative */
   --budget_balance_negative_background: var(--tk-custom-colours-negative) !important;
-  --budget_balance_negative_background_active: var(--tk-custom-colours-negative-l110c100) !important;
+  --budget_balance_negative_background_active: var(
+    --tk-custom-colours-negative-l110c100
+  ) !important;
   --budget_balance_negative_icon: #232325 !important;
   --budget_balance_negative_text: #232325 !important;
   --budget_bar_overspending: var(--tk-custom-colours-negative-l055c090) !important;
@@ -99,7 +105,9 @@ body.tk-custom-colours-enabled.theme-dark {
 
   /* Positive */
   --budget_balance_positive_background: var(--tk-custom-colours-positive) !important;
-  --budget_balance_positive_background_active: var(--tk-custom-colours-positive-l110c100) !important;
+  --budget_balance_positive_background_active: var(
+    --tk-custom-colours-positive-l110c100
+  ) !important;
   --budget_balance_positive_icon: #232325 !important;
   --budget_balance_positive_text: #232325 !important;
   --budget_bar_funded: var(--tk-custom-colours-positive) !important;
@@ -133,7 +141,9 @@ body.tk-custom-colours-enabled.theme-dark {
 body.tk-custom-colours-enabled.theme-classic {
   /* Negative */
   --budget_balance_negative_background: var(--tk-custom-colours-negative) !important;
-  --budget_balance_negative_background_active: var(--tk-custom-colours-negative-l090c090) !important;
+  --budget_balance_negative_background_active: var(
+    --tk-custom-colours-negative-l090c090
+  ) !important;
   --budget_balance_negative_icon: #fff !important;
   --budget_balance_negative_text: #fff !important;
   --budget_bar_overspending: var(--tk-custom-colours-negative) !important;
@@ -150,7 +160,9 @@ body.tk-custom-colours-enabled.theme-classic {
 
   /* Positive */
   --budget_balance_positive_background: var(--tk-custom-colours-positive) !important;
-  --budget_balance_positive_background_active: var(--tk-custom-colours-positive-l090c090) !important;
+  --budget_balance_positive_background_active: var(
+    --tk-custom-colours-positive-l090c090
+  ) !important;
   --budget_balance_positive_icon: #fff !important;
   --budget_balance_positive_text: #fff !important;
   --budget_bar_funded: var(--tk-custom-colours-positive) !important;
@@ -181,27 +193,34 @@ body.tk-custom-colours-enabled.theme-classic {
 }
 
 /* Square corners */
-body.tk-custom-colours-enabled[tk-custom-colours-negative-square] .ynab-new-budget-available-number.negative {
+body.tk-custom-colours-enabled[tk-custom-colours-negative-square]
+  .ynab-new-budget-available-number.negative {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
 }
 
-body.tk-custom-colours-enabled[tk-custom-colours-positive-square] .ynab-new-budget-available-number.positive {
+body.tk-custom-colours-enabled[tk-custom-colours-positive-square]
+  .ynab-new-budget-available-number.positive {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
 }
 
-body.tk-custom-colours-enabled[tk-custom-colours-warning-square] .ynab-new-budget-available-number.cautious {
+body.tk-custom-colours-enabled[tk-custom-colours-warning-square]
+  .ynab-new-budget-available-number.cautious {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
 }
 
-body.tk-custom-colours-enabled[tk-custom-colours-negative-square] .left-to-budget-is-negative .budget-header-totals-amount {
+body.tk-custom-colours-enabled[tk-custom-colours-negative-square]
+  .left-to-budget-is-negative
+  .to-be-budgeted {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
 }
 
-body.tk-custom-colours-enabled[tk-custom-colours-positive-square] .left-to-budget-is-positive .budget-header-totals-amount {
+body.tk-custom-colours-enabled[tk-custom-colours-positive-square]
+  .left-to-budget-is-positive
+  .to-be-budgeted {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
 }
@@ -267,7 +286,8 @@ body.tk-custom-colours-enabled .tk-custom-colours-option .ynab-new-theme-switche
   padding-bottom: 0.5em;
 }
 
-.tk-custom-colours-square input, .tk-custom-colours-square label {
+.tk-custom-colours-square input,
+.tk-custom-colours-square label {
   width: auto;
   display: inline;
   font-weight: normal;
