@@ -50,15 +50,15 @@ export class DisplayTotalMonthlyGoals extends Feature {
     const currencyClass = goalsAmount === 0 ? 'zero' : 'positive';
 
     return $(`
-      <div class="total-monthly-goals-inspector">
-        <h3>TOTAL MONTHLY GOALS</h3>
-        <h1 title>
+      <section class="card total-monthly-goals-inspector">
+        <h2>
+          Total Monthly Goals
+          <svg width="24" height="24" class="card-chevron"></svg>
           <span class="user-data currency ${currencyClass}">
-            ${formatCurrency(goalsAmount)}
+              ${formatCurrency(goalsAmount)}
           </span>
-        </h1>
-        <hr />
-      </div>
+        </h2>
+      </section>
     `);
   }
 
@@ -73,23 +73,11 @@ export class DisplayTotalMonthlyGoals extends Feature {
     }
 
     this.createInspectorElement(monthlyGoals.amount).insertBefore(
-      $('.inspector-quick-budget', element)
+      $('.card.budget-breakdown-monthly-totals', element)
     );
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
-      'budget/inspector/default-inspector',
-      'didRender',
-      this.addTotalMonthlyGoals
-    );
-
-    addToolkitEmberHook(
-      this,
-      'budget/inspector/multi-select-inspector',
-      'didRender',
-      this.addTotalMonthlyGoals
-    );
+    addToolkitEmberHook(this, 'budget/budget-inspector', 'didRender', this.addTotalMonthlyGoals);
   }
 }
