@@ -25,6 +25,12 @@ body.tk-custom-colours-enabled {
   /*
     Each accent colour is defined by scaling the base colour in the LCH colour space
     The accent variables are named --tk-custom-colours-{base}-l{% lightness}c{% chroma}
+    e.g. l100c100 is equivalent to the base colour, l150c100 would be 50% brighter,
+         l100c050 would be the same brightness, but 50% as saturated
+    
+    themer.html in this folder is a tool that can be used to convert CSS rules from
+    the YNAB stylesheet automatically into accent variables
+
     If a new accent variable is referenced it needs to be added to the
     TK_CUSTOMIZE_COLOUR_ACCENTS at the top of index.js to be defined and updated
   */
