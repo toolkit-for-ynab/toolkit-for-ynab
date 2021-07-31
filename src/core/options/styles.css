@@ -1,10 +1,12 @@
-body {
-  min-width: 900px;
-
+html {
   -webkit-transition: all 1s ease;
   -moz-transition: all 1s ease;
   -o-transition: all 1s ease;
   transition: all 1s ease;
+}
+
+body {
+  min-width: 900px;
 }
 
 .inverted {

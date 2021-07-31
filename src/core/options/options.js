@@ -354,9 +354,9 @@ jq(() => {
 
   function applyDarkMode(activate) {
     if (activate) {
-      jq('body').addClass('inverted');
+      jq('html').addClass('inverted');
     } else {
-      jq('body').removeClass('inverted');
+      jq('html').removeClass('inverted');
     }
   }
 
