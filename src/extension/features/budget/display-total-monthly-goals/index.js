@@ -51,13 +51,15 @@ export class DisplayTotalMonthlyGoals extends Feature {
 
     return $(`
       <section class="card total-monthly-goals-inspector">
-        <h2>
-          Total Monthly Goals
-          <svg width="24" height="24" class="card-chevron"></svg>
-          <span class="user-data currency ${currencyClass}">
-              ${formatCurrency(goalsAmount)}
-          </span>
-        </h2>
+        <div class="card-roll-up">
+          <h2>
+            Total Monthly Goals
+            <svg width="24" height="24" class="card-chevron"></svg>
+            <span class="user-data currency ${currencyClass}">
+                ${formatCurrency(goalsAmount)}
+            </span>
+          </h2>
+        </div>
       </section>
     `);
   }
