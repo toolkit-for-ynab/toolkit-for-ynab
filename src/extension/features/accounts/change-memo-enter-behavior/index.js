@@ -17,6 +17,14 @@ export class ChangeMemoEnterBehavior extends Feature {
     });
   }
 
+  destroy() {
+    const $editInputs = $('input[data-toolkit-memo-behavior]');
+    $editInputs.each((index, input) => {
+      input.removeAttribute('data-toolkit-memo-behavior');
+      input.removeEventListener('keydown', this.applyNewEnterBehavior);
+    });
+  }
+
   applyNewEnterBehavior(event) {
     if (event.keyCode === 13) {
       event.preventDefault();

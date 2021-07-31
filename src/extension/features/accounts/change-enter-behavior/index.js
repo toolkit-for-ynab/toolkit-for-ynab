@@ -20,6 +20,14 @@ export class ChangeEnterBehavior extends Feature {
     });
   }
 
+  destroy() {
+    const $editInputs = $('input[data-toolkit-save-behavior]');
+    $editInputs.each((index, input) => {
+      input.removeAttribute('data-toolkit-save-behavior');
+      input.removeEventListener('keydown', this.applyNewEnterBehavior);
+    });
+  }
+
   applyNewEnterBehavior(event) {
     // This check is added so that there is no conflict with ChangeMemoEnterBehavior
     if ($(this)[0].getAttribute('data-toolkit-memo-behavior')) return;

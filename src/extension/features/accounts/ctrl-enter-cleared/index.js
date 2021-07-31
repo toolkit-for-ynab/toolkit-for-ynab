@@ -20,6 +20,14 @@ export class CtrlEnterCleared extends Feature {
     });
   }
 
+  destroy() {
+    const $editInputs = $('input[data-toolkit-ctrl-behavior]');
+    $editInputs.each((index, input) => {
+      input.removeAttribute('data-toolkit-ctrl-behavior');
+      input.removeEventListener('keydown', this.applyCtrlEnter);
+    });
+  }
+
   applyCtrlEnter(event) {
     if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
       let $markClearedButton = $('.is-editing .ynab-cleared:not(.is-cleared)');
