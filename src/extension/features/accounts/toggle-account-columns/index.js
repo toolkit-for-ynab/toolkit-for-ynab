@@ -53,7 +53,12 @@ export class ToggleAccountColumns extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'modals/register/view-menu', 'didRender', this.insertToggles);
+    addToolkitEmberHook(
+      this,
+      'modals/register/register-view-options',
+      'didRender',
+      this.insertToggles
+    );
   }
 
   insertToggles(element) {
