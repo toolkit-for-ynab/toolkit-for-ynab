@@ -29,6 +29,8 @@ export class CtrlEnterCleared extends Feature {
   }
 
   applyCtrlEnter(event) {
+    // This check is added so that there is no conflict with ChangeMemoEnterBehavior
+    if ($(this)[0].getAttribute('data-toolkit-memo-behavior')) return;
     if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
       let $markClearedButton = $('.is-editing .ynab-cleared:not(.is-cleared)');
       $markClearedButton.trigger('click');
