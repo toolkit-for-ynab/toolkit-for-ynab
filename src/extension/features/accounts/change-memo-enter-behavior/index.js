@@ -7,9 +7,9 @@ export class ChangeMemoEnterBehavior extends Feature {
   }
 
   invoke() {
-    const editRows = $('.ynab-grid-body-row.is-editing');
-    const memoInputs = $('.ynab-grid-cell-memo input', editRows);
-    memoInputs.each((index, input) => {
+    const $editRows = $('.ynab-grid-body-row.is-editing');
+    const $memoInputs = $('.ynab-grid-cell-memo input', $editRows);
+    $memoInputs.each((index, input) => {
       if (!input.getAttribute('data-toolkit-memo-behavior')) {
         input.setAttribute('data-toolkit-memo-behavior', true);
         input.addEventListener('keydown', this.applyNewEnterBehavior);
@@ -29,16 +29,12 @@ export class ChangeMemoEnterBehavior extends Feature {
       const $columns = $closestAddEditRow.children();
       const $nextColumn = $($columns.get($columns.index($memoColumn) + 1));
 
-      $nextColumn.find('input').focus();
+      $nextColumn.find('input').trigger('focus');
     }
   }
 
   observe(changedNodes) {
-    if (
-      !changedNodes.has('ynab-grid-body-row is-editing is-checked') &&
-      !changedNodes.has('ynab-grid-add-rows')
-    )
-      return;
+    if (!changedNodes.has('ynab-grid-body')) return;
 
     if (this.shouldInvoke()) {
       this.invoke();

@@ -7,12 +7,12 @@ export class CtrlEnterCleared extends Feature {
   }
 
   invoke() {
-    const editRows = $('.ynab-grid-body-row.is-editing');
-    const editInputs = $(
+    const $editRows = $('.ynab-grid-body-row.is-editing');
+    const $editInputs = $(
       '.ynab-grid-cell-memo input, .ynab-grid-cell-outflow input, .ynab-grid-cell-inflow input',
-      editRows
+      $editRows
     );
-    editInputs.each((index, input) => {
+    $editInputs.each((index, input) => {
       if (!input.getAttribute('data-toolkit-ctrl-behavior')) {
         input.setAttribute('data-toolkit-ctrl-behavior', true);
         input.addEventListener('keydown', this.applyCtrlEnter);
@@ -22,10 +22,8 @@ export class CtrlEnterCleared extends Feature {
 
   applyCtrlEnter(event) {
     if (event.keyCode === 13 && (event.metaKey || event.ctrlKey)) {
-      let markClearedButton = document.querySelector('.is-editing .ynab-cleared:not(.is-cleared)');
-      if (markClearedButton) {
-        markClearedButton.click();
-      }
+      let $markClearedButton = $('.is-editing .ynab-cleared:not(.is-cleared)');
+      $markClearedButton.trigger('click');
     }
   }
 
