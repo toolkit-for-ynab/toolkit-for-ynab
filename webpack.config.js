@@ -25,7 +25,7 @@ module.exports = function (env) {
       'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`),
     },
 
-    devtool: env.buildType !== 'production' ? 'inline-source-map' : '',
+    devtool: env.buildType !== 'production' ? 'inline-source-map' : false,
 
     output: {
       path: path.join(__dirname, BUILD_ROOT),
