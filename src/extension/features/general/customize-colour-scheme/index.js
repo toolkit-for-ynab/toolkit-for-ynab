@@ -271,6 +271,7 @@ export class CustomizeColourScheme extends Feature {
     const button = $(
       `<button>
         <div class="tk-custom-colours-${name}">
+          <div class="tk-custom-colours-picker-reset"></div>  
           <div class="tk-custom-colours-picker-icon"></div>
           <input type="color" value="${value}" class="tk-custom-colours-picker" style="background-color: ${value};"></input>
         </div>
@@ -278,16 +279,25 @@ export class CustomizeColourScheme extends Feature {
       </button>`
     );
 
+    const colourInput = $('input', button);
+
     // Live update colours as they are selected
-    $('input', button).on('input', (e) => {
+    colourInput.on('input', (e) => {
       this.setColour(name, e.target.value);
+    });
+
+    // Reset button
+    $('.tk-custom-colours-picker-reset', button).on('click', (e) => {
+      e.stopPropagation();
+
+      this.resetColour(name);
+      colourInput.val(this.getColour(name));
     });
 
     // If the user clicks on the button, redirect it to the input
     button.on('click', (e) => {
-      const input = $('input', button);
-      if (e.target !== input.get(0)) {
-        input.trigger('click');
+      if (e.target !== colourInput.get(0)) {
+        colourInput.trigger('click');
       }
     });
 

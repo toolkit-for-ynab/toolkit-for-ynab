@@ -280,6 +280,17 @@ body.tk-custom-colours-enabled .tk-custom-colours-option .ynab-new-theme-switche
   right: 16px;
 }
 
+.tk-custom-colours-picker-reset {
+  width: 16px;
+  height: 16px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54.3 55.6"><path d="M54.3 0l-9 7.3a27.4 27.4 0 10-17.7 48.3c11.8 0 22-7.4 25.9-18l-10-2.4a17.3 17.3 0 01-16 10.6c-9.7 0-17.4-7.7-17.4-17.5 0-9.7 7.7-17.7 17.5-17.7 3.6 0 6.9 1.1 9.6 3l-9 7.2 26.1 4.9V0z"/></svg>');
+  background-size: 16px 16px;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 16px;
+  left: 16px;
+}
+
 .tk-custom-colours-square div {
   width: 219px;
   text-align: center;
