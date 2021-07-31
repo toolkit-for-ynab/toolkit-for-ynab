@@ -13,8 +13,8 @@ export class ChangeEnterBehavior extends Feature {
       $editRows
     );
     $editInputs.each((index, input) => {
-      if (!input.getAttribute('data-toolkit-ctrl-behavior')) {
-        input.setAttribute('data-toolkit-ctrl-behavior', true);
+      if (!input.getAttribute('data-toolkit-save-behavior')) {
+        input.setAttribute('data-toolkit-save-behavior', true);
         input.addEventListener('keydown', this.applyNewEnterBehavior);
       }
     });
