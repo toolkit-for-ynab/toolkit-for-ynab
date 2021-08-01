@@ -290,7 +290,9 @@ export class CustomizeColourScheme extends Feature {
     $('.tk-custom-colours-picker-reset', button).on('click', (e) => {
       e.stopPropagation();
 
-      this.resetColour(name);
+      this.resetColour(name); // Clear colour setting
+      this.setColour(name, this.getColour(name)); // Force recompute accents
+
       colourInput.val(this.getColour(name));
     });
 
