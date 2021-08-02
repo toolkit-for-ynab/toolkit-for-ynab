@@ -7,7 +7,7 @@ const defaultFeatures = JSON.parse(
 ).defaultFeatures;
 
 const NEW_SETTINGS_PROJECT_DIR = 'src/extension/features';
-const ALL_SETTINGS_OUTPUT = 'src/core/settings/settings.js';
+const ALL_SETTINGS_OUTPUT = 'src/core/settings/settings.ts';
 const SETTINGS_JSON = 'scripts/settings.json';
 const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
@@ -156,16 +156,16 @@ function generateAllSettingsFile(allSettings) {
  ***********************************************************
 */
 
-if (typeof window.ynabToolKit === 'undefined') { window.ynabToolKit = {}; }
+if (typeof window.ynabToolKit === 'undefined') { window.ynabToolKit = {} as any; }
 
 export const settingMigrationMap = ${JSON.stringify(settingMigrationMap)};
-export const settingsMap = ${JSON.stringify(
+export const settingsMap: Record<string, FeatureSettingConfig> = ${JSON.stringify(
     allSettings.reduce((settings, current) => {
       settings[current.name] = current;
       return settings;
     }, {})
   )};
-export const allToolkitSettings = ${JSON.stringify(allSettings)};
+export const allToolkitSettings = Object.values(settingsMap);
 
 // eslint-disable-next-line quotes, object-curly-spacing, quote-props
 window.ynabToolKit.settings = allToolkitSettings;

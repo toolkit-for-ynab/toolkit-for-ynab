@@ -1,6 +1,6 @@
 import { getBrowser } from 'toolkit/core/common/web-extensions';
-import { ToolkitStorage } from 'toolkit/core/common/storage';
-import { getUserSettings } from 'toolkit/core/settings';
+import { ToolkitStorage, FEATURE_SETTING_PREFIX } from 'toolkit/core/common/storage';
+import { allToolkitSettings, getUserSettings } from 'toolkit/core/settings';
 import { getEnvironment } from 'toolkit/core/common/web-extensions';
 
 const storage = new ToolkitStorage();
@@ -28,7 +28,7 @@ function sendToolkitBootstrap(options) {
   );
 }
 
-function messageHandler(event) {
+function toolkitMessageHandler(event) {
   if (event.data && event.data.type) {
     switch (event.data.type) {
       case 'ynab-toolkit-loaded':
@@ -37,12 +37,30 @@ function messageHandler(event) {
       case 'ynab-toolkit-error':
         handleToolkitError(event.data.context);
         break;
+      case 'ynab-toolkit-set-setting':
+        handleSetFeatureSetting(event.data.setting);
     }
   }
 }
 
 function handleToolkitError(context) {
   getBrowser().runtime.sendMessage({ type: 'error', context });
+}
+
+function handleSetFeatureSetting({ name, value }) {
+  storage.setFeatureSetting(name, value);
+}
+
+function handleFeatureSettingChanged(settingName, newValue) {
+  if (settingName.startsWith(FEATURE_SETTING_PREFIX)) {
+    window.postMessage({
+      type: 'ynab-toolkit-setting-changed',
+      setting: {
+        name: settingName.slice(FEATURE_SETTING_PREFIX.length),
+        value: newValue,
+      },
+    });
+  }
 }
 
 async function initializeYNABToolkit() {
@@ -64,7 +82,11 @@ async function init() {
   document.getElementsByTagName('head')[0].appendChild(script);
 
   // wait for the bundle to tell us it's loaded
-  window.addEventListener('message', messageHandler);
+  window.addEventListener('message', toolkitMessageHandler);
+
+  allToolkitSettings.forEach(({ name }) => {
+    storage.onFeatureSettingChanged(name, handleFeatureSettingChanged);
+  });
 }
 
 init();

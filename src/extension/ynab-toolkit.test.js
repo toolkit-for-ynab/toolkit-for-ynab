@@ -119,7 +119,7 @@ describe('YNABToolkit', () => {
         isYNABReady.mockReturnValueOnce(true);
         setup({ sendBootstrap: true });
 
-        expect($('head #toolkit-injected-styles').length).toEqual(1);
+        expect($('head #tk-global-styles').length).toEqual(1);
       });
     });
   });

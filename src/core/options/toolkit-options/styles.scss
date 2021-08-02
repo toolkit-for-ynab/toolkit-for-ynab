@@ -1,0 +1,104 @@
+.toggle {
+  min-width: 70px;
+  height: 28px;
+
+  &__input {
+    display: none;
+  }
+
+  &__label {
+    position: relative;
+    display: block;
+    border: 1px solid gray;
+    cursor: pointer;
+    line-height: 1.5rem;
+  }
+
+  &__inner {
+    &::before,
+    &::after {
+      width: 50%;
+      display: inline-block;
+      text-align: center;
+      padding: 1px 0px;
+    }
+
+    &::before {
+      content: 'On';
+      background-color: green;
+    }
+
+    &::after {
+      content: 'Off';
+      background-color: red;
+    }
+  }
+
+  &__switch {
+    position: absolute;
+    background-color: lightgray;
+    width: 50%;
+    height: 100%;
+    left: 0;
+    transition: left ease-in 100ms;
+  }
+
+  .toggle__input:checked + .toggle__label {
+    .toggle__switch {
+      left: 50%;
+    }
+  }
+}
+
+.setting {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid gray;
+  padding: 1rem;
+
+  &:first-child {
+    border-top: 1px solid gray;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+  }
+
+  &__title {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  &__description {
+    font-size: 0.8rem;
+  }
+}
+
+.nav-item {
+  font-size: 1.1rem;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+
+  &--selected {
+    &::after {
+      width: 100% !important;
+      background-color: lightgreen !important;
+    }
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    height: 2px;
+    width: 0px;
+    margin: auto;
+    background-color: gray;
+    transition: width 150ms ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}

@@ -52,21 +52,33 @@ export class YNABToolkit {
     window.postMessage({ type: TOOLKIT_LOADED_MESSAGE }, '*');
   }
 
-  _applyGlobalCSS() {
-    const globalCSS = this._featureInstances.reduce((css, feature) => {
-      const wrappedInjectCSS = withToolkitError(feature.injectCSS.bind(feature), feature);
-      const featureCSS = wrappedInjectCSS();
-
-      if (isFeatureEnabled(feature.settings.enabled) && featureCSS) {
-        css += `/* == Injected CSS from feature: ${feature.constructor.name} == */\n${featureCSS}\n\n`;
-      }
-
-      return css;
-    }, require('./ynab-toolkit.css'));
-
+  _applyFeatureCSS() {
     $('head').append(
-      $('<style>', { id: 'toolkit-injected-styles', type: 'text/css' }).text(globalCSS)
+      $('<style>', { id: 'tk-global-styles', type: 'text/css' }).text(require('./ynab-toolkit.css'))
     );
+
+    this._featureInstances.forEach((feature) => {
+      if (isFeatureEnabled(feature.settings.enabled)) {
+        this._appendFeatureCSS(feature);
+      }
+    });
+  }
+
+  _appendFeatureCSS(featureInstance: Feature) {
+    const wrappedInjectCSS = withToolkitError(
+      featureInstance.injectCSS.bind(featureInstance),
+      featureInstance
+    );
+    const featureCSS = wrappedInjectCSS();
+
+    if (featureCSS) {
+      $('head').append(
+        $('<style>', {
+          id: `tk-feature-styles-${featureInstance.constructor.name}`,
+          type: 'text/css',
+        }).text(featureCSS)
+      );
+    }
   }
 
   _createFeatureInstances() {
@@ -82,6 +94,12 @@ export class YNABToolkit {
     if (isFeatureEnabled(feature.settings.enabled) && wrappedShouldInvoke()) {
       wrappedInvoke();
     }
+  };
+
+  _destroyFeature = (featureName: FeatureName) => {
+    const feature = this._featureInstances.find((f) => f.constructor.name === featureName);
+    const wrappedDestroy = feature.destroy.bind(feature);
+    wrappedDestroy();
   };
 
   _invokeFeatureInstances = async () => {
@@ -112,17 +130,43 @@ export class YNABToolkit {
   };
 
   _onBackgroundMessage = (event: MessageEvent) => {
-    if (event.source === window && event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE) {
-      window.ynabToolKit = {
-        ...window.ynabToolKit,
-        ...event.data.ynabToolKit,
-        hookedComponents: new Set(),
-      };
+    if (event.source !== window) {
+      return;
+    }
 
-      this._setupErrorTracking();
-      this._createFeatureInstances();
-      this._removeMessageListener();
-      this._waitForUserSettings();
+    switch (event.data.type) {
+      case TOOLKIT_BOOTSTRAP_MESSAGE: {
+        window.ynabToolKit = {
+          ...window.ynabToolKit,
+          ...event.data.ynabToolKit,
+          hookedComponents: new Set(),
+        };
+
+        this._setupErrorTracking();
+        this._createFeatureInstances();
+        this._waitForUserSettings();
+        break;
+      }
+      case 'ynab-toolkit-setting-changed': {
+        const { name, value } = event.data.setting;
+        const featureInstance = this._featureInstances.find(
+          ({ constructor }) => constructor.name === name
+        );
+
+        if (featureInstance) {
+          featureInstance.settings.enabled = value;
+
+          if (isFeatureEnabled(value)) {
+            this._appendFeatureCSS(featureInstance);
+            this._invokeFeature(name);
+          } else {
+            document.head.querySelector(`#tk-feature-styles-${name}`).remove();
+            this._destroyFeature(name);
+          }
+        }
+
+        break;
+      }
     }
   };
 
@@ -211,7 +255,7 @@ export class YNABToolkit {
         ynabToolKit.invokeFeature = self._invokeFeature;
 
         // inject the global css from each feature into the HEAD of the DOM
-        self._applyGlobalCSS();
+        self._applyFeatureCSS();
 
         self._addToolkitEmberHooks();
 

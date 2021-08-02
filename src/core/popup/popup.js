@@ -56,7 +56,7 @@ export class Popup {
     }
   };
 
-  _toggleToolkitDisabledUI = (isToolkitDisabled) => {
+  _toggleToolkitDisabledUI = (_settingName, isToolkitDisabled) => {
     const logoPath = `assets/images/logos/toolkitforynab-logo-200${
       isToolkitDisabled ? '-disabled' : ''
     }.png`;

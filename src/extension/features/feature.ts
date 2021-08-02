@@ -23,6 +23,10 @@ export class Feature {
     throw Error(`Feature: ${this.featureName} does not implement required invoke() method.`);
   }
 
+  destroy() {
+    /* stubbed, most features don't support destroy yet */
+  }
+
   injectCSS() {
     /* stubbed, default to no injected CSS */
   }

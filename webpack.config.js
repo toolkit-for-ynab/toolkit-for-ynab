@@ -19,9 +19,11 @@ module.exports = function (env) {
 
     entry: {
       'background/background': path.resolve(`${CODE_SOURCE_DIR}/core/background/index.js`),
-      'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/options/options.js`),
+      'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/options/index.tsx`),
       'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/popup/index.js`),
-      'content-scripts/init': path.resolve(`${CODE_SOURCE_DIR}/core/content-scripts/init.js`),
+      'content-scripts/extension-bridge': path.resolve(
+        `${CODE_SOURCE_DIR}/core/content-scripts/extension-bridge.js`
+      ),
       'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`),
     },
 
