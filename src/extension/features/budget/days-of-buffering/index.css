@@ -3,6 +3,12 @@
   min-width: 6em;
 }
 
+.toolkit-days-of-buffering > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 /* Stop totals being crushed on smaller screens */
 .budget-header-totals {
   flex-shrink: 0;
