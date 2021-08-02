@@ -73,6 +73,7 @@
   "defaultFeatures": [
     "BudgetBalanceToZero",
     "BulkEditMemo",
+    "CustomizeColourScheme",
     "EnlargeCategoriesDropdown",
     "FilterCategories",
     "IncomeVsExpenseHoverHighlight",
