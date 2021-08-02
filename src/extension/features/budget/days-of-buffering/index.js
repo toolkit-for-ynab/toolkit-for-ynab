@@ -81,24 +81,30 @@ export class DaysOfBuffering extends Feature {
     );
 
     if (!calculation.notEnoughDates) {
-      const dayText = daysOfBuffering === 1.0
-        ? l10n('budget.ageOfMoneyDays.one', 'day')
-        : l10n('budget.ageOfMoneyDays.other', 'days');
+      const dayText =
+        daysOfBuffering === 1.0
+          ? l10n('budget.ageOfMoneyDays.one', 'day')
+          : l10n('budget.ageOfMoneyDays.other', 'days');
       text = `${daysOfBuffering} ${dayText}`;
 
       title = `${l10n('toolkit.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}`;
       title += `\n${l10n('toolkit.dob.days', 'Total days of budgeting')}: ${availableDates}`;
-      title += `\n${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(averageDailyOutflow)}`;
+      title += `\n${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(
+        averageDailyOutflow
+      )}`;
 
       // #1745 - Display the date of buffering
       if (ynabToolKit.options.DaysOfBufferingDate) {
         const dateOfBuffering = this._getDateOfBuffering(daysOfBuffering);
-        title += `\n${l10n('toolkit.dob.dateOfBuffering', 'Date of buffering')}: ${dateOfBuffering}`;
+        title += `\n${l10n(
+          'toolkit.dob.dateOfBuffering',
+          'Date of buffering'
+        )}: ${dateOfBuffering}`;
       }
     }
 
     $('.budget-header-days-age', $displayElement).text(text);
-    $('.budget-header-days-age', $displayElement).attr('title',title);
+    $('.budget-header-days-age', $displayElement).attr('title', title);
   }
 
   /**

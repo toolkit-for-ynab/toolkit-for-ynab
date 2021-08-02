@@ -9,9 +9,7 @@ export const Legend = (props) => (
       <div className="tk-flex tk-mg-b-05 tk-align-items-center">
         <div className="tk-mg-0">&nbsp;</div>
       </div>
-      <div className="tk-inflow-outflow-legend__text-faded">
-        {props.label}
-      </div>
+      <div className="tk-inflow-outflow-legend__text-faded">{props.label}</div>
     </div>
     <div className="tk-mg-05 tk-pd-r-1 tk-border-r">
       <div className="tk-flex tk-mg-b-05 tk-align-items-center">

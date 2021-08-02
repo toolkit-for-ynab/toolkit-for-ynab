@@ -193,11 +193,19 @@ export class SpendingByCategoryComponent extends React.Component {
         backgroundColor: 'transparent',
         events: {
           drilldown: (event) => {
-            chart.setTitle({ text: `${event.point.name}<br><span class="currency">${formatCurrency(event.point.y)}</span>` });
+            chart.setTitle({
+              text: `${event.point.name}<br><span class="currency">${formatCurrency(
+                event.point.y
+              )}</span>`,
+            });
             _this.setState({ currentDrillDownId: event.point.id });
           },
           drillup: () => {
-            chart.setTitle({ text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>` });
+            chart.setTitle({
+              text: `Total Spending<br><span class="currency">${formatCurrency(
+                totalSpending
+              )}</span>`,
+            });
             _this.setState({ currentDrillDownId: null });
           },
         },
@@ -207,7 +215,9 @@ export class SpendingByCategoryComponent extends React.Component {
           dataLabels: {
             formatter: function () {
               let formattedNumber = formatCurrency(this.y);
-              return `${this.point.name}<br><span class="currency">${formattedNumber}</span> (${Math.round(
+              return `${
+                this.point.name
+              }<br><span class="currency">${formattedNumber}</span> (${Math.round(
                 this.percentage
               )}%)`;
             },
