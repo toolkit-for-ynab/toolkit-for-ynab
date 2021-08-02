@@ -34,7 +34,7 @@ export class DateOfMoney extends Feature {
     budgetHeaderDaysAgeContainer.setAttribute('title', dateOfMoneyFormatted);
   }
 
-  _getDateOfMoney(ageOfMoneyLabel) {
+  _getDateOfMoney() {
     // Get the Age Of Money
     const budgetController = controllerLookup('budget');
     const ageOfMoney = budgetController.get(
