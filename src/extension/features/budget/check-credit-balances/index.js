@@ -37,7 +37,7 @@ export class CheckCreditBalances extends Feature {
       changedNodes.has(
         'budget-table-row js-budget-table-row is-sub-category is-debt-payment-category is-checked'
       ) ||
-      changedNodes.has('budget-header-totals-cell-value user-data')
+      changedNodes.has('to-be-budgeted-amount')
     ) {
       this.invoke();
     }
