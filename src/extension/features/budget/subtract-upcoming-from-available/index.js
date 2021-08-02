@@ -21,15 +21,15 @@ export class SubtractUpcomingFromAvailable extends Feature {
   }
 
   updateAvailableBalance(element) {
-    const elementObject = $(element);
-    const categoryObject = elementObject.hasClass('is-sub-category') ? elementObject : undefined;
-    if (!categoryObject) return;
+    const $element = $(element);
+    const $category = $element.hasClass('is-sub-category') ? $element : undefined;
+    if (!$category) return;
 
     const category = getEmberView(element.id, 'category');
     if (!category) return;
 
     if (category.upcomingTransactions) {
-      const availableObject = $(`.ynab-new-budget-available-number`, categoryObject);
+      const availableObject = $(`.ynab-new-budget-available-number`, $category);
       const availableTextObject = $(`.user-data`, availableObject);
 
       const available = category.available;
@@ -49,7 +49,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
       availableTextObject.addClass(currencyClass);
 
       if (availableAfterUpcoming >= 0) {
-        categoryObject.removeAttr('data-toolkit-negative-available');
+        $category.removeAttr('data-toolkit-negative-available');
 
         if (category.isOverSpent) {
           availableObject.addClass('cautious');
@@ -63,11 +63,8 @@ export class SubtractUpcomingFromAvailable extends Feature {
   }
 
   addTotalAvailableAfterUpcoming(element) {
-    const elementObject = $(element);
-    const budgetBreakdownObject = elementObject.hasClass('budget-breakdown')
-      ? elementObject
-      : undefined;
-    if (!budgetBreakdownObject) return;
+    const budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
+    if (!budgetBreakdownMonthlyTotals.length) return;
 
     const budgetBreakdown = getEmberView(element.id);
     if (!budgetBreakdown) return;
@@ -81,7 +78,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
     );
     const ynabAvailableAfterUpcomingMessageObject = $(
       '.inspector-message-label',
-      budgetBreakdownObject
+      budgetBreakdownMonthlyTotals
     ).filter(function () {
       return this.innerText === localizedMessageText;
     });
@@ -100,7 +97,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
     if (totalAvailableAfterUpcoming === totalAvailable) return;
 
-    const ynabBreakdownObject = $('.ynab-breakdown', budgetBreakdownObject);
+    const ynabBreakdownObject = $('.ynab-breakdown', budgetBreakdownMonthlyTotals);
 
     this.createInspectorElement(totalAvailableAfterUpcoming).prependTo(ynabBreakdownObject);
   }
