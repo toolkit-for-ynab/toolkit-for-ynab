@@ -58,5 +58,6 @@ export class MemoAsMarkdown extends Feature {
 
   invoke() {
     addToolkitEmberHook(this, 'register/grid-row', 'didRender', this.applyMarkdown);
+    addToolkitEmberHook(this, 'register/grid-sub', 'didRender', this.applyMarkdown);
   }
 }
