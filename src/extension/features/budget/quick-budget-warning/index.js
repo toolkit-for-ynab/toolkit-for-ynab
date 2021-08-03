@@ -39,7 +39,8 @@ export class QuickBudgetWarning extends Feature {
     if (
       changedNodes.has('navlink-budget active') ||
       changedNodes.has('budget-inspector') ||
-      changedNodes.has('inspector-quick-budget')
+      changedNodes.has('inspector-quick-budget') ||
+      changedNodes.has('budget-inspector-button')
     ) {
       this.invoke();
     }
