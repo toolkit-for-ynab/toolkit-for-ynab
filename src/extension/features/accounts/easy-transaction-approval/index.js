@@ -100,6 +100,32 @@ export class EasyTransactionApproval extends Feature {
     this.initKeyLoop = false;
   }
 
+  clickCallback(event) {
+    // prevent defaults
+    event.preventDefault();
+    event.stopPropagation();
+
+    const selectedRows = $('.ynab-grid-body-row .ynab-grid-cell-checkbox button.is-checked');
+
+    const checkbox = $(this).closest('.ynab-grid-body-row').find('.ynab-grid-cell-checkbox button');
+    const isChecked = checkbox.hasClass('is-checked');
+
+    // if the row clicked isn't already selected, select only that row for approval
+    if (!isChecked) {
+      selectedRows.click();
+      checkbox.click();
+    }
+
+    // approve transactions
+    event.data();
+
+    // restore original selection
+    if (!isChecked) {
+      selectedRows.click();
+      checkbox.click();
+    }
+  }
+
   watchForRightClick() {
     var _this = this;
 
@@ -108,44 +134,13 @@ export class EasyTransactionApproval extends Feature {
       $('.ynab-grid').off(
         'contextmenu',
         '.ynab-grid-body-row .ynab-grid-cell-notification button.transaction-notification-info',
-        function (event) {
-          // prevent defaults
-          event.preventDefault();
-          event.stopPropagation();
-
-          // select row
-          const checkbox = $(this)
-            .closest('.ynab-grid-body-row')
-            .find('.ynab-grid-cell-checkbox button:not(.is-checked)')
-            .click();
-
-          // approve transactions
-          _this.approveTransactions();
-
-          // restore original selection
-          checkbox.click();
-        }
+        _this.clickCallback
       );
       $('.ynab-grid').on(
         'contextmenu',
         '.ynab-grid-body-row .ynab-grid-cell-notification button.transaction-notification-info',
-        function (event) {
-          // prevent defaults
-          event.preventDefault();
-          event.stopPropagation();
-
-          // select row
-          const checkbox = $(this)
-            .closest('.ynab-grid-body-row')
-            .find('.ynab-grid-cell-checkbox button:not(.is-checked)')
-            .click();
-
-          // approve transactions
-          _this.approveTransactions();
-
-          // restore original selection
-          checkbox.click();
-        }
+        _this.approveTransactions,
+        _this.clickCallback
       );
     });
 
