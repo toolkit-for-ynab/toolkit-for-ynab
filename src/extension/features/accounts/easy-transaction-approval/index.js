@@ -1,6 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class EasyTransactionApproval extends Feature {
   initBudgetVersion = true;
@@ -149,17 +150,20 @@ export class EasyTransactionApproval extends Feature {
   }
 
   approveTransactions() {
-    // call 'c' keypress clearing and approving transaction using built in YNAB functionality
-    var keycode = jQuery.Event('keydown'); // eslint-disable-line new-cap
-    keycode.which = 67;
-    keycode.keyCode = 67;
-    $('body').trigger(keycode);
+    // open the edit menu
+    $('.accounts-toolbar-edit-transaction').click();
 
-    // call 'c' keypress again, to reset clear state back to previous
-    // completely separate event is needed, otherwise event doesn't fire properly the second time
-    var keycode2 = jQuery.Event('keydown'); // eslint-disable-line new-cap
-    keycode2.which = 67;
-    keycode2.keyCode = 67;
-    $('body').trigger(keycode2);
+    // attempt to find and click the approve button
+    $('.modal-account-edit-transaction-list .button-list')
+      .filter(
+        (index, el) =>
+          el.textContent && el.textContent.trim() === l10n('accounts.approve', 'Approve')
+      )
+      .click();
+
+    // if the edit menu is still open, close it
+    if ($('.modal-account-edit-transaction-list').length) {
+      $('.modal-account-edit-transaction-list').click();
+    }
   }
 }
