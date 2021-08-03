@@ -114,13 +114,16 @@ export class EasyTransactionApproval extends Feature {
           event.stopPropagation();
 
           // select row
-          $(this)
+          const checkbox = $(this)
             .closest('.ynab-grid-body-row')
             .find('.ynab-grid-cell-checkbox button:not(.is-checked)')
             .click();
 
           // approve transactions
           _this.approveTransactions();
+
+          // restore original selection
+          checkbox.click();
         }
       );
       $('.ynab-grid').on(
@@ -132,13 +135,16 @@ export class EasyTransactionApproval extends Feature {
           event.stopPropagation();
 
           // select row
-          $(this)
+          const checkbox = $(this)
             .closest('.ynab-grid-body-row')
             .find('.ynab-grid-cell-checkbox button:not(.is-checked)')
             .click();
 
           // approve transactions
           _this.approveTransactions();
+
+          // restore original selection
+          checkbox.click();
         }
       );
     });
@@ -160,8 +166,5 @@ export class EasyTransactionApproval extends Feature {
     keycode2.which = 67;
     keycode2.keyCode = 67;
     $('body').trigger(keycode2);
-
-    // unselect transactions after approval
-    $('.ynab-grid-body-row.is-checked').find('.ynab-grid-cell-checkbox button').click();
   }
 }
