@@ -37,6 +37,9 @@ export class CheckCreditBalances extends Feature {
       changedNodes.has(
         'budget-table-row js-budget-table-row is-sub-category is-debt-payment-category is-checked'
       ) ||
+      changedNodes.has(
+        'budget-table-row js-budget-table-row is-sub-category is-debt-payment-category'
+      ) ||
       changedNodes.has('to-be-budgeted-amount')
     ) {
       this.invoke();
@@ -69,6 +72,7 @@ export class CheckCreditBalances extends Feature {
   processDebtAccounts() {
     const debtCategories = this.getDebtCategories();
     let foundButton = false;
+    let inspectorWarning = false;
 
     debtCategories.forEach((debtCategory) => {
       const { accountCalculationsCollection, monthlySubCategoryBudgetCalculationsCollection } =
@@ -107,12 +111,12 @@ export class CheckCreditBalances extends Feature {
             difference = -(available + balance);
           }
 
-          if (!foundButton) {
-            foundButton = this.updateInspectorButton(debtCategory.name, difference);
-          }
+          const isInspectorShowing = this.updateInspectorButton(debtCategory.name, difference);
+          foundButton ||= isInspectorShowing;
 
           if (balance < 0 && available !== balance * -1) {
             this.addWarning(debtCategoryId);
+            inspectorWarning ||= isInspectorShowing;
           } else {
             this.removeWarning(debtCategoryId);
           }
@@ -123,6 +127,15 @@ export class CheckCreditBalances extends Feature {
     if (!foundButton) {
       $('.toolkit-rectify-difference').remove();
     }
+
+    const inspectorElement = document.querySelector('.budget-inspector');
+    if (inspectorElement) {
+      if (inspectorWarning) {
+        inspectorElement.setAttribute('data-toolkit-pif-assist', 'true');
+      } else {
+        inspectorElement.removeAttribute('data-toolkit-pif-assist');
+      }
+    }
   }
 
   addWarning(debtCategoryId) {
@@ -130,22 +143,12 @@ export class CheckCreditBalances extends Feature {
     if (debtRowElement) {
       debtRowElement.setAttribute('data-toolkit-pif-assist', 'true');
     }
-
-    const inspectorElement = document.querySelector('.budget-inspector');
-    if (inspectorElement) {
-      inspectorElement.setAttribute('data-toolkit-pif-assist', 'true');
-    }
   }
 
   removeWarning(debtCategoryId) {
     const debtRowElement = document.querySelector(`[data-entity-id="${debtCategoryId}"]`);
     if (debtRowElement) {
       debtRowElement.removeAttribute('data-toolkit-pif-assist');
-    }
-
-    const inspectorElement = document.querySelector('.budget-inspector');
-    if (inspectorElement) {
-      inspectorElement.removeAttribute('data-toolkit-pif-assist', 'true');
     }
   }
 
