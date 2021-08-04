@@ -7,28 +7,23 @@ import { localToolkitStorage } from 'toolkit/core/common/storage';
 
 function Toggle({
   checked,
-  name,
+  htmlFor,
   onChange,
 }: {
   checked: boolean;
-  name: string;
+  htmlFor: string;
   onChange(checked: boolean): void;
 }) {
-  const id = `${name}-toggle`;
-
   return (
     <div className="toggle">
       <input
-        id={id}
+        id={htmlFor}
         className="toggle__input"
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.currentTarget.checked)}
       ></input>
-      <label className="toggle__label" htmlFor={id}>
-        <span className="toggle__inner"></span>
-        <span className="toggle__switch"></span>
-      </label>
+      <label className="toggle__label" htmlFor={htmlFor}></label>
     </div>
   );
 }
@@ -47,11 +42,15 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
     <div className="setting">
       <Toggle
         checked={isEnabled}
-        name={config.name}
+        htmlFor={`${config.name}-toggle`}
         onChange={(checked) => setIsEnabled(checked)}
       />
       <div className="setting__info">
-        <div className="setting__title">{config.title}</div>
+        <div>
+          <label className="setting__title" htmlFor={`${config.name}-toggle`}>
+            {config.title}
+          </label>
+        </div>
         <div className="setting__description">{config.description}</div>
       </div>
     </div>
@@ -60,11 +59,11 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
 
 function SettingsList({ settings }: { settings: FeatureSettingConfig[] }) {
   return (
-    <>
+    <div className="settings-list">
       {settings.map((config) => (
         <Setting config={config} />
       ))}
-    </>
+    </div>
   );
 }
 
@@ -73,19 +72,23 @@ export function ToolkitOptions() {
 
   return (
     <div className="tk-flex tk-flex-grow tk-flex-column">
-      <nav className="tk-flex options-nav">
-        {settingsBySection.map((settings) => (
-          <div
-            className={classNames('nav-item', {
-              'nav-item--selected': settings.name === currentSettings.name,
-            })}
-            onClick={() => setCurrentSettings(settings)}
-          >
-            <div>{settings.name}</div>
-          </div>
-        ))}
-      </nav>
-      <main style={{ backgroundColor: 'white' }}>
+      <div className="tk-flex nav-bar">
+        <img src="../assets/images/icons/icon32.png" />
+        <nav className="nav-bar__nav">
+          {settingsBySection.map((settings) => (
+            <div
+              className={classNames('nav-bar__nav-item', {
+                'nav-bar__nav-item--selected': settings.name === currentSettings.name,
+              })}
+              onClick={() => setCurrentSettings(settings)}
+            >
+              <div>{settings.name}</div>
+            </div>
+          ))}
+        </nav>
+        <div className="nav-bar__settings"></div>
+      </div>
+      <main>
         <SettingsList settings={currentSettings.settings} />
       </main>
     </div>
