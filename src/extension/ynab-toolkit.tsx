@@ -12,6 +12,7 @@ import { componentAppend } from './utils/react';
 import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-modal';
 import { Feature } from './features/feature';
 
+let hasToolkitLoaded = false;
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
@@ -59,25 +60,31 @@ export class YNABToolkit {
 
     this._featureInstances.forEach((feature) => {
       if (isFeatureEnabled(feature.settings.enabled)) {
-        this._appendFeatureCSS(feature);
+        this._injectFeatureCSS(feature);
       }
     });
   }
 
-  _appendFeatureCSS(featureInstance: Feature) {
+  _injectFeatureCSS(featureInstance: Feature) {
     const wrappedInjectCSS = withToolkitError(
       featureInstance.injectCSS.bind(featureInstance),
       featureInstance
     );
+
+    const featureStyleID = `tk-feature-styles-${featureInstance.constructor.name}`;
     const featureCSS = wrappedInjectCSS();
+    const featureStyle = $('<style>', {
+      id: featureStyleID,
+      type: 'text/css',
+    }).text(featureCSS);
 
     if (featureCSS) {
-      $('head').append(
-        $('<style>', {
-          id: `tk-feature-styles-${featureInstance.constructor.name}`,
-          type: 'text/css',
-        }).text(featureCSS)
-      );
+      const existingStyle = document.querySelector(`#${featureStyleID}`);
+      if (existingStyle) {
+        $(existingStyle).replaceWith(featureStyle);
+      } else {
+        $('head').append(featureStyle);
+      }
     }
   }
 
@@ -97,6 +104,8 @@ export class YNABToolkit {
   };
 
   _destroyFeature = (featureName: FeatureName) => {
+    document.head.querySelector(`#tk-feature-styles-${featureName}`)?.remove();
+
     const feature = this._featureInstances.find((f) => f.constructor.name === featureName);
     const wrappedDestroy = feature.destroy.bind(feature);
     wrappedDestroy();
@@ -149,6 +158,31 @@ export class YNABToolkit {
       }
       case 'ynab-toolkit-setting-changed': {
         const { name, value } = event.data.setting;
+        if (name === 'DisableToolkit') {
+          if (!value && !hasToolkitLoaded) {
+            $('head').append(
+              $('<style>', { id: 'tk-global-styles', type: 'text/css' }).text(
+                require('./ynab-toolkit.css')
+              )
+            );
+
+            this._checkReleaseVersion();
+          } else if (value) {
+            $('#tk-global-styles').remove();
+          }
+
+          this._featureInstances.forEach((feature) => {
+            if (value) {
+              this._destroyFeature(feature.constructor.name);
+            } else if (isFeatureEnabled(feature.settings.enabled)) {
+              this._injectFeatureCSS(feature);
+              this._invokeFeature(feature.constructor.name);
+            }
+          });
+
+          return;
+        }
+
         const featureInstance = this._featureInstances.find(
           ({ constructor }) => constructor.name === name
         );
@@ -157,10 +191,9 @@ export class YNABToolkit {
           featureInstance.settings.enabled = value;
 
           if (isFeatureEnabled(value)) {
-            this._appendFeatureCSS(featureInstance);
+            this._injectFeatureCSS(featureInstance);
             this._invokeFeature(name);
           } else {
-            document.head.querySelector(`#tk-feature-styles-${name}`).remove();
             this._destroyFeature(name);
           }
         }
@@ -254,17 +287,21 @@ export class YNABToolkit {
         // from this file that features can require and use
         ynabToolKit.invokeFeature = self._invokeFeature;
 
-        // inject the global css from each feature into the HEAD of the DOM
-        self._applyFeatureCSS();
-
         self._addToolkitEmberHooks();
 
-        self._checkReleaseVersion();
+        if (!ynabToolKit.options['DisableToolkit']) {
+          // inject the global css from each feature into the HEAD of the DOM
+          self._applyFeatureCSS();
 
-        // Hook up listeners and then invoke any features that are ready to go.
-        self._invokeFeatureInstances();
+          self._checkReleaseVersion();
 
-        Ember.run.later(self._invokeAllHooks, 100);
+          // Hook up listeners and then invoke any features that are ready to go.
+          self._invokeFeatureInstances();
+
+          Ember.run.later(self._invokeAllHooks, 100);
+
+          hasToolkitLoaded = true;
+        }
       } else if (typeof Ember !== 'undefined') {
         Ember.run.later(poll, 250);
       } else {

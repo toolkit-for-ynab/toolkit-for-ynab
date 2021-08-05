@@ -72,7 +72,6 @@ async function init() {
   const isToolkitDisabled = await storage.getFeatureSetting('DisableToolkit');
   if (isToolkitDisabled) {
     console.log(`${getBrowser().runtime.getManifest().name} is disabled!`);
-    return;
   }
 
   // Load the toolkit bundle onto the YNAB dom
