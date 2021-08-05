@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
+import { addToolkitEmberHook, removeToolkitEmberHooks } from 'toolkit/extension/utils/toolkit';
 import { componentAppend } from 'toolkit/extension/utils/react';
 
 function CopyTransactionsButton({ transactions }) {
@@ -56,6 +56,12 @@ export class CategoryActivityCopy extends Feature {
       'didRender',
       this.handleReportActivityModal
     );
+  }
+
+  destroy() {
+    removeToolkitEmberHooks(this, 'budget/budget-activity', 'didRender');
+    removeToolkitEmberHooks(this, 'modals/reports/activity-transactions', 'didRender');
+    $('#tk-copy-transactions').remove();
   }
 
   handleBudgetActivityModal = (element) => {
