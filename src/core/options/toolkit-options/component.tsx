@@ -3,69 +3,12 @@ import * as React from 'react';
 import { settingsBySection } from './utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon, faFileExport } from '@fortawesome/free-solid-svg-icons';
+import { Toggle } from 'toolkit/components/toggle';
+import { RadioGroup } from 'toolkit/components/radio-group';
 
 import './styles.scss';
 import { localToolkitStorage } from 'toolkit/core/common/storage';
 import { getBrowser } from 'toolkit/core/common/web-extensions';
-
-function Toggle({
-  checked,
-  htmlFor,
-  onChange,
-}: {
-  checked: boolean;
-  htmlFor: string;
-  onChange(checked: boolean): void;
-}) {
-  return (
-    <div className="toggle">
-      <input
-        id={htmlFor}
-        className="toggle__input"
-        type="checkbox"
-        checked={checked}
-        onChange={(e) => onChange(e.currentTarget.checked)}
-      ></input>
-      <label className="toggle__label" htmlFor={htmlFor}></label>
-    </div>
-  );
-}
-
-function SelectOptions({
-  name,
-  onChange,
-  options,
-  value,
-}: {
-  name: string;
-  options: FeatureSettingSelectConfig['options'];
-  onChange: (value: string) => void;
-  value: string;
-}) {
-  console.log({ [name]: value });
-
-  return (
-    <div className="radio-select">
-      {options.map((option) => (
-        <div className="radio-select__option" key={option.name}>
-          <input
-            className="radio-select__input"
-            type="radio"
-            id={`${name}-${option.value}`}
-            name={name}
-            onChange={(e) => onChange(option.value as string)}
-            value={option.value as string}
-            checked={value === option.value}
-          ></input>
-          <label className="radio-select__toggle" htmlFor={`${name}-${option.value}`}></label>
-          <label className="radio-select__label" htmlFor={`${name}-${option.value}`}>
-            {option.name}
-          </label>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 function Setting({ config }: { config: FeatureSettingConfig }) {
   const [featureSetting, setFeatureSetting] = React.useState<FeatureSetting>(false);
@@ -77,7 +20,9 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
   }, []);
 
   function handleChange(newValue: FeatureSetting) {
-    setFeatureSetting(newValue);
+    localToolkitStorage.setFeatureSetting(config.name, newValue).then(() => {
+      setFeatureSetting(newValue);
+    });
   }
 
   return (
@@ -102,7 +47,7 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
         <div className="setting__description">{config.description}</div>
       </div>
       {config.type === 'select' && (
-        <SelectOptions
+        <RadioGroup
           name={config.name}
           options={config.options}
           value={featureSetting as string}
@@ -115,7 +60,7 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
 
 function SettingsList({ settings }: { settings: FeatureSettingConfig[] }) {
   return (
-    <div className="settings-list">
+    <div className="tk-flex tk-flex-column tk-flex-grow">
       {settings.map((config) => (
         <Setting key={config.name} config={config} />
       ))}
@@ -189,7 +134,7 @@ export function ToolkitOptions() {
           <DarkModeToggle />
         </div>
       </div>
-      <main>
+      <main className="tk-flex tk-flex-grow">
         <SettingsList settings={currentSettings.settings} />
       </main>
       <footer className="footer">

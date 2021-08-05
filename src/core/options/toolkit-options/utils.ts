@@ -33,9 +33,6 @@ for (const setting of allToolkitSettings) {
       advancedSettings.push(setting);
       break;
   }
-
-  console.log(setting);
-  console.log(toolkitReportSettings);
 }
 
 export const settingsBySection = [

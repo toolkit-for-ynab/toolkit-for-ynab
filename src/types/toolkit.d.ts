@@ -9,7 +9,7 @@ interface FeatureSettingBaseConfig {
 
 interface FeatureSettingSelectOption {
   name: string;
-  value: FeatureSetting;
+  value: string;
 }
 
 interface FeatureSettingSelectConfig extends FeatureSettingBaseConfig {
