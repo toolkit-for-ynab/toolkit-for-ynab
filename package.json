@@ -90,6 +90,9 @@
     }
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-fontawesome": "^0.1.15",
     "classnames": "^2.3.1",
     "core-js": "2",
     "fuzzysort": "^1.1.4",
@@ -148,6 +151,7 @@
     "sass": "^1.34.1",
     "sass-loader": "^12.0.0",
     "style-loader": "^2.0.0",
+    "svg-url-loader": "^7.1.1",
     "terminate": "^2.2.0",
     "to-string-loader": "^1.1.6",
     "ts-jest": "^27.0.3",

@@ -33,13 +33,19 @@ for (const setting of allToolkitSettings) {
       advancedSettings.push(setting);
       break;
   }
+
+  console.log(setting);
+  console.log(toolkitReportSettings);
 }
 
 export const settingsBySection = [
-  { name: 'General', settings: generalSettings },
-  { name: 'Account', settings: accountSettings },
-  { name: 'Budget', settings: budgetSettings },
-  { name: 'Reports', settings: reportsSettings },
-  { name: 'Toolkit Reports', settings: toolkitReportSettings },
-  { name: 'Advanced', settings: advancedSettings },
+  { name: 'General', settings: generalSettings.sort((a, b) => a.title.localeCompare(b.title)) },
+  { name: 'Account', settings: accountSettings.sort((a, b) => a.title.localeCompare(b.title)) },
+  { name: 'Budget', settings: budgetSettings.sort((a, b) => a.title.localeCompare(b.title)) },
+  { name: 'Reports', settings: reportsSettings.sort((a, b) => a.title.localeCompare(b.title)) },
+  {
+    name: 'Toolkit Reports',
+    settings: toolkitReportSettings.sort((a, b) => a.title.localeCompare(b.title)),
+  },
+  { name: 'Advanced', settings: advancedSettings.sort((a, b) => a.title.localeCompare(b.title)) },
 ];
