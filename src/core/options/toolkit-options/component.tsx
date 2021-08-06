@@ -9,6 +9,7 @@ import { RadioGroup } from 'toolkit/components/radio-group';
 import './styles.scss';
 import { localToolkitStorage } from 'toolkit/core/common/storage';
 import { getBrowser } from 'toolkit/core/common/web-extensions';
+import { Modal, useModal } from 'toolkit/components/modal';
 
 function Setting({ config }: { config: FeatureSettingConfig }) {
   const [featureSetting, setFeatureSetting] = React.useState<FeatureSetting>(false);
@@ -108,12 +109,28 @@ function DarkModeToggle() {
   );
 }
 
+function ImportExportModal({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}) {
+  return (
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="Import or Export Settings">
+      Import/Export!
+    </Modal>
+  );
+}
+
 export function ToolkitOptions() {
   const manifest = getBrowser().runtime.getManifest();
   const [currentSettings, setCurrentSettings] = React.useState(settingsBySection[0]);
+  const { isOpen, setIsOpen } = useModal();
 
   return (
     <div className="tk-flex tk-flex-grow tk-flex-column">
+      <ImportExportModal isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className="tk-flex nav-bar">
         <img src="../assets/images/icons/icon32.png" />
         <nav className="nav-bar__nav">
@@ -130,7 +147,12 @@ export function ToolkitOptions() {
           ))}
         </nav>
         <div className="nav-bar__actions">
-          <FontAwesomeIcon className="nav-bar__action-icon" icon={faFileExport} size="lg" />
+          <FontAwesomeIcon
+            className="nav-bar__action-icon"
+            icon={faFileExport}
+            size="lg"
+            onClick={() => setIsOpen(true)}
+          />
           <DarkModeToggle />
         </div>
       </div>

@@ -1,0 +1,56 @@
+:root {
+  --tk-modal-overlay-color: gray;
+  --tk-modal-background-color: white;
+  --tk-modal-text-color: black;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  background-color: var(--tk-modal-overlay-color);
+  opacity: 85%;
+}
+
+.modal {
+  z-index: 1001;
+  background-color: var(--tk-modal-background-color);
+  position: absolute;
+  color: var(--tk-modal-text-color);
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%);
+  padding: 1rem;
+  min-width: 20%;
+  border-radius: 5px;
+  animation: slidein 3s;
+
+  &__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+  }
+
+  &__cancel {
+    margin-right: 1rem;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.8rem;
+  }
+
+  &__content {
+    padding: 1rem 0rem;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
