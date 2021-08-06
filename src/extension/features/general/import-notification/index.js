@@ -35,6 +35,12 @@ export class ImportNotification extends Feature {
     this.checkImportTransactions();
   };
 
+  destroy() {
+    $(`.nav-account-row .nav-account-name.${this.importClass}`)
+      .removeAttr('title')
+      .removeClass(this.importClass);
+  }
+
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
     // To minimize checking for imported transactions, only do it if the changed nodes includes ynab-grid-body
