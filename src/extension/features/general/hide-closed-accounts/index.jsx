@@ -7,6 +7,7 @@ import {
   l10n,
   getToolkitStorageKey,
   setToolkitStorageKey,
+  removeToolkitEmberHook,
 } from 'toolkit/extension/utils/toolkit';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
@@ -57,6 +58,12 @@ export class HideClosedAccounts extends Feature {
     const initialState = getToolkitStorageKey('hide-closed', true);
     this.setHiddenState(initialState);
     addToolkitEmberHook(this, 'settings-menu', 'didRender', this.insertHideClosed);
+  }
+
+  destroy() {
+    removeToolkitEmberHook('settings-menu', 'didRender', this.insertHideClosed);
+    $('#tk-hide-closed-accounts').remove();
+    $('body').removeClass('tk-hide-closed');
   }
 
   setHiddenState = (state) => {

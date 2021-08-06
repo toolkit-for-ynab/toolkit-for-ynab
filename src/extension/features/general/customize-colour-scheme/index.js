@@ -265,6 +265,11 @@ export class CustomizeColourScheme extends Feature {
     this.loadSettings();
   }
 
+  destroy() {
+    this.setEnabled(false);
+    $('.tk-custom-colours-option').remove();
+  }
+
   createColourOption(name, label) {
     const value = this.getColour(name);
 
