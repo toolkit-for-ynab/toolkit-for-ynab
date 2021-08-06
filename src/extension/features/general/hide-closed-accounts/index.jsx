@@ -63,6 +63,7 @@ export class HideClosedAccounts extends Feature {
   destroy() {
     removeToolkitEmberHooks(this, 'settings-menu', 'didRender');
     $('#tk-hide-closed-accounts').remove();
+    $('body').removeClass('tk-hide-closed');
   }
 
   setHiddenState = (state) => {
