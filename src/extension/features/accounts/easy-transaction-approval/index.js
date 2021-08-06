@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { controllerLookup, serviceLookup } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class EasyTransactionApproval extends Feature {
@@ -150,20 +150,9 @@ export class EasyTransactionApproval extends Feature {
   }
 
   approveTransactions() {
-    // open the edit menu
-    $('.accounts-toolbar-edit-transaction').click();
-
-    // attempt to find and click the approve button
-    $('.modal-account-edit-transaction-list .button-list')
-      .filter(
-        (index, el) =>
-          el.textContent && el.textContent.trim() === l10n('accounts.approve', 'Approve')
-      )
-      .click();
-
-    // if the edit menu is still open, close it
-    if ($('.modal-account-edit-transaction-list').length) {
-      $('.modal-account-edit-transaction-list').click();
-    }
+    const accountsService = serviceLookup('accounts');
+    accountsService.areChecked.forEach((transaction) => {
+      if (transaction.needsApproval) transaction.approve();
+    });
   }
 }
