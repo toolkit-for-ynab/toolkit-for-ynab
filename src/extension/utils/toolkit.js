@@ -124,13 +124,13 @@ export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn) {
   ynabToolKit.hookedComponents.add(componentKey);
 }
 
-export function removeToolkitEmberHooks(context, componentKey, lifecycleHook) {
+export function removeToolkitEmberHook(componentKey, lifecycleHook, fn) {
   const componentProto = Object.getPrototypeOf(componentLookup(componentKey));
 
   let hooks = componentProto[emberComponentToolkitHookKey(lifecycleHook)];
   if (hooks) {
     componentProto[emberComponentToolkitHookKey(lifecycleHook)] = hooks.filter(
-      (hook) => hook.context !== context
+      (hook) => hook.fn !== fn
     );
   }
 }

@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook, removeToolkitEmberHooks } from 'toolkit/extension/utils/toolkit';
+import { addToolkitEmberHook, removeToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 const INDICATOR_CLASS = 'tk-uncleared-account-indicator';
 const INDICATOR_ELEMENT = `<div class="${INDICATOR_CLASS} flaticon solid copyright"></div>`;
@@ -79,7 +79,7 @@ export class UnclearedAccountHighlight extends Feature {
   }
 
   destroy() {
-    removeToolkitEmberHooks(this, 'accounts-list', 'didRender');
+    removeToolkitEmberHook('accounts-list', 'didRender', this.updateSidebarIndicator);
     $(`.nav-account-row .${INDICATOR_CLASS}`).remove();
     $('.tk-nav-account-icons-right-space').removeClass('tk-nav-account-icons-right-space');
   }

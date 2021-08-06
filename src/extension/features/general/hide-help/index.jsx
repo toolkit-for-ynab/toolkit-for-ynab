@@ -8,7 +8,7 @@ import {
   l10n,
   getToolkitStorageKey,
   setToolkitStorageKey,
-  removeToolkitEmberHooks,
+  removeToolkitEmberHook,
 } from 'toolkit/extension/utils/toolkit';
 
 const HideHelpButton = ({ toggleHiddenState }) => {
@@ -61,7 +61,7 @@ export class HideHelp extends Feature {
   }
 
   destroy() {
-    removeToolkitEmberHooks(this, 'settings-menu', 'didRender');
+    removeToolkitEmberHook('settings-menu', 'didRender', this.insertHideHelp);
     $('#tk-hide-help').remove();
     $('body').removeClass('toolkit-hide-help');
   }

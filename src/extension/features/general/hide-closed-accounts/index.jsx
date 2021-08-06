@@ -7,7 +7,7 @@ import {
   l10n,
   getToolkitStorageKey,
   setToolkitStorageKey,
-  removeToolkitEmberHooks,
+  removeToolkitEmberHook,
 } from 'toolkit/extension/utils/toolkit';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
@@ -61,7 +61,7 @@ export class HideClosedAccounts extends Feature {
   }
 
   destroy() {
-    removeToolkitEmberHooks(this, 'settings-menu', 'didRender');
+    removeToolkitEmberHook('settings-menu', 'didRender', this.insertHideClosed);
     $('#tk-hide-closed-accounts').remove();
     $('body').removeClass('tk-hide-closed');
   }
