@@ -10,8 +10,14 @@ export class QuickBudgetWarning extends Feature {
     // target only buttons so other elements with same class can be added without forcing
     // confirmation, which can break the quick budget functionality for quick budget
     // items added by the Toolkit
-    $('button.budget-inspector-button').off('click', this.confirmClick);
-    $('button.budget-inspector-button').on('click', this.confirmClick);
+    $('.budget-breakdown-auto-assign button.budget-inspector-button').off(
+      'click',
+      this.confirmClick
+    );
+    $('.budget-breakdown-auto-assign button.budget-inspector-button').on(
+      'click',
+      this.confirmClick
+    );
   }
 
   confirmClick(event) {
