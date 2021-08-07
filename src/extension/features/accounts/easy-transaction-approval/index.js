@@ -90,7 +90,7 @@ export class EasyTransactionApproval extends Feature {
     $('body').on('keydown', function (e) {
       if ((e.which === 13 || e.which === 65) && _this.watchForKeys) {
         // approve selected transactions when 'a' or 'enter is pressed'
-        _this.approveTransactions();
+        _this.approveSelectedTransactions();
 
         // disable keydown watch until selection is changed again
         _this.watchForKeys = false;
@@ -106,24 +106,24 @@ export class EasyTransactionApproval extends Feature {
     event.preventDefault();
     event.stopPropagation();
 
-    const selectedRows = $('.ynab-grid-body-row .ynab-grid-cell-checkbox button.is-checked');
+    const clickedRow = $(this).closest('.ynab-grid-body-row');
+    const clickedRowEntityId = clickedRow.attr('data-row-id');
 
-    const checkbox = $(this).closest('.ynab-grid-body-row').find('.ynab-grid-cell-checkbox button');
-    const isChecked = checkbox.hasClass('is-checked');
+    const accountsService = serviceLookup('accounts');
+    const isChecked =
+      accountsService.areChecked.filter(
+        (transaction) => transaction.entityId === clickedRowEntityId
+      ).length > 0;
 
-    // if the row clicked isn't already selected, select only that row for approval
+    // if the row clicked isn't already selected, approve only that transaction
     if (!isChecked) {
-      selectedRows.click();
-      checkbox.click();
-    }
-
-    // approve transactions
-    event.data();
-
-    // restore original selection
-    if (!isChecked) {
-      selectedRows.click();
-      checkbox.click();
+      accountsService.selectedAccount.getTransactions().forEach((transaction) => {
+        if (transaction.entityId === clickedRowEntityId && !transaction.accepted) {
+          transaction.setAccepted(true);
+        }
+      });
+    } else {
+      event.data.approveSelectedTransactions();
     }
   }
 
@@ -140,7 +140,7 @@ export class EasyTransactionApproval extends Feature {
       $('.ynab-grid').on(
         'contextmenu',
         '.ynab-grid-body-row .ynab-grid-cell-notification button.transaction-notification-info',
-        _this.approveTransactions,
+        _this,
         _this.clickCallback
       );
     });
@@ -149,17 +149,17 @@ export class EasyTransactionApproval extends Feature {
     this.initClickLoop = false;
   }
 
-  approveTransactions() {
+  approveSelectedTransactions() {
+    const accountsService = serviceLookup('accounts');
+
     const editingService = serviceLookup('transaction-editor');
     const editingId = editingService.editingId;
-    const accountsService = serviceLookup('accounts');
+
     accountsService.areChecked.forEach((transaction) => {
-      if (transaction.needsApproval) {
-        if (editingId && editingId === transaction.entityId) {
-          transaction.setAccepted(true);
-        } else {
-          transaction.approve();
-        }
+      if (editingId && editingId === transaction.entityId) {
+        transaction.setAccepted(true);
+      } else {
+        transaction.approve();
       }
     });
   }
