@@ -13,12 +13,23 @@ import { Modal, useModal } from 'toolkit/components/modal';
 
 function Setting({ config }: { config: FeatureSettingConfig }) {
   const [featureSetting, setFeatureSetting] = React.useState<FeatureSetting>(false);
+  const onSettingChanged = React.useCallback((key, newValue) => {
+    setFeatureSetting(newValue);
+  }, []);
 
   React.useEffect(() => {
     localToolkitStorage.getFeatureSetting(config.name).then((value) => {
       setFeatureSetting(value);
     });
   }, []);
+
+  React.useEffect(() => {
+    localToolkitStorage.onFeatureSettingChanged(config.name, onSettingChanged);
+
+    return () => {
+      localToolkitStorage.offFeatureSettingChanged(config.name, onSettingChanged);
+    };
+  });
 
   function handleChange(newValue: FeatureSetting) {
     localToolkitStorage.setFeatureSetting(config.name, newValue).then(() => {
@@ -109,6 +120,8 @@ function DarkModeToggle() {
   );
 }
 
+type ImportExportSettings = { key: string; value: FeatureSetting }[];
+
 function ImportExportModal({
   isOpen,
   setIsOpen,
@@ -116,9 +129,59 @@ function ImportExportModal({
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }) {
+  const textAreaRef = React.useRef(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [allToolkitSettings, setAllToolkitSettings] = React.useState('');
+
+  React.useEffect(() => {
+    localToolkitStorage.getStoredFeatureSettings().then((keys) =>
+      Promise.all(
+        keys.map((settingKey) =>
+          localToolkitStorage
+            .getFeatureSetting(settingKey)
+            .then((settingValue) => ({ key: settingKey, value: settingValue }))
+        )
+      ).then((allSettings) => {
+        setAllToolkitSettings(JSON.stringify(allSettings));
+        setIsLoading(false);
+      })
+    );
+  }, []);
+
+  function handleSubmit() {
+    let parsedSettings: ImportExportSettings = [];
+    try {
+      parsedSettings = JSON.parse(allToolkitSettings);
+    } catch {
+      /* ignore */
+    }
+
+    Promise.all(
+      parsedSettings.map(({ key, value }) => localToolkitStorage.setFeatureSetting(key, value))
+    ).then(() => {
+      setIsOpen(false);
+    });
+  }
+
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen} title="Import or Export Settings">
-      Import/Export!
+    <Modal
+      isOpen={isOpen && !isLoading}
+      setIsOpen={setIsOpen}
+      title="Import/Export Settings"
+      onSubmit={handleSubmit}
+    >
+      <textarea
+        ref={textAreaRef}
+        rows={10}
+        className="import-export__textarea"
+        value={allToolkitSettings}
+        onClick={() => textAreaRef.current?.select()}
+        onChange={(e) => setAllToolkitSettings(e.target.value)}
+      ></textarea>
+      <div className="import-export__instructions">
+        Copy and paste the above text into the Import/Export Dialog on your other devices. This is
+        currently a manual process and must be done on every new device.
+      </div>
     </Modal>
   );
 }
