@@ -150,9 +150,17 @@ export class EasyTransactionApproval extends Feature {
   }
 
   approveTransactions() {
+    const editingService = serviceLookup('transaction-editor');
+    const editingId = editingService.editingId;
     const accountsService = serviceLookup('accounts');
     accountsService.areChecked.forEach((transaction) => {
-      if (transaction.needsApproval) transaction.approve();
+      if (transaction.needsApproval) {
+        if (editingId && editingId === transaction.entityId) {
+          transaction.setAccepted(true);
+        } else {
+          transaction.approve();
+        }
+      }
     });
   }
 }
