@@ -25,6 +25,6 @@ jobs:
       - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: install
-      - uses:
+      - uses: borales/actions-yarn@v2.3.0
         with:
           cmd: lint
