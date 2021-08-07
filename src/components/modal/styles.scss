@@ -1,32 +1,41 @@
 :root {
-  --tk-modal-overlay-color: gray;
-  --tk-modal-background-color: white;
-  --tk-modal-text-color: black;
+  --tk-modal-overlay-color: #000000;
+  --tk-modal-background-color: #ffffff;
+  --tk-modal-text-color: #383e41;
+}
+
+.tk-overflow-hidden {
+  overflow: hidden;
+}
+
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
 }
 
 .modal-overlay {
   position: fixed;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
   background-color: var(--tk-modal-overlay-color);
   opacity: 85%;
 }
 
 .modal {
-  z-index: 1001;
   background-color: var(--tk-modal-background-color);
-  position: absolute;
   color: var(--tk-modal-text-color);
+  position: relative;
   top: 20%;
-  left: 50%;
-  transform: translate(-50%);
+  width: 30%;
   padding: 1rem;
-  min-width: 20%;
+  margin: auto;
   border-radius: 5px;
-  animation: slidein 3s;
 
   &__close {
     position: absolute;
