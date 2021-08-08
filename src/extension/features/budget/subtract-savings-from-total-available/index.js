@@ -23,11 +23,10 @@ export class SubtractSavingsFromTotalAvailable extends Feature {
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
-    const budgetBreakdownMonthlyTotals = getEmberView(element.id);
-    if (!budgetBreakdownMonthlyTotals) return;
+    const budgetBreakdown = getEmberView(element.id);
 
-    const totalAvailable = budgetBreakdownMonthlyTotals.budgetTotals.available;
-    const totalSavings = getTotalSavings(budgetBreakdownMonthlyTotals);
+    const totalAvailable = budgetBreakdown.budgetTotals.available;
+    const totalSavings = getTotalSavings(budgetBreakdown);
     const totalAvailableAfterSavings = totalAvailable - totalSavings;
 
     // fix

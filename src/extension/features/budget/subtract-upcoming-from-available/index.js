@@ -22,44 +22,38 @@ export class SubtractUpcomingFromAvailable extends Feature {
   }
 
   updateCategoryAvailableBalance(element) {
-    const $element = $(element);
-    const $category = $element.hasClass('is-sub-category') ? $element : undefined;
-    if (!$category) return;
+    const category = getEmberView(element.id);
+    if (!category.upcomingTransactions) return;
 
-    const category = getEmberView(element.id, 'category');
-    if (!category) return;
+    const $available = $(`.ynab-new-budget-available-number`, element);
+    const $availableText = $(`.user-data`, $available);
 
-    if (category.upcomingTransactions) {
-      const $available = $(`.ynab-new-budget-available-number`, $category);
-      const $availableText = $(`.user-data`, $available);
+    const available = category.available;
+    const upcoming = category.upcomingTransactions;
+    const availableAfterUpcoming = available + upcoming;
 
-      const available = category.available;
-      const upcoming = category.upcomingTransactions;
-      const availableAfterUpcoming = available + upcoming;
+    $availableText.text(formatCurrency(availableAfterUpcoming));
 
-      $availableText.text(formatCurrency(availableAfterUpcoming));
+    $available.children('svg.icon-upcoming').remove();
 
-      $available.children('svg.icon-upcoming').remove();
+    const classes = 'upcoming positive zero negative';
+    $available.removeClass(classes);
+    $availableText.removeClass(classes);
 
-      const classes = 'upcoming positive zero negative';
-      $available.removeClass(classes);
-      $availableText.removeClass(classes);
+    const currencyClass = getCurrencyClass(availableAfterUpcoming);
+    $available.addClass(currencyClass);
+    $availableText.addClass(currencyClass);
 
-      const currencyClass = getCurrencyClass(availableAfterUpcoming);
-      $available.addClass(currencyClass);
-      $availableText.addClass(currencyClass);
+    if (availableAfterUpcoming >= 0) {
+      $(element).removeAttr('data-toolkit-negative-available');
 
-      if (availableAfterUpcoming >= 0) {
-        $category.removeAttr('data-toolkit-negative-available');
-
-        if (category.isOverSpent) {
-          $available.addClass('cautious');
-          $availableText.addClass('cautious');
-        }
-      } else if (!category.isOverSpent) {
-        $available.removeClass('cautious');
-        $availableText.removeClass('cautious');
+      if (category.isOverSpent) {
+        $available.addClass('cautious');
+        $availableText.addClass('cautious');
       }
+    } else if (!category.isOverSpent) {
+      $available.removeClass('cautious');
+      $availableText.removeClass('cautious');
     }
   }
 
@@ -67,10 +61,9 @@ export class SubtractUpcomingFromAvailable extends Feature {
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
-    const budgetBreakdownMonthlyTotals = getEmberView(element.id);
-    if (!budgetBreakdownMonthlyTotals) return;
+    const budgetBreakdown = getEmberView(element.id);
 
-    $('#total-available-after-upcoming').remove();
+    $('#total-available-after-upcoming', $budgetBreakdownMonthlyTotals).remove();
 
     // When one category is selected, YNAB provides their own "Available After Upcoming" so we don't need ours.
     const localizedMessageText = l10n(
@@ -85,13 +78,11 @@ export class SubtractUpcomingFromAvailable extends Feature {
     });
     if ($ynabAvailableAfterUpcomingMessage.length) return;
 
-    // const
-    let totalAvailable = budgetBreakdownMonthlyTotals.budgetTotals.available;
-    const totalUpcoming = this.getTotalUpcoming(budgetBreakdownMonthlyTotals);
-    const totalOfCCBalances = this.getTotalOfCCBalances(budgetBreakdownMonthlyTotals);
-
-    if (ynabToolKit.options.SubtractSavingsFromTotalAvailable)
-      totalAvailable -= getTotalSavings(budgetBreakdownMonthlyTotals);
+    const totalAvailable = ynabToolKit.options.SubtractSavingsFromTotalAvailable
+      ? budgetBreakdown.budgetTotals.available - getTotalSavings(budgetBreakdown)
+      : budgetBreakdown.budgetTotals.available;
+    const totalUpcoming = this.getTotalUpcoming(budgetBreakdown);
+    const totalOfCCBalances = this.getTotalOfCCBalances(budgetBreakdown);
 
     let totalAvailableAfterUpcoming = totalAvailable;
 
@@ -105,10 +96,10 @@ export class SubtractUpcomingFromAvailable extends Feature {
     const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
 
     // append to Available After Savings if it exists
-    this.createBreakdownElement(totalAvailableAfterUpcoming).prependTo($ynabBreakdown);
+    this.createBudgetBreakdownElement(totalAvailableAfterUpcoming).prependTo($ynabBreakdown);
   }
 
-  createBreakdownElement(totalAvailableAfterUpcoming) {
+  createBudgetBreakdownElement(totalAvailableAfterUpcoming) {
     const localizedTitle = l10n(
       'toolkit.availableAfterUpcoming',
       'Available After Upcoming Transactions'
