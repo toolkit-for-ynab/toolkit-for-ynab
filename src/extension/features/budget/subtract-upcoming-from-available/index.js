@@ -3,7 +3,7 @@ import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
-import { getTotalSavings } from 'toolkit/extension/features/budget/subtract-savings-from-available/index';
+import { getTotalSavings } from 'toolkit/extension/features/budget/subtract-savings-from-total-available/index';
 
 export class SubtractUpcomingFromAvailable extends Feature {
   shouldInvoke() {
@@ -90,7 +90,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
     const totalUpcoming = this.getTotalUpcoming(budgetBreakdownMonthlyTotals);
     const totalOfCCBalances = this.getTotalOfCCBalances(budgetBreakdownMonthlyTotals);
 
-    if (ynabToolKit.options.SubtractSavingsFromAvailable)
+    if (ynabToolKit.options.SubtractSavingsFromTotalAvailable)
       totalAvailable -= getTotalSavings(budgetBreakdownMonthlyTotals);
 
     let totalAvailableAfterUpcoming = totalAvailable;
@@ -104,6 +104,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
     const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
 
+    // append to Available After Savings if it exists
     this.createBreakdownElement(totalAvailableAfterUpcoming).prependTo($ynabBreakdown);
   }
 

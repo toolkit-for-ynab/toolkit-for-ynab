@@ -5,7 +5,7 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { getCurrencyClass } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/index';
 
-export class SubtractSavingsFromAvailable extends Feature {
+export class SubtractSavingsFromTotalAvailable extends Feature {
   shouldInvoke() {
     return isCurrentRouteBudgetPage();
   }
@@ -16,11 +16,10 @@ export class SubtractSavingsFromAvailable extends Feature {
 
   run(element) {
     if (!this.shouldInvoke()) return;
-    this.subtractSavingsFromAvailable(element);
+    this.subtractSavingsFromTotalAvailable(element);
   }
 
-  // rename
-  subtractSavingsFromAvailable(element) {
+  subtractSavingsFromTotalAvailable(element) {
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
