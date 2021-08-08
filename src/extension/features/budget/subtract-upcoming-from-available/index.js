@@ -3,7 +3,7 @@ import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
-import { getTotalSavings } from 'toolkit/extension/features/budget/subtract-savings-from-total-available/index';
+import { getTotalSavings } from 'toolkit/extension/features/budget/show-available-after-savings/index';
 
 export class SubtractUpcomingFromAvailable extends Feature {
   shouldInvoke() {

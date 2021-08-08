@@ -4,7 +4,7 @@ import { getEmberView } from 'toolkit/extension/utils/ember';
 import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
 import { createBudgetBreakdownElement } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/index';
 
-export class SubtractSavingsFromTotalAvailable extends Feature {
+export class ShowAvailableAfterSavings extends Feature {
   shouldInvoke() {
     return isCurrentRouteBudgetPage();
   }
@@ -15,10 +15,10 @@ export class SubtractSavingsFromTotalAvailable extends Feature {
 
   run(element) {
     if (!this.shouldInvoke()) return;
-    this.subtractSavingsFromTotalAvailable(element);
+    this.showAvailableAfterSavings(element);
   }
 
-  subtractSavingsFromTotalAvailable(element) {
+  showAvailableAfterSavings(element) {
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
