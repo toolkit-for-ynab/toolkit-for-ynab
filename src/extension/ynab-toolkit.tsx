@@ -17,8 +17,14 @@ export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
 type SupportedEmberHook = 'didRender' | 'didInsertElement' | 'didUpdate';
 
-export const EMBER_COMPONENT_TOOLKIT_HOOKS: SupportedEmberHook[] = ['didRender', 'didInsertElement', 'didUpdate'];
-export const emberComponentToolkitHookKey = (hookName: SupportedEmberHook): `_tk_${SupportedEmberHook}_hooks_` => `_tk_${hookName}_hooks_`;
+export const EMBER_COMPONENT_TOOLKIT_HOOKS: SupportedEmberHook[] = [
+  'didRender',
+  'didInsertElement',
+  'didUpdate',
+];
+export const emberComponentToolkitHookKey = (
+  hookName: SupportedEmberHook
+): `_tk_${SupportedEmberHook}_hooks_` => `_tk_${hookName}_hooks_`;
 
 window.__toolkitUtils = {
   ...ynabUtils,
@@ -33,10 +39,10 @@ interface ToolkitEmberHook {
 
 type ToolkitEnabledComponent = Ember['Component'] & {
   element?: Element;
-  _tk_didRender_hooks_?: ToolkitEmberHook[]
+  _tk_didRender_hooks_?: ToolkitEmberHook[];
   _tk_didInsertElement_hooks_?: ToolkitEmberHook[];
   _tk_didUpdate_hooks_?: ToolkitEmberHook[];
-}
+};
 
 export class YNABToolkit {
   _featureInstances: Feature[] = [];
@@ -47,7 +53,7 @@ export class YNABToolkit {
   }
 
   _applyGlobalCSS() {
-    const globalCSS = this._featureInstances.reduce((css, feature) => {
+    let globalCSS = this._featureInstances.reduce((css, feature) => {
       const wrappedInjectCSS = withToolkitError(feature.injectCSS.bind(feature), feature);
       const featureCSS = wrappedInjectCSS();
 
@@ -57,6 +63,16 @@ export class YNABToolkit {
 
       return css;
     }, require('./ynab-toolkit.css'));
+
+    const imports = [];
+    let importIndex = 0;
+    while ((importIndex = globalCSS.search('@import')) > 0) {
+      let semicolon = globalCSS.indexOf(';', importIndex);
+      if (semicolon < 0) semicolon = globalCSS.length - 1;
+      imports.push(globalCSS.substring(importIndex, semicolon + 1));
+      globalCSS = globalCSS.substring(0, importIndex) + globalCSS.substring(semicolon + 1);
+    }
+    if (imports.length > 0) globalCSS = imports.join('\n') + '\n\n' + globalCSS;
 
     $('head').append(
       $('<style>', { id: 'toolkit-injected-styles', type: 'text/css' }).text(globalCSS)
