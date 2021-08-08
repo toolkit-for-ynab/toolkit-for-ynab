@@ -1,9 +1,3 @@
-.modal-account-edit-transaction-list .modal-list {
-  overflow-x: hidden;
-  overflow-y: auto;
-  height: 100%;
-}
-
 .modal-account-edit-transaction-list .modal-list > li {
   position: static !important;
 }
