@@ -69,7 +69,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
     // When one category is selected, YNAB provides their own "Available After Upcoming" so we don't need ours.
     if (this.ynabAvailableAfterUpcomingExists($budgetBreakdownMonthlyTotals)) return;
 
-    const totalAvailable = ynabToolKit.options.SubtractSavingsFromTotalAvailable
+    const totalAvailable = ynabToolKit.options.ShowAvailableAfterSavings
       ? budgetBreakdown.budgetTotals.available - getTotalSavings(budgetBreakdown)
       : budgetBreakdown.budgetTotals.available;
     const totalUpcoming = this.getTotalUpcoming(budgetBreakdown);
@@ -91,10 +91,15 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
     const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
 
-    // append to Available After Savings if it exists
-    createBudgetBreakdownElement(elementId, localizedTitle, totalAvailableAfterUpcoming).prependTo(
-      $ynabBreakdown
+    const availableAfterUpcoming = createBudgetBreakdownElement(
+      elementId,
+      localizedTitle,
+      totalAvailableAfterUpcoming
     );
+
+    if (ynabToolKit.options.ShowAvailableAfterSavings)
+      availableAfterUpcoming.appendTo('#total-available-after-savings');
+    else availableAfterUpcoming.prependTo($ynabBreakdown);
   }
 
   ynabAvailableAfterUpcomingExists($context) {
