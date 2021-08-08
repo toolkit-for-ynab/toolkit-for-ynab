@@ -19,29 +19,28 @@ export class SubtractSavingsFromAvailable extends Feature {
     this.subtractSavingsFromAvailable(element);
   }
 
+  // rename
   subtractSavingsFromAvailable(element) {
-    const elementObject = $(element);
-    const budgetBreakdownObject = elementObject.hasClass('budget-breakdown')
-      ? elementObject
-      : undefined;
-    if (!budgetBreakdownObject) return;
+    const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
+    if (!$budgetBreakdownMonthlyTotals.length) return;
 
-    const budgetBreakdown = getEmberView(element.id);
-    if (!budgetBreakdown) return;
+    const budgetBreakdownMonthlyTotals = getEmberView(element.id);
+    if (!budgetBreakdownMonthlyTotals) return;
 
-    const totalAvailable = budgetBreakdown.budgetTotals.available;
-    const totalSavings = getTotalSavings(budgetBreakdown);
+    const totalAvailable = budgetBreakdownMonthlyTotals.budgetTotals.available;
+    const totalSavings = getTotalSavings(budgetBreakdownMonthlyTotals);
     const totalAvailableAfterSavings = totalAvailable - totalSavings;
 
-    const totalAvailableObject = $('.budget-breakdown-monthly-totals', budgetBreakdownObject)
+    // fix
+    const $totalAvailable = $('.budget-breakdown-monthly-totals', $budgetBreakdownMonthlyTotals)
       .children()
       .first();
-    const totalAvailableTextObject = $(`.user-data`, totalAvailableObject);
-    totalAvailableTextObject.text(formatCurrency(totalAvailableAfterSavings));
+    const $totalAvailableText = $(`.user-data`, $totalAvailable);
+    $totalAvailableText.text(formatCurrency(totalAvailableAfterSavings));
 
-    totalAvailableTextObject.removeClass('positive zero negative');
+    $totalAvailableText.removeClass('positive zero negative');
     const currencyClass = getCurrencyClass(totalAvailableAfterSavings);
-    totalAvailableTextObject.addClass(currencyClass);
+    $totalAvailableText.addClass(currencyClass);
   }
 
   onRouteChanged() {
@@ -61,5 +60,5 @@ export function getTotalSavings(budgetBreakdown) {
       totalSavings += category.available;
   }
 
-  return totalSavings;
+  return totalSavings; // Returns positive value. Each category.available is positive.
 }

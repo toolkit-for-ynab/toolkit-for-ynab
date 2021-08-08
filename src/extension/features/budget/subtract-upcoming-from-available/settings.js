@@ -9,7 +9,7 @@ module.exports = {
     ' In other words, treat upcoming transactions as if the money has already been spent. Also adds "Available After Upcoming Transactions" to the budget breakdown.' +
     '\n\nEnabling "Subtract Credit Card Balances from Total Available" will total the amounts in the "Payment" column' +
     ' of your CC category group and subtract that from the "Available After Upcoming Transactions" in the budget breakdown.' +
-    ' This allows to see how much you have available, excluding the money "reserved" in your Credit Card Payments category group.' +
+    ' This allows to see how much you have available if you exclude the money "reserved" in your Credit Card Payments category group.' +
     ' (Probably only useful if you pay off your CCs in full every month.)',
   options: [
     { name: 'Both', value: 'both' },
