@@ -99,6 +99,10 @@ body {
   top: 0;
   z-index: 10;
 
+  &__logo {
+    cursor: pointer;
+  }
+
   &__actions {
     display: flex;
     align-items: center;

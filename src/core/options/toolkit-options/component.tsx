@@ -273,7 +273,14 @@ export function ToolkitOptions() {
     <div className="tk-flex tk-flex-grow tk-flex-column">
       <ImportExportModal isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className="tk-flex nav-bar">
-        <img src="../assets/images/icons/icon32.png" />
+        <img
+          className="nav-bar__logo"
+          onClick={() => {
+            setCurrentPage(settingsBySection[0].name);
+            setCurrentSettings(settingsBySection[0]);
+          }}
+          src="../assets/images/icons/icon32.png"
+        />
         <nav className="nav-bar__nav">
           {settingsBySection.map((settings) => (
             <div
