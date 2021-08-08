@@ -22,6 +22,12 @@
     width: 100%;
     transition: background-color 200ms ease;
 
+    &--labeled {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
     &::after {
       content: '';
       background-color: var(--tk-toggle-switch-color);
@@ -32,6 +38,18 @@
       left: 3px;
       top: 3px;
       transition: left 200ms ease;
+    }
+  }
+
+  &__toggle-text {
+    color: #f1f1f1;
+
+    &--left {
+      margin-left: 6px;
+    }
+
+    &--right {
+      margin-right: 6px;
     }
   }
 

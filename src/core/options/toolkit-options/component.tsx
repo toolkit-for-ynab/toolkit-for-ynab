@@ -10,6 +10,8 @@ import './styles.scss';
 import { localToolkitStorage } from 'toolkit/core/common/storage';
 import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { Modal, useModal } from 'toolkit/components/modal';
+import { DiscordLink, GitHubLink, TrelloLink } from 'toolkit/components/links';
+import { useDarkModeSetter } from 'toolkit/hooks/useDarkModeSetter';
 
 function Setting({ config }: { config: FeatureSettingConfig }) {
   const [featureSetting, setFeatureSetting] = React.useState<FeatureSetting>(false);
@@ -84,14 +86,6 @@ function DarkModeToggle() {
   const [isDarkModeEnabled, setIsDarkModeEnabled] = React.useState(
     document.querySelector('html').dataset['theme'] === 'dark'
   );
-
-  React.useEffect(() => {
-    if (isDarkModeEnabled) {
-      document.querySelector('html').dataset['theme'] = 'dark';
-    } else {
-      document.querySelector('html').dataset['theme'] = '';
-    }
-  }, [isDarkModeEnabled]);
 
   function handleDarkModeClicked() {
     localToolkitStorage.setFeatureSetting('options.dark-mode', !isDarkModeEnabled).then(() => {
@@ -186,32 +180,6 @@ function ImportExportModal({
   );
 }
 
-const DiscordLink = ({ children }: { children: React.ReactNode }) => (
-  <a target="_blank" rel="noreferrer noopener" href="https://discord.gg/jFKzZR2">
-    {children}
-  </a>
-);
-
-const GitHubLink = ({ children }: { children: React.ReactNode }) => (
-  <a
-    target="_blank"
-    rel="noreferrer noopener"
-    href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues"
-  >
-    {children}
-  </a>
-);
-
-const TrelloLink = ({ children }: { children: React.ReactNode }) => (
-  <a
-    target="_blank"
-    rel="noreferrer noopener"
-    href="https://trello.com/b/EzOvXlil/toolkit-for-ynab-roadmap"
-  >
-    {children}
-  </a>
-);
-
 function SupportPage() {
   return (
     <div className="support-page">
@@ -294,6 +262,8 @@ function SupportPage() {
 }
 
 export function ToolkitOptions() {
+  useDarkModeSetter();
+
   const manifest = getBrowser().runtime.getManifest();
   const [currentSettings, setCurrentSettings] = React.useState(settingsBySection[0]);
   const [currentPage, setCurrentPage] = React.useState(settingsBySection[0].name);

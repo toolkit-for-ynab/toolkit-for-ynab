@@ -3,13 +3,18 @@ import * as React from 'react';
 import './styles.scss';
 
 interface PublicProps {
-  className: string;
+  className?: string;
   children: React.ReactNode;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   variant?: 'default' | 'primary' | 'hollow';
 }
 
-export function Button({ className, children, onClick, variant = 'default' }: PublicProps) {
+export function Button({
+  className,
+  children,
+  onClick = () => {},
+  variant = 'default',
+}: PublicProps) {
   return (
     <button
       className={classNames('button', className, {

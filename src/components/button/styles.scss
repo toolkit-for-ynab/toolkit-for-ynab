@@ -1,23 +1,27 @@
+:root {
+  --tk-button-primary-color: #4495d7;
+  --tk-button-primary-hover-color: #2b7cbe;
+}
+
 .button {
   border: 3px solid gray;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   color: var(--tk-text-color);
   font-size: 1rem;
-  min-width: 6rem;
 
   &:hover {
     cursor: pointer;
   }
 
   &__primary {
-    background-color: var(--tk-action-primary);
-    border-color: var(--tk-action-primary);
+    background-color: var(--tk-button-primary-color);
+    border-color: var(--tk-button-primary-color);
     color: #f1f1f1;
 
     &:hover {
-      border-color: var(--tk-action-secondary);
-      background-color: var(--tk-action-secondary);
+      border-color: var(--tk-button-primary-hover-color);
+      background-color: var(--tk-button-primary-hover-color);
     }
   }
 
