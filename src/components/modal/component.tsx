@@ -3,17 +3,29 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import './styles.scss';
+import { Button } from '../button';
 
 interface PublicProps {
   children: React.ReactNode;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   title?: string;
+  cancelText?: string;
+  submitText?: string;
   onCancel?: () => void;
   onSubmit?: () => void;
 }
 
-export function Modal({ children, isOpen, title, setIsOpen, onCancel, onSubmit }: PublicProps) {
+export function Modal({
+  children,
+  isOpen,
+  title,
+  setIsOpen,
+  onCancel,
+  onSubmit,
+  submitText = 'Save',
+  cancelText = 'Cancel',
+}: PublicProps) {
   const modalRef = React.useRef(null);
 
   function handleCancel() {
@@ -66,19 +78,21 @@ export function Modal({ children, isOpen, title, setIsOpen, onCancel, onSubmit }
             ref={modalRef}
           >
             <FontAwesomeIcon className="modal__close" icon={faTimes} onClick={handleCancel} />
-            <div className="modal__header">
-              <h1 id="modal-title" className="modal__title">
-                {title}
-              </h1>
-            </div>
+            {title && (
+              <div className="modal__header">
+                <h1 id="modal-title" className="modal__title">
+                  {title}
+                </h1>
+              </div>
+            )}
             <div className="modal__content">{children}</div>
             <div className="modal__footer">
-              <button className="modal__cancel" onClick={handleCancel}>
-                Cancel
-              </button>
-              <button className="modal__confirm" onClick={onSubmit}>
-                Save
-              </button>
+              <Button className="modal__cancel" onClick={handleCancel} variant="hollow">
+                {cancelText}
+              </Button>
+              <Button className="modal__confirm" onClick={onSubmit} variant="primary">
+                {submitText}
+              </Button>
             </div>
           </div>
         </div>,

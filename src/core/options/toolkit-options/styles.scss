@@ -4,6 +4,7 @@
   --tk-background-color: #ffffff;
   --tk-text-color: #383e41;
   --tk-action-primary: #4495d7;
+  --tk-action-secondary: #2b7cbe;
 
   // src/components/toggle
   --tk-toggle-switch-color: #636366;
@@ -180,4 +181,11 @@ body {
     margin-top: 1rem;
     text-align: center;
   }
+}
+
+.support-page {
+  padding: 1rem;
+  text-align: center;
+  margin: 0 25%;
+  line-height: 1.5rem;
 }

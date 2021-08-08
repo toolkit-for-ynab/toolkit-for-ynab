@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { settingsBySection } from './utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSun, faMoon, faFileExport } from '@fortawesome/free-solid-svg-icons';
+import { faSun, faMoon, faFileExport, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { Toggle } from 'toolkit/components/toggle';
 import { RadioGroup } from 'toolkit/components/radio-group';
 
@@ -186,9 +186,117 @@ function ImportExportModal({
   );
 }
 
+const DiscordLink = ({ children }: { children: React.ReactNode }) => (
+  <a target="_blank" rel="noreferrer noopener" href="https://discord.gg/jFKzZR2">
+    {children}
+  </a>
+);
+
+const GitHubLink = ({ children }: { children: React.ReactNode }) => (
+  <a
+    target="_blank"
+    rel="noreferrer noopener"
+    href="https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues"
+  >
+    {children}
+  </a>
+);
+
+const TrelloLink = ({ children }: { children: React.ReactNode }) => (
+  <a
+    target="_blank"
+    rel="noreferrer noopener"
+    href="https://trello.com/b/EzOvXlil/toolkit-for-ynab-roadmap"
+  >
+    {children}
+  </a>
+);
+
+function SupportPage() {
+  return (
+    <div className="support-page">
+      <h1>Frequently Asked Questions</h1>
+      <div>
+        <h2>Who works on the Toolkit?</h2>
+        <p>
+          We're a small community of developers (and YNABers) who work on the Toolkit in our free
+          time. You can find most of us over in our <DiscordLink>Discord Server</DiscordLink>.
+        </p>
+      </div>
+      <div>
+        <h2>Is the Toolkit safe?</h2>
+        <p>Simply put, yes.</p>
+        <p>
+          All browser extensions have the ability to send the data loaded or input into the site
+          you're viewing off to some other location. Fortunately, the Toolkit is open source meaning
+          all the code is made available to you in <GitHubLink>GitHub</GitHubLink>. The only time we
+          make "outside requests" is when you encounter an error which resulted in a crash of the
+          Toolkit. That error is sent to our error tracking at{' '}
+          <a target="_blank" rel="noreferrer noopener" href="https://sentry.io/">
+            Sentry.io
+          </a>
+          . We do not store any data whatsoever. Even the Toolkit settings are stored on your own
+          machine. Every time you load YNAB, the Toolkit gets that data from the browser to do what
+          it needs to do. If you trust YNAB with your data, then you should feel confident that your
+          data is safe.
+        </p>
+      </div>
+      <div>
+        <h2>A pop-up appeared telling me something went wrong with the Toolkit. What do I do?</h2>
+        <p>
+          When you see this pop-up, it's usually because something changed on YNAB's side which
+          broke our functionality. At the very least, you should open a{' '}
+          <GitHubLink>bug report</GitHubLink> to help us identify we have an issue. If you'd like to
+          go a step further, you could try to do some investigation in the{' '}
+          <a
+            target="_blank"
+            rel="noreferrer noopener"
+            href="https://developer.chrome.com/docs/devtools/open/"
+          >
+            Developer Console
+          </a>{' '}
+          to find out what feature broke and include that in your bug report.
+        </p>
+      </div>
+      <div>
+        <h2>How much does the Toolkit cost?</h2>
+        <p>
+          So long as browsers continue to make it free to build extensions, the Toolkit for YNAB
+          will always be free! This is a hobby for all of us who work on the Toolkit and we're just
+          happy to provide something we believe our users enjoy.
+        </p>
+      </div>
+      <div>
+        <h2>Can you add this feature I want?</h2>
+        <p>
+          You can find all requested features on our <TrelloLink>Trello Board</TrelloLink>. If the
+          feature you want doesn't appear there, you should make a request on{' '}
+          <GitHubLink>GitHub</GitHubLink>. Once you've made a request for a feature you'd like to
+          see built, the rest just comes down to time.
+        </p>
+      </div>
+      <div>
+        <h2>What feature is next?</h2>
+        <p>
+          Since all the developers who work on the Toolkit do so in their free time, it usually
+          works out that the features we find most valuable ourselves are the features we work on
+          next. But don't lose hope! Once a feature is added to the{' '}
+          <TrelloLink>Trello Board</TrelloLink>, you and all members of the community are able to
+          vote on the feature. The higher the vote count (and the higher the feasibility of actually
+          building the feature) the more likely it is to get done! If you're a developer and there's
+          a feature you really want to added, feel free to open a{' '}
+          <GitHubLink>pull request</GitHubLink>! Also, join the <DiscordLink>Discord</DiscordLink>{' '}
+          to ask any questions you may have along the way!
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function ToolkitOptions() {
   const manifest = getBrowser().runtime.getManifest();
   const [currentSettings, setCurrentSettings] = React.useState(settingsBySection[0]);
+  const [currentPage, setCurrentPage] = React.useState(settingsBySection[0].name);
   const { isOpen, setIsOpen } = useModal();
 
   return (
@@ -201,15 +309,25 @@ export function ToolkitOptions() {
             <div
               key={settings.name}
               className={classNames('nav-bar__nav-item', {
-                'nav-bar__nav-item--selected': settings.name === currentSettings.name,
+                'nav-bar__nav-item--selected':
+                  currentPage !== 'support' && settings.name === currentSettings.name,
               })}
-              onClick={() => setCurrentSettings(settings)}
+              onClick={() => {
+                setCurrentPage(settings.name);
+                setCurrentSettings(settings);
+              }}
             >
               <div>{settings.name}</div>
             </div>
           ))}
         </nav>
         <div className="nav-bar__actions">
+          <FontAwesomeIcon
+            className="nav-bar__action-icon"
+            icon={faQuestionCircle}
+            size="lg"
+            onClick={() => setCurrentPage('support')}
+          />
           <FontAwesomeIcon
             className="nav-bar__action-icon"
             icon={faFileExport}
@@ -220,7 +338,8 @@ export function ToolkitOptions() {
         </div>
       </div>
       <main className="tk-flex tk-flex-grow">
-        <SettingsList settings={currentSettings.settings} />
+        {currentPage !== 'support' && <SettingsList settings={currentSettings.settings} />}
+        {currentPage === 'support' && <SupportPage />}
       </main>
       <footer className="footer">
         {manifest.name} v{manifest.version}

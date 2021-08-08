@@ -5,8 +5,8 @@
 }
 
 .toggle {
-  min-width: 70px;
-  height: 26px;
+  min-width: 64px;
+  height: 24px;
 
   &__input {
     display: none;
@@ -25,7 +25,7 @@
     &::after {
       content: '';
       background-color: var(--tk-toggle-switch-color);
-      height: 20px;
+      height: calc(100% - 6px);
       width: 50%;
       border-radius: 12px;
       position: absolute;
