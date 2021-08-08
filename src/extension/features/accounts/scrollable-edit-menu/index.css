@@ -4,13 +4,8 @@
   height: 100%;
 }
 
-.modal-account-edit-transaction-list .modal-list li {
+.modal-account-edit-transaction-list .modal-list > li {
   position: static !important;
-}
-
-.modal-account-edit-transaction-list .scrollable-edit-wrapper > ul {
-  position: static !important;
-  display: block !important;
 }
 
 .modal-account-edit-transaction-list .scrollable-edit-wrapper {
@@ -20,4 +15,9 @@
   padding: 0 !important;
   margin: 0 !important;
   border: none !important;
+}
+
+.modal-account-edit-transaction-list .scrollable-edit-wrapper > ul {
+  position: static !important;
+  display: block !important;
 }

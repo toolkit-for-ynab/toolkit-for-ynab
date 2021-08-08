@@ -25,7 +25,7 @@ export class ScrollableEditMenu extends Feature {
   addScrollWrappers(modalContainer) {
     const modal = $('.modal', modalContainer);
 
-    const subMenus = $('ul.modal-list li ul:not(.scrollable-edit-wrapper)', modal);
+    const subMenus = $('ul.modal-list > li > ul:not(.scrollable-edit-wrapper)', modal);
     subMenus.each((index, m) => {
       const menu = $(m);
       if (menu.parent().hasClass('scrollable-edit-wrapper')) return;
@@ -45,8 +45,8 @@ export class ScrollableEditMenu extends Feature {
       });
     });
 
-    if (modal.position().top + modal.outerHeight() > $(modalContainer).height()) {
-      modal.height(Math.max($(modalContainer).height() - modal.position().top, 100));
+    if (modal.offset().top + modal.height() > $(window).height()) {
+      modal.height(Math.max($(window).height() - modal.offset().top, 100));
     }
   }
 }
