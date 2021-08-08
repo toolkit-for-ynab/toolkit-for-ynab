@@ -61,8 +61,9 @@ export class SubtractUpcomingFromAvailable extends Feature {
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
-    const elementId = 'total-available-after-upcoming';
-    $(`#${elementId}`, $budgetBreakdownMonthlyTotals).remove();
+    $(`#total-upcoming`, $budgetBreakdownMonthlyTotals).remove();
+    $(`#total-cc-balances`, $budgetBreakdownMonthlyTotals).remove();
+    $(`#total-available-after-upcoming`, $budgetBreakdownMonthlyTotals).remove();
 
     const budgetBreakdown = getEmberView(element.id);
 
@@ -73,33 +74,56 @@ export class SubtractUpcomingFromAvailable extends Feature {
       ? budgetBreakdown.budgetTotals.available - getTotalSavings(budgetBreakdown)
       : budgetBreakdown.budgetTotals.available;
     const totalUpcoming = this.getTotalUpcoming(budgetBreakdown);
-    const totalOfCCBalances = this.getTotalOfCCBalances(budgetBreakdown);
-
+    const totalCCBalances = this.getTotalOfCCBalances(budgetBreakdown);
     let totalAvailableAfterUpcoming = totalAvailable;
 
-    if (this.settings.enabled === 'upcoming-only') totalAvailableAfterUpcoming += totalUpcoming;
-    if (this.settings.enabled === 'cc-only') totalAvailableAfterUpcoming += totalOfCCBalances;
-    if (this.settings.enabled === 'both')
-      totalAvailableAfterUpcoming += totalUpcoming + totalOfCCBalances;
+    const $elements = $();
+
+    const totalUpcomingElement = createBudgetBreakdownElement(
+      'total-upcoming',
+      'toolkit.totalUpcoming',
+      'Total of Upcoming Transactions',
+      totalUpcoming
+    );
+
+    const totalCCBalancesElement = createBudgetBreakdownElement(
+      'total-cc-balances',
+      'toolkit.totalCCBalances',
+      'Total of CC Balances',
+      totalCCBalances
+    );
+
+    if (this.settings.enabled === 'upcoming-only') {
+      totalAvailableAfterUpcoming += totalUpcoming;
+      $elements.add(totalUpcomingElement);
+    }
+
+    if (this.settings.enabled === 'cc-only') {
+      totalAvailableAfterUpcoming += totalCCBalances;
+      $elements.add(totalCCBalancesElement);
+    }
+
+    if (this.settings.enabled === 'both') {
+      totalAvailableAfterUpcoming += totalUpcoming + totalCCBalances;
+      $elements.add(totalUpcomingElement);
+      $elements.add(totalCCBalancesElement);
+    }
 
     if (totalAvailableAfterUpcoming === totalAvailable) return;
 
-    const localizedTitle = l10n(
+    const availableAfterUpcomingElement = createBudgetBreakdownElement(
+      'total-available-after-upcoming',
       'toolkit.availableAfterUpcoming',
-      'Available After Upcoming Transactions'
+      'Available After Upcoming Transactions',
+      totalAvailableAfterUpcoming
     );
+    $elements.add(availableAfterUpcomingElement);
 
     const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
 
-    const availableAfterUpcoming = createBudgetBreakdownElement(
-      elementId,
-      localizedTitle,
-      totalAvailableAfterUpcoming
-    );
-
     if (ynabToolKit.options.ShowAvailableAfterSavings)
-      availableAfterUpcoming.appendTo('#total-available-after-savings');
-    else availableAfterUpcoming.prependTo($ynabBreakdown);
+      $elements.appendTo('#total-available-after-savings');
+    else $elements.prependTo($ynabBreakdown);
   }
 
   ynabAvailableAfterUpcomingExists($context) {
@@ -150,7 +174,9 @@ export class SubtractUpcomingFromAvailable extends Feature {
   }
 }
 
-export function createBudgetBreakdownElement(elementId, title, amount) {
+export function createBudgetBreakdownElement(elementId, l10nKey, l10nDefault, amount) {
+  const title = l10n(l10nKey, l10nDefault);
+
   const currencyClass = SubtractUpcomingFromAvailable.getCurrencyClass(amount);
   amount = formatCurrency(amount);
 
