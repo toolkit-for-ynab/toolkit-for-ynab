@@ -40,7 +40,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
     $available.removeClass(classes);
     $availableText.removeClass(classes);
 
-    const currencyClass = getCurrencyClass(availableAfterUpcoming);
+    const currencyClass = this.getCurrencyClass(availableAfterUpcoming);
     $available.addClass(currencyClass);
     $availableText.addClass(currencyClass);
 
@@ -61,22 +61,13 @@ export class SubtractUpcomingFromAvailable extends Feature {
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
+    const elementId = 'total-available-after-upcoming';
+    $(`#${elementId}`, $budgetBreakdownMonthlyTotals).remove();
+
     const budgetBreakdown = getEmberView(element.id);
 
-    $('#total-available-after-upcoming', $budgetBreakdownMonthlyTotals).remove();
-
     // When one category is selected, YNAB provides their own "Available After Upcoming" so we don't need ours.
-    const localizedMessageText = l10n(
-      'inspector.availableMessage.afterUpcoming',
-      'Available After Upcoming'
-    );
-    const $ynabAvailableAfterUpcomingMessage = $(
-      '.inspector-message-label',
-      $budgetBreakdownMonthlyTotals
-    ).filter(function () {
-      return this.innerText === localizedMessageText;
-    });
-    if ($ynabAvailableAfterUpcomingMessage.length) return;
+    if (this.ynabAvailableAfterUpcomingExists($budgetBreakdownMonthlyTotals)) return;
 
     const totalAvailable = ynabToolKit.options.SubtractSavingsFromTotalAvailable
       ? budgetBreakdown.budgetTotals.available - getTotalSavings(budgetBreakdown)
@@ -93,32 +84,27 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
     if (totalAvailableAfterUpcoming === totalAvailable) return;
 
-    const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
-
-    // append to Available After Savings if it exists
-    this.createBudgetBreakdownElement(totalAvailableAfterUpcoming).prependTo($ynabBreakdown);
-  }
-
-  createBudgetBreakdownElement(totalAvailableAfterUpcoming) {
     const localizedTitle = l10n(
       'toolkit.availableAfterUpcoming',
       'Available After Upcoming Transactions'
     );
 
-    const currencyClass = getCurrencyClass(totalAvailableAfterUpcoming);
+    const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
 
-    totalAvailableAfterUpcoming = formatCurrency(totalAvailableAfterUpcoming);
+    // append to Available After Savings if it exists
+    createBudgetBreakdownElement(elementId, localizedTitle, totalAvailableAfterUpcoming).prependTo(
+      $ynabBreakdown
+    );
+  }
 
-    return $(`
-      <div id="total-available-after-upcoming">
-        <div>${localizedTitle}</div>
-        <div class="user-data">
-          <span class="user-data currency ${currencyClass}">
-            ${totalAvailableAfterUpcoming}
-          </span>
-        </div>
-      </div>
-    `);
+  ynabAvailableAfterUpcomingExists($context) {
+    const localizedMessageText = l10n(
+      'inspector.availableMessage.afterUpcoming',
+      'Available After Upcoming'
+    );
+    return $('.inspector-message-label', $context).filter(function () {
+      return this.innerText === localizedMessageText;
+    }).length;
   }
 
   getTotalUpcoming(budgetBreakdown) {
@@ -128,7 +114,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
       totalUpcoming += category.upcomingTransactions;
     }
 
-    return totalUpcoming; // Returns negative value. Each category.upcomingTransactions is negative.
+    return totalUpcoming; // Returns negative amount. Each category.upcomingTransactions is negative.
   }
 
   getTotalOfCCBalances(budgetBreakdown) {
@@ -138,7 +124,19 @@ export class SubtractUpcomingFromAvailable extends Feature {
       if (category.isCreditCardPaymentCategory) totalOfCCBalances -= category.available;
     }
 
-    return totalOfCCBalances; // Returns negative value. Each category.available is positive.
+    return totalOfCCBalances; // Returns negative amount. Each category.available is positive.
+  }
+
+  getCurrencyClass(amount) {
+    let currencyClass = 'positive';
+
+    if (amount < 0) {
+      currencyClass = 'negative';
+    } else if (amount === 0) {
+      currencyClass = 'zero';
+    }
+
+    return currencyClass;
   }
 
   onRouteChanged() {
@@ -147,14 +145,18 @@ export class SubtractUpcomingFromAvailable extends Feature {
   }
 }
 
-export function getCurrencyClass(amount) {
-  let currencyClass = 'positive';
+export function createBudgetBreakdownElement(elementId, title, amount) {
+  const currencyClass = SubtractUpcomingFromAvailable.getCurrencyClass(amount);
+  amount = formatCurrency(amount);
 
-  if (amount < 0) {
-    currencyClass = 'negative';
-  } else if (amount === 0) {
-    currencyClass = 'zero';
-  }
-
-  return currencyClass;
+  return $(`
+    <div id="${elementId}">
+      <div>${title}</div>
+      <div class="user-data">
+        <span class="user-data currency ${currencyClass}">
+          ${amount}
+        </span>
+      </div>
+    </div>
+  `);
 }

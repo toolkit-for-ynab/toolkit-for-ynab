@@ -1,9 +1,8 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
-import { getCurrencyClass } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/index';
+import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
+import { createBudgetBreakdownElement } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/index';
 
 export class SubtractSavingsFromTotalAvailable extends Feature {
   shouldInvoke() {
@@ -23,22 +22,22 @@ export class SubtractSavingsFromTotalAvailable extends Feature {
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
+    const elementId = 'total-available-after-savings';
+    $(`#${elementId}`, $budgetBreakdownMonthlyTotals).remove();
+
     const budgetBreakdown = getEmberView(element.id);
 
     const totalAvailable = budgetBreakdown.budgetTotals.available;
     const totalSavings = getTotalSavings(budgetBreakdown);
     const totalAvailableAfterSavings = totalAvailable - totalSavings;
 
-    // fix
-    const $totalAvailable = $('.budget-breakdown-monthly-totals', $budgetBreakdownMonthlyTotals)
-      .children()
-      .first();
-    const $totalAvailableText = $(`.user-data`, $totalAvailable);
-    $totalAvailableText.text(formatCurrency(totalAvailableAfterSavings));
+    const localizedTitle = l10n('toolkit.availableAfterSavings', 'Available After Savings');
 
-    $totalAvailableText.removeClass('positive zero negative');
-    const currencyClass = getCurrencyClass(totalAvailableAfterSavings);
-    $totalAvailableText.addClass(currencyClass);
+    const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
+
+    createBudgetBreakdownElement(elementId, localizedTitle, totalAvailableAfterSavings).prependTo(
+      $ynabBreakdown
+    );
   }
 
   onRouteChanged() {
@@ -58,5 +57,5 @@ export function getTotalSavings(budgetBreakdown) {
       totalSavings += category.available;
   }
 
-  return totalSavings; // Returns positive value. Each category.available is positive.
+  return totalSavings; // Returns positive amount. Each category.available is positive.
 }
