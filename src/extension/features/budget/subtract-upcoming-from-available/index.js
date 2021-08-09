@@ -116,10 +116,11 @@ export class SubtractUpcomingFromAvailable extends Feature {
       '<div id="available-after-upcoming-hr"><hr style="width:100%"></div>'
     );
 
+    const $totalAvailableAfterSavings = $('#total-available-after-savings');
     const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
 
-    if (ynabToolKit.options.ShowAvailableAfterSavings)
-      $elements.insertAfter('#total-available-after-savings');
+    if (ynabToolKit.options.ShowAvailableAfterSavings && $totalAvailableAfterSavings.length)
+      $elements.insertAfter($totalAvailableAfterSavings);
     else $elements.prependTo($ynabBreakdown);
   }
 

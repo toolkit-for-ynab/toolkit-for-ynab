@@ -31,6 +31,8 @@ export class ShowAvailableAfterSavings extends Feature {
     const totalSavings = getTotalSavings(budgetBreakdown);
     const totalAvailableAfterSavings = totalAvailable - totalSavings;
 
+    if (totalAvailableAfterSavings === totalAvailable) return;
+
     const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
 
     createBudgetBreakdownElement(
@@ -58,5 +60,6 @@ export function getTotalSavings(budgetBreakdown) {
       totalSavings += category.available + category.upcomingTransactions;
   }
 
+  if (totalSavings < 0) return 0;
   return totalSavings;
 }
