@@ -77,7 +77,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
       ? budgetBreakdown.budgetTotals.available - getTotalSavings(budgetBreakdown)
       : budgetBreakdown.budgetTotals.available;
     const totalUpcoming = this.getTotalUpcoming(budgetBreakdown);
-    const totalCCPayments = this.getTotalOfCCPayments(budgetBreakdown);
+    const totalCCPayments = this.getTotalCCPayments(budgetBreakdown);
     let totalAvailableAfterUpcoming = totalAvailable + totalUpcoming;
 
     let $elements = $();
@@ -145,15 +145,16 @@ export class SubtractUpcomingFromAvailable extends Feature {
     return totalUpcoming;
   }
 
-  getTotalOfCCPayments(budgetBreakdown) {
-    let totalOfCCPayments = 0;
+  getTotalCCPayments(budgetBreakdown) {
+    let totalCCPayments = 0;
 
     for (const category of budgetBreakdown.inspectorCategories) {
       if (category.isCreditCardPaymentCategory)
-        totalOfCCPayments += category.available + category.upcomingTransactions;
+        totalCCPayments += category.available + category.upcomingTransactions;
     }
 
-    return totalOfCCPayments;
+    if (totalCCPayments < 0) return 0;
+    return totalCCPayments;
   }
 
   onRouteChanged() {
