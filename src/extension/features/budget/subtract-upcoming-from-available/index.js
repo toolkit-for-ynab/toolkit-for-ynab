@@ -97,7 +97,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
         'total-cc-payments',
         'toolkit.totalCCPayments',
         'Total of CC Payments',
-        totalCCPayments
+        -totalCCPayments // Invert amount. A positive amount should show as negative in the budget breakdown and vice versa.
       );
       $elements = $elements.add(totalCCPaymentsElement);
     }
