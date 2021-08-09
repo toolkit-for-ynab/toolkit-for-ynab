@@ -2,36 +2,6 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
-function calcPosition(target, parent) {
-  if (parent === 0) parent = null;
-  const offsetParent = parent == null ? null : parent.offsetParent();
-  const pos = target.position();
-  const offset = target.offset();
-  const i =
-    (offsetParent == null ? null : offsetParent.css('position')) === 'absolute' ? pos : offset;
-  const el = target.get(0);
-  let left = i.left;
-  let top = i.top;
-  let outerWidth = target.outerWidth();
-  let outerHeight = target.outerHeight();
-  if (!el.getClientRects().length) {
-    let boundingRect = el.getBoundingClientRect();
-    let defaultView = el.ownerDocument.defaultView;
-    left = boundingRect.left + defaultView.pageXOffset;
-    top = boundingRect.top + defaultView.pageYOffset;
-    outerWidth = boundingRect.width;
-    outerHeight = boundingRect.height;
-  }
-  return {
-    x: left,
-    y: top,
-    width: outerWidth,
-    height: outerHeight,
-    offsetX: offset.left,
-    offsetY: offset.top,
-  };
-}
-
 export class ScrollableEditMenu extends Feature {
   injectCSS() {
     return require('./index.css');
@@ -57,37 +27,37 @@ export class ScrollableEditMenu extends Feature {
     const scrollable = $('.js-ynab-modal-scrollable-area', this.element);
     if (modal && scrollable) {
       const arrowDir = this.get('arrow');
-      const sizePos = calcPosition(modal, this.immediateParent());
-      const modalY = this.get('modalY');
-      const modalBottom = sizePos.y + scrollable.prop('scrollHeight');
       const windowHeight = $(window).height();
-      if (arrowDir === 'up' && modalBottom > windowHeight) {
-        const height = windowHeight - sizePos.y;
+      const windowMargin = this.get('windowMargin');
+      const targetY = this.triggerElement.offset().top;
+
+      let top = this.get('modalY');
+      let height = modal.height();
+      if (arrowDir === 'down') {
+        if (top < this.windowMargin) {
+          height -= windowMargin - top;
+          top = windowMargin;
+        }
+        if (top + height > targetY) {
+          height -= targetY - (top + height);
+        }
         scrollable.css({
           overflow: 'auto',
           height: '100%',
         });
         modal.css({
+          top: top,
           height: height,
         });
-      } else if (arrowDir === 'down' && modalY < 0) {
-        const height = sizePos.height - Math.abs(modalY) - 10;
+      } else if (arrowDir === 'up') {
+        if (top + height > windowHeight - windowMargin) {
+          height -= top + height + windowMargin - windowHeight;
+        }
         scrollable.css({
           overflow: 'auto',
           height: '100%',
         });
         modal.css({
-          top: 10,
-          height: height,
-        });
-      } else if (arrowDir === 'down' && modalBottom > this.triggerElement.position().top) {
-        const height = this.triggerElement.position().top - 24; // todo: replace constant
-        scrollable.css({
-          overflow: 'auto',
-          height: '100%',
-        });
-        modal.css({
-          top: 10,
           height: height,
         });
       } else {
