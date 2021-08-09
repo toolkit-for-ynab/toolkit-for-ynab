@@ -22,7 +22,8 @@ export class SubtractUpcomingFromAvailable extends Feature {
   }
 
   updateCategoryAvailableBalance(element) {
-    const category = getEmberView(element.id);
+    const category = getEmberView(element.id, 'category');
+    if (!category) return;
     if (!category.upcomingTransactions) return;
 
     const $available = $(`.ynab-new-budget-available-number`, element);
@@ -61,12 +62,13 @@ export class SubtractUpcomingFromAvailable extends Feature {
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
+    const budgetBreakdown = getEmberView(element.id);
+    if (!budgetBreakdown) return;
+
     $('#total-upcoming', $budgetBreakdownMonthlyTotals).remove();
-    $('#total-cc-balances', $budgetBreakdownMonthlyTotals).remove();
+    $('#total-cc-payments', $budgetBreakdownMonthlyTotals).remove();
     $('#total-available-after-upcoming', $budgetBreakdownMonthlyTotals).remove();
     $('#available-after-upcoming-hr', $budgetBreakdownMonthlyTotals).remove();
-
-    const budgetBreakdown = getEmberView(element.id);
 
     // When one category is selected, YNAB provides their own "Available After Upcoming" so we don't need ours.
     if (this.ynabAvailableAfterUpcomingExists($budgetBreakdownMonthlyTotals)) return;
@@ -75,8 +77,8 @@ export class SubtractUpcomingFromAvailable extends Feature {
       ? budgetBreakdown.budgetTotals.available - getTotalSavings(budgetBreakdown)
       : budgetBreakdown.budgetTotals.available;
     const totalUpcoming = this.getTotalUpcoming(budgetBreakdown);
-    const totalCCBalances = this.getTotalOfCCBalances(budgetBreakdown);
-    let totalAvailableAfterUpcoming = totalAvailable;
+    const totalCCPayments = this.getTotalOfCCPayments(budgetBreakdown);
+    let totalAvailableAfterUpcoming = totalAvailable + totalUpcoming;
 
     let $elements = $();
 
@@ -86,28 +88,18 @@ export class SubtractUpcomingFromAvailable extends Feature {
       'Total of Upcoming Transactions',
       totalUpcoming
     );
+    $elements = $elements.add(totalUpcomingElement);
 
-    const totalCCBalancesElement = createBudgetBreakdownElement(
-      'total-cc-balances',
-      'toolkit.totalCCBalances',
-      'Total of CC Balances',
-      totalCCBalances
-    );
+    if (this.settings.enabled !== 'no-cc') {
+      totalAvailableAfterUpcoming -= totalCCPayments;
 
-    if (this.settings.enabled === 'upcoming-only') {
-      totalAvailableAfterUpcoming += totalUpcoming;
-      $elements = $elements.add(totalUpcomingElement);
-    }
-
-    if (this.settings.enabled === 'cc-only') {
-      totalAvailableAfterUpcoming += totalCCBalances;
-      $elements = $elements.add(totalCCBalancesElement);
-    }
-
-    if (this.settings.enabled === 'both') {
-      totalAvailableAfterUpcoming += totalUpcoming + totalCCBalances;
-      $elements = $elements.add(totalUpcomingElement);
-      $elements = $elements.add(totalCCBalancesElement);
+      const totalCCPaymentsElement = createBudgetBreakdownElement(
+        'total-cc-payments',
+        'toolkit.totalCCPayments',
+        'Total of CC Payments',
+        totalCCPayments
+      );
+      $elements = $elements.add(totalCCPaymentsElement);
     }
 
     if (totalAvailableAfterUpcoming === totalAvailable) return;
@@ -126,7 +118,6 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
     const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
 
-    console.log($elements);
     if (ynabToolKit.options.ShowAvailableAfterSavings)
       $elements.insertAfter('#total-available-after-savings');
     else $elements.prependTo($ynabBreakdown);
@@ -150,17 +141,18 @@ export class SubtractUpcomingFromAvailable extends Feature {
       totalUpcoming += category.upcomingTransactions;
     }
 
-    return totalUpcoming; // Returns negative amount. Each category.upcomingTransactions is negative.
+    return totalUpcoming;
   }
 
-  getTotalOfCCBalances(budgetBreakdown) {
-    let totalOfCCBalances = 0;
+  getTotalOfCCPayments(budgetBreakdown) {
+    let totalOfCCPayments = 0;
 
     for (const category of budgetBreakdown.inspectorCategories) {
-      if (category.isCreditCardPaymentCategory) totalOfCCBalances -= category.available;
+      if (category.isCreditCardPaymentCategory)
+        totalOfCCPayments += category.available + category.upcomingTransactions;
     }
 
-    return totalOfCCBalances; // Returns negative amount. Each category.available is positive.
+    return totalOfCCPayments;
   }
 
   onRouteChanged() {
