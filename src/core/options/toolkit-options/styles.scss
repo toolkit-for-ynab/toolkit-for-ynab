@@ -198,3 +198,48 @@ body {
   margin: 0 25%;
   line-height: 1.5rem;
 }
+
+.color-picker {
+  position: relative;
+  border: 2px solid var(--tk-text-color);
+  border-radius: 5px;
+
+  &__input {
+    position: absolute;
+    visibility: hidden;
+    left: 0;
+    bottom: 0;
+  }
+
+  &__selector {
+    display: block;
+    width: 4rem;
+    height: 2rem;
+    border-bottom: 2px solid var(--tk-text-color);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 0.3rem 0px;
+
+    &:first-child {
+      border-right: 1px solid var(--tk-text-color);
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__action {
+    font-size: 0.8rem;
+  }
+
+  &__icon {
+    cursor: pointer;
+  }
+}

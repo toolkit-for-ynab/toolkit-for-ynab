@@ -2,7 +2,14 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { settingsBySection } from './utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSun, faMoon, faFileExport, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSun,
+  faMoon,
+  faFileExport,
+  faQuestionCircle,
+  faEyeDropper,
+  faUndoAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import { Toggle } from 'toolkit/components/toggle';
 import { RadioGroup } from 'toolkit/components/radio-group';
 
@@ -12,6 +19,43 @@ import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { Modal, useModal } from 'toolkit/components/modal';
 import { DiscordLink, GitHubLink, TrelloLink } from 'toolkit/components/links';
 import { useDarkModeSetter } from 'toolkit/hooks/useDarkModeSetter';
+
+function ColorPicker({
+  id,
+  resetColor,
+  onChange,
+  value,
+}: {
+  resetColor?: string;
+  onChange(hex: string): void;
+  value: string;
+  id: string;
+}) {
+  return (
+    <div className="color-picker">
+      <input
+        className="color-picker__input"
+        id={id}
+        type="color"
+        onChange={(e) => onChange(e.currentTarget.value)}
+        value={value}
+      />
+      <label className="color-picker__selector" htmlFor={id} style={{ backgroundColor: value }} />
+      <div className="color-picker__actions">
+        <span className="color-picker__action">
+          <FontAwesomeIcon
+            className="color-picker__icon"
+            icon={faUndoAlt}
+            onClick={() => onChange(resetColor)}
+          />
+        </span>
+        <label htmlFor={id} className="color-picker__action">
+          <FontAwesomeIcon className="color-picker__icon" icon={faEyeDropper} />
+        </label>
+      </div>
+    </div>
+  );
+}
 
 function Setting({ config }: { config: FeatureSettingConfig }) {
   const [featureSetting, setFeatureSetting] = React.useState<FeatureSetting>(false);
@@ -50,6 +94,14 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
           checked={featureSetting as boolean}
           htmlFor={`${config.name}-toggle`}
           onChange={(checked) => handleChange(checked)}
+        />
+      )}
+      {config.type === 'color' && (
+        <ColorPicker
+          id={`${config.name}-color-picker`}
+          resetColor={config.default as string}
+          value={featureSetting as string}
+          onChange={handleChange}
         />
       )}
       <div className="setting__info">
