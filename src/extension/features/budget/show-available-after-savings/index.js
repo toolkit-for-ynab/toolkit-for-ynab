@@ -22,9 +22,10 @@ export class ShowAvailableAfterSavings extends Feature {
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
-    $(`#total-available-after-savings`, $budgetBreakdownMonthlyTotals).remove();
-
     const budgetBreakdown = getEmberView(element.id);
+    if (!budgetBreakdown) return;
+
+    $(`#total-available-after-savings`, $budgetBreakdownMonthlyTotals).remove();
 
     const totalAvailable = budgetBreakdown.budgetTotals.available;
     const totalSavings = getTotalSavings(budgetBreakdown);
@@ -54,8 +55,8 @@ export function getTotalSavings(budgetBreakdown) {
       category.masterCategory.name.toLowerCase().includes('savings') ||
       category.displayName.toLowerCase().includes('savings')
     )
-      totalSavings += category.available;
+      totalSavings += category.available + category.upcomingTransactions;
   }
 
-  return totalSavings; // Returns positive amount. Each category.available is positive.
+  return totalSavings;
 }
