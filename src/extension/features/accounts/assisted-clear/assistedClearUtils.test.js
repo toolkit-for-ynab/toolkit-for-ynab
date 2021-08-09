@@ -2,7 +2,7 @@ describe('Assisted Clear Utils', () => {
   describe('findMatchingSum()', () => {
     let utils;
     beforeAll(() => {
-      utils = require('../assistedClearUtils');
+      utils = require('./assistedClearUtils');
     });
     it('should find a single match with single transaction', () => {
       let transactions = [{ amount: 5 }];
@@ -58,7 +58,7 @@ describe('Assisted Clear Utils', () => {
   describe('generatePowerset()', () => {
     let utils;
     beforeAll(() => {
-      utils = require('../assistedClearUtils');
+      utils = require('./assistedClearUtils');
     });
 
     it('should return empty set', () => {

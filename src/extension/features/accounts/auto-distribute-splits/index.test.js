@@ -1,3 +1,4 @@
+jest.mock('toolkit/extension/features/feature');
 import { AutoDistributeSplits } from './index';
 
 describe('AutoDistributeSplits', () => {

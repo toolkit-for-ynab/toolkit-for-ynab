@@ -14,7 +14,7 @@ export const YNAB_RECONCILE_INPUT_MODAL = '.modal-account-reconcile-enter-balanc
 export class AssistedClear extends Feature {
   constructor() {
     super();
-    this._reconcileInputValue = 0;
+    this._reconcileInputValue = '0';
   }
 
   shouldInvoke() {

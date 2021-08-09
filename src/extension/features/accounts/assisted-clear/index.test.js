@@ -1,4 +1,5 @@
-import { AssistedClear, ASSISTED_CLEAR_MODAL_PORTAL } from '../index';
+jest.mock('toolkit/extension/features/feature');
+import { AssistedClear, ASSISTED_CLEAR_MODAL_PORTAL } from './index';
 
 describe('Assisted Clear', () => {
   it('should invoke correctly', () => {
@@ -85,11 +86,11 @@ describe('Assisted Clear', () => {
       document.body.innerHTML =
         "<div class='modal-account-reconcile-enter-balance'>Has No Inputs<div>";
       let element = $('.modal-account-reconcile-enter-balance');
-      expect(feature._reconcileInputValue).toBe(0);
+      expect(feature._reconcileInputValue).toBe('0');
       feature._attachInputListener();
       expect(element.length).toBe(1);
       expect(element.find('input').length).toBe(0);
-      expect(feature._reconcileInputValue).toBe(0);
+      expect(feature._reconcileInputValue).toBe('0');
     });
   });
 

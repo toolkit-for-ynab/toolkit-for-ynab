@@ -38,7 +38,7 @@ export class ObserveListener {
     });
 
     // This finally says 'Watch for changes' and only needs to be called the one time
-    observer.observe($('.ember-view.layout')[0], {
+    observer.observe($('.ember-view.layout')[0] || document.body, {
       subtree: true,
       childList: true,
       characterData: true,

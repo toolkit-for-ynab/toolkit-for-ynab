@@ -2,10 +2,11 @@ jest.useFakeTimers();
 jest.mock('toolkit/extension/utils/ynab');
 jest.mock('toolkit/extension/listeners/observeListener');
 jest.mock('toolkit/extension/listeners/routeChangeListener');
-import { YNABToolkit, TOOLKIT_LOADED_MESSAGE, TOOLKIT_BOOTSTRAP_MESSAGE } from './ynab-toolkit';
+import { YNABToolkit } from './ynab-toolkit';
 import { allToolkitSettings } from 'toolkit/core/settings';
 import { isYNABReady } from 'toolkit/extension/utils/ynab';
 import { readyYNAB, unreadyYNAB } from 'toolkit/test/setup';
+import { OutboundMessageType, InboundMessageType } from 'toolkit/core/messages';
 
 const setup = (setupOptions = {}) => {
   const options = {
@@ -40,7 +41,7 @@ const setup = (setupOptions = {}) => {
     callMessageListener({
       source: window,
       data: {
-        type: TOOLKIT_BOOTSTRAP_MESSAGE,
+        type: InboundMessageType.Bootstrap,
         ynabToolKit: toolkitBootstrap,
       },
     });
@@ -74,11 +75,11 @@ describe('YNABToolkit', () => {
     it('should postMessage the toolkit loaded message', () => {
       const { postMessageSpy, ynabToolkit } = setup({ initialize: false });
       ynabToolkit.initializeToolkit();
-      expect(postMessageSpy).toHaveBeenCalledWith({ type: TOOLKIT_LOADED_MESSAGE }, '*');
+      expect(postMessageSpy).toHaveBeenCalledWith({ type: OutboundMessageType.ToolkitLoaded }, '*');
     });
   });
 
-  describe('once the TOOLKIT_BOOTSTRAP_MESSAGE is received', () => {
+  describe('once the InboundMessageType.Bootstrap message is received', () => {
     it('should create the ynabToolKit global object', () => {
       const { toolkitBootstrap } = setup({ sendBootstrap: true });
       expect(global.ynabToolKit).toEqual(toolkitBootstrap);

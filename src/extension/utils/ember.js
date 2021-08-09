@@ -31,26 +31,6 @@ export function forEachRenderedComponent(key, fn) {
   });
 }
 
-export function lookupForReopen(name) {
-  const appContainer = __ynabapp__.__container__;
-
-  let toReopen = appContainer.factoryCache[name];
-  if (toReopen) {
-    return toReopen;
-  }
-
-  // if it wasn't already cached, do a lookup which should cache it,
-  // if this fails for some reason -- catch it an optimistically try
-  // to resolve the cached version.
-  try {
-    appContainer.lookup(name);
-  } catch (e) {
-    /* not much we can do about it */
-  }
-
-  return appContainer.factoryCache[name];
-}
-
 /* Private Functions */
 function containerLookup(containerName) {
   let container;
