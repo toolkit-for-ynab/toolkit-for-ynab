@@ -1,7 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
+import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { createBudgetBreakdownElement } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/index';
 
 export class ShowAvailableAfterSavings extends Feature {
@@ -22,8 +22,7 @@ export class ShowAvailableAfterSavings extends Feature {
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
-    const elementId = 'total-available-after-savings';
-    $(`#${elementId}`, $budgetBreakdownMonthlyTotals).remove();
+    $(`#total-available-after-savings`, $budgetBreakdownMonthlyTotals).remove();
 
     const budgetBreakdown = getEmberView(element.id);
 
@@ -31,13 +30,14 @@ export class ShowAvailableAfterSavings extends Feature {
     const totalSavings = getTotalSavings(budgetBreakdown);
     const totalAvailableAfterSavings = totalAvailable - totalSavings;
 
-    const localizedTitle = l10n('toolkit.availableAfterSavings', 'Available After Savings');
-
     const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
 
-    createBudgetBreakdownElement(elementId, localizedTitle, totalAvailableAfterSavings).prependTo(
-      $ynabBreakdown
-    );
+    createBudgetBreakdownElement(
+      'total-available-after-savings',
+      'toolkit.availableAfterSavings',
+      'Available After Savings',
+      totalAvailableAfterSavings
+    ).prependTo($ynabBreakdown);
   }
 
   onRouteChanged() {

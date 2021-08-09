@@ -40,7 +40,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
     $available.removeClass(classes);
     $availableText.removeClass(classes);
 
-    const currencyClass = this.getCurrencyClass(availableAfterUpcoming);
+    const currencyClass = getCurrencyClass(availableAfterUpcoming);
     $available.addClass(currencyClass);
     $availableText.addClass(currencyClass);
 
@@ -61,9 +61,10 @@ export class SubtractUpcomingFromAvailable extends Feature {
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
-    $(`#total-upcoming`, $budgetBreakdownMonthlyTotals).remove();
-    $(`#total-cc-balances`, $budgetBreakdownMonthlyTotals).remove();
-    $(`#total-available-after-upcoming`, $budgetBreakdownMonthlyTotals).remove();
+    $('#total-upcoming', $budgetBreakdownMonthlyTotals).remove();
+    $('#total-cc-balances', $budgetBreakdownMonthlyTotals).remove();
+    $('#total-available-after-upcoming', $budgetBreakdownMonthlyTotals).remove();
+    $('#available-after-upcoming-hr', $budgetBreakdownMonthlyTotals).remove();
 
     const budgetBreakdown = getEmberView(element.id);
 
@@ -77,7 +78,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
     const totalCCBalances = this.getTotalOfCCBalances(budgetBreakdown);
     let totalAvailableAfterUpcoming = totalAvailable;
 
-    const $elements = $();
+    let $elements = $();
 
     const totalUpcomingElement = createBudgetBreakdownElement(
       'total-upcoming',
@@ -95,18 +96,18 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
     if (this.settings.enabled === 'upcoming-only') {
       totalAvailableAfterUpcoming += totalUpcoming;
-      $elements.add(totalUpcomingElement);
+      $elements = $elements.add(totalUpcomingElement);
     }
 
     if (this.settings.enabled === 'cc-only') {
       totalAvailableAfterUpcoming += totalCCBalances;
-      $elements.add(totalCCBalancesElement);
+      $elements = $elements.add(totalCCBalancesElement);
     }
 
     if (this.settings.enabled === 'both') {
       totalAvailableAfterUpcoming += totalUpcoming + totalCCBalances;
-      $elements.add(totalUpcomingElement);
-      $elements.add(totalCCBalancesElement);
+      $elements = $elements.add(totalUpcomingElement);
+      $elements = $elements.add(totalCCBalancesElement);
     }
 
     if (totalAvailableAfterUpcoming === totalAvailable) return;
@@ -117,12 +118,17 @@ export class SubtractUpcomingFromAvailable extends Feature {
       'Available After Upcoming Transactions',
       totalAvailableAfterUpcoming
     );
-    $elements.add(availableAfterUpcomingElement);
+    $elements = $elements.add(availableAfterUpcomingElement);
+
+    $elements = $elements.add(
+      '<div id="available-after-upcoming-hr"><hr style="width:100%"></div>'
+    );
 
     const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
 
+    console.log($elements);
     if (ynabToolKit.options.ShowAvailableAfterSavings)
-      $elements.appendTo('#total-available-after-savings');
+      $elements.insertAfter('#total-available-after-savings');
     else $elements.prependTo($ynabBreakdown);
   }
 
@@ -131,6 +137,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
       'inspector.availableMessage.afterUpcoming',
       'Available After Upcoming'
     );
+
     return $('.inspector-message-label', $context).filter(function () {
       return this.innerText === localizedMessageText;
     }).length;
@@ -156,18 +163,6 @@ export class SubtractUpcomingFromAvailable extends Feature {
     return totalOfCCBalances; // Returns negative amount. Each category.available is positive.
   }
 
-  getCurrencyClass(amount) {
-    let currencyClass = 'positive';
-
-    if (amount < 0) {
-      currencyClass = 'negative';
-    } else if (amount === 0) {
-      currencyClass = 'zero';
-    }
-
-    return currencyClass;
-  }
-
   onRouteChanged() {
     if (!this.shouldInvoke()) return;
     this.invoke();
@@ -177,7 +172,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
 export function createBudgetBreakdownElement(elementId, l10nKey, l10nDefault, amount) {
   const title = l10n(l10nKey, l10nDefault);
 
-  const currencyClass = SubtractUpcomingFromAvailable.getCurrencyClass(amount);
+  const currencyClass = getCurrencyClass(amount);
   amount = formatCurrency(amount);
 
   return $(`
@@ -190,4 +185,16 @@ export function createBudgetBreakdownElement(elementId, l10nKey, l10nDefault, am
       </div>
     </div>
   `);
+}
+
+function getCurrencyClass(amount) {
+  let currencyClass = 'positive';
+
+  if (amount < 0) {
+    currencyClass = 'negative';
+  } else if (amount === 0) {
+    currencyClass = 'zero';
+  }
+
+  return currencyClass;
 }
