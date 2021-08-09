@@ -1,13 +1,7 @@
 import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
-let instance = null;
-
 export class ObserveListener {
   constructor() {
-    if (instance) {
-      return instance;
-    }
-
     this.features = [];
 
     let _MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
@@ -51,14 +45,16 @@ export class ObserveListener {
       attributes: true,
       attributeFilter: ['class'],
     });
-
-    instance = this;
   }
 
   addFeature(feature) {
     if (this.features.indexOf(feature) === -1) {
       this.features.push(feature);
     }
+  }
+
+  removeFeature(feature) {
+    this.features.filter((f) => f !== feature);
   }
 
   emitChanges() {
@@ -86,3 +82,5 @@ export class ObserveListener {
     });
   }
 }
+
+export const observeListener = new ObserveListener();

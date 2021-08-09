@@ -1,4 +1,4 @@
-import { ObserveListener, RouteChangeListener } from 'toolkit/extension/listeners';
+import { observeListener, routeChangeListener } from 'toolkit/extension/listeners';
 import { logToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
 export class Feature {
@@ -8,30 +8,31 @@ export class Feature {
     enabled: ynabToolKit.options[this.featureName],
   };
 
-  shouldInvoke() {
+  shouldInvoke(): boolean {
     // Default to no action. Unless you're implementing a CSS only feature,
     // you MUST override this to specify when your invoke() function should run!
     return false;
   }
 
-  willInvoke() {
+  willInvoke(): void | Promise<void> {
     /* stubbed optional hook for logic that must happen for a feature
     to work but doesn't need to happen on every invoke */
   }
 
-  invoke() {
+  invoke(): void {
     throw Error(`Feature: ${this.featureName} does not implement required invoke() method.`);
   }
 
-  destroy() {
+  destroy(): void {
     /* stubbed, most features don't support destroy yet */
   }
 
-  injectCSS() {
+  injectCSS(): string {
     /* stubbed, default to no injected CSS */
+    return '';
   }
 
-  logError(exception: Error) {
+  logError(exception: Error): void {
     logToolkitError({
       exception,
       featureName: this.featureName,
@@ -39,23 +40,25 @@ export class Feature {
     });
   }
 
-  observe() {
+  observe(): void {
     /* stubbed listener function */
   }
 
-  onRouteChanged() {
+  onRouteChanged(): void {
     /* stubbed listener function */
   }
 
-  onBudgetChanged() {
+  onBudgetChanged(): void {
     /* stubbed listener function */
   }
 
-  applyListeners() {
-    let observeListener = new ObserveListener();
+  applyListeners(): void {
     observeListener.addFeature(this);
-
-    let routeChangeListener = new RouteChangeListener();
     routeChangeListener.addFeature(this);
+  }
+
+  removeListeners(): void {
+    observeListener.removeFeature(this);
+    routeChangeListener.removeFeature(this);
   }
 }

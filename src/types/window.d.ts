@@ -12,6 +12,7 @@ interface YNABToolkit {
   options: {
     [settingName in FeatureName]: FeatureSetting;
   };
+  name: string;
   version: string;
 }
 

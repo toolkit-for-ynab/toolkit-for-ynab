@@ -1,15 +1,8 @@
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 import { getRouter } from 'toolkit/extension/utils/ember';
-
-let instance = null;
-
 export class RouteChangeListener {
   constructor() {
-    if (instance) {
-      return instance;
-    }
-
     const routeChangeListener = this;
     routeChangeListener.features = [];
 
@@ -43,8 +36,6 @@ export class RouteChangeListener {
         }
       }
     });
-
-    instance = this;
   }
 
   addFeature(feature) {
@@ -52,4 +43,10 @@ export class RouteChangeListener {
       this.features.push(feature);
     }
   }
+
+  removeFeature(feature) {
+    this.features.filter((f) => f !== feature);
+  }
 }
+
+export const routeChangeListener = new RouteChangeListener();

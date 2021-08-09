@@ -2,6 +2,7 @@ import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { ToolkitStorage, FEATURE_SETTING_PREFIX } from 'toolkit/core/common/storage';
 import { allToolkitSettings, getUserSettings } from 'toolkit/core/settings';
 import { getEnvironment } from 'toolkit/core/common/web-extensions';
+import { InboundMessageType, OutboundMessageType } from '../messages';
 
 const storage = new ToolkitStorage();
 
@@ -12,7 +13,7 @@ function sendToolkitBootstrap(options) {
 
   window.postMessage(
     {
-      type: 'ynab-toolkit-bootstrap',
+      type: InboundMessageType.Bootstrap,
       ynabToolKit: {
         assets: {
           logo: browser.runtime.getURL('assets/images/logos/toolkitforynab-logo-200.png'),
@@ -31,7 +32,7 @@ function sendToolkitBootstrap(options) {
 function toolkitMessageHandler(event) {
   if (event.data && event.data.type) {
     switch (event.data.type) {
-      case 'ynab-toolkit-loaded':
+      case OutboundMessageType.ToolkitLoaded:
         initializeYNABToolkit();
         break;
       case 'ynab-toolkit-error':
@@ -54,7 +55,7 @@ function handleSetFeatureSetting({ name, value }) {
 function handleFeatureSettingChanged(settingName, newValue) {
   if (settingName.startsWith(FEATURE_SETTING_PREFIX)) {
     window.postMessage({
-      type: 'ynab-toolkit-setting-changed',
+      type: InboundMessageType.SettingChanged,
       setting: {
         name: settingName.slice(FEATURE_SETTING_PREFIX.length),
         value: newValue,
@@ -72,6 +73,7 @@ async function init() {
   const isToolkitDisabled = await storage.getFeatureSetting('DisableToolkit');
   if (isToolkitDisabled) {
     console.log(`${getBrowser().runtime.getManifest().name} is disabled!`);
+    return;
   }
 
   // Load the toolkit bundle onto the YNAB dom
@@ -89,3 +91,8 @@ async function init() {
 }
 
 init();
+storage.onToolkitDisabledChanged((_, isDisabled) => {
+  if (!isDisabled) {
+    init();
+  }
+});

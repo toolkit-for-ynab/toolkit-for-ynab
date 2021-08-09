@@ -112,6 +112,14 @@ export class ToolkitStorage {
     this.offStorageItemChanged(featureSettingKey(settingName), callback);
   }
 
+  onToolkitDisabledChanged(callback) {
+    this.onStorageItemChanged(featureSettingKey('DisableToolkit'), callback);
+  }
+
+  offToolkitDisabledChanged(callback) {
+    this.offStorageItemChanged(featureSettingKey('DisableToolkit'), callback);
+  }
+
   _listenForChanges = (changes, areaName) => {
     if (areaName !== this._storageArea) return;
 
