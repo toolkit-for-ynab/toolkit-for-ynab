@@ -93,9 +93,11 @@ export class ScrollableEditMenu extends Feature {
 
       const parent = wrapper.parent();
       parent.on('mouseover', function () {
-        let top = parent.position().top - 15;
-        if (top + wrapper.height() > modal.height()) {
-          top = modal.height() - wrapper.height();
+        const parentOffset = parent.offset().top - parent.position().top;
+
+        let top = parent.position().top - parent.height() / 2;
+        if (parentOffset + top + wrapper.height() > $(window).height()) {
+          top = $(window).height() - parentOffset - wrapper.height();
         }
         wrapper.css('top', top);
       });
