@@ -12,7 +12,7 @@ export class CtrlEnterCleared extends Feature {
       '.ynab-grid-cell-memo input, .ynab-grid-cell-outflow input, .ynab-grid-cell-inflow input',
       $editRows
     );
-    $editInputs.each((index, input) => {
+    $editInputs.each((_, input) => {
       if (!input.getAttribute('data-toolkit-ctrl-behavior')) {
         input.setAttribute('data-toolkit-ctrl-behavior', true);
         input.addEventListener('keydown', this.applyCtrlEnter);
@@ -22,7 +22,7 @@ export class CtrlEnterCleared extends Feature {
 
   destroy() {
     const $editInputs = $('input[data-toolkit-ctrl-behavior]');
-    $editInputs.each((index, input) => {
+    $editInputs.each((_, input) => {
       input.removeAttribute('data-toolkit-ctrl-behavior');
       input.removeEventListener('keydown', this.applyCtrlEnter);
     });

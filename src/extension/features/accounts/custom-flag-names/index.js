@@ -48,10 +48,16 @@ export class CustomFlagNames extends Feature {
     this.addToolkitEmberHook('register/grid-row', 'didRender', this.applyFlagTitle);
   }
 
+  destroy() {
+    Object.keys(defaultFlags).forEach((color) => {
+      $(`.ynab-flag-${color}`).parent().attr('title', '');
+    });
+  }
+
   applyFlagTitle(element) {
     const flags = getToolkitStorageKey('flags', defaultFlags);
 
-    ['red', 'blue', 'orange', 'yellow', 'green', 'purple'].forEach((color) => {
+    Object.keys(defaultFlags).forEach((color) => {
       const flag = element.querySelector(`.ynab-flag-${color}`);
       if (flag === null) {
         return;
