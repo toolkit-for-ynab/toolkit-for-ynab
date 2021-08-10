@@ -12,19 +12,8 @@ const SETTINGS_JSON = 'scripts/settings.json';
 const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
 const settingMigrationMap = {
-  CategorySoloMode: {
-    oldSettingName: 'ToggleMasterCategories',
-    settingMapping: {
-      true: 'cat-toggle-all',
-    },
-  },
-  AutoEnableRunningBalance: {
-    oldSettingName: 'RunningBalance',
-    settingMapping: {
-      0: false,
-      1: true,
-      2: true,
-    },
+  ConfirmEditTransactionCancellation: {
+    oldSettingName: 'ConfirmKeyboardCancelationOfTransactionChanges',
   },
 };
 
