@@ -24,6 +24,10 @@ export class ShowCategoryBalance extends Feature {
     });
   }
 
+  destroy() {
+    $('.ynab-grid-cell-subCategoryName').attr('title', '');
+  }
+
   addCategoryBalance(element) {
     const transaction = getEmberView(element.id, 'content');
     if (!transaction) {
