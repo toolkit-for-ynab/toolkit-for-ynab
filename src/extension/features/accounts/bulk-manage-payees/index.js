@@ -15,6 +15,10 @@ export class BulkManagePayees extends Feature {
     );
   }
 
+  destroy() {
+    $('#tk-manage-payees, #tk-manage-payees + li').remove();
+  }
+
   insertManagePayees(element) {
     if (element.querySelector('#tk-manage-payees') !== null) {
       return;
