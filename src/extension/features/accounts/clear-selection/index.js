@@ -28,6 +28,10 @@ export class ClearSelection extends Feature {
     );
   }
 
+  destroy() {
+    $('#tk-clear-selection, #tk-clear-selection + li').remove();
+  }
+
   insertClearSelection = (element) => {
     if (element.querySelector('#tk-clear-selection') !== null) {
       return;
@@ -43,11 +47,12 @@ export class ClearSelection extends Feature {
     // The second <li> functions as a separator on the menu after the feature menu item.
     $('.modal-account-edit-transaction-list .modal-list').prepend(
       $(`<li id="tk-clear-selection">
-            <button class="button-list ynab-toolkit-clear-selection">
-              <i class="ynab-new-icon flaticon stroke minus-2"></i>${menuText}
-            </button>
-          </li>
-          <li><hr /><li>`).click(() => {
+          <button class="button-list ynab-toolkit-clear-selection">
+            <i class="ynab-new-icon flaticon stroke minus-2"></i>${menuText}
+          </button>
+        </li>
+        <li><hr /><li>
+      `).on('click', () => {
         this.uncheckTransactions();
       })
     );
