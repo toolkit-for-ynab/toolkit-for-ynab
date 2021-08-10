@@ -12,10 +12,7 @@ export const ASSISTED_CLEAR_MODAL_PORTAL = 'tk-assisted-clear-portal';
 export const YNAB_RECONCILE_INPUT_MODAL = '.modal-account-reconcile-enter-balance';
 
 export class AssistedClear extends Feature {
-  constructor() {
-    super();
-    this._reconcileInputValue = '0';
-  }
+  _reconcileInputValue = '0';
 
   shouldInvoke() {
     return $(YNAB_RECONCILE_BUTTON).length > 0 && isCurrentRouteAccountsPage();
@@ -48,6 +45,11 @@ export class AssistedClear extends Feature {
         );
       }
     }, 50);
+  }
+
+  destroy() {
+    $(`#${ASSISTED_CLEAR_CONTAINER_ID}`).remove();
+    $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`).remove();
   }
 
   /**
