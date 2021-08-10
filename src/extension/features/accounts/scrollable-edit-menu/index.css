@@ -1,9 +1,10 @@
-.modal-account-edit-transaction-list .modal-list > li {
+.modal-account-edit-transaction-list .modal-list > li,
+.modal-account-edit-transaction-list .scrollable-edit-wrapper > ul > li {
   position: static !important;
 }
 
 .modal-account-edit-transaction-list .scrollable-edit-wrapper {
-  left: 92% !important;
+  left: 94% !important;
   position: absolute !important;
   background-color: transparent !important;
   padding: 0 !important;
@@ -14,4 +15,7 @@
 .modal-account-edit-transaction-list .scrollable-edit-wrapper > ul {
   position: static !important;
   display: block !important;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
 }

@@ -81,7 +81,7 @@ export class ScrollableEditMenu extends Feature {
 
     const modal = $('.modal', modalContainer);
 
-    const subMenus = $('ul.modal-list > li > ul:not(.scrollable-edit-wrapper)', modal);
+    const subMenus = $('ul.modal-list li > ul:not(.scrollable-edit-wrapper)', modal);
     subMenus.each((index, m) => {
       const menu = $(m);
       if (menu.parent().hasClass('scrollable-edit-wrapper')) return;
@@ -90,16 +90,28 @@ export class ScrollableEditMenu extends Feature {
 
       menu.after(wrapper);
       menu.appendTo(wrapper);
+    });
 
-      const parent = wrapper.parent();
-      parent.on('mouseover', function () {
-        const parentOffset = parent.offset().top - parent.position().top;
+    $('ul.modal-list li > ul', modal).each((index, el) => {
+      const ul = $(el);
+      const li = ul.parent();
 
-        let top = parent.position().top - parent.height() / 2;
-        if (parentOffset + top + wrapper.height() > $(window).height()) {
-          top = $(window).height() - parentOffset - wrapper.height();
+      const windowMargin = 10;
+      li.on('mouseenter', function () {
+        let top = li.offset().top;
+        let height = ul.height();
+        if (top + height > $(window).height() - windowMargin) {
+          top = Math.max(windowMargin, $(window).height() - height - windowMargin);
         }
-        wrapper.css('top', top);
+        if (top + height > $(window).height() - windowMargin) {
+          height = $(window).height() - windowMargin - top;
+          ul.children().css('overflow', 'auto');
+        }
+        top -= li.offset().top - li.position().top;
+        ul.css({
+          top: top,
+          height: height,
+        });
       });
     });
   }
