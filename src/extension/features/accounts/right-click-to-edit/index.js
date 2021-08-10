@@ -58,6 +58,11 @@ export class RightClickToEdit extends Feature {
     });
   }
 
+  destroy() {
+    $('.ynab-grid').off('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
+    $('body').off('contextmenu', '.modal-account-edit-transaction-list', this.hideContextMenu);
+  }
+
   observe(changedNodes) {
     if (!this.shouldInvoke() || this.isCurrentlyRunning) return;
 
