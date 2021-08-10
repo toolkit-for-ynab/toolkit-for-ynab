@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 import { getSelectedMonth, transitionTo } from 'toolkit/extension/utils/ynab';
 
 /**
@@ -19,8 +19,7 @@ export class LinkToInflows extends Feature {
    * Add the wrapper element to the TOTAL INFLOWS inspector area.
    */
   invoke() {
-    addToolkitEmberHook(
-      this,
+    this.addToolkitEmberHook(
       'budget/inspector/default-inspector',
       'didRender',
       this._addTotalInflowsLink

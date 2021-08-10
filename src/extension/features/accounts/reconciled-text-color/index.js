@@ -1,5 +1,4 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
 const TOOLKIT_RECONCILED_CLASS = 'tk-is-reconciled';
@@ -27,11 +26,11 @@ export class ReconciledTextColor extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'register/grid-sub', 'didInsertElement', this.addClass);
-    addToolkitEmberHook(this, 'register/grid-row', 'didInsertElement', this.addClass);
+    this.addToolkitEmberHook('register/grid-sub', 'didInsertElement', this.addClass);
+    this.addToolkitEmberHook('register/grid-row', 'didInsertElement', this.addClass);
 
-    addToolkitEmberHook(this, 'register/grid-sub', 'didUpdate', this.addClass);
-    addToolkitEmberHook(this, 'register/grid-row', 'didUpdate', this.addClass);
+    this.addToolkitEmberHook('register/grid-sub', 'didUpdate', this.addClass);
+    this.addToolkitEmberHook('register/grid-row', 'didUpdate', this.addClass);
   }
 
   addClass(element) {

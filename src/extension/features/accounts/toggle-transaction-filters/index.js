@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { componentAppend } from 'toolkit/extension/utils/react';
 
 const ToggleButton = ({ longTitle, stateField }) => {
@@ -48,7 +47,7 @@ export class ToggleTransactionFilters extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'accounts/account-header', 'didRender', this.injectButtons);
+    this.addToolkitEmberHook('accounts/account-header', 'didRender', this.injectButtons);
   }
 
   // Fix #1910

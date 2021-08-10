@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook, l10n, removeToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 import { componentAfter } from 'toolkit/extension/utils/react';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
@@ -74,16 +74,7 @@ export class BulkEditMemo extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
-      'modals/register/edit-transactions',
-      'didInsertElement',
-      this.injectBulkEditMemo
-    );
-  }
-
-  destroy() {
-    removeToolkitEmberHook(
+    this.addToolkitEmberHook(
       'modals/register/edit-transactions',
       'didInsertElement',
       this.injectBulkEditMemo

@@ -1,9 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import {
-  addToolkitEmberHook,
-  getToolkitStorageKey,
-  setToolkitStorageKey,
-} from 'toolkit/extension/utils/toolkit';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 const defaultFlags = {
@@ -43,14 +39,13 @@ export class CustomFlagNames extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
+    this.addToolkitEmberHook(
       'modals/accounts/transaction-flags',
       'didRender',
       this.injectEditFlags
     );
 
-    addToolkitEmberHook(this, 'register/grid-row', 'didRender', this.applyFlagTitle);
+    this.addToolkitEmberHook('register/grid-row', 'didRender', this.applyFlagTitle);
   }
 
   applyFlagTitle(element) {

@@ -2,7 +2,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class SubtractUpcomingFromAvailable extends Feature {
   shouldInvoke() {
@@ -10,8 +10,8 @@ export class SubtractUpcomingFromAvailable extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'budget-table-row', 'didRender', this.run);
-    addToolkitEmberHook(this, 'budget-breakdown', 'didRender', this.run);
+    this.addToolkitEmberHook('budget-table-row', 'didRender', this.run);
+    this.addToolkitEmberHook('budget-breakdown', 'didRender', this.run);
   }
 
   run(element) {

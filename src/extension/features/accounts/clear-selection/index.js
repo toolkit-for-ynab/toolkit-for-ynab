@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class ClearSelection extends Feature {
   uncheckTransactions = () => {
@@ -21,8 +21,7 @@ export class ClearSelection extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
+    this.addToolkitEmberHook(
       'modals/register/edit-transactions',
       'didRender',
       this.insertClearSelection

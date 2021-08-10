@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { componentPrepend } from 'toolkit/extension/utils/react';
 import ReactMarkdown from 'react-markdown';
 
@@ -57,7 +56,7 @@ export class MemoAsMarkdown extends Feature {
   };
 
   invoke() {
-    addToolkitEmberHook(this, 'register/grid-row', 'didRender', this.applyMarkdown);
-    addToolkitEmberHook(this, 'register/grid-sub', 'didRender', this.applyMarkdown);
+    this.addToolkitEmberHook('register/grid-row', 'didRender', this.applyMarkdown);
+    this.addToolkitEmberHook('register/grid-sub', 'didRender', this.applyMarkdown);
   }
 }

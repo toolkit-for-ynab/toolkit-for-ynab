@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class BulkManagePayees extends Feature {
   shouldInvoke() {
@@ -8,8 +8,7 @@ export class BulkManagePayees extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
+    this.addToolkitEmberHook(
       'modals/register/edit-transactions',
       'didRender',
       this.insertManagePayees
@@ -31,11 +30,12 @@ export class BulkManagePayees extends Feature {
     // The second <li> functions as a separator on the menu after the feature menu item.
     $('.modal-account-edit-transaction-move').before(
       $(`<li id="tk-manage-payees">
-            <button class="toolkit-modal-select-budget-manage-payees">
+          <button class="toolkit-modal-select-budget-manage-payees">
             <i class="ynab-new-icon ember-view flaticon stroke group"><!----></i>${menuText}
-            </button>
-          </li>
-          <li><hr /><li>`).click(() => {
+          </button>
+        </li>
+        <li><hr /><li>
+      `).on('click', () => {
         controllerLookup('accounts').send('openPayeeModal');
       })
     );

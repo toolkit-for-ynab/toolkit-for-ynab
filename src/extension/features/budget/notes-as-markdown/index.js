@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { componentAppend } from 'toolkit/extension/utils/react';
 import ReactMarkdown from 'react-markdown';
 
@@ -78,6 +77,6 @@ export class NotesAsMarkdown extends Feature {
   };
 
   invoke() {
-    addToolkitEmberHook(this, 'budget/inspector/inspector-notes', 'didRender', this.applyMarkdown);
+    this.addToolkitEmberHook('budget/inspector/inspector-notes', 'didRender', this.applyMarkdown);
   }
 }

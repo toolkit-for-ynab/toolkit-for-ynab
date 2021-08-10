@@ -1,5 +1,4 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class SwapClearedFlagged extends Feature {
   shouldInvoke() {
@@ -19,10 +18,10 @@ export class SwapClearedFlagged extends Feature {
       'register/grid-edit',
     ];
 
-    addToolkitEmberHook(this, 'register/grid-header', 'didRender', swapColumns);
+    this.addToolkitEmberHook(this, 'register/grid-header', 'didRender', swapColumns);
 
     rows.forEach((key) => {
-      addToolkitEmberHook(this, key, 'didInsertElement', swapColumns);
+      this.addToolkitEmberHook(this, key, 'didInsertElement', swapColumns);
     });
   }
 }

@@ -3,13 +3,7 @@ import * as PropTypes from 'prop-types';
 import { componentAppend } from 'toolkit/extension/utils/react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import {
-  addToolkitEmberHook,
-  l10n,
-  getToolkitStorageKey,
-  setToolkitStorageKey,
-  removeToolkitEmberHook,
-} from 'toolkit/extension/utils/toolkit';
+import { l10n, getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 const HideHelpButton = ({ toggleHiddenState }) => {
   const isHidden = getToolkitStorageKey('hide-help', true);
@@ -57,11 +51,10 @@ export class HideHelp extends Feature {
   invoke() {
     const initialState = getToolkitStorageKey('hide-help', true);
     this.setHiddenState(initialState);
-    addToolkitEmberHook(this, 'settings-menu', 'didRender', this.insertHideHelp);
+    this.addToolkitEmberHook('settings-menu', 'didRender', this.insertHideHelp);
   }
 
   destroy() {
-    removeToolkitEmberHook('settings-menu', 'didRender', this.insertHideHelp);
     $('#tk-hide-help').remove();
     $('body').removeClass('toolkit-hide-help');
   }

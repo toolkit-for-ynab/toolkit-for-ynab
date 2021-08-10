@@ -1,5 +1,4 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
 export class CheckNumbers extends Feature {
@@ -12,8 +11,8 @@ export class CheckNumbers extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'register/grid-header', 'didRender', this.insertHeader);
-    addToolkitEmberHook(this, 'register/grid-actions', 'didRender', this.insertDeadColumn);
+    this.addToolkitEmberHook('register/grid-header', 'didRender', this.insertHeader);
+    this.addToolkitEmberHook('register/grid-actions', 'didRender', this.insertDeadColumn);
 
     const valueColumns = [
       'register/grid-sub',
@@ -25,13 +24,13 @@ export class CheckNumbers extends Feature {
     ];
 
     valueColumns.forEach((key) => {
-      addToolkitEmberHook(this, key, 'didInsertElement', this.insertValueColumn);
+      this.addToolkitEmberHook(key, 'didInsertElement', this.insertValueColumn);
     });
 
     const inputColumns = ['register/grid-edit'];
 
     inputColumns.forEach((key) => {
-      addToolkitEmberHook(this, key, 'didInsertElement', this.insertInputColumn);
+      this.addToolkitEmberHook(key, 'didInsertElement', this.insertInputColumn);
     });
   }
 

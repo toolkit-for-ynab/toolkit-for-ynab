@@ -3,12 +3,7 @@ import * as PropTypes from 'prop-types';
 import { componentAppend } from 'toolkit/extension/utils/react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import {
-  addToolkitEmberHook,
-  l10n,
-  getToolkitStorageKey,
-  setToolkitStorageKey,
-} from 'toolkit/extension/utils/toolkit';
+import { l10n, getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export const ShowMemoButton = ({ defaultIsShown, id, toggleState }) => {
@@ -53,8 +48,7 @@ export class ToggleAccountColumns extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
+    this.addToolkitEmberHook(
       'modals/register/register-view-options',
       'didRender',
       this.insertToggles

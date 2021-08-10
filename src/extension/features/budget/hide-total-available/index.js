@@ -1,6 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 /**
  * Hides the "Total Available" section of the budget inspector.
@@ -11,8 +10,7 @@ export class HideTotalAvailable extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
+    this.addToolkitEmberHook(
       'budget/inspector/default-inspector',
       'didRender',
       this.hideTotalAvailable
