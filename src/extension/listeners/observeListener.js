@@ -54,7 +54,7 @@ export class ObserveListener {
   }
 
   removeFeature(feature) {
-    this.features.filter((f) => f !== feature);
+    this.features.removeAt(this.features.indexOf(feature));
   }
 
   emitChanges() {

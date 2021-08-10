@@ -45,7 +45,7 @@ export class RouteChangeListener {
   }
 
   removeFeature(feature) {
-    this.features.filter((f) => f !== feature);
+    this.features.removeAt(this.features.indexOf(feature));
   }
 }
 

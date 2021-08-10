@@ -169,6 +169,7 @@ export class YNABToolkit {
 
           if (isFeatureEnabled(value)) {
             this.injectFeatureCSS(featureInstance);
+            featureInstance.applyListeners();
             this.invokeFeature(name);
           } else {
             this.destroyFeature(name);
