@@ -1,5 +1,9 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import {
+  isCurrentRouteBudgetPage,
+  getAllBudgetMonthsViewModel,
+  getSelectedMonth,
+} from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
@@ -17,23 +21,30 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
   run(element) {
     if (!this.shouldInvoke()) return;
-    this.updateCategoryAvailableBalance(element);
-    this.addTotalAvailableAfterUpcoming(element);
+
+    const category = getEmberView(element.id, 'category');
+    if (category) this.updateCategoryAvailableBalance(category, element);
+
+    const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
+    const $budgetBreakdownAvailableBalance = $('.budget-breakdown-available-balance', element);
+    const $budgetBreakdownTotals = $budgetBreakdownMonthlyTotals.length
+      ? $budgetBreakdownMonthlyTotals
+      : $budgetBreakdownAvailableBalance.length
+      ? $budgetBreakdownAvailableBalance
+      : undefined;
+    const budgetBreakdown = getEmberView(element.id);
+    if ($budgetBreakdownTotals && budgetBreakdown)
+      this.addTotalAvailableAfterUpcoming(budgetBreakdown, $budgetBreakdownTotals);
   }
 
-  updateCategoryAvailableBalance(element) {
-    const category = getEmberView(element.id, 'category');
-    if (!category) return;
-    if (!category.upcomingTransactions) return;
+  updateCategoryAvailableBalance(category, context) {
+    const categoryData = this.getCategoryData(getSelectedMonth(), category.categoryId);
+    if (!categoryData) return;
 
-    const $available = $(`.ynab-new-budget-available-number`, element);
+    const $available = $(`.ynab-new-budget-available-number`, context);
     const $availableText = $(`.user-data`, $available);
 
-    const available = category.available;
-    const upcoming = category.upcomingTransactions;
-    const availableAfterUpcoming = available + upcoming;
-
-    $availableText.text(formatCurrency(availableAfterUpcoming));
+    $availableText.text(formatCurrency(categoryData.availableAfterUpcoming));
 
     $available.children('svg.icon-upcoming').remove();
 
@@ -41,12 +52,12 @@ export class SubtractUpcomingFromAvailable extends Feature {
     $available.removeClass(classes);
     $availableText.removeClass(classes);
 
-    const currencyClass = getCurrencyClass(availableAfterUpcoming);
+    const currencyClass = getCurrencyClass(categoryData.availableAfterUpcoming);
     $available.addClass(currencyClass);
     $availableText.addClass(currencyClass);
 
-    if (availableAfterUpcoming >= 0) {
-      $(element).removeAttr('data-toolkit-negative-available');
+    if (categoryData.availableAfterUpcoming >= 0) {
+      $(category).removeAttr('data-toolkit-negative-available');
 
       if (category.isOverSpent) {
         $available.addClass('cautious');
@@ -58,20 +69,101 @@ export class SubtractUpcomingFromAvailable extends Feature {
     }
   }
 
-  addTotalAvailableAfterUpcoming(element) {
-    const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
-    if (!$budgetBreakdownMonthlyTotals.length) return;
+  getCategoriesObject() {
+    const allBudgetMonthsViewModel = getAllBudgetMonthsViewModel();
+    if (!allBudgetMonthsViewModel) return;
 
-    const budgetBreakdown = getEmberView(element.id);
-    if (!budgetBreakdown) return;
+    const categoryCalculationsCollection = allBudgetMonthsViewModel.get(
+      'monthlySubCategoryBudgetCalculationsCollection'
+    );
+    if (!categoryCalculationsCollection) return;
 
-    $('#total-upcoming', $budgetBreakdownMonthlyTotals).remove();
-    $('#total-cc-payments', $budgetBreakdownMonthlyTotals).remove();
-    $('#total-available-after-upcoming', $budgetBreakdownMonthlyTotals).remove();
-    $('#available-after-upcoming-hr', $budgetBreakdownMonthlyTotals).remove();
+    const categoriesArray = categoryCalculationsCollection._internalDataArray;
 
-    // When one category is selected, YNAB provides their own "Available After Upcoming" so we don't need ours.
-    if (this.ynabAvailableAfterUpcomingExists($budgetBreakdownMonthlyTotals)) return;
+    // Create array of category IDs that have upcoming transactions.
+    const categoryIdsWithUpcomingTransactions = [];
+    for (const category of categoriesArray) {
+      if (category.upcomingTransactions)
+        categoryIdsWithUpcomingTransactions.push(category.subCategory.entityId);
+    }
+    if (!categoryIdsWithUpcomingTransactions.length) return;
+
+    const currentMonth = ynab.utilities.DateWithoutTime.createForCurrentMonth();
+
+    // Create array of categories from current month and beyond where the category has an upcoming transaction at some point.
+    const filteredCategoriesArray = categoriesArray.filter((category) => {
+      const isInCurrentMonthOrLater = !category.month.isBeforeMonth(currentMonth);
+      const hasUpcomingTransactionAtSomePoint = categoryIdsWithUpcomingTransactions.includes(
+        category.subCategory.entityId
+      );
+      return isInCurrentMonthOrLater && hasUpcomingTransactionAtSomePoint;
+    });
+
+    const categoriesObject = {};
+    /*
+    categoriesObject = {
+      categoryMonthKey: {
+        month: category.month,
+        categories: {
+          categoryId: categoryData
+        }
+      }
+    }
+    */
+
+    // Build categoriesObject.
+    for (const category of filteredCategoriesArray) {
+      const categoryMonthKey = this.getYearMonthKey(category.month);
+      const categoryId = category.subCategory.entityId;
+      const categoryData = {
+        available: category.balance,
+        upcoming: category.upcomingTransactions,
+        availableAfterUpcoming: category.balance + category.upcomingTransactions,
+      };
+
+      categoriesObject[categoryMonthKey] = categoriesObject[categoryMonthKey] || {
+        month: category.month,
+        categories: {},
+      };
+      categoriesObject[categoryMonthKey].categories[categoryId] = categoryData;
+    }
+
+    // For each category, add previous month's upcomingTransactions to current month's and calculate availableAfterUpcoming.
+    // We slice(1) because the first element (current month) has no previous month.
+    for (const [categoryMonthKey, categoryMonth] of Object.entries(categoriesObject).slice(1)) {
+      const previousMonthKey = this.getYearMonthKey(categoryMonth.month.clone().addMonths(-1));
+      const previousMonthCategories = categoriesObject[previousMonthKey].categories;
+
+      for (const [categoryId, categoryData] of Object.entries(categoryMonth.categories)) {
+        const previousMonthCategoryData = previousMonthCategories[categoryId];
+
+        categoryData.upcoming += previousMonthCategoryData.upcoming;
+        categoryData.availableAfterUpcoming = categoryData.available + categoryData.upcoming;
+        categoriesObject[categoryMonthKey].categories[categoryId] = categoryData;
+      }
+    }
+
+    return categoriesObject;
+  }
+
+  getCategoryData(monthObject, categoryId) {
+    const categoriesObject = this.getCategoriesObject();
+    const categoryMonthKey = this.getYearMonthKey(monthObject);
+    const categoryMonth = categoriesObject[categoryMonthKey];
+    return categoryMonth ? categoryMonth.categories[categoryId] : undefined;
+  }
+
+  getYearMonthKey(monthObject) {
+    const year = monthObject.getYear();
+    const month = monthObject.getMonth();
+    return Number(`${year}${month}`);
+  }
+
+  addTotalAvailableAfterUpcoming(budgetBreakdown, context) {
+    $('#total-upcoming', context).remove();
+    $('#total-cc-payments', context).remove();
+    $('#total-available-after-upcoming', context).remove();
+    $('#available-after-upcoming-hr', context).remove();
 
     const totalAvailable = ynabToolKit.options.ShowAvailableAfterSavings
       ? budgetBreakdown.budgetTotals.available - getTotalSavings(budgetBreakdown)
@@ -79,6 +171,9 @@ export class SubtractUpcomingFromAvailable extends Feature {
     const totalUpcoming = this.getTotalUpcoming(budgetBreakdown);
     const totalCCPayments = this.getTotalCCPayments(budgetBreakdown);
     let totalAvailableAfterUpcoming = totalAvailable + totalUpcoming;
+
+    // When one category is selected, YNAB provides its own "Available After Upcoming" so we edit that instead of adding ours.
+    if (this.ynabAvailableAfterUpcomingEdited(totalAvailableAfterUpcoming, context)) return;
 
     let $elements = $();
 
@@ -117,29 +212,47 @@ export class SubtractUpcomingFromAvailable extends Feature {
     );
 
     const $totalAvailableAfterSavings = $('#total-available-after-savings');
-    const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
+    const $ynabBreakdown = $('.ynab-breakdown', context);
 
     if (ynabToolKit.options.ShowAvailableAfterSavings && $totalAvailableAfterSavings.length)
       $elements.insertAfter($totalAvailableAfterSavings);
     else $elements.prependTo($ynabBreakdown);
   }
 
-  ynabAvailableAfterUpcomingExists($context) {
+  ynabAvailableAfterUpcomingEdited(amount, context) {
     const localizedMessageText = l10n(
       'inspector.availableMessage.afterUpcoming',
       'Available After Upcoming'
     );
 
-    return $('.inspector-message-label', $context).filter(function () {
+    const $ynabAvailableAfterUpcoming = $('.inspector-message-label', context).filter(function () {
       return this.innerText === localizedMessageText;
-    }).length;
+    });
+    if (!$ynabAvailableAfterUpcoming.length) return false;
+
+    const $inspectorMessageRow = $($ynabAvailableAfterUpcoming, context).parent();
+
+    const classes = 'positive zero negative';
+
+    const $inspectorMessage = $($inspectorMessageRow, context).parent();
+    $inspectorMessage.removeClass(classes);
+    $inspectorMessage.addClass(amount >= 0 ? 'positive' : 'negative');
+
+    const $availableAfterUpcomingText = $('.user-data', $inspectorMessageRow);
+    $availableAfterUpcomingText.text(formatCurrency(amount));
+    $availableAfterUpcomingText.removeClass(classes);
+    $availableAfterUpcomingText.addClass(getCurrencyClass(amount));
+    return true;
   }
 
   getTotalUpcoming(budgetBreakdown) {
     let totalUpcoming = 0;
 
+    const selectedMonthKey = getSelectedMonth();
+
     for (const category of budgetBreakdown.inspectorCategories) {
-      totalUpcoming += category.upcomingTransactions;
+      const categoryData = this.getCategoryData(selectedMonthKey, category.categoryId);
+      if (categoryData) totalUpcoming += categoryData.upcoming;
     }
 
     return totalUpcoming;
