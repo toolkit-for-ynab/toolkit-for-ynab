@@ -1,8 +1,9 @@
-import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
+import { Feature } from 'toolkit/extension/features/feature';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
-import { createBudgetBreakdownEntry } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/index';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { getTotalSavings } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/totals';
+import { createBudgetBreakdownEntry } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/util';
 
 export class ShowAvailableAfterSavings extends Feature {
   shouldInvoke() {
@@ -15,17 +16,15 @@ export class ShowAvailableAfterSavings extends Feature {
 
   run(element) {
     if (!this.shouldInvoke()) return;
-    this.showAvailableAfterSavings(element);
+
+    const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
+    const budgetBreakdown = getEmberView(element.id);
+    if ($budgetBreakdownMonthlyTotals.length && budgetBreakdown)
+      this.showAvailableAfterSavings(budgetBreakdown, $budgetBreakdownMonthlyTotals);
   }
 
-  showAvailableAfterSavings(element) {
-    const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
-    if (!$budgetBreakdownMonthlyTotals.length) return;
-
-    const budgetBreakdown = getEmberView(element.id);
-    if (!budgetBreakdown) return;
-
-    $(`#total-available-after-savings`, $budgetBreakdownMonthlyTotals).remove();
+  showAvailableAfterSavings(budgetBreakdown, context) {
+    $(`#total-available-after-savings`, context).remove();
 
     const totalAvailable = budgetBreakdown.budgetTotals.available;
     const totalSavings = getTotalSavings(budgetBreakdown);
@@ -33,7 +32,7 @@ export class ShowAvailableAfterSavings extends Feature {
 
     if (totalAvailableAfterSavings === totalAvailable) return;
 
-    const $ynabBreakdown = $('.ynab-breakdown', $budgetBreakdownMonthlyTotals);
+    const $ynabBreakdown = $('.ynab-breakdown', context);
 
     createBudgetBreakdownEntry(
       'total-available-after-savings',
@@ -47,19 +46,4 @@ export class ShowAvailableAfterSavings extends Feature {
     if (!this.shouldInvoke()) return;
     this.invoke();
   }
-}
-
-export function getTotalSavings(budgetBreakdown) {
-  let totalSavings = 0;
-
-  for (const category of budgetBreakdown.inspectorCategories) {
-    if (
-      category.masterCategory.name.toLowerCase().includes('savings') ||
-      category.displayName.toLowerCase().includes('savings')
-    )
-      totalSavings += category.available + category.upcomingTransactions;
-  }
-
-  if (totalSavings < 0) return 0;
-  return totalSavings;
 }

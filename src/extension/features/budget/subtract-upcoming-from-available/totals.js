@@ -1,6 +1,23 @@
 import { getSelectedMonth } from 'toolkit/extension/utils/ynab';
 import * as categories from 'toolkit/extension/features/budget/subtract-upcoming-from-available/categories';
 
+export function getTotalUpcoming(budgetBreakdown, categoriesObject) {
+  let totalUpcoming = 0;
+
+  const selectedMonth = getSelectedMonth();
+
+  for (const category of budgetBreakdown.inspectorCategories) {
+    const categoryData = categories.getCategoryData(
+      categoriesObject,
+      selectedMonth,
+      category.categoryId
+    );
+    if (categoryData) totalUpcoming += categoryData.upcoming;
+  }
+
+  return totalUpcoming;
+}
+
 export function getTotalPreviousUpcoming(budgetBreakdown, categoriesObject) {
   for (const [categoryMonthKey, categoryMonth] of Object.entries(categoriesObject).slice(1)) {
     const previousMonthKey = categories.getYearMonthKey(categoryMonth.month.clone().addMonths(-1));
@@ -31,23 +48,6 @@ export function getTotalPreviousUpcoming(budgetBreakdown, categoriesObject) {
   return totalUpcoming;
 }
 
-export function getTotalUpcoming(budgetBreakdown, categoriesObject) {
-  let totalUpcoming = 0;
-
-  const selectedMonth = getSelectedMonth();
-
-  for (const category of budgetBreakdown.inspectorCategories) {
-    const categoryData = categories.getCategoryData(
-      categoriesObject,
-      selectedMonth,
-      category.categoryId
-    );
-    if (categoryData) totalUpcoming += categoryData.upcoming;
-  }
-
-  return totalUpcoming;
-}
-
 export function getTotalCCPayments(budgetBreakdown) {
   let totalCCPayments = 0;
 
@@ -58,4 +58,19 @@ export function getTotalCCPayments(budgetBreakdown) {
 
   if (totalCCPayments < 0) return 0;
   return totalCCPayments;
+}
+
+export function getTotalSavings(budgetBreakdown) {
+  let totalSavings = 0;
+
+  for (const category of budgetBreakdown.inspectorCategories) {
+    if (
+      category.masterCategory.name.toLowerCase().includes('savings') ||
+      category.displayName.toLowerCase().includes('savings')
+    )
+      totalSavings += category.available + category.upcomingTransactions;
+  }
+
+  if (totalSavings < 0) return 0;
+  return totalSavings;
 }
