@@ -81,6 +81,10 @@ export class BulkEditMemo extends Feature {
     );
   }
 
+  destroy() {
+    $('.tk-bulk-edit-memo, .tk-bulk-edit-memo + li').remove();
+  }
+
   injectBulkEditMemo = (element) => {
     const categorizeRow = $(
       '.modal-account-edit-transaction-list li:contains("Categorize")',
