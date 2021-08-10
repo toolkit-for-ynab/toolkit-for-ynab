@@ -17,7 +17,7 @@ let hasToolkitLoaded = false;
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
-type SupportedEmberHook = 'didRender' | 'didInsertElement' | 'didUpdate';
+export type SupportedEmberHook = 'didRender' | 'didInsertElement' | 'didUpdate';
 
 export const EMBER_COMPONENT_TOOLKIT_HOOKS: SupportedEmberHook[] = [
   'didRender',
@@ -102,6 +102,7 @@ export class YNABToolkit {
     document.head.querySelector(`#tk-feature-styles-${featureName}`)?.remove();
     const feature = this.featureInstances.find((f) => f.constructor.name === featureName);
     feature.removeListeners();
+    feature.removeToolkitEmberHooks();
 
     const wrappedDestroy = feature.destroy.bind(feature);
     wrappedDestroy();

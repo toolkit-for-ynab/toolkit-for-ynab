@@ -1,7 +1,10 @@
 import { observeListener, routeChangeListener } from 'toolkit/extension/listeners';
 import { logToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
+import { SupportedEmberHook } from '../ynab-toolkit';
+import { addToolkitEmberHook, removeToolkitEmberHook } from '../utils/toolkit';
 
 export class Feature {
+  private __hooks = new Map<string, (element: HTMLElement) => void>();
   featureName = this.constructor.name as FeatureName;
 
   settings = {
@@ -24,7 +27,7 @@ export class Feature {
   }
 
   destroy(): void {
-    /* stubbed, most features don't support destroy yet */
+    /* stubbed, allows feature to add additional destroy functionality */
   }
 
   injectCSS(): string {
@@ -60,5 +63,30 @@ export class Feature {
   removeListeners(): void {
     observeListener.removeFeature(this);
     routeChangeListener.removeFeature(this);
+  }
+
+  addToolkitEmberHook(
+    componentKey: string,
+    lifecycleHook: SupportedEmberHook,
+    fn: (element: HTMLElement) => void
+  ): void {
+    addToolkitEmberHook(this, componentKey, lifecycleHook, fn);
+    this.__hooks.set(`${componentKey}:${lifecycleHook}`, fn);
+  }
+
+  removeToolkitEmberHook(
+    componentKey: string,
+    lifecycleHook: SupportedEmberHook,
+    fn: (element: HTMLElement) => void
+  ): void {
+    removeToolkitEmberHook(componentKey, lifecycleHook, fn);
+    this.__hooks.delete(`${componentKey}:${lifecycleHook}`);
+  }
+
+  removeToolkitEmberHooks(): void {
+    this.__hooks.forEach((fn, key) => {
+      const [componentKey, lifecycleHook] = key.split(':') as [string, SupportedEmberHook];
+      this.removeToolkitEmberHook(componentKey, lifecycleHook, fn);
+    });
   }
 }
