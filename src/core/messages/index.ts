@@ -1,4 +1,4 @@
-import { YNABToolkit } from 'toolkit/types/window';
+import { YNABToolkitObject } from 'toolkit/types/window';
 
 export enum InboundMessageType {
   Bootstrap = 'tk-bootstrap',
@@ -7,7 +7,10 @@ export enum InboundMessageType {
 
 export type BootstrapMessage = MessageEvent<{
   type: InboundMessageType.Bootstrap;
-  ynabToolKit: YNABToolkit;
+  ynabToolKit: Pick<
+    YNABToolkitObject,
+    'assets' | 'environment' | 'extensionId' | 'name' | 'options' | 'version'
+  >;
 }>;
 
 export type SettingChangedMessage = MessageEvent<{

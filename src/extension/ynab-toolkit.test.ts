@@ -6,7 +6,10 @@ import { YNABToolkit } from './ynab-toolkit';
 import { allToolkitSettings } from 'toolkit/core/settings';
 import { isYNABReady } from 'toolkit/extension/utils/ynab';
 import { readyYNAB, unreadyYNAB } from 'toolkit/test/setup';
-import { OutboundMessageType, InboundMessageType } from 'toolkit/core/messages';
+import { OutboundMessageType, InboundMessageType, BootstrapMessage } from 'toolkit/core/messages';
+import { YNABToolkitObject } from 'toolkit/types/window';
+
+const mockIsYNABReady = isYNABReady as jest.Mock;
 
 const setup = (setupOptions = {}) => {
   const options = {
@@ -15,15 +18,15 @@ const setup = (setupOptions = {}) => {
     ...setupOptions,
   };
 
-  let messageCallback;
+  let messageCallback: EventListener;
   const addEventListenerSpy = jest
     .spyOn(window, 'addEventListener')
-    .mockImplementation((event, callback) => {
+    .mockImplementation((_, callback: EventListener) => {
       messageCallback = callback;
     });
 
   const postMessageSpy = jest.spyOn(window, 'postMessage');
-  const callMessageListener = (...args) => {
+  const callMessageListener = (...args: any[]) => {
     messageCallback.apply(null, args);
   };
 
@@ -32,18 +35,28 @@ const setup = (setupOptions = {}) => {
     ynabToolkit.initializeToolkit();
   }
 
-  const toolkitBootstrap = { hookedComponents: new Set(), options: {} };
+  const bootstrapData: BootstrapMessage['data'] = {
+    type: InboundMessageType.Bootstrap,
+    ynabToolKit: {
+      assets: {
+        logo: 'logoURL',
+      },
+      environment: 'test' as YNABToolkitObject['environment'],
+      extensionId: 'extensionId',
+      name: 'extension',
+      options,
+      version: 'extensionVersion',
+    },
+  };
+
   allToolkitSettings.forEach((setting) => {
-    toolkitBootstrap.options[setting.name] = false;
+    bootstrapData.ynabToolKit.options[setting.name] = false;
   });
 
   if (options.sendBootstrap) {
     callMessageListener({
       source: window,
-      data: {
-        type: InboundMessageType.Bootstrap,
-        ynabToolKit: toolkitBootstrap,
-      },
+      data: bootstrapData,
     });
   }
 
@@ -51,7 +64,7 @@ const setup = (setupOptions = {}) => {
     addEventListenerSpy,
     callMessageListener,
     postMessageSpy,
-    toolkitBootstrap,
+    bootstrapData,
     ynabToolkit,
   };
 };
@@ -81,43 +94,42 @@ describe('YNABToolkit', () => {
 
   describe('once the InboundMessageType.Bootstrap message is received', () => {
     it('should create the ynabToolKit global object', () => {
-      const { toolkitBootstrap } = setup({ sendBootstrap: true });
-      expect(global.ynabToolKit).toEqual(toolkitBootstrap);
+      const { bootstrapData } = setup({ sendBootstrap: true });
+      expect(window.ynabToolKit).toMatchObject(bootstrapData.ynabToolKit);
     });
 
     it('should poll for YNAB to be ready', () => {
-      isYNABReady.mockReturnValueOnce(false);
+      mockIsYNABReady.mockReturnValueOnce(false);
 
-      const { toolkitBootstrap } = setup({ sendBootstrap: true });
+      const { bootstrapData } = setup({ sendBootstrap: true });
 
       // first poll attempt
       jest.runOnlyPendingTimers();
-      expect(global.ynabToolKit.invokeFeature).toBeUndefined();
+      expect(window.ynabToolKit.invokeFeature).toBeUndefined();
 
       // second poll attempt
-      isYNABReady.mockReturnValueOnce(false);
+      mockIsYNABReady.mockReturnValueOnce(false);
       jest.runOnlyPendingTimers();
-      expect(global.ynabToolKit.invokeFeature).toBeUndefined();
+      expect(window.ynabToolKit.invokeFeature).toBeUndefined();
 
       // third poll attempt
-      readyYNAB({ ynabToolKit: toolkitBootstrap });
-      isYNABReady.mockReturnValueOnce(true);
+      readyYNAB({ ynabToolKit: bootstrapData.ynabToolKit });
+      mockIsYNABReady.mockReturnValueOnce(true);
       jest.runOnlyPendingTimers();
-      expect(global.ynabToolKit.invokeFeature).toEqual(expect.any(Function));
+      expect(window.ynabToolKit.invokeFeature).toEqual(expect.any(Function));
     });
 
     describe('once YNAB is ready', () => {
       it('should set invokeFeature on the global ynabToolKit object', () => {
         readyYNAB();
-        isYNABReady.mockReturnValueOnce(true);
+        mockIsYNABReady.mockReturnValueOnce(true);
         setup({ sendBootstrap: true });
-
         expect(ynabToolKit.invokeFeature).toEqual(expect.any(Function));
       });
 
       it('should apply the globalCSS to the HEAD', () => {
         readyYNAB();
-        isYNABReady.mockReturnValueOnce(true);
+        mockIsYNABReady.mockReturnValueOnce(true);
         setup({ sendBootstrap: true });
 
         expect($('head #tk-global-styles').length).toEqual(1);

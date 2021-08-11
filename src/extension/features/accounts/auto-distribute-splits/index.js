@@ -9,15 +9,6 @@ function actualNumber(n) {
 }
 
 export class AutoDistributeSplits extends Feature {
-  button = $('<button>', {
-    id: DISTRIBUTE_BUTTON_ID,
-    class: 'button button-primary',
-    text: 'Auto-Distribute',
-  }).on('click', () => {
-    this.distribute();
-    this.button.trigger('blur');
-  });
-
   shouldInvoke() {
     return isCurrentRouteAccountsPage();
   }
@@ -28,7 +19,16 @@ export class AutoDistributeSplits extends Feature {
       !isButtonRendered && $('.ynab-grid-split-add-sub-transaction').length > 0;
 
     if (shouldButtonRender) {
-      $('.ynab-grid-actions-buttons .button-cancel').after(this.button);
+      $('.ynab-grid-actions-buttons .button-cancel').after(
+        $('<button>', {
+          id: DISTRIBUTE_BUTTON_ID,
+          class: 'button button-primary',
+          text: 'Auto-Distribute',
+        }).on('click', () => {
+          this.distribute();
+          this.button.trigger('blur');
+        })
+      );
     } else {
       $(`#${DISTRIBUTE_BUTTON_ID}`).remove();
     }
