@@ -50,6 +50,8 @@ export function getCategoriesObject() {
       available: category.balance,
       upcoming: category.upcomingTransactions,
       availableAfterUpcoming: category.balance + category.upcomingTransactions,
+      previousUpcoming: category.upcomingTransactions,
+      availableAfterPreviousUpcoming: category.balance + category.upcomingTransactions,
     };
 
     categoriesObject[categoryMonthKey] = categoriesObject[categoryMonthKey] || {
@@ -59,22 +61,21 @@ export function getCategoriesObject() {
     categoriesObject[categoryMonthKey].categories[categoryId] = categoryData;
   }
 
-  /*
-    // For each category, add previous month's upcomingTransactions to current month's and calculate availableAfterUpcoming.
-    // We slice(1) because the first element (current month) has no previous month.
-    for (const [categoryMonthKey, categoryMonth] of Object.entries(categoriesObject).slice(1)) {
-      const previousMonthKey = getYearMonthKey(categoryMonth.month.clone().addMonths(-1));
-      const previousMonthCategories = categoriesObject[previousMonthKey].categories;
+  // For each category, add previous month's upcomingTransactions to current month's and calculate availableAfterUpcoming.
+  // We slice(1) because the first element (current month) has no previous month.
+  for (const [categoryMonthKey, categoryMonth] of Object.entries(categoriesObject).slice(1)) {
+    const previousMonthKey = getYearMonthKey(categoryMonth.month.clone().addMonths(-1));
+    const previousMonthCategories = categoriesObject[previousMonthKey].categories;
 
-      for (const [categoryId, categoryData] of Object.entries(categoryMonth.categories)) {
-        const previousMonthCategoryData = previousMonthCategories[categoryId];
+    for (const [categoryId, categoryData] of Object.entries(categoryMonth.categories)) {
+      const previousMonthCategoryData = previousMonthCategories[categoryId];
 
-        categoryData.upcoming += previousMonthCategoryData.upcoming;
-        categoryData.availableAfterUpcoming = categoryData.available + categoryData.upcoming;
-        categoriesObject[categoryMonthKey].categories[categoryId] = categoryData;
-      }
+      categoryData.previousUpcoming += previousMonthCategoryData.previousUpcoming;
+      categoryData.availableAfterPreviousUpcoming =
+        categoryData.available + categoryData.previousUpcoming;
+      categoriesObject[categoryMonthKey].categories[categoryId] = categoryData;
     }
-    */
+  }
 
   return categoriesObject;
 }

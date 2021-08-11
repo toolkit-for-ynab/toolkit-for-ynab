@@ -1,6 +1,7 @@
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
+import { getSelectedMonth } from 'toolkit/extension/utils/ynab';
 import * as categories from 'toolkit/extension/features/budget/subtract-upcoming-from-available/categories';
 import * as totals from 'toolkit/extension/features/budget/subtract-upcoming-from-available/totals';
 import * as util from 'toolkit/extension/features/budget/subtract-upcoming-from-available/util';
@@ -32,73 +33,48 @@ function addTotalAvailableAfterUpcoming(budgetBreakdown, context) {
   const totalAvailable = ynabToolKit.options.ShowAvailableAfterSavings
     ? budgetBreakdown.budgetTotals.available - totals.getTotalSavings(budgetBreakdown)
     : budgetBreakdown.budgetTotals.available;
+
+  const currentMonth = ynab.utilities.DateWithoutTime.createForCurrentMonth();
+  const includePreviousUpcoming = getSelectedMonth().isAfter(currentMonth);
+  const totalPreviousUpcoming = includePreviousUpcoming
+    ? totals.getTotalPreviousUpcoming(budgetBreakdown, categoriesObject)
+    : 0;
+
   const totalUpcoming = totals.getTotalUpcoming(budgetBreakdown, categoriesObject);
-  let totalAvailableAfterUpcoming = totalAvailable + totalUpcoming;
 
-  // const isInCurrentMonthOrLater = !category.month.isBeforeMonth(currentMonth);
+  const noCC = ynabToolKit.options.SubtractUpcomingFromAvailable === 'no-cc';
+  const totalCCPayments = !noCC ? totals.getTotalCCPayments(budgetBreakdown) : 0;
+  const includeCCPayments = !!totalCCPayments; // Don't include CC payments if total is 0.
 
-  // if
-  const totalPreviousUpcoming = totals.getTotalPreviousUpcoming(budgetBreakdown, categoriesObject);
-  totalAvailableAfterUpcoming += totalPreviousUpcoming;
+  const totalAvailableAfterUpcoming =
+    totalAvailable + totalPreviousUpcoming + totalUpcoming - totalCCPayments;
+
+  if (totalAvailableAfterUpcoming === totalAvailable) return;
 
   // When one category is selected, YNAB provides its own "Available After Upcoming" so we edit that instead of adding ours.
   const $ynabAvailableAfterUpcoming = getYnabAvailableAfterUpcoming(context);
   if ($ynabAvailableAfterUpcoming)
     editYnabAvailableAfterUpcoming(
-      totalAvailableAfterUpcoming,
+      totalAvailableAfterUpcoming, // Subtract totalCCPayments?
       $ynabAvailableAfterUpcoming,
       context
     );
 
-  let $elements = $();
-
-  const $totalPreviousUpcoming = util.createBudgetBreakdownEntry(
-    'total-previous-upcoming',
-    'toolkit.totalPreviousUpcoming',
-    'Upcoming Transactions (Previous Months)',
-    totalPreviousUpcoming
-  );
-  $elements = $elements.add($totalPreviousUpcoming);
-
-  const $totalUpcoming = util.createBudgetBreakdownEntry(
-    'total-upcoming',
-    'toolkit.totalUpcoming',
-    'Upcoming Transactions (This Month)',
-    totalUpcoming
-  );
-  $elements = $elements.add($totalUpcoming);
-
-  if (ynabToolKit.options.SubtractUpcomingFromAvailable !== 'no-cc') {
-    const totalCCPayments = totals.getTotalCCPayments(budgetBreakdown);
-    totalAvailableAfterUpcoming -= totalCCPayments;
-
-    const $totalCCPayments = util.createBudgetBreakdownEntry(
-      'total-cc-payments',
-      'toolkit.totalCCPayments',
-      'CC Payments',
-      -totalCCPayments // Invert amount. A positive amount should show as negative in the budget breakdown and vice versa.
-    );
-    $elements = $elements.add($totalCCPayments);
-  }
-
-  if (totalAvailableAfterUpcoming === totalAvailable) return;
-
-  const $availableAfterUpcoming = util.createBudgetBreakdownEntry(
-    'total-available-after-upcoming',
-    'toolkit.availableAfterUpcoming',
-    'Available After Upcoming Transactions',
-    totalAvailableAfterUpcoming
-  );
-  $elements = $elements.add($availableAfterUpcoming);
-
-  $elements = $elements.add('<div id="available-after-upcoming-hr"><hr style="width:100%"></div>');
+  const entries = [];
+  if (includePreviousUpcoming)
+    entries.push(getBudgetBreakdownEntry('totalPreviousUpcoming', totalPreviousUpcoming));
+  entries.push(getBudgetBreakdownEntry('totalUpcoming', totalUpcoming));
+  if (includeCCPayments) entries.push(getBudgetBreakdownEntry('totalCCPayments', -totalCCPayments)); // Invert amount. A positive amount should show as negative in the budget breakdown and vice versa.
+  entries.push(getBudgetBreakdownEntry('totalAvailableAfterUpcoming', totalAvailableAfterUpcoming));
+  entries.push($('<div id="available-after-upcoming-hr"><hr style="width:100%"></div>'));
+  const $budgetBreakdownEntries = $(entries);
 
   const $totalAvailableAfterSavings = $('#total-available-after-savings');
   const $ynabBreakdown = $('.ynab-breakdown', context);
 
   if (ynabToolKit.options.ShowAvailableAfterSavings && $totalAvailableAfterSavings.length)
-    $elements.insertAfter($totalAvailableAfterSavings);
-  else $elements.prependTo($ynabBreakdown);
+    $budgetBreakdownEntries.insertAfter($totalAvailableAfterSavings);
+  else $budgetBreakdownEntries.prependTo($ynabBreakdown);
 }
 
 function getYnabAvailableAfterUpcoming(context) {
@@ -128,3 +104,34 @@ function editYnabAvailableAfterUpcoming(amount, $ynabAvailableAfterUpcoming, con
   $availableAfterUpcomingText.removeClass(classes);
   $availableAfterUpcomingText.addClass(util.getCurrencyClass(amount));
 }
+
+function getBudgetBreakdownEntry(key, amount) {
+  const entry = budgetBreakdownEntries[key];
+  return util.createBudgetBreakdownEntry(entry[0], entry[1], entry[2], amount);
+}
+
+const budgetBreakdownEntries = {};
+
+budgetBreakdownEntries.totalPreviousUpcoming = [
+  'total-previous-upcoming',
+  'toolkit.totalPreviousUpcoming',
+  'Upcoming Transactions (Previous Months)',
+];
+
+budgetBreakdownEntries.totalUpcoming = [
+  'total-upcoming',
+  'toolkit.totalUpcoming',
+  'Upcoming Transactions (This Month)',
+];
+
+budgetBreakdownEntries.totalCCPayments = [
+  'total-cc-payments',
+  'toolkit.totalCCPayments',
+  'CC Payments',
+];
+
+budgetBreakdownEntries.totalAvailableAfterUpcoming = [
+  'total-available-after-upcoming',
+  'toolkit.availableAfterUpcoming',
+  'Available After Upcoming Transactions',
+];
