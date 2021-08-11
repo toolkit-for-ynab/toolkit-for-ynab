@@ -19,6 +19,7 @@ import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { Modal, useModal } from 'toolkit/components/modal';
 import { DiscordLink, GitHubLink, TrelloLink } from 'toolkit/components/links';
 import { useDarkModeSetter } from 'toolkit/hooks/useDarkModeSetter';
+import { features } from 'toolkit/extension/features';
 
 function ColorPicker({
   id,
@@ -77,23 +78,29 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
     };
   });
 
-  function handleChange(newValue: FeatureSetting) {
+  function handleToggleFeature(isEnabled: boolean) {
+    let newValue: FeatureSetting = isEnabled;
+    if (config.type === 'select' && isEnabled) {
+      newValue = config.options[0].value;
+    }
+
+    handleFeatureSettingChanged(newValue);
+  }
+
+  function handleFeatureSettingChanged(newValue: FeatureSetting) {
     localToolkitStorage.setFeatureSetting(config.name, newValue).then(() => {
       setFeatureSetting(newValue);
     });
   }
 
   return (
-    <div
-      className={classNames('setting', {
-        'setting--select': config.type === 'select',
-      })}
-    >
-      {config.type === 'checkbox' && (
+    <div className="setting">
+      {config.type !== 'color' && (
         <Toggle
-          checked={featureSetting as boolean}
+          className="setting__toggle"
+          checked={typeof featureSetting === 'boolean' ? featureSetting : featureSetting !== '0'}
           htmlFor={`${config.name}-toggle`}
-          onChange={(checked) => handleChange(checked)}
+          onChange={(checked) => handleToggleFeature(checked)}
         />
       )}
       {config.type === 'color' && (
@@ -101,7 +108,7 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
           id={`${config.name}-color-picker`}
           resetColor={config.default as string}
           value={featureSetting as string}
-          onChange={handleChange}
+          onChange={handleFeatureSettingChanged}
         />
       )}
       <div className="setting__info">
@@ -111,15 +118,18 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
           </label>
         </div>
         <div className="setting__description">{config.description}</div>
+        {config.type === 'select' && (
+          <RadioGroup
+            className={classNames('setting__options', {
+              'setting__options--hidden': featureSetting === false || featureSetting === '0',
+            })}
+            name={config.name}
+            options={config.options}
+            value={featureSetting as string}
+            onChange={handleFeatureSettingChanged}
+          />
+        )}
       </div>
-      {config.type === 'select' && (
-        <RadioGroup
-          name={config.name}
-          options={config.options}
-          value={featureSetting as string}
-          onChange={handleChange}
-        />
-      )}
     </div>
   );
 }

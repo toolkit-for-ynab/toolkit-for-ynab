@@ -63,6 +63,29 @@ body {
     border-top: 1px solid gray;
   }
 
+  &__toggle {
+    margin-bottom: auto;
+  }
+
+  &__options {
+    max-height: 1000px;
+    transform: scaleY(1);
+    transform-origin: top;
+    margin-top: 1rem;
+
+    transition: max-height 1s ease-in-out, transform 0.5s ease-out, margin-top 0.5s ease-out;
+
+    &--hidden {
+      max-height: 0px;
+      transform: scaleY(0);
+      transform-origin: top;
+      margin-top: 0rem;
+
+      transition: max-height 0.5s cubic-bezier(0, 1, 0, 1), transform 0.5s ease-out,
+        margin-top 0.5s ease-out;
+    }
+  }
+
   &__info {
     display: flex;
     flex-direction: column;

@@ -1,7 +1,7 @@
 module.exports = {
   name: 'NavDisplayDensity',
   type: 'select',
-  default: '0',
+  default: false,
   section: 'general',
   title: 'Navigation Tabs Height',
   description:

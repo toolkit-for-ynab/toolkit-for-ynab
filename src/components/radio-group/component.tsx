@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import * as React from 'react';
 import './styles.scss';
 
@@ -7,14 +8,15 @@ interface RadioOption {
 }
 
 interface PublicProps {
+  className?: string;
   name: string;
   options: RadioOption[];
   onChange: (value: string) => void;
   value: string;
 }
 
-export const RadioGroup = ({ name, onChange, options, value }: PublicProps) => (
-  <div className="radio-group">
+export const RadioGroup = ({ className, name, onChange, options, value }: PublicProps) => (
+  <div className={classNames('radio-group', className)}>
     {options.map((option) => (
       <div className="radio-group__option" key={option.name}>
         <input

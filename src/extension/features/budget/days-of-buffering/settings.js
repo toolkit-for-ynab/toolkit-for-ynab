@@ -16,7 +16,6 @@ module.exports = [
     title: 'Days of Buffering History Lookup',
     description: 'How old transactions should be used for average daily outflow calculation.',
     options: [
-      { name: 'All', value: '0' },
       { name: '1 year', value: '12' },
       { name: '6 months', value: '6' },
       { name: '3 months', value: '3' },
