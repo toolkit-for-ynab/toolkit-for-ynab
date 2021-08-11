@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Set Custom Flag Names (with Tooltips)',
+  title: 'Enable Custom Flag Names',
   description:
-    'Adds the ability to set custom flag names. Tooltip for the flag name will only be visible when the cursor is hovered over the flag. *__Note__: Custom flag names are stored locally in the browser in which they are set and will __not__ be carried over to other browsers/computers. Custom flag names will be lost if browser data is cleared.*',
+    'Add functionality to provide custom flag names in the "Add Flag" menu. A tooltip will also be added to all flags on hover. *__Note__: Custom flag names are stored locally in the browser and will __not__ be carried over to other browsers/computers. Custom flag names will be lost if browser data is cleared though the flag colors themselves will remain on the transactions.*',
 };

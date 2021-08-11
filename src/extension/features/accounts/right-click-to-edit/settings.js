@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: true,
   section: 'accounts',
-  title: 'Show Menu When Right Clicking On Transaction',
+  title: 'Edit Transaction on Right Click',
   description:
-    'Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit menu options.',
+    'Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit Transaction(s) menu.',
 };

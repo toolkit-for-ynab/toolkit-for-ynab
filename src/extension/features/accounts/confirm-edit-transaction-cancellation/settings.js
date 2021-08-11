@@ -3,7 +3,6 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Confirm keyboard-initiated transaction cancellation',
-  description:
-    'Displays a pop-up confirmation prompt when transaction row\'s "Cancel" action is triggered by keyboard press ("Enter"). This guards against inadvertent discarding of complex split transaction entries in keyboard driven entry workflows.',
+  title: 'Confirm Transaction Edit Cancellation',
+  description: `Display a confirmation prompt when transaction cancelling a transaction edit by pressing "Enter" guarding against accidentely discarding complex split transactions.`,
 };
