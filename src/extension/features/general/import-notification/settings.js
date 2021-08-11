@@ -3,11 +3,11 @@ module.exports = {
   type: 'select',
   default: false,
   section: 'general',
-  title: 'Show Import Notifications in Navigation Sidebar',
+  title: 'Emphasize Accounts Needing Import',
   description:
-    'Underline account names in the navigation sidebar that have transactions to be imported. Hovering the mouse over the account name will display the number of transactions to be imported.',
+    'Adds an underline to account names in the sidebar that have transactions to be imported. Hovering over the account name will display the number of transactions waiting to be imported.',
   options: [
-    { name: 'On - Underline account names in white', value: '1' },
-    { name: 'On - Underline account names in red', value: '2' },
+    { name: 'Underline in white', value: '1' },
+    { name: 'Underline in red', value: '2' },
   ],
 };

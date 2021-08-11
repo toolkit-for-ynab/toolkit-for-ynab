@@ -3,7 +3,7 @@ module.exports = {
   type: 'select',
   default: false,
   section: 'general',
-  title: 'Interface Font',
+  title: 'Change Interface Font',
   description: 'Select a font from the Google Fonts library or choose to use your system font.',
   options: [
     { name: 'Open Sans', value: '1' },

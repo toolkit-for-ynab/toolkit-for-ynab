@@ -5,5 +5,5 @@ module.exports = {
   section: 'general',
   title: 'Hide Edit Account Button',
   description:
-    'Allows you to hide the edit account button to help prevent accidentally clicking on it.',
+    'Hide the "Edit Account" icon on account rows in the sidebar to avoid misclicks. You can still edit an account by right-clicking the account name.',
 };
