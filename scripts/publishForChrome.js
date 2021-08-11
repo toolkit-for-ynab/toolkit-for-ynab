@@ -140,7 +140,7 @@ async function uploadSourcemapsToSentry({ sentryAuthToken }) {
 async function publishForChrome() {
   const environmentVariables = getEnvironmentVariables();
   // Are we on the correct branch?
-  if (environmentVariables.githubRef.includes('beta')) {
+  if (!environmentVariables.githubRef.includes('beta')) {
     console.log(`githubRef is '${environmentVariables.githubRef}'.`);
     console.log(
       "Either we're on the wrong branch or this isn't a GitHub action. Either way, no need to publish."
