@@ -55,6 +55,10 @@ export class ToggleAccountColumns extends Feature {
     );
   }
 
+  destroy() {
+    $('body').removeClass('tk-hide-memos');
+  }
+
   insertToggles(element) {
     if (element.querySelector('#tk-show-memo') === null) {
       componentAppend(
@@ -86,9 +90,9 @@ export class ToggleAccountColumns extends Feature {
     setToolkitStorageKey(`show-memo-column-${selectedAccountId}`, state);
 
     if (!state) {
-      $('body').addClass('toolkit-hide-memos');
+      $('body').addClass('tk-hide-memos');
     } else {
-      $('body').removeClass('toolkit-hide-memos');
+      $('body').removeClass('tk-hide-memos');
     }
   };
 
