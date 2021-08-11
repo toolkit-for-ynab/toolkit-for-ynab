@@ -20,8 +20,8 @@ const changes = require(path.join(workspaceRoot, 'src', `manifest.${env}.json`))
 Object.assign(manifest, changes);
 
 // If we're in a github action, append the build number to the version number.
-if (process.env.GITHUB_RUN_ID) {
-  manifest.version += `.${process.env.GITHUB_RUN_ID}`;
+if (process.env.GITHUB_RUN_NUMBER) {
+  manifest.version += `.${process.env.GITHUB_RUN_NUMBER}`;
   console.log(`using version: ${manifest.version}`);
 }
 
