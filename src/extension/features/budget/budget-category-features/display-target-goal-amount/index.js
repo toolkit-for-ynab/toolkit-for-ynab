@@ -8,30 +8,33 @@ import {
 } from 'toolkit/extension/features/budget/budget-category-features';
 
 export const Settings = {
-  Off: '0',
   WarnBudgetOverTarget: '1',
   GreenBudgetOverTarget: '2',
   NoEmphasis: '3',
 };
 
-const EmphasisClass = {
-  [Settings.WarnBudgetOverTarget]: 'toolkit-display-goal-warn',
-  [Settings.GreenBudgetOverTarget]: 'toolkit-display-goal-highlight',
-};
-
 export class DisplayTargetGoalAmount extends Feature {
   injectCSS() {
-    return require('./index.css');
+    if (this.settings.enabled === Settings.WarnBudgetOverTarget) {
+      return require('./emphasis-red.css');
+    }
+
+    if (this.settings.enabled === Settings.GreenBudgetOverTarget) {
+      return require('./emphasis-green.css');
+    }
   }
 
   shouldInvoke() {
     return isCurrentRouteBudgetPage();
   }
 
+  destroy() {
+    $('.toolkit-target-goal-amount').remove();
+  }
+
   invoke() {
     const userSetting = this.settings.enabled;
-    const budgetRows = [...document.getElementsByClassName('budget-table-row')];
-    budgetRows.forEach((element) => {
+    Array.from(document.getElementsByClassName('budget-table-row')).forEach((element) => {
       const category = getEmberView(element.id, 'category');
       if (!category) {
         return;
@@ -90,16 +93,14 @@ export class DisplayTargetGoalAmount extends Feature {
         $(goalAmountElement).text(formatCurrency(goalAmount));
 
         if (applyEmphasis) {
-          $(goalAmountElement).addClass(EmphasisClass[this.settings.enabled]);
+          $(goalAmountElement).addClass('tk-goal-emphasis');
         } else {
-          $(goalAmountElement).removeClass(EmphasisClass[this.settings.enabled]);
+          $(goalAmountElement).removeClass('tk-goal-emphasis');
         }
       } else if (goalAmount !== null) {
         $(`.${GOAL_TABLE_CELL_CLASSNAME}`, element).prepend(
           $('<div>', {
-            class: `toolkit-target-goal-amount currency ${
-              applyEmphasis ? EmphasisClass[this.settings.enabled] : ''
-            }`,
+            class: `toolkit-target-goal-amount currency ${applyEmphasis ? 'tk-goal-emphasis' : ''}`,
             text: formatCurrency(goalAmount),
           })
         );
