@@ -1,24 +1,21 @@
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { getSelectedMonth } from 'toolkit/extension/utils/ynab';
 import * as categories from 'toolkit/extension/features/budget/subtract-upcoming-from-available/categories';
 import * as util from 'toolkit/extension/features/budget/subtract-upcoming-from-available/util';
 
 export function handleBudgetTableRow(element) {
-  if (!util.shouldInvoke()) return;
+  if (!util.shouldRun()) return;
 
   const category = getEmberView(element.id, 'category');
-  if (category) updateCategoryAvailableBalance(category, element);
-}
+  if (!category) return;
 
-function updateCategoryAvailableBalance(category, context) {
-  const categoryData = categories.getCategoryData(
-    categories.getCategoriesObject(),
-    getSelectedMonth(),
-    category.categoryId
-  );
+  const categoryData = categories.setAndGetCategoryData(category);
   if (!categoryData) return;
 
+  updateCategoryAvailableBalance(categoryData, category, element);
+}
+
+function updateCategoryAvailableBalance(categoryData, category, context) {
   const $available = $(`.ynab-new-budget-available-number`, context);
   const $availableText = $(`.user-data`, $available);
 

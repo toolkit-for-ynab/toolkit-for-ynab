@@ -1,9 +1,12 @@
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteBudgetPage, getSelectedMonth } from 'toolkit/extension/utils/ynab';
 
-export function shouldInvoke() {
-  return isCurrentRouteBudgetPage();
+export function shouldRun() {
+  // Upcoming transactions can only exist in current or future months.
+  const selectedMonth = getSelectedMonth();
+  const currentMonth = ynab.utilities.DateWithoutTime.createForCurrentMonth();
+  return isCurrentRouteBudgetPage() && !selectedMonth.isBeforeMonth(currentMonth);
 }
 
 export function getCurrencyClass(amount) {

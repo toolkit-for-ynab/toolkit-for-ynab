@@ -1,13 +1,11 @@
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import { getSelectedMonth } from 'toolkit/extension/utils/ynab';
 import * as categories from 'toolkit/extension/features/budget/subtract-upcoming-from-available/categories';
-import * as totals from 'toolkit/extension/features/budget/subtract-upcoming-from-available/totals';
 import * as util from 'toolkit/extension/features/budget/subtract-upcoming-from-available/util';
 
 export function handleBudgetBreakdown(element) {
-  if (!util.shouldInvoke()) return;
+  if (!util.shouldRun()) return;
 
   const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
   const $budgetBreakdownAvailableBalance = $('.budget-breakdown-available-balance', element);
@@ -16,35 +14,37 @@ export function handleBudgetBreakdown(element) {
     : $budgetBreakdownAvailableBalance.length
     ? $budgetBreakdownAvailableBalance
     : undefined;
+  if (!$budgetBreakdownTotals) return;
+
+  // Remove budget breakdown entries if they exist.
+  $('#total-previous-upcoming', $budgetBreakdownTotals).remove();
+  $('#total-upcoming', $budgetBreakdownTotals).remove();
+  $('#total-cc-payments', $budgetBreakdownTotals).remove();
+  $('#total-available-after-upcoming', $budgetBreakdownTotals).remove();
+  $('#available-after-upcoming-hr', $budgetBreakdownTotals).remove();
+
   const budgetBreakdown = getEmberView(element.id);
-  if ($budgetBreakdownTotals && budgetBreakdown)
-    addTotalAvailableAfterUpcoming(budgetBreakdown, $budgetBreakdownTotals);
+  if (!budgetBreakdown) return;
+
+  const totals = categories.getTotals(budgetBreakdown.inspectorCategories);
+  if (!totals) return;
+
+  updateBudgetBreakdown(totals, budgetBreakdown, $budgetBreakdownTotals);
 }
 
-function addTotalAvailableAfterUpcoming(budgetBreakdown, context) {
-  $('#total-previous-upcoming', context).remove();
-  $('#total-upcoming', context).remove();
-  $('#total-cc-payments', context).remove();
-  $('#total-available-after-upcoming', context).remove();
-  $('#available-after-upcoming-hr', context).remove();
-
-  const categoriesObject = categories.getCategoriesObject();
-
+function updateBudgetBreakdown(totals, budgetBreakdown, context) {
   const totalAvailable = ynabToolKit.options.ShowAvailableAfterSavings
-    ? budgetBreakdown.budgetTotals.available - totals.getTotalSavings(budgetBreakdown)
+    ? budgetBreakdown.budgetTotals.available - totals.totalSavings
     : budgetBreakdown.budgetTotals.available;
 
-  const currentMonth = ynab.utilities.DateWithoutTime.createForCurrentMonth();
-  const includePreviousUpcoming = getSelectedMonth().isAfter(currentMonth);
-  const totalPreviousUpcoming = includePreviousUpcoming
-    ? totals.getTotalPreviousUpcoming(budgetBreakdown, categoriesObject)
-    : 0;
+  const totalPreviousUpcoming = totals.totalPreviousUpcoming;
+  const includePreviousUpcoming = !!totalPreviousUpcoming; // Don't include totalPreviousUpcoming if total is 0.
 
-  const totalUpcoming = totals.getTotalUpcoming(budgetBreakdown, categoriesObject);
+  const totalUpcoming = totals.totalUpcoming;
 
   const noCC = ynabToolKit.options.SubtractUpcomingFromAvailable === 'no-cc';
-  const totalCCPayments = !noCC ? totals.getTotalCCPayments(budgetBreakdown) : 0;
-  const includeCCPayments = !!totalCCPayments; // Don't include CC payments if total is 0.
+  const totalCCPayments = !noCC ? totals.totalCCPayments : 0;
+  const includeCCPayments = !!totalCCPayments; // Don't include totalCCPayments if total is 0.
 
   const totalAvailableAfterUpcoming =
     totalAvailable + totalPreviousUpcoming + totalUpcoming - totalCCPayments;
@@ -67,9 +67,13 @@ function addTotalAvailableAfterUpcoming(budgetBreakdown, context) {
   if (includeCCPayments) entries.push(getBudgetBreakdownEntry('totalCCPayments', -totalCCPayments)); // Invert amount. A positive amount should show as negative in the budget breakdown and vice versa.
   entries.push(getBudgetBreakdownEntry('totalAvailableAfterUpcoming', totalAvailableAfterUpcoming));
   entries.push($('<div id="available-after-upcoming-hr"><hr style="width:100%"></div>'));
-  const $budgetBreakdownEntries = $(entries);
 
-  const $totalAvailableAfterSavings = $('#total-available-after-savings');
+  let $budgetBreakdownEntries = $();
+  for (const budgetBreakdownEntry of entries) {
+    $budgetBreakdownEntries = $budgetBreakdownEntries.add(budgetBreakdownEntry);
+  }
+
+  const $totalAvailableAfterSavings = $('#total-available-after-savings', context);
   const $ynabBreakdown = $('.ynab-breakdown', context);
 
   if (ynabToolKit.options.ShowAvailableAfterSavings && $totalAvailableAfterSavings.length)
@@ -87,7 +91,7 @@ function getYnabAvailableAfterUpcoming(context) {
     return this.innerText === localizedMessageText;
   });
 
-  return $ynabAvailableAfterUpcoming.length ? $ynabAvailableAfterUpcoming : false;
+  return $ynabAvailableAfterUpcoming.length && $ynabAvailableAfterUpcoming;
 }
 
 function editYnabAvailableAfterUpcoming(amount, $ynabAvailableAfterUpcoming, context) {
