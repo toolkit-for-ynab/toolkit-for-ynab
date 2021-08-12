@@ -14,15 +14,17 @@ export class RightClickToEdit extends Feature {
   }
 
   displayContextMenu() {
-    let $element = $(this);
+    const $element = $(this);
+    let $row = $element.parent();
+
     // check for a right click on a split transaction
-    if ($element.hasClass('ynab-grid-body-sub')) {
+    if ($row.hasClass('ynab-grid-body-sub')) {
       // select parent transaction
-      $element = $element.prevAll('.ynab-grid-body-parent:first');
+      $row = $row.prevAll('.ynab-grid-body-parent:first');
     }
 
     const { areChecked, visibleTransactionDisplayItems } = controllerLookup('accounts');
-    const clickedTransactionId = $element.data().rowId;
+    const clickedTransactionId = $row.data().rowId;
     const clickedTransaction = visibleTransactionDisplayItems.find(
       ({ entityId }) => entityId === clickedTransactionId
     );
@@ -34,7 +36,7 @@ export class RightClickToEdit extends Feature {
 
     serviceLookup('modal').openModal('modals/account/edit-transactions', {
       controller: 'accounts',
-      triggerElement: $element,
+      triggerElement: $(this),
     });
 
     return false;
@@ -48,8 +50,8 @@ export class RightClickToEdit extends Feature {
     this.isCurrentlyRunning = true;
 
     Ember.run.next(this, function () {
-      $('.ynab-grid').off('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
-      $('.ynab-grid').on('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
+      $('.ynab-grid').off('contextmenu', '.ynab-grid-body-row > div', this.displayContextMenu);
+      $('.ynab-grid').on('contextmenu', '.ynab-grid-body-row > div', this.displayContextMenu);
 
       $('body').off('contextmenu', '.modal-account-edit-transaction-list', this.hideContextMenu);
       $('body').on('contextmenu', '.modal-account-edit-transaction-list', this.hideContextMenu);
