@@ -11,7 +11,7 @@ interface YNABToolkit {
   invokeFeature(featureName: FeatureName): void;
   options: {
     [settingName in FeatureName]: FeatureSetting;
-  }
+  };
   version: string;
 }
 
@@ -34,7 +34,7 @@ declare global {
         willUpdate: Component['willUpdate'];
 
         didInsertElement(): void;
-      }
+      };
     };
   }
 

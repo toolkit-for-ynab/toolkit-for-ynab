@@ -1,7 +1,6 @@
 import { ObserveListener, RouteChangeListener } from 'toolkit/extension/listeners';
 import { logToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
-
 export class Feature {
   featureName = this.constructor.name as FeatureName;
 

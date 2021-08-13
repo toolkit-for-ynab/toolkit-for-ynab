@@ -1,7 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup, serviceLookup } from 'toolkit/extension/utils/ember';
-import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class EasyTransactionApproval extends Feature {
   initBudgetVersion = true;

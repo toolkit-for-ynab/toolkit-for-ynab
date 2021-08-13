@@ -17,8 +17,14 @@ export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
 type SupportedEmberHook = 'didRender' | 'didInsertElement' | 'didUpdate';
 
-export const EMBER_COMPONENT_TOOLKIT_HOOKS: SupportedEmberHook[] = ['didRender', 'didInsertElement', 'didUpdate'];
-export const emberComponentToolkitHookKey = (hookName: SupportedEmberHook): `_tk_${SupportedEmberHook}_hooks_` => `_tk_${hookName}_hooks_`;
+export const EMBER_COMPONENT_TOOLKIT_HOOKS: SupportedEmberHook[] = [
+  'didRender',
+  'didInsertElement',
+  'didUpdate',
+];
+export const emberComponentToolkitHookKey = (
+  hookName: SupportedEmberHook
+): `_tk_${SupportedEmberHook}_hooks_` => `_tk_${hookName}_hooks_`;
 
 window.__toolkitUtils = {
   ...ynabUtils,
@@ -33,10 +39,10 @@ interface ToolkitEmberHook {
 
 type ToolkitEnabledComponent = Ember['Component'] & {
   element?: Element;
-  _tk_didRender_hooks_?: ToolkitEmberHook[]
+  _tk_didRender_hooks_?: ToolkitEmberHook[];
   _tk_didInsertElement_hooks_?: ToolkitEmberHook[];
   _tk_didUpdate_hooks_?: ToolkitEmberHook[];
-}
+};
 
 export class YNABToolkit {
   _featureInstances: Feature[] = [];
