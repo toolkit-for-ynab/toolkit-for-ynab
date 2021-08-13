@@ -1,9 +1,9 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
-import { handleBudgetBreakdown } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/budget-breakdown';
-import { handleBudgetTableRow } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/budget-table-row';
-import { setCategoriesObject } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/categories';
+import { handleBudgetBreakdown } from './budget-breakdown';
+import { handleBudgetTableRow } from './budget-table-row';
+import { setCategoriesObject } from './categories';
 
 export class SubtractUpcomingFromAvailable extends Feature {
   shouldInvoke() {

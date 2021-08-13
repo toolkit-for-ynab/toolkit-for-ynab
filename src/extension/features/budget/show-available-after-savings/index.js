@@ -2,8 +2,8 @@ import { getEmberView } from 'toolkit/extension/utils/ember';
 import { Feature } from 'toolkit/extension/features/feature';
 import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
-import { isSavingsCategory } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/categories';
-import { createBudgetBreakdownEntry } from 'toolkit/extension/features/budget/subtract-upcoming-from-available/util';
+import { isSavingsCategory } from '../subtract-upcoming-from-available/categories';
+import { createBudgetBreakdownEntry } from '../subtract-upcoming-from-available/util';
 
 export class ShowAvailableAfterSavings extends Feature {
   shouldInvoke() {
@@ -48,7 +48,7 @@ export class ShowAvailableAfterSavings extends Feature {
   getTotalSavings(budgetBreakdown) {
     let totalSavings = 0;
 
-    for (const category in budgetBreakdown.inspectorCategories) {
+    for (const category of budgetBreakdown.inspectorCategories) {
       if (isSavingsCategory(category)) totalSavings += category.available;
     }
 

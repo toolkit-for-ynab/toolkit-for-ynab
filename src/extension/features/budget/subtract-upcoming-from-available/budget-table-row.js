@@ -1,7 +1,7 @@
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import * as categories from 'toolkit/extension/features/budget/subtract-upcoming-from-available/categories';
-import * as util from 'toolkit/extension/features/budget/subtract-upcoming-from-available/util';
+import * as categories from './categories';
+import * as util from './util';
 
 export function handleBudgetTableRow(element) {
   if (!util.shouldRun()) return;

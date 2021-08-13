@@ -1,12 +1,10 @@
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import * as categories from 'toolkit/extension/features/budget/subtract-upcoming-from-available/categories';
-import * as util from 'toolkit/extension/features/budget/subtract-upcoming-from-available/util';
+import * as categories from './categories';
+import * as util from './util';
 
 export function handleBudgetBreakdown(element) {
-  if (!util.shouldRun()) return;
-
   const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
   const $budgetBreakdownAvailableBalance = $('.budget-breakdown-available-balance', element);
   const $budgetBreakdownTotals = $budgetBreakdownMonthlyTotals.length
@@ -22,6 +20,8 @@ export function handleBudgetBreakdown(element) {
   $('#total-cc-payments', $budgetBreakdownTotals).remove();
   $('#total-available-after-upcoming', $budgetBreakdownTotals).remove();
   $('#available-after-upcoming-hr', $budgetBreakdownTotals).remove();
+
+  if (!util.shouldRun()) return;
 
   const budgetBreakdown = getEmberView(element.id);
   if (!budgetBreakdown) return;
@@ -51,30 +51,47 @@ function updateBudgetBreakdown(totals, budgetBreakdown, context) {
 
   if (totalAvailableAfterUpcoming === totalAvailable) return;
 
+  const $ynabBreakdown = $('.ynab-breakdown', context);
+
+  const inspectorMessageEntries = [];
+  if (includePreviousUpcoming)
+    inspectorMessageEntries.push(
+      getInspectorMessageEntry('previousUpcoming', totalPreviousUpcoming)
+    );
+  if (includeCCPayments)
+    inspectorMessageEntries.push(getInspectorMessageEntry('CCPayment', -totalCCPayments)); // Invert amount. A positive amount should show as negative in the budget breakdown and vice versa.
+  const $inspectorMessageEntries = $buildEntries(inspectorMessageEntries);
+
   // When one category is selected, YNAB provides its own "Available After Upcoming" so we edit that instead of adding ours.
   const $ynabAvailableAfterUpcoming = getYnabAvailableAfterUpcoming(context);
-  if ($ynabAvailableAfterUpcoming)
+  if ($ynabAvailableAfterUpcoming) {
     editYnabAvailableAfterUpcoming(
-      totalAvailableAfterUpcoming, // Subtract totalCCPayments?
+      totalAvailableAfterUpcoming,
+      $inspectorMessageEntries,
       $ynabAvailableAfterUpcoming,
+      $ynabBreakdown,
       context
     );
-
-  const entries = [];
-  if (includePreviousUpcoming)
-    entries.push(getBudgetBreakdownEntry('totalPreviousUpcoming', totalPreviousUpcoming));
-  entries.push(getBudgetBreakdownEntry('totalUpcoming', totalUpcoming));
-  if (includeCCPayments) entries.push(getBudgetBreakdownEntry('totalCCPayments', -totalCCPayments)); // Invert amount. A positive amount should show as negative in the budget breakdown and vice versa.
-  entries.push(getBudgetBreakdownEntry('totalAvailableAfterUpcoming', totalAvailableAfterUpcoming));
-  entries.push($('<div id="available-after-upcoming-hr"><hr style="width:100%"></div>'));
-
-  let $budgetBreakdownEntries = $();
-  for (const budgetBreakdownEntry of entries) {
-    $budgetBreakdownEntries = $budgetBreakdownEntries.add(budgetBreakdownEntry);
+    return;
   }
 
+  const budgetBreakdownEntries = [];
+  if (includePreviousUpcoming)
+    budgetBreakdownEntries.push(
+      getBudgetBreakdownEntry('totalPreviousUpcoming', totalPreviousUpcoming)
+    );
+  budgetBreakdownEntries.push(getBudgetBreakdownEntry('totalUpcoming', totalUpcoming));
+  if (includeCCPayments)
+    budgetBreakdownEntries.push(getBudgetBreakdownEntry('totalCCPayments', -totalCCPayments)); // Invert amount. A positive amount should show as negative in the budget breakdown and vice versa.
+  budgetBreakdownEntries.push(
+    getBudgetBreakdownEntry('totalAvailableAfterUpcoming', totalAvailableAfterUpcoming)
+  );
+  budgetBreakdownEntries.push(
+    $('<div id="available-after-upcoming-hr"><hr style="width:100%"></div>')
+  );
+  const $budgetBreakdownEntries = $buildEntries(budgetBreakdownEntries);
+
   const $totalAvailableAfterSavings = $('#total-available-after-savings', context);
-  const $ynabBreakdown = $('.ynab-breakdown', context);
 
   if (ynabToolKit.options.ShowAvailableAfterSavings && $totalAvailableAfterSavings.length)
     $budgetBreakdownEntries.insertAfter($totalAvailableAfterSavings);
@@ -94,19 +111,40 @@ function getYnabAvailableAfterUpcoming(context) {
   return $ynabAvailableAfterUpcoming.length && $ynabAvailableAfterUpcoming;
 }
 
-function editYnabAvailableAfterUpcoming(amount, $ynabAvailableAfterUpcoming, context) {
+function editYnabAvailableAfterUpcoming(
+  totalAvailableAfterUpcoming,
+  $entries,
+  $ynabAvailableAfterUpcoming,
+  $ynabBreakdown,
+  context
+) {
   const $inspectorMessageRow = $($ynabAvailableAfterUpcoming, context).parent();
+  const $inspectorMessage = $($inspectorMessageRow, context).parent();
+  const $inspectorMessageBox = $($inspectorMessage, context).parent();
+  $inspectorMessageBox.insertBefore($ynabBreakdown).css('margin-bottom', '8px');
+  $ynabBreakdown.css('margin-bottom', '0px');
+
+  $('#inspector-message-previous-upcoming', $inspectorMessage).remove();
+  $('#inspector-message-cc-payment', $inspectorMessage).remove();
+
+  $entries.insertBefore($inspectorMessageRow);
 
   const classes = 'positive zero negative';
-
-  const $inspectorMessage = $($inspectorMessageRow, context).parent();
   $inspectorMessage.removeClass(classes);
-  $inspectorMessage.addClass(amount >= 0 ? 'positive' : 'negative');
+  $inspectorMessage.addClass(totalAvailableAfterUpcoming >= 0 ? 'positive' : 'negative');
 
   const $availableAfterUpcomingText = $('.user-data', $inspectorMessageRow);
-  $availableAfterUpcomingText.text(formatCurrency(amount));
+  $availableAfterUpcomingText.text(formatCurrency(totalAvailableAfterUpcoming));
   $availableAfterUpcomingText.removeClass(classes);
-  $availableAfterUpcomingText.addClass(util.getCurrencyClass(amount));
+  $availableAfterUpcomingText.addClass(util.getCurrencyClass(totalAvailableAfterUpcoming));
+}
+
+function $buildEntries(entries) {
+  let $entries = $();
+  for (const budgetBreakdownEntry of entries) {
+    $entries = $entries.add(budgetBreakdownEntry);
+  }
+  return $entries;
 }
 
 function getBudgetBreakdownEntry(key, amount) {
@@ -131,11 +169,30 @@ budgetBreakdownEntries.totalUpcoming = [
 budgetBreakdownEntries.totalCCPayments = [
   'total-cc-payments',
   'toolkit.totalCCPayments',
-  'CC Payments',
+  'Credit Card Payments',
 ];
 
 budgetBreakdownEntries.totalAvailableAfterUpcoming = [
   'total-available-after-upcoming',
   'toolkit.availableAfterUpcoming',
   'Available After Upcoming Transactions',
+];
+
+function getInspectorMessageEntry(key, amount) {
+  const entry = inspectorMessageEntries[key];
+  return util.createInspectorMessageEntry(entry[0], entry[1], entry[2], amount);
+}
+
+const inspectorMessageEntries = {};
+
+inspectorMessageEntries.previousUpcoming = [
+  'inspector-message-previous-upcoming',
+  'toolkit.inspectorMessagePreviousUpcoming',
+  'Upcoming Transactions (Previous Months)',
+];
+
+inspectorMessageEntries.CCPayment = [
+  'inspector-message-cc-payment',
+  'toolkit.inspectorMessageCCPayment',
+  'Remaining Payment',
 ];

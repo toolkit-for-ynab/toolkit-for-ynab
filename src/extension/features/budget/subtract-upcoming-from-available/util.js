@@ -28,13 +28,27 @@ export function createBudgetBreakdownEntry(elementId, l10nKey, l10nDefault, amou
   amount = formatCurrency(amount);
 
   return $(`
-      <div id="${elementId}">
-        <div>${title}</div>
-        <div class="user-data">
-          <span class="user-data currency ${currencyClass}">
-            ${amount}
-          </span>
-        </div>
+    <div id="${elementId}">
+      <div>${title}</div>
+      <div class="user-data">
+        <span class="user-data currency ${currencyClass}">${amount}</span>
       </div>
-    `);
+    </div>
+  `);
+}
+
+export function createInspectorMessageEntry(elementId, l10nKey, l10nDefault, amount) {
+  const title = l10n(l10nKey, l10nDefault);
+
+  const currencyClass = getCurrencyClass(amount);
+  amount = formatCurrency(amount);
+
+  return $(`
+    <div id="${elementId}" class="inspector-message-row">
+      <div class="inspector-message-label">${title}</div>
+      <div class="inspector-message-currency">
+        <span class="user-data currency ${currencyClass}">${amount}</span>
+      </div>
+    </div>
+  `);
 }
