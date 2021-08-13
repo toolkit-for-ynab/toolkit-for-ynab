@@ -13,7 +13,6 @@ import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-mod
 import { Feature } from './features/feature';
 import { InboundMessage, InboundMessageType, OutboundMessageType } from 'toolkit/core/messages';
 
-let hasToolkitLoaded = false;
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
@@ -111,6 +110,8 @@ export class YNABToolkit {
   private invokeFeatureInstances = async () => {
     this.featureInstances.forEach(async (feature) => {
       if (isFeatureEnabled(feature.settings.enabled)) {
+        document.body.dataset[feature.constructor.name] = 'true';
+
         feature.applyListeners();
 
         try {
@@ -168,10 +169,12 @@ export class YNABToolkit {
           featureInstance.settings.enabled = value;
 
           if (isFeatureEnabled(value)) {
+            document.body.dataset[name] = 'true';
             this.injectFeatureCSS(featureInstance);
             featureInstance.applyListeners();
             this.invokeFeature(name);
           } else {
+            delete document.body.dataset[name];
             this.destroyFeature(name);
           }
         }
@@ -273,8 +276,6 @@ export class YNABToolkit {
           self.invokeFeatureInstances();
 
           Ember.run.later(self.invokeAllHooks, 100);
-
-          hasToolkitLoaded = true;
         }
       } else if (typeof Ember !== 'undefined') {
         Ember.run.later(poll, 250);

@@ -1,9 +1,11 @@
-.budget-table-header .budget-table-cell-name {
-  margin-left: auto;
-}
+.budget-table-header {
+  .budget-table-cell-name {
+    margin-left: auto;
+  }
 
-.budget-table-header .tk-budget-table-cell-goal {
-  padding-right: 1em;
+  .tk-budget-table-cell-goal {
+    padding-right: 1em;
+  }
 }
 
 .tk-budget-table-cell-goal {
