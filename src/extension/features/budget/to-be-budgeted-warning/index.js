@@ -7,33 +7,24 @@ export class ToBeBudgetedWarning extends Feature {
   }
 
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
+    return true;
   }
 
   invoke() {
-    // check if TBB > zero, if so, change background color
-    if ($('.budget-header-totals-amount-value .currency').hasClass('positive')) {
-      $('.budget-header-totals-amount').addClass('toolkit-cautious');
-      $('.budget-header-totals-amount-arrow').addClass('toolkit-cautious');
+    this.addToolkitEmberHook('to-be-budgeted', 'didRender', this.addClasses);
+    $('.budget-header .to-be-budgeted').each((id, el) => this.addClasses(el));
+  }
+
+  addClasses(element) {
+    const tbb = $(element);
+    if (tbb.hasClass('is-positive')) {
+      tbb.addClass('toolkit-tbb-warning');
     } else {
-      $('.budget-header-totals-amount').removeClass('toolkit-cautious');
-      $('.budget-header-totals-amount-arrow').removeClass('toolkit-cautious');
+      tbb.removeClass('toolkit-tbb-warning');
     }
   }
 
-  observe(changedNodes) {
-    if (!this.shouldInvoke()) return;
-
-    if (
-      changedNodes.has('budget-header-item budget-header-calendar') ||
-      changedNodes.has('budget-header-totals-cell-value user-data')
-    ) {
-      this.invoke();
-    }
-  }
-
-  onRouteChanged() {
-    if (!this.shouldInvoke()) return;
-    this.invoke();
+  destroy() {
+    $('.toolkit-tbb-warning').removeClass('toolkit-tbb-warning');
   }
 }

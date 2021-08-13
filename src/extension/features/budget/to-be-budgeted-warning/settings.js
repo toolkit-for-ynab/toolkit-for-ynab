@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'budget',
-  title: 'To Be Budgeted Warning',
+  title: 'Emphasize Ready to Assign',
   description:
-    "Changes the 'To Be Budgeted' background color to yellow if there is unallocated money left to be budgeted.",
+    "Changes the 'Ready to Assign' background color to yellow if there is unallocated money left to be budgeted.",
 };
