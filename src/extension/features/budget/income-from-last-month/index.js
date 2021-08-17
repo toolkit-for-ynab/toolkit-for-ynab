@@ -18,17 +18,22 @@ export class IncomeFromLastMonth extends Feature {
 
   invoke() {
     // Do nothing if no header found.
-    if ($('.budget-header-totals-details-values').length === 0) return;
+    if ($('.budget-header-totals').length === 0) return;
+    // Get current month and adjust per settings for which month to use for 'last month'
     const matchMonth = getSelectedMonth().subtractMonths(this.settings.enabled);
     const previousMonthName = l10nMonth(matchMonth.getMonth(), MonthStyle.Short);
+    const currentMonthName = l10nMonth(getSelectedMonth().getMonth(), MonthStyle.Short);
 
+    // Calculate income from 'last month'
     const total = getEntityManager()
       .getAllTransactions()
       .reduce((reduced, transaction) => {
+        // Extract details for transaction
         const isSplit = transaction.getIsSplit();
         const transactionSubCategory = transaction.get('subCategory');
         const transactionAmount = transaction.get('amount');
 
+        // Check if transaction is from the appropriate month.
         if (
           !transaction.get('date').equalsByMonth(matchMonth) ||
           transaction.get('isTombstone') ||
@@ -37,9 +42,11 @@ export class IncomeFromLastMonth extends Feature {
           return reduced;
         }
 
+        // Add to total if the transaction is income, but not if it is split
         if (transactionSubCategory.isImmediateIncomeCategory()) {
           return reduced + transactionAmount;
         }
+        // Add income portion to total if it is a split transaction
         if (isSplit) {
           let subTransactionIncomes = 0;
           transaction.get('subTransactions').forEach((subTransaction) => {
@@ -61,37 +68,36 @@ export class IncomeFromLastMonth extends Feature {
         return reduced;
       }, 0);
 
+    // Add the income from last month section and structure, if not already in place
     if ($('.toolkit-income-from-last-month').length === 0) {
-      $('.budget-header-totals-details-values').prepend(
+      $('.budget-header-totals').after(
         $('<div>', {
-          class: 'budget-header-totals-cell-value toolkit-income-from-last-month user-data',
+          class: 'budget-header-item budget-header-totals toolkit-income-from-last-month user-data',
         }).append(
-          $('<span>', {
-            class: 'user-data currency positive',
-          })
+          $('<div>', {
+            id: 'toolkit-income-from-last-month-container',
+            class: 'to-be-budgeted ember-view ynab-breakdown',
+          }).append(
+            $('<div>', {
+              class: 'toolkit-income-from-last-month-income',
+            })
+          )
         )
-      );
-
-      $('.budget-header-totals-details-names').prepend(
-        $('<div>', {
-          class: 'budget-header-totals-cell-name toolkit-income-from-last-month',
-          css: {
-            'padding-left': '0.3em',
-            'text-align': 'left',
-          },
-        })
       );
     }
 
-    $('.budget-header-totals-cell-value.toolkit-income-from-last-month span').text(
-      formatCurrency(total)
-    );
+    // Create income line
+    const incomeContents = `<div>${l10n(
+      'toolkit.incomeIn',
+      'Income in'
+    )} ${previousMonthName}</div><div class="user-data"><span class="user-data currency positive">${formatCurrency(
+      total
+    )}</span></div>`;
 
-    $('.budget-header-totals-details-names > .toolkit-income-from-last-month').text(
-      `${l10n('toolkit.incomeIn', 'Income in')} ${previousMonthName}`
-    );
+    $('.toolkit-income-from-last-month-income').html(incomeContents);
   }
 
+  // Listen for events that require an update
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
