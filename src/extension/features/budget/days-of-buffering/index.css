@@ -1,9 +1,9 @@
-.toolkit-days-of-buffering .budget-header-days-age {
+.tk-days-of-buffering .budget-header-days-age {
   color: #23b2ce;
   min-width: 6em;
 }
 
-.toolkit-days-of-buffering > div {
+.tk-days-of-buffering > div {
   display: flex;
   flex-direction: column;
   justify-content: center;
