@@ -13,6 +13,20 @@ export class NotesAsMarkdown extends Feature {
     return true;
   }
 
+  invoke() {
+    this.addToolkitEmberHook('budget/inspector/inspector-notes', 'didRender', this.applyMarkdown);
+
+    const inspectorNotes = document.querySelector('.inspector-notes');
+    if (inspectorNotes) {
+      this.applyMarkdown(inspectorNotes);
+    }
+  }
+
+  destroy() {
+    document.querySelector('.inspector-category-note.tk-hidden')?.classList.remove('tk-hidden');
+    document.querySelector('.tk-markdown-note')?.remove();
+  }
+
   applyMarkdown = (element) => {
     const view = getEmberView(element.getAttribute('id'));
     const ynabNoteContainer = element.querySelector('.inspector-category-note');
@@ -75,8 +89,4 @@ export class NotesAsMarkdown extends Feature {
       ynabNoteContainer.classList.remove('tk-hidden');
     }
   };
-
-  invoke() {
-    this.addToolkitEmberHook('budget/inspector/inspector-notes', 'didRender', this.applyMarkdown);
-  }
 }

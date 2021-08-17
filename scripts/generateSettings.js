@@ -164,13 +164,6 @@ export const settingsMap: Record<string, FeatureSettingConfig> = ${JSON.stringif
     }, {})
   )};
 export const allToolkitSettings = Object.values(settingsMap);
-
-// eslint-disable-next-line quotes, object-curly-spacing, quote-props
-window.ynabToolKit.settings = allToolkitSettings;
-
-// We don't update these from anywhere else, so go ahead and freeze / seal the object so nothing can be injected.
-Object.freeze(window.ynabToolKit.settings);
-Object.seal(window.ynabToolKit.settings);
 `;
 }
 
