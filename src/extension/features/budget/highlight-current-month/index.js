@@ -10,11 +10,15 @@ export class CurrentMonthIndicator extends Feature {
     return isCurrentRouteBudgetPage();
   }
 
+  destroy() {
+    $('.budget-header .budget-header-calendar').removeClass('tk-highlight-current-month');
+  }
+
   invoke() {
     if (isCurrentMonthSelected()) {
-      $('.budget-header .budget-header-calendar').addClass('toolkit-highlight-current-month');
+      $('.budget-header .budget-header-calendar').addClass('tk-highlight-current-month');
     } else {
-      $('.budget-header .budget-header-calendar').removeClass('toolkit-highlight-current-month');
+      $('.budget-header .budget-header-calendar').removeClass('tk-highlight-current-month');
     }
   }
 
