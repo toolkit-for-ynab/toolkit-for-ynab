@@ -1,7 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import {
   isCurrentRouteBudgetPage,
-  getSelectedMonth,
+  getCurrentBudgetDate,
   getEntityManager,
 } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
@@ -20,53 +20,34 @@ export class IncomeFromLastMonth extends Feature {
     // Do nothing if no header found.
     if ($('.budget-header-totals').length === 0) return;
     // Get current month and adjust per settings for which month to use for 'last month'
-    const matchMonth = getSelectedMonth().subtractMonths(this.settings.enabled);
-    const previousMonthName = l10nMonth(matchMonth.getMonth(), MonthStyle.Short);
-    const currentMonthName = l10nMonth(getSelectedMonth().getMonth(), MonthStyle.Short);
+    const currentBudgetDate = getCurrentBudgetDate();
+    const currentYear = parseInt(currentBudgetDate['year']);
+    const currentMonth = parseInt(currentBudgetDate['month']);
 
-    // Calculate income from 'last month'
-    const total = getEntityManager()
-      .getAllTransactions()
-      .reduce((reduced, transaction) => {
-        // Extract details for transaction
-        const isSplit = transaction.getIsSplit();
-        const transactionSubCategory = transaction.get('subCategory');
-        const transactionAmount = transaction.get('amount');
+    const incomeYear = currentMonth - this.settings.enabled > 0 ? currentYear : currentYear - 1;
+    const incomeMonth =
+      currentMonth - this.settings.enabled > 0
+        ? currentMonth - this.settings.enabled
+        : currentMonth - this.settings.enabled + 12;
 
-        // Check if transaction is from the appropriate month.
-        if (
-          !transaction.get('date').equalsByMonth(matchMonth) ||
-          transaction.get('isTombstone') ||
-          !transactionSubCategory
-        ) {
-          return reduced;
-        }
+    const currentMonthName = l10nMonth(currentMonth - 1, MonthStyle.Short);
+    const incomeMonthName = l10nMonth(incomeMonth - 1, MonthStyle.Short);
 
-        // Add to total if the transaction is income, but not if it is split
-        if (transactionSubCategory.isImmediateIncomeCategory()) {
-          return reduced + transactionAmount;
-        }
-        // Add income portion to total if it is a split transaction
-        if (isSplit) {
-          let subTransactionIncomes = 0;
-          transaction.get('subTransactions').forEach((subTransaction) => {
-            const subTransactionSubCategory = subTransaction.get('subCategory');
-            const subTransactionAmount = subTransaction.get('amount');
+    const allBudgetCalculations = getEntityManager().getAllMonthlyBudgetCalculations();
 
-            if (!subTransactionSubCategory) {
-              return;
-            }
+    const currentBudgetCalculation = allBudgetCalculations.filter((budgetItem) => {
+      const budgetItemDate = budgetItem.monthlyBudgetId.split('/')[1].split('-');
+      return (
+        currentYear === parseInt(budgetItemDate[0]) && currentMonth === parseInt(budgetItemDate[1])
+      );
+    })[0];
 
-            if (subTransactionSubCategory.isImmediateIncomeCategory()) {
-              subTransactionIncomes += subTransactionAmount;
-            }
-          });
-
-          return reduced + subTransactionIncomes;
-        }
-
-        return reduced;
-      }, 0);
+    const incomeBudgetCalculation = allBudgetCalculations.filter((budgetItem) => {
+      const budgetItemDate = budgetItem.monthlyBudgetId.split('/')[1].split('-');
+      return (
+        incomeYear === parseInt(budgetItemDate[0]) && incomeMonth === parseInt(budgetItemDate[1])
+      );
+    })[0];
 
     // Add the income from last month section and structure, if not already in place
     if ($('.toolkit-income-from-last-month').length === 0) {
@@ -80,6 +61,9 @@ export class IncomeFromLastMonth extends Feature {
           }).append(
             $('<div>', {
               class: 'toolkit-income-from-last-month-income',
+            }),
+            $('<div>', {
+              class: 'toolkit-income-from-last-month-assigned',
             })
           )
         )
@@ -90,11 +74,20 @@ export class IncomeFromLastMonth extends Feature {
     const incomeContents = `<div>${l10n(
       'toolkit.incomeIn',
       'Income in'
-    )} ${previousMonthName}</div><div class="user-data"><span class="user-data currency positive">${formatCurrency(
-      total
+    )} ${incomeMonthName}</div><div class="user-data"><span class="user-data currency positive">${formatCurrency(
+      incomeBudgetCalculation.immediateIncome
+    )}</span></div>`;
+
+    // Create assigned line
+    const assignedContents = `<div>${l10n(
+      'toolkit.assignedIn',
+      'Assigned in'
+    )} ${currentMonthName}</div><div class="user-data"><span class="user-data currency positive">${formatCurrency(
+      currentBudgetCalculation.budgeted
     )}</span></div>`;
 
     $('.toolkit-income-from-last-month-income').html(incomeContents);
+    $('.toolkit-income-from-last-month-assigned').html(assignedContents);
   }
 
   // Listen for events that require an update
