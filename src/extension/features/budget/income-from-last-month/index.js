@@ -19,22 +19,28 @@ export class IncomeFromLastMonth extends Feature {
   invoke() {
     // Do nothing if no header found.
     if ($('.budget-header-totals').length === 0) return;
-    // Get current month and adjust per settings for which month to use for 'last month'
-    const currentBudgetDate = getCurrentBudgetDate();
-    const currentYear = parseInt(currentBudgetDate['year']);
-    const currentMonth = parseInt(currentBudgetDate['month']);
 
+    // Get current month and year
+    const currentBudgetDate = getCurrentBudgetDate();
+    const currentYear = parseInt(currentBudgetDate.year);
+    const currentMonth = parseInt(currentBudgetDate.month);
+
+    // Calculate income month and year based on settings
+    // Adjust year/month when it rolls over
     const incomeYear = currentMonth - this.settings.enabled > 0 ? currentYear : currentYear - 1;
     const incomeMonth =
       currentMonth - this.settings.enabled > 0
         ? currentMonth - this.settings.enabled
         : currentMonth - this.settings.enabled + 12;
 
+    // Get short name for current and income months
     const currentMonthName = l10nMonth(currentMonth - 1, MonthStyle.Short);
     const incomeMonthName = l10nMonth(incomeMonth - 1, MonthStyle.Short);
 
+    // Get all budget calculations from YNAB
     const allBudgetCalculations = getEntityManager().getAllMonthlyBudgetCalculations();
 
+    // Find current month budget calculations
     const currentBudgetCalculation = allBudgetCalculations.filter((budgetItem) => {
       const budgetItemDate = budgetItem.monthlyBudgetId.split('/')[1].split('-');
       return (
@@ -42,6 +48,7 @@ export class IncomeFromLastMonth extends Feature {
       );
     })[0];
 
+    // Find income month budget calculations
     const incomeBudgetCalculation = allBudgetCalculations.filter((budgetItem) => {
       const budgetItemDate = budgetItem.monthlyBudgetId.split('/')[1].split('-');
       return (
@@ -86,6 +93,7 @@ export class IncomeFromLastMonth extends Feature {
       currentBudgetCalculation.budgeted
     )}</span></div>`;
 
+    // Insert income from last month lines
     $('.toolkit-income-from-last-month-income').html(incomeContents);
     $('.toolkit-income-from-last-month-assigned').html(assignedContents);
   }
