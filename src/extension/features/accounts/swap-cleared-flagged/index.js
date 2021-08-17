@@ -6,6 +6,10 @@ export class SwapClearedFlagged extends Feature {
     return true;
   }
 
+  injectCSS() {
+    return require('./index.css');
+  }
+
   invoke() {
     const rows = [
       'register/grid-header',
