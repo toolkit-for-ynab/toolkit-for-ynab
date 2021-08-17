@@ -63,7 +63,6 @@ export class IncomeFromLastMonth extends Feature {
           class: 'budget-header-item budget-header-totals toolkit-income-from-last-month user-data',
         }).append(
           $('<div>', {
-            id: 'toolkit-income-from-last-month-container',
             class: 'to-be-budgeted ember-view ynab-breakdown',
           }).append(
             $('<div>', {
@@ -82,27 +81,32 @@ export class IncomeFromLastMonth extends Feature {
     }
 
     // Create income line
+    const incomeType = incomeBudgetCalculation.immediateIncome > 0 ? 'positive' : 'negative';
     const incomeContents = `<div>${l10n(
       'toolkit.incomeIn',
       'Income in'
-    )} ${incomeMonthName}</div><div class="user-data"><span class="user-data currency positive">${formatCurrency(
+    )} ${incomeMonthName}</div><div class="user-data budget-breakdown-to-be-budgeted-${incomeType}"><span class="user-data currency ${incomeType}">${formatCurrency(
       incomeBudgetCalculation.immediateIncome
     )}</span></div>`;
 
     // Create assigned line
+    const assignedType = currentBudgetCalculation.budgeted <= 0 ? 'positive' : 'negative';
     const assignedContents = `<div>${l10n(
       'toolkit.assignedIn',
       'Assigned in'
-    )} ${currentMonthName}</div><div class="user-data"><span class="user-data currency positive">${formatCurrency(
+    )} ${currentMonthName}</div><div class="user-data budget-breakdown-to-be-budgeted-${assignedType}"><span class="user-data currency ${assignedType}">${formatCurrency(
       currentBudgetCalculation.budgeted
     )}</span></div>`;
 
     // Create variance line
+    const varianceAmount =
+      incomeBudgetCalculation.immediateIncome - currentBudgetCalculation.budgeted;
+    const varianceType = varianceAmount > 0 ? 'positive' : 'negative';
     const varianceContents = `<div>${l10n(
       'toolkit.varianceIn',
       'Variance'
-    )}</div><div class="user-data"><span class="user-data currency positive">${formatCurrency(
-      incomeBudgetCalculation.immediateIncome - currentBudgetCalculation.budgeted
+    )}</div><div class="user-data budget-breakdown-to-be-budgeted-${varianceType}"><span class="user-data currency ${varianceType}"> =${formatCurrency(
+      varianceAmount
     )}</span></div>`;
 
     // Insert income from last month lines
