@@ -7,6 +7,10 @@ export class DisplayTotalMonthlyGoals extends Feature {
     return true;
   }
 
+  destroy() {
+    document.querySelector('.tk-total-monthly-goals')?.remove();
+  }
+
   extractCategoryGoalInformation(element) {
     const category = getEmberView(element.id, 'category');
     if (!category) {
@@ -49,7 +53,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
     const currencyClass = goalsAmount === 0 ? 'zero' : 'positive';
 
     return $(`
-      <section class="card total-monthly-goals-inspector">
+      <section class="card tk-total-monthly-goals">
         <div class="card-roll-up">
           <h2>
             Total Monthly Goals
@@ -66,7 +70,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
   addTotalMonthlyGoals(element) {
     const monthlyGoals = this.calculateMonthlyGoals();
 
-    $('.total-monthly-goals-inspector').remove();
+    $('.tk-total-monthly-goals').remove();
 
     const shouldShowInspector = monthlyGoals.checkedCategoryCount !== 1;
     if (!shouldShowInspector) {
