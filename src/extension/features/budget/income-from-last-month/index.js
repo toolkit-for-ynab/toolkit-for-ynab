@@ -71,6 +71,10 @@ export class IncomeFromLastMonth extends Feature {
             }),
             $('<div>', {
               class: 'toolkit-income-from-last-month-assigned',
+            }),
+            $('<hr>'),
+            $('<div>', {
+              class: 'toolkit-income-from-last-month-variance',
             })
           )
         )
@@ -93,9 +97,18 @@ export class IncomeFromLastMonth extends Feature {
       currentBudgetCalculation.budgeted
     )}</span></div>`;
 
+    // Create variance line
+    const varianceContents = `<div>${l10n(
+      'toolkit.varianceIn',
+      'Variance'
+    )}</div><div class="user-data"><span class="user-data currency positive">${formatCurrency(
+      incomeBudgetCalculation.immediateIncome - currentBudgetCalculation.budgeted
+    )}</span></div>`;
+
     // Insert income from last month lines
     $('.toolkit-income-from-last-month-income').html(incomeContents);
     $('.toolkit-income-from-last-month-assigned').html(assignedContents);
+    $('.toolkit-income-from-last-month-variance').html(varianceContents);
   }
 
   // Listen for events that require an update
