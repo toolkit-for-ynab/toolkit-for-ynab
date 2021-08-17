@@ -15,6 +15,15 @@ const settingMigrationMap = {
   ConfirmEditTransactionCancellation: {
     oldSettingName: 'ConfirmKeyboardCancelationOfTransactionChanges',
   },
+  ToggleMasterCategories: {
+    oldSettingName: 'CategorySoloMode',
+    settingMapping: {
+      'cat-solo-mode': true,
+      'cat-toggle-all': true,
+      'cat-solo-mode-toggle-all': true,
+      0: false,
+    },
+  },
 };
 
 let previousSettings;
