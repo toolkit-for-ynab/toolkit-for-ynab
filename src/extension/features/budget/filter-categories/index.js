@@ -19,6 +19,11 @@ export class FilterCategories extends Feature {
     }
   };
 
+  destroy() {
+    $('.tk-categories-filter-hidden').removeClass('tk-categories-filter-hidden');
+    $('.tk-categories-filter-wrapper').remove();
+  }
+
   filterCategories = (text) => {
     $('.tk-categories-filter-hidden').removeClass('tk-categories-filter-hidden');
     if (!text) {
