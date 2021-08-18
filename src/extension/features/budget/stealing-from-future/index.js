@@ -1,7 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { componentLookup } from 'toolkit/extension/utils/ember';
-import { l10nMonth, MonthStyle } from 'toolkit/extension/utils/toolkit';
 
 export class StealingFromFuture extends Feature {
   injectCSS() {
@@ -14,48 +13,51 @@ export class StealingFromFuture extends Feature {
 
   invoke() {
     this.addToolkitEmberHook('budget-header', 'didRender', this.updateReadyToAssign);
-    $('.to-be-budgeted').each((_, el) => this.updateReadyToAssign(el));
+
+    const budgetHeader = document.querySelector('.budget-header');
+    if (budgetHeader) {
+      this.updateReadyToAssign(budgetHeader);
+    }
   }
 
   destroy() {
-    const toBeBudgeted = $('.to-be-budgeted');
-    $(toBeBudgeted).removeClass('is-negative');
-    $('.tk-stealing-from-future', toBeBudgeted).remove();
-    $('.to-be-budgeted-label', toBeBudgeted).css('display', 'initial');
+    $('#tk-stealing-from-future').remove();
   }
 
   updateReadyToAssign(header) {
-    $('.tk-stealing-from-future', header).remove();
+    $('#tk-stealing-from-future').remove();
 
     const budgetBreakdown = componentLookup('budget-breakdown');
     if (!budgetBreakdown) return;
 
-    const { negativeFutureBudgetedMonth } = budgetBreakdown;
-    if (
-      negativeFutureBudgetedMonth &&
-      budgetBreakdown.month.isBeforeMonth(negativeFutureBudgetedMonth.month)
-    ) {
-      $('.budget-header-totals', header).after(
-        $(`<div class="budget-header-item tk-stealing-from-future is-negative">
-            <div class="to-be-budgeted is-negative">
-              <button>
-                <div class="to-be-budgeted-amount">
-                  <span class="user-data currency negative">${formatCurrency(
-                    negativeFutureBudgetedMonth.available
-                  )}</span>
-                </div>
-                <div class="to-be-budgeted-label">in ${l10nMonth(
-                  negativeFutureBudgetedMonth.month.getMonth(),
-                  MonthStyle.Long
-                )}</div>
-              </button>
-            </div>
-          </div>`)
-      );
+    if (document.querySelector('.to-be-budgeted.is-negative')) {
+      return;
+    }
 
-      $('.tk-stealing-from-future button').on('click', () => {
-        componentLookup('budget-breakdown')?.send('goToFutureMonth');
-      });
+    const { negativeFutureBudgetedMonth } = budgetBreakdown;
+    if (negativeFutureBudgetedMonth) {
+      $('.budget-header-totals', header).after(
+        $('<div>', {
+          id: 'tk-stealing-from-future',
+          class: 'budget-header-item budget-header-totals tk-stealing-from-future',
+        }).append(
+          $('<div>', { class: 'to-be-budgeted is-negative' }).append(
+            $('<button>')
+              .append(
+                $('<div>', {
+                  class: 'to-be-budgeted-amount',
+                  text: formatCurrency(negativeFutureBudgetedMonth.available),
+                })
+              )
+              .append(
+                $('<div>', {
+                  class: 'to-be-budgeted-label',
+                  text: negativeFutureBudgetedMonth.availableLabel,
+                })
+              )
+          )
+        )
+      );
     }
   }
 }
