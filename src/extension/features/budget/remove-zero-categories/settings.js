@@ -3,8 +3,6 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'budget',
-  title: 'Remove Zero and Negative Categories When Covering Over-Budgeting',
-  description: `
-Default YNAB behaviour is to show these categories when covering overbudgeting, but since they've got no money in them they won't help you. Let's clean up the menu.
-`,
+  title: 'Hide Negative/Zero Categories When Covering Overspending',
+  description: `Removes categories which have a zero or negative balance from the "Cover Overspending" menu since they don't have any way of helping.`,
 };
