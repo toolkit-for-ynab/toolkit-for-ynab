@@ -1,4 +1,4 @@
-import { Feature } from 'tk/extension/features/feature';
+import { Feature } from 'toolkit/extension/features/feature';
 
 export class ToBeBudgetedWarning extends Feature {
   injectCSS() {
