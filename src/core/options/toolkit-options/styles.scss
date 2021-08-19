@@ -1,3 +1,5 @@
+@import '~@csstools/normalize.css';
+
 :root {
   // base colors
   --tk-header-color: #f2f2f7;
@@ -100,6 +102,7 @@ body {
   &__description {
     margin-top: 0.5rem;
     font-size: 0.9rem;
+    line-height: 1.2rem;
   }
 
   &--select {

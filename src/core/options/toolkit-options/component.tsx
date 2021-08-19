@@ -20,6 +20,7 @@ import { Modal, useModal } from 'toolkit/components/modal';
 import { DiscordLink, GitHubLink, TrelloLink } from 'toolkit/components/links';
 import { useDarkModeSetter } from 'toolkit/hooks/useDarkModeSetter';
 import { features } from 'toolkit/extension/features';
+import ReactMarkdown from 'react-markdown';
 
 function ColorPicker({
   id,
@@ -117,7 +118,21 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
             {config.title}
           </label>
         </div>
-        <div className="setting__description">{config.description}</div>
+        <div className="setting__description">
+          <ReactMarkdown
+            linkTarget="_blank"
+            components={{
+              link: ({ href, children }) => (
+                <a href={href as string} target="_blank" rel="noopener noreferrer">
+                  {children}
+                </a>
+              ),
+              p: ({ children }) => <p style={{ margin: 0 }}>{children}</p>,
+            }}
+          >
+            {config.description}
+          </ReactMarkdown>
+        </div>
         {config.type === 'select' && (
           <RadioGroup
             className={classNames('setting__options', {
