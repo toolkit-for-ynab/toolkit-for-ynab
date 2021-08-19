@@ -1,13 +1,13 @@
-.toolkit-tbb-warning {
+.tk-tbb-warning {
   background-color: var(--budget_balance_warning_background) !important;
 }
 
-.toolkit-tbb-warning .to-be-budgeted-auto-assign {
+.tk-tbb-warning .to-be-budgeted-auto-assign {
   background-color: var(--banner_warning_button_background) !important;
   color: var(--banner_warning_button_label);
 }
 
-.toolkit-tbb-warning .to-be-budgeted-auto-assign:hover {
+.tk-tbb-warning .to-be-budgeted-auto-assign:hover {
   background-color: var(--banner_warning_button_background_active) !important;
 }
 
