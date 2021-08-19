@@ -3,7 +3,7 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class SplitTransactionTabExpand extends Feature {
   shouldInvoke() {
-    return isCurrentRouteAccountsPage() && $('.ynab-grid-split-add-sub-transaction').length;
+    return isCurrentRouteAccountsPage() && !!$('.ynab-grid-split-add-sub-transaction').length;
   }
 
   invoke() {}

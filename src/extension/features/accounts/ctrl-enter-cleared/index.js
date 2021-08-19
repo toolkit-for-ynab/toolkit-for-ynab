@@ -3,7 +3,7 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class CtrlEnterCleared extends Feature {
   shouldInvoke() {
-    return isCurrentRouteAccountsPage() && $('.ynab-grid-body-row.is-editing').length;
+    return isCurrentRouteAccountsPage() && !!$('.ynab-grid-body-row.is-editing').length;
   }
 
   invoke() {
