@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'budget',
-  title: 'Display Total Monthly Goals',
+  title: 'Add Total Monthly Goals',
   description:
-    "Adds a 'Total Monthly Goals' to the budget inspector, which displays the total amount of monthly funding goals.",
+    "Add a 'Total Monthly Goals' section to the budget inspector, which displays the total amount of monthly funding goals.",
 };

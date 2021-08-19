@@ -1,5 +1,4 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class SwapClearedFlagged extends Feature {
   shouldInvoke() {
@@ -19,35 +18,44 @@ export class SwapClearedFlagged extends Feature {
       'register/grid-edit',
     ];
 
-    addToolkitEmberHook(this, 'register/grid-header', 'didRender', swapColumns);
+    this.addToolkitEmberHook('register/grid-header', 'didRender', this.swapColumns);
 
     rows.forEach((key) => {
-      addToolkitEmberHook(this, key, 'didInsertElement', swapColumns);
+      this.addToolkitEmberHook(key, 'didInsertElement', this.swapColumns);
     });
-  }
-}
 
-function swapColumns(element) {
-  const clearedColumn = element.querySelector('.ynab-grid-cell-cleared');
-  const flagColumn = element.querySelector('.ynab-grid-cell-flag');
-  if (
-    !clearedColumn ||
-    !flagColumn ||
-    clearedColumn.classList.contains('tk-swapped') ||
-    flagColumn.classList.contains('tk-swapped')
-  ) {
-    return;
+    for (const element of document.querySelectorAll('.ynab-grid-body-row')) {
+      this.swapColumns(element);
+    }
   }
 
-  const beforeClearedColumn = clearedColumn.previousElementSibling;
-  const beforeFlagColumn = flagColumn.previousElementSibling;
-  if (!beforeClearedColumn || !beforeFlagColumn) {
-    return;
+  destroy() {
+    const header = document.querySelector('.ynab-grid-header-row');
+    if (header) {
+      this.swapColumns(header);
+    }
+
+    for (const element of document.querySelectorAll('.ynab-grid-body-row')) {
+      this.swapColumns(element);
+    }
   }
 
-  clearedColumn.classList.add('tk-swapped');
-  flagColumn.classList.add('tk-swapped');
+  swapColumns(element) {
+    const clearedColumn = element.querySelector('.ynab-grid-cell-cleared');
+    const flagColumn = element.querySelector('.ynab-grid-cell-flag');
+    if (!clearedColumn || !flagColumn) {
+      return;
+    }
 
-  beforeClearedColumn.after(flagColumn);
-  beforeFlagColumn.after(clearedColumn);
+    const clearedIndex = Array.from(clearedColumn.parentElement.children).indexOf(clearedColumn);
+    const flagIndex = Array.from(flagColumn.parentElement.children).indexOf(flagColumn);
+    const isSwapped = clearedIndex < flagIndex;
+    if ((this.settings.enabled && !isSwapped) || (!this.settings.enabled && isSwapped)) {
+      const $tmp = $('<div>');
+      $(clearedColumn).after($tmp);
+      $(flagColumn).after($(clearedColumn));
+      $tmp.after($(flagColumn));
+      $tmp.remove();
+    }
+  }
 }

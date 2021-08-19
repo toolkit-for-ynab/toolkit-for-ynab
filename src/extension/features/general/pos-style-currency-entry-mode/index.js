@@ -28,18 +28,26 @@ export class POSStyleCurrencyEntryMode extends Feature {
     this.wrapCurrencyInput('ynab-new-currency-input');
   }
 
+  destroy() {
+    const newCurrencyInputComponent = componentLookup('ynab-new-currency-input');
+    const originalNewCurrencyInputComponentActions =
+      Object.getPrototypeOf(newCurrencyInputComponent).actions;
+    originalNewCurrencyInputComponentActions.commitValue =
+      this.originalNewCurrencyInputComponentCallback;
+  }
+
   wrapCurrencyInput(name) {
     const self = this;
 
     const newCurrencyInputComponent = componentLookup(name);
     const originalNewCurrencyInputComponentActions =
       Object.getPrototypeOf(newCurrencyInputComponent).actions;
-    const originalNewCurrencyInputComponentCallback =
+    this.originalNewCurrencyInputComponentCallback =
       originalNewCurrencyInputComponentActions.commitValue;
 
     originalNewCurrencyInputComponentActions.commitValue = function () {
       const newArgs = [].slice.call(arguments);
-      newArgs.push(self, originalNewCurrencyInputComponentCallback);
+      newArgs.push(self, self.originalNewCurrencyInputComponentCallback);
       self.commitValueWrapper.apply(this, newArgs);
     };
   }

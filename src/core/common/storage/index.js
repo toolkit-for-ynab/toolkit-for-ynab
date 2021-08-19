@@ -1,9 +1,7 @@
 import { getBrowser } from 'toolkit/core/common/web-extensions';
 
-const FEATURE_SETTING_PREFIX = 'toolkit-feature:';
-
+export const FEATURE_SETTING_PREFIX = 'toolkit-feature:';
 export const featureSettingKey = (featureName) => `${FEATURE_SETTING_PREFIX}${featureName}`;
-
 export const StorageArea = {
   Local: 'local',
 };
@@ -114,6 +112,14 @@ export class ToolkitStorage {
     this.offStorageItemChanged(featureSettingKey(settingName), callback);
   }
 
+  onToolkitDisabledChanged(callback) {
+    this.onStorageItemChanged(featureSettingKey('DisableToolkit'), callback);
+  }
+
+  offToolkitDisabledChanged(callback) {
+    this.offStorageItemChanged(featureSettingKey('DisableToolkit'), callback);
+  }
+
   _listenForChanges = (changes, areaName) => {
     if (areaName !== this._storageArea) return;
 
@@ -121,7 +127,7 @@ export class ToolkitStorage {
       if (this._storageListeners.has(key)) {
         const listeners = this._storageListeners.get(key);
         listeners.forEach((listener) => {
-          listener(value.newValue);
+          listener(key, value.newValue);
         });
       }
     }
@@ -183,3 +189,5 @@ export class ToolkitStorage {
     });
   }
 }
+
+export const localToolkitStorage = new ToolkitStorage(StorageArea.Local);

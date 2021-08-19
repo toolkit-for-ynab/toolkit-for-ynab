@@ -1,0 +1,63 @@
+:root {
+  --tk-toggle-switch-color: #636366;
+  --tk-toggle-checked-fill-color: #4495d7;
+  --tk-toggle-unchecked-fill-color: #aeaeb2;
+}
+
+.toggle {
+  min-width: 64px;
+  height: 24px;
+
+  &__input {
+    display: none;
+  }
+
+  &__label {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    background-color: var(--tk-toggle-unchecked-fill-color);
+    border-radius: 13px;
+    height: 100%;
+    width: 100%;
+    transition: background-color 200ms ease;
+
+    &--labeled {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &::after {
+      content: '';
+      background-color: var(--tk-toggle-switch-color);
+      height: calc(100% - 6px);
+      width: 50%;
+      border-radius: 12px;
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      transition: left 200ms ease;
+    }
+  }
+
+  &__toggle-text {
+    color: #f1f1f1;
+
+    &--left {
+      margin-left: 6px;
+    }
+
+    &--right {
+      margin-right: 6px;
+    }
+  }
+
+  .toggle__input:checked + .toggle__label {
+    background-color: var(--tk-toggle-checked-fill-color);
+  }
+
+  .toggle__input:checked + .toggle__label::after {
+    left: calc(50% - 3px);
+  }
+}

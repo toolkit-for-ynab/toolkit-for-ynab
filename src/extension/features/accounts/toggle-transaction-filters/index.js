@@ -2,20 +2,16 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
-import { componentAppend } from 'toolkit/extension/utils/react';
+import { componentBefore } from 'toolkit/extension/utils/react';
 
-const ToggleButton = ({ longTitle, stateField }) => {
+const ToggleButton = ({ stateField }) => {
   const accountsController = controllerLookup('accounts');
-  const [isToggled, setIsToggled] = React.useState(accountsController.get(`filters.${stateField}`));
-
-  const observer = React.useCallback((filters) => {
-    setIsToggled(filters.get(stateField));
-  });
+  const [isShown, setIsShown] = React.useState(accountsController.get(`filters.${stateField}`));
 
   React.useEffect(() => {
-    accountsController.get('filters').addObserver(stateField, observer);
-    return () => accountsController.removeObserver(stateField, observer);
+    accountsController.get('filters').addObserver(stateField, () => {
+      setIsShown(accountsController.get(`filters.${stateField}`));
+    });
   }, []);
 
   const toggleSetting = () => {
@@ -25,20 +21,17 @@ const ToggleButton = ({ longTitle, stateField }) => {
   };
 
   return (
-    <button className={`button ${!isToggled && 'button-disabled'}`} onClick={toggleSetting}>
+    <button className={`button ${!isShown && 'button-disabled '}`} onClick={toggleSetting}>
       <i
-        className={`flaticon solid ${
-          stateField === 'reconciled' ? 'lock-1' : 'clock-1'
+        className={`tk-toggle tk-toggle--${stateField} flaticon solid ${
+          stateField === 'reconciled' ? 'lock-1' : 'calendar-1'
         } is-reconciled`}
-      >
-        {longTitle && (stateField === 'reconciled' ? ' Reconciled' : ' Scheduled')}
-      </i>
+      />
     </button>
   );
 };
 
 ToggleButton.propTypes = {
-  longTitle: PropTypes.bool.isRequired,
   stateField: PropTypes.string.isRequired,
 };
 
@@ -48,12 +41,26 @@ export class ToggleTransactionFilters extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'accounts/account-header', 'didRender', this.injectButtons);
+    const accountsHeader = document.querySelector('.accounts-header');
+    if (accountsHeader) {
+      this.injectButtons(accountsHeader);
+    }
+
+    this.addToolkitEmberHook('accounts/account-header', 'didRender', this.injectButtons);
   }
 
-  // Fix #1910
   injectCSS() {
-    return require('./index.css');
+    if (this.settings.enabled === '1') {
+      return require('./no-labels.css');
+    }
+
+    if (this.settings.enabled === '2') {
+      return require('./labels.css');
+    }
+  }
+
+  destroy() {
+    $('#tk-toggle-transaction-filters').remove();
   }
 
   injectButtons = (element) => {
@@ -62,12 +69,12 @@ export class ToggleTransactionFilters extends Feature {
       return;
     }
 
-    componentAppend(
-      <span id="tk-toggle-transaction-filters">
-        <ToggleButton stateField={'scheduled'} longTitle={this.settings.enabled === '2'} />
-        <ToggleButton stateField={'reconciled'} longTitle={this.settings.enabled === '2'} />
+    componentBefore(
+      <span id="tk-toggle-transaction-filters" className="tk-toggle-transaction-filters">
+        <ToggleButton stateField={'scheduled'} />
+        <ToggleButton stateField={'reconciled'} />
       </span>,
-      toolbarRight
+      $('.js-transaction-search', toolbarRight)[0]
     );
   };
 }

@@ -6,6 +6,13 @@ export class QuickBudgetWarning extends Feature {
     return isCurrentRouteBudgetPage();
   }
 
+  destroy() {
+    $('.budget-breakdown-auto-assign button.budget-inspector-button').off(
+      'click',
+      this.confirmClick
+    );
+  }
+
   invoke() {
     // target only buttons so other elements with same class can be added without forcing
     // confirmation, which can break the quick budget functionality for quick budget

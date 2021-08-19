@@ -4,7 +4,10 @@ import { run } from '@ember/runloop';
 import { settingsMap } from 'toolkit/core/settings';
 import { Feature } from 'toolkit/extension/features/feature';
 
-interface YNABToolkit {
+export interface YNABToolkitObject {
+  assets: {
+    logo: string;
+  };
   environment: 'development' | 'beta' | 'production';
   extensionId: string;
   hookedComponents: Set<Feature>;
@@ -12,6 +15,7 @@ interface YNABToolkit {
   options: {
     [settingName in FeatureName]: FeatureSetting;
   };
+  name: string;
   version: string;
 }
 
@@ -19,7 +23,7 @@ declare global {
   interface Window {
     Ember: Ember;
     __toolkitUtils: any;
-    ynabToolKit: YNABToolkit;
+    ynabToolKit: YNABToolkitObject;
   }
 
   interface Ember {
@@ -42,5 +46,5 @@ declare global {
   type FeatureSetting = boolean | string;
 
   const Ember: Ember;
-  const ynabToolKit: YNABToolkit;
+  const ynabToolKit: YNABToolkitObject;
 }

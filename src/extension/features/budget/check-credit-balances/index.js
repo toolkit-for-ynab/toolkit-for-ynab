@@ -17,13 +17,18 @@ export class CheckCreditBalances extends Feature {
     return isCurrentRouteBudgetPage();
   }
 
+  destroy() {
+    $('#tk-rectify-difference').remove();
+    $('[data-tk-pif-assist]').removeAttr('data-tk-pif-assist');
+  }
+
   invoke() {
     const today = ynab.utilities.DateWithoutTime.createForToday();
 
     if (today.equalsByMonth(getSelectedMonth())) {
       this.processDebtAccounts();
     } else {
-      $('.toolkit-rectify-difference').remove();
+      $('#tk-rectify-difference').remove();
     }
   }
 
@@ -125,15 +130,15 @@ export class CheckCreditBalances extends Feature {
     });
 
     if (!foundButton) {
-      $('.toolkit-rectify-difference').remove();
+      $('#tk-rectify-difference').remove();
     }
 
     const inspectorElement = document.querySelector('.budget-inspector');
     if (inspectorElement) {
       if (inspectorWarning) {
-        inspectorElement.setAttribute('data-toolkit-pif-assist', 'true');
+        inspectorElement.setAttribute('data-tk-pif-assist', 'true');
       } else {
-        inspectorElement.removeAttribute('data-toolkit-pif-assist');
+        inspectorElement.removeAttribute('data-tk-pif-assist');
       }
     }
   }
@@ -141,14 +146,14 @@ export class CheckCreditBalances extends Feature {
   addWarning(debtCategoryId) {
     const debtRowElement = document.querySelector(`[data-entity-id="${debtCategoryId}"]`);
     if (debtRowElement) {
-      debtRowElement.setAttribute('data-toolkit-pif-assist', 'true');
+      debtRowElement.setAttribute('data-tk-pif-assist', 'true');
     }
   }
 
   removeWarning(debtCategoryId) {
     const debtRowElement = document.querySelector(`[data-entity-id="${debtCategoryId}"]`);
     if (debtRowElement) {
-      debtRowElement.removeAttribute('data-toolkit-pif-assist');
+      debtRowElement.removeAttribute('data-tk-pif-assist');
     }
   }
 
@@ -162,10 +167,11 @@ export class CheckCreditBalances extends Feature {
         positive = '+';
       }
 
-      let button = $('.toolkit-rectify-difference');
+      let button = $('#tk-rectify-difference');
       if (!button.length) {
         button = $('<a>', {
-          class: 'budget-inspector-button toolkit-rectify-difference',
+          id: 'tk-rectify-difference',
+          class: 'budget-inspector-button',
         }).on('click', this.updateCreditBalances);
 
         $('.inspector-quick-budget').append(button);
@@ -224,7 +230,7 @@ export class CheckCreditBalances extends Feature {
       if (accountName === name) {
         let input = $(this)
           .find('.budget-table-cell-budgeted div.ynab-new-currency-input')
-          .click()
+          .trigger('click')
           .find('input');
 
         let newValue = view.category.budgeted + difference;
@@ -235,7 +241,7 @@ export class CheckCreditBalances extends Feature {
         if (!ynabToolKit.options.QuickBudgetWarning) {
           // only seems to work if the confirmation doesn't pop up?
           // haven't figured out a way to properly blur otherwise
-          input.blur();
+          input.trigger('blur');
         }
       }
     });

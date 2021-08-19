@@ -5,5 +5,5 @@ module.exports = {
   section: 'general',
   title: 'Hide Closed Accounts',
   description:
-    'This feature hides the closed accounts section in the side menu. View the account-options popup (click your e-mail) to show or hide the closed accounts.',
+    'Hide closed accounts from the sidebar. They can then be toggled using the button added to the User Menu (click your e-mail).',
 };

@@ -22,7 +22,7 @@ const watcher = require('chokidar').watch(['src/**'], {
   ignored: [
     // all generated files need to be ignored
     'src/extension/features/index.js',
-    'src/core/settings/settings.js',
+    'src/core/settings/settings.ts',
   ],
 });
 

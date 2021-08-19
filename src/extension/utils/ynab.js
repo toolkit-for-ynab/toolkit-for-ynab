@@ -1,5 +1,4 @@
 import { getRouter, controllerLookup } from './ember';
-
 export function transitionTo() {
   getRouter().transitionTo(...arguments);
 }

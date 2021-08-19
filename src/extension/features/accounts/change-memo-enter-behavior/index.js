@@ -3,13 +3,13 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class ChangeMemoEnterBehavior extends Feature {
   shouldInvoke() {
-    return isCurrentRouteAccountsPage() && $('.ynab-grid-body-row.is-editing').length;
+    return isCurrentRouteAccountsPage() && !!$('.ynab-grid-body-row.is-editing').length;
   }
 
   invoke() {
     const $editRows = $('.ynab-grid-body-row.is-editing');
     const $memoInputs = $('.ynab-grid-cell-memo input', $editRows);
-    $memoInputs.each((index, input) => {
+    $memoInputs.each((_, input) => {
       if (!input.getAttribute('data-toolkit-memo-behavior')) {
         input.setAttribute('data-toolkit-memo-behavior', true);
         input.addEventListener('keydown', this.applyNewEnterBehavior);
@@ -19,7 +19,7 @@ export class ChangeMemoEnterBehavior extends Feature {
 
   destroy() {
     const $editInputs = $('input[data-toolkit-memo-behavior]');
-    $editInputs.each((index, input) => {
+    $editInputs.each((_, input) => {
       input.removeAttribute('data-toolkit-memo-behavior');
       input.removeEventListener('keydown', this.applyNewEnterBehavior);
     });

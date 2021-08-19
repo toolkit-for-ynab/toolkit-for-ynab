@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'budget',
-  title: 'Current Month Indicator',
+  title: 'Emphasize Current Month',
   description:
-    "Changes the header bar's background color to a lighter blue when viewing the current month to better differentiate between months.",
+    "Change the month background color to better distinguish you're looking at the current month.",
 };

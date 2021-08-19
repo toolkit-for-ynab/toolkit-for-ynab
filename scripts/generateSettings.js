@@ -7,23 +7,21 @@ const defaultFeatures = JSON.parse(
 ).defaultFeatures;
 
 const NEW_SETTINGS_PROJECT_DIR = 'src/extension/features';
-const ALL_SETTINGS_OUTPUT = 'src/core/settings/settings.js';
+const ALL_SETTINGS_OUTPUT = 'src/core/settings/settings.ts';
 const SETTINGS_JSON = 'scripts/settings.json';
 const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
 const settingMigrationMap = {
-  CategorySoloMode: {
-    oldSettingName: 'ToggleMasterCategories',
-    settingMapping: {
-      true: 'cat-toggle-all',
-    },
+  ConfirmEditTransactionCancellation: {
+    oldSettingName: 'ConfirmKeyboardCancelationOfTransactionChanges',
   },
-  AutoEnableRunningBalance: {
-    oldSettingName: 'RunningBalance',
+  ToggleMasterCategories: {
+    oldSettingName: 'CategorySoloMode',
     settingMapping: {
+      'cat-solo-mode': true,
+      'cat-toggle-all': true,
+      'cat-solo-mode-toggle-all': true,
       0: false,
-      1: true,
-      2: true,
     },
   },
 };
@@ -156,23 +154,16 @@ function generateAllSettingsFile(allSettings) {
  ***********************************************************
 */
 
-if (typeof window.ynabToolKit === 'undefined') { window.ynabToolKit = {}; }
+if (typeof window.ynabToolKit === 'undefined') { window.ynabToolKit = {} as any; }
 
 export const settingMigrationMap = ${JSON.stringify(settingMigrationMap)};
-export const settingsMap = ${JSON.stringify(
+export const settingsMap: Record<string, FeatureSettingConfig> = ${JSON.stringify(
     allSettings.reduce((settings, current) => {
       settings[current.name] = current;
       return settings;
     }, {})
   )};
-export const allToolkitSettings = ${JSON.stringify(allSettings)};
-
-// eslint-disable-next-line quotes, object-curly-spacing, quote-props
-window.ynabToolKit.settings = allToolkitSettings;
-
-// We don't update these from anywhere else, so go ahead and freeze / seal the object so nothing can be injected.
-Object.freeze(window.ynabToolKit.settings);
-Object.seal(window.ynabToolKit.settings);
+export const allToolkitSettings = Object.values(settingsMap);
 `;
 }
 

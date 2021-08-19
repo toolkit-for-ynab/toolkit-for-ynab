@@ -3,7 +3,6 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Add a Toggle Splits Button to the Account(s) toolbar',
-  description:
-    'Clicking the Toggle Splits button shows or hides all sub-transactions within all split transactions.',
+  title: 'Add "Toggle Splits" Button',
+  description: 'Add a button to expand/collapse all splits for the current account register.',
 };
