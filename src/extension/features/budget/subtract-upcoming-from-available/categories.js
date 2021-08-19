@@ -43,17 +43,21 @@ export function setAndGetCategoryData(category) {
 }
 
 // Get totals for selected month.
-export function getTotals(inspectorCategories) {
+export function getTotals(budgetBreakdown) {
   const totals = {
     totalPreviousUpcoming: 0,
     totalUpcoming: 0,
     totalCCPayments: 0,
-    totalSavings: 0,
+    totalAvailableAfterUpcoming: 0,
   };
 
-  const filteredInspectorCategories = inspectorCategories.filter((category) => {
+  let totalSavings = 0;
+
+  const filteredInspectorCategories = budgetBreakdown.inspectorCategories.filter((category) => {
     return isRelevantCategory(category);
   });
+
+  const noCC = ynabToolKit.options.SubtractUpcomingFromAvailable === 'no-cc';
 
   for (const category of filteredInspectorCategories) {
     const categoryData = getCategoryData(category);
@@ -62,15 +66,21 @@ export function getTotals(inspectorCategories) {
     totals.totalPreviousUpcoming += categoryData.previousUpcoming;
     totals.totalUpcoming += categoryData.upcoming;
 
-    if (category.isCreditCardPaymentCategory)
+    if (!noCC && category.isCreditCardPaymentCategory)
       totals.totalCCPayments +=
         categoryData.availableAfterUpcoming < 0 ? 0 : categoryData.availableAfterUpcoming;
-    if (isSavingsCategory(category))
-      totals.totalSavings +=
+
+    if (ynabToolKit.options.ShowAvailableAfterSavings && isSavingsCategory(category))
+      totalSavings +=
         categoryData.availableAfterUpcoming < 0 ? 0 : categoryData.availableAfterUpcoming;
   }
 
-  return totals;
+  const totalAvailable = budgetBreakdown.budgetTotals.available - totalSavings;
+
+  totals.totalAvailableAfterUpcoming =
+    totalAvailable + totals.totalPreviousUpcoming + totals.totalUpcoming - totals.totalCCPayments;
+
+  return totals.totalAvailableAfterUpcoming !== totals.totalAvailable && totals;
 }
 
 // Build categoriesObject.

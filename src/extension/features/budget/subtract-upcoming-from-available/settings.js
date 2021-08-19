@@ -12,7 +12,6 @@ module.exports = {
     ' You can turn this part of the feature off by selecting "Don\'t Include CC Payments".' +
     '\n\nIf the "Show Available After Savings" feature is enabled, the "Available After Savings" amount is used as the starting point for the budget breakdown calculations.',
   options: [
-    { name: 'Disabled', value: '0' },
     { name: 'Subtract Upcoming from Available', value: '1' },
     { name: "Don't Include CC Payments", value: 'no-cc' },
   ],

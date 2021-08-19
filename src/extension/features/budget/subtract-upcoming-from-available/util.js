@@ -52,3 +52,11 @@ export function createInspectorMessageEntry(elementId, l10nKey, l10nDefault, amo
     </div>
   `);
 }
+
+export function $buildEntries(entries) {
+  let $entries = $();
+  for (const entry of entries) {
+    $entries = $entries.add(entry);
+  }
+  return $entries;
+}
