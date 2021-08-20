@@ -13,11 +13,6 @@ export class StealingFromFuture extends Feature {
 
   invoke() {
     this.addToolkitEmberHook('budget-header', 'didRender', this.updateReadyToAssign);
-
-    const budgetHeader = document.querySelector('.budget-header');
-    if (budgetHeader) {
-      this.updateReadyToAssign(budgetHeader);
-    }
   }
 
   destroy() {

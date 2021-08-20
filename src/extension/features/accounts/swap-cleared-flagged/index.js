@@ -27,10 +27,6 @@ export class SwapClearedFlagged extends Feature {
     rows.forEach((key) => {
       this.addToolkitEmberHook(key, 'didInsertElement', this.swapColumns);
     });
-
-    for (const element of document.querySelectorAll('.ynab-grid-body-row')) {
-      this.swapColumns(element);
-    }
   }
 
   destroy() {

@@ -24,7 +24,7 @@ export function serviceLookup(serviceName) {
 }
 
 export function forEachRenderedComponent(key, fn) {
-  return Object.values(getViewRegistry()).forEach((view) => {
+  Object.values(getViewRegistry()).forEach((view) => {
     if (view._debugContainerKey === `component:${key}`) {
       fn(view);
     }

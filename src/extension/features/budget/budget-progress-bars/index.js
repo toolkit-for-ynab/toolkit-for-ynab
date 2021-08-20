@@ -39,7 +39,6 @@ export class BudgetProgressBars extends Feature {
   }
 
   invoke() {
-    Array.from(document.querySelectorAll('.budget-table-row')).forEach(this.addProgressBars);
     this.addToolkitEmberHook('budget-table-row', 'didRender', debounce(this.addProgressBars));
   }
 

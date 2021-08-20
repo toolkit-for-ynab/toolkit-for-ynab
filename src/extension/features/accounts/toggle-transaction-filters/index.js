@@ -41,11 +41,6 @@ export class ToggleTransactionFilters extends Feature {
   }
 
   invoke() {
-    const accountsHeader = document.querySelector('.accounts-header');
-    if (accountsHeader) {
-      this.injectButtons(accountsHeader);
-    }
-
     this.addToolkitEmberHook('accounts/account-header', 'didRender', this.injectButtons);
   }
 

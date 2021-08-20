@@ -2,6 +2,7 @@ import { observeListener, routeChangeListener } from 'toolkit/extension/listener
 import { logToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 import { SupportedEmberHook } from '../ynab-toolkit';
 import { addToolkitEmberHook, removeToolkitEmberHook } from '../utils/toolkit';
+import { forEachRenderedComponent } from '../utils/ember';
 
 export class Feature {
   private __hooks = new Map<string, (element: HTMLElement) => void>();
@@ -72,6 +73,12 @@ export class Feature {
   ): void {
     addToolkitEmberHook(this, componentKey, lifecycleHook, fn);
     this.__hooks.set(`${componentKey}:${lifecycleHook}`, fn);
+
+    forEachRenderedComponent(componentKey, (view: { element: HTMLElement }) => {
+      if (view.element) {
+        fn.call(this, view.element);
+      }
+    });
   }
 
   removeToolkitEmberHook(

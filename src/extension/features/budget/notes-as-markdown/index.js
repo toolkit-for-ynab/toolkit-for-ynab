@@ -15,11 +15,6 @@ export class NotesAsMarkdown extends Feature {
 
   invoke() {
     this.addToolkitEmberHook('budget/inspector/inspector-notes', 'didRender', this.applyMarkdown);
-
-    const inspectorNotes = document.querySelector('.inspector-notes');
-    if (inspectorNotes) {
-      this.applyMarkdown(inspectorNotes);
-    }
   }
 
   destroy() {

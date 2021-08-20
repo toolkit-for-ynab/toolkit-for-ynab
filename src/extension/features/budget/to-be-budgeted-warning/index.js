@@ -11,9 +11,6 @@ export class ToBeBudgetedWarning extends Feature {
 
   invoke() {
     this.addToolkitEmberHook('to-be-budgeted', 'didRender', this.addClasses);
-    $('.budget-header-item:not(.tk-stealing-from-future) .to-be-budgeted').each((id, el) =>
-      this.addClasses(el)
-    );
   }
 
   addClasses(element) {
