@@ -24,6 +24,8 @@
   // src/components/button
   --tk-button-primary-color: var(--tk-action-primary);
   --tk-button-primary-hover-color: var(--tk-action-primary-hover);
+
+  --tk-alert-danger: #e26136;
 }
 
 html[data-theme='dark'] {
@@ -51,6 +53,38 @@ body {
   font-family: 'Montserrat', sans-serif;
   color: var(--tk-text-color);
   background-color: var(--tk-background-color);
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 1rem;
+  color: black;
+
+  &--danger {
+    background-color: var(--tk-alert-danger);
+  }
+
+  &__dismiss {
+    position: absolute;
+    right: 1rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.toolkit-disabled-alert {
+  &__button {
+    text-decoration: underline;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .setting {

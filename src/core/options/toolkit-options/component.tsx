@@ -9,6 +9,7 @@ import {
   faQuestionCircle,
   faEyeDropper,
   faUndoAlt,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { Toggle } from 'toolkit/components/toggle';
 import { RadioGroup } from 'toolkit/components/radio-group';
@@ -20,7 +21,7 @@ import { Modal, useModal } from 'toolkit/components/modal';
 import { DiscordLink, GitHubLink, TrelloLink } from 'toolkit/components/links';
 import { useDarkModeSetter } from 'toolkit/hooks/useDarkModeSetter';
 import ReactMarkdown from 'react-markdown';
-import { featureSettingKey } from 'toolkit/test/utils/storage';
+import { useToolkitDisabled } from 'toolkit/hooks/useToolkitDisabled';
 
 function ColorPicker({
   id,
@@ -341,9 +342,41 @@ function SupportPage() {
   );
 }
 
+function AlertBanner({
+  children,
+  variant = 'danger',
+}: {
+  children: React.ReactNode;
+  variant?: 'danger';
+}) {
+  const [isDismissed, setIsDismissed] = React.useState(false);
+
+  if (isDismissed) {
+    return null;
+  }
+
+  return (
+    <div
+      className={classNames('alert', {
+        'alert--danger': variant === 'danger',
+      })}
+    >
+      <div>{children}</div>
+      <FontAwesomeIcon
+        role="button"
+        aria-label="Dismiss"
+        className="alert__dismiss"
+        icon={faTimes}
+        onClick={() => setIsDismissed(true)}
+      />
+    </div>
+  );
+}
+
 export function ToolkitOptions() {
   useDarkModeSetter();
 
+  const isToolkitDisabled = useToolkitDisabled();
   const manifest = getBrowser().runtime.getManifest();
   const [currentSettings, setCurrentSettings] = React.useState(settingsBySection[0]);
   const [currentPage, setCurrentPage] = React.useState(settingsBySection[0].name);
@@ -352,6 +385,23 @@ export function ToolkitOptions() {
   return (
     <div className="tk-flex tk-flex-grow tk-flex-column">
       <ImportExportModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      {isToolkitDisabled && (
+        <AlertBanner>
+          {manifest.name} is currently disabled.{' '}
+          <span
+            role="button"
+            aria-label="Enable Toolkit"
+            className="toolkit-disabled-alert__button"
+            onClick={(e) => {
+              e.preventDefault();
+              localToolkitStorage.setFeatureSetting('DisableToolkit', false);
+            }}
+          >
+            Click here to re-enable it
+          </span>
+          .
+        </AlertBanner>
+      )}
       <div className="tk-flex nav-bar">
         <img
           className="nav-bar__logo"

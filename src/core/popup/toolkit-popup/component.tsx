@@ -8,36 +8,21 @@ import { Toggle } from 'toolkit/components/toggle';
 import { localToolkitStorage } from 'toolkit/core/common/storage';
 import { getBrowser, getBrowserName } from 'toolkit/core/common/web-extensions';
 import { useDarkModeSetter } from 'toolkit/hooks/useDarkModeSetter';
+import { useToolkitDisabled } from 'toolkit/hooks/useToolkitDisabled';
 import './styles.scss';
 
 export function ToolkitPopup() {
   useDarkModeSetter();
 
+  const isToolkitDisabled = useToolkitDisabled();
   const { runtime, tabs } = getBrowser();
   const { version, name } = runtime.getManifest();
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [isToolkitDisabled, setIsToolkitDisabled] = React.useState(false);
-  const handleToolkitDisabledChanged = React.useCallback(
-    (_, isDisabled) => setIsToolkitDisabled(isDisabled),
-    []
-  );
 
   React.useEffect(() => {
     document.title = `${name} Popup`;
   }, []);
 
-  React.useEffect(() => {
-    localToolkitStorage.getFeatureSetting('DisableToolkit').then((isToolkitDisabled) => {
-      setIsLoading(false);
-      setIsToolkitDisabled(isToolkitDisabled);
-    });
-
-    localToolkitStorage.onToolkitDisabledChanged(handleToolkitDisabledChanged);
-
-    return () => localToolkitStorage.offToolkitDisabledChanged(handleToolkitDisabledChanged);
-  }, []);
-
-  return isLoading ? null : (
+  return (
     <div className="popup">
       <img
         onClick={() => {
