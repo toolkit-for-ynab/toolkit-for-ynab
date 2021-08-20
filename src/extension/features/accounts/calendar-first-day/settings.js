@@ -3,7 +3,7 @@ module.exports = {
   type: 'select',
   default: false,
   section: 'accounts',
-  title: 'Adjust First Day of the Week',
+  title: 'Modify First Day of the Week',
   description:
     'Adjust the first day of the week in the calendar to whichever day you chose when editing or adding a transaction.',
   options: [

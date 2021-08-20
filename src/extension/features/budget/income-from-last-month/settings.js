@@ -3,7 +3,7 @@ module.exports = {
   type: 'select',
   default: false,
   section: 'budget',
-  title: 'Income From Last Month',
+  title: 'Show Income From Last Month',
   description: 'Show total of incoming transactions for last month in the header.',
   options: [
     { name: 'Use previous month', value: '1' },

@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Enable Payee Bulk Edit',
+  title: 'Bulk Edit Payees',
   description:
     'Add an option to the "Edit Transaction(s)" menu to "Manage Payee(s)" for all selected transactions.',
 };

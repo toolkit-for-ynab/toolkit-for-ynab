@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: true,
   section: 'accounts',
-  title: 'Enable Memo Bulk Edit',
+  title: 'Bulk Edit Memos',
   description:
     'Add an option to the "Edit Transaction(s)" menu to "Edit Memo(s)" for all selected transactions.',
 };

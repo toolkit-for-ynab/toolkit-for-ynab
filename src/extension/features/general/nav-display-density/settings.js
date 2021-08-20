@@ -3,7 +3,7 @@ module.exports = {
   type: 'select',
   default: false,
   section: 'general',
-  title: 'Adjust Navigation Tab Height',
+  title: 'Adjust Navigation Tabs Height',
   description:
     'Make the navigation tab names (Budget, Reports, etc) and their padding smaller allowing more content to fit on the screen.',
   options: [
