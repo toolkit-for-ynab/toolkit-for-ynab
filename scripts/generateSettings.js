@@ -153,16 +153,30 @@ function generateAllSettingsFile(allSettings) {
  * the next time you run ./build or build.bat!             *
  ***********************************************************
 */
-
 if (typeof window.ynabToolKit === 'undefined') { window.ynabToolKit = {} as any; }
 
-export const settingMigrationMap = ${JSON.stringify(settingMigrationMap)};
-export const settingsMap: Record<string, FeatureSettingConfig> = ${JSON.stringify(
+declare global {
+  type FeatureName = ${allSettings.map(({ name }) => `'${name}'`).join(' |\n')}
+}
+
+export const settingsMap: Record<FeatureName, FeatureSettingConfig> = ${JSON.stringify(
     allSettings.reduce((settings, current) => {
       settings[current.name] = current;
       return settings;
-    }, {})
+    }, {}),
+    null,
+    2
   )};
+
+export const settingMigrationMap: {
+  [K in keyof typeof settingsMap]?: {
+    oldSettingName: string;
+    settingMapping?: {
+      [oldSettingValue: string]: FeatureSetting;
+    };
+  };
+} = ${JSON.stringify(settingMigrationMap, null, 2)};
+
 export const allToolkitSettings = Object.values(settingsMap);
 `;
 }

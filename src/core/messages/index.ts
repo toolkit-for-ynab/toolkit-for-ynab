@@ -16,7 +16,7 @@ export type BootstrapMessage = MessageEvent<{
 export type SettingChangedMessage = MessageEvent<{
   type: InboundMessageType.SettingChanged;
   setting: {
-    name: string;
+    name: FeatureName;
     value: FeatureSetting;
   };
 }>;

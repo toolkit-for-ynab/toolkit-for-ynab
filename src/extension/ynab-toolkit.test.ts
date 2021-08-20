@@ -44,8 +44,8 @@ const setup = (setupOptions = {}) => {
       environment: 'test' as YNABToolkitObject['environment'],
       extensionId: 'extensionId',
       name: 'extension',
-      options,
       version: 'extensionVersion',
+      options: {} as any,
     },
   };
 

@@ -11,10 +11,16 @@ export function useDarkModeSetter() {
   }
 
   React.useEffect(() => {
-    localToolkitStorage.onFeatureSettingChanged('options.dark-mode', handleDarkModeChanged);
+    localToolkitStorage.onStorageItemChanged(
+      'toolkit-feature:options.dark-mode',
+      handleDarkModeChanged
+    );
 
     return () => {
-      localToolkitStorage.offFeatureSettingChanged('options.dark-mode', handleDarkModeChanged);
+      localToolkitStorage.offStorageItemChanged(
+        'toolkit-feature:options.dark-mode',
+        handleDarkModeChanged
+      );
     };
   });
 }

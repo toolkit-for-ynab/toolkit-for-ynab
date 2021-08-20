@@ -103,6 +103,7 @@
     "regression": "^2.0.1"
   },
   "devDependencies": {
+    "@types/chrome": "^0.0.154",
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
     "@babel/eslint-parser": "^7.14.4",

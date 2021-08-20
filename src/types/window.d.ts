@@ -1,7 +1,6 @@
 import Object from '@ember/object';
 import Component from '@ember/component';
 import { run } from '@ember/runloop';
-import { settingsMap } from 'toolkit/core/settings';
 import { Feature } from 'toolkit/extension/features/feature';
 
 export interface YNABToolkitObject {
@@ -42,7 +41,6 @@ declare global {
     };
   }
 
-  type FeatureName = keyof typeof settingsMap;
   type FeatureSetting = boolean | string;
 
   const Ember: Ember;

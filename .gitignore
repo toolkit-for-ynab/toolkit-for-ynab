@@ -30,4 +30,4 @@ src/core/settings/settings.ts
 scripts/settings.json
 
 # created at build time with tasks/generateFeatureIndex.js
-src/extension/features/index.js
+src/extension/features/index.ts

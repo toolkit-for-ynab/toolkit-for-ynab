@@ -4,9 +4,11 @@ import * as ReactDOM from 'react-dom';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import './styles.scss';
 import { Button } from '../button';
+import classNames from 'classnames';
 
 interface PublicProps {
   children: React.ReactNode;
+  className?: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   title?: string;
@@ -18,6 +20,7 @@ interface PublicProps {
 
 export function Modal({
   children,
+  className,
   isOpen,
   title,
   setIsOpen,
@@ -71,7 +74,7 @@ export function Modal({
         <div className="modal-wrapper">
           <div className="modal-overlay" />
           <div
-            className="modal"
+            className={classNames('modal', className)}
             role="dialog"
             aria-labelledby="modal-title"
             aria-modal="true"

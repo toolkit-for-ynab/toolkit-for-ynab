@@ -1,10 +1,14 @@
-import { ToolkitStorage } from './index';
+import { StorageArea, ToolkitStorage } from './index';
 import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { setupWithWebExtensionStorage } from 'toolkit/test/utils/setup';
 
-const setup = setupWithWebExtensionStorage((overrides = {}) => {
-  const options = {
-    storageArea: 'local',
+interface SetupOptions {
+  storageArea: StorageArea;
+}
+
+const setup = setupWithWebExtensionStorage((overrides: Partial<SetupOptions> = {}) => {
+  const options: SetupOptions = {
+    storageArea: StorageArea.Local,
     ...overrides,
   };
 
@@ -28,19 +32,9 @@ describe('ToolkitStorage', () => {
     it('should call getStorageItem with a feature-namespaced key', () => {
       const { storage } = setup();
       const getStorageItemSpy = jest.spyOn(storage, 'getStorageItem');
-      storage.getFeatureSetting('testSetting');
+      storage.getFeatureSetting('testSetting' as FeatureName);
       expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', {
         parse: false,
-      });
-    });
-
-    it('should should allow overrides of options', () => {
-      const { storage } = setup();
-      const getStorageItemSpy = jest.spyOn(storage, 'getStorageItem');
-      storage.getFeatureSetting('testSetting', { parse: true, test: 'thing' });
-      expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', {
-        parse: true,
-        test: 'thing',
       });
     });
   });
@@ -49,7 +43,7 @@ describe('ToolkitStorage', () => {
     it('should call getStorageItem with feature-namespaced keys', () => {
       const { storage } = setup();
       const getStorageItemSpy = jest.spyOn(storage, 'getStorageItem');
-      storage.getFeatureSettings(['test', 'setting']);
+      storage.getFeatureSettings(['test' as FeatureName, 'setting' as FeatureName]);
       expect(getStorageItemSpy).toHaveBeenCalledTimes(2);
       expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:test', {
         parse: false,
@@ -57,28 +51,13 @@ describe('ToolkitStorage', () => {
       expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:setting', { parse: false });
     });
 
-    it('should allow overrides of options', () => {
-      const { storage } = setup();
-      const getStorageItemSpy = jest.spyOn(storage, 'getStorageItem');
-      storage.getFeatureSettings(['test', 'setting'], {
-        parse: true,
-        test: 'thing',
-      });
-      expect(getStorageItemSpy).toHaveBeenCalledTimes(2);
-      expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:test', {
-        parse: true,
-        test: 'thing',
-      });
-      expect(getStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:setting', {
-        parse: true,
-        test: 'thing',
-      });
-    });
-
     it('should resolve a list of values', async () => {
       const { storage } = setup();
       jest.spyOn(storage, 'getStorageItem').mockReturnValue(Promise.resolve('result'));
-      const results = await storage.getFeatureSettings(['test', 'setting']);
+      const results = await storage.getFeatureSettings([
+        'test' as FeatureName,
+        'setting' as FeatureName,
+      ]);
       expect(Array.isArray(results)).toEqual(true);
       expect(results).toHaveLength(2);
       results.forEach((result) => {
@@ -91,17 +70,8 @@ describe('ToolkitStorage', () => {
     it('should call setStorageItem with feature-namespaced key', () => {
       const { storage } = setup();
       const setStorageItemSpy = jest.spyOn(storage, 'setStorageItem');
-      storage.setFeatureSetting('testSetting', 'ynab');
+      storage.setFeatureSetting('testSetting' as FeatureName, 'ynab');
       expect(setStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', 'ynab', {});
-    });
-
-    it('should allow overrides of options', () => {
-      const { storage } = setup();
-      const setStorageItemSpy = jest.spyOn(storage, 'setStorageItem');
-      storage.setFeatureSetting('testSetting', 'ynab', { parse: false });
-      expect(setStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', 'ynab', {
-        parse: false,
-      });
     });
   });
 
@@ -109,17 +79,8 @@ describe('ToolkitStorage', () => {
     it('should call removeStorageItem with feature-namespaced key', () => {
       const { storage } = setup();
       const removeStorageItemSpy = jest.spyOn(storage, 'removeStorageItem');
-      storage.removeFeatureSetting('testSetting');
+      storage.removeFeatureSetting('testSetting' as FeatureName);
       expect(removeStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', {});
-    });
-
-    it('should allow overrides of options', () => {
-      const { storage } = setup();
-      const removeStorageItemSpy = jest.spyOn(storage, 'removeStorageItem');
-      storage.removeFeatureSetting('testSetting', { parse: false });
-      expect(removeStorageItemSpy).toHaveBeenCalledWith('toolkit-feature:testSetting', {
-        parse: false,
-      });
     });
   });
 
@@ -275,7 +236,7 @@ describe('ToolkitStorage', () => {
       const { storage } = setup();
       const onStorageItemChangedSpy = jest.spyOn(storage, 'onStorageItemChanged');
       const mockCallback = jest.fn();
-      storage.onFeatureSettingChanged('test', mockCallback);
+      storage.onFeatureSettingChanged('test' as FeatureName, mockCallback);
       expect(onStorageItemChangedSpy).toHaveBeenCalledWith('toolkit-feature:test', mockCallback);
     });
   });
@@ -285,7 +246,7 @@ describe('ToolkitStorage', () => {
       const { storage } = setup();
       const offStorageItemChangedSpy = jest.spyOn(storage, 'offStorageItemChanged');
       const mockCallback = jest.fn();
-      storage.offFeatureSettingChanged('test', mockCallback);
+      storage.offFeatureSettingChanged('test' as FeatureName, mockCallback);
       expect(offStorageItemChangedSpy).toHaveBeenCalledWith('toolkit-feature:test', mockCallback);
     });
   });

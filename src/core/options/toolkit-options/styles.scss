@@ -202,6 +202,10 @@ body {
 }
 
 .import-export {
+  &__modal {
+    width: 800px;
+  }
+
   &__textarea {
     font-size: 1rem;
     width: 100%;

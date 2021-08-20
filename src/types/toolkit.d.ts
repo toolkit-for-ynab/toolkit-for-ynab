@@ -1,5 +1,5 @@
 interface FeatureSettingBaseConfig {
-  name: string;
+  name: FeatureName;
   section: 'general' | 'accounts' | 'budget' | 'reports' | 'advanced' | 'toolkitReports' | 'system';
   title: string;
   description: string;

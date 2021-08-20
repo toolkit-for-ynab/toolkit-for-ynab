@@ -30,8 +30,7 @@
     color: var(--tk-text-color);
 
     &:hover {
-      background-color: hsla(0, 0%, 100%, 0.3);
-      border-color: hsla(0, 0%, 100%, 0.3);
+      background-color: rgba(0, 0, 0, 0.1);
     }
   }
 }

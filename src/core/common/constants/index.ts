@@ -1,20 +1,20 @@
-export const Browser = {
-  Chrome: 'chrome',
-  Edge: 'edge',
-  Firefox: 'firefox',
-};
+export enum Browser {
+  Chrome = 'chrome',
+  Edge = 'edge',
+  Firefox = 'firefox',
+}
 
-export const BrowserExtensionPrefixMap = {
+export const BrowserExtensionPrefix = {
   [Browser.Chrome]: 'chrome-extension://',
   [Browser.Edge]: 'ms-browser-extension://',
   [Browser.Firefox]: 'moz-extension://',
 };
 
-export const Environment = {
-  Beta: 'beta',
-  Development: 'development',
-  Production: 'production',
-};
+export enum Environment {
+  Beta = 'beta',
+  Development = 'development',
+  Production = 'production',
+}
 
 export const ExtensionIds = {
   ChromeBeta: 'mkgdgjnaaejddflnldinkilabeglghlo',

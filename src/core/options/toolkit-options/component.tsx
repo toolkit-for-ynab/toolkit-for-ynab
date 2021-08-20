@@ -19,8 +19,8 @@ import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { Modal, useModal } from 'toolkit/components/modal';
 import { DiscordLink, GitHubLink, TrelloLink } from 'toolkit/components/links';
 import { useDarkModeSetter } from 'toolkit/hooks/useDarkModeSetter';
-import { features } from 'toolkit/extension/features';
 import ReactMarkdown from 'react-markdown';
+import { featureSettingKey } from 'toolkit/test/utils/storage';
 
 function ColorPicker({
   id,
@@ -165,9 +165,11 @@ function DarkModeToggle() {
   );
 
   function handleDarkModeClicked() {
-    localToolkitStorage.setFeatureSetting('options.dark-mode', !isDarkModeEnabled).then(() => {
-      setIsDarkModeEnabled(!isDarkModeEnabled);
-    });
+    localToolkitStorage
+      .setStorageItem('toolkit-feature:options.dark-mode', !isDarkModeEnabled)
+      .then(() => {
+        setIsDarkModeEnabled(!isDarkModeEnabled);
+      });
   }
 
   return (
@@ -191,7 +193,7 @@ function DarkModeToggle() {
   );
 }
 
-type ImportExportSettings = { key: string; value: FeatureSetting }[];
+type ImportExportSettings = { key: FeatureName; value: FeatureSetting }[];
 
 function ImportExportModal({
   isOpen,
@@ -236,6 +238,7 @@ function ImportExportModal({
 
   return (
     <Modal
+      className="import-export__modal"
       isOpen={isOpen && !isLoading}
       setIsOpen={setIsOpen}
       title="Import/Export Settings"
