@@ -1,8 +1,7 @@
-import Object from '@ember/object';
 import Component from '@ember/component';
 import { run } from '@ember/runloop';
 import { settingsMap } from 'toolkit/core/settings';
-import { Feature } from 'toolkit/extension/features/feature';
+import { SupportedEmberHook } from 'toolkit/extension/ynab-toolkit';
 
 export interface YNABToolkitObject {
   assets: {
@@ -10,7 +9,14 @@ export interface YNABToolkitObject {
   };
   environment: 'development' | 'beta' | 'production';
   extensionId: string;
-  hookedComponents: Set<Feature>;
+  featureComponentHooks: {
+    [featureName: string]: {
+      [componentKey: string]: Set<SupportedEmberHook>;
+    };
+  };
+  hookedComponents: {
+    [componentKey: string]: Set<SupportedEmberHook>;
+  };
   invokeFeature(featureName: FeatureName): void;
   options: {
     [settingName in FeatureName]: FeatureSetting;

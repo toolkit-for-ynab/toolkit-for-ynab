@@ -23,12 +23,13 @@ export function serviceLookup(serviceName) {
   return containerLookup(`service:${serviceName}`);
 }
 
-export function forEachRenderedComponent(key, fn) {
-  return Object.values(getViewRegistry()).forEach((view) => {
-    if (view._debugContainerKey === `component:${key}`) {
-      fn(view);
-    }
+export function getRenderedEmberViews(componentKey) {
+  const renderedEmberViews = [];
+  Object.values(getViewRegistry()).forEach((view) => {
+    if (view._debugContainerKey === `component:${componentKey}`) renderedEmberViews.push(view);
   });
+
+  return renderedEmberViews;
 }
 
 /* Private Functions */

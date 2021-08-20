@@ -6,7 +6,7 @@ import * as Collections from 'toolkit/extension/utils/collections';
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
-import { forEachRenderedComponent } from './utils/ember';
+import { getRenderedEmberViews } from './utils/ember';
 import { compareSemanticVersion } from './utils/helpers';
 import { componentAppend } from './utils/react';
 import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-modal';
@@ -146,7 +146,8 @@ export class YNABToolkit {
         window.ynabToolKit = {
           ...window.ynabToolKit,
           ...event.data.ynabToolKit,
-          hookedComponents: new Set(),
+          featureComponentHooks: {},
+          hookedComponents: {},
         };
 
         this.setupErrorTracking();
@@ -173,6 +174,7 @@ export class YNABToolkit {
             this.injectFeatureCSS(featureInstance);
             featureInstance.applyListeners();
             this.invokeFeature(name);
+            this.invokeFeatureHook(name);
           } else {
             delete document.body.dataset[name];
             this.destroyFeature(name);
@@ -216,17 +218,34 @@ export class YNABToolkit {
     });
   };
 
-  private invokeAllHooks = () => {
-    window.ynabToolKit.hookedComponents.forEach((key) => {
-      forEachRenderedComponent(key, (view: ToolkitEnabledComponent) => {
-        EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
+  private invokeFeatureHook = (featureName: FeatureName) => {
+    for (const [componentKey, lifecycleNameSet] of Object.entries(
+      window.ynabToolKit.featureComponentHooks[featureName]
+    )) {
+      for (const view of getRenderedEmberViews(componentKey) as ToolkitEnabledComponent[]) {
+        lifecycleNameSet.forEach((lifecycleName) => {
           const hooks = view[emberComponentToolkitHookKey(lifecycleName)];
           if (hooks) {
             hooks.forEach((hook) => hook.fn.call(hook.context, view.element));
           }
         });
-      });
-    });
+      }
+    }
+  };
+
+  private invokeAllHooks = () => {
+    for (const [componentKey, lifecycleNameSet] of Object.entries(
+      window.ynabToolKit.hookedComponents
+    )) {
+      for (const view of getRenderedEmberViews(componentKey) as ToolkitEnabledComponent[]) {
+        lifecycleNameSet.forEach((lifecycleName) => {
+          const hooks = view[emberComponentToolkitHookKey(lifecycleName)];
+          if (hooks) {
+            hooks.forEach((hook) => hook.fn.call(hook.context, view.element));
+          }
+        });
+      }
+    }
   };
 
   private showReleaseModal = () => {

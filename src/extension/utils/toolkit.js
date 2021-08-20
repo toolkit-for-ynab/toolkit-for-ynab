@@ -121,7 +121,18 @@ export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn) {
     hooks.push({ context, fn });
   }
 
-  ynabToolKit.hookedComponents.add(componentKey);
+  if (!ynabToolKit.featureComponentHooks[context.featureName])
+    ynabToolKit.featureComponentHooks[context.featureName] = {};
+
+  if (!ynabToolKit.featureComponentHooks[context.featureName][componentKey])
+    ynabToolKit.featureComponentHooks[context.featureName][componentKey] = new Set();
+
+  ynabToolKit.featureComponentHooks[context.featureName][componentKey].add(lifecycleHook);
+
+  if (!ynabToolKit.hookedComponents[componentKey])
+    ynabToolKit.hookedComponents[componentKey] = new Set();
+
+  ynabToolKit.hookedComponents[componentKey].add(lifecycleHook);
 }
 
 export function removeToolkitEmberHook(componentKey, lifecycleHook, fn) {
