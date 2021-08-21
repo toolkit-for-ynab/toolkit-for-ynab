@@ -1,5 +1,5 @@
 /* eslint-disable no-continue */
-import { getAllBudgetMonthsViewModel } from 'toolkit/extension/utils/ynab';
+import { getAllBudgetMonthsViewModel, getSelectedMonth } from 'toolkit/extension/utils/ynab';
 
 let categoriesObject = {};
 /*
@@ -22,12 +22,15 @@ categoriesObject = {
 const relevantCategorySet = new Set();
 
 // Set categoryData on the individual category that was rendered.
+let selectedMonth = getSelectedMonth();
 export function setAndGetCategoryData(category) {
   if (!isRelevantCategory(category)) return;
 
+  // If category is relevant but the data doesn't already exist, completely rebuild categoriesObject. Also rebuild if the selected month changes.
   const categoryData = getCategoryData(category);
-  // If category is relevant but the data doesn't already exist, completely rebuild categoriesObject.
-  if (!categoryData) {
+  const isDifferentMonth = !getSelectedMonth().equalsByMonth(selectedMonth);
+  if (!categoryData || isDifferentMonth) {
+    if (isDifferentMonth) selectedMonth = getSelectedMonth();
     setCategoriesObject();
     return getCategoryData(category);
   }
