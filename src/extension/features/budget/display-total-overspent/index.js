@@ -12,6 +12,10 @@ export class DisplayTotalOverspent extends Feature {
     addToolkitEmberHook(this, 'budget/budget-inspector', 'didRender', this.addTotalOverspent);
   }
 
+  destroy() {
+    $('.tk-display-total-overspent').remove();
+  }
+
   addTotalOverspent() {
     let overspentTotal = 0;
     let overspentChecked = 0;
