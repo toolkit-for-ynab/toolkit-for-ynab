@@ -13,7 +13,12 @@ export class GoogleFontsSelector extends Feature {
   }
 
   injectStylesheetLink(url) {
-    $('head').append($('<link>', { href: url, rel: 'stylesheet' }));
+    $('#tk-google-fonts-selector').remove();
+    $('head').append($('<link>', { href: url, rel: 'stylesheet', id: 'tk-google-fonts-selector' }));
+  }
+
+  destroy() {
+    $('#tk-google-fonts-selector').remove();
   }
 
   injectCSS() {
