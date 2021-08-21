@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'budget',
-  title: 'Display Total Overspent',
+  title: 'Show Total Overspent',
   description:
     'Adds "Overspending" to the budget inspector, which displays the total overspending from selected categories.',
 };
