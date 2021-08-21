@@ -1,5 +1,4 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class ScrollableEditMenu extends Feature {
@@ -12,8 +11,7 @@ export class ScrollableEditMenu extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
+    this.addToolkitEmberHook(
       'modals/register/edit-transactions',
       'didRender',
       this.addScrollWrappers
