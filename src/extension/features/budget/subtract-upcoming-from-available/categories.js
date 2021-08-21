@@ -173,7 +173,7 @@ function getCategoryData(category, addMonths) {
   return categoriesObject[categoryMonthKey][categoryId];
 }
 
-// Optionally provide categoryData which can contain any number of valid keys. Otherwise categoryData on category is used.
+// Optionally provide categoryData which can contain any number of valid keys.
 function setCategoryData(category, categoryData) {
   if (!isValidCategoryOrCategoryData(category)) return;
 
@@ -260,6 +260,7 @@ export function isSavingsCategory(category) {
 
 function isValidCategoryData(categoryData) {
   const validKeys = [
+    'isSet',
     'id',
     'month',
     'available',

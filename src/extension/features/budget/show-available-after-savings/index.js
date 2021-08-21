@@ -1,26 +1,31 @@
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { Feature } from 'toolkit/extension/features/feature';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
-import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { l10n } from 'toolkit/extension/utils/toolkit';
+import { getBudgetBreakdownEntries } from '../subtract-upcoming-from-available/budget-breakdown-monthly-totals';
 import { isSavingsCategory } from '../subtract-upcoming-from-available/categories';
-import { createBudgetBreakdownEntry } from '../subtract-upcoming-from-available/util';
 
 export class ShowAvailableAfterSavings extends Feature {
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
+    return true;
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'budget-breakdown', 'didRender', this.handleBudgetBreakdown);
+    this.addToolkitEmberHook('budget-breakdown', 'didRender', this.handleBudgetBreakdown);
+  }
+
+  destroy() {
+    this.removeAvailableAfterSavings();
+  }
+
+  removeAvailableAfterSavings() {
+    $('#tk-total-available-after-savings').remove();
   }
 
   handleBudgetBreakdown(element) {
-    if (!this.shouldInvoke()) return;
+    this.removeAvailableAfterSavings();
 
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
-
-    $(`#total-available-after-savings`, $budgetBreakdownMonthlyTotals).remove();
 
     const budgetBreakdown = getEmberView(element.id);
     if (!budgetBreakdown) return;
@@ -37,12 +42,13 @@ export class ShowAvailableAfterSavings extends Feature {
 
     const $ynabBreakdown = $('.ynab-breakdown', context);
 
-    createBudgetBreakdownEntry(
-      'total-available-after-savings',
-      'toolkit.availableAfterSavings',
-      'Available After Savings',
-      totalAvailableAfterSavings
-    ).prependTo($ynabBreakdown);
+    getBudgetBreakdownEntries({
+      availableAfterSavings: {
+        elementId: 'tk-total-available-after-savings',
+        title: l10n('toolkit.availableAfterSavings', 'Available After Savings'),
+        amount: totalAvailableAfterSavings,
+      },
+    }).prependTo($ynabBreakdown);
   }
 
   getTotalSavings(budgetBreakdown) {
@@ -53,10 +59,5 @@ export class ShowAvailableAfterSavings extends Feature {
     }
 
     return totalSavings;
-  }
-
-  onRouteChanged() {
-    if (!this.shouldInvoke()) return;
-    this.invoke();
   }
 }

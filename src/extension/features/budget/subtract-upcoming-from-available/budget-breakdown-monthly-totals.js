@@ -1,15 +1,19 @@
+/* eslint-disable no-continue */
+import { formatCurrency, getCurrencyClass } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 import * as categories from './categories';
-import * as util from './util';
+import { removeBudgetBreakdownEntries } from './destroy-helpers';
+import { shouldRun } from './index';
 
 export function handleBudgetBreakdownMonthlyTotals(element) {
-  if (!util.shouldRun()) return;
+  // Remove budget breakdown entries if they exist.
+  removeBudgetBreakdownEntries();
+
+  if (!shouldRun()) return;
 
   const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
   if (!$budgetBreakdownMonthlyTotals.length) return;
-
-  // Remove budget breakdown entries if they exist.
-  removeBudgetBreakdownEntries();
 
   const budgetBreakdown = getEmberView(element.id);
   if (!budgetBreakdown) return;
@@ -17,38 +21,33 @@ export function handleBudgetBreakdownMonthlyTotals(element) {
   const totals = categories.getTotals(budgetBreakdown);
   if (!totals) return;
 
-  updateBudgetBreakdown(totals, $budgetBreakdownMonthlyTotals);
+  setBudgetBreakdown(totals, $budgetBreakdownMonthlyTotals);
 }
 
-export function removeBudgetBreakdownEntries() {
-  $('#tk-total-previous-upcoming').remove();
-  $('#tk-total-upcoming').remove();
-  $('#tk-total-cc-payments').remove();
-  $('#tk-total-available-after-upcoming').remove();
-  $('#available-after-upcoming-hr').remove();
-}
+function setBudgetBreakdown(totals, context) {
+  const totalPreviousUpcoming = totals.totalPreviousUpcoming;
+  const totalUpcoming = totals.totalUpcoming;
+  const totalCCPayments = totals.totalCCPayments;
+  const totalAvailableAfterUpcoming = totals.totalAvailableAfterUpcoming;
 
-function updateBudgetBreakdown(totals, context) {
-  const { totalPreviousUpcoming, totalUpcoming, totalCCPayments, totalAvailableAfterUpcoming } =
-    totals;
+  setBudgetBreakdownEntries();
 
-  const budgetBreakdownEntries = [];
   if (totalPreviousUpcoming)
-    budgetBreakdownEntries.push(
-      getBudgetBreakdownEntry('totalPreviousUpcoming', totalPreviousUpcoming)
-    );
-  budgetBreakdownEntries.push(getBudgetBreakdownEntry('totalUpcoming', totalUpcoming));
-  if (totalCCPayments)
-    budgetBreakdownEntries.push(getBudgetBreakdownEntry('totalCCPayments', -totalCCPayments)); // Invert amount. A positive amount should show as negative in the budget breakdown and vice versa.
-  budgetBreakdownEntries.push(
-    getBudgetBreakdownEntry('totalAvailableAfterUpcoming', totalAvailableAfterUpcoming)
-  );
-  budgetBreakdownEntries.push(
-    $('<div id="available-after-upcoming-hr"><hr style="width:100%"></div>')
-  );
-  const $budgetBreakdownEntries = util.$buildEntries(budgetBreakdownEntries);
+    budgetBreakdownEntries.totalPreviousUpcoming.amount = totalPreviousUpcoming;
 
-  const $totalAvailableAfterSavings = $('#total-available-after-savings', context);
+  budgetBreakdownEntries.totalUpcoming.amount = totalUpcoming;
+
+  if (totalCCPayments) budgetBreakdownEntries.totalCCPayments.amount = -totalCCPayments; // Invert amount. A positive amount should show as negative in the budget breakdown and vice versa.
+
+  budgetBreakdownEntries.totalAvailableAfterUpcoming.amount = totalAvailableAfterUpcoming;
+
+  let $budgetBreakdownEntries = getBudgetBreakdownEntries(budgetBreakdownEntries);
+
+  $budgetBreakdownEntries = $budgetBreakdownEntries.add(
+    $('<div id="tk-available-after-upcoming-hr"><hr style="width:100%"></div>')
+  );
+
+  const $totalAvailableAfterSavings = $('#tk-total-available-after-savings', context);
   const $ynabBreakdown = $('.ynab-breakdown', context);
 
   if (ynabToolKit.options.ShowAvailableAfterSavings && $totalAvailableAfterSavings.length)
@@ -56,33 +55,54 @@ function updateBudgetBreakdown(totals, context) {
   else $budgetBreakdownEntries.prependTo($ynabBreakdown);
 }
 
-function getBudgetBreakdownEntry(key, amount) {
-  const entry = budgetBreakdownEntries[key];
-  return util.createBudgetBreakdownEntry(entry[0], entry[1], entry[2], amount);
+export function getBudgetBreakdownEntries(entries) {
+  let $entries = $();
+
+  for (const entry of Object.values(entries)) {
+    if (entry.amount === null) continue;
+
+    const currencyClass = getCurrencyClass(entry.amount);
+    const amount = formatCurrency(entry.amount);
+
+    $entries = $entries.add(
+      $(`
+        <div id="${entry.elementId}" class="inspector-message-row">
+          <div class="inspector-message-label">${entry.title}</div>
+          <div class="inspector-message-currency">
+            <span class="user-data currency ${currencyClass}">${amount}</span>
+          </div>
+        </div>
+      `)
+    );
+  }
+
+  return $entries;
 }
 
 const budgetBreakdownEntries = {};
 
-budgetBreakdownEntries.totalPreviousUpcoming = [
-  'tk-total-previous-upcoming',
-  'toolkit.totalPreviousUpcoming',
-  'Upcoming Transactions (Previous Months)',
-];
+function setBudgetBreakdownEntries() {
+  budgetBreakdownEntries.totalPreviousUpcoming = {
+    elementId: 'tk-total-previous-upcoming',
+    title: l10n('toolkit.totalPreviousUpcoming', 'Upcoming Transactions (Previous Months)'),
+    amount: null,
+  };
 
-budgetBreakdownEntries.totalUpcoming = [
-  'tk-total-upcoming',
-  'toolkit.totalUpcoming',
-  'Upcoming Transactions (This Month)',
-];
+  budgetBreakdownEntries.totalUpcoming = {
+    elementId: 'tk-total-upcoming',
+    title: l10n('toolkit.totalUpcoming', 'Upcoming Transactions (This Month)'),
+    amount: null,
+  };
 
-budgetBreakdownEntries.totalCCPayments = [
-  'tk-total-cc-payments',
-  'toolkit.totalCCPayments',
-  'Credit Card Payments',
-];
+  budgetBreakdownEntries.totalCCPayments = {
+    elementId: 'tk-total-cc-payments',
+    title: l10n('toolkit.totalCCPayments', 'Credit Card Payments'),
+    amount: null,
+  };
 
-budgetBreakdownEntries.totalAvailableAfterUpcoming = [
-  'tk-total-available-after-upcoming',
-  'toolkit.availableAfterUpcoming',
-  'Available After Upcoming Transactions',
-];
+  budgetBreakdownEntries.totalAvailableAfterUpcoming = {
+    elementId: 'tk-total-available-after-upcoming',
+    title: l10n('toolkit.availableAfterUpcoming', 'Available After Upcoming Transactions'),
+    amount: null,
+  };
+}

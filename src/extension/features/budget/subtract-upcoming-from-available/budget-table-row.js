@@ -1,10 +1,14 @@
-import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { formatCurrency, getCurrencyClass } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import * as categories from './categories';
-import * as util from './util';
+import { setCategoryOriginalValues } from './destroy-helpers';
+import { shouldRun } from './index';
 
 export function handleBudgetTableRow(element) {
-  if (!util.shouldRun()) return;
+  if (!shouldRun()) return;
+
+  const $categoryObjects = getCategoryObjects(element);
+  if (!$categoryObjects) return;
 
   const category = getEmberView(element.id, 'category');
   if (!category) return;
@@ -12,34 +16,56 @@ export function handleBudgetTableRow(element) {
   const categoryData = categories.setAndGetCategoryData(category);
   if (!categoryData) return;
 
-  updateCategoryAvailableBalance(categoryData, category, element);
+  categoryValues(categoryData, category, $categoryObjects);
 }
 
-function updateCategoryAvailableBalance(categoryData, category, context) {
-  const $available = $(`.ynab-new-budget-available-number`, context);
-  const $availableText = $(`.user-data`, $available);
+function categoryValues(categoryData, category, $categoryObjects) {
+  // Save values before they're changed so we can revert everything on destroy().
+  setCategoryOriginalValues(category.categoryId, $categoryObjects);
 
-  $availableText.text(formatCurrency(categoryData.availableAfterUpcoming));
+  const values = {
+    $categoryObjects,
+    removeClasses: ['upcoming', 'positive', 'zero', 'negative'],
+    addClasses: [getCurrencyClass(categoryData.availableAfterUpcoming)],
+    text: formatCurrency(categoryData.availableAfterUpcoming),
+    $upcomingIcon: null,
+  };
 
-  $available.children('svg.icon-upcoming').remove();
+  // If a category is overspent but upcoming transactions makes the available amount positive, add cautious so the user knowns its overspent.
+  if (category.isOverSpent && categoryData.availableAfterUpcoming >= 0)
+    values.addClasses.push('cautious');
+  else if (!category.isOverSpent) values.removeClasses.push('cautious');
 
-  const classes = 'upcoming positive zero negative';
-  $available.removeClass(classes);
-  $availableText.removeClass(classes);
+  setCategoryValues(values);
+}
 
-  const currencyClass = util.getCurrencyClass(categoryData.availableAfterUpcoming);
-  $available.addClass(currencyClass);
-  $availableText.addClass(currencyClass);
+export function setCategoryValues(values) {
+  const $categoryObjects = values.$categoryObjects;
+  const $available = $categoryObjects.$available;
+  const $availableText = $categoryObjects.$availableText;
 
-  if (categoryData.availableAfterUpcoming >= 0) {
-    $(category).removeAttr('data-toolkit-negative-available');
+  $available.removeClass(values.removeClasses);
+  $availableText.removeClass(values.removeClasses);
 
-    if (category.isOverSpent) {
-      $available.addClass('cautious');
-      $availableText.addClass('cautious');
-    }
-  } else if (!category.isOverSpent) {
-    $available.removeClass('cautious');
-    $availableText.removeClass('cautious');
-  }
+  $available.addClass(values.addClasses);
+  $availableText.addClass(values.addClasses);
+
+  $availableText.text(values.text);
+
+  // Remove icon by default. If $upcomingIcon is provided, we add it.
+  if (!values.$upcomingIcon) $available.children('svg.icon-upcoming').remove();
+  else values.$upcomingIcon.prependTo($available);
+}
+
+function getCategoryObjects(context) {
+  const $available = $('.ynab-new-budget-available-number', context);
+  if (!$available.length) return;
+
+  const $availableText = $('.user-data', $available);
+  if (!$availableText.length) return;
+
+  return {
+    $available,
+    $availableText,
+  };
 }

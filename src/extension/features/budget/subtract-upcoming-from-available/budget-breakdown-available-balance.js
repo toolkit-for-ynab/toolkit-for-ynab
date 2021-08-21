@@ -1,21 +1,24 @@
-import { formatCurrency } from 'toolkit/extension/utils/currency';
+/* eslint-disable no-continue */
+import { formatCurrency, getCurrencyClass } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import * as categories from './categories';
-import * as util from './util';
+import { resetInspectorMessage } from './destroy-helpers';
+import { setInspectorMessageOriginalValues } from './destroy-helpers';
+import { shouldRun } from './index';
 
 // This file handles the case when YNAB provides its own available after upcoming when one category is selected.
 
 export function handleBudgetBreakdownAvailableBalance(element) {
-  if (!util.shouldRun()) return;
+  resetInspectorMessage();
+
+  if (!shouldRun()) return;
 
   const $budgetBreakdownAvailableBalance = $('.budget-breakdown-available-balance', element);
   if (!$budgetBreakdownAvailableBalance.length) return;
 
-  const $ynabAvailableAfterUpcoming = getYnabAvailableAfterUpcoming(element);
-  if (!$ynabAvailableAfterUpcoming.length) return;
-
-  resetInspectorMessage();
+  const $inspectorMessageObjects = getInspectorMessageObjects();
+  if (!$inspectorMessageObjects) return;
 
   const budgetBreakdown = getEmberView(element.id);
   if (!budgetBreakdown) return;
@@ -23,102 +26,134 @@ export function handleBudgetBreakdownAvailableBalance(element) {
   const totals = categories.getTotals(budgetBreakdown);
   if (!totals) return;
 
-  updateInspectorMessage(totals, $ynabAvailableAfterUpcoming, $budgetBreakdownAvailableBalance);
+  inspectorMessageValues(totals, $inspectorMessageObjects);
 }
 
-export function resetInspectorMessage() {
-  const $budgetBreakdownAvailableBalance = $('.budget-breakdown-available-balance');
-  if (!$budgetBreakdownAvailableBalance.length) return;
+function inspectorMessageValues(totals, $inspectorMessageObjects) {
+  // Save values before they're changed so we can revert everything on destroy().
+  setInspectorMessageOriginalValues($inspectorMessageObjects);
 
-  // Remove clones and show original elements.
-  for (const [key, $object] of Object.entries($budgetBreakdownAvailableBalance.data())) {
-    if (key.toLowerCase().includes('clone')) $object.remove();
-    else $object.show();
-  }
-
-  $('#tk-inspector-message-previous-upcoming').remove();
-  $('#tk-inspector-message-cc-payment').remove();
-}
-
-function updateInspectorMessage(totals, $ynabAvailableAfterUpcoming, context) {
   const totalPreviousUpcoming = totals.totalPreviousUpcoming;
   const totalCCPayments = totals.totalCCPayments;
   const totalAvailableAfterUpcoming = totals.totalAvailableAfterUpcoming;
 
-  const $inspectorMessage = $ynabAvailableAfterUpcoming.closest('.inspector-message').parent();
-  const $ynabBreakdown = $inspectorMessage.siblings('.ynab-breakdown');
+  setInspectorMessageEntries();
 
-  const clones = getClones({ $inspectorMessage, $ynabBreakdown }, context);
-  const $inspectorMessageClone = clones.$inspectorMessageClone;
-  const $ynabBreakdownClone = clones.$ynabBreakdownClone;
-
-  $inspectorMessageClone.insertBefore($ynabBreakdown).css('margin-bottom', '.5rem');
-  $ynabBreakdownClone.insertAfter($inspectorMessageClone).css('margin-bottom', '0rem');
-
-  const $inspectorMessageContainer = $('.inspector-message', $inspectorMessageClone);
-  const classes = 'positive zero negative';
-  $inspectorMessageContainer.removeClass(classes);
-  $inspectorMessageContainer.addClass(totalAvailableAfterUpcoming >= 0 ? 'positive' : 'negative');
-
-  const $inspectorMessageRow = getYnabAvailableAfterUpcoming($inspectorMessageClone).parent();
-  const $availableAfterUpcomingText = $('.user-data', $inspectorMessageRow);
-  $availableAfterUpcomingText.text(formatCurrency(totalAvailableAfterUpcoming));
-  $availableAfterUpcomingText.removeClass(classes);
-  $availableAfterUpcomingText.addClass(util.getCurrencyClass(totalAvailableAfterUpcoming));
-
-  const inspectorMessageEntries = [];
   if (totalPreviousUpcoming)
-    inspectorMessageEntries.push(
-      getInspectorMessageEntry('previousUpcoming', totalPreviousUpcoming)
-    );
-  if (totalCCPayments)
-    inspectorMessageEntries.push(getInspectorMessageEntry('CCPayment', -totalCCPayments)); // Invert amount. A positive amount should show as negative in the budget breakdown and vice versa.
-  const $inspectorMessageEntries = util.$buildEntries(inspectorMessageEntries);
+    inspectorMessageEntries.previousUpcoming.amount = totalPreviousUpcoming;
 
-  $inspectorMessageEntries.insertBefore($inspectorMessageRow);
+  if (totalCCPayments) inspectorMessageEntries.CCPayment.amount = -totalCCPayments; // Invert amount. A positive amount should show as negative in the budget breakdown and vice versa.
+
+  const $inspectorMessageEntries = getInspectorMessageEntries(inspectorMessageEntries);
+
+  const values = {
+    $inspectorMessageObjects,
+    reset: false,
+    removeClasses: ['positive', 'zero', 'negative'],
+    $inspectorMessageContainerClass: totalAvailableAfterUpcoming >= 0 ? 'positive' : 'negative',
+    $availableAfterUpcomingText: formatCurrency(totalAvailableAfterUpcoming),
+    $availableAfterUpcomingTextClass: getCurrencyClass(totalAvailableAfterUpcoming),
+    $inspectorMessageEntries,
+  };
+
+  setInspectorMessageValues(values);
 }
 
-// Store the elements on context ($budgetBreakdownAvailableBalance) and hide them so we can easily revert changes on destroy().
-function getClones($objects, context) {
-  const clones = {};
-  for (const [key, $object] of Object.entries($objects)) {
-    context.data(key, $object);
+export function setInspectorMessageValues(values) {
+  if (!values) return;
 
-    const cloneKey = `${key}Clone`;
-    clones[cloneKey] = $object.clone();
-    context.data(cloneKey, clones[cloneKey]);
+  const $inspectorMessageObjects = values.$inspectorMessageObjects;
+  const $inspectorMessage = $inspectorMessageObjects.$inspectorMessage;
+  const $ynabBreakdown = $inspectorMessageObjects.$ynabBreakdown;
+  const $inspectorMessageContainer = $inspectorMessageObjects.$inspectorMessageContainer;
+  const $availableAfterUpcomingRow = $inspectorMessageObjects.$availableAfterUpcomingRow;
+  const $availableAfterUpcomingText = $inspectorMessageObjects.$availableAfterUpcomingText;
 
-    $object.hide();
+  if (!values.reset) {
+    $inspectorMessage.insertBefore($ynabBreakdown).css('margin-bottom', '.5rem');
+    $ynabBreakdown.css('margin-bottom', '0rem');
+  } else {
+    $inspectorMessage.insertAfter($ynabBreakdown).css('margin-bottom', '0rem');
+    $ynabBreakdown.css('margin-bottom', '.5rem');
   }
-  return clones;
+
+  $inspectorMessageContainer.removeClass(values.removeClasses);
+  $inspectorMessageContainer.addClass(values.$inspectorMessageContainerClass);
+
+  $availableAfterUpcomingText.text(values.$availableAfterUpcomingText);
+  $availableAfterUpcomingText.removeClass(values.removeClasses);
+  $availableAfterUpcomingText.addClass(values.$availableAfterUpcomingTextClass);
+
+  if (values.$inspectorMessageEntries)
+    values.$inspectorMessageEntries.insertBefore($availableAfterUpcomingRow);
 }
 
-function getYnabAvailableAfterUpcoming(context) {
+function getInspectorMessageObjects() {
   const localizedMessageText = l10n(
     'inspector.availableMessage.afterUpcoming',
     'Available After Upcoming'
   );
 
-  return $('.inspector-message-label', context).filter(function () {
+  const $ynabAvailableAfterUpcoming = $('.inspector-message-label').filter(function () {
     return this.innerText === localizedMessageText;
   });
+
+  if (!$ynabAvailableAfterUpcoming.length) return;
+
+  const $inspectorMessage = $ynabAvailableAfterUpcoming.closest('.inspector-message').parent();
+  const $ynabBreakdown = $inspectorMessage.siblings('.ynab-breakdown');
+  const $inspectorMessageContainer = $('.inspector-message', $inspectorMessage);
+  const $availableAfterUpcomingRow = $ynabAvailableAfterUpcoming.parent();
+  const $availableAfterUpcomingText = $('.user-data', $availableAfterUpcomingRow);
+
+  return {
+    $inspectorMessage,
+    $ynabBreakdown,
+    $inspectorMessageContainer,
+    $availableAfterUpcomingRow,
+    $availableAfterUpcomingText,
+  };
 }
 
-function getInspectorMessageEntry(key, amount) {
-  const entry = inspectorMessageEntries[key];
-  return util.createInspectorMessageEntry(entry[0], entry[1], entry[2], amount);
+function getInspectorMessageEntries(entries) {
+  let $entries = $();
+
+  for (const entry of Object.values(entries)) {
+    if (entry.amount === null) continue;
+
+    const currencyClass = getCurrencyClass(entry.amount);
+    const amount = formatCurrency(entry.amount);
+
+    $entries = $entries.add(
+      $(`
+        <div id="${entry.elementId}" class="inspector-message-row">
+          <div class="inspector-message-label">${entry.title}</div>
+          <div class="inspector-message-currency">
+            <span class="user-data currency ${currencyClass}">${amount}</span>
+          </div>
+        </div>
+      `)
+    );
+  }
+
+  return $entries;
 }
 
 const inspectorMessageEntries = {};
 
-inspectorMessageEntries.previousUpcoming = [
-  'tk-inspector-message-previous-upcoming',
-  'toolkit.inspectorMessagePreviousUpcoming',
-  'Upcoming Transactions (Previous Months)',
-];
+function setInspectorMessageEntries() {
+  inspectorMessageEntries.previousUpcoming = {
+    elementId: 'tk-inspector-message-previous-upcoming',
+    title: l10n(
+      'toolkit.inspectorMessagePreviousUpcoming',
+      'Upcoming Transactions (Previous Months)'
+    ),
+    amount: null,
+  };
 
-inspectorMessageEntries.CCPayment = [
-  'tk-inspector-message-cc-payment',
-  'toolkit.inspectorMessageCCPayment',
-  'Remaining Payment',
-];
+  inspectorMessageEntries.CCPayment = {
+    elementId: 'tk-inspector-message-cc-payment',
+    title: l10n('toolkit.inspectorMessageCCPayment', 'Remaining Payment'),
+    amount: null,
+  };
+}
