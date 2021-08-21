@@ -12,6 +12,10 @@ import { componentAppend } from './utils/react';
 import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-modal';
 import { Feature } from './features/feature';
 import { InboundMessage, InboundMessageType, OutboundMessageType } from 'toolkit/core/messages';
+import { ObserveListener, RouteChangeListener } from './listeners';
+
+export let observeListener: ObserveListener;
+export let routeChangeListener: RouteChangeListener;
 
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
@@ -266,17 +270,18 @@ export class YNABToolkit {
 
         self.addToolkitEmberHooks();
 
-        if (!ynabToolKit.options['DisableToolkit']) {
-          // inject the global css from each feature into the HEAD of the DOM
-          self.applyFeatureCSS();
+        observeListener = new ObserveListener();
+        routeChangeListener = new RouteChangeListener();
 
-          self.checkReleaseVersion();
+        // inject the global css from each feature into the HEAD of the DOM
+        self.applyFeatureCSS();
 
-          // Hook up listeners and then invoke any features that are ready to go.
-          self.invokeFeatureInstances();
+        self.checkReleaseVersion();
 
-          Ember.run.later(self.invokeAllHooks, 100);
-        }
+        // Hook up listeners and then invoke any features that are ready to go.
+        self.invokeFeatureInstances();
+
+        Ember.run.later(self.invokeAllHooks, 100);
       } else if (typeof Ember !== 'undefined') {
         Ember.run.later(poll, 250);
       } else {
