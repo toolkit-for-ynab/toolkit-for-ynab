@@ -7,16 +7,20 @@ import { Collections } from 'toolkit/extension/utils/collections';
 import moment from 'moment';
 
 export class DaysOfBuffering extends Feature {
-  _lookbackMonths = parseInt(ynabToolKit.options.DaysOfBufferingHistoryLookup);
-
-  _lookbackDays = this._lookbackMonths * 30;
+  get lookbackDays() {
+    return (parseInt(this.settings.enabled) || 0) * 30;
+  }
 
   injectCSS() {
     return require('./index.css');
   }
 
+  destroy() {
+    document.querySelector('.tk-days-of-buffering')?.remove();
+  }
+
   shouldInvoke() {
-    return isCurrentRouteBudgetPage() && !document.querySelector('toolkit-days-of-buffering');
+    return isCurrentRouteBudgetPage();
   }
 
   invoke() {
@@ -49,11 +53,11 @@ export class DaysOfBuffering extends Feature {
 
   _updateDisplay(calculation) {
     const { averageDailyOutflow, daysOfBuffering, availableDates, totalOutflow } = calculation;
-    const daysOfBufferingContainer = document.querySelector('.toolkit-days-of-buffering');
+    const daysOfBufferingContainer = document.querySelector('.tk-days-of-buffering');
     let $displayElement = $(daysOfBufferingContainer);
     if (!daysOfBufferingContainer) {
       $displayElement = $('<div>', {
-        class: 'budget-header-item budget-header-days toolkit-days-of-buffering',
+        class: 'budget-header-item budget-header-days tk-days-of-buffering',
       }).append(
         $('<div>')
           .append(
@@ -93,14 +97,8 @@ export class DaysOfBuffering extends Feature {
         averageDailyOutflow
       )}`;
 
-      // #1745 - Display the date of buffering
-      if (ynabToolKit.options.DaysOfBufferingDate) {
-        const dateOfBuffering = this._getDateOfBuffering(daysOfBuffering);
-        title += `\n${l10n(
-          'toolkit.dob.dateOfBuffering',
-          'Date of buffering'
-        )}: ${dateOfBuffering}`;
-      }
+      const dateOfBuffering = this._getDateOfBuffering(daysOfBuffering);
+      title += `\n${l10n('toolkit.dob.dateOfBuffering', 'Date of buffering')}: ${dateOfBuffering}`;
     }
 
     $('.budget-header-days-age', $displayElement).text(text);
@@ -131,8 +129,8 @@ export class DaysOfBuffering extends Feature {
     const minDate = moment.min(dates);
     const maxDate = moment.max(dates);
     const availableDates =
-      this._lookbackDays !== 0
-        ? Math.min(this._lookbackDays, maxDate.diff(minDate, 'days'))
+      this.lookbackDays !== 0
+        ? Math.min(this.lookbackDays, maxDate.diff(minDate, 'days'))
         : maxDate.diff(minDate, 'days');
 
     let averageDailyOutflow = Math.abs(totalOutflow / availableDates);
@@ -162,10 +160,10 @@ export class DaysOfBuffering extends Feature {
     const today = ynab.utilities.DateWithoutTime.createForToday();
 
     let isEligibleDate = false;
-    if (this._lookbackDays === 0) {
+    if (this.lookbackDays === 0) {
       isEligibleDate = true;
     } else {
-      isEligibleDate = transaction.get('date').daysApart(today) < this._lookbackDays;
+      isEligibleDate = transaction.get('date').daysApart(today) < this.lookbackDays;
     }
 
     return (

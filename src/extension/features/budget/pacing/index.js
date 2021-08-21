@@ -18,6 +18,10 @@ export class Pacing extends Feature {
     return isCurrentRouteBudgetPage();
   }
 
+  destroy() {
+    $('.tk-budget-table-cell-pacing').remove();
+  }
+
   invoke() {
     if (!isCurrentMonthSelected()) {
       $('.tk-budget-table-cell-pacing').remove();
@@ -32,17 +36,21 @@ export class Pacing extends Feature {
 
     $('.budget-table-row').each((_, element) => {
       if (element.classList.contains('is-master-category')) {
-        $('.budget-table-cell-available', element).after(
-          `<li class="tk-budget-table-cell-pacing"></li>`
-        );
+        if (!element.querySelector('.tk-budget-table-cell-pacing')) {
+          $('.budget-table-cell-available', element).after(
+            `<li class="tk-budget-table-cell-pacing"></li>`
+          );
+        }
 
         return;
       }
 
       if (element.classList.contains('is-debt-payment-category')) {
-        $('.budget-table-cell-available', element).after(
-          `<li class="tk-budget-table-cell-pacing"></li>`
-        );
+        if (!element.querySelector('.tk-budget-table-cell-pacing')) {
+          $('.budget-table-cell-available', element).after(
+            `<li class="tk-budget-table-cell-pacing"></li>`
+          );
+        }
 
         return;
       }
@@ -59,31 +67,35 @@ export class Pacing extends Feature {
         pacingCalculation
       );
 
-      $('.budget-table-cell-available', element).after(
-        $display.click((event) => {
-          const deemphasizedCategories = getDeemphasizedCategories();
-          const subCategoryId = event.target.getAttribute('data-tk-sub-category-id');
+      $display.on('click', (event) => {
+        const deemphasizedCategories = getDeemphasizedCategories();
+        const subCategoryId = event.target.getAttribute('data-tk-sub-category-id');
 
-          if (deemphasizedCategories.contains(subCategoryId)) {
-            $(event.target).removeClass('deemphasized');
-            setDeemphasizedCategories(
-              deemphasizedCategories.filter((id) => {
-                return id !== subCategoryId;
-              })
-            );
-          } else {
-            $(event.target).addClass('deemphasized');
-            deemphasizedCategories.push(subCategoryId);
-            setDeemphasizedCategories(deemphasizedCategories);
-          }
+        if (deemphasizedCategories.contains(subCategoryId)) {
+          $(event.target).removeClass('deemphasized');
+          setDeemphasizedCategories(
+            deemphasizedCategories.filter((id) => {
+              return id !== subCategoryId;
+            })
+          );
+        } else {
+          $(event.target).addClass('deemphasized');
+          deemphasizedCategories.push(subCategoryId);
+          setDeemphasizedCategories(deemphasizedCategories);
+        }
 
-          if (['pacing', 'both'].indexOf(ynabToolKit.options.BudgetProgressBars) !== -1) {
-            ynabToolKit.invokeFeature('BudgetProgressBars');
-          }
+        if (['pacing', 'both'].indexOf(ynabToolKit.options.BudgetProgressBars) !== -1) {
+          ynabToolKit.invokeFeature('BudgetProgressBars');
+        }
 
-          event.stopPropagation();
-        })
-      );
+        event.stopPropagation();
+      });
+
+      if ($('.tk-budget-table-cell-pacing', element).length) {
+        $('.tk-budget-table-cell-pacing', element).remove();
+      }
+
+      $('.budget-table-cell-available', element).after($display);
     });
   }
 

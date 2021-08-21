@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 import { componentAfter } from 'toolkit/extension/utils/react';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
@@ -9,7 +9,7 @@ const EditMemo = () => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [memoInputValue, setMemoInputValue] = useState('');
 
-  const handleConfirm = (e) => {
+  const handleConfirm = () => {
     const checkedRows = controllerLookup('accounts').get('areChecked');
     const { transactionsCollection } = getEntityManager();
     getEntityManager().performAsSingleChangeSet(() => {
@@ -74,12 +74,15 @@ export class BulkEditMemo extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
+    this.addToolkitEmberHook(
       'modals/register/edit-transactions',
       'didInsertElement',
       this.injectBulkEditMemo
     );
+  }
+
+  destroy() {
+    $('.tk-bulk-edit-memo, .tk-bulk-edit-memo + li').remove();
   }
 
   injectBulkEditMemo = (element) => {

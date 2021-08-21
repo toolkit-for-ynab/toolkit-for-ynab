@@ -3,7 +3,7 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class ChangeEnterBehavior extends Feature {
   shouldInvoke() {
-    return isCurrentRouteAccountsPage() && $('.ynab-grid-body-row.is-editing').length;
+    return isCurrentRouteAccountsPage() && !!$('.ynab-grid-body-row.is-editing').length;
   }
 
   invoke() {
@@ -12,7 +12,7 @@ export class ChangeEnterBehavior extends Feature {
       '.ynab-grid-cell-memo input, .ynab-grid-cell-outflow input, .ynab-grid-cell-inflow input',
       $editRows
     );
-    $editInputs.each((index, input) => {
+    $editInputs.each((_, input) => {
       if (!input.getAttribute('data-toolkit-save-behavior')) {
         input.setAttribute('data-toolkit-save-behavior', true);
         input.addEventListener('keydown', this.applyNewEnterBehavior);
@@ -22,7 +22,7 @@ export class ChangeEnterBehavior extends Feature {
 
   destroy() {
     const $editInputs = $('input[data-toolkit-save-behavior]');
-    $editInputs.each((index, input) => {
+    $editInputs.each((_, input) => {
       input.removeAttribute('data-toolkit-save-behavior');
       input.removeEventListener('keydown', this.applyNewEnterBehavior);
     });

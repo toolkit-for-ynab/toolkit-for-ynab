@@ -3,7 +3,6 @@ import { componentPrepend } from 'toolkit/extension/utils/react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { BudgetListItem } from './components/budget-list-item';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class BudgetQuickSwitch extends Feature {
   shouldInvoke() {
@@ -11,7 +10,15 @@ export class BudgetQuickSwitch extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'settings-menu', 'didRender', this.injectQuickSwitch);
+    this.addToolkitEmberHook('settings-menu', 'didRender', this.injectQuickSwitch);
+  }
+
+  destroy() {
+    const quickSwitch = document.querySelector('#tk-quick-switch');
+    if (!quickSwitch) return;
+
+    while (quickSwitch.previousSibling) quickSwitch.previousSibling.remove();
+    quickSwitch.remove();
   }
 
   injectQuickSwitch(element) {

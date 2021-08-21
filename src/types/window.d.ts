@@ -1,17 +1,20 @@
 import Object from '@ember/object';
 import Component from '@ember/component';
 import { run } from '@ember/runloop';
-import { settingsMap } from 'toolkit/core/settings';
 import { Feature } from 'toolkit/extension/features/feature';
 
-interface YNABToolkit {
+export interface YNABToolkitObject {
+  assets: {
+    logo: string;
+  };
   environment: 'development' | 'beta' | 'production';
   extensionId: string;
   hookedComponents: Set<Feature>;
   invokeFeature(featureName: FeatureName): void;
   options: {
     [settingName in FeatureName]: FeatureSetting;
-  }
+  };
+  name: string;
   version: string;
 }
 
@@ -19,7 +22,7 @@ declare global {
   interface Window {
     Ember: Ember;
     __toolkitUtils: any;
-    ynabToolKit: YNABToolkit;
+    ynabToolKit: YNABToolkitObject;
   }
 
   interface Ember {
@@ -34,13 +37,12 @@ declare global {
         willUpdate: Component['willUpdate'];
 
         didInsertElement(): void;
-      }
+      };
     };
   }
 
-  type FeatureName = keyof typeof settingsMap;
   type FeatureSetting = boolean | string;
 
   const Ember: Ember;
-  const ynabToolKit: YNABToolkit;
+  const ynabToolKit: YNABToolkitObject;
 }

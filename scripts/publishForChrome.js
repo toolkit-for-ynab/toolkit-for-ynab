@@ -17,7 +17,7 @@ function getEnvironmentOrExit(variable) {
 
 function getEnvironmentVariables() {
   return {
-    travisBranch: getEnvironmentOrExit('TRAVIS_BRANCH'),
+    githubRef: getEnvironmentOrExit('GITHUB_REF'),
     chromeExtensionId: getEnvironmentOrExit('CHROME_EXTENSION_ID'),
     chromeClientId: getEnvironmentOrExit('CHROME_CLIENT_ID'),
     chromeClientSecret: getEnvironmentOrExit('CHROME_CLIENT_SECRET'),
@@ -79,7 +79,6 @@ async function uploadToWebStore(environmentVariables) {
 }
 
 async function uploadSourcemapsToSentry({ sentryAuthToken }) {
-  console.log(sentryAuthToken);
   const version = require(`${extensionDistPath}/extension/manifest.json`).version;
 
   try {
@@ -141,10 +140,10 @@ async function uploadSourcemapsToSentry({ sentryAuthToken }) {
 async function publishForChrome() {
   const environmentVariables = getEnvironmentVariables();
   // Are we on the correct branch?
-  if (environmentVariables.travisBranch !== 'beta') {
-    console.log(`TRAVIS_BRANCH is '${environmentVariables.travisBranch}'.`);
+  if (!environmentVariables.githubRef.includes('beta')) {
+    console.log(`githubRef is '${environmentVariables.githubRef}'.`);
     console.log(
-      "Either we're on the wrong branch or we're not on Travis. Either way, no need to publish."
+      "Either we're on the wrong branch or this isn't a GitHub action. Either way, no need to publish."
     );
     process.exit(0);
   }

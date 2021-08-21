@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'general',
-  title: 'Square Negative Mode',
+  title: 'Emphasize Negative Numbers',
   description:
-    'Changes the round borders on all negative numbers to square. Helps them become more of an eyesore so you want to get rid of them!',
+    'Make all round borders on all negative numbers square making them a bit more of an eyesore so you want to get rid of them!',
 };

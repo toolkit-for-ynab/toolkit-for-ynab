@@ -5,5 +5,5 @@ module.exports = {
   section: 'general',
   title: 'Budget Quick Switch',
   description:
-    "Adds the list of budgets to the Open Budget dropdown so you don't have to navigate to the 'Open Budget' page to switch budgets.",
+    'Add the list of budgets to the User Menu (click your e-mail) allowing you to switch between budgets without going to the "Open Budget" screen.',
 };

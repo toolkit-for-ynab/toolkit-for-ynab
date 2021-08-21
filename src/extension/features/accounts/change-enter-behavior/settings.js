@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Change Behaviour of Enter Key When Adding Transactions',
+  title: 'Save Transaction on Enter',
   description:
-    "When you press enter while adding transactions, the default behaviour is 'Save and add another'. This option changes it to just 'Save'.",
+    'Change the default action of pressing "Enter" to save a transaction rather than "Save and add another".',
 };

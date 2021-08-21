@@ -27,6 +27,11 @@ export class ToolkitReports extends Feature {
     return true;
   }
 
+  destroy() {
+    $(TOOLKIT_REPORTS_NAVLINK_SELECTOR).remove();
+    $('#TOOLKIT_REPORTS_CONTAINER_ID').remove();
+  }
+
   invoke() {
     if (!document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID)) {
       $(YNAB_CONTENT_CONTAINER_SELECTOR).append(

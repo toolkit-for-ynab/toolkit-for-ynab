@@ -1,5 +1,4 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
 const TOOLKIT_RECONCILED_CLASS = 'tk-is-reconciled';
@@ -8,16 +7,16 @@ const YNAB_GRID_BODY_SUB_CLASS = 'ynab-grid-body-sub';
 
 export class ReconciledTextColor extends Feature {
   injectCSS() {
-    if (ynabToolKit.options.ReconciledTextColor === '1') {
+    if (this.settings.enabled === '1') {
       return require('./green.css');
     }
-    if (ynabToolKit.options.ReconciledTextColor === '2') {
+    if (this.settings.enabled === '2') {
       return require('./lightgray.css');
     }
-    if (ynabToolKit.options.ReconciledTextColor === '3') {
+    if (this.settings.enabled === '3') {
       return require('./darkgray.css');
     }
-    if (ynabToolKit.options.ReconciledTextColor === '4') {
+    if (this.settings.enabled === '4') {
       return require('./darkgraybg.css');
     }
   }
@@ -27,11 +26,15 @@ export class ReconciledTextColor extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'register/grid-sub', 'didInsertElement', this.addClass);
-    addToolkitEmberHook(this, 'register/grid-row', 'didInsertElement', this.addClass);
+    this.addToolkitEmberHook('register/grid-sub', 'didInsertElement', this.addClass);
+    this.addToolkitEmberHook('register/grid-row', 'didInsertElement', this.addClass);
 
-    addToolkitEmberHook(this, 'register/grid-sub', 'didUpdate', this.addClass);
-    addToolkitEmberHook(this, 'register/grid-row', 'didUpdate', this.addClass);
+    this.addToolkitEmberHook('register/grid-sub', 'didUpdate', this.addClass);
+    this.addToolkitEmberHook('register/grid-row', 'didUpdate', this.addClass);
+  }
+
+  destroy() {
+    $(`.${TOOLKIT_RECONCILED_CLASS}`).removeClass(TOOLKIT_RECONCILED_CLASS);
   }
 
   addClass(element) {

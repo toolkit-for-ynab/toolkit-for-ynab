@@ -3,6 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Larger Clickable Area for Icons',
-  description: 'Makes the uncleared, cleared and reconciled icons easier to select.',
+  title: 'Enlarge Small Icons',
+  description:
+    'Makes the uncleared, cleared and reconciled icons slightly larger and easier to click.',
 };

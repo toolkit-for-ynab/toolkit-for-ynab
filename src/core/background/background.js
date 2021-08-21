@@ -21,7 +21,9 @@ export class Background {
   initListeners() {
     this._browser.runtime.onMessage.addListener(this._handleMessage);
     this._browser.runtime.onUpdateAvailable.addListener(this._handleUpdateAvailable);
-    this._storage.onFeatureSettingChanged(TOOLKIT_DISABLED_FEATURE_SETTING, this._updatePopupIcon);
+    this._storage.onToolkitDisabledChanged((_, isToolkitDisabled) =>
+      this._updatePopupIcon(isToolkitDisabled)
+    );
     this._checkForUpdates();
   }
 

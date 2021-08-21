@@ -3,11 +3,10 @@ module.exports = {
   type: 'select',
   default: false,
   section: 'accounts',
-  title: 'Reconciled Text Colour',
+  title: 'Emphasize Reconciled Transactions',
   description:
-    'Makes the text on reconciled transactions appear in a more obvious colour of your choosing.',
+    'Add emphasis to reconciled transaction rows to better distinguish them from "active" transactions.',
   options: [
-    { name: 'Default', value: '0' },
     { name: 'Green', value: '1' },
     { name: 'Light gray', value: '2' },
     { name: 'Dark gray', value: '3' },
