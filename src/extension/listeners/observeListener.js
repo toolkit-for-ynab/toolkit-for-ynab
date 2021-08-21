@@ -1,20 +1,14 @@
 import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
-let instance = null;
-
 export class ObserveListener {
   constructor() {
-    if (instance) {
-      return instance;
-    }
-
     this.features = [];
 
     let _MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-    let observer = new _MutationObserver(mutations => {
+    let observer = new _MutationObserver((mutations) => {
       this.changedNodes = new Set();
 
-      const addChangedNodes = nodes => {
+      const addChangedNodes = (nodes) => {
         nodes.each((index, element) => {
           var nodeClass = $(element).attr('class');
           if (nodeClass) {
@@ -23,7 +17,7 @@ export class ObserveListener {
         });
       };
 
-      mutations.forEach(mutation => {
+      mutations.forEach((mutation) => {
         let newNodes = mutation.target;
         let addedNodes = mutation.addedNodes;
         let $nodes = $(newNodes);
@@ -44,15 +38,13 @@ export class ObserveListener {
     });
 
     // This finally says 'Watch for changes' and only needs to be called the one time
-    observer.observe($('.ember-view.layout')[0], {
+    observer.observe($('.ember-view.layout')[0] || document.body, {
       subtree: true,
       childList: true,
       characterData: true,
       attributes: true,
       attributeFilter: ['class'],
     });
-
-    instance = this;
   }
 
   addFeature(feature) {
@@ -61,8 +53,12 @@ export class ObserveListener {
     }
   }
 
+  removeFeature(feature) {
+    this.features.removeAt(this.features.indexOf(feature));
+  }
+
   emitChanges() {
-    this.features.forEach(feature => {
+    this.features.forEach((feature) => {
       const observe = feature.observe.bind(feature, this.changedNodes);
       const wrapped = withToolkitError(observe, feature);
       Ember.run.later(() => {
@@ -86,3 +82,5 @@ export class ObserveListener {
     });
   }
 }
+
+export const observeListener = new ObserveListener();

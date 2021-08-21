@@ -1,16 +1,16 @@
 .ynab-grid-cell-outflow .currency::before {
-	content: "(";
+  content: '(';
 }
 
 .ynab-grid-cell-outflow .currency::after {
-	content: ")";
+  content: ')';
 }
 
 .ynab-grid-cell-outflow .currency {
-	color: #c00;
+  color: #c00;
 }
 
 .ynab-grid-body-row.is-checked .ynab-grid-cell-outflow .currency {
-	color: #ff4b2b;
-	font-weight: bold;
+  color: #ff4b2b;
+  font-weight: bold;
 }

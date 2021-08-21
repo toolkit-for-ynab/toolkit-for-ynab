@@ -1,4 +1,3 @@
-.budget-header-days:not(.toolkit-days-of-buffering) {
-	display: none;
-	border-left: none;
+.budget-header-days:not(.tk-days-of-buffering) div {
+  display: none;
 }

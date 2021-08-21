@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'budget',
-  title: 'Date Of Money',
+  title: 'Add Date of Money Tooltip',
   description:
-    'Hover the mouse over Age of Money to display the date of the income.\n For example, on 11th January with Age of Money = 10, Date of Money would be 1st January.',
+    'Hovering "Age of Money" will display the date of the income.\n For example, on 11th January with Age of Money = 10, Date of Money would be 1st January.',
 };

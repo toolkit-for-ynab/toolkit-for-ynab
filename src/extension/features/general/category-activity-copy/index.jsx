@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { componentAppend } from 'toolkit/extension/utils/react';
 
 function CopyTransactionsButton({ transactions }) {
@@ -43,22 +42,20 @@ export class CategoryActivityCopy extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
-      'budget/budget-activity',
-      'didRender',
-      this.handleBudgetActivityModal
-    );
+    this.addToolkitEmberHook('budget/budget-activity', 'didRender', this.handleBudgetActivityModal);
 
-    addToolkitEmberHook(
-      this,
+    this.addToolkitEmberHook(
       'modals/reports/activity-transactions',
       'didRender',
       this.handleReportActivityModal
     );
   }
 
-  handleBudgetActivityModal = element => {
+  destroy() {
+    $('#tk-copy-transactions').remove();
+  }
+
+  handleBudgetActivityModal = (element) => {
     if ($('#tk-copy-transactions').length) {
       return;
     }
@@ -71,7 +68,7 @@ export class CategoryActivityCopy extends Feature {
     );
   };
 
-  handleReportActivityModal = element => {
+  handleReportActivityModal = (element) => {
     if ($('#tk-copy-transactions').length) {
       return;
     }
@@ -85,7 +82,7 @@ export class CategoryActivityCopy extends Feature {
 
 function copyTransactionsToClipboard(transactions) {
   const entityManager = getEntityManager();
-  const activities = transactions.map(transaction => {
+  const activities = transactions.map((transaction) => {
     const parentEntityId = transaction.get('parentEntityId');
     let payeeId = transaction.get('payeeId');
 
@@ -109,8 +106,8 @@ function copyTransactionsToClipboard(transactions) {
 
   const replacer = (key, value) => (value === null ? '' : value);
   const header = Object.keys(activities[0]);
-  let csv = activities.map(row =>
-    header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t')
+  let csv = activities.map((row) =>
+    header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join('\t')
   );
   csv.unshift(header.join('\t'));
   csv = csv.join('\r\n');

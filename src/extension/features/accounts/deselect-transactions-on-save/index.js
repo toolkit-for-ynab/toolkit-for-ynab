@@ -12,11 +12,7 @@ export class DeselectTransactionsOnSave extends Feature {
     const $saveButton = $('.ynab-grid-actions-buttons .button.button-primary:not(.button-another');
 
     // attach an event handler when the save button is clicked
-    $saveButton.on('click', () => {
-      setTimeout(() => {
-        controllerLookup('accounts').areChecked.setEach('isChecked', false);
-      }, 0);
-    });
+    $saveButton.on('click', this.handleSaveButtonClicked);
   }
 
   observe(changedNodes) {
@@ -26,4 +22,17 @@ export class DeselectTransactionsOnSave extends Feature {
       this.invoke();
     }
   }
+
+  destroy() {
+    $('.ynab-grid-actions-buttons .button.button-primary:not(.button-another').off(
+      'click',
+      this.handleSaveButtonClicked
+    );
+  }
+
+  handleSaveButtonClicked = () => {
+    setTimeout(() => {
+      controllerLookup('accounts').areChecked.setEach('isChecked', false);
+    }, 0);
+  };
 }

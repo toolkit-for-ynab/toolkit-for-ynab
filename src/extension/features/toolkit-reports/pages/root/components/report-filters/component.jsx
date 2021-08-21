@@ -55,7 +55,7 @@ export class ReportFiltersComponent extends React.Component {
     );
   }
 
-  _handleAccountsChanged = accountFilterIds => {
+  _handleAccountsChanged = (accountFilterIds) => {
     this.props.closeModal();
     this._applyFilters({ accountFilterIds });
   };
@@ -69,7 +69,7 @@ export class ReportFiltersComponent extends React.Component {
     });
   };
 
-  _handleCategoriesChanged = categoryFilterIds => {
+  _handleCategoriesChanged = (categoryFilterIds) => {
     this.props.closeModal();
     this._applyFilters({ categoryFilterIds });
   };
@@ -86,7 +86,7 @@ export class ReportFiltersComponent extends React.Component {
     });
   };
 
-  _handleDatesChanged = dateFilter => {
+  _handleDatesChanged = (dateFilter) => {
     this.props.closeModal();
     this._applyFilters({ dateFilter });
   };

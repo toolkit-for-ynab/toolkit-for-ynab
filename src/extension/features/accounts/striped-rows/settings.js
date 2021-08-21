@@ -6,24 +6,23 @@ module.exports = [
     section: 'accounts',
     title: 'Striped Transaction Rows',
     description:
-      'Shows a different-color background on every other transaction row. See the Color for Striped Transaction Rows settings to specify the color to be used.',
+      'Alternate backgrounds on every other transaction row. Set your own background color or use the default below.',
   },
   {
     name: 'AccountsStripedRowsColor',
     type: 'color',
     default: '#fafafa',
     section: 'accounts',
-    title: 'Color for Striped Transaction Rows',
+    title: 'Striped Transaction Rows - Default/Classic Theme Color',
     description:
-      'When the Striped Transaction Rows feature is enabled, alternating rows use this color as the background. The default is #fafafa.',
+      'The color which will be used for the Default and Classic YNAB Themes. The default is #fafafa.',
   },
   {
     name: 'AccountsStripedRowsDarkColor',
     type: 'color',
     default: '#1e1e1f',
     section: 'accounts',
-    title: 'Color for Striped Transaction Rows - Dark Theme',
-    description:
-      'When the Striped Transaction Rows feature is enabled, in dark theme, alternating rows use this color as the background. The default is #1e1e1f.',
+    title: 'Striped Transaction Rows - Dark Theme Color',
+    description: 'The color which will be used for the Dark YNAB Theme. The default is #1e1e1f.',
   },
 ];

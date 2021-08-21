@@ -5,5 +5,5 @@ module.exports = {
   section: 'accounts',
   title: 'Show Reconcile Confetti',
   description:
-    'When an account is successfully reconciled, show a fun confetti animation to mark your tremendous achievement.',
+    'Add a fun confetti animation when marking an account as reconciled to mark your tremendous achievement.',
 };

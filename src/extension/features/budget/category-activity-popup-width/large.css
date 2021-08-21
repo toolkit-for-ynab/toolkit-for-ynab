@@ -1,17 +1,17 @@
 .modal-budget-activity .modal {
-	width: 64em !important;
+  width: 64em !important;
 }
 
 /* There are 5 columns all 20% width by default */
 /* Date column */
 .modal-budget-activity ul.budget-activity li:nth-child(2) {
-	width: 10%;
+  width: 10%;
 }
 /* Memo column */
 .modal-budget-activity ul.budget-activity li:nth-child(4) {
-	width: 40%;
+  width: 40%;
 }
 /* Amount column */
 .modal-budget-activity ul.budget-activity li:nth-child(5) {
-	width: 10%;
+  width: 10%;
 }

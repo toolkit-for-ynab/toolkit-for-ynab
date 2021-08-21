@@ -30,7 +30,7 @@ export class ToolkitMath {
   _computeTokenizerRegexp() {
     const regexpString = Object.keys(mathOperators)
       .concat(parentheses)
-      .map(op => `\\${op}`)
+      .map((op) => `\\${op}`)
       .join('|');
 
     return new RegExp(`(${regexpString})`);
@@ -76,7 +76,7 @@ export class ToolkitMath {
       }
     }
 
-    if (parentheses.filter(value => operatorStack.indexOf(value) > -1).length)
+    if (parentheses.filter((value) => operatorStack.indexOf(value) > -1).length)
       throw new Error('Unbalanced parentheses in expression');
 
     return rpnOutput.concat(operatorStack.reverse());
@@ -109,8 +109,8 @@ export class ToolkitMath {
   _tokenize(expression) {
     let tokens = expression
       .split(this.tokenizerRegexp)
-      .map(t => t.trim())
-      .filter(t => t !== '');
+      .map((t) => t.trim())
+      .filter((t) => t !== '');
 
     tokens = this._markUnaryOperators(tokens);
 

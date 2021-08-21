@@ -3,12 +3,7 @@ import * as PropTypes from 'prop-types';
 import { componentAppend } from 'toolkit/extension/utils/react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import {
-  addToolkitEmberHook,
-  l10n,
-  getToolkitStorageKey,
-  setToolkitStorageKey,
-} from 'toolkit/extension/utils/toolkit';
+import { l10n, getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export const ShowMemoButton = ({ defaultIsShown, id, toggleState }) => {
@@ -53,7 +48,15 @@ export class ToggleAccountColumns extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'modals/register/view-menu', 'didRender', this.insertToggles);
+    this.addToolkitEmberHook(
+      'modals/register/register-view-options',
+      'didRender',
+      this.insertToggles
+    );
+  }
+
+  destroy() {
+    $('body').removeClass('tk-hide-memos');
   }
 
   insertToggles(element) {
@@ -78,7 +81,7 @@ export class ToggleAccountColumns extends Feature {
     return getToolkitStorageKey(`show-memo-column-${selectedAccountId}`, true);
   };
 
-  updateShowMemoState = state => {
+  updateShowMemoState = (state) => {
     const { selectedAccountId } = controllerLookup('accounts');
     if (!selectedAccountId) {
       return;
@@ -87,9 +90,9 @@ export class ToggleAccountColumns extends Feature {
     setToolkitStorageKey(`show-memo-column-${selectedAccountId}`, state);
 
     if (!state) {
-      $('body').addClass('toolkit-hide-memos');
+      $('body').addClass('tk-hide-memos');
     } else {
-      $('body').removeClass('toolkit-hide-memos');
+      $('body').removeClass('tk-hide-memos');
     }
   };
 

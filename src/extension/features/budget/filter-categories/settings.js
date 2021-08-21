@@ -3,6 +3,6 @@ module.exports = {
   type: 'checkbox',
   default: true,
   section: 'budget',
-  title: 'Enable Categories Filter',
-  description: 'Enable textbox at budget page for categories filtering',
+  title: 'Add Category Filter',
+  description: 'Add a textbox to the budget page allowing you to filter categories.',
 };

@@ -29,7 +29,7 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
 
     // Get all the uncleared transactions
     let unclearedTransactions = transactions.filter(
-      txn => txn.cleared && txn.isUncleared() && !txn.isTombstone
+      (txn) => txn.cleared && txn.isUncleared() && !txn.isTombstone
     );
 
     // Note: For credit cards, we'll automatically invert to follow ynab's behavior

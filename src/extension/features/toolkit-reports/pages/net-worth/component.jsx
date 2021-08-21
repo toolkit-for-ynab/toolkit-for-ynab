@@ -53,6 +53,7 @@ export class NetWorthComponent extends React.Component {
           <div className="tk-flex tk-justify-content-end">
             {this.state.hoveredData && (
               <Legend
+                label={this.state.hoveredData.label}
                 assets={this.state.hoveredData.assets}
                 debts={this.state.hoveredData.debts}
                 debtRatio={this.state.hoveredData.debtRatio}
@@ -67,7 +68,7 @@ export class NetWorthComponent extends React.Component {
   }
 
   toggleDebtDirection = () => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const inverseDebt = !prevState.inverseDebt;
       setToolkitStorageKey(STORAGE_KEYS.inverseDebt, inverseDebt);
       return { inverseDebt };
@@ -81,9 +82,10 @@ export class NetWorthComponent extends React.Component {
 
     const pointHover = {
       events: {
-        mouseOver: function() {
+        mouseOver: function () {
           _this.setState({
             hoveredData: {
+              label: labels[this.index],
               assets: assets[this.index],
               debts: debts[this.index],
               debtRatio: debtRatios[this.index],
@@ -112,7 +114,7 @@ export class NetWorthComponent extends React.Component {
       yAxis: {
         title: { text: '' },
         labels: {
-          formatter: function() {
+          formatter: function () {
             return formatCurrency(this.value);
           },
           style: { color: 'var(--label_primary)' },
@@ -133,7 +135,7 @@ export class NetWorthComponent extends React.Component {
           type: 'column',
           name: l10n('toolkit.debts', 'Debts'),
           color: 'rgba(234,106,81,1)',
-          data: this.state.inverseDebt ? debts.map(item => -item) : debts,
+          data: this.state.inverseDebt ? debts.map((item) => -item) : debts,
           pointPadding: 0,
           point: pointHover,
         },
@@ -174,7 +176,7 @@ export class NetWorthComponent extends React.Component {
     function pushCurrentAccountData() {
       let assets = 0;
       let debts = 0;
-      accounts.forEach(total => {
+      accounts.forEach((total) => {
         if (total > 0) {
           assets += total;
         } else {
@@ -190,11 +192,8 @@ export class NetWorthComponent extends React.Component {
       allReportData.labels.push(localizedMonthAndYear(lastMonth));
     }
 
-    transactions.forEach(transaction => {
-      const transactionMonth = transaction
-        .get('date')
-        .clone()
-        .startOfMonth();
+    transactions.forEach((transaction) => {
+      const transactionMonth = transaction.get('date').clone().startOfMonth();
       if (lastMonth === null) {
         lastMonth = transactionMonth;
       }
@@ -229,14 +228,8 @@ export class NetWorthComponent extends React.Component {
     const { fromDate, toDate } = this.props.filters.dateFilter;
     if (transactions.length) {
       let currentIndex = 0;
-      const transactionMonth = transactions[0]
-        .get('date')
-        .clone()
-        .startOfMonth();
-      const lastFilterMonth = toDate
-        .clone()
-        .addMonths(1)
-        .startOfMonth();
+      const transactionMonth = transactions[0].get('date').clone().startOfMonth();
+      const lastFilterMonth = toDate.clone().addMonths(1).startOfMonth();
       while (transactionMonth.isBefore(lastFilterMonth)) {
         if (!allReportData.labels.includes(localizedMonthAndYear(transactionMonth))) {
           const { assets, debts, debtRatios, netWorths, labels } = allReportData;
@@ -255,9 +248,9 @@ export class NetWorthComponent extends React.Component {
     // Net Worth is calculated from the start of time so we need to handle "filters" here
     // rather than using `filteredTransactions` from context.
     const { labels, assets, debts, netWorths, debtRatios } = allReportData;
-    let startIndex = labels.findIndex(label => label === localizedMonthAndYear(fromDate));
+    let startIndex = labels.findIndex((label) => label === localizedMonthAndYear(fromDate));
     startIndex = startIndex === -1 ? 0 : startIndex;
-    let endIndex = labels.findIndex(label => label === localizedMonthAndYear(toDate));
+    let endIndex = labels.findIndex((label) => label === localizedMonthAndYear(toDate));
     endIndex = endIndex === -1 ? labels.length + 1 : endIndex + 1;
 
     const filteredLabels = labels.slice(startIndex, endIndex);
@@ -269,6 +262,7 @@ export class NetWorthComponent extends React.Component {
     this.setState(
       {
         hoveredData: {
+          label: labels[labels.length - 1] || '',
           assets: assets[assets.length - 1] || 0,
           debts: debts[debts.length - 1] || 0,
           debtRatio: debtRatios[debtRatios.length - 1] || 0,

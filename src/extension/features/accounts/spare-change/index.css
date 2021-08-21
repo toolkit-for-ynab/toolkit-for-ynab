@@ -1,19 +1,19 @@
-.ynab-toolkit-accounts-header-balances-spare-change {
-	-webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    -o-box-flex: 1;
-    box-flex: 1;
-    -webkit-flex: 0 1 auto;
-    -ms-flex: 0 1 auto;
-    flex: 0 1 auto;
+.tk-spare-change {
+  margin-right: 1rem;
+}
 
-    height: 3.75em;
-    padding-top: .75em;
-    padding-right: 1rem;
-    margin-right: 1rem;
-    border-right: 1px solid #0e414c;
-    overflow: hidden;
+.tk-spare-change > span {
+  min-height: 1.5rem;
+}
 
-    text-align: center;
-    color: #5bbe72;
+.tk-spare-change .currency.positive {
+  color: var(--header_label_positive);
+}
+
+.tk-spare-change .currency.negative {
+  color: var(--header_label_negative);
+}
+
+.tk-spare-change .currency.zero {
+  color: var(--header_label_zero);
 }

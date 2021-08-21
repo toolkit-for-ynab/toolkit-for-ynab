@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { componentAppend } from 'toolkit/extension/utils/react';
 import ReactMarkdown from 'react-markdown';
 
@@ -14,7 +13,16 @@ export class NotesAsMarkdown extends Feature {
     return true;
   }
 
-  applyMarkdown = element => {
+  invoke() {
+    this.addToolkitEmberHook('budget/inspector/inspector-notes', 'didRender', this.applyMarkdown);
+  }
+
+  destroy() {
+    document.querySelector('.inspector-category-note.tk-hidden')?.classList.remove('tk-hidden');
+    document.querySelector('.tk-markdown-note')?.remove();
+  }
+
+  applyMarkdown = (element) => {
     const view = getEmberView(element.getAttribute('id'));
     const ynabNoteContainer = element.querySelector('.inspector-category-note');
     if (!view || !ynabNoteContainer) {
@@ -32,7 +40,7 @@ export class NotesAsMarkdown extends Feature {
     }
 
     if (view.isEditing) {
-      ynabNoteContainer.classList.remove('hidden');
+      ynabNoteContainer.classList.remove('tk-hidden');
 
       const textarea = ynabNoteContainer.querySelector('textarea');
       if (textarea) {
@@ -43,7 +51,7 @@ export class NotesAsMarkdown extends Feature {
       return;
     }
 
-    const handleClick = event => {
+    const handleClick = (event) => {
       if (event.target.tagName === 'A') {
         event.stopPropagation();
         return;
@@ -54,29 +62,26 @@ export class NotesAsMarkdown extends Feature {
 
     const note = view.get('activeCategory.subCategory.note');
     if (note) {
-      ynabNoteContainer.classList.add('hidden');
+      ynabNoteContainer.classList.add('tk-hidden');
       componentAppend(
         <div className="tk-markdown-note" onClick={handleClick}>
           <ReactMarkdown
-            source={note}
             linkTarget="_blank"
-            renderers={{
+            components={{
               link: ({ href, children }) => (
                 <a href={href} target="_blank" rel="noopener noreferrer">
                   {children}
                 </a>
               ),
             }}
-          />
+          >
+            {note}
+          </ReactMarkdown>
         </div>,
         element
       );
     } else {
-      ynabNoteContainer.classList.remove('hidden');
+      ynabNoteContainer.classList.remove('tk-hidden');
     }
   };
-
-  invoke() {
-    addToolkitEmberHook(this, 'budget/inspector/inspector-notes', 'didRender', this.applyMarkdown);
-  }
 }

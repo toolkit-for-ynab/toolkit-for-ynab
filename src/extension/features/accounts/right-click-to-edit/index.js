@@ -47,7 +47,7 @@ export class RightClickToEdit extends Feature {
   invoke() {
     this.isCurrentlyRunning = true;
 
-    Ember.run.next(this, function() {
+    Ember.run.next(this, function () {
       $('.ynab-grid').off('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
       $('.ynab-grid').on('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
 
@@ -56,6 +56,11 @@ export class RightClickToEdit extends Feature {
 
       this.isCurrentlyRunning = false;
     });
+  }
+
+  destroy() {
+    $('.ynab-grid').off('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
+    $('body').off('contextmenu', '.modal-account-edit-transaction-list', this.hideContextMenu);
   }
 
   observe(changedNodes) {

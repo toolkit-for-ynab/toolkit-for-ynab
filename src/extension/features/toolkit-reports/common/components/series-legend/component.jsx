@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import { Currency } from 'toolkit-reports/common/components/currency';
 import './styles.scss';
 
-export const SeriesLegendComponent = props => {
+export const SeriesLegendComponent = (props) => {
   const sortedSeries = props.series.slice().sort((a, b) => b.y - a.y);
   const seriesTotal = sortedSeries.reduce((reduced, current) => reduced + current.y, 0);
   const { fromDate, toDate } = props.filters.dateFilter;
@@ -38,7 +38,7 @@ export const SeriesLegendComponent = props => {
         <div>{props.tableName}</div>
       </div>
       <div className="tk-full-height">
-        {sortedSeries.map(seriesData => (
+        {sortedSeries.map((seriesData) => (
           <div
             className="tk-series-legend__table-row tk-flex tk-justify-content-between"
             key={seriesData.id}

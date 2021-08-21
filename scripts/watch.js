@@ -1,28 +1,41 @@
 const spawn = require('child_process').spawn;
 const terminate = require('terminate');
 
+function debounce(fn, timeout = 50) {
+  let timer;
+
+  return (...args) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, timeout);
+  };
+}
+
+const debounceSpawn = debounce(spawnBuildProcess, spawnBuildProcess);
+
 const buildProcesses = [];
 const watcher = require('chokidar').watch(['src/**'], {
   persistent: true,
   ignoreInitial: true,
   ignored: [
     // all generated files need to be ignored
-    'src/extension/features/index.js',
-    'src/core/settings/settings.js',
-    'src/**/feedChanges.js',
+    'src/extension/features/index.ts',
+    'src/core/settings/settings.ts',
   ],
 });
 
-watcher.on('all', function(event, path) {
+watcher.on('all', function (event, path) {
   console.log(`Changes detected (${path}), rebuilding...`);
 
   if (buildProcesses.length) {
-    buildProcesses.forEach(proc => {
+    buildProcesses.forEach((proc) => {
       terminate(proc.pid);
     });
   }
 
-  spawnBuildProcess();
+  debounceSpawn();
 });
 
 function spawnBuildProcess() {

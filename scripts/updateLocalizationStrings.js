@@ -17,7 +17,7 @@ function getLocalizations(callback) {
   const otherStrings = {};
 
   glob(`${featuresProjectDir}/*/**/*.{js,jsx}`, (_, files) => {
-    files.forEach(fileName => {
+    files.forEach((fileName) => {
       const content = fs.readFileSync(fileName);
       const parsed = parser.parse(content, {
         sourceType: 'module',
@@ -70,7 +70,7 @@ function getLocalizations(callback) {
               if (value instanceof acorn.Node) {
                 visit(value);
               } else if (Array.isArray(value)) {
-                value.forEach(nested => {
+                value.forEach((nested) => {
                   if (nested instanceof acorn.Node) {
                     visit(nested);
                   }
@@ -135,9 +135,7 @@ getLocalizations((toolkitStrings, otherStrings) => {
   if (process.argv[2]) {
     console.log('Crowdin API Key detected, uploading en.json...');
     exec(
-      `curl -F "files[en.json]=@${localizationDir}/en.json" https://api.crowdin.com/api/project/toolkit-for-ynab/update-file?key=${
-        process.argv[2]
-      }`
+      `curl -F "files[en.json]=@${localizationDir}/en.json" https://api.crowdin.com/api/project/toolkit-for-ynab/update-file?key=${process.argv[2]}`
     );
   } else {
     console.log('No Crowdin API Key, skipping upload.');

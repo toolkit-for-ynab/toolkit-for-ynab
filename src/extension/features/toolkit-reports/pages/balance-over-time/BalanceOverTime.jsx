@@ -75,7 +75,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
         groupedData.entities[accountType].push(datapoints);
       });
 
-      groupedData.ids.forEach(accountType => {
+      groupedData.ids.forEach((accountType) => {
         newSeries.push({
           name: l10nAccountType(accountType),
           step: useStepGraph ? 'right' : undefined,
@@ -85,7 +85,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
     } else if (shouldGroupAccounts) {
       // When grouping accounts, combined all the selected accounts datapoints to create a single series
       let datapointsToCombine = [];
-      filteredData.forEach(datapoints => {
+      filteredData.forEach((datapoints) => {
         datapointsToCombine.push(datapoints);
       });
       newSeries.push({
@@ -106,7 +106,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
 
     // Trendline option
     if (useTrendLine) {
-      newSeries.forEach(seriesData => {
+      newSeries.forEach((seriesData) => {
         newSeries.push({
           name: `${TRENDLINE_PREFIX}${seriesData.name}`,
           dashStyle: 'dash',

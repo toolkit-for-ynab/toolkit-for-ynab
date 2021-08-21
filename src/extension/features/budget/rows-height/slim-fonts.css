@@ -22,7 +22,8 @@
 .budget-table-cell-budgeted,
 .budget-table-cell-activity,
 .budget-table-cell-available,
-.tk-budget-table-cell-pacing {
+.tk-budget-table-cell-pacing,
+.tk-budget-table-cell-goal {
   height: 1.6em !important;
   font-size: 0.8rem !important;
 }
@@ -32,6 +33,7 @@
 }
 
 .tk-budget-table-cell-pacing,
+.tk-budget-table-cell-goal,
 .ynab-new-budget-available-number,
 .budget-table-cell-available .ynab-new-budget-available-number {
   padding-top: 0px;
@@ -41,4 +43,13 @@
 .budget-table-cell-budgeted .ynab-new-currency-input {
   height: 1.3rem;
   align-items: center;
+}
+
+.budget-table .currency,
+.budget-table .budget-table-cell-goal-status {
+  font-size: 0.8rem !important;
+}
+
+.budget-table .ynab-new-budget-bar-v2 {
+  margin-top: -0.025rem !important;
 }

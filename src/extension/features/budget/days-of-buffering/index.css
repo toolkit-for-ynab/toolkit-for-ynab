@@ -1,3 +1,15 @@
-.toolkit-days-of-buffering .budget-header-days-age {
+.tk-days-of-buffering .budget-header-days-age {
   color: #23b2ce;
+  min-width: 6em;
+}
+
+.tk-days-of-buffering > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Stop totals being crushed on smaller screens */
+.budget-header-totals {
+  flex-shrink: 0;
 }

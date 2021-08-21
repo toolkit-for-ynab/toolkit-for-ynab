@@ -50,7 +50,7 @@ export class CollapsableRow extends React.Component {
   }
 
   _renderChildRows() {
-    return this.props.sources.map(sourceData => {
+    return this.props.sources.map((sourceData) => {
       const source = sourceData.get('source');
       const monthlyTotals = sourceData.get('monthlyTotals');
 

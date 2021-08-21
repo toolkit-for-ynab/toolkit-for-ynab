@@ -1,12 +1,12 @@
-.toolkit-activity-upcoming {
-  display: flex !important;
-  flex-direction: row !important;
+.tk-activity-upcoming {
   justify-content: flex-end !important;
-  align-items: center !important;
 }
 
-.toolkit-activity-upcoming-amount {
+.tk-activity-upcoming-amount {
   margin-right: 0.5rem;
+  margin-left: 0.25rem;
   color: darkgray;
   font-size: 0.7rem;
+  flex-basis: 100%;
+  white-space: nowrap;
 }

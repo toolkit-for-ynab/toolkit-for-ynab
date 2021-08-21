@@ -20,7 +20,6 @@ body.theme-dark {
 
 /* add transitions */
 .budget-header .budget-header-item {
-  padding: 0.7em 0.6em 0.6em;
   -moz-transition: background-color 0.3s linear;
   -webkit-transition: background-color 0.3s linear;
   -o-transition: background-color 0.3s linear;
@@ -37,19 +36,19 @@ body.theme-dark {
 }
 
 /* current month styles */
-.toolkit-highlight-current-month {
+.tk-highlight-current-month {
   background: var(--tk-current-month-background-color) !important;
 }
-.budget-header .toolkit-highlight-current-month .budget-header-calendar-prev,
-.budget-header .toolkit-highlight-current-month .budget-header-calendar-next,
-.budget-header .toolkit-highlight-current-month .flaticon {
+.budget-header .tk-highlight-current-month .budget-header-calendar-prev,
+.budget-header .tk-highlight-current-month .budget-header-calendar-next,
+.budget-header .tk-highlight-current-month .flaticon {
   color: var(--tk-current-month-control-color);
 }
 
-.budget-header .toolkit-highlight-current-month .budget-header-calendar-date-button {
+.budget-header .tk-highlight-current-month .budget-header-calendar-date-button {
   color: var(--tk-current-month-header-color);
 }
 
-.budget-header .toolkit-highlight-current-month .budget-header-calendar-note {
+.budget-header .tk-highlight-current-month .budget-header-calendar-note {
   color: var(--tk-current-month-note-color);
 }

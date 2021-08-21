@@ -17,8 +17,7 @@
 }
 
 /* Budget Numbers, pacing */
-.budget-table-row[data-toolkit-negative-available] .ynab-new-budget-available-number,
-.budget-table-row .ynab-new-budget-available-number span.negative,
+.budget-table-row .ynab-new-budget-available-number.negative,
 .budget-table-row .budget-table-cell-pacing span.negative,
 .budget-table-row .budget-table-cell-pacing span.cautious {
   border-radius: 0em !important;
@@ -26,7 +25,7 @@
 }
 
 /* Budget Inspector */
-.budget-inspector[data-toolkit-negative-available] .ynab-new-budget-available-number {
+.budget-inspector .ynab-new-budget-available-number.negative {
   border-radius: 0em !important;
   -webkit-border-radius: 0em !important;
 }

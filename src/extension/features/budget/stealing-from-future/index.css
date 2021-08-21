@@ -1,8 +1,3 @@
-.ynabtk-stealing-from-next-month {
-	color: red;
-}
-
-.ynabtk-month-link {
-	cursor: pointer;
-	text-decoration: underline;
+.tk-stealing-from-future button {
+  margin-left: 0px !important;
 }

@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Easy Transaction Approval',
+  title: 'Keyboard Shortcut: Approve Transaction [A] or [Enter]',
   description:
-    "Quickly approve scheduled or linked transactions by selecting the transaction(s) and pressing 'a' or 'enter' on your keyboard. Alternately, approve single scheduled or linked transactions by right clicking on the blue 'i' or link icon.",
+    "Approve scheduled or linked transactions by pressing 'A' or 'Enter' on your keyboard selecting any number of transactions. Alternately, approve single scheduled or linked transactions by right clicking on the blue 'i' or link icon.",
 };
