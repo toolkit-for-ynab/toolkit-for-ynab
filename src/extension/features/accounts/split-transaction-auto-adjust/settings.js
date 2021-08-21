@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Auto Adjust Split Transactions',
+  title: 'Automatically Fill Split Transaction Amount',
   description:
-    'When entering split transactions, each additional split will be auto-filled with the current remaining amount.',
+    'Automatically fill each additional split transaction row with the current remaining amount.',
 };

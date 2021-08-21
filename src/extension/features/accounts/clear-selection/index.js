@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook, l10n } from 'toolkit/extension/utils/toolkit';
+import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class ClearSelection extends Feature {
   uncheckTransactions = () => {
@@ -21,12 +21,15 @@ export class ClearSelection extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
+    this.addToolkitEmberHook(
       'modals/register/edit-transactions',
       'didRender',
       this.insertClearSelection
     );
+  }
+
+  destroy() {
+    $('#tk-clear-selection, #tk-clear-selection + li').remove();
   }
 
   insertClearSelection = (element) => {
@@ -44,11 +47,12 @@ export class ClearSelection extends Feature {
     // The second <li> functions as a separator on the menu after the feature menu item.
     $('.modal-account-edit-transaction-list .modal-list').prepend(
       $(`<li id="tk-clear-selection">
-            <button class="button-list ynab-toolkit-clear-selection">
-              <i class="ynab-new-icon flaticon stroke minus-2"></i>${menuText}
-            </button>
-          </li>
-          <li><hr /><li>`).click(() => {
+          <button class="button-list ynab-toolkit-clear-selection">
+            <i class="ynab-new-icon flaticon stroke minus-2"></i>${menuText}
+          </button>
+        </li>
+        <li><hr /><li>
+      `).on('click', () => {
         this.uncheckTransactions();
       })
     );

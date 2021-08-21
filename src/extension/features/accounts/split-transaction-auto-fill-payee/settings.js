@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: "Auto-Fill Split Transactions' Payee",
+  title: 'Automatically Fill Split Transaction Payee',
   description:
-    'When entering split transactions, each additional split will be auto-filled with the first Payee.',
+    'Automatically fill each additional split transaction row with the current previous payee.',
 };

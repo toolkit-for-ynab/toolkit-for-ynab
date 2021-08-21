@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { componentAppend } from 'toolkit/extension/utils/react';
 import ReactMarkdown from 'react-markdown';
 
@@ -12,6 +11,15 @@ export class NotesAsMarkdown extends Feature {
 
   shouldInvoke() {
     return true;
+  }
+
+  invoke() {
+    this.addToolkitEmberHook('budget/inspector/inspector-notes', 'didRender', this.applyMarkdown);
+  }
+
+  destroy() {
+    document.querySelector('.inspector-category-note.tk-hidden')?.classList.remove('tk-hidden');
+    document.querySelector('.tk-markdown-note')?.remove();
   }
 
   applyMarkdown = (element) => {
@@ -76,8 +84,4 @@ export class NotesAsMarkdown extends Feature {
       ynabNoteContainer.classList.remove('tk-hidden');
     }
   };
-
-  invoke() {
-    addToolkitEmberHook(this, 'budget/inspector/inspector-notes', 'didRender', this.applyMarkdown);
-  }
 }

@@ -1,6 +1,6 @@
 module.exports = {
   name: 'ToolkitReports',
-  section: 'general',
+  section: 'toolkitReports',
   default: true,
   type: 'checkbox',
   title: 'Toolkit Reports',

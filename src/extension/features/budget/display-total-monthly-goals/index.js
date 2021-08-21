@@ -1,11 +1,14 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class DisplayTotalMonthlyGoals extends Feature {
   shouldInvoke() {
     return true;
+  }
+
+  destroy() {
+    document.querySelector('.tk-total-monthly-goals')?.remove();
   }
 
   extractCategoryGoalInformation(element) {
@@ -50,7 +53,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
     const currencyClass = goalsAmount === 0 ? 'zero' : 'positive';
 
     return $(`
-      <section class="card total-monthly-goals-inspector">
+      <section class="card tk-total-monthly-goals">
         <div class="card-roll-up">
           <h2>
             Total Monthly Goals
@@ -67,7 +70,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
   addTotalMonthlyGoals(element) {
     const monthlyGoals = this.calculateMonthlyGoals();
 
-    $('.total-monthly-goals-inspector').remove();
+    $('.tk-total-monthly-goals').remove();
 
     const shouldShowInspector = monthlyGoals.checkedCategoryCount !== 1;
     if (!shouldShowInspector) {
@@ -80,6 +83,6 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'budget/budget-inspector', 'didRender', this.addTotalMonthlyGoals);
+    this.addToolkitEmberHook('budget/budget-inspector', 'didRender', this.addTotalMonthlyGoals);
   }
 }

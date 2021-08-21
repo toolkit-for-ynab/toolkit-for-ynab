@@ -1,4 +1,4 @@
-import { Feature } from "toolkit/extension/features/feature";
+import { Feature } from 'toolkit/extension/features/feature';
 
 export function withToolkitError(wrappedFunction: Function, feature: Feature | FeatureName) {
   if (typeof wrappedFunction !== 'function') {
@@ -38,7 +38,12 @@ interface LogToolkitErrorInput {
   functionName?: string;
 }
 
-export function logToolkitError({ exception, featureName, featureSetting, functionName }: LogToolkitErrorInput) {
+export function logToolkitError({
+  exception,
+  featureName,
+  featureSetting,
+  functionName,
+}: LogToolkitErrorInput) {
   const routeName = window.location.pathname.replace(
     /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g,
     'omitted'

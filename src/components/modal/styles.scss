@@ -1,0 +1,65 @@
+:root {
+  --tk-modal-overlay-color: #000000;
+  --tk-modal-background-color: #ffffff;
+  --tk-modal-text-color: #383e41;
+}
+
+.tk-overflow-hidden {
+  overflow: hidden;
+}
+
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: var(--tk-modal-overlay-color);
+  opacity: 85%;
+}
+
+.modal {
+  background-color: var(--tk-modal-background-color);
+  color: var(--tk-modal-text-color);
+  position: relative;
+  top: 20%;
+  min-width: 30%;
+  padding: 2rem;
+  margin: auto;
+  border-radius: 5px;
+
+  &__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+  }
+
+  &__cancel {
+    margin-right: 1rem;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 1.8rem;
+  }
+
+  &__content {
+    padding: 1rem 0rem;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}

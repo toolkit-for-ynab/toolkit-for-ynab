@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'budget',
-  title: 'Warn When Clicking a Quick Budget Option',
+  title: 'Add Quick Budget Confirmation',
   description:
-    'When this feature is activated, there will be a warning if you have already budgeted something.',
+    'Pop up a confirmation prompt when using a quick budget option to prevent mistakingly altering your budget.',
 };

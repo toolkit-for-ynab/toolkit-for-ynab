@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 import { componentPrepend } from 'toolkit/extension/utils/react';
 import ReactMarkdown from 'react-markdown';
 
@@ -34,7 +33,7 @@ export class MemoAsMarkdown extends Feature {
     const note = view.get('attrs.content.value.memo');
     const originalMemo = element.querySelector('.ynab-grid-cell-memo span');
     if (note && originalMemo) {
-      originalMemo.remove();
+      $(originalMemo).hide();
 
       componentPrepend(
         <div className="tk-markdown-memo" onClick={handleClick}>
@@ -57,6 +56,12 @@ export class MemoAsMarkdown extends Feature {
   };
 
   invoke() {
-    addToolkitEmberHook(this, 'register/grid-row', 'didRender', this.applyMarkdown);
+    this.addToolkitEmberHook('register/grid-row', 'didRender', this.applyMarkdown);
+    this.addToolkitEmberHook('register/grid-sub', 'didRender', this.applyMarkdown);
+  }
+
+  destroy() {
+    $('.ynab-grid-cell-memo span').show();
+    $('.tk-markdown-memo').remove();
   }
 }

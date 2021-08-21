@@ -5,5 +5,5 @@ module.exports = {
   section: 'accounts',
   title: 'Show Available Category Balance on Hover',
   description:
-    'Adds the total available balance to the category tooltip on each row in the Accounts register.',
+    "Add a tooltip showing the total available balance for a transaction's category after breifly hovering the transaction category.",
 };

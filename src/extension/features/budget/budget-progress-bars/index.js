@@ -1,317 +1,182 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import {
-  isCurrentRouteBudgetPage,
-  getEntityManager,
-  getSelectedMonth,
-  isCurrentMonthSelected,
-} from 'toolkit/extension/utils/ynab';
 import { pacingForCategory } from 'toolkit/extension/utils/pacing';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
-const progressIndicatorWidth = 0.005; // Current month progress indicator width
+const PROGRESS_INDICATOR_WIDTH = 0.001; // Current month progress indicator width
+
+function debounce(fn, timeout = 50) {
+  let timer;
+
+  return (...args) => {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, timeout);
+  };
+}
 
 export class BudgetProgressBars extends Feature {
-  // Supporting functions, or variables, etc
-  loadCategories = true;
-
-  selMonth;
-
-  subCats = [];
-
-  internalIdBase;
-
-  monthProgress;
-
   injectCSS() {
     return require('./index.css');
   }
 
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
+    return true;
   }
 
-  // Takes N colors and N-1 sorted points from (0, 1) to make color1|color2|color3 bg style.
-  generateProgressBarStyle(colors, points) {
-    const pointsPercent = [0, ...points, 1].map((p) => p * 100);
-    return colors.reduce(
-      (reduced, color, index) =>
-        reduced +
-        `${color} ${pointsPercent[index]}%, ${color} ${pointsPercent[index + 1]}%${
-          index + 1 === colors.length ? ')' : ', '
-        }`,
-      'linear-gradient(to right, '
-    );
-  }
-
-  getCalculation(subCategoryName) {
-    const subCategory = this.subCats.find((ele) => ele.toolkitName === subCategoryName);
-
-    if (subCategory) {
-      const crazyInternalId = this.internalIdBase + subCategory.entityId;
-      const calculation =
-        getEntityManager().getMonthlySubCategoryBudgetCalculationById(crazyInternalId);
-      if (!calculation) {
-        return;
-      }
-      /**
-       * Add a few values from the subCategory object to the calculation object.
-       */
-      calculation.targetBalance = subCategory.getGoalTargetAmount();
-      calculation.goalType = subCategory.getGoalType();
-      calculation.goalCreationMonth = subCategory.goalCreationMonth
-        ? subCategory.goalCreationMonth.toString().substr(0, 7)
-        : '';
-      /**
-       * If the month the goal was created in is greater than the selected month, null the goal type to prevent further
-       * processing.
-       */
-      if (calculation.goalCreationMonth && calculation.goalCreationMonth > this.selMonth) {
-        calculation.goalType = null;
-      }
-
-      return calculation;
-    }
-  }
-
-  addGoalProgress(subCategoryName, target) {
-    const calculation = this.getCalculation(subCategoryName);
-    if (!calculation) {
-      return;
-    }
-
-    if (['TB', 'TBD', 'MF'].includes(calculation && calculation.goalType)) {
-      const percent = Math.round(parseFloat(calculation.get('goalPercentageComplete')));
-      $(target).css(
-        'background',
-        `linear-gradient(
-          to right,
-          var(--tk-color-goal-fill) ${percent}%,
-          var(--table_row_background) ${percent}%
-        )`
-      );
-    } else {
-      $(target).css('background', '');
-    }
-  }
-
-  addMasterPacingProgress(target) {
-    if (!isCurrentMonthSelected()) {
-      $(target).css('background', '');
-      return;
-    }
-
-    $(target).css(
-      'background',
-      this.generateProgressBarStyle(
-        [
-          'var(--table_header_background)',
-          'var(--tk-color-progress-bar-month-indicator)',
-          'var(--table_header_background)',
-        ],
-        [this.monthProgress - progressIndicatorWidth, this.monthProgress]
-      )
-    );
-  }
-
-  addPacingProgress(subCategory, target) {
-    if (!isCurrentMonthSelected()) {
-      $(target).css('background', '');
-      return;
-    }
-
-    const pacingCalculation = pacingForCategory(subCategory);
-    const balancePriorToSpending = subCategory.get('balancePriorToSpending');
-    const { budgetedPace, monthPace } = pacingCalculation;
-
-    // For pacing progress bars we can't use budgeted pace higher than 100%, otherwise the bars get screwed. So we cap it at 100% width
-    const cappedBudgetedPace = Math.min(budgetedPace, 1);
-
-    if (!pacingCalculation.isDeemphasized) {
-      if (balancePriorToSpending > 0) {
-        if (monthPace > budgetedPace) {
-          $(target).css(
-            'background',
-            this.generateProgressBarStyle(
-              [
-                'var(--tk-color-pacing-fill)',
-                'var(--table_row_background)',
-                'var(--tk-color-progress-bar-month-indicator)',
-                'var(--table_row_background)',
-              ],
-              [cappedBudgetedPace, this.monthProgress - progressIndicatorWidth, this.monthProgress]
-            )
-          );
-        } else {
-          $(target).css(
-            'background',
-            this.generateProgressBarStyle(
-              [
-                'var(--tk-color-pacing-fill)',
-                'var(--tk-color-progress-bar-month-indicator)',
-                'var(--tk-color-pacing-fill)',
-                'var(--table_row_background)',
-              ],
-              [this.monthProgress - progressIndicatorWidth, this.monthProgress, cappedBudgetedPace]
-            )
-          );
-        }
+  destroy() {
+    Array.from(document.querySelectorAll('[data-tk-progress-bars]')).forEach((element) => {
+      const { tkProgressBars } = element.dataset;
+      if (tkProgressBars === 'both') {
+        $('li.budget-table-cell-budgeted, li.budget-table-cell-name', element).css({
+          background: '',
+        });
       } else {
-        $(target).css(
-          'background',
-          this.generateProgressBarStyle(
-            [
-              'var(--table_row_background)',
-              'var(--tk-color-progress-bar-month-indicator)',
-              'var(--table_row_background)',
-            ],
-            [this.monthProgress - progressIndicatorWidth, this.monthProgress]
-          )
-        );
-      }
-    } else {
-      $(target).css('background', '');
-    }
-  }
-
-  invoke() {
-    const today = ynab.utilities.DateWithoutTime.createForToday();
-    this.monthProgress = today.getDate() / today.daysInMonth();
-
-    let categories = $('.budget-table ul')
-      .not('.budget-table-uncategorized-transactions')
-      .not('.is-debt-payment-category');
-
-    if (this.subCats === null || this.subCats.length === 0 || this.loadCategories) {
-      this.subCats = getMergedCategories();
-      this.loadCategories = false;
-    }
-
-    this.selMonth = getSelectedMonth().format('YYYY-MM');
-    this.internalIdBase = 'mcbc/' + this.selMonth + '/';
-
-    let masterCategoryName = '';
-    $(categories).each((_, element) => {
-      let nameCell;
-      let budgetedCell;
-
-      if ($(element).hasClass('is-master-category')) {
-        const { category } = getEmberView(element.id);
-        if (!category) {
-          return;
-        }
-
-        masterCategoryName = category.displayName;
-      }
-
-      if ($(element).hasClass('is-sub-category')) {
-        const subCategory = getEmberView(element.id, 'category');
-        if (!subCategory) {
-          return;
-        }
-
-        const namespacedCategory = `${masterCategoryName}_${subCategory.displayName}`;
-        switch (this.settings.enabled) {
-          case 'goals':
-            $(element).addClass('goal-progress');
-            this.addGoalProgress(namespacedCategory, $(element));
-            break;
-          case 'pacing':
-            $(element).addClass('goal-progress');
-            this.addPacingProgress(subCategory, $(element));
-            break;
-          case 'both':
-            $(element).addClass('goal-progress-both');
-            budgetedCell = $(element).find('li.budget-table-cell-budgeted')[0];
-            nameCell = $(element).find('li.budget-table-cell-name')[0];
-            this.addGoalProgress(namespacedCategory, budgetedCell);
-            this.addPacingProgress(subCategory, nameCell);
-            break;
-        }
-      }
-
-      if ($(element).hasClass('is-master-category')) {
-        switch (this.settings.enabled) {
-          case 'pacing':
-            this.addMasterPacingProgress($(element));
-            break;
-          case 'both':
-            nameCell = $(element).find('li.budget-table-cell-name'); // [0];
-            this.addMasterPacingProgress($(nameCell));
-            break;
-        }
+        element.style.background = '';
       }
     });
   }
 
-  observe(changedNodes) {
-    if (!this.shouldInvoke()) {
+  invoke() {
+    this.addToolkitEmberHook('budget-table-row', 'didRender', debounce(this.addProgressBars));
+  }
+
+  addGoalProgress = (element) => {
+    const category = getEmberView(element.id)?.category;
+    if (!category || !category.goalType) {
       return;
     }
 
-    /**
-     * Check for this node seperately from the other checks to ensure the flag to load
-     * categories gets set just in case there is another changed node that drives invoke().
-     */
-    if (changedNodes.has('onboarding-steps')) {
-      this.loadCategories = true;
+    const { monthlySubCategoryBudgetCalculation } = category;
+    if (!monthlySubCategoryBudgetCalculation) {
+      return;
     }
 
-    if (
-      changedNodes.has('budget-table-row') ||
-      changedNodes.has('ynab-new-budget-available-number user-data') ||
-      changedNodes.has('budget-table-cell-budgeted') ||
-      changedNodes.has('navlink-budget active') ||
-      changedNodes.has('budget-inspector')
-    ) {
-      this.invoke();
-    } else if (
-      changedNodes.has('modal-overlay ynab-u modal-popup modal-budget-edit-category active') ||
-      changedNodes.has('modal-overlay ynab-u modal-popup modal-add-master-category active') ||
-      changedNodes.has('modal-overlay ynab-u modal-popup modal-add-sub-category active')
-    ) {
-      /**
-       * Seems there should be a more 'Embery' way to know when the categories have been
-       * updated, added, or deleted but this'll have to do for now. Note that the flag is
-       * set to true here so that next time invoke() is called the categories array will
-       * be rebuilt. Rebuilding at this point won't work becuase the user hasn't completed
-       * the update activity at this point.
-       */
-      this.loadCategories = true;
-    }
-  }
+    const { goalPercentageComplete } = monthlySubCategoryBudgetCalculation;
+    const toElement =
+      this.settings.enabled === 'both'
+        ? element.querySelector('li.budget-table-cell-budgeted')
+        : element;
 
-  onRouteChanged() {
-    if (this.shouldInvoke()) {
-      this.loadCategories = true;
-      this.invoke();
+    $(toElement).css(
+      'background',
+      `linear-gradient(
+        to right,
+        var(--tk-color-goal-fill) ${goalPercentageComplete}%,
+        var(--table_row_background) ${goalPercentageComplete}%
+      )`
+    );
+  };
+
+  addPacingProgress = (element) => {
+    const category = getEmberView(element.id)?.category;
+    if (!category) {
+      return;
     }
-  }
+
+    const toElement =
+      this.settings.enabled === 'both'
+        ? element.querySelector('li.budget-table-cell-name')
+        : element;
+
+    const { isDeemphasized, budgetedPace, monthPace } = pacingForCategory(category);
+    if (isDeemphasized) {
+      toElement.style.background = '';
+      return;
+    }
+
+    const { balancePriorToSpending } = category;
+    const cappedBudgetedPace = Math.min(budgetedPace, 1);
+    if (balancePriorToSpending > 0) {
+      if (monthPace > budgetedPace) {
+        $(toElement).css(
+          'background',
+          generateProgressBarStyle(
+            [
+              'var(--tk-color-pacing-fill)',
+              'var(--table_row_background)',
+              'var(--tk-color-progress-bar-month-indicator)',
+              'var(--table_row_background)',
+            ],
+            [cappedBudgetedPace, monthPace - PROGRESS_INDICATOR_WIDTH, monthPace]
+          )
+        );
+      } else {
+        $(toElement).css(
+          'background',
+          generateProgressBarStyle(
+            [
+              'var(--tk-color-pacing-fill)',
+              'var(--tk-color-progress-bar-month-indicator)',
+              'var(--tk-color-pacing-fill)',
+              'var(--table_row_background)',
+            ],
+            [monthPace - PROGRESS_INDICATOR_WIDTH, monthPace, cappedBudgetedPace]
+          )
+        );
+      }
+    } else {
+      $(toElement).css(
+        'background',
+        generateProgressBarStyle(
+          [
+            'var(--table_row_background)',
+            'var(--tk-color-progress-bar-month-indicator)',
+            'var(--table_row_background)',
+          ],
+          [monthPace - PROGRESS_INDICATOR_WIDTH, monthPace]
+        )
+      );
+    }
+  };
+
+  addProgressBars = (element) => {
+    const userSetting = this.settings.enabled;
+    const { tkProgressBars } = element.dataset;
+    if (tkProgressBars !== userSetting) {
+      if (tkProgressBars === 'both') {
+        $('li.budget-table-cell-budgeted, li.budget-table-cell-name', element).css({
+          background: '',
+        });
+      } else {
+        element.style.background = '';
+      }
+    }
+
+    element.dataset.tkProgressBars = this.settings.enabled;
+
+    if (element.classList.contains('is-sub-category')) {
+      const subCategory = getEmberView(element.id, 'category');
+      if (!subCategory) {
+        return;
+      }
+
+      switch (this.settings.enabled) {
+        case 'goals':
+          this.addGoalProgress(element);
+          break;
+        case 'pacing':
+          this.addPacingProgress(element);
+          break;
+        case 'both':
+          this.addGoalProgress(element);
+          this.addPacingProgress(element);
+          break;
+      }
+    }
+  };
 }
 
-function getMergedCategories() {
-  const entityManager = getEntityManager();
-  const masterCategories = entityManager.getAllNonTombstonedMasterCategories();
-  const mergedCategories = [];
-
-  masterCategories.forEach((masterCategory) => {
-    // Ignore certain categories!
-    if (masterCategory.isHidden !== true && masterCategory.name !== 'Internal Master Category') {
-      const subCategories = entityManager.getSubCategoriesByMasterCategoryId(
-        masterCategory.getEntityId()
-      );
-      subCategories.forEach((subCategory) => {
-        // Ignore certain categories!
-        if (
-          subCategory.isHidden !== true &&
-          !subCategory.isTombstone &&
-          subCategory.name !== 'Uncategorized Transactions'
-        ) {
-          subCategory.toolkitName = masterCategory.name + '_' + subCategory.name; // Add toolkit specific attribute
-          mergedCategories.push(subCategory);
-        }
-      });
-    }
-  });
-
-  return mergedCategories;
+// Takes N colors and N-1 sorted points from (0, 1) to make color1|color2|color3 bg style.
+function generateProgressBarStyle(colors, points) {
+  const pointsPercent = [0, ...points, 1].map((p) => p * 100);
+  return colors.reduce(
+    (reduced, color, index) =>
+      reduced +
+      `${color} ${pointsPercent[index]}%, ${color} ${pointsPercent[index + 1]}%${
+        index + 1 === colors.length ? ')' : ', '
+      }`,
+    'linear-gradient(to right, '
+  );
 }

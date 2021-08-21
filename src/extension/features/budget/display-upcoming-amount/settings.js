@@ -4,5 +4,5 @@ module.exports = {
   default: false,
   section: 'budget',
   title: 'Show Upcoming Transaction Total',
-  description: 'Adds the total of upcoming transactions alongside activity for each category.',
+  description: 'Add the total of upcoming transactions alongside activity for each category.',
 };
