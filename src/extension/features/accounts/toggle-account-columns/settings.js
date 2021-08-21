@@ -3,7 +3,6 @@ module.exports = {
   type: 'checkbox',
   default: true,
   section: 'accounts',
-  title: 'Toggle Memo Column',
-  description:
-    'Adds option to toggle the memo column as visible or not to the account register "View" menu',
+  title: 'Add "Toggle Memo" Option',
+  description: `Add an option to toggle the memo column under the account page's "View" menu`,
 };

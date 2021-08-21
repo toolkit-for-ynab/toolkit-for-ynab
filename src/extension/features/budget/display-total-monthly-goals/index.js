@@ -1,11 +1,14 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class DisplayTotalMonthlyGoals extends Feature {
   shouldInvoke() {
     return true;
+  }
+
+  destroy() {
+    document.querySelector('.tk-total-monthly-goals')?.remove();
   }
 
   extractCategoryGoalInformation(element) {
@@ -50,22 +53,24 @@ export class DisplayTotalMonthlyGoals extends Feature {
     const currencyClass = goalsAmount === 0 ? 'zero' : 'positive';
 
     return $(`
-      <div class="total-monthly-goals-inspector">
-        <h3>TOTAL MONTHLY GOALS</h3>
-        <h1 title>
-          <span class="user-data currency ${currencyClass}">
-            ${formatCurrency(goalsAmount)}
-          </span>
-        </h1>
-        <hr />
-      </div>
+      <section class="card tk-total-monthly-goals">
+        <div class="card-roll-up">
+          <h2>
+            Total Monthly Goals
+            <svg width="24" height="24" class="card-chevron"></svg>
+            <span class="user-data currency ${currencyClass}">
+                ${formatCurrency(goalsAmount)}
+            </span>
+          </h2>
+        </div>
+      </section>
     `);
   }
 
   addTotalMonthlyGoals(element) {
     const monthlyGoals = this.calculateMonthlyGoals();
 
-    $('.total-monthly-goals-inspector').remove();
+    $('.tk-total-monthly-goals').remove();
 
     const shouldShowInspector = monthlyGoals.checkedCategoryCount !== 1;
     if (!shouldShowInspector) {
@@ -73,23 +78,11 @@ export class DisplayTotalMonthlyGoals extends Feature {
     }
 
     this.createInspectorElement(monthlyGoals.amount).insertBefore(
-      $('.inspector-quick-budget', element)
+      $('.card.budget-breakdown-monthly-totals', element)
     );
   }
 
   invoke() {
-    addToolkitEmberHook(
-      this,
-      'budget/inspector/default-inspector',
-      'didRender',
-      this.addTotalMonthlyGoals
-    );
-
-    addToolkitEmberHook(
-      this,
-      'budget/inspector/multi-select-inspector',
-      'didRender',
-      this.addTotalMonthlyGoals
-    );
+    this.addToolkitEmberHook('budget/budget-inspector', 'didRender', this.addTotalMonthlyGoals);
   }
 }

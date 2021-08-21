@@ -37,6 +37,10 @@ export class ReconcileBalance extends Feature {
     this._setFeatureVisibility(true);
   }
 
+  destroy() {
+    $('.tk-accounts-header-balances-reconciled').remove();
+  }
+
   onRouteChanged() {
     if (this.shouldInvoke()) {
       this.invoke();

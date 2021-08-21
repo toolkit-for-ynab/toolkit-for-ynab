@@ -2,12 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { componentAppend } from 'toolkit/extension/utils/react';
 import { Feature } from 'toolkit/extension/features/feature';
-import {
-  addToolkitEmberHook,
-  l10n,
-  getToolkitStorageKey,
-  setToolkitStorageKey,
-} from 'toolkit/extension/utils/toolkit';
+import { l10n, getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 const HideClosedButton = ({ toggleHiddenState }) => {
@@ -56,7 +51,12 @@ export class HideClosedAccounts extends Feature {
   invoke() {
     const initialState = getToolkitStorageKey('hide-closed', true);
     this.setHiddenState(initialState);
-    addToolkitEmberHook(this, 'settings-menu', 'didRender', this.insertHideClosed);
+    this.addToolkitEmberHook('settings-menu', 'didRender', this.insertHideClosed);
+  }
+
+  destroy() {
+    $('#tk-hide-closed-accounts').remove();
+    $('body').removeClass('tk-hide-closed');
   }
 
   setHiddenState = (state) => {

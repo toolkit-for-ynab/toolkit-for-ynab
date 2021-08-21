@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Assisted Clear',
+  title: 'Reconciliation Assistance',
   description:
-    'This feature assists you in the reconcilation process by locating uncleared transactions that should be cleared based on the desired reconcile amount.',
+    'Provides a tool to help find uncleared transactions which add up to the provided reconciliation amount during the normal reconciliation flow.',
 };

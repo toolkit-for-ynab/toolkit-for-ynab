@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Allow Markdown in Memo',
+  title: 'Enable Markdown in Memos',
   description:
-    'Adds Markdown parsing to memos, allowing support for links and other formatting tools. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).',
+    'Enables Markdown parsing for memos, allowing support for links and other formatting. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).',
 };

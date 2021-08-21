@@ -11,14 +11,21 @@ import { compareSemanticVersion } from './utils/helpers';
 import { componentAppend } from './utils/react';
 import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-modal';
 import { Feature } from './features/feature';
+import { InboundMessage, InboundMessageType, OutboundMessageType } from 'toolkit/core/messages';
 
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
 
-type SupportedEmberHook = 'didRender' | 'didInsertElement' | 'didUpdate';
+export type SupportedEmberHook = 'didRender' | 'didInsertElement' | 'didUpdate';
 
-export const EMBER_COMPONENT_TOOLKIT_HOOKS: SupportedEmberHook[] = ['didRender', 'didInsertElement', 'didUpdate'];
-export const emberComponentToolkitHookKey = (hookName: SupportedEmberHook): `_tk_${SupportedEmberHook}_hooks_` => `_tk_${hookName}_hooks_`;
+export const EMBER_COMPONENT_TOOLKIT_HOOKS: SupportedEmberHook[] = [
+  'didRender',
+  'didInsertElement',
+  'didUpdate',
+];
+export const emberComponentToolkitHookKey = (
+  hookName: SupportedEmberHook
+): `_tk_${SupportedEmberHook}_hooks_` => `_tk_${hookName}_hooks_`;
 
 window.__toolkitUtils = {
   ...ynabUtils,
@@ -33,44 +40,56 @@ interface ToolkitEmberHook {
 
 type ToolkitEnabledComponent = Ember['Component'] & {
   element?: Element;
-  _tk_didRender_hooks_?: ToolkitEmberHook[]
+  _tk_didRender_hooks_?: ToolkitEmberHook[];
   _tk_didInsertElement_hooks_?: ToolkitEmberHook[];
   _tk_didUpdate_hooks_?: ToolkitEmberHook[];
-}
+};
 
 export class YNABToolkit {
-  _featureInstances: Feature[] = [];
+  private featureInstances: Feature[] = [];
 
-  initializeToolkit() {
-    window.addEventListener('message', this._onBackgroundMessage);
-    window.postMessage({ type: TOOLKIT_LOADED_MESSAGE }, '*');
+  public initializeToolkit() {
+    window.addEventListener('message', this.onBackgroundMessage);
+    window.postMessage({ type: OutboundMessageType.ToolkitLoaded }, '*');
   }
 
-  _applyGlobalCSS() {
-    const globalCSS = this._featureInstances.reduce((css, feature) => {
-      const wrappedInjectCSS = withToolkitError(feature.injectCSS.bind(feature), feature);
-      const featureCSS = wrappedInjectCSS();
-
-      if (isFeatureEnabled(feature.settings.enabled) && featureCSS) {
-        css += `/* == Injected CSS from feature: ${feature.constructor.name} == */\n${featureCSS}\n\n`;
-      }
-
-      return css;
-    }, require('./ynab-toolkit.css'));
-
+  private applyFeatureCSS() {
     $('head').append(
-      $('<style>', { id: 'toolkit-injected-styles', type: 'text/css' }).text(globalCSS)
+      $('<style>', { id: 'tk-global-styles', type: 'text/css' }).text(require('./ynab-toolkit.css'))
     );
-  }
 
-  _createFeatureInstances() {
-    features.forEach((Feature) => {
-      this._featureInstances.push(new Feature());
+    this.featureInstances.forEach((feature) => {
+      if (isFeatureEnabled(feature.settings.enabled)) {
+        this.injectFeatureCSS(feature);
+      }
     });
   }
 
-  _invokeFeature = (featureName: FeatureName) => {
-    const feature = this._featureInstances.find((f) => f.constructor.name === featureName);
+  private injectFeatureCSS(featureInstance: Feature) {
+    const wrappedInjectCSS = withToolkitError(
+      featureInstance.injectCSS.bind(featureInstance),
+      featureInstance
+    );
+
+    const featureStyleID = `tk-feature-styles-${featureInstance.constructor.name}`;
+    const featureCSS = wrappedInjectCSS();
+    const featureStyle = $('<style>', {
+      id: featureStyleID,
+      type: 'text/css',
+    }).text(featureCSS);
+
+    if (featureCSS) {
+      const existingStyle = document.querySelector(`#${featureStyleID}`);
+      if (existingStyle) {
+        $(existingStyle).replaceWith(featureStyle);
+      } else {
+        $('head').append(featureStyle);
+      }
+    }
+  }
+
+  private invokeFeature = (featureName: FeatureName) => {
+    const feature = this.featureInstances.find((f) => f.constructor.name === featureName);
     const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
     const wrappedInvoke = feature.invoke.bind(feature);
     if (isFeatureEnabled(feature.settings.enabled) && wrappedShouldInvoke()) {
@@ -78,9 +97,21 @@ export class YNABToolkit {
     }
   };
 
-  _invokeFeatureInstances = async () => {
-    this._featureInstances.forEach(async (feature) => {
+  private destroyFeature = (featureName: FeatureName) => {
+    document.head.querySelector(`#tk-feature-styles-${featureName}`)?.remove();
+    const feature = this.featureInstances.find((f) => f.constructor.name === featureName);
+    feature.removeListeners();
+    feature.removeToolkitEmberHooks();
+
+    const wrappedDestroy = feature.destroy.bind(feature);
+    wrappedDestroy();
+  };
+
+  private invokeFeatureInstances = async () => {
+    this.featureInstances.forEach(async (feature) => {
       if (isFeatureEnabled(feature.settings.enabled)) {
+        document.body.dataset[feature.constructor.name] = 'true';
+
         feature.applyListeners();
 
         try {
@@ -105,26 +136,55 @@ export class YNABToolkit {
     });
   };
 
-  _onBackgroundMessage = (event: MessageEvent) => {
-    if (event.source === window && event.data.type === TOOLKIT_BOOTSTRAP_MESSAGE) {
-      window.ynabToolKit = {
-        ...window.ynabToolKit,
-        ...event.data.ynabToolKit,
-        hookedComponents: new Set(),
-      };
+  private onBackgroundMessage = (event: InboundMessage) => {
+    if (event.source !== window) {
+      return;
+    }
 
-      this._setupErrorTracking();
-      this._createFeatureInstances();
-      this._removeMessageListener();
-      this._waitForUserSettings();
+    switch (event.data.type) {
+      case InboundMessageType.Bootstrap: {
+        window.ynabToolKit = {
+          ...window.ynabToolKit,
+          ...event.data.ynabToolKit,
+          hookedComponents: new Set(),
+        };
+
+        this.setupErrorTracking();
+        features.forEach((Feature) => this.featureInstances.push(new Feature()));
+        this._waitForUserSettings();
+        break;
+      }
+      case InboundMessageType.SettingChanged: {
+        const { name, value } = event.data.setting;
+        if (name === 'DisableToolkit' && value) {
+          document.location.reload();
+          break;
+        }
+
+        const featureInstance = this.featureInstances.find(
+          ({ constructor }) => constructor.name === name
+        );
+
+        if (featureInstance) {
+          featureInstance.settings.enabled = value;
+
+          if (isFeatureEnabled(value)) {
+            document.body.dataset[name] = 'true';
+            this.injectFeatureCSS(featureInstance);
+            featureInstance.applyListeners();
+            this.invokeFeature(name);
+          } else {
+            delete document.body.dataset[name];
+            this.destroyFeature(name);
+          }
+        }
+
+        break;
+      }
     }
   };
 
-  _removeMessageListener() {
-    window.removeEventListener('message', this._onBackgroundMessage);
-  }
-
-  _setupErrorTracking = () => {
+  private setupErrorTracking = () => {
     window.addEventListener('error', ({ error }) => {
       let serializedError = '';
       if (error.message && error.stack) {
@@ -144,7 +204,7 @@ export class YNABToolkit {
     });
   };
 
-  _addToolkitEmberHooks = () => {
+  private addToolkitEmberHooks = () => {
     EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
       Ember.Component.prototype[lifecycleName] = function () {
         const self = this as ToolkitEnabledComponent;
@@ -156,7 +216,7 @@ export class YNABToolkit {
     });
   };
 
-  _invokeAllHooks = () => {
+  private invokeAllHooks = () => {
     window.ynabToolKit.hookedComponents.forEach((key) => {
       forEachRenderedComponent(key, (view: ToolkitEnabledComponent) => {
         EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
@@ -169,7 +229,7 @@ export class YNABToolkit {
     });
   };
 
-  _showNewReleaseModal = () => {
+  private showReleaseModal = () => {
     componentAppend(
       <div id="tk-modal-container">
         <ToolkitReleaseModal
@@ -180,7 +240,7 @@ export class YNABToolkit {
     );
   };
 
-  _checkReleaseVersion = () => {
+  private checkReleaseVersion = () => {
     const latestVersionKey = `latest-version-${ynabToolKit.environment}`;
     let latestVersion = getToolkitStorageKey(latestVersionKey);
     if (!latestVersion) {
@@ -190,7 +250,7 @@ export class YNABToolkit {
 
     if (compareSemanticVersion(latestVersion, ynabToolKit.version) === -1) {
       setToolkitStorageKey(latestVersionKey, ynabToolKit.version);
-      this._showNewReleaseModal();
+      this.showReleaseModal();
     }
   };
 
@@ -202,19 +262,21 @@ export class YNABToolkit {
         // add a global invokeFeature to the global ynabToolKit for legacy features
         // once legacy features have been removed, this should be a global exported function
         // from this file that features can require and use
-        ynabToolKit.invokeFeature = self._invokeFeature;
+        ynabToolKit.invokeFeature = self.invokeFeature;
 
-        // inject the global css from each feature into the HEAD of the DOM
-        self._applyGlobalCSS();
+        self.addToolkitEmberHooks();
 
-        self._addToolkitEmberHooks();
+        if (!ynabToolKit.options['DisableToolkit']) {
+          // inject the global css from each feature into the HEAD of the DOM
+          self.applyFeatureCSS();
 
-        self._checkReleaseVersion();
+          self.checkReleaseVersion();
 
-        // Hook up listeners and then invoke any features that are ready to go.
-        self._invokeFeatureInstances();
+          // Hook up listeners and then invoke any features that are ready to go.
+          self.invokeFeatureInstances();
 
-        Ember.run.later(self._invokeAllHooks, 100);
+          Ember.run.later(self.invokeAllHooks, 100);
+        }
       } else if (typeof Ember !== 'undefined') {
         Ember.run.later(poll, 250);
       } else {

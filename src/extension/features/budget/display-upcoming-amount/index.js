@@ -12,9 +12,14 @@ export class DisplayUpcomingAmount extends Feature {
     return isCurrentRouteBudgetPage();
   }
 
+  destroy() {
+    $('.tk-activity-upcoming').removeClass('tk-activity-upcoming');
+    $('.tk-activity-upcoming-amount').remove();
+  }
+
   invoke() {
-    $('.toolkit-activity-upcoming').removeClass('.toolkit-activity-upcoming');
-    $('.toolkit-activity-upcoming-amount').remove();
+    $('.tk-activity-upcoming').removeClass('.tk-activity-upcoming');
+    $('.tk-activity-upcoming-amount').remove();
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
       const category = getEmberView(element.id, 'category');
@@ -28,10 +33,10 @@ export class DisplayUpcomingAmount extends Feature {
         monthlySubCategoryBudgetCalculation.upcomingTransactions
       ) {
         let activity = $('.budget-table-cell-activity', element);
-        activity.addClass('toolkit-activity-upcoming');
+        activity.addClass('tk-activity-upcoming');
 
         let upcoming = $('<div>', {
-          class: 'toolkit-activity-upcoming-amount currency',
+          class: 'tk-activity-upcoming-amount currency',
           title: `Total upcoming transaction amount in this month for ${subCategory.get('name')}`,
           text: formatCurrency(monthlySubCategoryBudgetCalculation.upcomingTransactions),
         });

@@ -59,8 +59,7 @@ describe('Background', () => {
     it('should attach a listener to toolkitStorage.onFeatureSettingChanged for DisableToolkit', () => {
       const { background } = setup();
       background.initListeners();
-      expect(mockToolkitStorage.onFeatureSettingChanged).toHaveBeenCalledWith(
-        DISABLE_TOOLKIT_FEATURE_KEY,
+      expect(mockToolkitStorage.onToolkitDisabledChanged).toHaveBeenCalledWith(
         expect.any(Function)
       );
     });

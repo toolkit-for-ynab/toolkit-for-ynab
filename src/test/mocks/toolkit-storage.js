@@ -8,8 +8,10 @@ export const mockToolkitStorage = {
   getStoredFeatureSettings: jest.fn(),
   on: jest.fn(),
   onFeatureSettingChanged: jest.fn(),
+  onToolkitDisabledChanged: jest.fn(),
   off: jest.fn(),
   offFeatureSettingChanged: jest.fn(),
+  offToolkitDisabledChanged: jest.fn(),
   mock: {
     clearMock: () => {
       Object.values(mockToolkitStorage).forEach((value) => {

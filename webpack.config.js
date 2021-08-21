@@ -19,13 +19,15 @@ module.exports = function (env) {
 
     entry: {
       'background/background': path.resolve(`${CODE_SOURCE_DIR}/core/background/index.js`),
-      'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/options/options.js`),
-      'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/popup/index.js`),
-      'content-scripts/init': path.resolve(`${CODE_SOURCE_DIR}/core/content-scripts/init.js`),
+      'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/options/index.tsx`),
+      'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/popup/index.tsx`),
+      'content-scripts/extension-bridge': path.resolve(
+        `${CODE_SOURCE_DIR}/core/content-scripts/extension-bridge.js`
+      ),
       'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`),
     },
 
-    devtool: env.buildType !== 'production' ? 'inline-source-map' : '',
+    devtool: env.buildType !== 'production' ? 'inline-source-map' : false,
 
     output: {
       path: path.join(__dirname, BUILD_ROOT),
@@ -85,6 +87,17 @@ module.exports = function (env) {
           test: /\.scss$/,
           use: ['style-loader', 'css-loader', 'sass-loader'],
         },
+        {
+          test: /\.svg$/,
+          use: [
+            {
+              loader: 'svg-url-loader',
+              options: {
+                limit: 10000,
+              },
+            },
+          ],
+        },
       ],
     },
 
@@ -116,12 +129,12 @@ module.exports = function (env) {
           {
             from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/options`),
             to: path.join(__dirname, `${BUILD_PATH}/options`),
-            globOptions: { ignore: '**/*.js' },
+            globOptions: { ignore: '**/*.{js,jsx,ts,tsx}' },
           },
           {
             from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/popup`),
             to: path.join(__dirname, `${BUILD_PATH}/popup`),
-            globOptions: { ignore: '**/*.js' },
+            globOptions: { ignore: '**/*.{js,jsx,ts,tsx}' },
           },
         ],
       }),

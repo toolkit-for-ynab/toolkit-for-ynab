@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'general',
-  title: 'Uncleared Account Highlight',
+  title: 'Emphasize Uncleared Accounts',
   description:
-    'Adds a small indicator next to account balances on the sidebar to indicate not all transactions are cleared.',
+    'Add a small indicator next to account balances on the sidebar to indicate not all transactions are cleared.',
 };

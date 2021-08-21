@@ -53,6 +53,7 @@ export class NetWorthComponent extends React.Component {
           <div className="tk-flex tk-justify-content-end">
             {this.state.hoveredData && (
               <Legend
+                label={this.state.hoveredData.label}
                 assets={this.state.hoveredData.assets}
                 debts={this.state.hoveredData.debts}
                 debtRatio={this.state.hoveredData.debtRatio}
@@ -84,6 +85,7 @@ export class NetWorthComponent extends React.Component {
         mouseOver: function () {
           _this.setState({
             hoveredData: {
+              label: labels[this.index],
               assets: assets[this.index],
               debts: debts[this.index],
               debtRatio: debtRatios[this.index],
@@ -260,6 +262,7 @@ export class NetWorthComponent extends React.Component {
     this.setState(
       {
         hoveredData: {
+          label: labels[labels.length - 1] || '',
           assets: assets[assets.length - 1] || 0,
           debts: debts[debts.length - 1] || 0,
           debtRatio: debtRatios[debtRatios.length - 1] || 0,

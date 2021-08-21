@@ -3,7 +3,6 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'budget',
-  title: 'Stealing From Future Alert',
-  description:
-    'Highlights "Budget Next Month" red when you\'ve gone negative as some point in the future.',
+  title: 'Stealing From Future Warning',
+  description: `Adds a red button next to "Ready to Assign" when you've gone negative at some point in you budget's future.`,
 };

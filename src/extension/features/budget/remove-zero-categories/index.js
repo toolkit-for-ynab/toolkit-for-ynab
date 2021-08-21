@@ -6,34 +6,41 @@ export class RemoveZeroCategories extends Feature {
     return isCurrentRouteBudgetPage();
   }
 
+  destroy() {
+    $('.modal-budget-overspending .dropdown-list > li').removeClass('tk-hidden');
+  }
+
   invoke() {
-    let coverOverbudgetingCategories = $('.modal-budget-overspending .dropdown-list > li');
-    coverOverbudgetingCategories.each(function () {
-      let t = $(this).find('.category-available').attr('title'); // Category balance text.
-      if (t == null) {
-        return;
-      }
-      let categoryBalance = parseInt(t.replace(/[^\d-]/g, ''));
-      if (categoryBalance <= 0) {
-        $(this).remove();
-      }
-    });
+    let lastSectionItem = null;
+    let hideSectionItem = true;
 
-    coverOverbudgetingCategories = $('.modal-budget-overspending .dropdown-list > li');
+    Array.from(document.querySelectorAll('.modal-budget-overspending .dropdown-list > li')).forEach(
+      (element) => {
+        if (element.classList.contains('section-item')) {
+          if (lastSectionItem && hideSectionItem) {
+            lastSectionItem.classList.add('tk-hidden');
+          }
 
-    // Remove empty sections.
-    for (let i = 0; i < coverOverbudgetingCategories.length - 1; i++) {
-      if (
-        $(coverOverbudgetingCategories[i]).hasClass('section-item') &&
-        $(coverOverbudgetingCategories[i + 1]).hasClass('section-item')
-      ) {
-        $(coverOverbudgetingCategories[i]).remove();
+          lastSectionItem = element;
+          hideSectionItem = true;
+        }
+
+        const availableTitle = element.querySelector('.category-available')?.getAttribute('title');
+        if (!availableTitle) {
+          return;
+        }
+
+        let categoryBalance = ynab.unformat(availableTitle);
+        if (categoryBalance <= 0) {
+          element.classList.add('tk-hidden');
+        } else {
+          hideSectionItem = false;
+        }
       }
-    }
+    );
 
-    // Remove last section empty.
-    if (coverOverbudgetingCategories.last().hasClass('section-item')) {
-      coverOverbudgetingCategories.last().remove();
+    if (lastSectionItem && hideSectionItem) {
+      lastSectionItem.classList.add('tk-hidden');
     }
   }
 

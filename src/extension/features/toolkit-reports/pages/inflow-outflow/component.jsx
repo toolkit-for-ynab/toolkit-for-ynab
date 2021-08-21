@@ -34,6 +34,7 @@ export class InflowOutflowComponent extends React.Component {
         <div className="tk-flex tk-justify-content-end">
           {this.state.hoveredData && (
             <Legend
+              label={this.state.hoveredData.label}
               inflows={this.state.hoveredData.inflows}
               outflows={this.state.hoveredData.outflows}
               diffs={this.state.hoveredData.diffs}
@@ -54,6 +55,7 @@ export class InflowOutflowComponent extends React.Component {
         mouseOver: function () {
           _this.setState({
             hoveredData: {
+              label: labels[this.index],
               inflows: inflows[this.index],
               outflows: outflows[this.index],
               diffs: diffs[this.index],
@@ -236,6 +238,7 @@ export class InflowOutflowComponent extends React.Component {
     this.setState(
       {
         hoveredData: {
+          label: labels[inflows.length - 1] || '',
           inflows: filteredInflows[inflows.length - 1] || 0,
           outflows: filteredOutflows[outflows.length - 1] || 0,
           diffs: filteredDiffs[outflows.length - 1] || 0,
