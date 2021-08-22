@@ -20,6 +20,8 @@ export class GoalIndicator extends Feature {
 
   invoke() {
     this.addToolkitEmberHook('budget-table-row', 'didRender', this.addGoalIndicator);
+    // Add goal column to hidden categories row to allow for accurate column resizing
+    this.addToolkitEmberHook('budget/hidden-row', 'didRender', ensureGoalColumn);
   }
 
   addGoalIndicator(element) {

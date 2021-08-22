@@ -29,6 +29,8 @@ export class DisplayTargetGoalAmount extends Feature {
 
   invoke() {
     this.addToolkitEmberHook('budget-table-row', 'didRender', this.addTargetGoalAmount);
+    // Add goal column to hidden categories row to allow for accurate column resizing
+    this.addToolkitEmberHook('budget/hidden-row', 'didRender', ensureGoalColumn);
   }
 
   destroy() {
