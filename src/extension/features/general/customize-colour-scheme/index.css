@@ -5,21 +5,6 @@ body {
   --tk-custom-colours-warning: #797dec;
 }
 
-body.tk-custom-colours-enabled {
-  /* Inspector messages - recently replaced with general messages but still in YNAB stylesheet */
-  --inspector_message_negative_background: var(--message_negative_background) !important;
-  --inspector_message_negative_border: var(--message_negative_accent) !important;
-  --inspector_message_negative_label: var(--message_negative_label) !important;
-
-  --inspector_message_positive_background: var(--message_positive_background) !important;
-  --inspector_message_positive_border: var(--message_positive_accent) !important;
-  --inspector_message_positive_label: var(--message_positive_label) !important;
-
-  --inspector_message_warning_background: var(--message_warning_background) !important;
-  --inspector_message_warning_border: var(--message_warning_accent) !important;
-  --inspector_message_warning_label: var(--message_warning_label) !important;
-}
-
 /* Default theme */
 body.tk-custom-colours-enabled {
   /*
@@ -33,9 +18,16 @@ body.tk-custom-colours-enabled {
 
     If a new accent variable is referenced it needs to be added to the
     TK_CUSTOMIZE_COLOUR_ACCENTS at the top of index.js to be defined and updated
+
+    Base colours:
+    Positive: #6d9f38
+    Warning: #e0a41a
+    Negative: #ca481d
   */
 
   /* Negative */
+  --banner_negative_button_background: var(--tk-custom-colours-negative) !important;
+  --banner_negative_button_background_active: var(--tk-custom-colours-negative-l045c055) !important;
   --budget_balance_negative_background: var(--tk-custom-colours-negative-l150c060) !important;
   --budget_balance_negative_background_active: var(
     --tk-custom-colours-negative-l140c075
@@ -55,6 +47,8 @@ body.tk-custom-colours-enabled {
   --status_negative: var(--tk-custom-colours-negative) !important;
 
   /* Positive */
+  --banner_positive_button_background: var(--tk-custom-colours-positive) !important;
+  --banner_positive_button_background_active: var(--tk-custom-colours-positive-l045c055) !important;
   --budget_balance_positive_background: var(--tk-custom-colours-positive-l150c060) !important;
   --budget_balance_positive_background_active: var(
     --tk-custom-colours-positive-l140c075
@@ -74,6 +68,8 @@ body.tk-custom-colours-enabled {
   --status_positive: var(--tk-custom-colours-positive) !important;
 
   /* Warning */
+  --banner_warning_button_background: var(--tk-custom-colours-warning) !important;
+  --banner_warning_button_background_active: var(--tk-custom-colours-warning-l045c055) !important;
   --budget_balance_warning_background: var(--tk-custom-colours-warning-l150c060) !important;
   --budget_balance_warning_background_active: var(--tk-custom-colours-warning-l140c075) !important;
   --budget_balance_warning_icon: var(--tk-custom-colours-warning-l030c045) !important;
@@ -91,6 +87,9 @@ body.tk-custom-colours-enabled {
 /* Dark theme */
 body.tk-custom-colours-enabled.theme-dark {
   /* Negative */
+  --banner_negative_button_background: var(--tk-custom-colours-negative-l140c075) !important;
+  --banner_negative_button_background_active: var(--tk-custom-colours-negative-l120c100) !important;
+  --banner_negative_button_label: var(--tk-custom-colours-negative-l025c020) !important;
   --budget_balance_negative_background: var(--tk-custom-colours-negative) !important;
   --budget_balance_negative_background_active: var(
     --tk-custom-colours-negative-l110c100
@@ -110,6 +109,9 @@ body.tk-custom-colours-enabled.theme-dark {
   --status_negative: var(--tk-custom-colours-negative-l055c090);
 
   /* Positive */
+  --banner_positive_button_background: var(--tk-custom-colours-positive-l140c075) !important;
+  --banner_positive_button_background_active: var(--tk-custom-colours-positive-l120c100) !important;
+  --banner_positive_button_label: var(--tk-custom-colours-positive-l025c020) !important;
   --budget_balance_positive_background: var(--tk-custom-colours-positive) !important;
   --budget_balance_positive_background_active: var(
     --tk-custom-colours-positive-l110c100
@@ -129,6 +131,9 @@ body.tk-custom-colours-enabled.theme-dark {
   --status_positive: var(--tk-custom-colours-positive) !important;
 
   /* Warning */
+  --banner_warning_button_background: var(--tk-custom-colours-warning-l140c075) !important;
+  --banner_warning_button_background_active: var(--tk-custom-colours-warning-l120c100) !important;
+  --banner_warning_button_label: var(--tk-custom-colours-warning-l025c020) !important;
   --budget_balance_warning_background: var(--tk-custom-colours-warning) !important;
   --budget_balance_warning_background_active: var(--tk-custom-colours-warning-l110c100) !important;
   --budget_balance_warning_icon: #232325 !important;
@@ -146,6 +151,9 @@ body.tk-custom-colours-enabled.theme-dark {
 /* Classic theme */
 body.tk-custom-colours-enabled.theme-classic {
   /* Negative */
+  --banner_negative_button_background: #fff !important;
+  --banner_negative_button_background_active: var(--tk-custom-colours-negative-l160c015) !important;
+  --banner_negative_button_label: var(--tk-custom-colours-negative) !important;
   --budget_balance_negative_background: var(--tk-custom-colours-negative) !important;
   --budget_balance_negative_background_active: var(
     --tk-custom-colours-negative-l090c090
@@ -165,6 +173,9 @@ body.tk-custom-colours-enabled.theme-classic {
   --status_negative: var(--tk-custom-colours-negative) !important;
 
   /* Positive */
+  --banner_positive_button_background: #fff !important;
+  --banner_positive_button_background_active: var(--tk-custom-colours-positive-l160c015) !important;
+  --banner_positive_button_label: var(--tk-custom-colours-positive) !important;
   --budget_balance_positive_background: var(--tk-custom-colours-positive) !important;
   --budget_balance_positive_background_active: var(
     --tk-custom-colours-positive-l090c090
@@ -184,6 +195,9 @@ body.tk-custom-colours-enabled.theme-classic {
   --status_positive: var(--tk-custom-colours-positive) !important;
 
   /* Warning */
+  --banner_warning_button_background: #fff !important;
+  --banner_warning_button_background_active: var(--tk-custom-colours-warning-l160c015) !important;
+  --banner_warning_button_label: var(--tk-custom-colours-warning) !important;
   --budget_balance_warning_background: var(--tk-custom-colours-warning) !important;
   --budget_balance_warning_background_active: var(--tk-custom-colours-warning-l090c090) !important;
   --budget_balance_warning_icon: #fff !important;
