@@ -22,7 +22,7 @@ categoriesObject = {
 const relevantCategorySet = new Set();
 
 // Set categoryData on the individual category that was rendered.
-let selectedMonth = getSelectedMonth();
+let selectedMonth;
 export function setAndGetCategoryData(category) {
   if (!isRelevantCategory(category)) return;
 
