@@ -2,14 +2,20 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
+const HEADER_CLASS = 'tk-resizable-column';
+
+// If another feature alters header classes, add the class names here
+const IGNORE_CLASSES = [HEADER_CLASS];
+
+// Amount to increase/decrease flex-grow/flex-shrink per click
+const GROW_STEP = 0.01;
+
 const IGNORE_COLUMNS = [
   'budget-table-cell-checkbox',
   'budget-table-cell-collapse',
   'budget-table-cell-margin',
   'budget-table-cell-name',
 ];
-
-const GROW_STEP = 0.1;
 
 export class ResizableColumns extends Feature {
   shouldInvoke() {
@@ -20,55 +26,62 @@ export class ResizableColumns extends Feature {
     return require('./index.css');
   }
 
-  getFlexSize(column) {
-    let colClass;
-    column.classList.forEach((className) => {
-      if (className !== 'tk-resizable-column') colClass = className;
+  loadColumnSize(columnClass) {
+    return getToolkitStorageKey(`resizable-columns-${columnClass}`, 0);
+  }
+
+  saveColumnSize(columnClass, size) {
+    setToolkitStorageKey(`resizable-columns-${columnClass}`, size);
+  }
+
+  getColumnClass(columnHeader) {
+    let columnClass = columnHeader.attr('class');
+
+    let split = columnClass.split(' ');
+    IGNORE_CLASSES.forEach((ignoreClass) => {
+      split = split.filter((className) => className !== ignoreClass);
     });
-    if (!colClass) return;
+    columnClass = split.join('.');
 
-    const allCols = $(`.${colClass}`);
-
-    let grow = parseFloat($(column).css('flex-grow'));
-    if (!grow) grow = 0;
-
-    return {
-      class: colClass,
-      elements: allCols,
-      grow: grow,
-    };
+    return columnClass;
   }
 
-  loadColumnSize(className) {
-    return getToolkitStorageKey(`resizable-columns-${className}`, 0);
+  getColumnSize(columnHeader) {
+    return parseFloat(columnHeader.css('flex-grow')) || 0;
   }
 
-  saveColumnSize(className, grow) {
-    setToolkitStorageKey(`resizable-columns-${className}`, grow);
+  setColumnSize(columnClass, size) {
+    const cells = $(`.${columnClass}`);
+    cells.css('flex-grow', size);
   }
 
-  expandColumn(e, column) {
+  changeColumnSize(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    const size = this.getFlexSize(column);
-    if (!size) return;
+    const self = e.data.this;
+    const step = e.data.step;
 
-    size.elements.css('flex-grow', size.grow + GROW_STEP);
+    // Some header elements have sub-elements - try going up one level
+    let columnHeader = $(e.target);
+    if (!columnHeader.hasClass(HEADER_CLASS)) columnHeader = columnHeader.parent();
+    if (!columnHeader.hasClass(HEADER_CLASS)) return;
 
-    this.saveColumnSize(size.class, size.grow + GROW_STEP);
+    // Find the column class - e.g. budget-table-cell-available, to find all cells in the column
+    const columnClass = self.getColumnClass(columnHeader);
+    if (!columnClass) return;
+
+    let size = Math.max(self.getColumnSize(columnHeader) + step, 0);
+    self.setColumnSize(columnClass, size);
+    self.saveColumnSize(columnClass, size);
   }
 
-  shrinkColumn(e, column) {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const size = this.getFlexSize(column);
-    if (!size) return;
-
-    size.elements.css('flex-grow', size.grow - GROW_STEP);
-
-    this.saveColumnSize(size.class, size.grow - GROW_STEP);
+  // Check to see if any new columns have been added by other features
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+    if (changedNodes.has('budget-table-header-labels')) {
+      this.invoke();
+    }
   }
 
   invoke() {
@@ -79,22 +92,29 @@ export class ResizableColumns extends Feature {
 
     columns.each((index, colEl) => {
       const col = $(colEl);
-      if (!col.hasClass('tk-resizable-column')) {
-        col.on('click', (e) => this.expandColumn(e, e.target));
-        col.on('contextmenu', (e) => this.shrinkColumn(e, e.target));
+      if (!col.hasClass(HEADER_CLASS)) {
+        col.on('click', { this: this, step: GROW_STEP }, this.changeColumnSize);
+        col.on('contextmenu', { this: this, step: -GROW_STEP }, this.changeColumnSize);
 
-        // If the header text is encased in an element, add handlers for that too
-        col.children().each((id, el) => {
-          const child = $(el);
-          child.on('click', (e) => this.expandColumn(e, e.target.parentElement));
-          child.on('contextmenu', (e) => this.shrinkColumn(e, e.target.parentElement));
-        });
+        const columnClass = this.getColumnClass(col);
+        const size = this.loadColumnSize(columnClass);
+        this.setColumnSize(columnClass, size);
 
-        const grow = this.loadColumnSize(colEl.className);
-        col.css('flex-grow', grow);
-
-        col.addClass('tk-resizable-column');
+        col.addClass(HEADER_CLASS);
       }
     });
+  }
+
+  destroy() {
+    const columnHeaders = $(`.${HEADER_CLASS}`);
+    columnHeaders.off('click', this.changeColumnSize);
+    columnHeaders.off('contextmenu', this.changeColumnSize);
+
+    columnHeaders.each((id, el) => {
+      const columnClass = this.getColumnClass($(el));
+      this.setColumnSize(columnClass, 0);
+    });
+
+    columnHeaders.removeClass(HEADER_CLASS);
   }
 }
