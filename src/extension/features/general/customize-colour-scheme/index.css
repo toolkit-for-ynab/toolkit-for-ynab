@@ -16,6 +16,10 @@ body.tk-custom-colours-enabled {
     themer.html in this folder is a tool that can be used to convert CSS rules from
     the YNAB stylesheet automatically into accent variables
 
+    To build the themes copy the base colours below into the themer along with YNAB
+    CSS rules - then standardise the LC colours across the positive/negative/warning
+    rules - some manual tweaking will be required
+
     If a new accent variable is referenced it needs to be added to the
     TK_CUSTOMIZE_COLOUR_ACCENTS at the top of index.js to be defined and updated
 
