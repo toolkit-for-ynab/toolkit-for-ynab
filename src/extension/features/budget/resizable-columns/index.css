@@ -1,0 +1,14 @@
+.budget-table-header-labels li {
+  border-left: 1px solid var(--divider_standard);
+  cursor: pointer;
+  flex-basis: content;
+  user-select: none;
+}
+
+.budget-table-header-labels li.budget-table-cell-checkbox,
+.budget-table-header-labels li.budget-table-cell-collapse,
+.budget-table-header-labels li.budget-table-cell-margin,
+.budget-table-header-labels li.budget-table-cell-name {
+  border-left: 0;
+  cursor: auto;
+}
