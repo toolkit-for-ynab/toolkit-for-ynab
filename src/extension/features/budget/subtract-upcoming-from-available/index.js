@@ -17,6 +17,10 @@ export class SubtractUpcomingFromAvailable extends Feature {
     this.addToolkitEmberHook('budget-table-row', 'didRender', handleBudgetTableRow);
   }
 
+  onRouteChanged() {
+    setCategoriesObject();
+  }
+
   destroy() {
     destroyHelpers.resetInspectorMessage();
     destroyHelpers.removeBudgetBreakdownEntries();
