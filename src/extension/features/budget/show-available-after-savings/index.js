@@ -35,7 +35,7 @@ export class ShowAvailableAfterSavings extends Feature {
 
   showAvailableAfterSavings(budgetBreakdown, context) {
     const totalAvailable = budgetBreakdown.budgetTotals.available;
-    const totalSavings = this.getTotalSavings(budgetBreakdown);
+    const totalSavings = getTotalSavings(budgetBreakdown);
     const totalAvailableAfterSavings = totalAvailable - totalSavings;
 
     if (totalAvailableAfterSavings === totalAvailable) return;
@@ -50,14 +50,15 @@ export class ShowAvailableAfterSavings extends Feature {
       },
     }).prependTo($ynabBreakdown);
   }
+}
 
-  getTotalSavings(budgetBreakdown) {
-    let totalSavings = 0;
+export function getTotalSavings(budgetBreakdown) {
+  let totalSavings = 0;
 
-    for (const category of budgetBreakdown.inspectorCategories) {
-      if (isSavingsCategory(category)) totalSavings += category.available;
-    }
-
-    return totalSavings;
+  for (const category of budgetBreakdown.inspectorCategories) {
+    if (isSavingsCategory(category))
+      totalSavings += category.available < 0 ? 0 : category.available; // If available is less than 0, it will already have been subtracted from YNAB's total available.
   }
+
+  return totalSavings;
 }

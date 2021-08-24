@@ -1,5 +1,6 @@
 /* eslint-disable no-continue */
 import { getAllBudgetMonthsViewModel, getSelectedMonth } from 'toolkit/extension/utils/ynab';
+import { getTotalSavings } from '../show-available-after-savings/index';
 
 let categoriesObject = {};
 /*
@@ -54,8 +55,6 @@ export function getTotals(budgetBreakdown) {
     totalAvailableAfterUpcoming: 0,
   };
 
-  let totalSavings = 0;
-
   const filteredInspectorCategories = budgetBreakdown.inspectorCategories.filter((category) => {
     return isRelevantCategory(category);
   });
@@ -70,14 +69,12 @@ export function getTotals(budgetBreakdown) {
     totals.totalUpcoming += categoryData.upcoming;
 
     if (!noCC && category.isCreditCardPaymentCategory)
-      totals.totalCCPayments +=
-        categoryData.availableAfterUpcoming < 0 ? 0 : categoryData.availableAfterUpcoming;
-
-    if (ynabToolKit.options.ShowAvailableAfterSavings && isSavingsCategory(category))
-      totalSavings +=
-        categoryData.availableAfterUpcoming < 0 ? 0 : categoryData.availableAfterUpcoming;
+      totals.totalCCPayments += categoryData.available < 0 ? 0 : categoryData.available; // If available is less than 0, it will already have been subtracted from YNAB's total available.
   }
 
+  const totalSavings = ynabToolKit.options.ShowAvailableAfterSavings
+    ? getTotalSavings(budgetBreakdown)
+    : 0;
   const totalAvailable = budgetBreakdown.budgetTotals.available - totalSavings;
 
   totals.totalAvailableAfterUpcoming =
