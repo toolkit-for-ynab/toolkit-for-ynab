@@ -80,7 +80,7 @@ export function getTotals(budgetBreakdown) {
   totals.totalAvailableAfterUpcoming =
     totalAvailable + totals.totalPreviousUpcoming + totals.totalUpcoming - totals.totalCCPayments;
 
-  return totals.totalAvailableAfterUpcoming !== totals.totalAvailable && totals;
+  return totals.totalAvailableAfterUpcoming !== totalAvailable && totals;
 }
 
 // Build categoriesObject.
