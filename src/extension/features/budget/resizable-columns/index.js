@@ -55,12 +55,16 @@ export class ResizableColumns extends Feature {
     cells.css('flex-grow', size);
   }
 
+  preventContextMenu(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
   changeColumnSize(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    const self = e.data.this;
-    const step = e.data.step;
+    const self = e.data;
 
     // Some header elements have sub-elements - try going up one level
     let columnHeader = $(e.target);
@@ -71,7 +75,13 @@ export class ResizableColumns extends Feature {
     const columnClass = self.getColumnClass(columnHeader);
     if (!columnClass) return;
 
+    let step = 0;
+    if (e.button === 0) step = GROW_STEP; // Left click
+    if (e.button === 2) step = -GROW_STEP; // Right click
+
     let size = Math.max(self.getColumnSize(columnHeader) + step, 0);
+    if (e.button === 1) size = 0; // Middle click
+
     self.setColumnSize(columnClass, size);
     self.saveColumnSize(columnClass, size);
   }
@@ -93,8 +103,9 @@ export class ResizableColumns extends Feature {
     columns.each((index, colEl) => {
       const col = $(colEl);
       if (!col.hasClass(HEADER_CLASS)) {
-        col.on('click', { this: this, step: GROW_STEP }, this.changeColumnSize);
-        col.on('contextmenu', { this: this, step: -GROW_STEP }, this.changeColumnSize);
+        col.on('click', this, this.changeColumnSize);
+        col.on('auxclick', this, this.changeColumnSize);
+        col.on('contextmenu', this, this.preventContextMenu);
 
         const columnClass = this.getColumnClass(col);
         const size = this.loadColumnSize(columnClass);
@@ -108,7 +119,8 @@ export class ResizableColumns extends Feature {
   destroy() {
     const columnHeaders = $(`.${HEADER_CLASS}`);
     columnHeaders.off('click', this.changeColumnSize);
-    columnHeaders.off('contextmenu', this.changeColumnSize);
+    columnHeaders.off('auxclick', this.changeColumnSize);
+    columnHeaders.off('contextmenu', this.preventContextMenu);
 
     columnHeaders.each((id, el) => {
       const columnClass = this.getColumnClass($(el));
