@@ -1,2 +1,2 @@
-export { observeListener } from 'toolkit/extension/listeners/observeListener';
-export { routeChangeListener } from 'toolkit/extension/listeners/routeChangeListener';
+export { ObserveListener } from 'toolkit/extension/listeners/observeListener';
+export { RouteChangeListener } from 'toolkit/extension/listeners/routeChangeListener';

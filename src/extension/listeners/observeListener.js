@@ -82,5 +82,3 @@ export class ObserveListener {
     });
   }
 }
-
-export const observeListener = new ObserveListener();

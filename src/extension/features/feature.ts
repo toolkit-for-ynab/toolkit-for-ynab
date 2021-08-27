@@ -1,4 +1,4 @@
-import { observeListener, routeChangeListener } from 'toolkit/extension/listeners';
+import { observeListener, routeChangeListener } from 'toolkit/extension/ynab-toolkit';
 import { logToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 import { SupportedEmberHook } from '../ynab-toolkit';
 import { addToolkitEmberHook, removeToolkitEmberHook } from '../utils/toolkit';
