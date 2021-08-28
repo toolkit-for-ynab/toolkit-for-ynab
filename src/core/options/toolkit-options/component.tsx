@@ -123,8 +123,13 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
           <ReactMarkdown
             linkTarget="_blank"
             components={{
-              link: ({ href, children }) => (
-                <a href={href as string} target="_blank" rel="noopener noreferrer">
+              a: ({ href, children }) => (
+                <a
+                  style={{ color: 'var(--tk-text-color)' }}
+                  href={href as string}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {children}
                 </a>
               ),

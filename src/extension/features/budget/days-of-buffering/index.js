@@ -32,8 +32,8 @@ export class DaysOfBuffering extends Feature {
     let onBudgetBalance = 0;
     if (onBudgetAccounts) {
       // filter credit card accounts if enabled option is '2'
-      if (this.settings.enabled === '2') {
-        onBudgetAccounts = onBudgetAccounts.filter(acc => acc.accountType !== 'CreditCard');
+      if (ynabToolKit.options.DaysOfBufferingExcludeCreditCards) {
+        onBudgetAccounts = onBudgetAccounts.filter((acc) => acc.accountType !== 'CreditCard');
       }
 
       onBudgetBalance = onBudgetAccounts.reduce((reduced, current) => {
