@@ -10,7 +10,6 @@ export class DisplayTotalOverspent extends Feature {
 
   invoke() {
     addToolkitEmberHook(this, 'budget/budget-inspector', 'didRender', this.addTotalOverspent);
-    this.addTotalOverspent();
   }
 
   destroy() {
