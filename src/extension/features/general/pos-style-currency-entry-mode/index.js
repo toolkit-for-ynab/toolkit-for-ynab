@@ -13,9 +13,8 @@ export class POSStyleCurrencyEntryMode extends Feature {
   }
 
   shouldInvoke() {
-    const {
-      currencyFormatter,
-    } = ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
+    const { currencyFormatter } =
+      ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
 
     this.currencyFormatter = currencyFormatter;
     this.accountCurrency = currencyFormatter.getCurrency();
@@ -29,19 +28,26 @@ export class POSStyleCurrencyEntryMode extends Feature {
     this.wrapCurrencyInput('ynab-new-currency-input');
   }
 
+  destroy() {
+    const newCurrencyInputComponent = componentLookup('ynab-new-currency-input');
+    const originalNewCurrencyInputComponentActions =
+      Object.getPrototypeOf(newCurrencyInputComponent).actions;
+    originalNewCurrencyInputComponentActions.commitValue =
+      this.originalNewCurrencyInputComponentCallback;
+  }
+
   wrapCurrencyInput(name) {
     const self = this;
 
     const newCurrencyInputComponent = componentLookup(name);
-    const originalNewCurrencyInputComponentActions = Object.getPrototypeOf(
-      newCurrencyInputComponent
-    ).actions;
-    const originalNewCurrencyInputComponentCallback =
+    const originalNewCurrencyInputComponentActions =
+      Object.getPrototypeOf(newCurrencyInputComponent).actions;
+    this.originalNewCurrencyInputComponentCallback =
       originalNewCurrencyInputComponentActions.commitValue;
 
-    originalNewCurrencyInputComponentActions.commitValue = function() {
+    originalNewCurrencyInputComponentActions.commitValue = function () {
       const newArgs = [].slice.call(arguments);
-      newArgs.push(self, originalNewCurrencyInputComponentCallback);
+      newArgs.push(self, self.originalNewCurrencyInputComponentCallback);
       self.commitValueWrapper.apply(this, newArgs);
     };
   }

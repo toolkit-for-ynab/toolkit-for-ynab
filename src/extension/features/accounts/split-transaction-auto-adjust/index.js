@@ -83,7 +83,7 @@ export class SplitTransactionAutoAdjust extends Feature {
       let currentRowIndex = splitTransactionRow.children().index(currentRow);
       let currentValue = ynab.unformat($(currentInputElement).val()) * 1000;
 
-      splitTransactionRow.children().each(function(index, splitRow) {
+      splitTransactionRow.children().each(function (index, splitRow) {
         if (index === currentRowIndex) {
           let nextRow = splitTransactionRow.children().eq(currentRowIndex + 1);
           if (index === 0) {

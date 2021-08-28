@@ -3,20 +3,26 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class ChangeMemoEnterBehavior extends Feature {
   shouldInvoke() {
-    return (
-      isCurrentRouteAccountsPage() &&
-      $('.ynab-grid-body-row.is-adding, .ynab-grid-body-row.is-editing').length
-    );
+    return isCurrentRouteAccountsPage() && !!$('.ynab-grid-body-row.is-editing').length;
   }
 
   invoke() {
-    const $addEditRow = $('.ynab-grid-body-row.is-adding, .ynab-grid-body-row.is-editing');
-    const $memoInput = $('.ynab-grid-cell-memo input', $addEditRow);
+    const $editRows = $('.ynab-grid-body-row.is-editing');
+    const $memoInputs = $('.ynab-grid-cell-memo input', $editRows);
+    $memoInputs.each((_, input) => {
+      if (!input.getAttribute('data-toolkit-memo-behavior')) {
+        input.setAttribute('data-toolkit-memo-behavior', true);
+        input.addEventListener('keydown', this.applyNewEnterBehavior);
+      }
+    });
+  }
 
-    if (!$memoInput[0].getAttribute('data-toolkit-memo-behavior')) {
-      $memoInput[0].setAttribute('data-toolkit-memo-behavior', true);
-      $memoInput.keydown(this.applyNewEnterBehavior);
-    }
+  destroy() {
+    const $editInputs = $('input[data-toolkit-memo-behavior]');
+    $editInputs.each((_, input) => {
+      input.removeAttribute('data-toolkit-memo-behavior');
+      input.removeEventListener('keydown', this.applyNewEnterBehavior);
+    });
   }
 
   applyNewEnterBehavior(event) {
@@ -31,16 +37,12 @@ export class ChangeMemoEnterBehavior extends Feature {
       const $columns = $closestAddEditRow.children();
       const $nextColumn = $($columns.get($columns.index($memoColumn) + 1));
 
-      $nextColumn.find('input').focus();
+      $nextColumn.find('input').trigger('focus');
     }
   }
 
   observe(changedNodes) {
-    if (
-      !changedNodes.has('ynab-grid-body-row is-editing') &&
-      !changedNodes.has('ynab-grid-add-rows')
-    )
-      return;
+    if (!changedNodes.has('ynab-grid-body')) return;
 
     if (this.shouldInvoke()) {
       this.invoke();

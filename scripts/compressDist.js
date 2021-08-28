@@ -22,10 +22,10 @@ const output = fs.createWriteStream(zipFile);
 const archive = archiver('zip', { zlib: { level: 9 } });
 
 output.on('close', () => {
-  console.log('Archive sucessfully created.');
+  console.log('Archive successfully created.');
 });
 
-archive.on('warning', error => {
+archive.on('warning', (error) => {
   if (error.code === 'ENOENT') {
     console.warn('Warning while archiving: ', error);
   } else {
@@ -33,7 +33,7 @@ archive.on('warning', error => {
   }
 });
 
-archive.on('error', error => {
+archive.on('error', (error) => {
   throw error;
 });
 

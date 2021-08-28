@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'general',
-  title: 'Hide Help (?) Button',
+  title: 'Hide Blue Help (?) Button',
   description:
-    'This feature hides the blue help (?) button in the bottom right corner of the screen. View the account-options popup (click your e-mail) to show or hide the help button.',
+    'Hide the blue help (?) button in the bottom right corner of the screen. The button can then be toggled using the button added to the User Menu (click your e-mail).',
 };

@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Clear Selection',
+  title: 'Add "Clear Selection" Button',
   description:
-    'Adds an option to the transaction edit drop-down menu to clear the current selection.',
+    'Add an option to the "Edit Transaction(s)" menu to "Clear Selection" clearing all selected transactions.',
 };

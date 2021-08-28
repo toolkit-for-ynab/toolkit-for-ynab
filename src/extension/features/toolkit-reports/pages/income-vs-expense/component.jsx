@@ -13,7 +13,11 @@ import './styles.scss';
 
 export const MONTHLY_TOTALS_KEY = '__totals';
 
-const createPayeeMap = (payee, months) => new Map([['payee', payee], ['monthlyTotals', months]]);
+const createPayeeMap = (payee, months) =>
+  new Map([
+    ['payee', payee],
+    ['monthlyTotals', months],
+  ]);
 
 const createMasterCategoryMap = (masterCategory, months) =>
   new Map([
@@ -23,14 +27,23 @@ const createMasterCategoryMap = (masterCategory, months) =>
   ]);
 
 const createSubCategoryMap = (category, months) =>
-  new Map([['subCategory', category], ['monthlyTotals', months]]);
+  new Map([
+    ['subCategory', category],
+    ['monthlyTotals', months],
+  ]);
 
-const createMonthlyTotalsMap = date =>
-  new Map([['date', date.clone()], ['total', 0], ['transactions', []]]);
+const createMonthlyTotalsMap = (date) =>
+  new Map([
+    ['date', date.clone()],
+    ['total', 0],
+    ['transactions', []],
+  ]);
 
 export class IncomeVsExpenseComponent extends React.Component {
   _payeesCollection = Collections.payeesCollection;
+
   _subCategoriesCollection = Collections.subCategoriesCollection;
+
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
 
   static propTypes = {
@@ -100,15 +113,15 @@ export class IncomeVsExpenseComponent extends React.Component {
   }
 
   _collapseAll = () => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const collapsedSources = new Set();
       const prevPayees = prevState.incomes.get('sources');
       const prevMasterCategories = prevState.expenses.get('sources');
-      prevPayees.forEach(payee => {
+      prevPayees.forEach((payee) => {
         collapsedSources.add(payee.get('source').get('entityId'));
       });
 
-      prevMasterCategories.forEach(category => {
+      prevMasterCategories.forEach((category) => {
         collapsedSources.add(category.get('source').get('entityId'));
       });
 
@@ -120,8 +133,8 @@ export class IncomeVsExpenseComponent extends React.Component {
     this.setState({ collapsedSources: new Set() });
   };
 
-  _collapseSourceRow = sourceId => {
-    this.setState(prevState => {
+  _collapseSourceRow = (sourceId) => {
+    this.setState((prevState) => {
       const { collapsedSources } = prevState;
       if (collapsedSources.has(sourceId)) {
         collapsedSources.delete(sourceId);
@@ -148,15 +161,14 @@ export class IncomeVsExpenseComponent extends React.Component {
       ['monthlyTotals', this._createEmptyMonthMapFromFilters()],
     ]);
 
-    this.props.filteredTransactions.forEach(transaction => {
+    this.props.filteredTransactions.forEach((transaction) => {
       const transactionSubCategoryId = transaction.get('subCategoryId');
       if (!transactionSubCategoryId) {
         return;
       }
 
-      const transactionSubCategory = this._subCategoriesCollection.findItemByEntityId(
-        transactionSubCategoryId
-      );
+      const transactionSubCategory =
+        this._subCategoriesCollection.findItemByEntityId(transactionSubCategoryId);
       if (!transactionSubCategory) {
         return;
       }
@@ -233,10 +245,7 @@ export class IncomeVsExpenseComponent extends React.Component {
 
   _addTransactionToMonthlyTotals(transaction, monthlyTotalsMap) {
     const transactionAmount = transaction.get('amount');
-    const transactionMonth = transaction
-      .get('date')
-      .clone()
-      .startOfMonth();
+    const transactionMonth = transaction.get('date').clone().startOfMonth();
     const monthlyTotalsKey = transactionMonth.toISOString();
 
     const monthlyTotalsData = monthlyTotalsMap.get(monthlyTotalsKey);
@@ -268,7 +277,7 @@ export class IncomeVsExpenseComponent extends React.Component {
       .sort((a, b) => {
         return a.get('masterCategory').sortableIndex - b.get('masterCategory').sortableIndex;
       })
-      .map(masterCategoryData => {
+      .map((masterCategoryData) => {
         const masterCategoryMonthlyTotalsArray = mapToArray(
           masterCategoryData.get('monthlyTotals')
         );
@@ -278,7 +287,7 @@ export class IncomeVsExpenseComponent extends React.Component {
           .sort((a, b) => {
             return a.get('subCategory').sortableIndex - b.get('subCategory').sortableIndex;
           })
-          .map(subCategoryData => {
+          .map((subCategoryData) => {
             const subCategoryMonthlyTotalsArray = mapToArray(subCategoryData.get('monthlyTotals'));
             subCategoryMonthlyTotalsArray.sort(sortByGettableDate);
 
@@ -295,7 +304,10 @@ export class IncomeVsExpenseComponent extends React.Component {
         ]);
       });
 
-    return new Map([['monthlyTotals', monthlyTotalsArray], ['sources', masterCategoriesArray]]);
+    return new Map([
+      ['monthlyTotals', monthlyTotalsArray],
+      ['sources', masterCategoriesArray],
+    ]);
   }
 
   _sortAndNormalizeIncomes(incomes) {
@@ -308,13 +320,14 @@ export class IncomeVsExpenseComponent extends React.Component {
         const nameB = b.get('payee').get('name');
         if (nameA < nameB) {
           return -1;
-        } else if (nameA > nameB) {
+        }
+        if (nameA > nameB) {
           return 1;
         }
 
         return 0;
       })
-      .map(payeeData => {
+      .map((payeeData) => {
         const payeeMonthlyTotalsArray = mapToArray(payeeData.get('monthlyTotals'));
         payeeMonthlyTotalsArray.sort(sortByGettableDate);
 
@@ -331,7 +344,13 @@ export class IncomeVsExpenseComponent extends React.Component {
         [
           new Map([
             ['monthlyTotals', monthlyTotalsArray],
-            ['source', new Map([['entityId', '__incomeSources'], ['name', 'Income Sources']])],
+            [
+              'source',
+              new Map([
+                ['entityId', '__incomeSources'],
+                ['name', 'Income Sources'],
+              ]),
+            ],
             ['sources', payeesArray],
           ]),
         ],

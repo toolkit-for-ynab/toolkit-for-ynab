@@ -1,0 +1,8 @@
+.budget-header-days .budget-header-days-age {
+  min-width: 6em;
+}
+
+/* Stop totals being crushed on smaller screens */
+.budget-header-totals {
+  flex-shrink: 0;
+}

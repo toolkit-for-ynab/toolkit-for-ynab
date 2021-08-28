@@ -6,6 +6,7 @@ const Settings = {
   Toggle: '2',
 };
 
+const TEXT_BLUR_SVG_ID = 'tk-privacy-mode-svg';
 const TEXT_BLUR_FILTER_ID = 'text-blur';
 
 const PRIVACY_TOOLKIT_STORAGE_KEY = 'privacy-mode';
@@ -60,6 +61,12 @@ export class PrivacyMode extends Feature {
     this.updatePrivacyMode();
   }
 
+  destroy() {
+    $('#tk-toggle-privacy').remove();
+    $('body').removeClass('tk-privacy-mode');
+    $(`#${TEXT_BLUR_SVG_ID}`).remove();
+  }
+
   onRouteChanged() {
     this.invoke();
   }
@@ -77,22 +84,18 @@ export class PrivacyMode extends Feature {
 
     if (toggle) {
       $('body').addClass('tk-privacy-mode');
-      $('#tk-toggle-privacy i')
-        .removeClass('unlock-1')
-        .addClass('lock-1');
+      $('#tk-toggle-privacy i').removeClass('unlock-1').addClass('lock-1');
     } else {
       $('body').removeClass('tk-privacy-mode');
-      $('#tk-toggle-privacy i')
-        .removeClass('lock-1')
-        .addClass('unlock-1');
+      $('#tk-toggle-privacy i').removeClass('lock-1').addClass('unlock-1');
     }
   }
 
   _getBlurSVG() {
     return /* html */ `
-      <svg version="1.1" width="0" height="0">
+      <svg id="${TEXT_BLUR_SVG_ID}" version="1.1" width="0" height="0">
         <defs>
-          <filter id="text-blur">
+          <filter id="${TEXT_BLUR_FILTER_ID}">
             <feGaussianBlur stdDeviation="6" result="blur" />
           </filter>
         </defs>

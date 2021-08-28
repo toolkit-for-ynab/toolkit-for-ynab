@@ -3,7 +3,6 @@ import { getAllBudgetMonthsViewModel } from 'toolkit/extension/utils/ynab';
 import { getCurrentDate } from 'toolkit/extension/utils/date';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class ShowCategoryBalance extends Feature {
   shouldInvoke() {
@@ -20,9 +19,13 @@ export class ShowCategoryBalance extends Feature {
       'register/grid-split',
     ];
 
-    valueColumns.forEach(key => {
-      addToolkitEmberHook(this, key, 'didRender', this.addCategoryBalance);
+    valueColumns.forEach((key) => {
+      this.addToolkitEmberHook(key, 'didRender', this.addCategoryBalance);
     });
+  }
+
+  destroy() {
+    $('.ynab-grid-cell-subCategoryName').attr('title', '');
   }
 
   addCategoryBalance(element) {

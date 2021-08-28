@@ -26,7 +26,7 @@ export class CategoryFilterComponent extends React.Component {
   render() {
     const { categoryFilterIds } = this.state;
     const categoriesList = [];
-    this._masterCategoriesCollection.forEach(masterCategory => {
+    this._masterCategoriesCollection.forEach((masterCategory) => {
       const { entityId: masterCategoryId } = masterCategory;
       if (
         masterCategory.isTombstone ||
@@ -37,9 +37,8 @@ export class CategoryFilterComponent extends React.Component {
       }
 
       const isHiddenMasterCategory = masterCategory.isHiddenMasterCategory();
-      const subCategories = this._subCategoriesCollection.findItemsByMasterCategoryId(
-        masterCategoryId
-      );
+      const subCategories =
+        this._subCategoriesCollection.findItemsByMasterCategoryId(masterCategoryId);
       if (!subCategories) {
         return;
       }
@@ -59,7 +58,7 @@ export class CategoryFilterComponent extends React.Component {
         </div>
       );
 
-      subCategories.sort(sortableIndexCompare).forEach(subCategory => {
+      subCategories.sort(sortableIndexCompare).forEach((subCategory) => {
         const { entityId: subCategoryId } = subCategory;
         if (subCategory.isTombstone || (subCategory.internalName && !isHiddenMasterCategory)) {
           return;
@@ -117,21 +116,20 @@ export class CategoryFilterComponent extends React.Component {
   _handleSelectNone = () => {
     const { categoryFilterIds } = this.state;
 
-    this._masterCategoriesCollection.forEach(masterCategory => {
+    this._masterCategoriesCollection.forEach((masterCategory) => {
       const { entityId: masterCategoryId } = masterCategory;
       const isHiddenMasterCategory = masterCategory.isHiddenMasterCategory();
 
       if (!masterCategory.isTombstone && (!masterCategory.internalName || isHiddenMasterCategory)) {
-        const subCategories = this._subCategoriesCollection.findItemsByMasterCategoryId(
-          masterCategoryId
-        );
+        const subCategories =
+          this._subCategoriesCollection.findItemsByMasterCategoryId(masterCategoryId);
         if (!subCategories) {
           return;
         }
 
-        subCategories.forEach(subCategory => {
+        subCategories.forEach((subCategory) => {
           const { entityId: subCategoryId } = subCategory;
-          if (!subCategory.isTombstone || (!subCategory.internalName || isHiddenMasterCategory)) {
+          if (!subCategory.isTombstone || !subCategory.internalName || isHiddenMasterCategory) {
             categoryFilterIds.add(subCategoryId);
           }
         });

@@ -1,0 +1,50 @@
+:root {
+  --tk-color-goal-warning-underfunded: #c9e1fd;
+  --tk-color-goal-warning-underfunded-hover: #b0d5ff;
+  --tk-color-goal-warning-underfunded-message-bg: #ecf4ff;
+  --tk-color-goal-warning-underfunded-message-text: #000000;
+  --tk-color-goal-warning-underfunded-message-border: #70b3ff;
+}
+
+body.theme-dark {
+  --tk-color-goal-warning-underfunded: #429aff;
+  --tk-color-goal-warning-underfunded-hover: #61abff;
+  --tk-color-goal-warning-underfunded-message-bg: #0f1e2d;
+  --tk-color-goal-warning-underfunded-message-text: #429aff;
+  --tk-color-goal-warning-underfunded-message-border: #429aff;
+}
+
+body.theme-classic {
+  --tk-color-goal-warning-underfunded: #298cff;
+  --tk-color-goal-warning-underfunded-hover: #0378ff;
+  --tk-color-goal-warning-underfunded-message-bg: #d0e4ff;
+  --tk-color-goal-warning-underfunded-message-text: #000000;
+  --tk-color-goal-warning-underfunded-message-border: #0378ff;
+}
+
+/* row */
+.budget-table-row .budget-table-cell-available .ynab-new-budget-available-number.cautious.goal {
+  background-color: var(--tk-color-goal-warning-underfunded);
+}
+.budget-table-row
+  .budget-table-cell-available
+  .ynab-new-budget-available-number.cautious.goal:hover {
+  background-color: var(--tk-color-goal-warning-underfunded-hover);
+}
+
+/* inspector */
+.budget-inspector
+  .budget-inspector-category-overview
+  .ynab-new-budget-available-number.cautious.goal {
+  background: var(--tk-color-goal-warning-underfunded);
+}
+.budget-inspector .ynab-new-inspector-goals-view-goal .goal-message {
+  color: var(--tk-color-goal-warning-underfunded-message-text);
+  background: var(--tk-color-goal-warning-underfunded-message-bg);
+  border-color: var(--tk-color-goal-warning-underfunded-message-border);
+}
+
+/* Fix background of available marker, where span overrides the background color */
+.inspector-overview-available span {
+  background: transparent !important;
+}

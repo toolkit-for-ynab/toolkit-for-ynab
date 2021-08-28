@@ -3,7 +3,6 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'accounts',
-  title: 'Change Behaviour of Enter Key on the Memo field When Adding or Editing Transactions',
-  description:
-    "When you press enter on the memo field while adding or editing a transaction, the default behaviour is 'Save' or 'Save and add another'. This option changes it to move to the next field.",
+  title: 'Override Memo Enter Behavior',
+  description: `Change the default action of pressing "Enter" while in a transaction's memo field from saving the transaction to moving to the next field.`,
 };

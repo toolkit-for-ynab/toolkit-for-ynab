@@ -3,29 +3,29 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class ChangeEnterBehavior extends Feature {
   shouldInvoke() {
-    return isCurrentRouteAccountsPage() && $('.ynab-grid-body-row.is-adding').length;
+    return isCurrentRouteAccountsPage() && !!$('.ynab-grid-body-row.is-editing').length;
   }
 
   invoke() {
-    const $addRow = $('.ynab-grid-body-row.is-adding');
-    const $memoInput = $('.ynab-grid-cell-memo input', $addRow);
-    const $outflowInput = $('.ynab-grid-cell-outflow input', $addRow);
-    const $inflowInput = $('.ynab-grid-cell-inflow input', $addRow);
+    const $editRows = $('.ynab-grid-body-row.is-editing');
+    const $editInputs = $(
+      '.ynab-grid-cell-memo input, .ynab-grid-cell-outflow input, .ynab-grid-cell-inflow input',
+      $editRows
+    );
+    $editInputs.each((_, input) => {
+      if (!input.getAttribute('data-toolkit-save-behavior')) {
+        input.setAttribute('data-toolkit-save-behavior', true);
+        input.addEventListener('keydown', this.applyNewEnterBehavior);
+      }
+    });
+  }
 
-    if (!$memoInput[0].getAttribute('data-toolkit-save-behavior')) {
-      $memoInput[0].setAttribute('data-toolkit-save-behavior', true);
-      $memoInput.keydown(this.applyNewEnterBehavior);
-    }
-
-    if (!$outflowInput[0].getAttribute('data-toolkit-save-behavior')) {
-      $outflowInput[0].setAttribute('data-toolkit-save-behavior', true);
-      $outflowInput.keydown(this.applyNewEnterBehavior);
-    }
-
-    if (!$inflowInput[0].getAttribute('data-toolkit-save-behavior')) {
-      $inflowInput[0].setAttribute('data-toolkit-save-behavior', true);
-      $inflowInput.keydown(this.applyNewEnterBehavior);
-    }
+  destroy() {
+    const $editInputs = $('input[data-toolkit-save-behavior]');
+    $editInputs.each((_, input) => {
+      input.removeAttribute('data-toolkit-save-behavior');
+      input.removeEventListener('keydown', this.applyNewEnterBehavior);
+    });
   }
 
   applyNewEnterBehavior(event) {
@@ -36,25 +36,18 @@ export class ChangeEnterBehavior extends Feature {
       event.stopPropagation();
 
       // Added to support CtrlEnterCleared when ChangeEnterBehavior is enabled
-      if (
-        ynabToolKit.options.CtrlEnterCleared === true &&
-        (event.metaKey === true || event.ctrlKey === true)
-      ) {
-        let $markClearedButton = $('.is-adding .ynab-cleared:not(.is-cleared)');
-        if ($markClearedButton.length !== 0) {
-          $markClearedButton[0].click();
-        }
+      if (ynabToolKit.options.CtrlEnterCleared === true && (event.metaKey || event.ctrlKey)) {
+        let $markClearedButton = $('.is-editing .ynab-cleared:not(.is-cleared)');
+        $markClearedButton.trigger('click');
       }
 
-      const $saveButton = $(
-        '.ynab-grid-actions-buttons .button.button-primary:not(.button-another)'
-      );
-      $saveButton.click();
+      const $saveButton = $('.ynab-grid-actions-buttons .button.button-primary');
+      $saveButton.trigger('click');
     }
   }
 
   observe(changedNodes) {
-    if (!changedNodes.has('ynab-grid-add-rows')) return;
+    if (!changedNodes.has('ynab-grid-body')) return;
 
     if (this.shouldInvoke()) {
       this.invoke();

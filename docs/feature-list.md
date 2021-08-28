@@ -20,9 +20,9 @@ Provides smaller and cleaner scrollbars across the application.
 
 Adds the list of budgets to the Open Budget dropdown so you don't have to navigate to the 'Open Budget' page to switch budgets.
 
-## Colour Blind Mode
+## Customize Colour Scheme
 
-Changes colours like red, yellow and green in the interface to colours and shapes that are more easily distinguishable by colourblind people.
+Adds an option in YNAB's Display Menu to customize the default green/orange/red colour scheme to whatever you wish.
 
 ## Hide Account Balances
 
@@ -47,10 +47,6 @@ YNAB shows a "Share YNAB, Get YNAB free" banner. If you'd rather not see this ba
 ## Interface Font
 
 Select a font from the Google Fonts library or choose to use your system font.
-
-## Localization of YNAB
-
-Localization of interface.
 
 ## Navigation Tabs Height
 
@@ -160,6 +156,10 @@ Hides the Age of Money calculation. Some users find it's not relevant or helpful
 
 Hides the "Total Available" section in the budget inspector.
 
+## Highlight Budget Rows On Hover
+
+Shows a light gray background on category rows when hovered over.
+
 ## Highlight all Negative Category Balances Red
 
 Ensure all negative balances are highlighted red instead of yellow, even with credit card spending.
@@ -203,6 +203,12 @@ Highlights "Budget Next Month" red when you've gone negative as some point in th
 ## Striped Budget Rows
 
 Shows a light gray background on alternating category rows.
+
+## Subtract Upcoming Transactions from Available Balance
+
+Subtracts upcoming transactions from the available balance for each category. In other words, treat upcoming transactions as if the money has already been spent. Also adds "Available After Upcoming Transactions" to the budget breakdown.
+
+Enabling "Subtract Credit Card Balances from Total Available" will total the amounts in the "Payment" column of your CC category group and subtract that from the "Available After Upcoming Transactions" in the budget breakdown. This allows to see how much you have available, excluding the money "reserved" in your Credit Card Payments category group. (Probably only useful if you pay off your CCs in full every month.)
 
 ## To Be Budgeted Warning
 
@@ -258,6 +264,10 @@ This feature assists you in the reconcilation process by locating uncleared tran
 
 When entering split transactions, each additional split will be auto-filled with the current remaining amount.
 
+## Auto-Fill Split Transactions' Payee
+
+When entering split transactions, each additional split will be auto-filled with the first Payee.
+
 ## Automatically Enable Running Balance
 
 Enables YNAB's native "Running Balance" by default for each account register.
@@ -290,9 +300,9 @@ When you press enter on the memo field while adding or editing a transaction, th
 
 Adds an option to the transaction edit drop-down menu to clear the current selection.
 
-## Clear new transactions with CTRL+Enter
+## Clear transactions with CTRL+Enter
 
-Automatically clear a new transaction by pressing CTRL+Enter (CMD on Mac).
+Automatically clear a new or edited transaction by pressing CTRL+Enter (CMD on Mac).
 
 ## Color for Striped Transaction Rows
 
@@ -350,13 +360,13 @@ Adds the ability to set custom flag names. Tooltip for the flag name will only b
 
 Adds the total available balance to the category tooltip on each row in the Accounts register.
 
-## Show Last Reconciled Date
-
-Show the last reconciled date of the current account in the header
-
 ## Show Menu When Right Clicking On Transaction
 
 Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit menu options.
+
+## Show Reconcile Confetti
+
+When an account is successfully reconciled, show a fun confetti animation to mark your tremendous achievement.
 
 ## Show Reconciled Balance
 
@@ -373,6 +383,10 @@ Shows a different-color background on every other transaction row. See the Color
 ## Swap cleared and flagged columns
 
 Place the Cleared column on the left and the Flagged column on the right sides of an account screen.
+
+## Tab Expands Split Transactions
+
+When entering a split transaction, add a new split automatically when tabbing past the last split (a la YNAB4).
 
 ## Toggle Memo Column
 

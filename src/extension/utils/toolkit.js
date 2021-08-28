@@ -61,28 +61,8 @@ export function removeToolkitStorageKey(key) {
   return localStorage.removeItem(STORAGE_KEY_PREFIX + key);
 }
 
-export function l10n(key, defaultValue) {
-  const isDevelopment = ynabToolKit.environment === 'development';
-  if (!ynabToolKit.l10nData) {
-    if (isDevelopment) {
-      console.warn(
-        `Localization data not loaded yet for ${key}!!! Make sure to call l10n within lifecycle or render event!`
-      );
-    }
-
-    return defaultValue;
-  }
-
-  const localizedString = ynabToolKit.l10nData[key];
-  if (!localizedString) {
-    if (isDevelopment) {
-      console.warn(`No localization key for ${key}, try running "yarn l10n:update"`);
-    }
-
-    return defaultValue;
-  }
-
-  return localizedString;
+export function l10n(_key, defaultValue) {
+  return defaultValue;
 }
 
 export function l10nMonth(monthIndex, short = MonthStyle.Long) {
@@ -100,9 +80,9 @@ export function l10nAccountType(accountType) {
     case ynab.enums.AccountType.Savings:
       return l10n('Savings', 'Savings');
     case ynab.enums.AccountType.Cash:
-      return l10n('Cash', 'Credit Card');
+      return l10n('Cash', 'Cash');
     case ynab.enums.AccountType.CreditCard:
-      return l10n('CreditCard', 'Cash');
+      return l10n('CreditCard', 'Credit Card');
     case ynab.enums.AccountType.LineOfCredit:
       return l10n('LineOfCredit', 'Line of Credit');
     case ynab.enums.AccountType.Mortgage:
@@ -142,4 +122,15 @@ export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn) {
   }
 
   ynabToolKit.hookedComponents.add(componentKey);
+}
+
+export function removeToolkitEmberHook(componentKey, lifecycleHook, fn) {
+  const componentProto = Object.getPrototypeOf(componentLookup(componentKey));
+
+  let hooks = componentProto[emberComponentToolkitHookKey(lifecycleHook)];
+  if (hooks) {
+    componentProto[emberComponentToolkitHookKey(lifecycleHook)] = hooks.filter(
+      (hook) => hook.fn !== fn
+    );
+  }
 }

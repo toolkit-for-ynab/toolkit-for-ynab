@@ -1,5 +1,6 @@
 import { l10nMonth, MonthStyle } from './toolkit';
 import { getEntityManager } from './ynab';
+import moment from 'moment';
 
 export function getCurrentDate(format) {
   return ynabDate(format, false);
@@ -11,9 +12,7 @@ export function getToday() {
 }
 
 export function getFirstMonthOfBudget() {
-  return getEntityManager()
-    .getFirstMonthForBudget()
-    .clone();
+  return getEntityManager().getFirstMonthForBudget().clone();
 }
 
 export function localizedMonthAndYear(date, style = MonthStyle.Long) {

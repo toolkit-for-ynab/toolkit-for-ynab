@@ -1,6 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 const INDICATOR_CLASS = 'tk-uncleared-account-indicator';
 const INDICATOR_ELEMENT = `<div class="${INDICATOR_CLASS} flaticon solid copyright"></div>`;
@@ -40,7 +39,7 @@ export class UnclearedAccountHighlight extends Feature {
     let hasOtherNavAccountRightIcons = false;
     const navAccounts = element.querySelectorAll('.nav-account-row');
 
-    navAccounts.forEach(navAccount => {
+    navAccounts.forEach((navAccount) => {
       const emberView = getEmberView(navAccount.id);
       if (!emberView) {
         return;
@@ -75,6 +74,11 @@ export class UnclearedAccountHighlight extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'accounts-list', 'didRender', this.updateSidebarIndicator);
+    this.addToolkitEmberHook('accounts-list', 'didRender', this.updateSidebarIndicator);
+  }
+
+  destroy() {
+    $(`.nav-account-row .${INDICATOR_CLASS}`).remove();
+    $('.tk-nav-account-icons-right-space').removeClass('tk-nav-account-icons-right-space');
   }
 }

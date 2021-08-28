@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "lib": ["dom"],
+    "jsx": "react",
+    "allowJs": true,
+    "target": "es2016",
+    "outDir": "./outDir",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "paths": {
+      "toolkit/*": ["./src/*"],
+      "toolkit-reports/*": ["./src/features/toolkit-reports/*"]
+    }
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}

@@ -1,0 +1,25 @@
+.tk-accounts-header-irr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  padding-left: 1rem;
+  border-left: solid grey 2px;
+  margin-left: 1rem;
+}
+
+.tk-accounts-header-irr-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0 0.5rem;
+}
+
+#tk-accounts-header-total-irr-label,
+#tk-accounts-header-filtered-irr-label {
+  font-size: 0.75rem;
+  color: var(--header_label_primary);
+  font-weight: 400;
+  font-style: italic;
+}

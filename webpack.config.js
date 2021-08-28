@@ -7,7 +7,7 @@ const BUILD_ROOT = './dist';
 const BUILD_PATH = `${BUILD_ROOT}/extension`;
 const CODE_SOURCE_DIR = './src';
 
-module.exports = function(env) {
+module.exports = function (env) {
   const validBuildTypes = ['beta', 'development', 'production'];
   if (!env || !validBuildTypes.includes(env.buildType)) {
     console.log(`Invalid --env.buildType provided. Must be one of: [${validBuildTypes.join('|')}]`);
@@ -18,16 +18,16 @@ module.exports = function(env) {
     mode: 'none',
 
     entry: {
-      'background/background': path.resolve(`${CODE_SOURCE_DIR}/core/browser/background/index.js`),
-      'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/browser/options/options.js`),
-      'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/browser/popup/index.js`),
-      'content-scripts/init': path.resolve(
-        `${CODE_SOURCE_DIR}/core/browser/content-scripts/init.js`
+      'background/background': path.resolve(`${CODE_SOURCE_DIR}/core/background/index.js`),
+      'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/options/index.tsx`),
+      'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/popup/index.tsx`),
+      'content-scripts/extension-bridge': path.resolve(
+        `${CODE_SOURCE_DIR}/core/content-scripts/extension-bridge.js`
       ),
       'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`),
     },
 
-    devtool: env.buildType !== 'production' ? 'inline-source-map' : '',
+    devtool: env.buildType !== 'production' ? 'inline-source-map' : false,
 
     output: {
       path: path.join(__dirname, BUILD_ROOT),
@@ -42,12 +42,22 @@ module.exports = function(env) {
           path.join(CODE_SOURCE_DIR, 'extension', 'features', 'toolkit-reports')
         ),
       },
-      extensions: ['.js', '.jsx'],
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
       modules: ['node_modules'],
     },
 
     module: {
       rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          include: [path.resolve(__dirname, CODE_SOURCE_DIR)],
+          use: [
+            {
+              loader: 'ts-loader',
+            },
+          ],
+        },
         {
           test: /\.jsx?$/,
           exclude: /node_modules/,
@@ -61,60 +71,73 @@ module.exports = function(env) {
         {
           test: /\.css$/,
           include: [path.resolve(__dirname, CODE_SOURCE_DIR)],
-          use: ['to-string-loader', 'css-loader'],
+          use: [
+            {
+              loader: 'to-string-loader',
+            },
+            {
+              loader: 'css-loader',
+              options: {
+                esModule: false,
+              },
+            },
+          ],
         },
         {
           test: /\.scss$/,
           use: ['style-loader', 'css-loader', 'sass-loader'],
+        },
+        {
+          test: /\.svg$/,
+          use: [
+            {
+              loader: 'svg-url-loader',
+              options: {
+                limit: 10000,
+              },
+            },
+          ],
         },
       ],
     },
 
     plugins: [
       new webpack.ProgressPlugin(),
+      new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(env.buildType),
+      }),
       new CleanWebpackPlugin(),
-      new CopyWebpackPlugin([
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/assets/common`),
-          to: path.join(__dirname, `${BUILD_PATH}/assets`),
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/assets/environment/${env.buildType}`),
-          to: path.join(__dirname, `${BUILD_PATH}/assets`),
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/manifest.json`),
-          to: path.join(__dirname, `${BUILD_PATH}`),
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/background`),
-          to: path.join(__dirname, `${BUILD_PATH}/background`),
-          ignore: '**/*.js',
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/options`),
-          to: path.join(__dirname, `${BUILD_PATH}/options`),
-          ignore: '**/*.js',
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/browser/popup`),
-          to: path.join(__dirname, `${BUILD_PATH}/popup`),
-          ignore: '**/*.js',
-        },
-        {
-          from: path.join(__dirname, `${CODE_SOURCE_DIR}/extension/legacy/**/*.css`),
-          to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`),
-          context: 'src/extension',
-        },
-        {
-          from: path.join(
-            __dirname,
-            `${CODE_SOURCE_DIR}/extension/legacy/features/l10n/locales/*.js`
-          ),
-          to: path.join(__dirname, `${BUILD_PATH}/web-accessibles`),
-          context: 'src/extension',
-        },
-      ]),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/assets/common`),
+            to: path.join(__dirname, `${BUILD_PATH}/assets`),
+          },
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/assets/environment/${env.buildType}`),
+            to: path.join(__dirname, `${BUILD_PATH}/assets`),
+          },
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/manifest.json`),
+            to: path.join(__dirname, `${BUILD_PATH}`),
+          },
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/background`),
+            to: path.join(__dirname, `${BUILD_PATH}/background`),
+            globOptions: { ignore: '**/*.js' },
+          },
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/options`),
+            to: path.join(__dirname, `${BUILD_PATH}/options`),
+            globOptions: { ignore: '**/*.{js,jsx,ts,tsx}' },
+          },
+          {
+            from: path.join(__dirname, `${CODE_SOURCE_DIR}/core/popup`),
+            to: path.join(__dirname, `${BUILD_PATH}/popup`),
+            globOptions: { ignore: '**/*.{js,jsx,ts,tsx}' },
+          },
+        ],
+      }),
     ],
   };
 

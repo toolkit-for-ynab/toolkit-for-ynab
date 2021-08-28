@@ -189,10 +189,7 @@ export class DateFilterComponent extends React.Component {
   _handleFromYearSelected = ({ currentTarget }) => {
     const { selectedFromMonth } = this.state;
     const toDate = ynab.utilities.DateWithoutTime.createForToday();
-    toDate
-      .setMonth(selectedFromMonth)
-      .setYear(currentTarget.value)
-      .startOfMonth();
+    toDate.setMonth(selectedFromMonth).setYear(currentTarget.value).startOfMonth();
 
     let selectedMonth = selectedFromMonth;
     if (toDate.isBefore(this.firstMonthOfBudget)) {
@@ -211,10 +208,7 @@ export class DateFilterComponent extends React.Component {
   _handleToYearSelected = ({ currentTarget }) => {
     const { selectedToMonth } = this.state;
     const toDate = ynab.utilities.DateWithoutTime.createForToday();
-    toDate
-      .setMonth(selectedToMonth)
-      .setYear(currentTarget.value)
-      .startOfMonth();
+    toDate.setMonth(selectedToMonth).setYear(currentTarget.value).startOfMonth();
 
     let selectedMonth = selectedToMonth;
     if (toDate.isBefore(this.firstMonthOfBudget)) {
@@ -228,10 +222,7 @@ export class DateFilterComponent extends React.Component {
 
   _getEligibleMonth(selectedMonth, selectedYear) {
     const date = ynab.utilities.DateWithoutTime.createForToday();
-    date
-      .setMonth(selectedMonth)
-      .setYear(selectedYear)
-      .startOfMonth();
+    date.setMonth(selectedMonth).setYear(selectedYear).startOfMonth();
 
     if (date.isBefore(this.firstMonthOfBudget)) {
       return this.firstMonthOfBudget;
@@ -274,14 +265,8 @@ export class DateFilterComponent extends React.Component {
         selectedDates = this._getSelectedFromDates(today.clone().startOfYear(), today);
         break;
       case Options.LastYear:
-        const startOfLastYear = today
-          .clone()
-          .subtractYears(1)
-          .startOfYear();
-        const endOfLastYear = today
-          .clone()
-          .subtractYears(1)
-          .endOfYear();
+        const startOfLastYear = today.clone().subtractYears(1).startOfYear();
+        const endOfLastYear = today.clone().subtractYears(1).endOfYear();
         selectedDates = this._getSelectedFromDates(startOfLastYear, endOfLastYear);
         break;
       case Options.AllDates:

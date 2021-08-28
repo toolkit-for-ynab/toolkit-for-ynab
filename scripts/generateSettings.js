@@ -2,29 +2,30 @@ require('colors');
 const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
-const defaultFeatures = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json')))
-  .defaultFeatures;
+const defaultFeatures = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '..', 'package.json'))
+).defaultFeatures;
 
-const LEAGACY_SETTINGS_PROJECT_DIR = 'src/extension/legacy/features';
 const NEW_SETTINGS_PROJECT_DIR = 'src/extension/features';
-const ALL_SETTINGS_OUTPUT = 'src/core/settings/settings.js';
+const ALL_SETTINGS_OUTPUT = 'src/core/settings/settings.ts';
 const SETTINGS_JSON = 'scripts/settings.json';
 const REQUIRED_SETTINGS = ['name', 'type', 'default', 'section', 'title'];
 
 const settingMigrationMap = {
-  CategorySoloMode: {
-    oldSettingName: 'ToggleMasterCategories',
+  ConfirmEditTransactionCancellation: {
+    oldSettingName: 'ConfirmKeyboardCancelationOfTransactionChanges',
+  },
+  ToggleMasterCategories: {
+    oldSettingName: 'CategorySoloMode',
     settingMapping: {
-      true: 'cat-toggle-all',
+      'cat-solo-mode': true,
+      'cat-toggle-all': true,
+      'cat-solo-mode-toggle-all': true,
+      0: false,
     },
   },
-  AutoEnableRunningBalance: {
-    oldSettingName: 'RunningBalance',
-    settingMapping: {
-      0: false,
-      1: true,
-      2: true,
-    },
+  LiveOnLastMonthsIncome: {
+    oldSettingName: 'IncomeFromLastMonth',
   },
 };
 
@@ -32,18 +33,16 @@ let previousSettings;
 
 function run(callback) {
   previousSettings = new Set();
-  Promise.all([gatherLegacySettings(), gatherNewSettings()])
+  gatherNewSettings()
     .then(
-      values => {
+      (settings) => {
         let validatedSettings = [];
-        let settingsConcatenated = values[0].concat(values[1]);
-        settingsConcatenated.forEach(setting => {
+        settings.forEach((setting) => {
           if (Array.isArray(setting.setting)) {
-            setting.setting.forEach(subSetting => {
+            setting.setting.forEach((subSetting) => {
               let validatedSetting = validateSetting({
                 setting: subSetting,
                 file: setting.file,
-                legacy: setting.legacy,
               });
 
               if (validatedSetting.hidden !== true) {
@@ -64,44 +63,13 @@ function run(callback) {
           fs.writeFile(SETTINGS_JSON, JSON.stringify(validatedSettings), callback);
         });
       },
-      reason => {
+      (reason) => {
         callback(reason);
       }
     )
-    .catch(exception => {
+    .catch((exception) => {
       callback(exception.stack);
     });
-}
-
-function gatherLegacySettings() {
-  return new Promise((resolve, reject) => {
-    glob(`${LEAGACY_SETTINGS_PROJECT_DIR}/**/settings.js*`, (error, files) => {
-      if (error) return reject(error);
-
-      let legacySettingsPromises = [];
-
-      files.forEach(file => {
-        legacySettingsPromises.push(
-          new Promise((resolve, reject) => {
-            let setting;
-            const filePath = `${__dirname}/../${file}`;
-            try {
-              setting = require(filePath); // eslint-disable-line global-require
-            } catch (e) {
-              fs.readFile(filePath, 'utf8', (error, data) => {
-                if (error) return reject(error);
-                setting = JSON.parse(data);
-              });
-            }
-
-            resolve({ file, setting, legacy: true });
-          })
-        );
-      });
-
-      Promise.all(legacySettingsPromises).then(resolve, reject);
-    });
-  });
 }
 
 function gatherNewSettings() {
@@ -110,7 +78,7 @@ function gatherNewSettings() {
       if (error) return reject(error);
 
       resolve(
-        files.map(file => {
+        files.map((file) => {
           const setting = require(path.join(__dirname, '..', file)); // eslint-disable-line global-require
           return { file, setting };
         })
@@ -127,7 +95,7 @@ function validateSetting(settingObj) {
     return featureSettings;
   }
 
-  REQUIRED_SETTINGS.forEach(requiredSetting => {
+  REQUIRED_SETTINGS.forEach((requiredSetting) => {
     if (
       typeof featureSettings[requiredSetting] === 'undefined' ||
       featureSettings[requiredSetting] === null
@@ -137,10 +105,6 @@ function validateSetting(settingObj) {
   });
 
   featureSettings.description = featureSettings.description || '';
-
-  if (settingObj.legacy) {
-    validateActions(settingObj);
-  }
 
   if (previousSettings.has(featureSettings.name)) {
     logFatal(settingFilename, `Duplicate Setting: ${featureSettings.name}`);
@@ -156,25 +120,8 @@ function validateSetting(settingObj) {
           `${featureSettings.name} is not expected to be defaulted to on. If this default was intentional, add the feature name to the defaultFeatures array found in package.json`
         );
       }
-
-      if (
-        settingObj.legacy &&
-        typeof featureSettings.actions.true === 'undefined' &&
-        typeof featureSettings.actions.false === 'undefined'
-      ) {
-        logFatal(
-          settingFilename,
-          'Checkbox settings must declare an action for "true" or "false" to have any effect.'
-        );
-      }
       break;
     case 'select':
-      if (settingObj.legacy && featureSettings.length < 2) {
-        logFatal(
-          settingFilename,
-          'Select settings must have more than one action associated with them.'
-        );
-      }
       break;
     case 'color':
       break;
@@ -186,48 +133,6 @@ function validateSetting(settingObj) {
   }
 
   return featureSettings;
-}
-
-function validateActions(settingObj) {
-  const featureSettings = settingObj.setting;
-  const settingFilename = settingObj.file;
-
-  if (typeof featureSettings.actions === 'undefined') {
-    logFatal(settingFilename, 'Setting "actions" is required');
-  }
-
-  for (const actionKey in featureSettings.actions) {
-    const action = featureSettings.actions[actionKey];
-    if (!Array.isArray(action)) {
-      logFatal(
-        settingFilename,
-        'Actions must be declared as an array, for example ["injectCSS", "main.css"].'
-      );
-    }
-
-    if (action.length % 2 !== 0) {
-      logFatal(
-        settingFilename,
-        'Actions must have an even number of elements, for example ["injectCSS", "main.css"].'
-      );
-    }
-  }
-
-  for (const actionKey in featureSettings.actions) {
-    let i = 0;
-    while (i < featureSettings.actions[actionKey].length) {
-      let currentAction = featureSettings.actions[actionKey][i];
-      let featureDir = settingFilename.replace(/settings.js(on)?/, ''); // handle old & new style settings files
-
-      if (currentAction === 'injectCSS' || currentAction === 'injectScript') {
-        let fullPath = path.join(featureDir, featureSettings.actions[actionKey][i + 1]);
-        fullPath = path.relative('src/extension', fullPath);
-        featureSettings.actions[actionKey][i + 1] = fullPath;
-      }
-
-      i += 2;
-    }
-  }
 }
 
 function logFatal(settingFilename, message) {
@@ -251,22 +156,35 @@ function generateAllSettingsFile(allSettings) {
  * the next time you run ./build or build.bat!             *
  ***********************************************************
 */
+if (typeof window.ynabToolKit === 'undefined') { window.ynabToolKit = {} as any; }
 
-if (typeof window.ynabToolKit === 'undefined') { window.ynabToolKit = {}; }
+declare global {
+  type FeatureName = ${allSettings.map(({ name }) => `'${name}'`).join(' |\n')}
+}
 
-export const settingMigrationMap = ${JSON.stringify(settingMigrationMap)};
-export const allToolkitSettings = ${JSON.stringify(allSettings)};
+export const settingsMap: Record<FeatureName, FeatureSettingConfig> = ${JSON.stringify(
+    allSettings.reduce((settings, current) => {
+      settings[current.name] = current;
+      return settings;
+    }, {}),
+    null,
+    2
+  )};
 
-// eslint-disable-next-line quotes, object-curly-spacing, quote-props
-window.ynabToolKit.settings = allToolkitSettings;
+export const settingMigrationMap: {
+  [K in keyof typeof settingsMap]?: {
+    oldSettingName: string;
+    settingMapping?: {
+      [oldSettingValue: string]: FeatureSetting;
+    };
+  };
+} = ${JSON.stringify(settingMigrationMap, null, 2)};
 
-// We don't update these from anywhere else, so go ahead and freeze / seal the object so nothing can be injected.
-Object.freeze(window.ynabToolKit.settings);
-Object.seal(window.ynabToolKit.settings);
+export const allToolkitSettings = Object.values(settingsMap);
 `;
 }
 
-run(error => {
+run((error) => {
   if (error) {
     console.log(`Error: ${error}`.red);
     process.exit(1);

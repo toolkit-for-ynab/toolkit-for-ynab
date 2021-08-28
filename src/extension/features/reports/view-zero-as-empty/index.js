@@ -6,12 +6,17 @@ export class ViewZeroAsEmpty extends Feature {
     return getCurrentRouteName().indexOf('reports.income-expense') !== -1;
   }
 
+  destroy() {
+    $('.income-expense-level2 .user-data.zero').removeClass('tk-hidden');
+  }
+
   invoke() {
-    $('.income-expense-level2 .user-data.zero').empty();
+    $('.income-expense-level2 .user-data.zero').addClass('tk-hidden');
   }
 
   onRouteChanged() {
     if (!this.shouldInvoke()) return;
+
     this.invoke();
   }
 }

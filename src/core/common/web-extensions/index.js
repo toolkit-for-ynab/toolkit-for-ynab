@@ -1,6 +1,6 @@
 import {
   Browser,
-  BrowserExtensionPrefixMap,
+  BrowserExtensionPrefix,
   Environment,
   ExtensionIdEnvironmentMap,
 } from 'toolkit/core/common/constants';
@@ -18,13 +18,13 @@ export function getBrowserName() {
   const _browser = getBrowser(); // browser is global so use _ to namespace
   const URL = _browser.runtime.getURL('');
 
-  if (URL.startsWith(BrowserExtensionPrefixMap[Browser.Chrome])) {
+  if (URL.startsWith(BrowserExtensionPrefix[Browser.Chrome])) {
     return Browser.Chrome;
   }
-  if (URL.startsWith(BrowserExtensionPrefixMap[Browser.Firefox])) {
+  if (URL.startsWith(BrowserExtensionPrefix[Browser.Firefox])) {
     return Browser.Firefox;
   }
-  if (URL.startsWith(BrowserExtensionPrefixMap[Browser.Edge])) {
+  if (URL.startsWith(BrowserExtensionPrefix[Browser.Edge])) {
     return Browser.Edge;
   }
 
