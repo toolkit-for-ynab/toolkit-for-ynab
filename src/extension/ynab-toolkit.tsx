@@ -92,11 +92,12 @@ export class YNABToolkit {
     }
   }
 
-  private invokeFeature = (featureName: FeatureName) => {
+  private invokeFeature = (featureName: FeatureName, options?: { force: boolean }) => {
     const feature = this.featureInstances.find((f) => f.constructor.name === featureName);
     const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
     const wrappedInvoke = feature.invoke.bind(feature);
-    if (isFeatureEnabled(feature.settings.enabled) && wrappedShouldInvoke()) {
+    const isEnabled = isFeatureEnabled(feature.settings.enabled);
+    if ((options.force || isEnabled) && wrappedShouldInvoke()) {
       wrappedInvoke();
     }
   };
@@ -267,6 +268,7 @@ export class YNABToolkit {
         // once legacy features have been removed, this should be a global exported function
         // from this file that features can require and use
         ynabToolKit.invokeFeature = self.invokeFeature;
+        ynabToolKit.destroyFeature = self.destroyFeature;
 
         self.addToolkitEmberHooks();
 

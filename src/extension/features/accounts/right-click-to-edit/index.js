@@ -47,6 +47,10 @@ export class RightClickToEdit extends Feature {
   }
 
   invoke() {
+    if (!ynabToolKit.options.ScrollableEditMenu) {
+      ynabToolKit.invokeFeature('ScrollableEditMenu', { force: true });
+    }
+
     this.isCurrentlyRunning = true;
 
     Ember.run.next(this, function () {
@@ -61,6 +65,10 @@ export class RightClickToEdit extends Feature {
   }
 
   destroy() {
+    if (!ynabToolKit.options.ScrollableEditMenu) {
+      ynabToolKit.destroyFeature('ScrollableEditMenu');
+    }
+
     $('.ynab-grid').off('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
     $('body').off('contextmenu', '.modal-account-edit-transaction-list', this.hideContextMenu);
   }

@@ -10,7 +10,8 @@ export interface YNABToolkitObject {
   environment: 'development' | 'beta' | 'production';
   extensionId: string;
   hookedComponents: Set<Feature>;
-  invokeFeature(featureName: FeatureName): void;
+  invokeFeature(featureName: FeatureName, options?: { force: boolean }): void;
+  destroyFeature(featureName: FeatureName): void;
   options: {
     [settingName in FeatureName]: FeatureSetting;
   };
