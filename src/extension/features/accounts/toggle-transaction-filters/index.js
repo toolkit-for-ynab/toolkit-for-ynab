@@ -9,7 +9,7 @@ const ToggleButton = ({ stateField }) => {
   const [isShown, setIsShown] = React.useState(accountsController.get(`filters.${stateField}`));
 
   React.useEffect(() => {
-    accountsController.get('filters').addObserver(stateField, () => {
+    accountsController.addObserver(`filters.${stateField}`, () => {
       setIsShown(accountsController.get(`filters.${stateField}`));
     });
   }, []);
