@@ -14,31 +14,28 @@ export class AutoDistributeSplits extends Feature {
   }
 
   invoke() {
-    const isButtonRendered = $(`#${DISTRIBUTE_BUTTON_ID}`).length > 0;
-    const shouldButtonRender =
-      !isButtonRendered && $('.ynab-grid-split-add-sub-transaction').length > 0;
+    this.addToolkitEmberHook('register/grid-actions', 'didRender', this.injectDistributeButton);
+  }
 
-    if (shouldButtonRender) {
+  injectDistributeButton(element) {
+    if ($(`#${DISTRIBUTE_BUTTON_ID}`, element).length) {
+      return;
+    }
+
+    if ($('.ynab-grid-split-add-sub-transaction').length) {
       $('.ynab-grid-actions-buttons .button-cancel').after(
         $('<button>', {
           id: DISTRIBUTE_BUTTON_ID,
           class: 'button button-primary',
           text: 'Auto-Distribute',
-        }).on('click', () => {
+        }).on('click', (event) => {
           this.distribute();
-          this.button.trigger('blur');
+          $(event.currentTarget).trigger('blur');
         })
       );
     } else {
       $(`#${DISTRIBUTE_BUTTON_ID}`).remove();
     }
-  }
-
-  // don't really care which nodes have been changed since the feature doesn't trigger off of changed nodes but the presence of nodes.
-  observe() {
-    if (!this.shouldInvoke) return;
-
-    this.invoke();
   }
 
   destroy() {
