@@ -6,7 +6,12 @@ export class RightClickToEdit extends Feature {
   isCurrentlyRunning = false;
 
   injectCSS() {
-    return require('./index.css');
+    let css = require('./index.css');
+    if (!ynabToolKit.options.ScrollableEditMenu) {
+      css += `\n${require('../scrollable-edit-menu/index.css')}`;
+    }
+
+    return css;
   }
 
   shouldInvoke() {
