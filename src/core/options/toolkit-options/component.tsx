@@ -213,6 +213,10 @@ function ImportExportModal({
   const [allToolkitSettings, setAllToolkitSettings] = React.useState('');
 
   React.useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
     localToolkitStorage.getStoredFeatureSettings().then((keys) =>
       Promise.all(
         keys.map((settingKey) =>
@@ -225,7 +229,7 @@ function ImportExportModal({
         setIsLoading(false);
       })
     );
-  }, []);
+  }, [isOpen]);
 
   function handleSubmit() {
     let parsedSettings: ImportExportSettings = [];
