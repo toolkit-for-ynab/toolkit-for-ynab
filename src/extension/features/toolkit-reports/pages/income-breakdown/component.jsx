@@ -365,6 +365,15 @@ export class IncomeBreakdownComponent extends React.Component {
               },
             },
           },
+          dataLabels: {
+            backgroundColor: '#00000080',
+            borderRadius: 5,
+            padding: 3,
+            style: {
+              color: '#FFF',
+              textOutline: 'none',
+            },
+          },
           tooltip: {
             headerFormat: '',
             pointFormatter: function () {
