@@ -49,11 +49,20 @@ html[data-theme='dark'] {
   --tk-modal-text-color: var(--tk-text-color);
 
   // links
-  a {
-    color: #8ab4f8;
+  @supports (color-scheme: dark light) {
+    color-scheme: dark light;
+  }
+  @supports not (color-scheme: dark light) {
+    a {
+      color: #9e9eff;
 
-    &:visited {
-      color: #c58af9;
+      &:visited {
+        color: #d0adf0;
+      }
+
+      &:active {
+        color: #ff9e9e;
+      }
     }
   }
 }
