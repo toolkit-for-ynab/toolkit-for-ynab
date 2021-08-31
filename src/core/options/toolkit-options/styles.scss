@@ -47,6 +47,15 @@ html[data-theme='dark'] {
   // src/components/modal
   --tk-modal-background-color: var(--tk-background-color);
   --tk-modal-text-color: var(--tk-text-color);
+
+  // links
+  a {
+    color: #8ab4f8;
+
+    &:visited {
+      color: #c58af9;
+    }
+  }
 }
 
 body {
