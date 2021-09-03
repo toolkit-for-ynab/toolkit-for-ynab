@@ -1,8 +1,13 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { getCurrentBudgetDate, getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export class DisplayTotalMonthlyGoals extends Feature {
+  injectCSS() {
+    return require('./index.css');
+  }
+
   shouldInvoke() {
     return true;
   }
@@ -23,63 +28,128 @@ export class DisplayTotalMonthlyGoals extends Feature {
     };
   }
 
-  calculateMonthlyGoals() {
-    const categoryGoals = {
+  calculateTotalAssigned() {
+    // Get current month and year
+    const currentBudgetDate = getCurrentBudgetDate();
+    const currentYear = parseInt(currentBudgetDate.year);
+    const currentMonth = parseInt(currentBudgetDate.month);
+
+    // Get all budget calculations from YNAB
+    const allBudgetCalculations = getEntityManager().getAllMonthlyBudgetCalculations();
+
+    // Find current month budget calculations
+    const budgetedCalculation = allBudgetCalculations.filter((budgetItem) => {
+      const budgetItemDate = budgetItem.monthlyBudgetId.split('/')[1].split('-');
+      return (
+        currentYear === parseInt(budgetItemDate[0]) && currentMonth === parseInt(budgetItemDate[1])
+      );
+    })[0];
+
+    console.log(budgetedCalculation);
+
+    const budgeted = budgetedCalculation?.budgeted || 0;
+    const income = budgetedCalculation?.immediateIncome || 0;
+    const spent = budgetedCalculation?.cashOutflows || 0;
+
+    return { income, budgeted, spent };
+  }
+
+  calculateTotalGoals() {
+    const totalCategoryGoals = {
       total: 0,
       checkedTotal: 0,
       checkedCount: 0,
     };
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
-      const categoryGoal = this.extractCategoryGoalInformation(element);
-      if (!categoryGoal) {
+      const totalCategoryGoal = this.extractCategoryGoalInformation(element);
+      if (!totalCategoryGoal) {
         return;
       }
 
-      categoryGoals.total += categoryGoal.monthlyGoalAmount;
-      if (categoryGoal.isChecked) {
-        categoryGoals.checkedTotal += categoryGoal.monthlyGoalAmount;
-        categoryGoals.checkedCount++;
+      totalCategoryGoals.total += totalCategoryGoal.monthlyGoalAmount;
+      if (totalCategoryGoal.isChecked) {
+        totalCategoryGoals.checkedTotal += totalCategoryGoal.monthlyGoalAmount;
+        totalCategoryGoals.checkedCount++;
       }
     });
 
-    return {
-      amount: categoryGoals.checkedCount > 0 ? categoryGoals.checkedTotal : categoryGoals.total,
-      checkedCategoryCount: categoryGoals.checkedCount,
+    const monthlyGoals = {
+      amount:
+        totalCategoryGoals.checkedCount > 0
+          ? totalCategoryGoals.checkedTotal
+          : totalCategoryGoals.total,
+      checkedCategoryCount: totalCategoryGoals.checkedCount,
     };
+
+    return monthlyGoals;
   }
 
-  createInspectorElement(goalsAmount) {
-    const currencyClass = goalsAmount === 0 ? 'zero' : 'positive';
+  calculateMonthlyTotals() {
+    const { income, budgeted, spent } = this.calculateTotalAssigned();
+    const goals = this.calculateTotalGoals();
 
-    return $(`
-      <section class="card tk-total-monthly-goals">
-        <div class="card-roll-up">
-          <h2>
-            Total Monthly Goals
-            <svg width="24" height="24" class="card-chevron"></svg>
-            <span class="user-data currency ${currencyClass}">
-                ${formatCurrency(goalsAmount)}
-            </span>
-          </h2>
-        </div>
-      </section>
-    `);
+    return { income, goals, budgeted, spent };
   }
 
   addTotalMonthlyGoals(element) {
-    const monthlyGoals = this.calculateMonthlyGoals();
+    const { income, goals, budgeted, spent } = this.calculateMonthlyTotals();
 
     $('.tk-total-monthly-goals').remove();
 
-    const shouldShowInspector = monthlyGoals.checkedCategoryCount !== 1;
+    const shouldShowInspector = goals.checkedCategoryCount !== 1;
     if (!shouldShowInspector) {
       return;
     }
 
-    this.createInspectorElement(monthlyGoals.amount).insertBefore(
+    this.createInspectorElement(income, goals.amount, budgeted, spent).insertBefore(
       $('.card.budget-breakdown-monthly-totals', element)
     );
+  }
+
+  createInspectorElement(income, goals, budgeted, spent) {
+    const needed = goals - budgeted;
+
+    const elementsToCreate = [
+      ['Total Monthly Goals', goals, '', true],
+      ['Budgeted For Goals', budgeted, '', true],
+      ['Needed For Goals', needed, 'negative', true],
+      ['Total Income', income, '', true],
+      ['Total Spent', spent, '', true],
+    ];
+
+    var goalsHTML = `
+      <section class="card tk-total-monthly-goals">
+        <div class="monthly-goals-header">
+          <h2>
+            Monthly Goals Overview
+          </h2>
+        </div>
+        <div class="card-roll-up-total-goals">
+    `;
+
+    elementsToCreate.forEach(async function (element) {
+      const [title, amount, color, active] = element;
+
+      if (active) {
+        goalsHTML += `
+        <div class="goals-row">
+          ${title}
+          <svg width="24" height="24" class="card-chevron"></svg>
+          <span class="user-data currency ${color}">
+              ${formatCurrency(amount)}
+          </span>
+        </div>
+      `;
+      }
+    });
+
+    goalsHTML += `
+      </div>
+      </section>
+    `;
+
+    return $(goalsHTML);
   }
 
   invoke() {

@@ -1,0 +1,51 @@
+.tk-budget-table-cell-pacing {
+  width: 15%;
+  justify-content: flex-end !important;
+  padding: 0 0 0 1rem !important;
+  text-align: right !important;
+}
+
+.tk-budget-table-cell-pacing .deemphasized,
+.tk-budget-table-cell-pacing .deemphasized:hover {
+  color: #cfd5d7 !important;
+  background-color: transparent !important;
+}
+
+.tk-budget-table-cell-pacing .indicator {
+  border-radius: 0.5em;
+  height: 1em;
+  width: 1em;
+  margin-right: 0.5em;
+  overflow: hidden;
+  text-indent: -9999px;
+  text-align: left;
+}
+
+.tk-budget-table-cell-pacing .indicator.deemphasized {
+  background-color: #cfd5d7 !important;
+}
+
+.card-roll-up-total-goals {
+  padding: 16px;
+}
+
+.goals-row {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.card-roll-up-total-goals > h2 > span {
+  padding: 0 0.2em !important;
+}
+
+.card-roll-up-total-goals > div > .positive {
+  color: var(--budget_balance_positive_background);
+}
+
+.card-roll-up-total-goals > div > .negative {
+  color: var(--budget_balance_negative_background);
+}
+
+.card-roll-up-total-goals > div > .zero {
+  color: var(--tk-color-goal-warning-underfunded);
+}
