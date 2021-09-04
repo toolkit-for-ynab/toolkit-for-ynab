@@ -142,7 +142,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
           <div class="card-roll-up-total-goals">
       `;
 
-      for (var x = 0; x < elementList.length(); x++) {
+      for (var x = 0; x < elementList.length; x++) {
         const [title, amount, color, active, totalRow] = elementList[x];
 
         if (totalRow) {
