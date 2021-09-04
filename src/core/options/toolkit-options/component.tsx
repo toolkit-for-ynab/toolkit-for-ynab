@@ -194,6 +194,7 @@ function DarkModeToggle() {
         icon={faSun}
         size="lg"
         onClick={() => setIsDarkModeEnabled(true)}
+        title="Toggle Dark Mode"
       />
     </div>
   );
@@ -443,12 +444,14 @@ export function ToolkitOptions() {
             icon={faQuestionCircle}
             size="lg"
             onClick={() => setCurrentPage('support')}
+            title="Support"
           />
           <FontAwesomeIcon
             className="nav-bar__action-icon"
             icon={faFileExport}
             size="lg"
             onClick={() => setIsOpen(true)}
+            title="Import/Export Settings"
           />
           <DarkModeToggle />
         </div>
