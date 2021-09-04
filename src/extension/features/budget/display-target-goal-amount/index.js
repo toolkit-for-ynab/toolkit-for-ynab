@@ -29,10 +29,55 @@ export class DisplayTargetGoalAmount extends Feature {
 
   invoke() {
     this.addToolkitEmberHook('budget-table-row', 'didRender', this.addTargetGoalAmount);
+    this.addToolkitEmberHook('budget-table-row', 'didRender', this.calculateTotalGoals);
   }
 
   destroy() {
     $('.tk-target-goal-amount').remove();
+  }
+
+  calculateTotalGoals() {
+    var categoryGoalTotalsDict = {};
+
+    $('.budget-table-row').each((_, element) => {
+      const goalData = this.extractCategoryGoalInformation(element);
+      if (!goalData) {
+        return;
+      }
+
+      if ($(element).hasClass('is-master-category')) {
+        categoryGoalTotalsDict[goalData.category] = {
+          element: $(element).find('.tk-budget-table-cell-goal'),
+          goalTotal: 0,
+        };
+      }
+      if ($(element).hasClass('is-sub-category')) {
+        categoryGoalTotalsDict[goalData.category].goalTotal += goalData.goal;
+      }
+    });
+
+    for (const [categoryName, categoryData] of Object.entries(categoryGoalTotalsDict)) {
+      $(categoryData.element).html(
+        $('<div>', {
+          class: `tk-target-goal-amount currency category-goal-toal ${categoryName}`,
+          text: formatCurrency(categoryData.goalTotal),
+        })
+      );
+    }
+  }
+
+  extractCategoryGoalInformation(element) {
+    const category = getEmberView(element.id, 'category');
+    if (!category) {
+      return;
+    }
+
+    return {
+      category: category.masterCategory.name,
+      name: category.displayName,
+      type: category.goalType,
+      goal: parseInt(category.goalTarget || 0, 10),
+    };
   }
 
   addTargetGoalAmount(element) {

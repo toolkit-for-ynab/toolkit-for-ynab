@@ -1,3 +1,7 @@
 .tk-goal-emphasis {
   color: var(--label_negative);
 }
+
+.category-goal-toal {
+  color: var(--tk-color-goal-warning-underfunded);
+}
