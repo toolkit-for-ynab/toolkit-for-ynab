@@ -97,7 +97,7 @@ export class YNABToolkit {
     const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
     const wrappedInvoke = feature.invoke.bind(feature);
     const isEnabled = isFeatureEnabled(feature.settings.enabled);
-    if ((options.force || isEnabled) && wrappedShouldInvoke()) {
+    if ((isEnabled || (options && options.force)) && wrappedShouldInvoke()) {
       wrappedInvoke();
     }
   };
