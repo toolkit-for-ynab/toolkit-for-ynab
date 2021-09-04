@@ -22,9 +22,14 @@ export class DisplayTotalMonthlyGoals extends Feature {
       return;
     }
 
+    console.log(`Category Name: ${category.name}`);
+    console.log(`Category Goal: ${category.goalTarget}`);
+    console.log(`Category Type: ${category.goalType}`);
+
     return {
-      monthlyGoalAmount: parseInt(category.goalTarget || 0, 10),
-      isChecked: category.get('isChecked'),
+      name: category.name,
+      type: category.goalType,
+      goal: parseInt(category.goalTarget || 0, 10),
     };
   }
 
@@ -55,99 +60,114 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   calculateTotalGoals() {
-    const totalCategoryGoals = {
-      total: 0,
-      checkedTotal: 0,
-      checkedCount: 0,
-    };
+    var savingsGoals = 0;
+    var spendingGoals = 0;
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
-      const totalCategoryGoal = this.extractCategoryGoalInformation(element);
-      if (!totalCategoryGoal) {
+      const goalData = this.extractCategoryGoalInformation(element);
+      if (!goalData) {
         return;
       }
 
-      totalCategoryGoals.total += totalCategoryGoal.monthlyGoalAmount;
-      if (totalCategoryGoal.isChecked) {
-        totalCategoryGoals.checkedTotal += totalCategoryGoal.monthlyGoalAmount;
-        totalCategoryGoals.checkedCount++;
-      }
+      if (goalData.type === 'MF') savingsGoals += goalData.goal;
+      else if (goalData.type === 'NEED') spendingGoals += goalData.goal;
     });
 
-    const monthlyGoals = {
-      amount:
-        totalCategoryGoals.checkedCount > 0
-          ? totalCategoryGoals.checkedTotal
-          : totalCategoryGoals.total,
-      checkedCategoryCount: totalCategoryGoals.checkedCount,
-    };
-
-    return monthlyGoals;
+    return { savingsGoals, spendingGoals };
   }
 
   calculateMonthlyTotals() {
     const { income, budgeted, spent } = this.calculateTotalAssigned();
-    const goals = this.calculateTotalGoals();
+    const { savingsGoals, spendingGoals } = this.calculateTotalGoals();
 
-    return { income, goals, budgeted, spent };
+    return { income, budgeted, spent, savingsGoals, spendingGoals };
   }
 
   addTotalMonthlyGoals(element) {
-    const { income, goals, budgeted, spent } = this.calculateMonthlyTotals();
+    const { income, budgeted, spent, savingsGoals, spendingGoals } = this.calculateMonthlyTotals();
 
     $('.tk-total-monthly-goals').remove();
 
-    const shouldShowInspector = goals.checkedCategoryCount !== 1;
-    if (!shouldShowInspector) {
-      return;
-    }
-
-    this.createInspectorElement(income, goals.amount, budgeted, spent).insertBefore(
+    this.createInspectorElement(income, budgeted, spent, savingsGoals, spendingGoals).insertBefore(
       $('.card.budget-breakdown-monthly-totals', element)
     );
   }
 
-  createInspectorElement(income, goals, budgeted, spent) {
-    const needed = goals - budgeted;
+  createInspectorElement(income, budgeted, spent, savingsGoals, spendingGoals) {
+    const totalGoals = savingsGoals + spendingGoals;
+    const needed = totalGoals - budgeted;
+    const saved = income - -spent;
 
-    const elementsToCreate = [
-      ['Total Monthly Goals', goals, '', true],
-      ['Budgeted For Goals', budgeted, '', true],
-      ['Needed For Goals', needed, 'negative', true],
-      ['Total Income', income, '', true],
-      ['Total Spent', spent, '', true],
+    const neededColor = needed > 0 ? 'negative' : 'positive';
+    const budgetedColor = budgeted >= totalGoals ? 'positive' : 'warning';
+
+    const incomeColor = income >= -spent ? 'positive' : 'warning';
+    const spentColor = -spent >= income ? 'negative' : 'positive';
+    const savedColor = saved >= 0 ? 'positive' : 'negative';
+
+    const elementsToCreateForIncome = [
+      ['Total Income', income, incomeColor, true, false],
+      ['Total Spent', spent, spentColor, true, false],
+      ['Total Saved', saved, savedColor, true, true],
     ];
 
-    var goalsHTML = `
-      <section class="card tk-total-monthly-goals">
-        <div class="monthly-goals-header">
-          <h2>
-            Monthly Goals Overview
-          </h2>
-        </div>
-        <div class="card-roll-up-total-goals">
-    `;
+    const elementsToCreateForMonthlyTotals = [
+      ['Savings Goals', savingsGoals, '', true, false],
+      ['Spending Goals', spendingGoals, '', true, false],
+      ['Total Goals', totalGoals, 'zero', true, true],
+      ['Budgeted For Goals', budgeted, budgetedColor, true, false],
+      ['Needed For Goals', needed, neededColor, true, true],
+    ];
 
-    elementsToCreate.forEach(async function (element) {
-      const [title, amount, color, active] = element;
+    var goalsHTML = '';
 
-      if (active) {
-        goalsHTML += `
-        <div class="goals-row">
-          ${title}
-          <svg width="24" height="24" class="card-chevron"></svg>
-          <span class="user-data currency ${color}">
-              ${formatCurrency(amount)}
-          </span>
-        </div>
-      `;
+    for (var i = 0; i < 2; i++) {
+      let elementList = [];
+      let elementHeader = '';
+      if (i === 0) {
+        elementList = elementsToCreateForIncome;
+        elementHeader = 'Income VS Spending';
+      } else if (i === 1) {
+        elementList = elementsToCreateForMonthlyTotals;
+        elementHeader = 'Monthly Goals Overview';
       }
-    });
 
-    goalsHTML += `
-      </div>
-      </section>
-    `;
+      goalsHTML += `
+        <section class="card tk-total-monthly-goals">
+          <div class="monthly-goals-header">
+            <h2>
+              ${elementHeader}
+            </h2>
+          </div>
+          <div class="card-roll-up-total-goals">
+      `;
+
+      for (var x = 0; x < elementList.length(); x++) {
+        const [title, amount, color, active, totalRow] = elementList[x];
+
+        if (totalRow) {
+          goalsHTML += `
+            <div class="goals-row-total-spacer"></div>
+          `;
+        }
+        if (active) {
+          goalsHTML += `
+            <div class="goals-row">
+              ${title}
+              <svg width="24" height="24" class="card-chevron"></svg>
+              <span class="user-data currency ${color}">
+                  ${formatCurrency(amount)}
+              </span>
+            </div>
+          `;
+        }
+      }
+
+      goalsHTML += `
+        </div>
+        </section>
+      `;
+    }
 
     return $(goalsHTML);
   }
