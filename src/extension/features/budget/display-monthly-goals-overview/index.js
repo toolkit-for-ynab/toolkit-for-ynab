@@ -44,7 +44,7 @@ export class DisplayMonthlyGoalsOverview extends Feature {
       return (
         currentYear === parseInt(budgetItemDate[0]) && currentMonth === parseInt(budgetItemDate[1])
       );
-    })[0];
+    });
 
     return [
       budgetedCalculation?.immediateIncome || 0,
