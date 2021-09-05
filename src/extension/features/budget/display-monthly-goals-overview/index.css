@@ -31,5 +31,5 @@
 }
 
 .card-roll-up-total-goals > div > .warning {
-  color: var(--tk-custom-colours-warning);
+  color: var(--budget_balance_warning_background);
 }

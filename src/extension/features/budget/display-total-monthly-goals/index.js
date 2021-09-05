@@ -1,13 +1,8 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { getCurrentBudgetDate, getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export class DisplayTotalMonthlyGoals extends Feature {
-  injectCSS() {
-    return require('./index.css');
-  }
-
   shouldInvoke() {
     return true;
   }
@@ -22,154 +17,69 @@ export class DisplayTotalMonthlyGoals extends Feature {
       return;
     }
 
-    console.log(`Category Name: ${category.name}`);
-    console.log(`Category Goal: ${category.goalTarget}`);
-    console.log(`Category Type: ${category.goalType}`);
-
     return {
-      name: category.name,
-      type: category.goalType,
-      goal: parseInt(category.goalTarget || 0, 10),
+      monthlyGoalAmount: parseInt(category.goalTarget || 0, 10),
+      isChecked: category.get('isChecked'),
     };
   }
 
-  calculateTotalAssigned() {
-    // Get current month and year
-    const currentBudgetDate = getCurrentBudgetDate();
-    const currentYear = parseInt(currentBudgetDate.year);
-    const currentMonth = parseInt(currentBudgetDate.month);
-
-    // Get all budget calculations from YNAB
-    const allBudgetCalculations = getEntityManager().getAllMonthlyBudgetCalculations();
-
-    // Find current month budget calculations
-    const budgetedCalculation = allBudgetCalculations.filter((budgetItem) => {
-      const budgetItemDate = budgetItem.monthlyBudgetId.split('/')[1].split('-');
-      return (
-        currentYear === parseInt(budgetItemDate[0]) && currentMonth === parseInt(budgetItemDate[1])
-      );
-    })[0];
-
-    console.log(budgetedCalculation);
-
-    const budgeted = budgetedCalculation?.budgeted || 0;
-    const income = budgetedCalculation?.immediateIncome || 0;
-    const spent = budgetedCalculation?.cashOutflows || 0;
-
-    return { income, budgeted, spent };
-  }
-
-  calculateTotalGoals() {
-    var savingsGoals = 0;
-    var spendingGoals = 0;
+  calculateMonthlyGoals() {
+    const categoryGoals = {
+      total: 0,
+      checkedTotal: 0,
+      checkedCount: 0,
+    };
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
-      const goalData = this.extractCategoryGoalInformation(element);
-      if (!goalData) {
+      const categoryGoal = this.extractCategoryGoalInformation(element);
+      if (!categoryGoal) {
         return;
       }
 
-      if (goalData.type === 'MF') savingsGoals += goalData.goal;
-      else if (goalData.type === 'NEED') spendingGoals += goalData.goal;
+      categoryGoals.total += categoryGoal.monthlyGoalAmount;
+      if (categoryGoal.isChecked) {
+        categoryGoals.checkedTotal += categoryGoal.monthlyGoalAmount;
+        categoryGoals.checkedCount++;
+      }
     });
 
-    return { savingsGoals, spendingGoals };
+    return {
+      amount: categoryGoals.checkedCount > 0 ? categoryGoals.checkedTotal : categoryGoals.total,
+      checkedCategoryCount: categoryGoals.checkedCount,
+    };
   }
 
-  calculateMonthlyTotals() {
-    const { income, budgeted, spent } = this.calculateTotalAssigned();
-    const { savingsGoals, spendingGoals } = this.calculateTotalGoals();
+  createInspectorElement(goalsAmount) {
+    const currencyClass = goalsAmount === 0 ? 'zero' : 'positive';
 
-    return { income, budgeted, spent, savingsGoals, spendingGoals };
+    return $(`
+      <section class="card tk-total-monthly-goals">
+        <div class="card-roll-up">
+          <h2>
+            Total Monthly Goals
+            <svg width="24" height="24" class="card-chevron"></svg>
+            <span class="user-data currency ${currencyClass}">
+                ${formatCurrency(goalsAmount)}
+            </span>
+          </h2>
+        </div>
+      </section>
+    `);
   }
 
   addTotalMonthlyGoals(element) {
-    const { income, budgeted, spent, savingsGoals, spendingGoals } = this.calculateMonthlyTotals();
+    const monthlyGoals = this.calculateMonthlyGoals();
 
     $('.tk-total-monthly-goals').remove();
 
-    this.createInspectorElement(income, budgeted, spent, savingsGoals, spendingGoals).insertBefore(
-      $('.card.budget-breakdown-monthly-totals', element)
-    );
-  }
-
-  createInspectorElement(income, budgeted, spent, savingsGoals, spendingGoals) {
-    const totalGoals = savingsGoals + spendingGoals;
-    const needed = totalGoals - budgeted;
-    const saved = income - -spent;
-
-    const neededColor = needed > 0 ? 'negative' : 'positive';
-    const budgetedColor = budgeted >= totalGoals ? 'positive' : 'warning';
-
-    const incomeColor = income >= -spent ? 'positive' : 'warning';
-    const spentColor = -spent >= income ? 'negative' : 'positive';
-    const savedColor = saved >= 0 ? 'positive' : 'negative';
-
-    const elementsToCreateForIncome = [
-      ['Total Income', income, incomeColor, true, false],
-      ['Total Spent', spent, spentColor, true, false],
-      ['Total Saved', saved, savedColor, true, true],
-    ];
-
-    const elementsToCreateForMonthlyTotals = [
-      ['Savings Goals', savingsGoals, '', true, false],
-      ['Spending Goals', spendingGoals, '', true, false],
-      ['Total Goals', totalGoals, 'zero', true, true],
-      ['Budgeted For Goals', budgeted, budgetedColor, true, false],
-      ['Needed For Goals', needed, neededColor, true, true],
-    ];
-
-    var goalsHTML = '';
-
-    for (var i = 0; i < 2; i++) {
-      let elementList = [];
-      let elementHeader = '';
-      if (i === 0) {
-        elementList = elementsToCreateForIncome;
-        elementHeader = 'Income VS Spending';
-      } else if (i === 1) {
-        elementList = elementsToCreateForMonthlyTotals;
-        elementHeader = 'Monthly Goals Overview';
-      }
-
-      goalsHTML += `
-        <section class="card tk-total-monthly-goals">
-          <div class="monthly-goals-header">
-            <h2>
-              ${elementHeader}
-            </h2>
-          </div>
-          <div class="card-roll-up-total-goals">
-      `;
-
-      for (var x = 0; x < elementList.length; x++) {
-        const [title, amount, color, active, totalRow] = elementList[x];
-
-        if (totalRow) {
-          goalsHTML += `
-            <div class="goals-row-total-spacer"></div>
-          `;
-        }
-        if (active) {
-          goalsHTML += `
-            <div class="goals-row">
-              ${title}
-              <svg width="24" height="24" class="card-chevron"></svg>
-              <span class="user-data currency ${color}">
-                  ${formatCurrency(amount)}
-              </span>
-            </div>
-          `;
-        }
-      }
-
-      goalsHTML += `
-        </div>
-        </section>
-      `;
+    const shouldShowInspector = monthlyGoals.checkedCategoryCount !== 1;
+    if (!shouldShowInspector) {
+      return;
     }
 
-    return $(goalsHTML);
+    this.createInspectorElement(monthlyGoals.amount).insertBefore(
+      $('.card.budget-breakdown-monthly-totals', element)
+    );
   }
 
   invoke() {
