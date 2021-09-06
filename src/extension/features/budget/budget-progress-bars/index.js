@@ -4,18 +4,6 @@ import { getEmberView } from 'toolkit/extension/utils/ember';
 
 const PROGRESS_INDICATOR_WIDTH = 0.001; // Current month progress indicator width
 
-function debounce(fn, timeout = 50) {
-  let timer;
-
-  return (...args) => {
-    clearTimeout(timer);
-
-    timer = setTimeout(() => {
-      fn.apply(this, args);
-    }, timeout);
-  };
-}
-
 export class BudgetProgressBars extends Feature {
   injectCSS() {
     return require('./index.css');
@@ -39,7 +27,7 @@ export class BudgetProgressBars extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('budget-table-row', 'didRender', debounce(this.addProgressBars));
+    this.addToolkitEmberHook('budget-table-row', 'didRender', this.addProgressBars);
   }
 
   addGoalProgress = (element) => {
