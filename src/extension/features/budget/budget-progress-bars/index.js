@@ -27,7 +27,9 @@ export class BudgetProgressBars extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('budget-table-row', 'didRender', this.addProgressBars);
+    this.addToolkitEmberHook('budget-table-row', 'didRender', this.addProgressBars, {
+      debounce: 50,
+    });
   }
 
   addGoalProgress = (element) => {
