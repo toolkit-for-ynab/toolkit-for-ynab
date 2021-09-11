@@ -14,7 +14,7 @@ export class CalculateIRR extends Feature {
   }
 
   invoke() {
-    let { selectedAccountId, filters } = controllerLookup('accounts');
+    let { selectedAccount, selectedAccountId, filters } = controllerLookup('accounts');
     let { filterFrom, filterTo } = this._getFilterDates(filters);
     let totalIrr = this._calculateIRR(selectedAccountId);
     if (totalIrr === Infinity) {
@@ -45,24 +45,32 @@ export class CalculateIRR extends Feature {
     let totalIrrContainer = $(`#tk-total-irr`);
     let filteredIrrContainer = $(`#tk-filtered-irr`);
 
+    let textTotal = 'Total Annualized Return';
+    let textFiltered = 'Annualized Return';
+    if (selectedAccount.isOtherLiabilityAccount || selectedAccount.isMortgage) {
+      textTotal = 'Estimated APR';
+      textFiltered = 'Estimated APR';
+    }
+
     if (!headerIrr || headerIrr.length === 0) {
       $('.accounts-header-balances').append(
         `<div class="tk-accounts-header-irr">
         <div class="tk-accounts-header-irr-div">
-          <span id="tk-filtered-irr">${filteredIrr}</span>
-          <div id="tk-accounts-header-filtered-irr-label">${irrYear} Annualized Return</div>
+          <span id="tk-filtered-irr"></span>
+          <div id="tk-accounts-header-filtered-irr-label"></div>
         </div>
         <div class="tk-accounts-header-irr-div">
-          <span id="tk-total-irr">${totalIrr}</span>
-          <div id="tk-accounts-header-total-irr-label">Total Annualized Return</div>
+          <span id="tk-total-irr"></span>
+          <div id="tk-accounts-header-total-irr-label"></div>
         </div>
       </div>`
       );
     }
 
     totalIrrContainer.text(totalIrr);
+    $(`#tk-accounts-header-total-irr-label`).text(textTotal);
     filteredIrrContainer.text(filteredIrr);
-    $(`#tk-accounts-header-filtered-irr-label`).text(irrYear + ' Annualized Return');
+    $(`#tk-accounts-header-filtered-irr-label`).text(irrYear + ' ' + textFiltered);
     $(`#tk-accounts-header-filtered-irr-label`)
       .parent()
       .toggle(irrYear != null);
