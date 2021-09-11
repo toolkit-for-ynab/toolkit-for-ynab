@@ -24,6 +24,9 @@ const settingMigrationMap = {
       0: false,
     },
   },
+  LiveOnLastMonthsIncome: {
+    oldSettingName: 'IncomeFromLastMonth',
+  },
 };
 
 let previousSettings;

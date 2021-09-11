@@ -1,6 +1,9 @@
 <html>
   <head>
     <style type="text/css">
+      input {
+        width: 15em;
+      }
       textarea {
         width: 50%;
         height: 30%;
@@ -184,9 +187,11 @@ SOFTWARE.
     ><input type="text" id="base" value="#ca481d" autocomplete="off" /><br />
     <label for="granularity">Round to nearest: </label
     ><input type="number" min="0" max="100" step="1" id="granularity" value="5" /><br />
-    <label for="prefix">Prefix: </label
+    <label for="prefix">Variable prefix: </label
     ><input type="text" id="prefix" value="tk-custom-colours-negative-" /><br />
-    <textarea id="rulesIn" autocomplete="off">
+    <p>
+      <label for="rulesIn">Rules in: </label><br />
+      <textarea id="rulesIn" autocomplete="off">
             --budget_balance_negative_icon: #4a190d;
             --budget_balance_negative_text: #4a190d;
             --message_negative_label: #4a190d;
@@ -202,9 +207,16 @@ SOFTWARE.
             --budget_bar_overspending_stripe: #f49e8b;
             --message_negative_background: #fcece8;
         </textarea
-    ><br />
+      >
+    </p>
     <button onclick="convert();">Convert</button><br />
-    <textarea id="rulesOut" autocomplete="off"> </textarea>
-    <textarea id="accentsOut" autocomplete="off"> </textarea>
+    <p>
+      <label for="rulesOut">Rules out:</label><br />
+      <textarea id="rulesOut" autocomplete="off"> </textarea>
+    </p>
+    <p>
+      <label for="accentsOut">Accents out:</label><br />
+      <textarea id="accentsOut" autocomplete="off"> </textarea>
+    </p>
   </body>
 </html>

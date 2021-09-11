@@ -11,6 +11,7 @@ const TK_CUSTOMIZE_COLOUR_ACCENTS = [
   'l100c100',
   'l110c100',
   'l120c050',
+  'l120c100',
   'l125c065',
   'l140c060',
   'l140c075',

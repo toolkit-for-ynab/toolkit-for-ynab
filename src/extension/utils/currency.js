@@ -28,3 +28,15 @@ export function stripCurrency(formattedCurrencyText) {
   const numberInDollars = currencyFormatter.unformat(formattedCurrencyText);
   return currencyFormatter.convertToMilliDollars(numberInDollars);
 }
+
+export function getCurrencyClass(amount) {
+  let currencyClass = 'positive';
+
+  if (amount < 0) {
+    currencyClass = 'negative';
+  } else if (amount === 0) {
+    currencyClass = 'zero';
+  }
+
+  return currencyClass;
+}

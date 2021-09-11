@@ -24,47 +24,50 @@ export class SpareChange extends Feature {
   }
 
   calculateSpareChange() {
-    const { areChecked } = controllerLookup('accounts');
-    if (!areChecked.length) {
-      $('#tk-spare-change').remove();
-      return;
-    }
+    // Running this code straight away in the callback seems to break some YNAB features - schedule it to run later
+    Ember.run.once(this, () => {
+      const { areChecked } = controllerLookup('accounts');
+      if (!areChecked.length) {
+        $('#tk-spare-change').remove();
+        return;
+      }
 
-    let runningAmount = 0;
-    areChecked.forEach((transaction) => {
-      const outflow = ynab.convertFromMilliDollars(transaction.outflow);
-      const nextDollar = Math.ceil(outflow);
-      runningAmount += ynab.convertToMilliDollars(nextDollar - outflow);
+      let runningAmount = 0;
+      areChecked.forEach((transaction) => {
+        const outflow = ynab.convertFromMilliDollars(transaction.outflow);
+        const nextDollar = Math.ceil(outflow);
+        runningAmount += ynab.convertToMilliDollars(nextDollar - outflow);
+      });
+
+      let emphasis;
+      if (runningAmount > 0) {
+        emphasis = 'positive';
+      } else if (runningAmount < 0) {
+        emphasis = 'negative';
+      } else {
+        emphasis = 'zero';
+      }
+
+      const $spareChangeAmount = $('#tk-spare-change-amount');
+      if ($spareChangeAmount.length) {
+        $spareChangeAmount.attr('class', `currency ${emphasis}`);
+        $spareChangeAmount.text(formatCurrency(runningAmount));
+      } else {
+        $('.accounts-header-balances-right').prepend(
+          $('<div>', {
+            id: 'tk-spare-change',
+            class: 'accounts-header-balances-amount tk-spare-change',
+          })
+            .append(
+              $('<span>', {
+                id: 'tk-spare-change-amount',
+                class: `currency ${emphasis}`,
+                text: formatCurrency(runningAmount),
+              })
+            )
+            .append($('<div>', { class: 'accounts-header-label', text: 'Spare Change' }))
+        );
+      }
     });
-
-    let emphasis;
-    if (runningAmount > 0) {
-      emphasis = 'positive';
-    } else if (runningAmount < 0) {
-      emphasis = 'negative';
-    } else {
-      emphasis = 'zero';
-    }
-
-    const $spareChangeAmount = $('#tk-spare-change-amount');
-    if ($spareChangeAmount.length) {
-      $spareChangeAmount.attr('class', `currency ${emphasis}`);
-      $spareChangeAmount.text(formatCurrency(runningAmount));
-    } else {
-      $('.accounts-header-balances-right').prepend(
-        $('<div>', {
-          id: 'tk-spare-change',
-          class: 'accounts-header-balances-amount tk-spare-change',
-        })
-          .append(
-            $('<span>', {
-              id: 'tk-spare-change-amount',
-              class: `currency ${emphasis}`,
-              text: formatCurrency(runningAmount),
-            })
-          )
-          .append($('<div>', { class: 'accounts-header-label', text: 'Spare Change' }))
-      );
-    }
   }
 }

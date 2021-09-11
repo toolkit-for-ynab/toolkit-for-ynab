@@ -6,7 +6,12 @@ export class RightClickToEdit extends Feature {
   isCurrentlyRunning = false;
 
   injectCSS() {
-    return require('./index.css');
+    let css = require('./index.css');
+    if (!ynabToolKit.options.ScrollableEditMenu) {
+      css += `\n${require('../scrollable-edit-menu/index.css')}`;
+    }
+
+    return css;
   }
 
   shouldInvoke() {
@@ -14,15 +19,17 @@ export class RightClickToEdit extends Feature {
   }
 
   displayContextMenu() {
-    let $element = $(this);
+    const $element = $(this);
+    let $row = $element.parent();
+
     // check for a right click on a split transaction
-    if ($element.hasClass('ynab-grid-body-sub')) {
+    if ($row.hasClass('ynab-grid-body-sub')) {
       // select parent transaction
-      $element = $element.prevAll('.ynab-grid-body-parent:first');
+      $row = $row.prevAll('.ynab-grid-body-parent:first');
     }
 
     const { areChecked, visibleTransactionDisplayItems } = controllerLookup('accounts');
-    const clickedTransactionId = $element.data().rowId;
+    const clickedTransactionId = $row.data().rowId;
     const clickedTransaction = visibleTransactionDisplayItems.find(
       ({ entityId }) => entityId === clickedTransactionId
     );
@@ -34,7 +41,7 @@ export class RightClickToEdit extends Feature {
 
     serviceLookup('modal').openModal('modals/account/edit-transactions', {
       controller: 'accounts',
-      triggerElement: $element,
+      triggerElement: $(this),
     });
 
     return false;
@@ -45,11 +52,15 @@ export class RightClickToEdit extends Feature {
   }
 
   invoke() {
+    if (!ynabToolKit.options.ScrollableEditMenu) {
+      ynabToolKit.invokeFeature('ScrollableEditMenu', { force: true });
+    }
+
     this.isCurrentlyRunning = true;
 
     Ember.run.next(this, function () {
-      $('.ynab-grid').off('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
-      $('.ynab-grid').on('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
+      $('.ynab-grid').off('contextmenu', '.ynab-grid-body-row > div', this.displayContextMenu);
+      $('.ynab-grid').on('contextmenu', '.ynab-grid-body-row > div', this.displayContextMenu);
 
       $('body').off('contextmenu', '.modal-account-edit-transaction-list', this.hideContextMenu);
       $('body').on('contextmenu', '.modal-account-edit-transaction-list', this.hideContextMenu);
@@ -59,6 +70,10 @@ export class RightClickToEdit extends Feature {
   }
 
   destroy() {
+    if (!ynabToolKit.options.ScrollableEditMenu) {
+      ynabToolKit.destroyFeature('ScrollableEditMenu');
+    }
+
     $('.ynab-grid').off('contextmenu', '.ynab-grid-body-row', this.displayContextMenu);
     $('body').off('contextmenu', '.modal-account-edit-transaction-list', this.hideContextMenu);
   }

@@ -47,6 +47,24 @@ html[data-theme='dark'] {
   // src/components/modal
   --tk-modal-background-color: var(--tk-background-color);
   --tk-modal-text-color: var(--tk-text-color);
+
+  // links
+  @supports (color-scheme: dark light) {
+    color-scheme: dark light;
+  }
+  @supports not (color-scheme: dark light) {
+    a {
+      color: #9e9eff;
+
+      &:visited {
+        color: #d0adf0;
+      }
+
+      &:active {
+        color: #ff9e9e;
+      }
+    }
+  }
 }
 
 body {

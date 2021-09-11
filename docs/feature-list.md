@@ -4,57 +4,69 @@
 
 <details><summary>General (Click to Expand/Collapse)</summary>
 
-## Account Name Height
+## Add "Copy Transactions" to Activity Modals
 
-Makes the account names smaller so that you can see more of the account names and fit more on the screen.
+Add a button to copy transactions displayed in the various Activity Modals (Budget and Reports pages).
 
-## Add Copy Transactions to Activity Modals
+## Adjust Account Name Height
 
-Adds a button to copy transactions displayed in the various Activity Modals (Budget and Reports pages).
+Make the account names and their padding in the sidebar smaller allowing more accounts to fit on the screen.
 
-## Better scrollbars
+## Adjust Navigation Tabs Height
 
-Provides smaller and cleaner scrollbars across the application.
+Make the navigation tab names (Budget, Reports, etc) and their padding smaller allowing more content to fit on the screen.
+
+## Adjust Scrollbars Size
+
+Choose between smaller and cleaner scrollbars across the application.
 
 ## Budget Quick Switch
 
-Adds the list of budgets to the Open Budget dropdown so you don't have to navigate to the 'Open Budget' page to switch budgets.
+Add the list of budgets to the User Menu (click your e-mail) allowing you to switch between budgets without going to the "Open Budget" screen.
 
-## Customize Colour Scheme
+## Emphasize Accounts Needing Import
 
-Adds an option in YNAB's Display Menu to customize the default green/orange/red colour scheme to whatever you wish.
+Adds an underline to account names in the sidebar that have transactions to be imported. Hovering over the account name will display the number of transactions waiting to be imported.
+
+## Emphasize Negative Numbers
+
+Make all round borders on all negative numbers square making them a bit more of an eyesore so you want to get rid of them!
+
+## Emphasize Uncleared Accounts
+
+Add a small indicator next to account balances on the sidebar to indicate not all transactions are cleared.
 
 ## Hide Account Balances
 
 Allows you to hide account type totals and/or account balances.
 
+## Hide Blue Help (?) Button
+
+Hide the blue help (?) button in the bottom right corner of the screen. The button can then be toggled using the button added to the User Menu (click your e-mail).
+
 ## Hide Closed Accounts
 
-This feature hides the closed accounts section in the side menu. View the account-options popup (click your e-mail) to show or hide the closed accounts.
+Hide closed accounts from the sidebar. They can then be toggled using the button added to the User Menu (click your e-mail).
 
 ## Hide Edit Account Button
 
-Allows you to hide the edit account button to help prevent accidentally clicking on it.
-
-## Hide Help (?) Button
-
-This feature hides the blue help (?) button in the bottom right corner of the screen. View the account-options popup (click your e-mail) to show or hide the help button.
+Hide the "Edit Account" icon on account rows in the sidebar to avoid misclicks. You can still edit an account by right-clicking the account name.
 
 ## Hide Referral Banner
 
-YNAB shows a "Share YNAB, Get YNAB free" banner. If you'd rather not see this banner, you can turn this feature on to hide it.
+Hides the "Share YNAB, Get YNAB free" banner.
 
-## Interface Font
+## Modify Currency Colors
+
+Add an option in YNAB's Display Menu to customize the default green/orange/red color scheme to whatever you wish.
+
+## Modify Interface Font
 
 Select a font from the Google Fonts library or choose to use your system font.
 
-## Navigation Tabs Height
+## POS-style Currency Entry
 
-Makes the navigation tabs (Budget, Reports, etc) smaller, and with less padding, so that you can see more of the sidebar on the screen.
-
-## POS-style currency entry mode
-
-Allow entry of currency values without decimal separators (as done in real-life on POS terminals). For example, entering a figure of "500" will expand to "5.00". Values containing decimal separator of current account are left unmodified (e.g. "50.00" will stay "50.00"). As a shorthand, values ending with "-" will be expanded to full monetary unit (e.g. "50-" will result in "50.00"). Math operations are supported as well (e.g. "50\*5" becomes "2.50").
+Allow entry of currency values without decimal separators (as done in real-life on POS terminals). For example, entering a figure of "500" will expand to "5.00". Values containing decimal separators will be left unmodified (e.g. "50.00" will stay "50.00"). As a shorthand, values ending with "-" will be expanded to full monetary unit (e.g. "50-" will result in "50.00"). Math operations are supported as well (e.g. "50\*5" becomes "2.50").
 
 ## Printing Improvements
 
@@ -62,37 +74,62 @@ Changes print styles so budget and account sections can be easily printed. Due t
 
 ## Privacy Mode
 
-Obscures dollar amounts everywhere until hovered. In toggle mode, a lock icon will appear in the lower left corner of YNAB. Click to enable or disable privacy mode.
-
-## Show Import Notifications in Navigation Sidebar
-
-Underline account names in the navigation sidebar that have transactions to be imported. Hovering the mouse over the account name will display the number of transactions to be imported.
-
-## Square Negative Mode
-
-Changes the round borders on all negative numbers to square. Helps them become more of an eyesore so you want to get rid of them!
-
-## Toolkit Reports
-
-Adds Toolkit Reports to the sidebar. Current reports include: Net Worth, Spending By Category/Payee, and Income vs Expense
-
-## Uncleared Account Highlight
-
-Adds a small indicator next to account balances on the sidebar to indicate not all transactions are cleared.</details>
+Obscure dollar amounts everywhere until hovered. In toggle mode, a lock icon will appear in the lower left corner of YNAB. Click to enable or disable privacy mode.</details>
 
 <details><summary>Budget (Click to Expand/Collapse)</summary>
 
-## Add Goals Indication
+## Add Category Filter
 
-Add indicators for subcategories with goals. Types: (M)onthly goal, target by (D)ate goal, (T)arget without date, and (U)pcoming transactions.
+Add a textbox to the budget page allowing you to filter categories.
 
-## Add Pacing to the Budget
+## Add Date of Money Tooltip
 
-Add a column for 'pacing' which shows you how much money you've spent based on how far you are through the month. Note that clicking on the pacing value will toggle emphasis, allowing you to selectively enable the feature per category.
+Hovering "Age of Money" will display the date of the income.
+For example, on 11th January with Age of Money = 10, Date of Money would be 1st January.
 
-## Allow Markdown in Notes
+## Add Days of Buffering
 
-Adds Markdown parsing to notes, allowing support for links, bullet points, and other formatting tools. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).
+Add a calculation which shows how long your money would likely last if you never earned another cent based on your average spending from a chosen date range. We know that no month is 'average' but this should give you some idea of how much of a buffer you have. The actual calculation is the sum of all your budget accounts divided by the average daily outflow in the time range. Optionally, you can exclude negative credit card balances for better accuracy when carrying credit card debt.
+
+## Add Days of Buffering - Exclude Credit Cards
+
+Option to exclude credit cards from the days of buffering calculation, this will usually eliminate negative calculations for Days of Buffering but it should be noted that this will also inflate you "Days of Buffering" as far as the actual calculation goes.
+
+## Add Goal Indicator
+
+Add an indicator to subcategories with goals. Types: (M)onthly goal, target by (D)ate goal, (T)arget without date, (S)pending goals, and (U)pcoming transactions.
+
+## Add Master Category Toggle
+
+Add a toggle to the budget table header to expand/collapse all categories at once. You can also enable "Solo Mode" by right clicking the toggle which will ensure only one category is expanded at a time.
+
+## Add Pacing
+
+Add a column for "pacing" which shows you how much money you have left in your budget proportionate to how much time is left in the month.
+
+## Add Quick Budget Confirmation
+
+Pop up a confirmation prompt when using a quick budget option to prevent mistakingly altering your budget.
+
+## Add Total Monthly Goals
+
+Add a 'Total Monthly Goals' section to the budget inspector, which displays the total amount of monthly funding goals.
+
+## Adjust Budget Row Height
+
+Make the height of budget category rows smaller allowing more categories to fit on the screen.
+
+## Adjust Category Activity Popup Size
+
+Makes the screen that pops up when you click on activity from a budget category wider so you can see more details of the transactions listed.
+
+## Adjust Category Dropdown Size
+
+The Categories Dropdown that shows in the move money modal is quite small. Show more categories if the page real estate allows for it.
+
+## Adjust Monthly Notes Popup Size
+
+Makes the screen that pops up when you click on 'Enter a note...' below the month name wider so you can add more text.
 
 ## Budget Rows Progress Bars
 
@@ -106,55 +143,37 @@ Adds Color to Master Category Row.
 
 Adds a credit card emoji 💳 to the "Credit Card Payments" category.
 
-## Current Month Indicator
+## Display Target Goal and Emphasize Overbudget
 
-Changes the header bar's background color to a lighter blue when viewing the current month to better differentiate between months.
+Adds a "Goal" column which displays the target goal amount for every category with a goal. Optionally emphasize the amount as red if you've budgeted beyond your goal or green if you've met/exceeded your goal.
 
-## Date Of Money
+## Emphasize Available to Assign
 
-Hover the mouse over Age of Money to display the date of the income.
-For example, on 11th January with Age of Money = 10, Date of Money would be 1st January.
+Changes the "Ready to Assign" background color to yellow if there is unallocated money left to be budgeted.
 
-## Days Of Buffering Metric - Date
+## Emphasize Current Month
 
-Hover the mouse over Days of Buffering to display the equivalent Date for Days of Buffering.
-For example, on 1st January with Days of Buffering = 10, Date of Buffering would be 11th January.
+Change the month background color to better distinguish you're looking at the current month.
 
-## Days of Buffering History Lookup
+## Emphasize Underfunded Goals
 
-How old transactions should be used for average daily outflow calculation.
+Change the default orange goal underfunded warning to blue to better differentiate it from credit card overspending.
 
-## Days of Buffering Metric
+## Emphasize Unmet Target Balances
 
-This calculation shows how long your money would likely last if you never earned another cent based on your average spending. We know that no month is 'average' but this should give you some idea of how much of a buffer you have. Equal to budget accounts total divided by the average daily outflow. That comes from sum of all outflow transactions from on budget accounts only divided by the age of budget in days. You can also change the number of days taken into account by this metric with the 'Days of Buffering History Lookup' setting.
+Add warning emphasis to categories with Target Balances that have not yet been met.
 
-## Display Target Goal Amount And Overbudget Warning
+## Enable Markdown in Notes
 
-Adds a 'Goal' column which displays the target goal amount for every category with a goal, and a warning in red if you have budgeted beyond your goal.
+Adds Markdown parsing to notes, allowing support for links, bullet points, and other formatting tools. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).
 
-## Display Total Monthly Goals
+## Hide Age of Money
 
-Adds a 'Total Monthly Goals' to the budget inspector, which displays the total amount of monthly funding goals.
+Hides "Age of Money" in the budget header. YNAB will continue to run its Age of Money calculations, so the data will always be up to date if you decide to show it again.
 
-## Enable Categories Filter
+## Hide Negative/Zero Categories When Covering Overspending
 
-Enable textbox at budget page for categories filtering
-
-## Goal Indicator Warning Color
-
-Change the orange goal underfunded warning to blue, to better differentiate it from credit card overspending.
-
-## Height of Budget Rows
-
-Makes the budget rows skinnier than the default YNAB style so that you can fit more on the screen.
-
-## Hide Age of Money Calculation
-
-Hides the Age of Money calculation. Some users find it's not relevant or helpful for them, so they'd rather hide it. NOTE: YNAB will continue to run its Age of Money calculations, so the data will be up to date if you decide to show it again.
-
-## Hide Total Available
-
-Hides the "Total Available" section in the budget inspector.
+Removes categories which have a zero or negative balance from the "Cover Overspending" menu since they don't have any way of helping.
 
 ## Highlight Budget Rows On Hover
 
@@ -164,41 +183,29 @@ Shows a light gray background on category rows when hovered over.
 
 Ensure all negative balances are highlighted red instead of yellow, even with credit card spending.
 
-## Income From Last Month
+## Live on Last Month's Income
 
-Show total of incoming transactions for last month in the header.
-
-## Link to Inflows
-
-Clicking on the "Total Inflows" section of the budget inspector will link to the inflow transactions for that month.
-
-## Make the Categories Dropdown Larger
-
-The Categories Dropdown that shows in the move money modal is quite small. Show more categories if the page real estate allows for it.
+Add a section the budget inspector showing your variance between last month's income and this month's assigned budget for users who still live by the old Rule #4.
 
 ## Paid in Full Credit Card Assist
 
 Highlights credit card category balances with a yellow warning if the balance of the category does not match the account balance. Adds a button to the Inspector to rectify the difference.
 
-## Remove Zero and Negative Categories When Covering Over-Budgeting
+## Show Available After Savings
 
-Default YNAB behaviour is to show these categories when covering overbudgeting, but since they've got no money in them they won't help you. Let's clean up the menu.
+Shows "Available After Savings" in the budget breakdown. This allows you to see how much you have available if you exclude your savings. Any categories under a category group that includes "Savings" in its name will be taken into account. You can also add "Savings" anywhere in the name of a category to mark it.
 
-## Seamless Budget Header
+## Show Total Overspent
 
-Remove the borders between selected month, funds and Age of Money in the budget header.
+Adds "Overspending" to the budget inspector, which displays the total overspending from selected categories.
 
 ## Show Upcoming Transaction Total
 
-Adds the total of upcoming transactions alongside activity for each category.
+Add the total of upcoming transactions alongside activity for each category.
 
-## Spending Goal
+## Stealing From Future Warning
 
-Allows the monthly funding goal to be set as a max spending goal for each category.
-
-## Stealing From Future Alert
-
-Highlights "Budget Next Month" red when you've gone negative as some point in the future.
+Adds a red button next to "Ready to Assign" when you've gone negative at some point in you budget's future.
 
 ## Striped Budget Rows
 
@@ -206,71 +213,65 @@ Shows a light gray background on alternating category rows.
 
 ## Subtract Upcoming Transactions from Available Balance
 
-Subtracts upcoming transactions from the available balance for each category. In other words, treat upcoming transactions as if the money has already been spent. Also adds "Available After Upcoming Transactions" to the budget breakdown.
+Subtracts upcoming transactions from the available balance for each category. In other words, treat upcoming transactions as if the money has already been spent. Also shows "Available After Upcoming Transactions" in the budget breakdown.
 
-Enabling "Subtract Credit Card Balances from Total Available" will total the amounts in the "Payment" column of your CC category group and subtract that from the "Available After Upcoming Transactions" in the budget breakdown. This allows to see how much you have available, excluding the money "reserved" in your Credit Card Payments category group. (Probably only useful if you pay off your CCs in full every month.)
+Additionally, this feature totals the amounts in the "Payment" column of your CC category group and subtracts that from the "Available After Upcoming Transactions" in the budget breakdown. This allows you to see how much you have available if you exclude the money "reserved" in your Credit Card Payments category group. You can turn this part of the feature off by selecting "Don't Include CC Payments".
 
-## To Be Budgeted Warning
-
-Changes the 'To Be Budgeted' background color to yellow if there is unallocated money left to be budgeted.
-
-## Toggle Master Categories
-
-Adds ability to toggle all master categories at once. Alternatively, "Solo Mode" can be used to toggle all but a single category at once.
+If the "Show Available After Savings" feature is enabled, the "Available After Savings" amount is used as the starting point for the budget breakdown calculations.
 
 ## Unhighlight all Positive Category Balances
 
-Removes the highlight colour from positive (or zero) category balances and colours positive balances green instead.
-
-## Warn When Clicking a Quick Budget Option
-
-When this feature is activated, there will be a warning if you have already budgeted something.
-
-## Warn When Target Balance is Not Reached
-
-Will highlight balances of categories with Target Balances that have not yet been met.
-
-## Width of Category Popup
-
-Makes the screen that pops up when you click on activity from a budget category wider so you can see more details of the transactions listed.
-
-## Width of Monthly Notes Popup
-
-Makes the screen that pops up when you click on 'Enter a note...' below the month name wider so you can add more text.</details>
+Removes the highlight colour from positive (or zero) category balances and colours positive balances green instead.</details>
 
 <details><summary>Accounts (Click to Expand/Collapse)</summary>
 
-## Add Auto-Distribute Button To Split Transactions
+## Add "Auto Distribute" Button To Split Transactions
 
-Allows you to distribute the remaining amount in a split transaction proportionally to sub-transactions
+Distrubutes the remaining total of a split transaction proportionally to all other splits which contain an amount.
 
-## Add Check Number Column
+## Add "Check Number" Column
 
-Adds the check number column to your account view.
+Adds a check number column to your account view. YNAB currently has a way to save check numbers but does not officially support it. There are no guarantees that YNAB will continue to store this value. For that reason, it is still recommended that you store check numbers in the memo field
 
-## Add a Toggle Splits Button to the Account(s) toolbar
+## Add "Clear Selection" Button
 
-Clicking the Toggle Splits button shows or hides all sub-transactions within all split transactions.
+Add an option to the "Edit Transaction(s)" menu to "Clear Selection" clearing all selected transactions.
 
-## Allow Markdown in Memo
+## Add "Scheduled" and "Reconciled" Toggle Buttons
 
-Adds Markdown parsing to memos, allowing support for links and other formatting tools. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).
+Add buttons to quickly show/hide either scheduled or reconciled transactions with one click.
 
-## Assisted Clear
+## Add "Toggle Memo" Option
 
-This feature assists you in the reconcilation process by locating uncleared transactions that should be cleared based on the desired reconcile amount.
+Add an option to toggle the memo column under the account page's "View" menu
 
-## Auto Adjust Split Transactions
+## Add "Toggle Splits" Button
 
-When entering split transactions, each additional split will be auto-filled with the current remaining amount.
+Add a button to expand/collapse all splits for the current account register.
 
-## Auto-Fill Split Transactions' Payee
+## Add Scrollbars to Edit Menu
 
-When entering split transactions, each additional split will be auto-filled with the first Payee.
+Resize the edit menu to fit on the screen and add scrollbars.
+
+## Adjust Transaction Row Height
+
+Make the height of transaction rows smaller allowing more transactions to fit on the screen.
+
+## Automatically Add Next Split
+
+Automatically add a new split row when tabbing past the last split's "Inflow" input.
 
 ## Automatically Enable Running Balance
 
 Enables YNAB's native "Running Balance" by default for each account register.
+
+## Automatically Fill Split Transaction Amount
+
+Automatically fill each additional split transaction row with the current remaining amount.
+
+## Automatically Fill Split Transaction Payee
+
+Automatically fill each additional split transaction row with the current previous payee.
 
 ## Automatically Mark Transaction as Cleared
 
@@ -278,55 +279,35 @@ Automatically mark transaction as cleared when you enter it manually.
 
 ## Bottom Notification Bar
 
-Move the notification bar to the bottom as an overlay. This prevents the transactions from "jumping around."
+Move the notification bar to the bottom as an overlay preventing transactions from "jumping around."
 
-## Bulk Edit Memo
+## Bulk Edit Memos
 
-Adds option to edit memo on transactions to the edit menu.
+Add an option to the "Edit Transaction(s)" menu to "Edit Memo(s)" for all selected transactions.
 
-## Bulk Manage Payees
+## Bulk Edit Payees
 
-Adds an option to the transaction edit drop-down menu to manage payees for the current selection.
+Add an option to the "Edit Transaction(s)" menu to "Manage Payee(s)" for all selected transactions.
 
-## Change Behaviour of Enter Key When Adding Transactions
+## Calculate Internal Rate of Return
 
-When you press enter while adding transactions, the default behaviour is 'Save and add another'. This option changes it to just 'Save'.
+Calculate Internal Rate of Return for Tracking Accounts. Set Tracking Account contributions to this color to calculate IRR
 
-## Change Behaviour of Enter Key on the Memo field When Adding or Editing Transactions
+## Confirm Transaction Edit Cancellation
 
-When you press enter on the memo field while adding or editing a transaction, the default behaviour is 'Save' or 'Save and add another'. This option changes it to move to the next field.
+Display a confirmation prompt when transaction cancelling a transaction edit by pressing "Enter" guarding against accidentely discarding complex split transactions.
 
-## Clear Selection
+## Custom Flag Names
 
-Adds an option to the transaction edit drop-down menu to clear the current selection.
-
-## Clear transactions with CTRL+Enter
-
-Automatically clear a new or edited transaction by pressing CTRL+Enter (CMD on Mac).
-
-## Color for Striped Transaction Rows
-
-When the Striped Transaction Rows feature is enabled, alternating rows use this color as the background. The default is #fafafa.
-
-## Color for Striped Transaction Rows - Dark Theme
-
-When the Striped Transaction Rows feature is enabled, in dark theme, alternating rows use this color as the background. The default is #1e1e1f.
-
-## Confirm keyboard-initiated transaction cancelation
-
-Displays a pop-up confirmation prompt when transaction row's "Cancel" action is triggered by keyboard press ("Enter"). This guards against inadvertent discarding of complex split transaction entries in keyboard driven entry workflows.
+Add functionality to provide custom flag names in the "Add Flag" menu. A tooltip will also be added to all flags on hover. _**Note**: Custom flag names are stored locally in the browser and will **not** be carried over to other browsers/computers. Custom flag names will be lost if browser data is cleared though the flag colors themselves will remain on the transactions._
 
 ## Deselect Transactions on Save
 
-Deselects all transactions after any transaction is saved.
+Deselect all transactions after a transaction is saved.
 
-## Easy Transaction Approval
+## Edit Transaction on Right Click
 
-Quickly approve scheduled or linked transactions by selecting the transaction(s) and pressing 'a' or 'enter' on your keyboard. Alternately, approve single scheduled or linked transactions by right clicking on the blue 'i' or link icon.
-
-## Edit Multiple Flags at Once
-
-Adds a button to the edit dialog which allows you to set the flag. If multiple transactions are selected, all transactions are updated.
+Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit Transaction(s) menu.
 
 ## Emphasize Inflows
 
@@ -336,65 +317,73 @@ Make values in the inflow column green.
 
 Make values in the outflow column red and put them in parenthesis.
 
-## First Day of the Week in Calendar
+## Emphasize Reconciled Transactions
 
-Change the first day of the week when viewing the calendar.
+Add emphasis to reconciled transaction rows to better distinguish them from "active" transactions.
 
-## Height of Rows in Account Register
+## Enable Markdown in Memos
 
-Change the height of transaction rows so more of them are displayed on the screen.
+Enables Markdown parsing for memos, allowing support for links and other formatting. Learn how to use Markdown [here](https://www.markdownguide.org/cheat-sheet).
 
-## Larger Clickable Area for Icons
+## Enlarge Small Icons
 
-Makes the uncleared, cleared and reconciled icons easier to select.
+Makes the uncleared, cleared and reconciled icons slightly larger and easier to click.
 
-## Reconciled Text Colour
+## Keyboard Shortcut: Approve Transaction [A] or [Enter]
 
-Makes the text on reconciled transactions appear in a more obvious colour of your choosing.
+Approve scheduled or linked transactions by pressing 'A' or 'Enter' on your keyboard selecting any number of transactions. Alternately, approve single scheduled or linked transactions by right clicking on the blue 'i' or link icon.
 
-## Set Custom Flag Names (with Tooltips)
+## Keyboard Shortcut: Clear Transaction [CTRL + Enter]
 
-Adds the ability to set custom flag names. Tooltip for the flag name will only be visible when the cursor is hovered over the flag. _**Note**: Custom flag names are stored locally in the browser in which they are set and will **not** be carried over to other browsers/computers. Custom flag names will be lost if browser data is cleared._
+Clear a new or edited transaction by pressing CTRL+Enter (CMD on Mac) while it's selected.
+
+## Modify First Day of the Week
+
+Adjust the first day of the week in the calendar to whichever day you chose when editing or adding a transaction.
+
+## Override Memo Enter Behavior
+
+Change the default action of pressing "Enter" while in a transaction's memo field from saving the transaction to moving to the next field.
+
+## Reconciliation Assistance
+
+Provides a tool to help find uncleared transactions which add up to the provided reconciliation amount during the normal reconciliation flow.
+
+## Save Transaction on Enter
+
+Change the default action of pressing "Enter" to save a transaction rather than "Save and add another".
 
 ## Show Available Category Balance on Hover
 
-Adds the total available balance to the category tooltip on each row in the Accounts register.
-
-## Show Menu When Right Clicking On Transaction
-
-Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit menu options.
+Add a tooltip showing the total available balance for a transaction's category after breifly hovering the transaction category.
 
 ## Show Reconcile Confetti
 
-When an account is successfully reconciled, show a fun confetti animation to mark your tremendous achievement.
+Add a fun confetti animation when marking an account as reconciled to mark your tremendous achievement.
 
 ## Show Reconciled Balance
 
 Show the current reconciled balance excluding cleared and non-reconciled transactions
 
-## Show Spare Change
+## Spare Change
 
-Imagine if you paid for all purchases in whole dollars. Shows a total of the spare change you would accumulate for the selected outflow transactions.
+Shows the total of "spare change" you would accumulate for the set of selected if you were to pay in whole dollars.
 
 ## Striped Transaction Rows
 
-Shows a different-color background on every other transaction row. See the Color for Striped Transaction Rows settings to specify the color to be used.
+Alternate backgrounds on every other transaction row. Set your own background color or use the default below.
 
-## Swap cleared and flagged columns
+## Striped Transaction Rows - Dark Theme Color
 
-Place the Cleared column on the left and the Flagged column on the right sides of an account screen.
+The color which will be used for the Dark YNAB Theme. The default is #1e1e1f.
 
-## Tab Expands Split Transactions
+## Striped Transaction Rows - Default/Classic Theme Color
 
-When entering a split transaction, add a new split automatically when tabbing past the last split (a la YNAB4).
+The color which will be used for the Default and Classic YNAB Themes. The default is #fafafa.
 
-## Toggle Memo Column
+## Swap Flag/Cleared Columns
 
-Adds option to toggle the memo column as visible or not to the account register "View" menu
-
-## Toggle Scheduled and Reconciled Transaction Buttons
-
-Easily show and hide scheduled and reconciled transactions with one click.</details>
+Place the Cleared column on the left and the Flagged column on the right sides of an account screen.</details>
 
 <details><summary>Reports (Click to Expand/Collapse)</summary>
 
@@ -402,13 +391,13 @@ Easily show and hide scheduled and reconciled transactions with one click.</deta
 
 Modifies styling of the Income vs. Expense report so it doesn't use too much white space on the page.
 
+## Hide Zero Cells
+
+If a cell is zero in the Income v. Expense report, replace it with an empty cell so it is easier to focus on non-zero cells. "Total" rows are not modified.
+
 ## Highlight Income vs Expense Row on Hover
 
-Provides a highlight over the currently hovered row on the native YNAB Income vs Expense report.
-
-## View Zero as Empty
-
-If a cell is zero, replace it with an empty cell so it is easier to focus on non-zero cells. "Total" rows are not modified.</details>
+Provides a highlight over the currently hovered row on the native YNAB Income vs Expense report.</details>
 
 <details><summary>Advanced (Click to Expand/Collapse)</summary>
 

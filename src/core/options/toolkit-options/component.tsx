@@ -123,8 +123,13 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
           <ReactMarkdown
             linkTarget="_blank"
             components={{
-              link: ({ href, children }) => (
-                <a href={href as string} target="_blank" rel="noopener noreferrer">
+              a: ({ href, children }) => (
+                <a
+                  style={{ color: 'var(--tk-text-color)' }}
+                  href={href as string}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {children}
                 </a>
               ),
@@ -189,6 +194,7 @@ function DarkModeToggle() {
         icon={faSun}
         size="lg"
         onClick={() => setIsDarkModeEnabled(true)}
+        title="Toggle Dark Mode"
       />
     </div>
   );
@@ -208,6 +214,10 @@ function ImportExportModal({
   const [allToolkitSettings, setAllToolkitSettings] = React.useState('');
 
   React.useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
     localToolkitStorage.getStoredFeatureSettings().then((keys) =>
       Promise.all(
         keys.map((settingKey) =>
@@ -220,7 +230,7 @@ function ImportExportModal({
         setIsLoading(false);
       })
     );
-  }, []);
+  }, [isOpen]);
 
   function handleSubmit() {
     let parsedSettings: ImportExportSettings = [];
@@ -434,12 +444,14 @@ export function ToolkitOptions() {
             icon={faQuestionCircle}
             size="lg"
             onClick={() => setCurrentPage('support')}
+            title="Support"
           />
           <FontAwesomeIcon
             className="nav-bar__action-icon"
             icon={faFileExport}
             size="lg"
             onClick={() => setIsOpen(true)}
+            title="Import/Export Settings"
           />
           <DarkModeToggle />
         </div>
