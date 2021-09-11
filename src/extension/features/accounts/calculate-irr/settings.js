@@ -10,7 +10,7 @@ module.exports = [
     options: [
       { name: 'Red', value: 'Red' },
       { name: 'Orange', value: 'Orange' },
-      { name: 'Yellow (Default Color)', value: 'Yellow' },
+      { name: 'Yellow', value: 'Yellow' },
       { name: 'Green', value: 'Green' },
       { name: 'Blue', value: 'Blue' },
       { name: 'Purple', value: 'Purple' },
