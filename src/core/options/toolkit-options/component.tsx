@@ -390,6 +390,7 @@ export function ToolkitOptions() {
   const manifest = getBrowser().runtime.getManifest();
   const [currentSettings, setCurrentSettings] = React.useState(settingsBySection[0]);
   const [currentPage, setCurrentPage] = React.useState(settingsBySection[0].name);
+  const [searchQuery, setSearchQuery] = React.useState('');
   const { isOpen, setIsOpen } = useModal();
 
   return (
@@ -439,6 +440,12 @@ export function ToolkitOptions() {
           ))}
         </nav>
         <div className="nav-bar__actions">
+          <input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search options"
+            className="nav-bar__search"
+          />
           <FontAwesomeIcon
             className="nav-bar__action-icon"
             icon={faQuestionCircle}
@@ -457,7 +464,18 @@ export function ToolkitOptions() {
         </div>
       </div>
       <main className="tk-flex tk-flex-grow">
-        {currentPage !== 'support' && <SettingsList settings={currentSettings.settings} />}
+        {currentPage !== 'support' && (
+          <SettingsList
+            settings={currentSettings.settings.filter((setting) => {
+              const query = searchQuery.toLowerCase();
+              return (
+                setting.name.toLowerCase().includes(query) ||
+                setting.title.toLowerCase().includes(query) ||
+                setting.description.toLowerCase().includes(query)
+              );
+            })}
+          />
+        )}
         {currentPage === 'support' && <SupportPage />}
       </main>
       <footer className="footer">
