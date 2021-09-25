@@ -65,8 +65,19 @@ export function getTotals(budgetBreakdown) {
     totals.totalPreviousUpcoming += categoryData.previousUpcoming;
     totals.totalUpcoming += categoryData.upcoming;
 
-    if (!noCC && category.isCreditCardPaymentCategory)
-      totals.totalCCPayments += categoryData.available < 0 ? 0 : categoryData.available; // If available is less than 0, it will already have been subtracted from YNAB's total available.
+    if (!noCC && category.isCreditCardPaymentCategory) {
+      /*
+      If available is less than 0, we ignore it because it will already have been subtracted from YNAB's total available.
+      If availableAfterUpcoming is less than 0, we ignore it because that amount is already accounted for by the upcoming transactions.
+      We use availableAfterUpcoming to avoid "double-dipping" in the totals calculation. e.g. if available is 100 and upcoming is 100, we only want to subtract 100 once (which we are via totalUpcoming).
+      This also allows us to grab any remaining CC payment if available is greater than upcoming. e.g. if available is 150 and upcoming is 100, we still have a 50 CC payment to account for.
+      Also, it is currently impossible in YNAB to have a positive upcoming transaction for a CC category, so we don't have to worry about having a negative available but a positive availableAfterUpcoming.
+      */
+      totals.totalCCPayments +=
+        categoryData.available < 0 || categoryData.availableAfterUpcoming < 0
+          ? 0
+          : categoryData.availableAfterUpcoming;
+    }
   }
 
   const totalSavings = ynabToolKit.options.ShowAvailableAfterSavings
