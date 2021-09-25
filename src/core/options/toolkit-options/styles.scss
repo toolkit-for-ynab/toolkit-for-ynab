@@ -186,6 +186,12 @@ body {
     margin-left: auto;
   }
 
+  &__search {
+    padding: 4px;
+    border: 2px solid #aaa;
+    width: 200px;
+  }
+
   &__action-icon {
     cursor: pointer;
     margin-left: 1rem;
