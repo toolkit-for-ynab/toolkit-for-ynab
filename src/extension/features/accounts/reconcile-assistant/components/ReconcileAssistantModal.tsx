@@ -4,6 +4,7 @@ import { TransactionsTable } from './TransactionsTable';
 import { CarouselSelector } from './CarouselSelector';
 import { setTransactionCleared } from '../reconcileAssistantUtils';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import resources from '../resources';
 import '../styles.scss';
 
 interface ReconcileAssistantModalProps {
@@ -117,28 +118,23 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
     <div className="tk-modal-container" style={{ zIndex: 10000 }}>
       <div className="tk-modal-content tk-modal-stack tk-confirmation-modal">
         {/* Modal Header */}
-        <span className="tk-align-self-start" style={{ fontSize: '1.5rem' }}>
-          Reconcile Assistant
-        </span>
+        <div className="tk-align-self-start" style={{ fontSize: '1.5rem' }}>
+          <p>{resources.modalHeader}</p>
+        </div>
 
         {/* Modal Body */}
-        <div className="tk-align-self-start">
+        <div>
           {isTargetAlreadyReached() ? (
-            <>
-              {' '}
-              {
-                "This account's cleared balance in YNAB matches your actual account balance. You're all set to finish reconciling!"
-              }{' '}
-            </>
+            <p>{resources.targetReachedMessage}</p>
           ) : (
             <>
-              {/* Reconcile Assistant Summary */}
-              YNAB Cleared Balance: <strong>{formatCurrency(clearedTotal)}</strong> <br />
+              {resources.currentClearedBalance} <strong>{formatCurrency(clearedTotal)}</strong>{' '}
+              <br />
               Current Account Balance: <strong>{formatCurrency(clearedTotal + target)}</strong>
               <br />
               <br />
               Found <strong>{matchingTransactions.length}</strong> sets of uncleared transactions
-              totaling to <strong>{formatCurrency(target)}</strong>.{/* Transaction Chooser */}
+              totaling to <strong>{formatCurrency(target)}</strong>.
               <TransactionsTable transactions={chosenTransactionSet} />
               <CarouselSelector
                 onBack={() => handleIndexChange(transactionArrIndex - 1)}
@@ -154,11 +150,11 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
         <div className="tk-align-self-end">
           {shouldShowClearButton() && (
             <button className="tk-button tk-mg-r-05" onClick={handleConfirmation}>
-              Clear Transactions
+              {resources.clearButtonText}
             </button>
           )}
           <button className="tk-button" onClick={onModalClose}>
-            Close
+            {resources.closeButtonText}
           </button>
         </div>
       </div>

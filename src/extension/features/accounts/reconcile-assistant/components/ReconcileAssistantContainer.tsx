@@ -4,6 +4,7 @@ import { ReconcileAssistantModal } from './ReconcileAssistantModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { stripCurrency } from 'toolkit/extension/utils/currency';
+import resources from '../resources';
 
 interface ReconcileAssistantContainerProps {
   reconcileInputValue: string;
@@ -75,15 +76,10 @@ export const ReconcileAssistantContainer: React.FC<ReconcileAssistantContainerPr
           setIsToolTipVisible(false);
         }}
       >
-        Use Reconcile Assistant
+        {resources.useReconcileAssistantText}
       </button>
 
-      {isToolTipVisible && (
-        <span className="tk-tooltip">
-          Determine if any combination of uncleared transactions adds up to the difference between
-          the YNAB account balance and the actual account balance
-        </span>
-      )}
+      {isToolTipVisible && <span className="tk-tooltip">{resources.tooltipInstructions}</span>}
     </>
   );
 };
