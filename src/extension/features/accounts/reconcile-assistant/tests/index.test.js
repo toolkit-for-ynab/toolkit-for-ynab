@@ -1,11 +1,11 @@
 jest.mock('toolkit/extension/features/feature');
-import { AssistedClear, ASSISTED_CLEAR_MODAL_PORTAL } from './index';
+import { ReconcileAssistant, ASSISTED_CLEAR_MODAL_PORTAL } from './index';
 
 describe('Assisted Clear', () => {
   it('should invoke correctly', () => {
-    let extension = new AssistedClear();
+    let extension = new ReconcileAssistant();
     expect(extension).toBeTruthy();
-    expect(extension).toBeInstanceOf(AssistedClear);
+    expect(extension).toBeInstanceOf(ReconcileAssistant);
   });
 
   describe('invoke()', () => {
@@ -13,7 +13,7 @@ describe('Assisted Clear', () => {
 
     beforeEach(() => {
       jest.useFakeTimers();
-      feature = new AssistedClear();
+      feature = new ReconcileAssistant();
     });
 
     it('should invoke the correct methods', () => {
@@ -49,7 +49,7 @@ describe('Assisted Clear', () => {
   describe('_createFeatureContainer()', () => {
     let feature;
     beforeEach(() => {
-      feature = new AssistedClear();
+      feature = new ReconcileAssistant();
     });
 
     it('should append if not found', () => {
@@ -79,7 +79,7 @@ describe('Assisted Clear', () => {
   describe('_attachInputListener()', () => {
     let feature;
     beforeEach(() => {
-      feature = new AssistedClear();
+      feature = new ReconcileAssistant();
     });
 
     it('should do nothing if not found', () => {
@@ -97,7 +97,7 @@ describe('Assisted Clear', () => {
   describe('_createModalPortal()', () => {
     let feature;
     beforeEach(() => {
-      feature = new AssistedClear();
+      feature = new ReconcileAssistant();
     });
 
     it('should do nothing if ynab not found', () => {
@@ -127,7 +127,7 @@ describe('Assisted Clear', () => {
   describe('observe()', () => {
     let feature;
     beforeEach(() => {
-      feature = new AssistedClear();
+      feature = new ReconcileAssistant();
     });
     it('should attach an input listener', () => {
       let attachInputListenerMock = jest.spyOn(feature, '_attachInputListener');
@@ -160,7 +160,7 @@ describe('Assisted Clear', () => {
     let ynabUtils;
     beforeEach(() => {
       ynabUtils = require('toolkit/extension/utils/ynab');
-      feature = new AssistedClear();
+      feature = new ReconcileAssistant();
     });
 
     it('should return invoke on accounts page', () => {

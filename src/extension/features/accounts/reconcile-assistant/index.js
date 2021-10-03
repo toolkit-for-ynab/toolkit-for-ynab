@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { ClearAssistantContainer } from './components/AssistedClearContainer';
+import { ReconcileAssistantContainer } from './components/ReconcileAssistantContainer';
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 
@@ -11,7 +11,7 @@ export const YNAB_ADJUSTMENT_SELECTOR = '.accounts-adjustment.account-flash-noti
 export const ASSISTED_CLEAR_MODAL_PORTAL = 'tk-assisted-clear-portal';
 export const YNAB_RECONCILE_INPUT_MODAL = '.modal-account-reconcile-enter-balance';
 
-export class AssistedClear extends Feature {
+export class ReconcileAssistant extends Feature {
   _reconcileInputValue = '0';
 
   shouldInvoke() {
@@ -40,7 +40,10 @@ export class AssistedClear extends Feature {
       let container = document.getElementById(ASSISTED_CLEAR_CONTAINER_ID);
       if (container) {
         ReactDOM.render(
-          <ClearAssistantContainer reconcileInputValue={this._reconcileInputValue} />,
+          <ReconcileAssistantContainer
+            reconcileInputValue={this._reconcileInputValue}
+            portalId={ASSISTED_CLEAR_MODAL_PORTAL}
+          />,
           container
         );
       }

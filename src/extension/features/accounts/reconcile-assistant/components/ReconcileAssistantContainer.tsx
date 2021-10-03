@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
-import { generatePowerset, findMatchingSum } from '../assistedClearUtils';
-import { AssistedClearModal } from './AssistedClearModal';
+import { findMatchingTransactions } from '../reconcileAssistantUtils';
+import { ReconcileAssistantModal } from './ReconcileAssistantModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { stripCurrency } from 'toolkit/extension/utils/currency';
-import PropTypes from 'prop-types';
 
-export const ClearAssistantContainer = ({ reconcileInputValue }) => {
-  const [isModalOpened, setModalOpened] = useState(false);
-  const [matchingTransactions, setMatchingTransactions] = useState([]);
-  const [clearedTotal, setClearedTotal] = useState(0);
-  const [target, setTarget] = useState(0);
-  const [isToolTipVisible, setIsToolTipVisible] = useState(false);
+interface ReconcileAssistantContainerProps {
+  reconcileInputValue: string;
+  portalId: string;
+}
+
+export const ReconcileAssistantContainer: React.FC<ReconcileAssistantContainerProps> = ({
+  reconcileInputValue,
+  portalId,
+}) => {
+  const [target, setTarget] = useState<number>(0);
+  const [clearedTotal, setClearedTotal] = useState<number>(0);
+  const [isModalOpened, setModalOpened] = useState<boolean>(false);
+  const [isToolTipVisible, setIsToolTipVisible] = useState<boolean>(false);
+  const [matchingTransactions, setMatchingTransactions] = useState<Array<Array<Transaction>>>([]);
+
+  function getCurrentAccount(): any {
+    let { selectedAccountId } = controllerLookup('accounts');
+    return getEntityManager().getAccountById(selectedAccountId);
+  }
 
   /**
    * Figure out which transactions add up to a specific target
@@ -20,29 +32,22 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
   let onSubmit = () => {
     // Parse the input value for the converted normalized amount
     // If get an invalid number such as a string, 0 will be returned and will match ynab's functionality
-    let convertedInputValue = stripCurrency(reconcileInputValue);
-
-    let { selectedAccountId } = controllerLookup('accounts');
-    let account = getEntityManager().getAccountById(selectedAccountId);
-    let transactions = account.getTransactions();
+    let convertedInputValue: number = stripCurrency(reconcileInputValue);
+    let account: any = getCurrentAccount();
     let { clearedBalance } = account.getAccountCalculation();
-
-    // Get all the uncleared transactions
-    let unclearedTransactions = transactions.filter(
-      (txn) => txn.cleared && txn.isUncleared() && !txn.isTombstone
-    );
 
     // Note: For credit cards, we'll automatically invert to follow ynab's behavior
     if (convertedInputValue > 0 && account.getAccountType() === 'CreditCard') {
       convertedInputValue *= -1;
     }
-    let calculatedTarget = convertedInputValue - clearedBalance;
 
-    // Figure out which of the non reconciled transactions add up to our target
-    let transactionPowerset = generatePowerset(unclearedTransactions);
-    let possibleMatches = findMatchingSum(transactionPowerset, calculatedTarget);
+    // The target should be the (targeted reconcile amount - current cleared balance)
+    let calculatedTarget: number = convertedInputValue - clearedBalance;
+    let possibleMatches: Array<Array<Transaction>> = findMatchingTransactions(
+      account.getTransactions(),
+      calculatedTarget
+    );
 
-    // Update context state
     setClearedTotal(clearedBalance);
     setTarget(calculatedTarget);
     setMatchingTransactions(possibleMatches);
@@ -51,7 +56,8 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
 
   return (
     <>
-      <AssistedClearModal
+      <ReconcileAssistantModal
+        portalId={portalId}
         isOpen={isModalOpened}
         setModalOpened={setModalOpened}
         clearedTotal={clearedTotal}
@@ -69,7 +75,7 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
           setIsToolTipVisible(false);
         }}
       >
-        Use Assisted Clear
+        Use Reconcile Assistant
       </button>
 
       {isToolTipVisible && (
@@ -80,8 +86,4 @@ export const ClearAssistantContainer = ({ reconcileInputValue }) => {
       )}
     </>
   );
-};
-
-ClearAssistantContainer.propTypes = {
-  reconcileInputValue: PropTypes.string.isRequired,
 };
