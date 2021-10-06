@@ -70,25 +70,10 @@ function transactionReducer(accumulator: number, txn: Transaction): number {
   return accumulator + txn.amount;
 }
 
-/**
- * Find any uncleared transactions that add up to the desired sum
- * @param transactions The array of transactions
- * @param targetSum The targeted balance to match
- * @returns Possible sets of transactions adding up to the targeted balance
- */
-function findMatchingTransactions(
-  transactions: Array<Transaction>,
-  targetSum: number
-): Array<Array<Transaction>> {
-  let unclearedTransactions: Array<Transaction> = getUnclearedTransactions(transactions);
-  let transactionPowerset: Array<Array<Transaction>> = generatePowerset(unclearedTransactions);
-  return findMatchingSum(transactionPowerset, targetSum);
-}
-
 export {
   setTransactionCleared,
   generatePowerset,
   findMatchingSum,
   transactionReducer,
-  findMatchingTransactions,
+  getUnclearedTransactions,
 };

@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import * as ReactDOM from 'react-dom';
+import {
+  generatePowerset,
+  getUnclearedTransactions,
+  findMatchingSum,
+} from '../reconcileAssistantUtils';
 import { TransactionsTable } from './TransactionsTable';
 import { CarouselSelector } from './CarouselSelector';
 import { setTransactionCleared } from '../reconcileAssistantUtils';
@@ -11,25 +16,35 @@ interface ReconcileAssistantModalProps {
   portalId: string;
   isOpen: boolean;
   setModalOpened: (isOpen: boolean) => void;
-  matchingTransactions: Array<Array<Transaction>>;
   clearedTotal: number;
   target: number;
+  transactions: Array<Transaction>;
 }
 
 export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = ({
   portalId,
   isOpen,
   setModalOpened,
-  matchingTransactions,
   clearedTotal,
   target,
+  transactions,
 }) => {
+  const [transactionPowerset, setTransactionPowerset] = useState<Array<Array<Transaction>>>([]);
+  const [matchingTransactions, setMatchingTransactions] = useState<Array<Array<Transaction>>>([]);
   const [chosenTransactionSet, setChosenSelectionSet] = useState<Array<Transaction>>([]);
   const [transactionArrIndex, setTransactionArrIndex] = useState<number>(0);
 
   /////////////////////////////////////////////////////////////////////////////
   // Lifecycle Events
   /////////////////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    let unclearedTransactions: Array<Transaction> = getUnclearedTransactions(transactions);
+    setTransactionPowerset(generatePowerset(unclearedTransactions));
+  }, [isOpen]);
+
+  useEffect(() => {
+    setMatchingTransactions(findMatchingSum(transactionPowerset, target));
+  }, [isOpen, transactionPowerset]);
 
   useEffect(() => {
     if (matchingTransactions.length === 0) {
@@ -78,6 +93,8 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
     setChosenSelectionSet([]);
     setTransactionArrIndex(0);
     setModalOpened(false);
+    setTransactionPowerset([]);
+    setMatchingTransactions([]);
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -90,6 +107,13 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
    */
   function isTargetAlreadyReached(): boolean {
     return matchingTransactions.length === 1 && matchingTransactions[0].length === 0;
+  }
+
+  function matchingTransactionResult(numMatches: number, target: number): string {
+    let summary = resources.matchingTransactionsSummary;
+    summary = summary.replace('{0}', matchingTransactions.length.toString());
+    summary = summary.replace('{1}', formatCurrency(target));
+    return summary;
   }
 
   /**
@@ -113,6 +137,35 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
     return null;
   }
 
+  let modalBodyContent = () => {
+    if (isTargetAlreadyReached()) {
+      return <p>{resources.targetReachedMessage}</p>;
+    }
+    return (
+      <>
+        <div>
+          <p>
+            {resources.currentClearedBalance} <strong>{formatCurrency(clearedTotal)}</strong>
+            <br />
+            {resources.currentAccountBalance}{' '}
+            <strong>{formatCurrency(clearedTotal + target)}</strong>
+            <br />
+            <br />
+            {matchingTransactionResult(matchingTransactions.length, target)}
+          </p>
+        </div>
+        <TransactionsTable transactions={chosenTransactionSet} />
+        <div style={{ alignSelf: 'center' }}>
+          <CarouselSelector
+            onBack={() => handleIndexChange(transactionArrIndex - 1)}
+            onForward={() => handleIndexChange(transactionArrIndex + 1)}
+            currentSelectionIndex={transactionArrIndex + 1}
+            maxSelectionIndex={matchingTransactions.length}
+          />
+        </div>
+      </>
+    );
+  };
   // Note: YNAB has their zIndex at 9998. Keep the current ynab modal from disappearing.
   return ReactDOM.createPortal(
     <div className="tk-modal-container" style={{ zIndex: 10000 }}>
@@ -123,28 +176,7 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
         </div>
 
         {/* Modal Body */}
-        <div>
-          {isTargetAlreadyReached() ? (
-            <p>{resources.targetReachedMessage}</p>
-          ) : (
-            <>
-              {resources.currentClearedBalance} <strong>{formatCurrency(clearedTotal)}</strong>{' '}
-              <br />
-              Current Account Balance: <strong>{formatCurrency(clearedTotal + target)}</strong>
-              <br />
-              <br />
-              Found <strong>{matchingTransactions.length}</strong> sets of uncleared transactions
-              totaling to <strong>{formatCurrency(target)}</strong>.
-              <TransactionsTable transactions={chosenTransactionSet} />
-              <CarouselSelector
-                onBack={() => handleIndexChange(transactionArrIndex - 1)}
-                onForward={() => handleIndexChange(transactionArrIndex + 1)}
-                currentSelectionIndex={transactionArrIndex}
-                maxSelectionIndex={matchingTransactions.length}
-              />
-            </>
-          )}
-        </div>
+        <div className="tk-reconcile-assistant-modal-body">{modalBodyContent()}</div>
 
         {/* Modal Action Buttons */}
         <div className="tk-align-self-end">

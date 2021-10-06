@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { findMatchingTransactions } from '../reconcileAssistantUtils';
 import { ReconcileAssistantModal } from './ReconcileAssistantModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
@@ -19,7 +18,7 @@ export const ReconcileAssistantContainer: React.FC<ReconcileAssistantContainerPr
   const [clearedTotal, setClearedTotal] = useState<number>(0);
   const [isModalOpened, setModalOpened] = useState<boolean>(false);
   const [isToolTipVisible, setIsToolTipVisible] = useState<boolean>(false);
-  const [matchingTransactions, setMatchingTransactions] = useState<Array<Array<Transaction>>>([]);
+  const [transactions, setTransactions] = useState<Array<Transaction>>([]);
 
   function getCurrentAccount(): any {
     let { selectedAccountId } = controllerLookup('accounts');
@@ -44,28 +43,14 @@ export const ReconcileAssistantContainer: React.FC<ReconcileAssistantContainerPr
 
     // The target should be the (targeted reconcile amount - current cleared balance)
     let calculatedTarget: number = convertedInputValue - clearedBalance;
-    let possibleMatches: Array<Array<Transaction>> = findMatchingTransactions(
-      account.getTransactions(),
-      calculatedTarget
-    );
-
+    setTransactions(account.getTransactions());
     setClearedTotal(clearedBalance);
     setTarget(calculatedTarget);
-    setMatchingTransactions(possibleMatches);
     setModalOpened(true);
   };
 
   return (
     <>
-      <ReconcileAssistantModal
-        portalId={portalId}
-        isOpen={isModalOpened}
-        setModalOpened={setModalOpened}
-        clearedTotal={clearedTotal}
-        target={target}
-        matchingTransactions={matchingTransactions}
-      />
-
       <button
         className={`button-primary button${reconcileInputValue.length ? '' : ' button-disabled'}`}
         onClick={onSubmit}
@@ -80,6 +65,15 @@ export const ReconcileAssistantContainer: React.FC<ReconcileAssistantContainerPr
       </button>
 
       {isToolTipVisible && <span className="tk-tooltip">{resources.tooltipInstructions}</span>}
+
+      <ReconcileAssistantModal
+        portalId={portalId}
+        isOpen={isModalOpened}
+        setModalOpened={setModalOpened}
+        transactions={transactions}
+        clearedTotal={clearedTotal}
+        target={target}
+      />
     </>
   );
 };
