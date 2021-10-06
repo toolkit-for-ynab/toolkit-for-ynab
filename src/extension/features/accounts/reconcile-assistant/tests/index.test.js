@@ -1,5 +1,5 @@
 jest.mock('toolkit/extension/features/feature');
-import { ReconcileAssistant, ASSISTED_CLEAR_MODAL_PORTAL } from './index';
+import { ReconcileAssistant, ASSISTED_CLEAR_MODAL_PORTAL } from '../index';
 
 describe('Assisted Clear', () => {
   it('should invoke correctly', () => {

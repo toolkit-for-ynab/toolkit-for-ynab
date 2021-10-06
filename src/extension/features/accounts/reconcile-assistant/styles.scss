@@ -1,13 +1,17 @@
 .tk-modal-stack {
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: 1rem;
 }
 
 .tk-confirmation-modal {
-  width: 760px;
+  width: 50%;
   font-weight: 400;
+}
+
+.tk-reconcile-assistant-modal-body {
+  display: flex;
+  flex-direction: column;
 }
 
 #tk-assisted-clear-container {
