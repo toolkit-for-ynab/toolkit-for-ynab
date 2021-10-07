@@ -1,7 +1,7 @@
 jest.mock('toolkit/extension/features/feature');
 import { ReconcileAssistant, ASSISTED_CLEAR_MODAL_PORTAL } from '../index';
 
-describe('Assisted Clear', () => {
+describe('Reconcile Assistant', () => {
   it('should invoke correctly', () => {
     let extension = new ReconcileAssistant();
     expect(extension).toBeTruthy();
@@ -42,7 +42,7 @@ describe('Assisted Clear', () => {
       expect(container.children.length).toBeTruthy();
       expect(container.children.length).toBe(1);
       expect(container.children[0].tagName).toBe('BUTTON');
-      expect(container.children[0].textContent).toBe('Use Assisted Clear');
+      expect(container.children[0].textContent).toBe('Use Reconcile Assistant');
     });
   });
 

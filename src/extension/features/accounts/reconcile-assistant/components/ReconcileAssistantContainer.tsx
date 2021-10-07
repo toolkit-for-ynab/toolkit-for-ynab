@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
+import resources from '../resources';
 import { ReconcileAssistantModal } from './ReconcileAssistantModal';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { stripCurrency } from 'toolkit/extension/utils/currency';
-import resources from '../resources';
 
 interface ReconcileAssistantContainerProps {
   reconcileInputValue: string;
@@ -20,6 +20,10 @@ export const ReconcileAssistantContainer: React.FC<ReconcileAssistantContainerPr
   const [isToolTipVisible, setIsToolTipVisible] = useState<boolean>(false);
   const [transactions, setTransactions] = useState<Array<Transaction>>([]);
 
+  /**
+   * Get the current account on this page
+   * @returns {Account} The current account
+   */
   function getCurrentAccount(): any {
     let { selectedAccountId } = controllerLookup('accounts');
     return getEntityManager().getAccountById(selectedAccountId);
@@ -29,9 +33,9 @@ export const ReconcileAssistantContainer: React.FC<ReconcileAssistantContainerPr
    * Figure out which transactions add up to a specific target
    * Update the state to update target and any matched transactions
    */
-  let onSubmit = () => {
+  let handleSubmit = () => {
     // Parse the input value for the converted normalized amount
-    // If get an invalid number such as a string, 0 will be returned and will match ynab's functionality
+    // If we get an invalid number such as a string, 0 will be returned and will match ynab's functionality
     let convertedInputValue: number = stripCurrency(reconcileInputValue);
     let account: any = getCurrentAccount();
     let { clearedBalance } = account.getAccountCalculation();
@@ -53,7 +57,7 @@ export const ReconcileAssistantContainer: React.FC<ReconcileAssistantContainerPr
     <>
       <button
         className={`button-primary button${reconcileInputValue.length ? '' : ' button-disabled'}`}
-        onClick={onSubmit}
+        onClick={handleSubmit}
         onMouseEnter={() => {
           setIsToolTipVisible(true);
         }}
