@@ -1,5 +1,9 @@
 jest.mock('toolkit/extension/features/feature');
-import { ReconcileAssistant, ASSISTED_CLEAR_MODAL_PORTAL } from '../index';
+import {
+  ReconcileAssistant,
+  RECONCILE_ASSISTANT_MODAL_PORTAL,
+  RECONCILE_ASSISTANT_CONTAINER_ID,
+} from '../index';
 
 describe('Reconcile Assistant', () => {
   it('should invoke correctly', () => {
@@ -23,8 +27,8 @@ describe('Reconcile Assistant', () => {
       });
       let _createFeatureContainerMock = jest.spyOn(feature, '_createFeatureContainer');
       let _createModalPortalMock = jest.spyOn(feature, '_createModalPortal');
-      document.body.innerHTML = '<div id="tk-assisted-clear-container"></div>';
-      expect(document.getElementById('tk-assisted-clear-container').children.length).toBe(0);
+      document.body.innerHTML = `<div id="${RECONCILE_ASSISTANT_CONTAINER_ID}"></div>`;
+      expect(document.getElementById(RECONCILE_ASSISTANT_CONTAINER_ID).children.length).toBe(0);
 
       // Ensure each method has been called
       feature.invoke();
@@ -38,7 +42,7 @@ describe('Reconcile Assistant', () => {
       expect(document.querySelector('.button-primary.button')).toBeTruthy();
 
       // Ensure our component rendered with our button
-      let container = document.getElementById('tk-assisted-clear-container');
+      let container = document.getElementById(RECONCILE_ASSISTANT_CONTAINER_ID);
       expect(container.children.length).toBeTruthy();
       expect(container.children.length).toBe(1);
       expect(container.children[0].tagName).toBe('BUTTON');
@@ -55,21 +59,21 @@ describe('Reconcile Assistant', () => {
     it('should append if not found', () => {
       document.body.innerHTML =
         "<div class='accounts-adjustment account-flash-notification'></div>";
-      expect(document.getElementById('tk-assisted-clear-container')).toBeFalsy();
+      expect(document.getElementById(RECONCILE_ASSISTANT_CONTAINER_ID)).toBeFalsy();
       let element = document.querySelector('.accounts-adjustment.account-flash-notification');
       expect(element).toBeTruthy();
       expect(element.children.length).toBe(0);
 
       // Create the container
       feature._createFeatureContainer();
-      let container = document.getElementById('tk-assisted-clear-container');
+      let container = document.getElementById(RECONCILE_ASSISTANT_CONTAINER_ID);
       expect(container).toBeTruthy();
       expect(element.children.length).toBe(1);
       expect(container.className).toBe('tk-mg-r-1');
 
       // Call it again and check that we did not create again
       feature._createFeatureContainer();
-      container = document.getElementById('tk-assisted-clear-container');
+      container = document.getElementById(RECONCILE_ASSISTANT_CONTAINER_ID);
       expect(container).toBeTruthy();
       expect(element.children.length).toBe(1);
       expect(container.className).toBe('tk-mg-r-1');
@@ -102,9 +106,9 @@ describe('Reconcile Assistant', () => {
 
     it('should do nothing if ynab not found', () => {
       document.body.innerHTML = "<div class='not-ember-application''>Invalid<div>";
-      let portal = $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`);
+      let portal = $(`#${RECONCILE_ASSISTANT_MODAL_PORTAL}`);
       feature._createModalPortal();
-      portal = $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`);
+      portal = $(`#${RECONCILE_ASSISTANT_MODAL_PORTAL}`);
       expect(portal.length).toBe(0);
     });
 
@@ -112,14 +116,14 @@ describe('Reconcile Assistant', () => {
       document.body.innerHTML = "<div class='ember-application''>Valid<div>";
 
       // Add it once
-      let portal = $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`);
+      let portal = $(`#${RECONCILE_ASSISTANT_MODAL_PORTAL}`);
       feature._createModalPortal();
-      portal = $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`);
+      portal = $(`#${RECONCILE_ASSISTANT_MODAL_PORTAL}`);
       expect(portal.length).toBe(1);
 
       // Add it again
       feature._createModalPortal();
-      portal = $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`);
+      portal = $(`#${RECONCILE_ASSISTANT_MODAL_PORTAL}`);
       expect(portal.length).toBe(1);
     });
   });
