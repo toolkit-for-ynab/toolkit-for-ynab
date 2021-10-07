@@ -68,8 +68,8 @@ describe('Reconcile Assistant Utils', () => {
     });
 
     it('should return only cleared transactions', () => {
-      let t1: Transaction = mockTransaction(5, 'Cleared');
-      let t2: Transaction = mockTransaction(10, 'Uncleared');
+      let t1: Transaction = mockTransaction(5, 'Cleared', false);
+      let t2: Transaction = mockTransaction(10, 'Uncleared', false);
       let transactions: Array<Transaction> = [t1, t2];
 
       let result: Array<Transaction> = utils.getUnclearedTransactions(transactions);
@@ -78,12 +78,21 @@ describe('Reconcile Assistant Utils', () => {
     });
 
     it('should return nothing when there are no cleared transactions', () => {
-      let t1: Transaction = mockTransaction(5, 'Cleared');
-      let t2: Transaction = mockTransaction(10, 'Cleared');
+      let t1: Transaction = mockTransaction(5, 'Cleared', false);
+      let t2: Transaction = mockTransaction(10, 'Cleared', false);
       let transactions: Array<Transaction> = [t1, t2];
 
       let result: Array<Transaction> = utils.getUnclearedTransactions(transactions);
       expect(result.length).toBe(0);
+    });
+
+    it('should ignore deleted transactions', () => {
+      let t1: Transaction = mockTransaction(5, 'Uncleared', false);
+      let t2: Transaction = mockTransaction(10, 'Uncleared', true);
+      let t3: Transaction = mockTransaction(10, 'Uncleared', false);
+      let transactions: Array<Transaction> = [t1, t2, t3];
+      let result: Array<Transaction> = utils.getUnclearedTransactions(transactions);
+      expect(result.length).toBe(2);
     });
   });
 
@@ -92,13 +101,14 @@ describe('Reconcile Assistant Utils', () => {
    * @param {number} amount The amount of the transaction
    * @param {string} cleared The cleared value
    */
-  function mockTransaction(amount: number, cleared: string) {
+  function mockTransaction(amount: number, cleared: string, isTombstone: boolean) {
     return {
       amount: amount,
       cleared: cleared,
       isUncleared: () => {
         return cleared === 'Uncleared';
       },
+      isTombstone: isTombstone,
     };
   }
 
