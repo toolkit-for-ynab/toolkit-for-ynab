@@ -37,14 +37,15 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
   /////////////////////////////////////////////////////////////////////////////
   // Lifecycle Events
   /////////////////////////////////////////////////////////////////////////////
+
   useEffect(() => {
     let unclearedTransactions: Array<Transaction> = getUnclearedTransactions(transactions);
     setTransactionPowerset(generatePowerset(unclearedTransactions));
-  }, [isOpen]);
+  }, [isOpen, transactions]);
 
   useEffect(() => {
     setMatchingTransactions(findMatchingSum(transactionPowerset, target));
-  }, [isOpen, transactionPowerset]);
+  }, [isOpen, transactionPowerset, target]);
 
   useEffect(() => {
     if (matchingTransactions.length === 0) {
@@ -109,6 +110,12 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
     return matchingTransactions.length === 1 && matchingTransactions[0].length === 0;
   }
 
+  /**
+   * The matching transaction result string
+   * @param numMatches The number of matches
+   * @param target The target number
+   * @returns {string} The text of the matching result
+   */
   function matchingTransactionResult(numMatches: number, target: number): string {
     let summary = resources.matchingTransactionsSummary;
     summary = summary.replace('{0}', matchingTransactions.length.toString());
@@ -137,10 +144,15 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
     return null;
   }
 
+  /**
+   * Get the modal content body
+   * @returns The modal content body
+   */
   let modalBodyContent = () => {
     if (isTargetAlreadyReached()) {
       return <p>{resources.targetReachedMessage}</p>;
     }
+
     return (
       <>
         <div>
@@ -159,13 +171,14 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
           <CarouselSelector
             onBack={() => handleIndexChange(transactionArrIndex - 1)}
             onForward={() => handleIndexChange(transactionArrIndex + 1)}
-            currentSelectionIndex={transactionArrIndex + 1}
+            currentSelectionIndex={transactionArrIndex}
             maxSelectionIndex={matchingTransactions.length}
           />
         </div>
       </>
     );
   };
+
   // Note: YNAB has their zIndex at 9998. Keep the current ynab modal from disappearing.
   return ReactDOM.createPortal(
     <div className="tk-modal-container" style={{ zIndex: 10000 }}>

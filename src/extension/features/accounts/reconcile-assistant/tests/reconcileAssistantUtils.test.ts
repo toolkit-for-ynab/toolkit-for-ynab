@@ -55,6 +55,53 @@ describe('Reconcile Assistant Utils', () => {
     });
   });
 
+  describe('getUnclearedTransactions(transactions)', () => {
+    let utils: any;
+    beforeAll(() => {
+      utils = require('../reconcileAssistantUtils');
+    });
+
+    it('should return nothing if no transactions', () => {
+      let transactions: Array<Transaction> = [];
+      let results: Array<Transaction> = utils.getUnclearedTransactions(transactions);
+      expect(results.length).toBe(0);
+    });
+
+    it('should return only cleared transactions', () => {
+      let t1: Transaction = mockTransaction(5, 'Cleared');
+      let t2: Transaction = mockTransaction(10, 'Uncleared');
+      let transactions: Array<Transaction> = [t1, t2];
+
+      let result: Array<Transaction> = utils.getUnclearedTransactions(transactions);
+      expect(result.length).toBe(1);
+      expect(result[0]).toBe(t2);
+    });
+
+    it('should return nothing when there are no cleared transactions', () => {
+      let t1: Transaction = mockTransaction(5, 'Cleared');
+      let t2: Transaction = mockTransaction(10, 'Cleared');
+      let transactions: Array<Transaction> = [t1, t2];
+
+      let result: Array<Transaction> = utils.getUnclearedTransactions(transactions);
+      expect(result.length).toBe(0);
+    });
+  });
+
+  /**
+   * Helper function to mock a transaction
+   * @param {number} amount The amount of the transaction
+   * @param {string} cleared The cleared value
+   */
+  function mockTransaction(amount: number, cleared: string) {
+    return {
+      amount: amount,
+      cleared: cleared,
+      isUncleared: () => {
+        return cleared === 'Uncleared';
+      },
+    };
+  }
+
   describe('generatePowerset()', () => {
     let utils: any;
     beforeAll(() => {
