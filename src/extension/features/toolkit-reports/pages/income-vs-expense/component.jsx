@@ -10,6 +10,7 @@ import {
 } from './components/monthly-transaction-totals-table';
 import { MonthlyTotalsRow } from 'toolkit-reports/pages/income-vs-expense/components/monthly-totals-row';
 import './styles.scss';
+import { MonthlySavingsRatioRow } from './components/monthly-savings-ratio-row';
 
 export const MONTHLY_TOTALS_KEY = '__totals';
 
@@ -107,6 +108,16 @@ export class IncomeVsExpenseComponent extends React.Component {
             titleCell="Net Income"
             emphasizeTotals
           />
+          {!!ynabToolKit.options.SavingsRatio && (
+            <MonthlySavingsRatioRow
+              className="tk-ive__net-income"
+              incomes={incomes}
+              expenses={expenses}
+              threshold={parseFloat(ynabToolKit.options.SavingsRatio)}
+              titleCell="Savings Ratio"
+              emphasizeTotals
+            />
+          )}
         </div>
       </>
     );
