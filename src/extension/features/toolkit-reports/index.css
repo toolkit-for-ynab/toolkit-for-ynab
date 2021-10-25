@@ -2,7 +2,3 @@
   cursor: pointer;
   display: 'flex';
 }
-
-.nav-main .tk-react-reports-link.active a .flaticon {
-  color: #fed168;
-}
