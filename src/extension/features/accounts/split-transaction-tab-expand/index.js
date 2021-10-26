@@ -1,9 +1,8 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class SplitTransactionTabExpand extends Feature {
   shouldInvoke() {
-    return isCurrentRouteAccountsPage();
+    return true;
   }
 
   invoke() {
