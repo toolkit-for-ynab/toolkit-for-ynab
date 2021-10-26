@@ -13,6 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Toggle } from 'toolkit/components/toggle';
 import { RadioGroup } from 'toolkit/components/radio-group';
+import fuzzysort from 'fuzzysort';
 
 import './styles.scss';
 import { localToolkitStorage } from 'toolkit/core/common/storage';
@@ -393,6 +394,16 @@ export function ToolkitOptions() {
   const [searchQuery, setSearchQuery] = React.useState('');
   const { isOpen, setIsOpen } = useModal();
 
+  let settingsToDisplay = currentSettings.settings;
+  if (searchQuery.trim()) {
+    settingsToDisplay = fuzzysort
+      .go(searchQuery, settingsToDisplay, {
+        threshold: -40000,
+        keys: ['name', 'title', 'description'],
+      })
+      .map((result) => result.obj);
+  }
+
   return (
     <div className="tk-flex tk-flex-grow tk-flex-column">
       <ImportExportModal isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -464,18 +475,7 @@ export function ToolkitOptions() {
         </div>
       </div>
       <main className="tk-flex tk-flex-grow">
-        {currentPage !== 'support' && (
-          <SettingsList
-            settings={currentSettings.settings.filter((setting) => {
-              const query = searchQuery.toLowerCase();
-              return (
-                setting.name.toLowerCase().includes(query) ||
-                setting.title.toLowerCase().includes(query) ||
-                setting.description.toLowerCase().includes(query)
-              );
-            })}
-          />
-        )}
+        {currentPage !== 'support' && <SettingsList settings={settingsToDisplay} />}
         {currentPage === 'support' && <SupportPage />}
       </main>
       <footer className="footer">
