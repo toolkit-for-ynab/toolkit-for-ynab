@@ -44,7 +44,7 @@ export class ToolkitReports extends Feature {
 
     if (!$(TOOLKIT_REPORTS_NAVLINK_SELECTOR).length) {
       const toolkitReportsLink = $('<li>', {
-        class: TOOLKIT_REPORTS_NAVLINK_CLASS,
+        class: `navlink ${TOOLKIT_REPORTS_NAVLINK_CLASS}`,
       }).append(
         $('<a>', { class: 'tk-navlink' })
           .append($('<i>', { class: 'flaticon stroke document-4' }))
