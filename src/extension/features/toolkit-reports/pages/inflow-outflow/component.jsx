@@ -38,6 +38,7 @@ export class InflowOutflowComponent extends React.Component {
               inflows={this.state.hoveredData.inflows}
               outflows={this.state.hoveredData.outflows}
               diffs={this.state.hoveredData.diffs}
+              savings={this.state.hoveredData.savings}
             />
           )}
         </div>
@@ -48,7 +49,7 @@ export class InflowOutflowComponent extends React.Component {
 
   _renderReport = () => {
     const _this = this;
-    const { inflows, outflows, diffs, labels } = this.state.reportData;
+    const { inflows, outflows, diffs, savings, labels } = this.state.reportData;
 
     const pointHover = {
       events: {
@@ -59,6 +60,7 @@ export class InflowOutflowComponent extends React.Component {
               inflows: inflows[this.index],
               outflows: outflows[this.index],
               diffs: diffs[this.index],
+              savings: savings[this.index],
             },
           });
         },
@@ -236,6 +238,14 @@ export class InflowOutflowComponent extends React.Component {
     const filteredOutflows = outflows.slice(startIndex, endIndex);
     const filteredInflows = inflows.slice(startIndex, endIndex);
     const filteredDiffs = filteredOutflows.map((outflow, idx) => filteredInflows[idx] + outflow);
+    const filteredSavings = filteredOutflows.map((outflow, idx) => {
+      const inflow = filteredInflows[idx];
+      if (inflow >= Math.abs(outflow)) {
+        return 1 - Math.abs(outflow) / inflow;
+      }
+
+      return 0;
+    });
 
     this.setState(
       {
@@ -244,12 +254,14 @@ export class InflowOutflowComponent extends React.Component {
           inflows: filteredInflows[inflows.length - 1] || 0,
           outflows: filteredOutflows[outflows.length - 1] || 0,
           diffs: filteredDiffs[outflows.length - 1] || 0,
+          savings: filteredSavings[outflows.length - 1] || 0,
         },
         reportData: {
           labels: filteredLabels,
           outflows: filteredOutflows,
           inflows: filteredInflows,
           diffs: filteredDiffs,
+          savings: filteredSavings,
         },
       },
       this._renderReport
