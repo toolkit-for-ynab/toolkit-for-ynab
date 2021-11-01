@@ -12,8 +12,12 @@
     }
   ],
   "icons": {
+    "1024": "assets/images/icons/icon1024.png",
+    "512": "assets/images/icons/icon512.png",
+    "256": "assets/images/icons/icon256.png",
     "128": "assets/images/icons/icon128.png",
     "100": "assets/images/icons/icon100.png",
+    "64": "assets/images/icons/icon64.png",
     "48": "assets/images/icons/icon48.png",
     "32": "assets/images/icons/icon32.png",
     "16": "assets/images/icons/button.png"
