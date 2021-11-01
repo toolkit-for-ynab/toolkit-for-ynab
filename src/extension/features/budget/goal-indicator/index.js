@@ -38,6 +38,7 @@ export class GoalIndicator extends Feature {
       NEED: ['S', 'Spending goal'],
       TB: ['T', 'Target balance goal'],
       TBD: ['D', 'Target by date goal'],
+      DEBT: ['MD', 'Debt goal'],
     };
 
     const goalContainer = element.querySelector(`.${GOAL_TABLE_CELL_CLASSNAME}`);
