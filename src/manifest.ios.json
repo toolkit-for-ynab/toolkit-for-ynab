@@ -1,0 +1,6 @@
+{
+  "background": {
+    "scripts": ["background/background.js"],
+    "persistent": false
+  }
+}
