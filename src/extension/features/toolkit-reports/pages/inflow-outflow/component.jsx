@@ -180,9 +180,7 @@ export class InflowOutflowComponent extends React.Component {
 
       const transactionAccountId = transaction.get('accountId');
 
-      // We're checking for transferAccountId here instead of transaction.getIsOnBudgetTransfer()
-      // because the second returns false for transfers from/to tracking account
-      if (transaction.get('transferAccountId')) {
+      if (transaction.getIsOnBudgetTransfer()) {
         return;
       }
 

@@ -82,9 +82,7 @@ export class SpendingByCategoryComponent extends React.Component {
     const spendingByMasterCategory = new Map();
 
     this.props.filteredTransactions.forEach((transaction) => {
-      // We're checking for transferAccountId here instead of transaction.getIsOnBudgetTransfer()
-      // because the second returns false for transfers from/to tracking account
-      if (transaction.get('transferAccountId')) {
+      if (transaction.getIsOnBudgetTransfer()) {
         return;
       }
 
