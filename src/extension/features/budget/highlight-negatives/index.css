@@ -3,8 +3,8 @@
   color: var(--budget_balance_negative_text) !important;
 }
 
-body[data--square-negative-mode]
-  .budget-table-row
+body.tk-custom-colours-enabled[tk-custom-colours-negative-square]
   .ynab-new-budget-available-number.cautious.credit {
-  border-radius: 0rem;
+  border-radius: 0em !important;
+  -webkit-border-radius: 0em !important;
 }
