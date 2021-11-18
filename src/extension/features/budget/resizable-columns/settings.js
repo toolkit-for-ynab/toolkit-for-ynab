@@ -4,5 +4,5 @@ module.exports = {
   default: false,
   section: 'budget',
   title: 'Resizable Columns',
-  description: `Allows clicking/right-clicking the budget table headers to grow/shrink the width of the number columns. Middle-click to reset.`,
+  description: `Adds buttons in budget table headers to grow/shrink the width of the number columns. Right-click to reset.`,
 };

@@ -60,30 +60,25 @@ export class ResizableColumns extends Feature {
     e.stopPropagation();
   }
 
-  changeColumnSize(e) {
+  changeColumnSize(e, step) {
     e.preventDefault();
     e.stopPropagation();
 
-    const self = e.data;
+    let button = $(e.target);
 
-    // Some header elements have sub-elements - try going up one level
-    let columnHeader = $(e.target);
+    let columnHeader = button.parent();
     if (!columnHeader.hasClass(HEADER_CLASS)) columnHeader = columnHeader.parent();
     if (!columnHeader.hasClass(HEADER_CLASS)) return;
 
     // Find the column class - e.g. budget-table-cell-available, to find all cells in the column
-    const columnClass = self.getColumnClass(columnHeader);
+    const columnClass = this.getColumnClass(columnHeader);
     if (!columnClass) return;
 
-    let step = 0;
-    if (e.button === 0) step = GROW_STEP; // Left click
-    if (e.button === 2) step = -GROW_STEP; // Right click
+    let size = Math.max(this.getColumnSize(columnHeader) + GROW_STEP * step, 0);
+    if (step === 0) size = 0;
 
-    let size = Math.max(self.getColumnSize(columnHeader) + step, 0);
-    if (e.button === 1) size = 0; // Middle click
-
-    self.setColumnSize(columnClass, size);
-    self.saveColumnSize(columnClass, size);
+    this.setColumnSize(columnClass, size);
+    this.saveColumnSize(columnClass, size);
   }
 
   // Check to see if any new columns have been added by other features
@@ -103,30 +98,29 @@ export class ResizableColumns extends Feature {
     columns.each((index, colEl) => {
       const col = $(colEl);
       if (!col.hasClass(HEADER_CLASS)) {
-        col.on('click', this, this.changeColumnSize);
-        col.on('auxclick', this, this.changeColumnSize);
-        col.on('contextmenu', this, this.preventContextMenu);
+        const plus = $('<button class="tk-resizable-column-plus" title="">+</button>');
+        const minus = $('<button class="tk-resizable-column-minus" title="">-</button>');
 
-        const columnClass = this.getColumnClass(col);
-        const size = this.loadColumnSize(columnClass);
-        this.setColumnSize(columnClass, size);
+        plus.on('click', (e) => this.changeColumnSize(e, 1));
+        minus.on('click', (e) => this.changeColumnSize(e, -1));
+        plus.on('contextmenu', (e) => this.changeColumnSize(e, 0));
+        minus.on('contextmenu', (e) => this.changeColumnSize(e, 0));
 
+        col.append(plus, minus);
         col.addClass(HEADER_CLASS);
       }
     });
   }
 
   destroy() {
-    const columnHeaders = $(`.${HEADER_CLASS}`);
-    columnHeaders.off('click', this.changeColumnSize);
-    columnHeaders.off('auxclick', this.changeColumnSize);
-    columnHeaders.off('contextmenu', this.preventContextMenu);
+    $('.tk-resizable-column-plus').remove();
+    $('.tk-resizable-column-minus').remove();
 
+    const columnHeaders = $(`.${HEADER_CLASS}`);
     columnHeaders.each((id, el) => {
       const columnClass = this.getColumnClass($(el));
       this.setColumnSize(columnClass, 0);
     });
-
     columnHeaders.removeClass(HEADER_CLASS);
   }
 }

@@ -1,11 +1,36 @@
-.budget-table-header-labels li {
-  cursor: pointer;
-  user-select: none;
+.tk-resizable-column {
+  position: relative;
 }
 
-.budget-table-header-labels li.budget-table-cell-checkbox,
-.budget-table-header-labels li.budget-table-cell-collapse,
-.budget-table-header-labels li.budget-table-cell-margin,
-.budget-table-header-labels li.budget-table-cell-name {
-  cursor: auto;
+.tk-resizable-column:hover {
+  padding-right: 1.35rem !important;
+}
+
+.tk-resizable-column-plus,
+.tk-resizable-column-minus {
+  position: absolute;
+  right: 0;
+  height: 46%;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--sidebar_button_background_active);
+  border-radius: 30%;
+  opacity: 0;
+}
+
+.tk-resizable-column-plus {
+  top: 3%;
+}
+.tk-resizable-column-minus {
+  bottom: 3%;
+}
+
+.tk-resizable-column:hover .tk-resizable-column-plus,
+.tk-resizable-column:hover .tk-resizable-column-minus {
+  opacity: 1;
+}
+
+.tk-resizable-column-plus:hover,
+.tk-resizable-column-minus:hover {
+  color: var(--sidebar_label_primary);
+  background-color: var(--sidebar_button_background_active);
 }
