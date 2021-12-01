@@ -4,7 +4,7 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getCurrentBudgetDate, getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export class DisplayMonthlyGoalsOverview extends Feature {
-  containerClass = '.tk-monthly-goals-overview';
+  containerClass = 'tk-monthly-goals-overview';
 
   injectCSS() {
     return require('./index.css');
@@ -15,7 +15,7 @@ export class DisplayMonthlyGoalsOverview extends Feature {
   }
 
   destroy() {
-    document.querySelector(this.containerClass)?.remove();
+    document.querySelector('.' + this.containerClass)?.remove();
   }
 
   extractCategoryGoalInformation(element) {
@@ -76,7 +76,7 @@ export class DisplayMonthlyGoalsOverview extends Feature {
     const [income, budgeted, spent] = this.calculateTotalAssigned();
     const [savingsGoals, spendingGoals] = this.calculateTotalGoals();
 
-    $(this.containerClass).remove();
+    $('.' + this.containerClass).remove();
 
     this.createInspectorElement(income, budgeted, spent, savingsGoals, spendingGoals).insertBefore(
       $('.card.budget-breakdown-monthly-totals', element)
@@ -123,7 +123,7 @@ export class DisplayMonthlyGoalsOverview extends Feature {
       }
 
       goalsHTML += `
-        <section class="card tk-total-monthly-goals">
+        <section class="card ${this.containerClass}">
           <div class="monthly-goals-header">
             <h2>
               ${elementHeader}

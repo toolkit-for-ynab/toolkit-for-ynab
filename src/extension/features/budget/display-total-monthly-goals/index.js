@@ -3,14 +3,14 @@ import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class DisplayTotalMonthlyGoals extends Feature {
-  containerClass = '.tk-total-monthly-goals';
+  containerClass = 'tk-total-monthly-goals';
 
   shouldInvoke() {
     return true;
   }
 
   destroy() {
-    document.querySelector(this.containerClass)?.remove();
+    document.querySelector('.' + this.containerClass)?.remove();
   }
 
   extractCategoryGoalInformation(element) {
@@ -55,7 +55,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
     const currencyClass = goalsAmount === 0 ? 'zero' : 'positive';
 
     return $(`
-      <section class="card tk-total-monthly-goals">
+      <section class="card ${this.containerClass}">
         <div class="card-roll-up">
           <h2>
             Total Monthly Goals
@@ -72,7 +72,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
   addTotalMonthlyGoals(element) {
     const monthlyGoals = this.calculateMonthlyGoals();
 
-    $(this.containerClass).remove();
+    $('.' + this.containerClass).remove();
 
     const shouldShowInspector = monthlyGoals.checkedCategoryCount !== 1;
     if (!shouldShowInspector) {
