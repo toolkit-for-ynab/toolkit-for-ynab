@@ -15,6 +15,7 @@ import {
   storeDateFilters,
 } from 'toolkit-reports/utils/storage';
 import { IncomeBreakdown } from '../../../pages/income-breakdown/container';
+import { Forecast } from '../../../pages/forecast';
 
 export const SelectedReportContextPropType = {
   component: PropTypes.func.isRequired,
@@ -92,6 +93,14 @@ const REPORT_COMPONENTS = [
     filterSettings: {
       disableTrackingAccounts: true,
       includeTrackingAccounts: false,
+    },
+  },
+  {
+    component: Forecast,
+    key: ReportKeys.Forecast,
+    filterSettings: {
+      disableTrackingAccounts: false,
+      includeTrackingAccounts: true,
     },
   },
 ];
