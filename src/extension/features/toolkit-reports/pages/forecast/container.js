@@ -3,7 +3,6 @@ import { ForecastComponent } from './component';
 
 function mapReportContextToProps(context) {
   return {
-    filters: context.filters,
     allReportableTransactions: context.allReportableTransactions,
   };
 }
