@@ -5,6 +5,7 @@ import Highcharts from 'highcharts';
 import moment from 'moment';
 
 export function ForecastComponent({ filteredTransactions }) {
+  const [netWorth, setNetWorth] = useState();
   const [forecasts, setForecasts] = useState([]);
   const [chart, setChart] = useState();
   const chartRef = useRef();
@@ -13,7 +14,9 @@ export function ForecastComponent({ filteredTransactions }) {
 
   useEffect(() => {
     console.log({ filteredTransactions });
-    setForecasts(generateForecasts(filteredTransactions));
+    const newForecasts = generateForecasts(filteredTransactions);
+    setForecasts(newForecasts);
+    setNetWorth(newForecasts[0][0]);
   }, [filteredTransactions]);
 
   useEffect(() => {
@@ -39,11 +42,12 @@ export function ForecastComponent({ filteredTransactions }) {
               return now
                 .clone()
                 .add(this.value + 1, 'w')
-                .format('YYYY-MM-DD');
+                .format('MMM YYYY');
             },
           },
         },
         yAxis: {
+          title: { text: '' },
           labels: {
             formatter: function () {
               return `$${Number(this.value / 1000).toLocaleString()}`;
@@ -52,12 +56,18 @@ export function ForecastComponent({ filteredTransactions }) {
         },
         tooltip: {
           formatter: function () {
-            return `${this.series.name}: <b>$${Number(
-              this.point.y / 1000
-            ).toLocaleString()}</b><br />${now
+            const series = this.series.name;
+            const years = this.point.x / 52;
+            const dollars = this.point.y / 1000;
+            const dollarString = Number(dollars).toLocaleString();
+            const apy = Math.log(dollars / (netWorth / 1000)) / years;
+            const apyString = `${(apy * 100).toFixed(1)}%`;
+            const date = now
               .clone()
               .add(this.point.x + 1, 'w')
-              .format('YYYY-MM-DD')}`;
+              .format('YYYY-MM-DD');
+
+            return `${series}: <b>$${dollarString}</b><br />APY: ${apyString}<br />${date}`;
           },
         },
         series: confidences.map((c) => ({
