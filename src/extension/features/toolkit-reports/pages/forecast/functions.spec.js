@@ -4,15 +4,15 @@ import moment from 'moment';
 
 jest.mock('./random');
 
-function makeTransactions(inputGroups) {
-  return inputGroups.map((inputs) =>
-    inputs.map((input) => ({
-      inflow: 0,
-      outflow: 0,
-      date: moment('1995-12-25').utc(),
-      ...input,
-    }))
-  );
+function makeTransactions(inputs) {
+  return inputs.map((input) => ({
+    inflow: 0,
+    outflow: 0,
+    ...input,
+    date: {
+      toUTCMoment: () => moment(input?.date || '1995-12-25').utc(),
+    },
+  }));
 }
 
 function getForecastsResult(inputGroups) {
@@ -25,15 +25,11 @@ describe('forecast page functions', () => {
   it('returns various confidences', async () => {
     const result = generateForecasts();
 
-    expect(result).toHaveProperty('10');
-    expect(result).toHaveProperty('25');
-    expect(result).toHaveProperty('50');
-    expect(result).toHaveProperty('75');
-    expect(result).toHaveProperty('90');
+    expect(result).toHaveLength(100);
   });
 
   it('generates forecasts using transactions', async () => {
-    const result = getForecastsResult([[{ inflow: 1 }]]);
+    const result = getForecastsResult([{ inflow: 1 }]);
 
     const expected = Array.from({ length: 10 * 52 }, (v, i) => i + 1);
 
@@ -41,7 +37,7 @@ describe('forecast page functions', () => {
   });
 
   it('uses transactions', async () => {
-    const result = getForecastsResult([[{ inflow: 2 }]]);
+    const result = getForecastsResult([{ inflow: 2 }]);
 
     const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2);
 
@@ -49,7 +45,7 @@ describe('forecast page functions', () => {
   });
 
   it('supports outflows', async () => {
-    const result = getForecastsResult([[{ outflow: 1 }]]);
+    const result = getForecastsResult([{ outflow: 1 }]);
 
     const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * -1);
 
@@ -57,7 +53,7 @@ describe('forecast page functions', () => {
   });
 
   it('generates forecasts for all confidences', async () => {
-    const result = getForecastsResult([[{ inflow: 1 }]]);
+    const result = getForecastsResult([{ inflow: 1 }]);
 
     const expected = Array.from({ length: 10 * 52 }, (v, i) => i + 1);
 
@@ -68,21 +64,9 @@ describe('forecast page functions', () => {
     random.mockImplementation((list) => list[1]);
 
     const result = getForecastsResult([
-      [
-        { inflow: 1, date: moment('1995-11-20').utc() },
-        { inflow: 2, date: moment('1995-11-27').utc() },
-      ],
+      { inflow: 1, date: '1995-11-20' },
+      { inflow: 2, date: '1995-11-27' },
     ]);
-
-    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2);
-
-    expect(result).toHaveProperty('10', expected);
-  });
-
-  it('uses transactions from all groups', async () => {
-    random.mockImplementation((list) => list[0]);
-
-    const result = getForecastsResult([[{ inflow: 1 }], [{ inflow: 1 }]]);
 
     const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2);
 
@@ -91,16 +75,14 @@ describe('forecast page functions', () => {
 
   it('sums weeks', async () => {
     const result = getForecastsResult([
-      [
-        {
-          inflow: 1,
-          date: moment('1995-12-25').utc(),
-        },
-        {
-          inflow: 1,
-          date: moment('1995-12-26').utc(),
-        },
-      ],
+      {
+        inflow: 1,
+        date: '1995-12-25',
+      },
+      {
+        inflow: 1,
+        date: '1995-12-26',
+      },
     ]);
 
     const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2);
@@ -117,16 +99,14 @@ describe('forecast page functions', () => {
     });
 
     const result = getForecastsResult([
-      [
-        {
-          inflow: 1,
-          date: moment('1995-11-20').utc(),
-        },
-        {
-          inflow: 2,
-          date: moment('1995-11-27').utc(),
-        },
-      ],
+      {
+        inflow: 1,
+        date: '1995-11-20',
+      },
+      {
+        inflow: 2,
+        date: '1995-11-27',
+      },
     ]);
 
     const expected = [1, 3, 4, 6, 7, 9];
@@ -138,21 +118,71 @@ describe('forecast page functions', () => {
     random.mockImplementation((list) => list[1]);
 
     const result = getForecastsResult([
-      [
-        {
-          inflow: 1,
-          date: moment('1995-11-25').utc(),
-        },
-        {
-          inflow: 2,
-          date: moment('1995-12-25').utc(),
-        },
-      ],
+      {
+        inflow: 1,
+        date: '1995-11-25',
+      },
+      {
+        inflow: 2,
+        date: '1995-12-25',
+      },
     ]);
 
     expect(result[10][0]).toEqual(0);
   });
+
+  it('sorts forecasts', async () => {
+    let i = 0;
+    random.mockImplementation((list) => {
+      i++;
+      if (i > 10 * 52) return list[0];
+      return list[1];
+    });
+
+    const result = getForecastsResult([
+      {
+        inflow: 1,
+        date: '1995-11-20',
+      },
+      {
+        inflow: 2,
+        date: '1995-11-27',
+      },
+    ]);
+
+    const first = result[0][10 * 52 - 1];
+    const last = result[99][10 * 52 - 1];
+
+    expect(last < first).toBeTruthy();
+  });
+
+  it('can use last week', async () => {
+    random.mockImplementation((list) => {
+      return list[list.length - 1];
+    });
+
+    const result = getForecastsResult([
+      { inflow: 1, date: '1995-11-20' },
+      { inflow: 2, date: '1995-11-27' },
+    ]);
+
+    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2);
+
+    expect(result).toHaveProperty('10', expected);
+  });
+
+  it('excludes starting balance from forecasts', async () => {
+    random.mockImplementation((list) => list[0]);
+
+    const result = getForecastsResult([
+      { inflow: 1, date: '1995-11-20', payeeName: 'Starting Balance' },
+    ]);
+
+    expect(result[0][0]).toEqual(0);
+  });
 });
 
 // TODO
-// Only include last 52 weeks in pool
+// Add current net worth to all numbers
+// Divide by 100 so forecasts are in dollars, round to cents
+// Add x-axis dates
