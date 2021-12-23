@@ -25,11 +25,6 @@ export function ForecastComponent({ filteredTransactions }) {
 
     const now = moment();
 
-    // function prepareData(data) {
-    //   if (!data?.length) return [];
-    //   return data.map((d, i) => [now.clone().add(i + 1, 'w'), d]);
-    // }
-
     setChart(
       new Highcharts.Chart({
         credits: false,
@@ -51,14 +46,14 @@ export function ForecastComponent({ filteredTransactions }) {
         yAxis: {
           labels: {
             formatter: function () {
-              return `$${Number(this.value / 100).toLocaleString()}`;
+              return `$${Number(this.value / 1000).toLocaleString()}`;
             },
           },
         },
         tooltip: {
           formatter: function () {
             return `${this.series.name}: <b>$${Number(
-              this.point.y / 100
+              this.point.y / 1000
             ).toLocaleString()}</b><br />${now
               .clone()
               .add(this.point.x + 1, 'w')

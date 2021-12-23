@@ -31,7 +31,8 @@ describe('forecast page functions', () => {
   it('generates forecasts using transactions', async () => {
     const result = getForecastsResult([{ inflow: 1 }]);
 
-    const expected = Array.from({ length: 10 * 52 }, (v, i) => i + 1);
+    // i+2: i is zero-based; 2 adjusts for this and adds initial networth
+    const expected = Array.from({ length: 10 * 52 }, (v, i) => i + 2);
 
     expect(result).toHaveProperty('10', expected);
   });
@@ -39,7 +40,7 @@ describe('forecast page functions', () => {
   it('uses transactions', async () => {
     const result = getForecastsResult([{ inflow: 2 }]);
 
-    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2);
+    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2 + 2);
 
     expect(result).toHaveProperty('10', expected);
   });
@@ -47,7 +48,7 @@ describe('forecast page functions', () => {
   it('supports outflows', async () => {
     const result = getForecastsResult([{ outflow: 1 }]);
 
-    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * -1);
+    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * -1 - 1);
 
     expect(result).toHaveProperty('10', expected);
   });
@@ -55,7 +56,7 @@ describe('forecast page functions', () => {
   it('generates forecasts for all confidences', async () => {
     const result = getForecastsResult([{ inflow: 1 }]);
 
-    const expected = Array.from({ length: 10 * 52 }, (v, i) => i + 1);
+    const expected = Array.from({ length: 10 * 52 }, (v, i) => i + 2);
 
     Object.keys(result).forEach((k) => expect(result).toHaveProperty(k, expected));
   });
@@ -68,7 +69,7 @@ describe('forecast page functions', () => {
       { inflow: 2, date: '1995-11-27' },
     ]);
 
-    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2);
+    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2 + 3);
 
     expect(result).toHaveProperty('10', expected);
   });
@@ -85,7 +86,7 @@ describe('forecast page functions', () => {
       },
     ]);
 
-    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2);
+    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2 + 2);
 
     expect(result).toHaveProperty('10', expected);
   });
@@ -109,7 +110,7 @@ describe('forecast page functions', () => {
       },
     ]);
 
-    const expected = [1, 3, 4, 6, 7, 9];
+    const expected = [4, 6, 7, 9, 10, 12];
 
     expect(result[10].slice(0, 6)).toEqual(expected);
   });
@@ -128,7 +129,7 @@ describe('forecast page functions', () => {
       },
     ]);
 
-    expect(result[10][0]).toEqual(0);
+    expect(result[10][0]).toEqual(3);
   });
 
   it('sorts forecasts', async () => {
@@ -166,7 +167,7 @@ describe('forecast page functions', () => {
       { inflow: 2, date: '1995-11-27' },
     ]);
 
-    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2);
+    const expected = Array.from({ length: 10 * 52 }, (v, i) => (i + 1) * 2 + 3);
 
     expect(result).toHaveProperty('10', expected);
   });
@@ -178,11 +179,7 @@ describe('forecast page functions', () => {
       { inflow: 1, date: '1995-11-20', payeeName: 'Starting Balance' },
     ]);
 
-    expect(result[0][0]).toEqual(0);
+    // but not initial net worth
+    expect(result[0][0]).toEqual(1);
   });
 });
-
-// TODO
-// Add current net worth to all numbers
-// Divide by 100 so forecasts are in dollars, round to cents
-// Add x-axis dates

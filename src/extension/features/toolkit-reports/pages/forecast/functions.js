@@ -27,13 +27,17 @@ function makeWeeks(transactions) {
   }, {});
 }
 
-function generateForecast(weeks) {
+function calculateNetWorth(transactions) {
+  return transactions?.reduce((acc, t) => acc + t.inflow - t.outflow, 0) || 0;
+}
+
+function generateForecast(weeks, netWorth) {
   const weekKeys = Object.keys(weeks);
   const tenYears = Array.from({ length: 10 * 52 }, () => null);
 
   return tenYears.reduce((accumulator, current, i) => {
     if (!weekKeys.length) return [...accumulator, 0];
-    const prev = i > 0 ? accumulator[i - 1] : 0;
+    const prev = i > 0 ? accumulator[i - 1] : netWorth;
     if (Number.isNaN(prev)) {
       throw new Error('Not a number');
     }
@@ -44,8 +48,9 @@ function generateForecast(weeks) {
 
 export function generateForecasts(transactions) {
   const weeks = makeWeeks(transactions);
+  const netWorth = calculateNetWorth(transactions);
 
   return range(0, 99)
-    .map(() => generateForecast(weeks))
+    .map(() => generateForecast(weeks, netWorth))
     .sort((a, b) => b[b.length - 1] - a[a.length - 1]);
 }
