@@ -37,7 +37,6 @@ export class ToolkitReports extends Feature {
       $(YNAB_CONTENT_CONTAINER_SELECTOR).append(
         $('<div>', {
           id: TOOLKIT_REPORTS_CONTAINER_ID,
-          css: { height: '100%' },
         })
       );
     }
@@ -87,6 +86,7 @@ export class ToolkitReports extends Feature {
     const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
     if (container) {
       ReactDOM.unmountComponentAtNode(container);
+      $(container).css('height', '');
     }
 
     // Update the nav with the active indicator
@@ -106,6 +106,7 @@ export class ToolkitReports extends Feature {
       // Display the toolkit's report
       const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
       if (container) {
+        $(container).css('height', '100%');
         ReactDOM.render(React.createElement(Root), container);
       }
     }, 50);
