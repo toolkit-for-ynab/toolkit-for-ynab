@@ -14,9 +14,11 @@ const resources = {
   transactionAmount: 'Amount',
   currentClearedBalance: 'YNAB Cleared Balance:',
   currentAccountBalance: 'Current Account Balance:',
-  matchingTransactionsSummary: 'Found {0} sets of uncleared transactions totaling to {1}.',
+  matchingTransactionsSummary: 'Found {0} of uncleared transactions totaling to {1}.',
   noOptionsAvailable: 'No Options Available',
   of: 'of',
+  setsPlural: 'sets',
+  setsSingular: 'set',
 };
 
 export default resources;
