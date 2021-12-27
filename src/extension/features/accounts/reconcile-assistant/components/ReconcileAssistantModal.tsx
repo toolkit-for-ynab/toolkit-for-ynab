@@ -117,8 +117,13 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
    * @returns {string} The text of the matching result
    */
   function matchingTransactionResult(numMatches: number, target: number): string {
-    let summary = resources.matchingTransactionsSummary;
-    summary = summary.replace('{0}', matchingTransactions.length.toString());
+    let summary: string = resources.matchingTransactionsSummary;
+    let unit: string = resources.setsPlural;
+    if (matchingTransactions.length === 1) {
+      unit = resources.setsSingular;
+    }
+    let result: string = matchingTransactions.length.toString() + ' ' + unit;
+    summary = summary.replace('{0}', result);
     summary = summary.replace('{1}', formatCurrency(target));
     return summary;
   }
@@ -167,14 +172,16 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
           </p>
         </div>
         <TransactionsTable transactions={chosenTransactionSet} />
-        <div style={{ alignSelf: 'center' }}>
-          <CarouselSelector
-            onBack={() => handleIndexChange(transactionArrIndex - 1)}
-            onForward={() => handleIndexChange(transactionArrIndex + 1)}
-            currentSelectionIndex={transactionArrIndex}
-            maxSelectionIndex={matchingTransactions.length}
-          />
-        </div>
+        {matchingTransactions.length > 0 && (
+          <div style={{ alignSelf: 'center' }}>
+            <CarouselSelector
+              onBack={() => handleIndexChange(transactionArrIndex - 1)}
+              onForward={() => handleIndexChange(transactionArrIndex + 1)}
+              currentSelectionIndex={transactionArrIndex}
+              maxSelectionIndex={matchingTransactions.length}
+            />
+          </div>
+        )}
       </>
     );
   };
