@@ -87,6 +87,12 @@ function gatherNewSettings() {
   });
 }
 
+function isFeatureEnabled(setting) {
+  return (
+    (typeof setting === 'boolean' && setting) || (typeof setting === 'string' && setting !== '0')
+  );
+}
+
 function validateSetting(settingObj) {
   const featureSettings = settingObj.setting;
   const settingFilename = settingObj.file;
@@ -112,24 +118,22 @@ function validateSetting(settingObj) {
 
   previousSettings.add(featureSettings.name);
 
-  switch (featureSettings.type) {
-    case 'checkbox':
-      if (featureSettings.default === true && !defaultFeatures.includes(featureSettings.name)) {
-        logWarning(
-          settingFilename,
-          `${featureSettings.name} is not expected to be defaulted to on. If this default was intentional, add the feature name to the defaultFeatures array found in package.json`
-        );
-      }
-      break;
-    case 'select':
-      break;
-    case 'color':
-      break;
-    default:
-      logFatal(
-        settingFilename,
-        `type "${featureSettings.type}" is invalid. Allowed types are: "select", "checkbox", and "color"`
-      );
+  if (!['checkbox', 'select', 'color'].includes(featureSettings.type)) {
+    logFatal(
+      settingFilename,
+      `type "${featureSettings.type}" is invalid. Allowed types are: "select", "checkbox", and "color"`
+    );
+  }
+
+  if (
+    featureSettings.type !== 'color' &&
+    isFeatureEnabled(featureSettings.default) &&
+    !defaultFeatures.includes(featureSettings.name)
+  ) {
+    logWarning(
+      settingFilename,
+      `${featureSettings.name} is not expected to be defaulted to on. If this default was intentional, add the feature name to the defaultFeatures array found in package.json`
+    );
   }
 
   return featureSettings;

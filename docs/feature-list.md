@@ -103,6 +103,10 @@ Add an indicator to subcategories with goals. Types: (M)onthly goal, target by (
 
 Add a toggle to the budget table header to expand/collapse all categories at once. You can also enable "Solo Mode" by right clicking the toggle which will ensure only one category is expanded at a time.
 
+## Add Monthly Goals Overview
+
+Add a 'Monthly Goals Overview' section to the budget inspector, which displays info about monthly funding goals.
+
 ## Add Pacing
 
 Add a column for "pacing" which shows you how much money you have left in your budget proportionate to how much time is left in the month.
@@ -138,6 +142,14 @@ Add progress bars and a vertical bar that shows how far you are through the mont
 ## Colored Master Category Row
 
 Adds Color to Master Category Row.
+
+## Colored Master Category Row - Dark Theme Color
+
+The color which will be used for the Dark YNAB Theme. The default is #636366.
+
+## Colored Master Category Row - Default/Classic Theme Color
+
+The color which will be used for the Default and Classic YNAB Themes. The default is #d1d1d6.
 
 ## Credit Card Emoji
 

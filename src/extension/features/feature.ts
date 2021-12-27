@@ -66,11 +66,32 @@ export class Feature {
     routeChangeListener.removeFeature(this);
   }
 
+  debounce(fn: (element: HTMLElement) => void, timeout: number): (element: HTMLElement) => void {
+    const timers = new Map<string, number>();
+    return (element: HTMLElement) => {
+      if (timers.has(element.id)) {
+        window.clearTimeout(timers.get(element.id));
+      }
+
+      timers.set(
+        element.id,
+        window.setTimeout(() => {
+          fn.call(this, element);
+        }, timeout)
+      );
+    };
+  }
+
   addToolkitEmberHook(
     componentKey: string,
     lifecycleHook: SupportedEmberHook,
-    fn: (element: HTMLElement) => void
+    fn: (element: HTMLElement) => void,
+    options?: { debounce: number }
   ): void {
+    if (options && options.debounce) {
+      fn = this.debounce(fn, options.debounce);
+    }
+
     addToolkitEmberHook(this, componentKey, lifecycleHook, fn);
     this.__hooks.set(`${componentKey}:${lifecycleHook}`, fn);
 

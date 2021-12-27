@@ -14,40 +14,63 @@ export class CalculateIRR extends Feature {
   }
 
   invoke() {
-    let { selectedAccountId, filters } = controllerLookup('accounts');
+    let { selectedAccount, selectedAccountId, filters } = controllerLookup('accounts');
     let { filterFrom, filterTo } = this._getFilterDates(filters);
-    let totalIrr = (100 * this._calculateIRR(selectedAccountId)).toFixed(2) + ' %';
+    let totalIrr = this._calculateIRR(selectedAccountId);
+    if (totalIrr === Infinity) {
+      console.log('YNAB Toolkit - Calculate IRR Error:  Infinity Result');
+      return this.destroy();
+    }
+    if (Number.isNaN(totalIrr)) {
+      totalIrr = 'Error';
+    } else {
+      totalIrr = (100 * totalIrr).toFixed(2) + ' %';
+    }
     let filteredIrr = '';
     let irrYear;
     if (filterFrom.getYear() === filterTo.getYear()) {
-      filteredIrr =
-        (
-          100 * this._calculateIRR(selectedAccountId, { fromDate: filterFrom, toDate: filterTo })
-        ).toFixed(2) + ' %';
-      irrYear = filterTo.getYear();
+      filteredIrr = this._calculateIRR(selectedAccountId, {
+        fromDate: filterFrom,
+        toDate: filterTo,
+      });
+      if (filteredIrr === Infinity) irrYear = null;
+      else irrYear = filterTo.getYear();
+      if (Number.isNaN(filteredIrr)) {
+        filteredIrr = 'Error';
+      } else {
+        filteredIrr = (100 * filteredIrr).toFixed(2) + ' %';
+      }
     }
     let headerIrr = $(`.tk-accounts-header-irr`);
     let totalIrrContainer = $(`#tk-total-irr`);
     let filteredIrrContainer = $(`#tk-filtered-irr`);
 
+    let textTotal = 'Total Annualized Return';
+    let textFiltered = 'Annualized Return';
+    if (selectedAccount.isOtherLiabilityAccount || selectedAccount.isMortgage) {
+      textTotal = 'Estimated APR';
+      textFiltered = 'Estimated APR';
+    }
+
     if (!headerIrr || headerIrr.length === 0) {
       $('.accounts-header-balances').append(
         `<div class="tk-accounts-header-irr">
         <div class="tk-accounts-header-irr-div">
-          <span id="tk-filtered-irr">${filteredIrr}</span>
-          <div id="tk-accounts-header-filtered-irr-label">${irrYear} Annualized Return</div>
+          <span id="tk-filtered-irr"></span>
+          <div id="tk-accounts-header-filtered-irr-label"></div>
         </div>
         <div class="tk-accounts-header-irr-div">
-          <span id="tk-total-irr">${totalIrr}</span>
-          <div id="tk-accounts-header-total-irr-label">Total Annualized Return</div>
+          <span id="tk-total-irr"></span>
+          <div id="tk-accounts-header-total-irr-label"></div>
         </div>
       </div>`
       );
     }
 
     totalIrrContainer.text(totalIrr);
+    $(`#tk-accounts-header-total-irr-label`).text(textTotal);
     filteredIrrContainer.text(filteredIrr);
-    $(`#tk-accounts-header-filtered-irr-label`).text(irrYear + ' Annualized Return');
+    $(`#tk-accounts-header-filtered-irr-label`).text(irrYear + ' ' + textFiltered);
     $(`#tk-accounts-header-filtered-irr-label`)
       .parent()
       .toggle(irrYear != null);
@@ -183,7 +206,7 @@ export class CalculateIRR extends Feature {
     } while (continueLoop && ++iteration < iterMax);
 
     if (continueLoop) {
-      console.log('Calculate IRR -- Max Iterations Exceeded');
+      console.log('YNAB Toolkit - Calculate IRR Error:  Max Iterations Exceeded');
       console.log(iterationLog);
       return NaN;
     }

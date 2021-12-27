@@ -1,6 +1,10 @@
 import { Feature } from 'toolkit/extension/features/feature';
 
 export class SplitTransactionTabExpand extends Feature {
+  shouldInvoke() {
+    return true;
+  }
+
   invoke() {
     this.addToolkitEmberHook('register/grid-split', 'didRender', this.addEventListeners);
   }

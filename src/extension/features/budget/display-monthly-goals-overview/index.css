@@ -1,0 +1,35 @@
+.card-roll-up-total-goals {
+  padding: 16px;
+}
+
+.goals-row {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.goals-row-total-spacer {
+  background-color: var(--tk-color-goal-warning-underfunded-message-border);
+  height: 2px;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.card-roll-up-total-goals > h2 > span {
+  padding: 0 0.2em !important;
+}
+
+.card-roll-up-total-goals > div > .positive {
+  color: var(--budget_balance_positive_background);
+}
+
+.card-roll-up-total-goals > div > .negative {
+  color: var(--budget_balance_negative_background);
+}
+
+.card-roll-up-total-goals > div > .zero {
+  color: var(--tk-color-goal-warning-underfunded);
+}
+
+.card-roll-up-total-goals > div > .warning {
+  color: var(--budget_balance_warning_background);
+}

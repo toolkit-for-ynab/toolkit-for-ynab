@@ -1,7 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Currency } from 'toolkit-reports/common/components/currency';
+import { Percentage } from 'toolkit-reports/common/components/percentage';
 import './styles.scss';
+import classnames from 'classnames';
 
 export const Legend = (props) => (
   <React.Fragment>
@@ -29,7 +31,11 @@ export const Legend = (props) => (
         <Currency value={props.inflows} />
       </div>
     </div>
-    <div className="tk-mg-05 tk-pd-r-1">
+    <div
+      className={classnames('tk-mg-05 tk-pd-r-1', {
+        'tk-border-r': !!ynabToolKit.options.SavingsRatio,
+      })}
+    >
       <div className="tk-flex tk-mg-b-05 tk-align-items-center">
         <div className="tk-inflow-outflow-legend__icon-inflow-outflows" />
         <div className="tk-mg-l-05">Difference</div>
@@ -38,6 +44,15 @@ export const Legend = (props) => (
         <Currency value={props.diffs} />
       </div>
     </div>
+    {!!ynabToolKit.options.SavingsRatio && (
+      <div className="tk-mg-05 tk-pd-r-1">
+        <div className="tk-flex tk-mg-b-05 tk-align-items-center">
+          <div className="tk-inflow-outflow-legend__icon-inflow-outflows" />
+          <div className="tk-mg-l-05">Savings Ratio</div>
+        </div>
+        <Percentage value={props.savings} numbersAfterPoint={1} pretty />
+      </div>
+    )}
   </React.Fragment>
 );
 

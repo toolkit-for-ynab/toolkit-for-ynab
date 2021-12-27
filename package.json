@@ -1,6 +1,6 @@
 {
   "name": "toolkit-for-ynab",
-  "version": "2.35.1",
+  "version": "2.36.1",
   "private": true,
   "scripts": {
     "prepare": "husky install",
@@ -10,13 +10,15 @@
     "build:development": "yarn build:check && yarn webpack:development && yarn manifest:development",
     "build:prod": "yarn build:production",
     "build:production": "yarn build:check && yarn webpack:production && yarn compress",
+    "build:ios": "yarn build:check && yarn webpack:production && yarn manifest:ios",
     "build:webpack": "webpack",
     "compress": "yarn compress:dist && yarn compress:src",
     "compress:dist": "node scripts/compressDist.js",
     "compress:src": "node scripts/compressSrc.js",
     "deploy:beta": "git fetch origin master:beta && git push origin beta",
-    "manifest:beta": "node scripts/applyManifestOverrides.js --env=beta",
-    "manifest:development": "node scripts/applyManifestOverrides.js --env=development",
+    "manifest:beta": "node scripts/applyManifestOverrides.js --type=beta",
+    "manifest:development": "node scripts/applyManifestOverrides.js --type=development",
+    "manifest:ios": "node scripts/applyManifestOverrides.js --type=ios",
     "webpack:beta": "yarn build:webpack --env buildType=beta",
     "webpack:development": "yarn build:webpack --env buildType=development",
     "webpack:production": "yarn build:webpack --env buildType=production",
@@ -79,7 +81,8 @@
     "ShowIntercom",
     "SplitKeyboardShortcut",
     "ToggleAccountColumns",
-    "ToolkitReports"
+    "ToolkitReports",
+    "SavingsRatio"
   ],
   "husky": {
     "hooks": {
@@ -160,7 +163,7 @@
     "yargs": "^17.0.1"
   },
   "engines": {
-    "node": "^8.16.0 || >=10.13.0 <=14",
+    "node": ">=14 <=16",
     "yarn": ">=1.10.0"
   }
 }
