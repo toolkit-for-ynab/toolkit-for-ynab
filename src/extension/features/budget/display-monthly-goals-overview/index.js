@@ -65,7 +65,7 @@ export class DisplayMonthlyGoalsOverview extends Feature {
         return;
       }
 
-      if (goalData.type === 'MF') savingsGoals += goalData.goal;
+      if (['MF', 'TBD'].includes(goalData.type)) savingsGoals += goalData.goal;
       else if (goalData.type === 'NEED') spendingGoals += goalData.goal;
     });
 
