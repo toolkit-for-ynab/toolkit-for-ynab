@@ -20,8 +20,8 @@ const BreakdownItem = ({ label, children, className = '' }) => {
   );
 };
 
-export class DisplayMonthlyGoalsOverview extends Feature {
-  containerClass = 'tk-monthly-goals-overview-develop';
+export class DisplayTotalMonthlyGoals extends Feature {
+  containerClass = 'tk-monthly-goals-overview';
 
   get configuration() {
     return this.settings.enabled || 'show-total-only';
