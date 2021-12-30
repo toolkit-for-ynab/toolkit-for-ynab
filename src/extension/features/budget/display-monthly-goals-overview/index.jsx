@@ -49,6 +49,7 @@ export class DisplayMonthlyGoalsOverview extends Feature {
       categoryName: category.displayName,
       type: category.goalType,
       goal: parseInt(category.goalTarget || 0, 10),
+      isChecked: category.get('isChecked'),
     };
   }
 
@@ -77,8 +78,17 @@ export class DisplayMonthlyGoalsOverview extends Feature {
   }
 
   calculateTotalGoals() {
-    var savingsGoals = 0;
-    var spendingGoals = 0;
+    const categoryGoals = {
+      totalGoalsAmount: {
+        savings: 0,
+        spending: 0,
+      },
+      checkedTotalGoalsAmount: {
+        savings: 0,
+        spending: 0,
+      },
+      checkedCategoriesCount: 0,
+    };
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
       const goalData = this.extractCategoryGoalInformation(element);
@@ -86,22 +96,46 @@ export class DisplayMonthlyGoalsOverview extends Feature {
         return;
       }
 
-      if (['MF', 'TBD'].includes(goalData.type)) savingsGoals += goalData.goal;
-      else if (goalData.type === 'NEED') spendingGoals += goalData.goal;
+      if (goalData.isChecked) {
+        categoryGoals.checkedCategoriesCount++;
+      }
+
+      categoryGoals.total += goalData.goal;
+      if (['MF', 'TBD'].includes(goalData.type)) {
+        categoryGoals.totalGoalsAmount.savings += goalData.goal;
+        if (goalData.isChecked) {
+          categoryGoals.checkedTotalGoalsAmount.savings += goalData.goal;
+        }
+      } else if (goalData.type === 'NEED') {
+        categoryGoals.totalGoalsAmount.spending += goalData.goal;
+        if (goalData.isChecked) {
+          categoryGoals.checkedTotalGoalsAmount.spending += goalData.goal;
+        }
+      }
     });
 
-    return [savingsGoals, spendingGoals];
+    return {
+      ...(categoryGoals.checkedCategoriesCount > 0
+        ? categoryGoals.checkedTotalGoalsAmount
+        : categoryGoals.totalGoalsAmount),
+      checkedCategoriesCount: categoryGoals.checkedCategoriesCount,
+    };
   }
 
   addMonthlyGoalsOverview(element) {
     const [income, budgeted, spent] = this.calculateTotalAssigned();
-    const [savingsGoals, spendingGoals] = this.calculateTotalGoals();
+    const { savings: savingsGoals, spending: spendingGoals } = this.calculateTotalGoals();
 
     $('.' + this.containerClass).remove();
 
+    const target = $('.card.budget-breakdown-monthly-totals', element);
+    if (!target.length) {
+      return;
+    }
+
     componentBefore(
       this.createInspectorElement(income, budgeted, spent, savingsGoals, spendingGoals),
-      $('.card.budget-breakdown-monthly-totals', element)
+      target
     );
   }
 
