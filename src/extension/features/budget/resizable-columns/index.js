@@ -53,6 +53,8 @@ export class ResizableColumns extends Feature {
   setColumnSize(columnClass, size) {
     const cells = $(`.${columnClass}`);
     cells.css('flex-grow', size);
+
+    $('.tk-resizable-column-minus', cells).prop('disabled', size <= 0);
   }
 
   preventContextMenu(e) {
@@ -108,6 +110,10 @@ export class ResizableColumns extends Feature {
 
         col.append(plus, minus);
         col.addClass(HEADER_CLASS);
+
+        const columnClass = this.getColumnClass(col);
+        const size = this.loadColumnSize(columnClass);
+        this.setColumnSize(columnClass, size);
       }
     });
   }
