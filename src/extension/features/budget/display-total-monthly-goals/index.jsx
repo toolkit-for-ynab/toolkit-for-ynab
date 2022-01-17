@@ -2,11 +2,7 @@ import React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { componentBefore } from 'toolkit/extension/utils/react';
-import {
-  getCurrentBudgetDate,
-  getEntityManager,
-  isCurrentRouteBudgetPage,
-} from 'toolkit/extension/utils/ynab';
+import { getCurrentBudgetDate, getEntityManager } from 'toolkit/extension/utils/ynab';
 
 import { FormattedCurrency } from './FormattedCurrency';
 import { InspectorCard } from './InspectorCard';
@@ -32,7 +28,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
+    return true;
   }
 
   destroy() {
