@@ -1,30 +1,25 @@
 .tk-collapsible-inspector-button {
   position: absolute;
-  bottom: 0;
+  bottom: 0px;
+  margin-bottom: 5px !important;
+  width: 48px;
+}
+
+.tk-collapsible-inspector-button .sidebar-expand {
+  position: relative;
+  left: 6px;
+  margin: 0px;
 }
 
 .tk-collapsible-inspector-button .sidebar-collapse {
   position: relative;
   left: -6px;
-  transform: rotateY(180deg);
-}
-
-.budget-inspector {
-  transition: width 0.25s;
+  margin: 0px;
 }
 
 .budget-inspector[tk-collapse] {
   width: 56px !important;
   min-width: 56px !important;
-}
-
-.budget-inspector[tk-collapse] .tk-collapsible-inspector-button {
-  width: 48px;
-}
-
-.budget-inspector[tk-collapse] .tk-collapsible-inspector-button .sidebar-collapse {
-  left: 0px;
-  transform: rotateY(0deg);
 }
 
 .budget-inspector[tk-collapse] .budget-inspector-content {

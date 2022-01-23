@@ -12,53 +12,71 @@ export class CollapsableInspector extends Feature {
 
   destroy() {
     $('.tk-collapsible-inspector-button').remove();
+    $('.budget-inspector').removeAttr('tk-collapse');
   }
 
   invoke() {
-    this.addToolkitEmberHook('budget/budget-inspector', 'didRender', this.insertButton);
+    this.addToolkitEmberHook('budget/budget-inspector', 'didRender', this.updateDOM);
 
-    this.setInspectorCollapse(getToolkitStorageKey('inspector-collapse', false));
+    this.setInspectorCollapsed(getToolkitStorageKey('collapsable-inspector', false));
   }
 
-  insertButton() {
-    if ($('.tk-collapsible-inspector-button').length) {
-      return;
-    }
-
-    $('.budget-inspector-content').append(
-      $(`
-      <div class="tk-collapsible-inspector-button">
-        <button class="sidebar-collapse">
-          <svg height="32" width="32" class="ynab-new-icon ember-view">
-            <use href="#icon_sprite_sidebar_collapse"></use>
-            <title>Collapse Inspector</title>    
-          </svg>
-        </button>
-      </div>
-      `)
-    );
-
-    const self = this;
-    $('.tk-collapsible-inspector-button button').on('click', function () {
-      self.toggleInspectorCollapse();
-    });
+  collapseButton() {
+    return $(`
+      <button class="sidebar-collapse">
+        <svg height="32" width="32" class="ynab-new-icon ember-view">
+          <use href="#icon_sprite_sidebar_expand"></use>
+          <title>Collapse Inspector</title>    
+        </svg>
+      </button>
+    `);
   }
 
-  getInspectorCollapse() {
-    return $('.budget-inspector').attr('tk-collapse') != null;
+  expandButton() {
+    return $(`
+      <button class="sidebar-expand">
+        <svg height="32" width="32" class="ynab-new-icon ember-view">
+          <use href="#icon_sprite_sidebar_collapse"></use>
+          <title>Expand Inspector</title>    
+        </svg>
+      </button>
+    `);
   }
 
-  setInspectorCollapse(collapse) {
-    if (collapse) {
+  updateDOM() {
+    if (!$('.budget-inspector').length) return;
+
+    if (this.isInspectorCollapsed) {
       $('.budget-inspector').attr('tk-collapse', '');
     } else {
       $('.budget-inspector').removeAttr('tk-collapse');
     }
 
-    setToolkitStorageKey('inspector-collapse', collapse);
+    let buttonContainer = $('.tk-collapsible-inspector-button');
+    if (buttonContainer.length === 0) {
+      buttonContainer = $(`<div class="tk-collapsible-inspector-button"></div>`);
+      $('.budget-inspector-content').append(buttonContainer);
+    }
+
+    buttonContainer.empty();
+
+    const button = this.isInspectorCollapsed ? this.expandButton() : this.collapseButton();
+    buttonContainer.append(button);
+
+    const self = this;
+    button.on('click', function () {
+      self.toggleInspectorCollapsed();
+    });
   }
 
-  toggleInspectorCollapse() {
-    this.setInspectorCollapse(!this.getInspectorCollapse());
+  setInspectorCollapsed(collapsed) {
+    this.isInspectorCollapsed = collapsed;
+    setToolkitStorageKey('collapsable-inspector', collapsed);
+
+    this.updateDOM();
+  }
+
+  toggleInspectorCollapsed() {
+    this.setInspectorCollapsed(!this.isInspectorCollapsed);
   }
 }
