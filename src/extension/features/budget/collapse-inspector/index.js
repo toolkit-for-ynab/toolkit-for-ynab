@@ -1,7 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
-export class CollapsableInspector extends Feature {
+export class CollapseInspector extends Feature {
   injectCSS() {
     return require('./index.css');
   }
@@ -11,14 +11,14 @@ export class CollapsableInspector extends Feature {
   }
 
   destroy() {
-    $('.tk-collapsible-inspector-button').remove();
-    $('.budget-inspector').removeAttr('tk-collapse');
+    $('.tk-collapse-inspector').remove();
+    $('.budget-inspector').removeAttr('tk-collapse-inspector');
   }
 
   invoke() {
     this.addToolkitEmberHook('budget/budget-inspector', 'didRender', this.updateDOM);
 
-    this.setInspectorCollapsed(getToolkitStorageKey('collapsable-inspector', false));
+    this.setInspectorCollapsed(getToolkitStorageKey('collapse-inspector', false));
   }
 
   collapseButton() {
@@ -47,14 +47,14 @@ export class CollapsableInspector extends Feature {
     if (!$('.budget-inspector').length) return;
 
     if (this.isInspectorCollapsed) {
-      $('.budget-inspector').attr('tk-collapse', '');
+      $('.budget-inspector').attr('tk-collapse-inspector', '');
     } else {
-      $('.budget-inspector').removeAttr('tk-collapse');
+      $('.budget-inspector').removeAttr('tk-collapse-inspector');
     }
 
-    let buttonContainer = $('.tk-collapsible-inspector-button');
+    let buttonContainer = $('.tk-collapse-inspector');
     if (buttonContainer.length === 0) {
-      buttonContainer = $(`<div class="tk-collapsible-inspector-button"></div>`);
+      buttonContainer = $(`<div class="tk-collapse-inspector"></div>`);
       $('.budget-inspector-content').append(buttonContainer);
     }
 
@@ -71,7 +71,7 @@ export class CollapsableInspector extends Feature {
 
   setInspectorCollapsed(collapsed) {
     this.isInspectorCollapsed = collapsed;
-    setToolkitStorageKey('collapsable-inspector', collapsed);
+    setToolkitStorageKey('collapse-inspector', collapsed);
 
     this.updateDOM();
   }
