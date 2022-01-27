@@ -40,6 +40,8 @@ export class ToggleMasterCategories extends Feature {
     const headerToggle = document.querySelector('.budget-table-header .budget-table-cell-collapse');
     headerToggle.dataset.tkCategoryToggle = this.settings.enabled;
 
+    $(headerToggle).off('click', this.handleToggleCategories);
+    $(headerToggle).off('contextmenu', this.handleToggleSoloMode);
     $(headerToggle).on('click', this.handleToggleCategories);
     $(headerToggle).on('contextmenu', this.handleToggleSoloMode);
 
