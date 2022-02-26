@@ -35,6 +35,9 @@ export class ChangeEnterBehavior extends Feature {
       event.preventDefault();
       event.stopPropagation();
 
+      // Remove focus to the input so ynab can apply value
+      $(this).trigger('blur');
+
       // Added to support CtrlEnterCleared when ChangeEnterBehavior is enabled
       if (ynabToolKit.options.CtrlEnterCleared === true && (event.metaKey || event.ctrlKey)) {
         let $markClearedButton = $('.is-editing .ynab-cleared:not(.is-cleared)');
