@@ -6,6 +6,7 @@ export const ReportKeys = {
   IncomeVsExpense: 'income-vs-expense',
   IncomeBreakdown: 'income-breakdown',
   BalanceOverTime: 'balance-over-time',
+  Forecast: 'forecast',
 };
 
 export const ReportNames = {
@@ -16,6 +17,7 @@ export const ReportNames = {
   IncomeVsExpense: 'Income vs. Expense',
   IncomeBreakdown: 'Income Breakdown',
   BalanceOverTime: 'Balance Over Time',
+  Forecast: 'Forecast',
 };
 
 export const REPORT_TYPES = [
@@ -46,5 +48,9 @@ export const REPORT_TYPES = [
   {
     key: ReportKeys.BalanceOverTime,
     name: ReportNames.BalanceOverTime,
+  },
+  {
+    key: ReportKeys.Forecast,
+    name: ReportNames.Forecast,
   },
 ];
