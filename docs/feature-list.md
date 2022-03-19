@@ -103,10 +103,6 @@ Add an indicator to subcategories with goals. Types: (M)onthly goal, target by (
 
 Add a toggle to the budget table header to expand/collapse all categories at once. You can also enable "Solo Mode" by right clicking the toggle which will ensure only one category is expanded at a time.
 
-## Add Monthly Goals Overview
-
-Add a 'Monthly Goals Overview' section to the budget inspector, which displays info about monthly funding goals.
-
 ## Add Pacing
 
 Add a column for "pacing" which shows you how much money you have left in your budget proportionate to how much time is left in the month.
@@ -117,7 +113,7 @@ Pop up a confirmation prompt when using a quick budget option to prevent mistaki
 
 ## Add Total Monthly Goals
 
-Add a 'Total Monthly Goals' section to the budget inspector, which displays the total amount of monthly funding goals.
+Add a 'Total Monthly Goals' section to the budget inspector, which displays the total amount of monthly funding goals. It's also possible to have a more detailed overview of the goals, and information of 'Income vs Spending' for the month.
 
 ## Adjust Budget Row Height
 
@@ -138,6 +134,10 @@ Makes the screen that pops up when you click on 'Enter a note...' below the mont
 ## Budget Rows Progress Bars
 
 Add progress bars and a vertical bar that shows how far you are through the month to category rows.
+
+## Collapse Budget Inspector
+
+Add a collapse button to the bottom of the budget inspector.
 
 ## Colored Master Category Row
 

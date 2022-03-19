@@ -2,10 +2,11 @@
   <img src="http://i.imgur.com/SJhwBpU.png" alt="Toolkit for YNAB">
 </p>
 
-[![Build Status](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab.svg?branch=master)](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab)
+[![Build Status](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab.svg?branch=main)](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab)
 [![Chat](https://img.shields.io/discord/743988612382589010?logo=discord)](https://discord.gg/jFKzZR2)
 
 # **Maintenence Mode (Looking for Maintainers)**
+
 **The Toolkit for YNAB is officially in maintenence mode. This means updates will be much more infrequent and will likely only contain bug fixes and not new features. We're actively looking for some new maintainers who are willing to take on the duties of the approving and releasing updates. Please reach out to Josh Madewell in our [Discord](https://discord.gg/jFKzZR2).**
 
 Toolkit for YNAB is a browser extension that enhances your experience with the YNAB Web Application.
@@ -54,7 +55,7 @@ on the roadmap. If you can't find what you want to build on the roadmap, feel fr
 a note up on the github issues board to let the team know you're working on something new.
 When your code is ready, submit a pull request.
 
-For documentation on how to build a feature, [see the documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/docs/building-features.md).
+For documentation on how to build a feature, [see the documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/main/docs/building-features.md).
 
 ### Building the Code
 
