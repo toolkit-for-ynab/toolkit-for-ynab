@@ -34,10 +34,6 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
   const [chosenTransactionSet, setChosenSelectionSet] = useState<Array<Transaction>>([]);
   const [transactionArrIndex, setTransactionArrIndex] = useState<number>(0);
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Lifecycle Events
-  /////////////////////////////////////////////////////////////////////////////
-
   useEffect(() => {
     let unclearedTransactions: Array<Transaction> = getUnclearedTransactions(transactions);
     setTransactionPowerset(generatePowerset(unclearedTransactions));
@@ -54,16 +50,10 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
     setChosenSelectionSet(matchingTransactions[transactionArrIndex]);
   }, [matchingTransactions, transactionArrIndex]);
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Event Handler Functions
-  /////////////////////////////////////////////////////////////////////////////
-
   /**
    * Ensure the new index is within bounds of the matching transaction sets
-   * @param {Integer} newIndex The new index of which transaction set to use
-   * @returns {Void}
    */
-  function handleIndexChange(newIndex: number): void {
+  function handleIndexChange(newIndex: number) {
     if (newIndex < 0 || newIndex >= matchingTransactions.length) {
       return;
     }
@@ -72,9 +62,8 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
 
   /**
    * Handle Confirmation to clear the selected transactions
-   * @returns {Void}
    */
-  function handleConfirmation(): void {
+  function handleConfirmation() {
     if (chosenTransactionSet.length === 0) {
       return;
     }
@@ -88,9 +77,8 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
 
   /**
    * Handle Modal close by clearing state
-   * @returns {Void}
    */
-  function onModalClose(): void {
+  function onModalClose() {
     setChosenSelectionSet([]);
     setTransactionArrIndex(0);
     setModalOpened(false);
@@ -98,13 +86,8 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
     setMatchingTransactions([]);
   }
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Helper Functions
-  /////////////////////////////////////////////////////////////////////////////
-
   /**
    * Determine if the target is already reached. IE: The empty set matches
-   * @returns {Boolean} true if the target was reached, false otherwise
    */
   function isTargetAlreadyReached(): boolean {
     return matchingTransactions.length === 1 && matchingTransactions[0].length === 0;
@@ -112,9 +95,6 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
 
   /**
    * The matching transaction result string
-   * @param numMatches The number of matches
-   * @param target The target number
-   * @returns {string} The text of the matching result
    */
   function matchingTransactionResult(numMatches: number, target: number): string {
     let summary: string = resources.matchingTransactionsSummary;
@@ -130,7 +110,6 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
 
   /**
    * Determine if the clear button should be visible
-   * @returns {Boolean} True if there are any possible matches, false otherwise
    */
   function shouldShowClearButton(): boolean {
     // Nothing to do if the target matches or no matches were found
@@ -141,17 +120,12 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
     return true;
   }
 
-  /////////////////////////////////////////////////////////////////////////////
-  // Component Rendering
-  /////////////////////////////////////////////////////////////////////////////
-
   if (!isOpen) {
     return null;
   }
 
   /**
    * Get the modal content body
-   * @returns The modal content body
    */
   let modalBodyContent = () => {
     if (isTargetAlreadyReached()) {

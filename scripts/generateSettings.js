@@ -27,6 +27,9 @@ const settingMigrationMap = {
   LiveOnLastMonthsIncome: {
     oldSettingName: 'IncomeFromLastMonth',
   },
+  ReconcileAssistant: {
+    oldSettingName: 'AssistedClear',
+  },
 };
 
 let previousSettings;

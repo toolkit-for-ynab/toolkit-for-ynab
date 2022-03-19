@@ -1,8 +1,7 @@
 /**
  * Clear a transaction by clicking on the clear button
- * @param {Transaction} transaction The transaction to clear
  */
-function setTransactionCleared(transaction: Transaction): void {
+export function setTransactionCleared(transaction: Transaction) {
   if (transaction && transaction.entityId && !transaction.isTombstone) {
     let selector: string = `[data-row-id='${transaction.entityId}'] .ynab-grid-cell-cleared`;
     let element: any = document.querySelector(selector);
@@ -14,10 +13,8 @@ function setTransactionCleared(transaction: Transaction): void {
 
 /**
  * Generate all subsets for an array
- * @param {Array} array Array to generate powerset for
- * @return {Array<Array>} Array of a all possible subsets
  */
-function generatePowerset(array: Array<Transaction>): Array<Array<Transaction>> {
+export function generatePowerset(array: Array<Transaction>): Array<Array<Transaction>> {
   let result: Array<Array<Transaction>> = [];
   result.push([]);
 
@@ -37,11 +34,8 @@ function generatePowerset(array: Array<Transaction>): Array<Array<Transaction>> 
 
 /**
  * See if any possible transaction combination add up to a specific target
- * @param {Array<Array>} transactionsPowerset The array of transaction combinations to compare against
- * @param {Number} target The sum of transactions that is desired
- * @return {Array<Array>} array of possible transaction combination matches
  */
-function findMatchingSum(
+export function findMatchingSum(
   transactionsPowerset: Array<Array<Transaction>>,
   target: number
 ): Array<Array<Transaction>> {
@@ -56,24 +50,13 @@ function findMatchingSum(
   return matchingTargets;
 }
 
-function getUnclearedTransactions(transactions: Array<Transaction>): Array<Transaction> {
+export function getUnclearedTransactions(transactions: Array<Transaction>): Array<Transaction> {
   return transactions.filter((txn) => txn.cleared && txn.isUncleared() && !txn.isTombstone);
 }
 
 /**
  * Reducer method to sum up all transactions
- * @param {Number} accumulator The current accumulator
- * @param {Transaction} txn The current transaction
- * @returns {Number} The combined sum
  */
-function transactionReducer(accumulator: number, txn: Transaction): number {
+export function transactionReducer(accumulator: number, txn: Transaction): number {
   return accumulator + txn.amount;
 }
-
-export {
-  setTransactionCleared,
-  generatePowerset,
-  findMatchingSum,
-  transactionReducer,
-  getUnclearedTransactions,
-};
