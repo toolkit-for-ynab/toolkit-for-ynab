@@ -1,17 +1,17 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { ClearAssistantContainer } from './components/AssistedClearContainer';
+import { ReconcileAssistantContainer } from './components/ReconcileAssistantContainer';
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 
 const YNAB_RECONCILE_BUTTON = '.accounts-header-reconcile';
 const YNAB_APPLICATION_BODY = '.ember-application';
-const ASSISTED_CLEAR_CONTAINER_ID = 'tk-assisted-clear-container';
 export const YNAB_ADJUSTMENT_SELECTOR = '.accounts-adjustment.account-flash-notification';
-export const ASSISTED_CLEAR_MODAL_PORTAL = 'tk-assisted-clear-portal';
 export const YNAB_RECONCILE_INPUT_MODAL = '.modal-account-reconcile-enter-balance';
+export const RECONCILE_ASSISTANT_CONTAINER_ID = 'tk-reconcile-assistant-container';
+export const RECONCILE_ASSISTANT_MODAL_PORTAL = 'tk-reconcile-assistant-portal';
 
-export class AssistedClear extends Feature {
+export class ReconcileAssistant extends Feature {
   _reconcileInputValue = '0';
 
   shouldInvoke() {
@@ -37,10 +37,13 @@ export class AssistedClear extends Feature {
       this._createModalPortal();
 
       // Render the react component as part of the container
-      let container = document.getElementById(ASSISTED_CLEAR_CONTAINER_ID);
+      let container = document.getElementById(RECONCILE_ASSISTANT_CONTAINER_ID);
       if (container) {
         ReactDOM.render(
-          <ClearAssistantContainer reconcileInputValue={this._reconcileInputValue} />,
+          <ReconcileAssistantContainer
+            reconcileInputValue={this._reconcileInputValue}
+            portalId={RECONCILE_ASSISTANT_MODAL_PORTAL}
+          />,
           container
         );
       }
@@ -48,8 +51,8 @@ export class AssistedClear extends Feature {
   }
 
   destroy() {
-    $(`#${ASSISTED_CLEAR_CONTAINER_ID}`).remove();
-    $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`).remove();
+    $(`#${RECONCILE_ASSISTANT_CONTAINER_ID}`).remove();
+    $(`#${RECONCILE_ASSISTANT_MODAL_PORTAL}`).remove();
   }
 
   /**
@@ -70,12 +73,12 @@ export class AssistedClear extends Feature {
    * Create the react modal portal in the DOM if its not already present
    */
   _createModalPortal() {
-    let portal = $(`#${ASSISTED_CLEAR_MODAL_PORTAL}`);
+    let portal = $(`#${RECONCILE_ASSISTANT_MODAL_PORTAL}`);
     if (!portal.length) {
       // Append it as a child of the ynab application
       let ynabApp = $(YNAB_APPLICATION_BODY);
       if (ynabApp.length) {
-        ynabApp.append(`<div id='${ASSISTED_CLEAR_MODAL_PORTAL}'></div>`);
+        ynabApp.append(`<div id='${RECONCILE_ASSISTANT_MODAL_PORTAL}'></div>`);
       }
     }
   }
@@ -84,13 +87,13 @@ export class AssistedClear extends Feature {
    * Create the feature container in the DOM if its not already present
    */
   _createFeatureContainer() {
-    let container = $(`#${ASSISTED_CLEAR_CONTAINER_ID}`);
+    let container = $(`#${RECONCILE_ASSISTANT_CONTAINER_ID}`);
     if (!container.length) {
       // Append the container next to the create adjustment button
       let parent = $(YNAB_ADJUSTMENT_SELECTOR);
 
       if (parent) {
-        parent.append(`<span class='tk-mg-r-1' id='${ASSISTED_CLEAR_CONTAINER_ID}'></span>`);
+        parent.append(`<span class='tk-mg-r-1' id='${RECONCILE_ASSISTANT_CONTAINER_ID}'></span>`);
       }
     }
   }

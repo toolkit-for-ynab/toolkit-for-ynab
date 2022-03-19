@@ -30,6 +30,11 @@ export function isCurrentRouteAccountsPage() {
   );
 }
 
+export function getSelectedAccount() {
+  const { selectedAccountId } = controllerLookup('accounts');
+  return getEntityManager().getAccountById(selectedAccountId);
+}
+
 export function getCurrentRouteName() {
   return controllerLookup('application').get('activeRoute');
 }

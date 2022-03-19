@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'AssistedClear',
+  name: 'ReconcileAssistant',
   type: 'checkbox',
   default: false,
   section: 'accounts',
