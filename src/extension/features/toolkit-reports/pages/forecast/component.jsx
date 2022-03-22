@@ -4,7 +4,7 @@ import { generateForecasts } from './functions';
 import Highcharts from 'highcharts';
 import moment from 'moment';
 
-export function ForecastComponent({ filteredTransactions }) {
+export function ForecastComponent({ filteredTransactions, allReportableTransactions, filters }) {
   const [netWorth, setNetWorth] = useState();
   const [forecasts, setForecasts] = useState([]);
   const [chart, setChart] = useState();
@@ -14,7 +14,11 @@ export function ForecastComponent({ filteredTransactions }) {
 
   useEffect(() => {
     console.log({ filteredTransactions });
-    const newForecasts = generateForecasts(filteredTransactions);
+    const newForecasts = generateForecasts(
+      filteredTransactions,
+      allReportableTransactions,
+      filters
+    );
     setForecasts(newForecasts);
     setNetWorth(newForecasts[0][0]);
   }, [filteredTransactions]);
