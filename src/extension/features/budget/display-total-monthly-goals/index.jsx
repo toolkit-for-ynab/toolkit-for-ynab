@@ -97,7 +97,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
       }
 
       categoryGoals.total += goalData.goal;
-      if (['MF', 'TBD'].includes(goalData.type)) {
+      if (['MF', 'TBD', 'DEBT'].includes(goalData.type)) {
         categoryGoals.totalGoalsAmount.savings += goalData.goal;
         if (goalData.isChecked) {
           categoryGoals.checkedTotalGoalsAmount.savings += goalData.goal;
