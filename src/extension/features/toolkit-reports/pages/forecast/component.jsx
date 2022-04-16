@@ -35,6 +35,15 @@ export function ForecastComponent({ filteredTransactions }) {
           backgroundColor: 'transparent',
           renderTo: 'tk-forecast-chart',
         },
+        legend: {
+          itemStyle: {
+            color: '#888888',
+            cursor: 'pointer',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            textOverflow: 'ellipsis',
+          },
+        },
         title: { text: '' },
         xAxis: {
           labels: {
