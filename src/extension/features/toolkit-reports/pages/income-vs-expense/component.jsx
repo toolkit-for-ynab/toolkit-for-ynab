@@ -47,6 +47,16 @@ export class IncomeVsExpenseComponent extends React.Component {
 
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
 
+  _localStorageKey = 'ynab-toolkit-income-vs-expense-collapse-state';
+
+  constructor() {
+    super();
+
+    this.state = {
+      collapsedSources: this._parseState(localStorage.getItem(this._localStorageKey)),
+    };
+  }
+
   static propTypes = {
     filters: PropTypes.shape(FiltersPropType),
     filteredTransactions: PropTypes.array.isRequired,
@@ -56,8 +66,24 @@ export class IncomeVsExpenseComponent extends React.Component {
     collapsedSources: new Set(),
   };
 
+  _saveState(state) {
+    return JSON.stringify(Array.from([...state.collapsedSources]));
+  }
+
+  _parseState(storage) {
+    if (storage === null) {
+      return new Set();
+    }
+
+    return new Set(JSON.parse(storage));
+  }
+
   componentDidMount() {
     this._calculateData();
+  }
+
+  componentWillUnmount() {
+    localStorage.setItem(this._localStorageKey, this._saveState(this.state));
   }
 
   componentDidUpdate(prevProps) {
