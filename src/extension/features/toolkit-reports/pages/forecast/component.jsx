@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { generateForecasts } from './functions';
 import Highcharts from 'highcharts';
 import moment from 'moment';
+import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export function ForecastComponent({ filteredTransactions }) {
   const [netWorth, setNetWorth] = useState();
@@ -59,7 +60,7 @@ export function ForecastComponent({ filteredTransactions }) {
           title: { text: '' },
           labels: {
             formatter: function () {
-              return `$${Number(this.value / 1000).toLocaleString()}`;
+              return formatCurrency(this.value);
             },
           },
         },
@@ -67,16 +68,14 @@ export function ForecastComponent({ filteredTransactions }) {
           formatter: function () {
             const series = this.series.name;
             const years = this.point.x / 52;
-            const dollars = this.point.y / 1000;
-            const dollarString = Number(dollars).toLocaleString();
-            const apy = Math.log(dollars / (netWorth / 1000)) / years;
+            const apy = Math.log(this.point.y / netWorth) / years;
             const apyString = `${(apy * 100).toFixed(1)}%`;
             const date = now
               .clone()
               .add(this.point.x + 1, 'w')
               .format('YYYY-MM-DD');
 
-            return `${series}: <b>$${dollarString}</b><br />APY: ${apyString}<br />${date}`;
+            return `${series}: <b>${formatCurrency(this.point.y)}</b><br />APY: ${apyString}<br />${date}`;
           },
         },
         series: confidences.map((c) => ({
