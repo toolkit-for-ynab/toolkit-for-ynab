@@ -99,7 +99,7 @@
     "fuzzysort": "^1.1.4",
     "highcharts": "^9.1.1",
     "jquery": "^3.6.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "raven-js": "^3.25.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
