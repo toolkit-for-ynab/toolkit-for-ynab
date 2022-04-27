@@ -31,7 +31,7 @@ describe('Background', () => {
       expect(mockToolkitStorage.getFeatureSetting).toHaveBeenCalledWith(
         DISABLE_TOOLKIT_FEATURE_KEY
       );
-      expect(chrome.browserAction.setIcon).toHaveBeenCalledWith({
+      expect(chrome.action.setIcon).toHaveBeenCalledWith({
         path: expect.stringMatching(/\/\/assets\/images\/icons\/button.png/),
       });
     });
@@ -43,7 +43,7 @@ describe('Background', () => {
       expect(mockToolkitStorage.getFeatureSetting).toHaveBeenCalledWith(
         DISABLE_TOOLKIT_FEATURE_KEY
       );
-      expect(chrome.browserAction.setIcon).toHaveBeenCalledWith({
+      expect(chrome.action.setIcon).toHaveBeenCalledWith({
         path: expect.stringMatching(/\/\/assets\/images\/icons\/button-disabled.png/),
       });
     });
