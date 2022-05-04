@@ -58,6 +58,7 @@ export class NetWorthComponent extends React.Component {
                 debts={this.state.hoveredData.debts}
                 debtRatio={this.state.hoveredData.debtRatio}
                 netWorth={this.state.hoveredData.netWorth}
+                changePreviousMonth={this.state.hoveredData.netWorth - (this.state.hoveredData.previousWorth || 0)}
               />
             )}
           </div>
@@ -90,6 +91,7 @@ export class NetWorthComponent extends React.Component {
               debts: debts[this.index],
               debtRatio: debtRatios[this.index],
               netWorth: netWorths[this.index],
+              previousWorth: netWorths[this.index - 1],
             },
           });
         },
