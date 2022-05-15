@@ -1,13 +1,14 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
-import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { formatCurrency, stripCurrency } from 'toolkit/extension/utils/currency';
 
 export class DefaultCCToCleared extends Feature {
   constructor() {
     super();
 
-    // TODO also figure out how to create a modal with a button
+    // TODO add option to create a modal with a button to choose which value to insert
+    // TODO (ref https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/2171#issuecomment-1024907005)
     this.didClickRecord = false;
   }
 
@@ -32,25 +33,21 @@ export class DefaultCCToCleared extends Feature {
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
-
     // pull this out to avoid recalculation
     const didChangeInput = changedNodes.has('ynab-new-currency-input is-editing');
     // ideally i'd await completion of the existing event listener on the Record Payment button
     // but i don't see one registered consistently, so i set a state variable when the button is clicked and wait for the
     // transaction entry model to appear
-    if (didChangeInput && this.didClickRecord && this.settings.enabled === 'ask') {
-      console.log('todo');
-
-      this.didClickRecord = false;
-    } else if (didChangeInput && this.didClickRecord) {
+    if (didChangeInput && this.didClickRecord) {
       // grab amounts from account
       let { selectedAccount } = controllerLookup('accounts');
       const clearedBal = selectedAccount.accountCalculation.clearedBalance;
-      const unclearedBal = selectedAccount.accountCalculation.unclearedBalance;
-      const workingBal = clearedBal + unclearedBal;
-      // we want to fill in the absolute value of working bal, since it's positive infow,
-      //   but the working balance is negative (it's a credit card)
-      const absWorkingBal = Math.abs(workingBal);
+      // const unclearedBal = selectedAccount.accountCalculation.unclearedBalance;
+      // const workingBal = clearedBal + unclearedBal;
+
+      // we want to fill in the absolute value of cleared bal, since it's positive infow,
+      //   but the cleared balance is negative (it's a credit card)
+      const absClearedBal = Math.abs(clearedBal);
 
       // there's probably a better way to find the input field but i've never used jquery before so here we are
       // find inflow and outflow divs on the transaction entry row that
@@ -68,12 +65,12 @@ export class DefaultCCToCleared extends Feature {
         }
       });
       // grab out the default value (Payment from budget)
-      const ynabPaymentValue = inflowField.value;
+      const ynabPaymentValue = stripCurrency(inflowField.value);
       // convert to real dollars
-      const workingBalToFill = formatCurrency(absWorkingBal, true);
+      const clearedBalToFill = formatCurrency(absClearedBal, true);
       // make sure we're not going overbudget
-      if (ynabPaymentValue >= workingBalToFill) {
-        inflowField.value = workingBalToFill;
+      if (ynabPaymentValue >= absClearedBal) {
+        inflowField.value = clearedBalToFill;
       }
 
       // reset state
@@ -82,12 +79,11 @@ export class DefaultCCToCleared extends Feature {
   }
 
   invoke() {
-    console.log('init default cc feature, behavior');
     this.applyNewButtonBehavior();
   }
 
   destroy() {
-    console.log('destroy not yet implemented');
+    this.didClickRecord = false;
   }
 
   applyNewButtonBehavior() {
@@ -97,9 +93,5 @@ export class DefaultCCToCleared extends Feature {
         this.didClickRecord = true;
       });
     });
-  }
-
-  eventAskUserFill() {
-    console.log('ask not yet implemented');
   }
 }
