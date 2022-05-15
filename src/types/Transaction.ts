@@ -1,0 +1,42 @@
+interface Transaction {
+  accepted?: boolean;
+  account?: any;
+  accountId?: string;
+  amount?: number;
+  baseSubTransactions?: Array<any>;
+  budgetVersionId?: string;
+  cashAmount?: any;
+  checkNumber?: any;
+  cleared?: string;
+  creditAmount?: any;
+  creditAmountAdjusted?: any;
+  date?: any;
+  dateEnteredFromSchedule?: any;
+  entityId?: string;
+  flag?: any;
+  importedDate?: any;
+  importedPayee?: string;
+  isTombstone?: boolean;
+  matchedTransaction?: any;
+  matchedTransactionId?: any;
+  memo?: string;
+  month?: any;
+  originalImportedPayee?: string;
+  payee?: any;
+  payeeId?: string;
+  scheduledTransactions?: any;
+  scheduledTransactionId?: string;
+  source?: string;
+  subCategory?: any;
+  subCategoryCreditAmountPreceding?: any;
+  subTransactions?: any;
+  transferAccounts?: any;
+  transferAccountId?: string;
+  transferSubTransaction?: any;
+  transferSubTransactionId?: string;
+  transferTransaction?: any;
+  transferTransactionId?: string;
+  ynabId?: string;
+
+  isUncleared?: () => boolean;
+}

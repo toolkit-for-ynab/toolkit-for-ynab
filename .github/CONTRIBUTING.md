@@ -19,4 +19,4 @@ If you can't find what you want to build on the roadmap, feel free to put
 a note up on the github issues board to let the team know you're working
 on something new.
 
-You can find documentation on how to build features [here](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/master/docs/building-features.md).
+You can find documentation on how to build features [here](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/main/docs/building-features.md).

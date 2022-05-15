@@ -1,6 +1,6 @@
 {
   "name": "toolkit-for-ynab",
-  "version": "2.36.1",
+  "version": "2.37.0",
   "private": true,
   "scripts": {
     "prepare": "husky install",
@@ -15,7 +15,7 @@
     "compress": "yarn compress:dist && yarn compress:src",
     "compress:dist": "node scripts/compressDist.js",
     "compress:src": "node scripts/compressSrc.js",
-    "deploy:beta": "git fetch origin master:beta && git push origin beta",
+    "deploy:beta": "git fetch origin main:beta && git push origin beta",
     "manifest:beta": "node scripts/applyManifestOverrides.js --type=beta",
     "manifest:development": "node scripts/applyManifestOverrides.js --type=development",
     "manifest:ios": "node scripts/applyManifestOverrides.js --type=ios",
@@ -28,6 +28,7 @@
     "publish:desktop": "node scripts/publishForDesktop.js",
     "prettier": "prettier --write \"{src,scripts}/**/*.{js,jsx,ts,tsx}\"",
     "test": "yarn && yarn gen && jest",
+    "test:watch": "yarn && yarn gen && jest --watch",
     "watch": "yarn && node scripts/watch.js",
     "gen": "yarn gen:settings && yarn gen:featureIndex",
     "gen:featureIndex": "node scripts/generateFeatureIndex",
@@ -98,7 +99,7 @@
     "fuzzysort": "^1.1.4",
     "highcharts": "^9.1.1",
     "jquery": "^3.6.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "raven-js": "^3.25.2",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
@@ -106,7 +107,6 @@
     "regression": "^2.0.1"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.154",
     "@babel/cli": "^7.14.3",
     "@babel/core": "^7.14.3",
     "@babel/eslint-parser": "^7.14.4",
@@ -114,6 +114,7 @@
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
     "@babel/preset-env": "^7.14.4",
     "@babel/preset-react": "^7.13.13",
+    "@types/chrome": "^0.0.154",
     "@types/ember": "^3.16.0",
     "@types/jest": "^26.0.23",
     "@types/jquery": "^3.5.5",
