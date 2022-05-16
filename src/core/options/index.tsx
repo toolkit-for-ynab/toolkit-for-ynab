@@ -8,8 +8,8 @@ import { getUserSettings } from '../settings';
 getUserSettings().then(() => {
   localToolkitStorage.getStorageItem('toolkit-feature:options.dark-mode').then((darkMode) => {
     // backwards compatible migration from on/off dark mode
-    if (typeof darkMode == 'boolean' && darkMode) {
-      darkMode = 'dark';
+    if (typeof darkMode == 'boolean') {
+      darkMode = darkMode ? 'dark' : 'light';
     }
 
     document.querySelector('html').dataset['theme'] = darkMode;
