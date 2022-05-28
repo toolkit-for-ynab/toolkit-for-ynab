@@ -78,17 +78,17 @@ export class LiveOnLastMonthsIncome extends Feature {
                 .append(
                   $('<div>', { id: 'tk-income-in-month' })
                     .append($('<div>', { class: 'tk-title' }))
-                    .append($('<div>', { class: 'tk-value' }))
+                    .append($('<div>', { class: 'tk-value currency' }))
                 )
                 .append(
                   $('<div>', { id: 'tk-assigned-in-month' })
                     .append($('<div>', { class: 'tk-title' }))
-                    .append($('<div>', { class: 'tk-value' }))
+                    .append($('<div>', { class: 'tk-value currency' }))
                 )
                 .append(
                   $('<div>', { id: 'tk-variance-in-month' })
                     .append($('<div>').text(l10n('toolkit.varianceIn', 'Variance')))
-                    .append($('<div>', { class: 'tk-value' }))
+                    .append($('<div>', { class: 'tk-value currency' }))
                 )
             )
           )
