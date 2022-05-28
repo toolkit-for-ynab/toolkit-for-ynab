@@ -29,7 +29,7 @@
   --tk-alert-danger: #e26136;
 }
 
-html[data-theme='dark'] {
+@mixin dark-mode {
   // base colors
   --tk-text-color: #f1f1f1;
   --tk-header-color: #1b1b1d;
@@ -67,6 +67,16 @@ html[data-theme='dark'] {
       }
     }
   }
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme='auto'] {
+    @include dark-mode();
+  }
+}
+
+html[data-theme='dark'] {
+  @include dark-mode();
 }
 
 body {
@@ -248,16 +258,20 @@ body {
 
 .dark-mode-toggle {
   position: relative;
+  height: 24px;
+  width: 24px;
 
-  &__icon {
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
     opacity: 0;
     transition: opacity 200ms ease-out;
 
-    &--active {
-      position: absolute;
-      left: 0;
-      top: 0;
+    &.active {
       opacity: 1;
+      pointer-events: unset;
     }
   }
 }

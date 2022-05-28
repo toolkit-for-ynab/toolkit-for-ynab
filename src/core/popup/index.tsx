@@ -3,12 +3,13 @@ import * as ReactDOM from 'react-dom';
 import { localToolkitStorage } from 'toolkit/core/common/storage';
 import { ToolkitPopup } from './toolkit-popup';
 
-localToolkitStorage
-  .getStorageItem('toolkit-feature:options.dark-mode')
-  .then((isDarkModeEnabled) => {
-    if (isDarkModeEnabled) {
-      document.querySelector('html').dataset['theme'] = 'dark';
-    }
+localToolkitStorage.getStorageItem('toolkit-feature:options.dark-mode').then((darkMode) => {
+  // backwards compatible migration from on/off dark mode
+  if (typeof darkMode == 'boolean') {
+    darkMode = darkMode ? 'dark' : 'light';
+  }
 
-    ReactDOM.render(<ToolkitPopup />, document.getElementById('root'));
-  });
+  document.querySelector('html').dataset['theme'] = darkMode;
+
+  ReactDOM.render(<ToolkitPopup />, document.getElementById('root'));
+});

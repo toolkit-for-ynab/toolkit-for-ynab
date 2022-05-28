@@ -6,13 +6,14 @@ import { localToolkitStorage } from '../common/storage';
 import { getUserSettings } from '../settings';
 
 getUserSettings().then(() => {
-  localToolkitStorage
-    .getStorageItem('toolkit-feature:options.dark-mode')
-    .then((isDarkModeEnabled) => {
-      if (isDarkModeEnabled) {
-        document.querySelector('html').dataset['theme'] = 'dark';
-      }
+  localToolkitStorage.getStorageItem('toolkit-feature:options.dark-mode').then((darkMode) => {
+    // backwards compatible migration from on/off dark mode
+    if (typeof darkMode == 'boolean') {
+      darkMode = darkMode ? 'dark' : 'light';
+    }
 
-      ReactDOM.render(<ToolkitOptions />, document.getElementById('root'));
-    });
+    document.querySelector('html').dataset['theme'] = darkMode;
+
+    ReactDOM.render(<ToolkitOptions />, document.getElementById('root'));
+  });
 });

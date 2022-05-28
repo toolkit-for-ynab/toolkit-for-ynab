@@ -10,6 +10,7 @@ import {
   faEyeDropper,
   faUndoAlt,
   faTimes,
+  faSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { Toggle } from 'toolkit/components/toggle';
 import { RadioGroup } from 'toolkit/components/radio-group';
@@ -170,36 +171,41 @@ function SettingsList({ settings }: { settings: FeatureSettingConfig[] }) {
 }
 
 function DarkModeToggle() {
-  const [isDarkModeEnabled, setIsDarkModeEnabled] = React.useState(
-    document.querySelector('html').dataset['theme'] === 'dark'
+  // default is light mode
+  // toggle goes light -> dark -> auto -> light ....
+
+  const [darkMode, setDarkMode] = React.useState(
+    document.querySelector('html').dataset['theme'] || 'light'
   );
 
-  function handleDarkModeClicked() {
-    localToolkitStorage
-      .setStorageItem('toolkit-feature:options.dark-mode', !isDarkModeEnabled)
-      .then(() => {
-        setIsDarkModeEnabled(!isDarkModeEnabled);
-      });
+  function setMode(mode: string) {
+    localToolkitStorage.setStorageItem('toolkit-feature:options.dark-mode', mode).then(() => {
+      setDarkMode(mode);
+    });
   }
 
   return (
-    <div className="dark-mode-toggle nav-bar__action-icon" onClick={handleDarkModeClicked}>
+    <div className="dark-mode-toggle nav-bar__action-icon">
       <FontAwesomeIcon
-        className={classNames('dark-mode-toggle__icon', {
-          'dark-mode-toggle__icon--active': isDarkModeEnabled,
-        })}
-        icon={faMoon}
-        size="lg"
-      />
-      <FontAwesomeIcon
-        className={classNames('dark-mode-toggle__icon', {
-          'dark-mode-toggle__icon--active': !isDarkModeEnabled,
-        })}
+        className={classNames({ active: darkMode == 'light' })}
         icon={faSun}
         size="lg"
-        onClick={() => setIsDarkModeEnabled(true)}
-        title="Toggle Dark Mode"
+        onClick={() => setMode('dark')}
       />
+      <FontAwesomeIcon
+        className={classNames({ active: darkMode == 'dark' })}
+        icon={faMoon}
+        size="lg"
+        onClick={() => setMode('auto')}
+      />
+      <span
+        onClick={() => setMode('light')}
+        className={classNames('fa-layers', 'fa-lg', { active: darkMode == 'auto' })}
+      >
+        <FontAwesomeIcon icon={faSun} transform="shrink-6 up-4 right-8" />
+        <FontAwesomeIcon icon={faSlash} transform="shrink-2" />
+        <FontAwesomeIcon icon={faMoon} transform="shrink-8 down-3 left-3" />
+      </span>
     </div>
   );
 }

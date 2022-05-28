@@ -2,12 +2,8 @@ import * as React from 'react';
 import { localToolkitStorage } from 'toolkit/core/common/storage';
 
 export function useDarkModeSetter() {
-  function handleDarkModeChanged(_: string, newDarkMode: boolean) {
-    if (newDarkMode) {
-      document.querySelector('html').dataset['theme'] = 'dark';
-    } else {
-      document.querySelector('html').dataset['theme'] = '';
-    }
+  function handleDarkModeChanged(_: string, newDarkMode: string) {
+    document.querySelector('html').dataset['theme'] = newDarkMode;
   }
 
   React.useEffect(() => {
