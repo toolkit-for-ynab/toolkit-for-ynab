@@ -1,4 +1,5 @@
 module.exports = {
+  disabled: true,
   name: 'BudgetProgressBars',
   type: 'select',
   default: false,

@@ -23,6 +23,7 @@ import { DiscordLink, GitHubLink, TrelloLink } from 'toolkit/components/links';
 import { useDarkModeSetter } from 'toolkit/hooks/useDarkModeSetter';
 import ReactMarkdown from 'react-markdown';
 import { useToolkitDisabled } from 'toolkit/hooks/useToolkitDisabled';
+import { allToolkitSettings } from 'toolkit/core/settings';
 
 function ColorPicker({
   id,
@@ -104,6 +105,7 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
           checked={typeof featureSetting === 'boolean' ? featureSetting : featureSetting !== '0'}
           htmlFor={`${config.name}-toggle`}
           onChange={(checked) => handleToggleFeature(checked)}
+          disabled={config.disabled}
         />
       )}
       {config.type === 'color' && (
@@ -143,7 +145,8 @@ function Setting({ config }: { config: FeatureSettingConfig }) {
         {config.type === 'select' && (
           <RadioGroup
             className={classNames('setting__options', {
-              'setting__options--hidden': featureSetting === false || featureSetting === '0',
+              'setting__options--hidden':
+                featureSetting === false || featureSetting === '0' || config.disabled,
             })}
             name={config.name}
             options={config.options}
@@ -422,6 +425,12 @@ export function ToolkitOptions() {
             Click here to re-enable it
           </span>
           .
+        </AlertBanner>
+      )}
+      {allToolkitSettings.some((setting) => setting.disabled) && (
+        <AlertBanner>
+          Please note that some settings are currently disabled. We are working to get all settings
+          re-enabled. Check back in a future release if the setting you care about is disabled.
         </AlertBanner>
       )}
       <div className="tk-flex nav-bar">

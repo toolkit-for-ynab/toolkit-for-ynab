@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 const TOOLKIT_RECONCILED_CLASS = 'tk-is-reconciled';
 const YNAB_IS_CHECKED_CLASS = 'is-checked';
@@ -22,15 +23,15 @@ export class ReconciledTextColor extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteAccountsPage();
   }
 
   invoke() {
-    this.addToolkitEmberHook('register/grid-sub', 'didInsertElement', this.addClass);
-    this.addToolkitEmberHook('register/grid-row', 'didInsertElement', this.addClass);
+    this.onElements('.ynab-grid-body-row', this.addClass);
+  }
 
-    this.addToolkitEmberHook('register/grid-sub', 'didUpdate', this.addClass);
-    this.addToolkitEmberHook('register/grid-row', 'didUpdate', this.addClass);
+  observe() {
+    this.onElements('.ynab-grid-body-row', this.addClass);
   }
 
   destroy() {
@@ -38,10 +39,9 @@ export class ReconciledTextColor extends Feature {
   }
 
   addClass(element) {
-    let content;
-    const emberView = getEmberView(element.id);
-    if (emberView) {
-      content = emberView.content;
+    const content = getEmberView(element.id, 'content');
+    if (!content) {
+      return;
     }
 
     const $element = $(element);

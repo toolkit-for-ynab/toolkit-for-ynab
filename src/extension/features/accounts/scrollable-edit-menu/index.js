@@ -11,11 +11,15 @@ export class ScrollableEditMenu extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook(
-      'modals/register/edit-transactions',
-      'didRender',
-      this.addScrollWrappers
-    );
+    this.onElement('.modal-account-edit-transaction-list', this.addScrollWrappers, {
+      guard: 'tk-clear-selection',
+    });
+  }
+
+  observe() {
+    this.onElement('.modal-account-edit-transaction-list', this.addScrollWrappers, {
+      guard: 'tk-clear-selection',
+    });
   }
 
   destroy() {}

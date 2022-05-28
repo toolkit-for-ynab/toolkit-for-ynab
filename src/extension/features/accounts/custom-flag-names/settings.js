@@ -1,4 +1,5 @@
 module.exports = {
+  disabled: true,
   name: 'CustomFlagNames',
   type: 'checkbox',
   default: false,

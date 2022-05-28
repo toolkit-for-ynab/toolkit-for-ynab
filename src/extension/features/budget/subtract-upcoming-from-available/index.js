@@ -13,8 +13,13 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
   invoke() {
     setCategoriesObject();
-    this.addToolkitEmberHook('budget-breakdown', 'didRender', this.handleBudgetBreakdown);
-    this.addToolkitEmberHook('budget-table-row', 'didRender', handleBudgetTableRow);
+    this.onElement('.budget-breakdown', this.handleBudgetBreakdown);
+    this.onElements('.budget-table-row', handleBudgetTableRow);
+  }
+
+  observe() {
+    this.onElement('.budget-breakdown', this.handleBudgetBreakdown);
+    this.onElements('.budget-table-row', handleBudgetTableRow);
   }
 
   onRouteChanged() {

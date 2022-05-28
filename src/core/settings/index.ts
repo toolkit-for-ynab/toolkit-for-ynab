@@ -17,6 +17,10 @@ function ensureSettingIsValid(name: FeatureName, value: any) {
 export function getUserSettings() {
   return storage.getStoredFeatureSettings().then((storedFeatureSettings) => {
     const settingPromises = allToolkitSettings.map((setting) => {
+      if (setting.disabled) {
+        return false;
+      }
+
       const settingIsPersisted = storedFeatureSettings.includes(setting.name);
 
       if (settingIsPersisted) {

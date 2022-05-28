@@ -37,26 +37,26 @@ export class HideHelp extends Feature {
     return true;
   }
 
-  insertHideHelp(element) {
-    if ($('#tk-hide-help', element).length) {
-      return;
-    }
-
-    componentAppend(
-      <HideHelpButton toggleHiddenState={this.setHiddenState} />,
-      element.getElementsByClassName('modal-list')[0]
-    );
-  }
-
   invoke() {
     const initialState = getToolkitStorageKey('hide-help', true);
     this.setHiddenState(initialState);
-    this.addToolkitEmberHook('settings-menu', 'didRender', this.insertHideHelp);
+    this.onElement('.ynab-new-settings-menu', this.insertHideHelp, { guard: '#tk-hide-help' });
+  }
+
+  observe() {
+    this.onElement('.ynab-new-settings-menu', this.insertHideHelp, { guard: '#tk-hide-help' });
   }
 
   destroy() {
     $('#tk-hide-help').remove();
     $('body').removeClass('toolkit-hide-help');
+  }
+
+  insertHideHelp(element) {
+    componentAppend(
+      <HideHelpButton toggleHiddenState={this.setHiddenState} />,
+      element.getElementsByClassName('modal-list')[0]
+    );
   }
 
   setHiddenState = (state) => {

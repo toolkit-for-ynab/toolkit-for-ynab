@@ -1,7 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { addToolkitEmberHook } from 'toolkit/extension/utils/toolkit';
 
 export class DisplayTotalOverspent extends Feature {
   shouldInvoke() {
@@ -9,7 +8,7 @@ export class DisplayTotalOverspent extends Feature {
   }
 
   invoke() {
-    addToolkitEmberHook(this, 'budget/budget-inspector', 'didRender', this.addTotalOverspent);
+    this.addToolkitEmberHook(this, 'budget/budget-inspector', 'didRender', this.addTotalOverspent);
   }
 
   destroy() {

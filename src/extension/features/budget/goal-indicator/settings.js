@@ -1,4 +1,5 @@
 module.exports = {
+  disabled: true,
   name: 'GoalIndicator',
   type: 'checkbox',
   default: false,

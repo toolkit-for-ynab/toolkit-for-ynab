@@ -13,6 +13,15 @@ export class UnclearedAccountHighlight extends Feature {
     return true;
   }
 
+  invoke() {
+    this.onElement('.nav-accounts', this.updateSidebarIndicator);
+  }
+
+  destroy() {
+    $(`.nav-account-row .${INDICATOR_CLASS}`).remove();
+    $('.tk-nav-account-icons-right-space').removeClass('tk-nav-account-icons-right-space');
+  }
+
   isUnclearedTransaction(transaction) {
     return (
       transaction &&
@@ -71,14 +80,5 @@ export class UnclearedAccountHighlight extends Feature {
     } else {
       element.classList.remove('tk-nav-account-icons-right-space');
     }
-  }
-
-  invoke() {
-    this.addToolkitEmberHook('accounts-list', 'didRender', this.updateSidebarIndicator);
-  }
-
-  destroy() {
-    $(`.nav-account-row .${INDICATOR_CLASS}`).remove();
-    $('.tk-nav-account-icons-right-space').removeClass('tk-nav-account-icons-right-space');
   }
 }
