@@ -14,6 +14,12 @@ const buildDirectory = path.join(workspaceRoot, 'dist', 'extension');
 const manifestPath = path.join(buildDirectory, 'manifest.json');
 
 const manifest = require(manifestPath);
+
+if (yargs.type === 'ios') {
+  delete manifest.host_permissions;
+  delete manifest.browser_action;
+}
+
 const changes = require(path.join(workspaceRoot, 'src', `manifest.${type}.json`));
 
 // Clobber any keys in the beta manifest across.
