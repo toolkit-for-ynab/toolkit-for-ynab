@@ -112,6 +112,11 @@ export class Background {
   _updatePopupIcon = (isToolkitDisabled) => {
     const imagePath = `assets/images/icons/button${isToolkitDisabled ? '-disabled' : ''}.png`;
     const imageURL = this._browser.runtime.getURL(imagePath);
-    this._browser.action.setIcon({ path: imageURL });
+
+    if (typeof this._browser.action === 'undefined') {
+      this._browser.browserAction.setIcon({ path: imageURL });
+    } else {
+      this._browser.action.setIcon({ path: imageURL });
+    }
   };
 }

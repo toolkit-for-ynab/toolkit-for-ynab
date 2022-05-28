@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const yargs = require('yargs').argv;
 
-const validOverrides = ['beta', 'development', 'ios'];
+const validOverrides = ['beta', 'development', 'ios', 'firefox'];
 if (!validOverrides.includes(yargs.type)) {
   console.log(`Invalid OVERRIDE provided. Must be one of: [${validOverrides.join('|')}]`);
   process.exit(1);
@@ -15,9 +15,9 @@ const manifestPath = path.join(buildDirectory, 'manifest.json');
 
 const manifest = require(manifestPath);
 
-if (yargs.type === 'ios') {
+if (yargs.type === 'ios' || yargs.type === 'firefox') {
   delete manifest.host_permissions;
-  delete manifest.browser_action;
+  delete manifest.action;
 }
 
 const changes = require(path.join(workspaceRoot, 'src', `manifest.${type}.json`));
