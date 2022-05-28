@@ -20,10 +20,6 @@ Make the navigation tab names (Budget, Reports, etc) and their padding smaller a
 
 Choose between smaller and cleaner scrollbars across the application.
 
-## Budget Quick Switch
-
-Add the list of budgets to the User Menu (click your e-mail) allowing you to switch between budgets without going to the "Open Budget" screen.
-
 ## Emphasize Accounts Needing Import
 
 Adds an underline to account names in the sidebar that have transactions to be imported. Hovering over the account name will display the number of transactions waiting to be imported.
