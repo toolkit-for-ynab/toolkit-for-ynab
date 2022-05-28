@@ -40,13 +40,22 @@ export const Legend = (props) => (
         </div>
       </div>
     )}
-    <div className="tk-mg-05 tk-pd-r-1">
+    <div className="tk-mg-05 tk-pd-r-1 tk-border-r">
       <div className="tk-flex tk-mg-b-05 tk-align-items-center">
         <div className="tk-net-worth-legend__icon-net-worths" />
         <div className="tk-mg-l-05">Net Worth</div>
       </div>
       <div>
         <Currency value={props.netWorth} />
+      </div>
+    </div>
+    <div className="tk-mg-05 tk-pd-r-1">
+      <div className="tk-flex tk-mg-b-05 tk-align-items-center">
+        <div className="tk-net-worth-legend__icon-net-worths" />
+        <div className="tk-mg-l-05">Change</div>
+      </div>
+      <div>
+        <Currency value={props.changePreviousMonth} />
       </div>
     </div>
   </React.Fragment>
@@ -56,4 +65,5 @@ Legend.propTypes = {
   assets: PropTypes.number.isRequired,
   debts: PropTypes.number.isRequired,
   netWorth: PropTypes.number.isRequired,
+  changePreviousMonth: PropTypes.number.isRequired
 };
