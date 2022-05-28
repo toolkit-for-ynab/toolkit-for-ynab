@@ -3,8 +3,9 @@ import * as React from 'react';
 import './styles.scss';
 
 interface PublicProps {
-  enabledText?: string;
-  disabledText?: string;
+  onText?: string;
+  disabled?: boolean;
+  offText?: string;
   checked: boolean;
   htmlFor: string;
   className?: string;
@@ -13,8 +14,9 @@ interface PublicProps {
 
 export const Toggle = ({
   className,
-  enabledText,
-  disabledText,
+  disabled,
+  onText,
+  offText,
   checked,
   htmlFor,
   onChange,
@@ -24,19 +26,20 @@ export const Toggle = ({
       id={htmlFor}
       className="toggle__input"
       type="checkbox"
-      checked={checked}
+      checked={!disabled && checked}
       onChange={(e) => onChange(e.currentTarget.checked)}
+      disabled={disabled}
     ></input>
     <label
       className={classNames('toggle__label', {
-        'toggle__label--labeled': enabledText && disabledText,
+        'toggle__label--labeled': onText && offText,
       })}
       htmlFor={htmlFor}
     >
-      {enabledText && disabledText && (
+      {onText && offText && (
         <>
-          <span className="toggle__toggle-text toggle__toggle-text--left">{enabledText}</span>
-          <span className="toggle__toggle-text toggle__toggle-text--right">{disabledText}</span>
+          <span className="toggle__toggle-text toggle__toggle-text--left">{onText}</span>
+          <span className="toggle__toggle-text toggle__toggle-text--right">{offText}</span>
         </>
       )}
     </label>

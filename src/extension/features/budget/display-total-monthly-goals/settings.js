@@ -1,4 +1,5 @@
 module.exports = {
+  disabled: true,
   name: 'DisplayTotalMonthlyGoals',
   type: 'select',
   default: false,

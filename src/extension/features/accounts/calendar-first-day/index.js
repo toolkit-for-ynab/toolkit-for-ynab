@@ -1,12 +1,16 @@
 import { Feature } from 'toolkit/extension/features/feature';
 
 export class CalendarFirstDay extends Feature {
-  shouldInvoke() {
-    return true;
+  invoke() {
+    this.onElement('.modal-account-calendar', this.adjustDays, {
+      guard: '.modal-account-calendar[data-tk-shifted]',
+    });
   }
 
-  invoke() {
-    this.addToolkitEmberHook('calendar', 'didInsertElement', this.adjustDays);
+  observe() {
+    this.onElement('.modal-account-calendar', this.adjustDays, {
+      guard: '.modal-account-calendar[data-tk-shifted]',
+    });
   }
 
   adjustDays(element) {
@@ -20,5 +24,7 @@ export class CalendarFirstDay extends Feature {
     for (let i = 0; i < 7 - shiftDays; i++) {
       $('.accounts-calendar-grid', element).prepend($('<li class="accounts-calendar-empty"></li>'));
     }
+
+    element.dataset.tkShifted = true;
   }
 }

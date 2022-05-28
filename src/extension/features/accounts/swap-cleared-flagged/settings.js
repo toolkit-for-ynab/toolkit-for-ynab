@@ -1,4 +1,5 @@
 module.exports = {
+  disabled: true,
   name: 'SwapClearedFlagged',
   type: 'checkbox',
   default: false,

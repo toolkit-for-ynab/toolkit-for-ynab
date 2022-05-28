@@ -37,26 +37,30 @@ export class HideClosedAccounts extends Feature {
     return true;
   }
 
-  insertHideClosed(element) {
-    if ($('#tk-hide-closed-accounts', element).length) {
-      return;
-    }
-
-    componentAppend(
-      <HideClosedButton toggleHiddenState={this.setHiddenState} />,
-      element.getElementsByClassName('modal-list')[0]
-    );
-  }
-
   invoke() {
     const initialState = getToolkitStorageKey('hide-closed', true);
     this.setHiddenState(initialState);
-    this.addToolkitEmberHook('settings-menu', 'didRender', this.insertHideClosed);
+    this.onElement('.ynab-new-settings-menu', this.insertHideClosed, {
+      guard: '#tk-hide-closed-accounts',
+    });
+  }
+
+  observe() {
+    this.onElement('.ynab-new-settings-menu', this.insertHideClosed, {
+      guard: '#tk-hide-closed-accounts',
+    });
   }
 
   destroy() {
     $('#tk-hide-closed-accounts').remove();
     $('body').removeClass('tk-hide-closed');
+  }
+
+  insertHideClosed(element) {
+    componentAppend(
+      <HideClosedButton toggleHiddenState={this.setHiddenState} />,
+      element.getElementsByClassName('modal-list')[0]
+    );
   }
 
   setHiddenState = (state) => {

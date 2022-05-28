@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class CollapseInspector extends Feature {
   injectCSS() {
@@ -7,7 +8,15 @@ export class CollapseInspector extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteBudgetPage();
+  }
+
+  invoke() {
+    this.setInspectorCollapsed(getToolkitStorageKey('collapse-inspector', false));
+  }
+
+  onRouteChanged() {
+    this.setInspectorCollapsed(getToolkitStorageKey('collapse-inspector', false));
   }
 
   destroy() {
@@ -15,18 +24,12 @@ export class CollapseInspector extends Feature {
     $('.budget-inspector').removeAttr('tk-collapse-inspector');
   }
 
-  invoke() {
-    this.addToolkitEmberHook('budget/budget-inspector', 'didRender', this.updateDOM);
-
-    this.setInspectorCollapsed(getToolkitStorageKey('collapse-inspector', false));
-  }
-
   collapseButton() {
     return $(`
       <button class="sidebar-collapse">
         <svg height="32" width="32" class="ynab-new-icon ember-view">
           <use href="#icon_sprite_sidebar_expand"></use>
-          <title>Collapse Inspector</title>    
+          <title>Collapse Inspector</title>
         </svg>
       </button>
     `);
@@ -37,7 +40,7 @@ export class CollapseInspector extends Feature {
       <button class="sidebar-expand">
         <svg height="32" width="32" class="ynab-new-icon ember-view">
           <use href="#icon_sprite_sidebar_collapse"></use>
-          <title>Expand Inspector</title>    
+          <title>Expand Inspector</title>
         </svg>
       </button>
     `);

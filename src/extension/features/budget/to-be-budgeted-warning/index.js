@@ -1,4 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class ToBeBudgetedWarning extends Feature {
   injectCSS() {
@@ -6,18 +7,22 @@ export class ToBeBudgetedWarning extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteBudgetPage();
   }
 
   invoke() {
-    this.addToolkitEmberHook('to-be-budgeted', 'didRender', this.addClasses);
+    this.onElement('.budget-header .to-be-budgeted', this.addClasses);
+  }
+
+  observe() {
+    this.onElement('.budget-header .to-be-budgeted', this.addClasses);
   }
 
   addClasses(element) {
     if (element.classList.contains('is-positive')) {
-      element.classList.add('tk-tbb-warning');
+      $(element).addClass('tk-tbb-warning');
     } else {
-      element.classList.remove('tk-tbb-warning');
+      $(element).removeClass('tk-tbb-warning');
     }
   }
 

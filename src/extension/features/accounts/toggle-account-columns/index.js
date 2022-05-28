@@ -44,15 +44,19 @@ export class ToggleAccountColumns extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteAccountsPage();
   }
 
   invoke() {
-    this.addToolkitEmberHook(
-      'modals/register/register-view-options',
-      'didRender',
-      this.insertToggles
-    );
+    this.onElement('.modal-account-view-options', this.insertToggles, {
+      guard: '#tk-show-memo',
+    });
+  }
+
+  observe() {
+    this.onElement('.modal-account-view-options', this.insertToggles, {
+      guard: '#tk-show-memo',
+    });
   }
 
   destroy() {
@@ -60,16 +64,14 @@ export class ToggleAccountColumns extends Feature {
   }
 
   insertToggles(element) {
-    if (element.querySelector('#tk-show-memo') === null) {
-      componentAppend(
-        <ShowMemoButton
-          id="tk-show-memo"
-          defaultIsShown={this.getShowMemoState()}
-          toggleState={this.updateShowMemoState}
-        />,
-        element.getElementsByClassName('modal-content')[0]
-      );
-    }
+    componentAppend(
+      <ShowMemoButton
+        id="tk-show-memo"
+        defaultIsShown={this.getShowMemoState()}
+        toggleState={this.updateShowMemoState}
+      />,
+      element.getElementsByClassName('modal-content')[0]
+    );
   }
 
   getShowMemoState = () => {

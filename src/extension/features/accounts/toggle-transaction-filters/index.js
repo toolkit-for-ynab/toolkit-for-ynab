@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { componentBefore } from 'toolkit/extension/utils/react';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 const ToggleButton = ({ stateField }) => {
   const accountsController = controllerLookup('accounts');
@@ -36,14 +37,6 @@ ToggleButton.propTypes = {
 };
 
 export class ToggleTransactionFilters extends Feature {
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    this.addToolkitEmberHook('accounts/account-header', 'didRender', this.injectButtons);
-  }
-
   injectCSS() {
     if (this.settings.enabled === '1') {
       return require('./no-labels.css');
@@ -54,15 +47,28 @@ export class ToggleTransactionFilters extends Feature {
     }
   }
 
+  shouldInvoke() {
+    return isCurrentRouteAccountsPage();
+  }
+
+  invoke() {
+    this.onElement('.accounts-toolbar', this.injectButtons, {
+      guard: '#tk-toggle-transaction-filters',
+    });
+  }
+
+  observe() {
+    this.onElement('.accounts-toolbar', this.injectButtons, {
+      guard: '#tk-toggle-transaction-filters',
+    });
+  }
+
   destroy() {
     $('#tk-toggle-transaction-filters').remove();
   }
 
   injectButtons = (element) => {
     const toolbarRight = $('.accounts-toolbar-right', element);
-    if ($('#tk-toggle-transaction-filters', toolbarRight).length) {
-      return;
-    }
 
     componentBefore(
       <span id="tk-toggle-transaction-filters" className="tk-toggle-transaction-filters">

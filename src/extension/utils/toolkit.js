@@ -1,9 +1,3 @@
-import {
-  EMBER_COMPONENT_TOOLKIT_HOOKS,
-  emberComponentToolkitHookKey,
-} from 'toolkit/extension/ynab-toolkit';
-import { componentLookup } from 'toolkit/extension/utils/ember';
-
 const MONTHS_SHORT = [
   'Jan',
   'Feb',
@@ -103,34 +97,5 @@ export function l10nAccountType(accountType) {
       return l10n('OtherAsset', 'Asset (e.g. Investment)');
     case ynab.enums.AccountType.OtherLiability:
       return l10n('OtherLiability', 'Liability (e.g. Mortgage)');
-  }
-}
-
-export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn) {
-  const componentProto = Object.getPrototypeOf(componentLookup(componentKey));
-
-  if (!EMBER_COMPONENT_TOOLKIT_HOOKS.includes(lifecycleHook)) {
-    return;
-  }
-
-  let hooks = componentProto[emberComponentToolkitHookKey(lifecycleHook)];
-  if (!hooks) {
-    hooks = [{ context, fn }];
-    componentProto[emberComponentToolkitHookKey(lifecycleHook)] = hooks;
-  } else if (hooks && !hooks.some(({ fn: fnExists }) => fn === fnExists)) {
-    hooks.push({ context, fn });
-  }
-
-  ynabToolKit.hookedComponents.add(componentKey);
-}
-
-export function removeToolkitEmberHook(componentKey, lifecycleHook, fn) {
-  const componentProto = Object.getPrototypeOf(componentLookup(componentKey));
-
-  let hooks = componentProto[emberComponentToolkitHookKey(lifecycleHook)];
-  if (hooks) {
-    componentProto[emberComponentToolkitHookKey(lifecycleHook)] = hooks.filter(
-      (hook) => hook.fn !== fn
-    );
   }
 }
