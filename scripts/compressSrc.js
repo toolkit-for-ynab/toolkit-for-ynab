@@ -1,6 +1,7 @@
 const archiver = require('archiver');
 const fs = require('fs');
 const path = require('path');
+const yargs = require('yargs').argv;
 
 const workspaceRoot = path.join(__dirname, '..');
 const extensionDirectory = path.join(workspaceRoot, 'dist', 'extension');
@@ -13,9 +14,17 @@ if (!fs.existsSync(extensionDirectory)) {
   process.exit(1);
 }
 
+if (!['chrome', 'firefox', 'edge'].includes(yargs.browser)) {
+  console.log(`${yargs.browser} is not a valid browser option`);
+  process.exit(1);
+}
+
 // It's nice to create zip files with the version number in the name
 const version = require(path.join(extensionDirectory, 'manifest.json')).version;
-const zipFile = path.join(outputDirectory, `toolkit-for-ynab-source-v${version}.zip`);
+const zipFile = path.join(
+  outputDirectory,
+  `toolkit-for-ynab-source-v${version}-${yargs.browser}.zip`
+);
 
 // Create our zip file
 const output = fs.createWriteStream(zipFile);
