@@ -1,4 +1,5 @@
 module.exports = {
+  disabled: true,
   name: 'DisplayTargetGoalAmount',
   type: 'select',
   default: false,
