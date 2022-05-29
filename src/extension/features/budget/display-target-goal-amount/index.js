@@ -28,7 +28,15 @@ export class DisplayTargetGoalAmount extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('budget-table-row', 'didRender', this.addTargetGoalAmount);
+    this.onElements('.budget-table-row', this.addTargetGoalAmount, {
+      guard: '.tk-target-goal-amount',
+    });
+  }
+
+  observe() {
+    this.onElements('.budget-table-row', this.addTargetGoalAmount, {
+      guard: '.tk-target-goal-amount',
+    });
   }
 
   destroy() {
