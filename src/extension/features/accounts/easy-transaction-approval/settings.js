@@ -1,5 +1,4 @@
 module.exports = {
-  disabled: true,
   name: 'EasyTransactionApproval',
   type: 'checkbox',
   default: false,

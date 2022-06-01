@@ -5,7 +5,6 @@ interface FeatureSettingBaseConfig {
   description: string;
   default: FeatureSetting;
   hidden?: boolean;
-  disabled?: boolean;
 }
 
 interface FeatureSettingSelectOption {

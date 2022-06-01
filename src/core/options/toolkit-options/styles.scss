@@ -10,7 +10,6 @@
   --tk-toggle-switch-color: #636366;
   --tk-toggle-checked-fill-color: var(--tk-action-primary);
   --tk-toggle-unchecked-fill-color: #aeaeb2;
-  --tk-toggle-disabled-fill-color: #da6161;
 
   // src/components/radio-group
   --tk-radio-background-color: var(--tk-background-color);
@@ -39,7 +38,6 @@
   --tk-toggle-switch-color: #3a3a3c;
   --tk-toggle-checked-fill-color: var(--tk-action-primary);
   --tk-toggle-unchecked-fill-color: #8e8e93;
-  --tk-toggle-disabled-fill-color: #da6161;
 
   // src/components/radio-group
   --tk-radio-background-color: var(--tk-background-color);
@@ -131,12 +129,6 @@ body {
     margin-bottom: auto;
   }
 
-  &__disabled {
-    &::before {
-      content: 'This feature is temporarily disabled. Check back after the next update.';
-    }
-  }
-
   &__options {
     max-height: 1000px;
     transform: scaleY(1);
@@ -168,12 +160,6 @@ body {
   }
 
   &__description {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    line-height: 1.2rem;
-  }
-
-  &__disabled {
     margin-top: 0.5rem;
     font-size: 0.9rem;
     line-height: 1.2rem;

@@ -42,15 +42,13 @@ export class CategoryActivityCopy extends Feature {
   }
 
   invoke() {
-    this.onElement('.modal-budget-activity', this.handleBudgetActivityModal, {
-      guard: '#tk-copy-transactions',
-    });
-  }
+    this.addToolkitEmberHook('budget/budget-activity', 'didRender', this.handleBudgetActivityModal);
 
-  observe() {
-    this.onElement('.modal-budget-activity', this.handleBudgetActivityModal, {
-      guard: '#tk-copy-transactions',
-    });
+    this.addToolkitEmberHook(
+      'modals/reports/activity-transactions',
+      'didRender',
+      this.handleReportActivityModal
+    );
   }
 
   destroy() {
@@ -58,6 +56,10 @@ export class CategoryActivityCopy extends Feature {
   }
 
   handleBudgetActivityModal = (element) => {
+    if ($('#tk-copy-transactions').length) {
+      return;
+    }
+
     componentAppend(
       <CopyTransactionsButton
         transactions={controllerLookup('budget').get('selectedActivityTransactions') || []}
@@ -67,6 +69,10 @@ export class CategoryActivityCopy extends Feature {
   };
 
   handleReportActivityModal = (element) => {
+    if ($('#tk-copy-transactions').length) {
+      return;
+    }
+
     componentAppend(
       <CopyTransactionsButton transactions={getEmberView(element.id).sortedTransactions || []} />,
       element.querySelector('.modal-actions')

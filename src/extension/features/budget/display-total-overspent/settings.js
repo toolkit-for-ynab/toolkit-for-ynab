@@ -1,5 +1,4 @@
 module.exports = {
-  disabled: true,
   name: 'DisplayTotalOverspent',
   type: 'checkbox',
   default: false,

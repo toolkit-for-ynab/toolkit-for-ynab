@@ -16,23 +16,27 @@ export class ClearSelection extends Feature {
     }
   };
 
-  invoke() {
-    this.onElement('.modal-account-edit-transaction-list', this.insertClearSelection, {
-      guard: '#tk-clear-selection',
-    });
+  shouldInvoke() {
+    return true;
   }
 
-  observe() {
-    this.onElement('.modal-account-edit-transaction-list', this.insertClearSelection, {
-      guard: '#tk-clear-selection',
-    });
+  invoke() {
+    this.addToolkitEmberHook(
+      'modals/register/edit-transactions',
+      'didRender',
+      this.insertClearSelection
+    );
   }
 
   destroy() {
     $('#tk-clear-selection, #tk-clear-selection + li').remove();
   }
 
-  insertClearSelection = () => {
+  insertClearSelection = (element) => {
+    if (element.querySelector('#tk-clear-selection') !== null) {
+      return;
+    }
+
     const menuText = l10n('toolkit.accountsClearSelection', 'Clear Selection');
 
     // Note that ${menuText} was intentionally placed on the same line as the <i> tag to

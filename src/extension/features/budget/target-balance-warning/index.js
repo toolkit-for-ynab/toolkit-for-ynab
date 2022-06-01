@@ -7,49 +7,12 @@ export class TargetBalanceWarning extends Feature {
   }
 
   invoke() {
-    this.onElements('.budget-table-row', this.modifyBudgetRow, {
-      guard: '[data-tk-target-balance-row-warning]',
-    });
-
-    this.onElement('.budget-breakdown', this.modifyInspector);
-  }
-
-  observe() {
-    this.onElements('.budget-table-row', this.modifyBudgetRow, {
-      guard: '[data-tk-target-balance-row-warning]',
-    });
-
-    this.onElement('.budget-breakdown', this.modifyInspector);
+    this.addToolkitEmberHook('budget-table-row', 'didRender', this.modifyBudgetRow);
+    this.addToolkitEmberHook('budget-breakdown', 'didRender', this.modifyInspector);
   }
 
   destroy() {
-    this.onElements('[data-tk-target-balance-row-warning]', (element) => {
-      const category = getEmberView(element.id, 'category');
-      if (!category) {
-        return;
-      }
-
-      $('.ynab-new-budget-available-number', element).removeClass('goal cautious');
-      $('.ynab-new-budget-available-number', element).addClass(
-        category.available === 0 ? 'zero' : 'positive'
-      );
-
-      delete element.dataset.tkTargetBalanceRowWarning;
-    });
-
-    this.onElements('[data-tk-target-balance-inspector-warning]', (element) => {
-      const category = getEmberView(element.id, 'activeCategory');
-      if (!category) {
-        return;
-      }
-
-      $('.ynab-new-budget-available-number', element).removeClass('goal cautious');
-      $('.ynab-new-budget-available-number', element).addClass(
-        category.available === 0 ? 'zero' : 'positive'
-      );
-
-      delete element.dataset.tkTargetBalanceInspectorWarning;
-    });
+    $('.tk-target-underfunded').removeClass('tk-target-underfunded');
   }
 
   modifyBudgetRow(element) {
@@ -63,7 +26,6 @@ export class TargetBalanceWarning extends Feature {
       return;
     }
 
-    element.dataset.tkTargetBalanceRowWarning = true;
     $('.ynab-new-budget-available-number', element).addClass('goal');
 
     if (category.goalOverallLeft > 0) {
@@ -84,7 +46,6 @@ export class TargetBalanceWarning extends Feature {
       return;
     }
 
-    element.dataset.tkTargetBalanceInspectorWarning = true;
     $('.ynab-new-budget-available-number', element).addClass('goal');
 
     if (category.goalOverallLeft > 0) {
