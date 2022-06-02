@@ -8,11 +8,9 @@ export class BulkManagePayees extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook(
-      'modals/register/edit-transactions',
-      'didRender',
-      this.insertManagePayees
-    );
+    this.addToolkitEmberHook('modal', 'didRender', this.insertManagePayees, {
+      guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
+    });
   }
 
   destroy() {

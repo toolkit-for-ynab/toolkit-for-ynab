@@ -106,19 +106,23 @@ export function l10nAccountType(accountType) {
   }
 }
 
-export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn) {
-  const componentProto = Object.getPrototypeOf(componentLookup(componentKey));
+export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn, guard) {
+  const component = componentLookup(componentKey);
+  if (!component) {
+    return;
+  }
 
+  const componentProto = Object.getPrototypeOf(component);
   if (!EMBER_COMPONENT_TOOLKIT_HOOKS.includes(lifecycleHook)) {
     return;
   }
 
   let hooks = componentProto[emberComponentToolkitHookKey(lifecycleHook)];
   if (!hooks) {
-    hooks = [{ context, fn }];
+    hooks = [{ context, fn, guard }];
     componentProto[emberComponentToolkitHookKey(lifecycleHook)] = hooks;
   } else if (hooks && !hooks.some(({ fn: fnExists }) => fn === fnExists)) {
-    hooks.push({ context, fn });
+    hooks.push({ context, fn, guard });
   }
 
   ynabToolKit.hookedComponents.add(componentKey);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import { getEntityManager, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
 import { componentAppend } from 'toolkit/extension/utils/react';
 
@@ -42,13 +42,15 @@ export class CategoryActivityCopy extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('budget/budget-activity', 'didRender', this.handleBudgetActivityModal);
+    this.addToolkitEmberHook('modal', 'didRender', this.handleBudgetActivityModal, {
+      guard: () =>
+        isCurrentRouteBudgetPage() && document.querySelector('.modal-budget-activity') !== null,
+    });
 
-    this.addToolkitEmberHook(
-      'modals/reports/activity-transactions',
-      'didRender',
-      this.handleReportActivityModal
-    );
+    this.addToolkitEmberHook('modal', 'didRender', this.handleReportActivityModal, {
+      guard: () =>
+        !isCurrentRouteBudgetPage() && document.querySelector('.modal-budget-activity') !== null,
+    });
   }
 
   destroy() {
@@ -74,7 +76,9 @@ export class CategoryActivityCopy extends Feature {
     }
 
     componentAppend(
-      <CopyTransactionsButton transactions={getEmberView(element.id).sortedTransactions || []} />,
+      <CopyTransactionsButton
+        transactions={getEmberView(element.id).parentView.sortedTransactions || []}
+      />,
       element.querySelector('.modal-actions')
     );
   };

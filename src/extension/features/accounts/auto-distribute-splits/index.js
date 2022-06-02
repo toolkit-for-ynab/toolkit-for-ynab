@@ -65,7 +65,9 @@ export class AutoDistributeSplits extends Feature {
   }
 
   canDistribute(total, subValues) {
-    return actualNumber(total) && subValues.any(actualNumber);
+    return (
+      actualNumber(total) && !subValues.every((value) => value === 0) && subValues.any(actualNumber)
+    );
   }
 
   alertCannotDistribute() {

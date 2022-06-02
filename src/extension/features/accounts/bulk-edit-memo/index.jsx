@@ -74,11 +74,9 @@ export class BulkEditMemo extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook(
-      'modals/register/edit-transactions',
-      'didInsertElement',
-      this.injectBulkEditMemo
-    );
+    this.addToolkitEmberHook('modal', 'didInsertElement', this.injectBulkEditMemo, {
+      guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
+    });
   }
 
   destroy() {
@@ -86,10 +84,11 @@ export class BulkEditMemo extends Feature {
   }
 
   injectBulkEditMemo = (element) => {
-    const categorizeRow = $(
-      '.modal-account-edit-transaction-list li:contains("Categorize")',
-      element
-    );
-    componentAfter(<EditMemo />, categorizeRow);
+    const categorizeRow = $('li:contains("Categorize")', element);
+    if (!categorizeRow.length) {
+      return;
+    }
+
+    componentAfter(<EditMemo />, categorizeRow[0]);
   };
 }

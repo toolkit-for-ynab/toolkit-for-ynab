@@ -51,7 +51,9 @@ export class HideHelp extends Feature {
   invoke() {
     const initialState = getToolkitStorageKey('hide-help', true);
     this.setHiddenState(initialState);
-    this.addToolkitEmberHook('settings-menu', 'didRender', this.insertHideHelp);
+    this.addToolkitEmberHook('modal', 'didRender', this.insertHideHelp, {
+      guard: () => document.querySelector('.ynab-new-settings-menu') !== null,
+    });
   }
 
   destroy() {

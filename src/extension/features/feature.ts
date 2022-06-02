@@ -86,17 +86,22 @@ export class Feature {
     componentKey: string,
     lifecycleHook: SupportedEmberHook,
     fn: (element: HTMLElement) => void,
-    options?: { debounce: number }
+    options?: { debounce?: number; guard?: (element: HTMLElement) => boolean }
   ): void {
-    if (options && options.debounce) {
+    if (options?.debounce != null) {
       fn = this.debounce(fn, options.debounce);
     }
 
-    addToolkitEmberHook(this, componentKey, lifecycleHook, fn);
+    addToolkitEmberHook(this, componentKey, lifecycleHook, fn, options?.guard);
+
     this.__hooks.set(`${componentKey}:${lifecycleHook}`, fn);
 
     forEachRenderedComponent(componentKey, (view: { element: HTMLElement }) => {
       if (view.element) {
+        if (options?.guard && !options.guard(view.element)) {
+          return;
+        }
+
         fn.call(this, view.element);
       }
     });
@@ -105,7 +110,8 @@ export class Feature {
   removeToolkitEmberHook(
     componentKey: string,
     lifecycleHook: SupportedEmberHook,
-    fn: (element: HTMLElement) => void
+    fn: (element: HTMLElement) => void,
+    options?: { guard?: string }
   ): void {
     removeToolkitEmberHook(componentKey, lifecycleHook, fn);
     this.__hooks.delete(`${componentKey}:${lifecycleHook}`);

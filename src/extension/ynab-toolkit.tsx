@@ -13,6 +13,7 @@ import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-mod
 import { Feature } from './features/feature';
 import { InboundMessage, InboundMessageType, OutboundMessageType } from 'toolkit/core/messages';
 import { ObserveListener, RouteChangeListener } from './listeners';
+import { getUnclearedTransactions } from './features/accounts/reconcile-assistant/reconcileAssistantUtils';
 
 export let observeListener: ObserveListener;
 export let routeChangeListener: RouteChangeListener;
@@ -40,6 +41,7 @@ window.__toolkitUtils = {
 interface ToolkitEmberHook {
   context: Feature;
   fn(element: Element): void;
+  guard?: (element: Element) => boolean;
 }
 
 type ToolkitEnabledComponent = Ember['Component'] & {
@@ -215,7 +217,13 @@ export class YNABToolkit {
         const self = this as ToolkitEnabledComponent;
         const hooks = self[emberComponentToolkitHookKey(lifecycleName)];
         if (hooks) {
-          hooks.forEach(({ context, fn }) => fn.call(context, self.element));
+          hooks.forEach(({ context, fn, guard }) => {
+            if (guard && !guard(self.element)) {
+              return;
+            }
+
+            fn.call(context, self.element);
+          });
         }
       };
     });
@@ -227,7 +235,13 @@ export class YNABToolkit {
         EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
           const hooks = view[emberComponentToolkitHookKey(lifecycleName)];
           if (hooks) {
-            hooks.forEach((hook) => hook.fn.call(hook.context, view.element));
+            hooks.forEach((hook) => {
+              if (hook.guard && !hook.guard(view.element)) {
+                return;
+              }
+
+              hook.fn.call(hook.context, view.element);
+            });
           }
         });
       });
@@ -264,6 +278,14 @@ export class YNABToolkit {
 
     (function poll() {
       if (ynabUtils.isYNABReady()) {
+        // YNAB does some lazy execution of their code (it's already loaded so I'm not really sure what the)
+        // goal is with it. But if you load YNAB on the budget page, then some object (like transaction
+        // grid row components) won't be available. This then causes some deferred errors to happen. When we
+        // look up these templates at launch, all that code executes and wa-la!
+        emberUtils.containerLookup('template:accounts');
+        emberUtils.containerLookup('template:budget');
+        emberUtils.containerLookup('template:reports');
+
         // add a global invokeFeature to the global ynabToolKit for legacy features
         // once legacy features have been removed, this should be a global exported function
         // from this file that features can require and use

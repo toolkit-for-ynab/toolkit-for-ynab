@@ -21,11 +21,9 @@ export class ClearSelection extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook(
-      'modals/register/edit-transactions',
-      'didRender',
-      this.insertClearSelection
-    );
+    this.addToolkitEmberHook('modal', 'didRender', this.insertClearSelection, {
+      guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
+    });
   }
 
   destroy() {
