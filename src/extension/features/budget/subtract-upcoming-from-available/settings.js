@@ -15,5 +15,4 @@ module.exports = {
     { name: 'Subtract Upcoming from Available', value: '1' },
     { name: "Don't Include CC Payments", value: 'no-cc' },
   ],
-  disabled: true,
 };

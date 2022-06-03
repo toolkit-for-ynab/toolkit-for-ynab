@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import { getEntityManager, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
 import { componentAppend } from 'toolkit/extension/utils/react';
 
@@ -42,14 +42,14 @@ export class CategoryActivityCopy extends Feature {
   }
 
   invoke() {
-    this.onElement('.modal-budget-activity', this.handleBudgetActivityModal, {
-      guard: '#tk-copy-transactions',
+    this.addToolkitEmberHook('modal', 'didRender', this.handleBudgetActivityModal, {
+      guard: () =>
+        isCurrentRouteBudgetPage() && document.querySelector('.modal-budget-activity') !== null,
     });
-  }
 
-  observe() {
-    this.onElement('.modal-budget-activity', this.handleBudgetActivityModal, {
-      guard: '#tk-copy-transactions',
+    this.addToolkitEmberHook('modal', 'didRender', this.handleReportActivityModal, {
+      guard: () =>
+        !isCurrentRouteBudgetPage() && document.querySelector('.modal-budget-activity') !== null,
     });
   }
 
@@ -58,6 +58,10 @@ export class CategoryActivityCopy extends Feature {
   }
 
   handleBudgetActivityModal = (element) => {
+    if ($('#tk-copy-transactions').length) {
+      return;
+    }
+
     componentAppend(
       <CopyTransactionsButton
         transactions={controllerLookup('budget').get('selectedActivityTransactions') || []}
@@ -67,8 +71,14 @@ export class CategoryActivityCopy extends Feature {
   };
 
   handleReportActivityModal = (element) => {
+    if ($('#tk-copy-transactions').length) {
+      return;
+    }
+
     componentAppend(
-      <CopyTransactionsButton transactions={getEmberView(element.id).sortedTransactions || []} />,
+      <CopyTransactionsButton
+        transactions={getEmberView(element.id).parentView.sortedTransactions || []}
+      />,
       element.querySelector('.modal-actions')
     );
   };

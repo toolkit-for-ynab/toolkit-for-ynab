@@ -1,5 +1,4 @@
 module.exports = {
-  disabled: true,
   name: 'CheckNumbers',
   type: 'checkbox',
   default: false,

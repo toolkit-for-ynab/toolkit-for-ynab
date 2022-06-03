@@ -31,8 +31,7 @@ export function forEachRenderedComponent(key, fn) {
   });
 }
 
-/* Private Functions */
-function containerLookup(containerName) {
+export function containerLookup(containerName) {
   let container;
   try {
     container = __ynabapp__.__container__.lookup(containerName);
@@ -43,6 +42,6 @@ function containerLookup(containerName) {
   return container;
 }
 
-function getViewRegistry() {
+export function getViewRegistry() {
   return __ynabapp__.__container__.lookup('-view-registry:main');
 }

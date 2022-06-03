@@ -11,14 +11,8 @@ export class ScrollableEditMenu extends Feature {
   }
 
   invoke() {
-    this.onElement('.modal-account-edit-transaction-list', this.addScrollWrappers, {
-      guard: 'tk-clear-selection',
-    });
-  }
-
-  observe() {
-    this.onElement('.modal-account-edit-transaction-list', this.addScrollWrappers, {
-      guard: 'tk-clear-selection',
+    this.addToolkitEmberHook('modal', 'didRender', this.addScrollWrappers, {
+      guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
     });
   }
 

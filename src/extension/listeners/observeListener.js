@@ -1,16 +1,6 @@
 import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 
-const IGNORE_UPDATES = new Set([
-  // every time you hover a budget row, one of these nodes change which is _just a lot_.
-  'budget-table-cell-category-moves js-budget-toolbar-open-category-moves',
-  'budget-table-cell-category-moves js-budget-toolbar-open-category-moves category-moves-hidden',
-]);
-
 export class ObserveListener {
-  lastChangedNodes = new Set();
-
-  duplicateCount = 0;
-
   constructor() {
     this.features = [];
 
@@ -40,12 +30,9 @@ export class ObserveListener {
         }
       });
 
-      const shouldIgnore =
-        this.changedNodes.size === 0 ||
-        Array.from(this.changedNodes).every((change) => IGNORE_UPDATES.has(change));
-
-      if (!shouldIgnore) {
-        this.debug();
+      // Now we are ready to feed the change digest to the
+      // automatically setup feedChanges file/function
+      if (this.changedNodes.size > 0) {
         this.emitChanges();
       }
     });
@@ -58,34 +45,6 @@ export class ObserveListener {
       attributes: true,
       attributeFilter: ['class'],
     });
-  }
-
-  debug() {
-    if (ynabToolKit.environment !== 'development') {
-      return;
-    }
-
-    console.debug(this.changedNodes);
-
-    if (this.changedNodes.size !== this.lastChangedNodes.size) {
-      this.lastChangedNodes = this.changedNodes;
-      this.duplicateCount = 0;
-      return;
-    }
-
-    const isDuplicate = Array.from(this.changedNodes).every((element) =>
-      this.lastChangedNodes.has(element)
-    );
-    if (isDuplicate && ++this.duplicateCount % 100 === 0) {
-      console.warn(
-        `Changed nodes have been the same for ${this.duplicateCount} emits. A feature is likely always updating DOM elements inside an observe without an proper exit condition.`,
-        this.changedNodes
-      );
-    } else if (!isDuplicate) {
-      this.duplicateCount = 0;
-    }
-
-    this.lastChangedNodes = this.changedNodes;
   }
 
   addFeature(feature) {

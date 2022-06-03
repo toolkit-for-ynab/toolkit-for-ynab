@@ -1,5 +1,4 @@
 module.exports = {
-  disabled: true,
   name: 'SplitTransactionTabExpand',
   type: 'checkbox',
   default: false,
