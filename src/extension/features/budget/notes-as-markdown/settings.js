@@ -1,5 +1,4 @@
 module.exports = {
-  disabled: true,
   name: 'NotesAsMarkdown',
   type: 'checkbox',
   default: false,

@@ -1,23 +1,15 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import {
-  getCurrentBudgetDate,
-  getEntityManager,
-  isCurrentRouteBudgetPage,
-} from 'toolkit/extension/utils/ynab';
+import { getCurrentBudgetDate, getEntityManager } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n, l10nMonth, MonthStyle } from 'toolkit/extension/utils/toolkit';
 
 export class LiveOnLastMonthsIncome extends Feature {
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
+    return true;
   }
 
   invoke() {
-    this.onElement('.budget-breakdown', this.injectLastMonthsIncome);
-  }
-
-  observe() {
-    this.onElement('.budget-breakdown', this.injectLastMonthsIncome);
+    this.addToolkitEmberHook('budget-breakdown', 'didRender', this.injectLastMonthsIncome);
   }
 
   destroy() {
@@ -98,34 +90,16 @@ export class LiveOnLastMonthsIncome extends Feature {
     const income = incomeBudgetCalculation?.immediateIncome || 0;
     const budgeted = currentBudgetCalculation?.budgeted || 0;
 
-    const lastMonthTitleText = `${l10n('toolkit.incomeIn', 'Income In')} ${incomeMonthName}`;
-    const $lastMonthTitle = $('#tk-income-in-month .tk-title', element);
-    if ($lastMonthTitle.text() !== lastMonthTitleText) {
-      $lastMonthTitle.text(lastMonthTitleText);
-    }
+    // Create variance line
+    $('#tk-last-months-income .tk-title', element).text(
+      `${l10n('toolkit.incomeIn', 'Income In')} ${incomeMonthName}`
+    );
+    $('#tk-last-months-income .tk-value', element).text(formatCurrency(income));
 
-    const lastMonthValueText = formatCurrency(income);
-    const $lastMonthValue = $('#tk-income-in-month .tk-value', element);
-    if ($lastMonthValue.text() !== lastMonthValueText) {
-      $lastMonthValue.text(lastMonthValueText);
-    }
-
-    const assignedInTitleText = `${l10n('toolkit.assignedIn', 'Assigned in')} ${currentMonthName}`;
-    const $assignedInTitle = $('#tk-assigned-in-month .tk-title', element);
-    if ($assignedInTitle.text() !== assignedInTitleText) {
-      $assignedInTitle.text(assignedInTitleText);
-    }
-
-    const assignedInValueText = formatCurrency(budgeted);
-    const $assignedInValue = $('#tk-assigned-in-month .tk-value', element);
-    if ($assignedInValue.text() !== assignedInValueText) {
-      $assignedInValue.text(assignedInValueText);
-    }
-
-    const varianceValueText = formatCurrency(income - budgeted);
-    const $varianceValue = $('#tk-variance-in-month .tk-value', element);
-    if ($varianceValue.text() !== varianceValueText) {
-      $varianceValue.text(varianceValueText);
-    }
+    $('#tk-assigned-in-month .tk-title', element).text(
+      `${l10n('toolkit.assignedIn', 'Assigned in')} ${currentMonthName}`
+    );
+    $('#tk-assigned-in-month .tk-value', element).text(formatCurrency(budgeted));
+    $('#tk-variance-in-month .tk-value', element).text(formatCurrency(income - budgeted));
   }
 }

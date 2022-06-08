@@ -2,7 +2,6 @@
   --tk-toggle-switch-color: #636366;
   --tk-toggle-checked-fill-color: #4495d7;
   --tk-toggle-unchecked-fill-color: #aeaeb2;
-  --tk-toggle-disabled-fill-color: #da6161;
 }
 
 .toggle {
@@ -60,10 +59,5 @@
 
   .toggle__input:checked + .toggle__label::after {
     left: calc(50% - 3px);
-  }
-
-  .toggle__input:disabled + .toggle__label {
-    background-color: var(--tk-toggle-disabled-fill-color);
-    cursor: not-allowed;
   }
 }

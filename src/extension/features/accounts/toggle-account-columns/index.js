@@ -13,22 +13,24 @@ export const ShowMemoButton = ({ defaultIsShown, id, toggleState }) => {
   };
 
   return (
-    <div className="modal-account-view-menu" id={id}>
-      <button
-        onClick={toggleHidden}
-        aria-label={l10n('toolkit.checkShowMenuColumn', 'Check Show Memo Column')}
-        role="checkbox"
-      >
-        <div
-          className={`flaticon stroke ynab-checkbox-button-square ${
-            defaultIsShown ? 'is-checked' : ''
-          }`}
-        ></div>
-      </button>
-      <label onClick={toggleHidden} className="label-checkbox">
-        &nbsp;{l10n('toolkit.showMemoColumn', 'Show Memo Column')}
-      </label>
-    </div>
+    <li>
+      <div className="modal-account-view-menu" id={id}>
+        <button
+          onClick={toggleHidden}
+          aria-label={l10n('toolkit.checkShowMenuColumn', 'Check Show Memo Column')}
+          role="checkbox"
+        >
+          <div
+            className={`flaticon stroke ynab-checkbox-button-square ${
+              defaultIsShown ? 'is-checked' : ''
+            }`}
+          ></div>
+        </button>
+        <label onClick={toggleHidden} className="label-checkbox">
+          &nbsp;&nbsp;{l10n('toolkit.showMemoColumn', 'Show Memo Column')}
+        </label>
+      </div>
+    </li>
   );
 };
 
@@ -44,19 +46,17 @@ export class ToggleAccountColumns extends Feature {
   }
 
   shouldInvoke() {
-    return isCurrentRouteAccountsPage();
+    return true;
   }
 
   invoke() {
-    this.onElement('.modal-account-view-options', this.insertToggles, {
-      guard: '#tk-show-memo',
+    this.addToolkitEmberHook('modal', 'didRender', this.insertToggles, {
+      guard: () => document.querySelector('.modal-account-view-options') !== null,
     });
-  }
 
-  observe() {
-    this.onElement('.modal-account-view-options', this.insertToggles, {
-      guard: '#tk-show-memo',
-    });
+    if (isCurrentRouteAccountsPage()) {
+      this.updateShowMemoState(this.getShowMemoState());
+    }
   }
 
   destroy() {
@@ -64,14 +64,16 @@ export class ToggleAccountColumns extends Feature {
   }
 
   insertToggles(element) {
-    componentAppend(
-      <ShowMemoButton
-        id="tk-show-memo"
-        defaultIsShown={this.getShowMemoState()}
-        toggleState={this.updateShowMemoState}
-      />,
-      element.getElementsByClassName('modal-content')[0]
-    );
+    if (element.querySelector('#tk-show-memo') === null) {
+      componentAppend(
+        <ShowMemoButton
+          id="tk-show-memo"
+          defaultIsShown={this.getShowMemoState()}
+          toggleState={this.updateShowMemoState}
+        />,
+        element.getElementsByClassName('modal-account-view-options-status')[0]
+      );
+    }
   }
 
   getShowMemoState = () => {

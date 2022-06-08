@@ -14,7 +14,6 @@ export function ForecastComponent({ filteredTransactions }) {
   const confidences = [10, 25, 50, 75, 90];
 
   useEffect(() => {
-    console.log({ filteredTransactions });
     const newForecasts = generateForecasts(filteredTransactions);
     setForecasts(newForecasts);
     setNetWorth(newForecasts[0][0]);
@@ -75,7 +74,9 @@ export function ForecastComponent({ filteredTransactions }) {
               .add(this.point.x + 1, 'w')
               .format('YYYY-MM-DD');
 
-            return `${series}: <b>${formatCurrency(this.point.y)}</b><br />APY: ${apyString}<br />${date}`;
+            return `${series}: <b>${formatCurrency(
+              this.point.y
+            )}</b><br />APY: ${apyString}<br />${date}`;
           },
         },
         series: confidences.map((c) => ({

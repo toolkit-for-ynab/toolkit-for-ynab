@@ -11,6 +11,12 @@ export class RemoveZeroCategories extends Feature {
   }
 
   invoke() {
+    this.addToolkitEmberHook('modal', 'didRender', this.hideEmpties, {
+      guard: () => document.querySelector('.modal-budget-overspending') !== null,
+    });
+  }
+
+  hideEmpties() {
     let lastSectionItem = null;
     let hideSectionItem = true;
 
@@ -41,16 +47,6 @@ export class RemoveZeroCategories extends Feature {
 
     if (lastSectionItem && hideSectionItem) {
       lastSectionItem.classList.add('tk-hidden');
-    }
-  }
-
-  observe(changedNodes) {
-    if (!this.shouldInvoke()) {
-      return;
-    }
-
-    if (changedNodes.has('category-item-container')) {
-      this.invoke();
     }
   }
 }

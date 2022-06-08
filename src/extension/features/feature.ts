@@ -1,6 +1,8 @@
 import { observeListener, routeChangeListener } from 'toolkit/extension/ynab-toolkit';
 import { logToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
-import { boolean } from 'yargs';
+import { SupportedEmberHook } from '../ynab-toolkit';
+import { addToolkitEmberHook, removeToolkitEmberHook } from '../utils/toolkit';
+import { forEachRenderedComponent } from '../utils/ember';
 
 export class Feature {
   private __hooks = new Map<string, (element: HTMLElement) => void>();
@@ -11,6 +13,8 @@ export class Feature {
   };
 
   shouldInvoke(): boolean {
+    // Default to no action. Unless you're implementing a CSS only feature,
+    // you MUST override this to specify when your invoke() function should run!
     return false;
   }
 
@@ -62,43 +66,61 @@ export class Feature {
     routeChangeListener.removeFeature(this);
   }
 
-  onElement(
-    selector: string,
-    fn: (element: Element) => void,
-    options?: {
-      guard?: string;
-    }
-  ) {
-    const element = document.querySelector(selector);
-    if (element !== null) {
-      if (options?.guard && element.querySelector(options.guard) !== null) {
-        return;
+  debounce(fn: (element: HTMLElement) => void, timeout: number): (element: HTMLElement) => void {
+    const timers = new Map<string, number>();
+    return (element: HTMLElement) => {
+      if (timers.has(element.id)) {
+        window.clearTimeout(timers.get(element.id));
       }
 
-      fn.call(this, element);
-    }
+      timers.set(
+        element.id,
+        window.setTimeout(() => {
+          fn.call(this, element);
+        }, timeout)
+      );
+    };
   }
 
-  onElements(
-    selector: string,
-    fn: (element: Element) => void,
-    options?: {
-      guard?: string;
+  addToolkitEmberHook(
+    componentKey: string,
+    lifecycleHook: SupportedEmberHook,
+    fn: (element: HTMLElement) => void,
+    options?: { debounce?: number; guard?: (element: HTMLElement) => boolean }
+  ): void {
+    if (options?.debounce != null) {
+      fn = this.debounce(fn, options.debounce);
     }
-  ) {
-    const elements = document.querySelectorAll(selector);
-    Array.from(elements).forEach((element) => {
-      if (element !== null) {
-        if (options?.guard && element.querySelector(options.guard) !== null) {
+
+    addToolkitEmberHook(this, componentKey, lifecycleHook, fn, options?.guard);
+
+    this.__hooks.set(`${componentKey}:${lifecycleHook}`, fn);
+
+    forEachRenderedComponent(componentKey, (view: { element: HTMLElement }) => {
+      if (view.element) {
+        if (options?.guard && !options.guard(view.element)) {
           return;
         }
-      }
 
-      fn.call(this, element);
+        fn.call(this, view.element);
+      }
     });
   }
 
-  addToolkitEmberHook() {
-    console.warn('todo: fix');
+  removeToolkitEmberHook(
+    componentKey: string,
+    lifecycleHook: SupportedEmberHook,
+    fn: (element: HTMLElement) => void,
+    options?: { guard?: string }
+  ): void {
+    removeToolkitEmberHook(componentKey, lifecycleHook, fn);
+    this.__hooks.delete(`${componentKey}:${lifecycleHook}`);
+  }
+
+  removeToolkitEmberHooks(): void {
+    this.__hooks.forEach((fn, key) => {
+      const [componentKey, lifecycleHook] = key.split(':') as [string, SupportedEmberHook];
+      this.removeToolkitEmberHook(componentKey, lifecycleHook, fn);
+    });
   }
 }

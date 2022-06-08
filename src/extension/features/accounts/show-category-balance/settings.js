@@ -1,5 +1,4 @@
 module.exports = {
-  disabled: true,
   name: 'ShowCategoryBalance',
   type: 'checkbox',
   default: false,

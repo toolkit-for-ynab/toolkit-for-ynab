@@ -3,15 +3,13 @@ import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class BulkManagePayees extends Feature {
-  invoke() {
-    this.onElement('.modal-account-edit-transaction-list', this.insertManagePayees, {
-      guard: '#tk-manage-payees',
-    });
+  shouldInvoke() {
+    return true;
   }
 
-  observe() {
-    this.onElement('.modal-account-edit-transaction-list', this.insertManagePayees, {
-      guard: '#tk-manage-payees',
+  invoke() {
+    this.addToolkitEmberHook('modal', 'didRender', this.insertManagePayees, {
+      guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
     });
   }
 
@@ -19,7 +17,11 @@ export class BulkManagePayees extends Feature {
     $('#tk-manage-payees, #tk-manage-payees + li').remove();
   }
 
-  insertManagePayees() {
+  insertManagePayees(element) {
+    if (element.querySelector('#tk-manage-payees') !== null) {
+      return;
+    }
+
     const menuText = l10n('toolkit.accountsBulkManagePayees', 'Manage Payees');
 
     // Note that ${menuText} was intentionally placed on the same line as the <i> tag to

@@ -14,11 +14,7 @@ export class AutoDistributeSplits extends Feature {
   }
 
   invoke() {
-    this.onElement('.ynab-grid-actions', this.injectDistributeButton);
-  }
-
-  observe() {
-    this.onElement('.ynab-grid-actions', this.injectDistributeButton);
+    this.addToolkitEmberHook('register/grid-actions', 'didRender', this.injectDistributeButton);
   }
 
   injectDistributeButton(element) {
@@ -69,12 +65,14 @@ export class AutoDistributeSplits extends Feature {
   }
 
   canDistribute(total, subValues) {
-    return actualNumber(total) && !subValues.every((n) => n === 0) && subValues.any(actualNumber);
+    return (
+      actualNumber(total) && !subValues.every((value) => value === 0) && subValues.any(actualNumber)
+    );
   }
 
   alertCannotDistribute() {
     // eslint-disable-next-line no-alert
-    window.alert(
+    alert(
       `Please fill in the transaction total and at least one sub-transaction in order to auto-distribute the remaining amount between sub-transactions`
     );
   }

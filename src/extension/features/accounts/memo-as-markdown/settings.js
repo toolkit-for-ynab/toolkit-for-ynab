@@ -1,5 +1,4 @@
 module.exports = {
-  disabled: true,
   name: 'MemoAsMarkdown',
   type: 'checkbox',
   default: false,

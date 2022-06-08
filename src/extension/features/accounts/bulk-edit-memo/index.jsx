@@ -69,15 +69,13 @@ export class BulkEditMemo extends Feature {
     return require('./index.css');
   }
 
-  invoke() {
-    this.onElement('.modal-account-edit-transaction-list', this.injectBulkEditMemo, {
-      guard: '.tk-bulk-edit-memo',
-    });
+  shouldInvoke() {
+    return true;
   }
 
-  observe() {
-    this.onElement('.modal-account-edit-transaction-list', this.injectBulkEditMemo, {
-      guard: '.tk-bulk-edit-memo',
+  invoke() {
+    this.addToolkitEmberHook('modal', 'didInsertElement', this.injectBulkEditMemo, {
+      guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
     });
   }
 
@@ -87,6 +85,10 @@ export class BulkEditMemo extends Feature {
 
   injectBulkEditMemo = (element) => {
     const categorizeRow = $('li:contains("Categorize")', element);
-    componentAfter(<EditMemo />, categorizeRow);
+    if (!categorizeRow.length) {
+      return;
+    }
+
+    componentAfter(<EditMemo />, categorizeRow[0]);
   };
 }

@@ -3,27 +3,27 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { getBudgetBreakdownEntries } from '../subtract-upcoming-from-available/budget-breakdown-monthly-totals';
 import { isSavingsCategory } from '../subtract-upcoming-from-available/categories';
-import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
-import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class ShowAvailableAfterSavings extends Feature {
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
+    return true;
   }
 
   invoke() {
-    this.onElement('.budget-breakdown', this.handleBudgetBreakdown);
-  }
-
-  observe() {
-    this.onElement('.budget-breakdown', this.handleBudgetBreakdown);
+    this.addToolkitEmberHook('budget-breakdown', 'didRender', this.handleBudgetBreakdown);
   }
 
   destroy() {
+    this.removeAvailableAfterSavings();
+  }
+
+  removeAvailableAfterSavings() {
     $('#tk-total-available-after-savings').remove();
   }
 
   handleBudgetBreakdown(element) {
+    this.removeAvailableAfterSavings();
+
     const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
@@ -40,14 +40,6 @@ export class ShowAvailableAfterSavings extends Feature {
 
     if (totalAvailableAfterSavings === totalAvailable) return;
 
-    if (
-      $('#tk-total-available-after-savings .inspector-message-currency .currency').text() ===
-      formatCurrency(totalAvailableAfterSavings)
-    ) {
-      return;
-    }
-
-    $('#tk-total-available-after-savings').remove();
     const $ynabBreakdown = $('.ynab-breakdown', context);
 
     getBudgetBreakdownEntries({

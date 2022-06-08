@@ -39,11 +39,9 @@ export class CustomFlagNames extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook(
-      'modals/accounts/transaction-flags',
-      'didRender',
-      this.injectEditFlags
-    );
+    this.addToolkitEmberHook('modal', 'didRender', this.injectEditFlags, {
+      guard: () => document.querySelector('.modal-account-flags') !== null,
+    });
 
     this.addToolkitEmberHook('register/grid-row', 'didRender', this.applyFlagTitle);
   }
