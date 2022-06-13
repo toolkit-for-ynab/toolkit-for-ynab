@@ -8,9 +8,9 @@ import { componentPrepend } from 'toolkit/extension/utils/react';
 function CategorySearchInput({ applySearch }) {
   const [value, setValue] = React.useState('');
   const handleSetValue = React.useCallback(
-    (event) => {
-      setValue(event.target.value);
-      applySearch(event.target.value);
+    (newValue) => {
+      setValue(newValue);
+      applySearch(newValue);
     },
     [applySearch]
   );
