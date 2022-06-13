@@ -69,7 +69,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
     return [
       budgetedCalculation?.immediateIncome || 0,
       budgetedCalculation?.budgeted || 0,
-      budgetedCalculation?.cashOutflows || 0,
+      budgetedCalculation?.cashOutflows + budgetedCalculation?.creditOutflows || 0,
     ];
   }
 
@@ -102,7 +102,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
         if (goalData.isChecked) {
           categoryGoals.checkedTotalGoalsAmount.savings += goalData.goal;
         }
-      } else if (goalData.type === 'NEED' || goalData.type === 'DEBT') {
+      } else if (['NEED', 'DEBT'].includes(goalData.type)) {
         categoryGoals.totalGoalsAmount.spending += goalData.goal;
         if (goalData.isChecked) {
           categoryGoals.checkedTotalGoalsAmount.spending += goalData.goal;

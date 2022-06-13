@@ -47,4 +47,5 @@ declare global {
   const Ember: Ember;
   const ynabToolKit: YNABToolkitObject;
   const ynab: any;
+  const YNABFEATURES: any;
 }

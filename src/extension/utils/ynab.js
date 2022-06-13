@@ -8,7 +8,7 @@ export function getEntityManager() {
 }
 
 export function getCurrentBudgetDate() {
-  const date = controllerLookup('application').get('monthString');
+  const date = controllerLookup('budget').monthString;
   return { year: date.slice(0, 4), month: date.slice(4, 6) };
 }
 
@@ -36,28 +36,20 @@ export function getSelectedAccount() {
 }
 
 export function getCurrentRouteName() {
-  return controllerLookup('application').get('activeRoute');
-}
-
-export function getCategoriesViewModel() {
-  return controllerLookup('application').get('categoriesViewModel');
+  return controllerLookup('application').currentRouteName;
 }
 
 export function getAllBudgetMonthsViewModel() {
-  return controllerLookup('application').get('allBudgetMonthsViewModel');
+  return controllerLookup('application').budgetViewModel.allBudgetMonthsViewModel;
 }
 
 export function getBudgetViewModel() {
-  return controllerLookup('application').get('budgetViewModel');
+  return controllerLookup('application').budgetViewModel;
 }
 
 export function getSelectedMonth() {
-  const monthString = controllerLookup('application').get('monthString');
+  const monthString = controllerLookup('budget').get('monthString');
   return ynab.utilities.DateWithoutTime.createFromString(monthString, 'YYYYMM');
-}
-
-export function getSidebarViewModel() {
-  return controllerLookup('application').get('sidebarViewModel');
 }
 
 export function getApplicationService() {
