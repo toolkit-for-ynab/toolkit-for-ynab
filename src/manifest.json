@@ -2,7 +2,7 @@
   "author": "Toolkit for YNAB",
   "name": "Toolkit for YNAB",
   "description": "UI customizations and tweaks for the web version of YNAB.",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "content_scripts": [
     {
       "matches": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"],
