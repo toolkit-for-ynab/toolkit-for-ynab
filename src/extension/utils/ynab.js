@@ -40,11 +40,11 @@ export function getCurrentRouteName() {
 }
 
 export function getAllBudgetMonthsViewModel() {
-  return controllerLookup('application').budgetViewModel.allBudgetMonthsViewModel;
+  return controllerLookup('budget').budgetViewModel.allBudgetMonthsViewModel;
 }
 
 export function getBudgetViewModel() {
-  return controllerLookup('application').budgetViewModel;
+  return controllerLookup('budget').budgetViewModel;
 }
 
 export function getSelectedMonth() {

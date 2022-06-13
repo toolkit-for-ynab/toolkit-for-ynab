@@ -33,18 +33,27 @@ export class ObserveListener {
       // Now we are ready to feed the change digest to the
       // automatically setup feedChanges file/function
       if (this.changedNodes.size > 0) {
+        this.debug();
         this.emitChanges();
       }
     });
 
     // This finally says 'Watch for changes' and only needs to be called the one time
-    observer.observe($('.ember-view.layout')[0] || document.body, {
+    observer.observe(document.body, {
       subtree: true,
       childList: true,
       characterData: true,
       attributes: true,
       attributeFilter: ['class'],
     });
+  }
+
+  debug() {
+    if (ynabToolKit.environment !== 'development') {
+      return;
+    }
+
+    console.info(this.changedNodes);
   }
 
   addFeature(feature) {
