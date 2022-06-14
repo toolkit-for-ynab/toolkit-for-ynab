@@ -23,6 +23,10 @@ export function serviceLookup(serviceName) {
   return containerLookup(`service:${serviceName}`);
 }
 
+export function factoryLookup(componentName) {
+  return __ynabapp__?.__container__?.factoryFor(`component:${componentName}`);
+}
+
 export function forEachRenderedComponent(key, fn) {
   Object.values(getViewRegistry()).forEach((view) => {
     if (view._debugContainerKey === `component:${key}`) {
