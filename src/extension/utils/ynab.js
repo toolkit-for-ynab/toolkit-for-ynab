@@ -36,15 +36,15 @@ export function getSelectedAccount() {
 }
 
 export function getCurrentRouteName() {
-  return controllerLookup('application')?.currentRouteName ?? false;
+  return controllerLookup('application')?.currentRouteName;
 }
 
 export function getAllBudgetMonthsViewModel() {
-  return controllerLookup('budget')?.budgetViewModel?.allBudgetMonthsViewModel ?? false;
+  return controllerLookup('budget')?.budgetViewModel?.allBudgetMonthsViewModel;
 }
 
 export function getBudgetViewModel() {
-  return controllerLookup('budget')?.budgetViewModel ?? false;
+  return controllerLookup('budget')?.budgetViewModel;
 }
 
 export function getSelectedMonth() {
