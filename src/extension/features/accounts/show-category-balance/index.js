@@ -35,6 +35,10 @@ export class ShowCategoryBalance extends Feature {
     }
 
     const allBudgetMonthsViewModel = getAllBudgetMonthsViewModel();
+    if (!allBudgetMonthsViewModel) {
+      return;
+    }
+
     const subCategoryCalculations = allBudgetMonthsViewModel.get(
       'monthlySubCategoryBudgetCalculationsCollection'
     );
