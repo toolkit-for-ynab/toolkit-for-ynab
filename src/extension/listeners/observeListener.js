@@ -5,6 +5,8 @@ const IGNORE_UPDATES = new Set([
   'ynab-new-icon category-moves-moves-icon',
   'budget-table-cell-category-moves js-budget-toolbar-open-category-moves',
   'budget-table-cell-category-moves js-budget-toolbar-open-category-moves category-moves-hidden',
+  // when you scroll on an accounts page :D
+  'ynab-grid-container  scrolling',
 ]);
 
 export class ObserveListener {
