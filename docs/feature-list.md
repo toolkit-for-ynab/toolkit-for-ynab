@@ -391,7 +391,11 @@ The color which will be used for the Default and Classic YNAB Themes. The defaul
 
 ## Swap Flag/Cleared Columns
 
-Place the Cleared column on the left and the Flagged column on the right sides of an account screen.</details>
+Place the Cleared column on the left and the Flagged column on the right sides of an account screen.
+
+## Use Cleared Balance for "Record Payment"
+
+Change the default credit card payment value to use the Cleared Balance instead of the Working Balance to avoid overpaying credit card bills. _**Note**: If you don't have enough budgeted in Payment to cover the selected option, it will use the Payment value instead to avoid overbudgeting_</details>
 
 <details><summary>Reports (Click to Expand/Collapse)</summary>
 

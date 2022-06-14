@@ -2,7 +2,7 @@ import {
   EMBER_COMPONENT_TOOLKIT_HOOKS,
   emberComponentToolkitHookKey,
 } from 'toolkit/extension/ynab-toolkit';
-import { componentLookup } from 'toolkit/extension/utils/ember';
+import { factoryLookup } from 'toolkit/extension/utils/ember';
 
 const MONTHS_SHORT = [
   'Jan',
@@ -107,20 +107,19 @@ export function l10nAccountType(accountType) {
 }
 
 export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn, guard) {
-  const component = componentLookup(componentKey);
-  if (!component) {
+  const componentPrototype = factoryLookup(componentKey)?.class?.prototype;
+  if (!componentPrototype) {
     return;
   }
 
-  const componentProto = Object.getPrototypeOf(component);
   if (!EMBER_COMPONENT_TOOLKIT_HOOKS.includes(lifecycleHook)) {
     return;
   }
 
-  let hooks = componentProto[emberComponentToolkitHookKey(lifecycleHook)];
+  let hooks = componentPrototype[emberComponentToolkitHookKey(lifecycleHook)];
   if (!hooks) {
     hooks = [{ context, fn, guard }];
-    componentProto[emberComponentToolkitHookKey(lifecycleHook)] = hooks;
+    componentPrototype[emberComponentToolkitHookKey(lifecycleHook)] = hooks;
   } else if (hooks && !hooks.some(({ fn: fnExists }) => fn === fnExists)) {
     hooks.push({ context, fn, guard });
   }
@@ -129,11 +128,14 @@ export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn, gu
 }
 
 export function removeToolkitEmberHook(componentKey, lifecycleHook, fn) {
-  const componentProto = Object.getPrototypeOf(componentLookup(componentKey));
+  const componentPrototype = factoryLookup(componentKey)?.class?.prototype;
+  if (!componentPrototype) {
+    return;
+  }
 
-  let hooks = componentProto[emberComponentToolkitHookKey(lifecycleHook)];
+  let hooks = componentPrototype[emberComponentToolkitHookKey(lifecycleHook)];
   if (hooks) {
-    componentProto[emberComponentToolkitHookKey(lifecycleHook)] = hooks.filter(
+    componentPrototype[emberComponentToolkitHookKey(lifecycleHook)] = hooks.filter(
       (hook) => hook.fn !== fn
     );
   }

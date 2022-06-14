@@ -8,7 +8,6 @@ body.theme-dark {
   --tk-striped-transaction-row-color: #1e1e1f;
 }
 
-.ynab-grid
-  .ynab-grid-body-row:nth-of-type(even):not(.is-scheduled):not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
-  background-color: var(--tk-striped-transaction-row-color);
+.tk-striped-transaction-row:not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
+  background-color: var(--tk-striped-transaction-row-color) !important;
 }
