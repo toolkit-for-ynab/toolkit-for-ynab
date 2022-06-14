@@ -13,7 +13,6 @@ import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-mod
 import { Feature } from './features/feature';
 import { InboundMessage, InboundMessageType, OutboundMessageType } from 'toolkit/core/messages';
 import { ObserveListener, RouteChangeListener } from './listeners';
-import { getUnclearedTransactions } from './features/accounts/reconcile-assistant/reconcileAssistantUtils';
 
 export let observeListener: ObserveListener;
 export let routeChangeListener: RouteChangeListener;

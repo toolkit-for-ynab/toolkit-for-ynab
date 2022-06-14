@@ -34,7 +34,7 @@ export function forEachRenderedComponent(key, fn) {
 export function containerLookup(containerName) {
   let container;
   try {
-    container = __ynabapp__.__container__.lookup(containerName);
+    container = __ynabapp__.__container__.lookup(containerName, { instantiate: false });
   } catch (e) {
     container = __ynabapp__.__container__.cache[containerName];
   }
