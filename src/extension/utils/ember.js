@@ -33,6 +33,10 @@ export function forEachRenderedComponent(key, fn) {
 
 export function containerLookup(containerName) {
   let container;
+
+  if (__ynabapp__.__container__?.cache[containerName]) {
+    return __ynabapp__.__container__?.cache[containerName];
+  }
   try {
     container = __ynabapp__.__container__.lookup(containerName, { instantiate: false });
   } catch (e) {
@@ -43,5 +47,6 @@ export function containerLookup(containerName) {
 }
 
 export function getViewRegistry() {
-  return __ynabapp__.__container__.lookup('-view-registry:main');
+  var containerName = '-view-registry:main';
+  return __ynabapp__.__container__.lookup(containerName, { instantiate: false });
 }

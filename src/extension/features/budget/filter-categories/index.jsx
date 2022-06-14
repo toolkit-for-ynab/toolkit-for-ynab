@@ -89,7 +89,30 @@ export class FilterCategories extends Feature {
     });
   };
 
-  handleTableRender = () => {
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    let budgetClasses = [
+      'budget-table-row js-budget-table-row is-sub-category budget-table-last-row',
+      'budget-header-flexbox',
+      'budget-header-item budget-header-days tk-days-of-buffering',
+      'budget-header-days-age',
+      'budget-table-cell-activity budget-table-cell-flexed tk-activity-upcoming',
+      'budget-table-cell-collapse',
+    ];
+
+    let found = false;
+    for (let i = 0; i < budgetClasses.length; i++) {
+      if (changedNodes.has(budgetClasses[i])) {
+        found = true;
+      }
+    }
+    if (found) {
+      this.invoke();
+    }
+  }
+
+  handleTableRender = (e) => {
     if (document.querySelector('#tk-categories-filter') === null) {
       componentPrepend(
         <CategorySearchInput applySearch={this.applySearch} />,
