@@ -11,6 +11,7 @@ import {
 import { MonthlyTotalsRow } from 'toolkit-reports/pages/income-vs-expense/components/monthly-totals-row';
 import './styles.scss';
 import { MonthlySavingsRatioRow } from './components/monthly-savings-ratio-row';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 export const MONTHLY_TOTALS_KEY = '__totals';
 
@@ -47,13 +48,13 @@ export class IncomeVsExpenseComponent extends React.Component {
 
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
 
-  _localStorageKey = 'ynab-toolkit-income-vs-expense-collapse-state';
+  _localStorageKey = 'income-vs-expense-collapse-state';
 
   constructor() {
     super();
 
     this.state = {
-      collapsedSources: this._parseState(localStorage.getItem(this._localStorageKey)),
+      collapsedSources: this._parseState(getToolkitStorageKey(this._localStorageKey)),
     };
   }
 
@@ -83,7 +84,7 @@ export class IncomeVsExpenseComponent extends React.Component {
   }
 
   componentWillUnmount() {
-    localStorage.setItem(this._localStorageKey, this._saveState(this.state));
+    setToolkitStorageKey(this._localStorageKey, this._saveState(this.state));
   }
 
   componentDidUpdate(prevProps) {
