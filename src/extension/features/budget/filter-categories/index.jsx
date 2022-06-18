@@ -65,6 +65,20 @@ export class FilterCategories extends Feature {
       return;
     }
 
+    if (/^available$/g.test(text)) {
+      $('.tk-categories-filter-hidden').removeClass('tk-categories-filter-hidden');
+
+      $('.budget-table-container .is-master-category').addClass('tk-categories-filter-hidden');
+
+      $('.budget-table-container .is-sub-category').each((_, el) => {
+        if ($(el).children('.budget-table-cell-available').children(':not(.positive)').length > 0) {
+          $(el).addClass('tk-categories-filter-hidden');
+        }
+      });
+
+      return;
+    }
+
     $('.budget-table-container .is-master-category').addClass('tk-categories-filter-hidden');
 
     $('.budget-table-container .is-sub-category').each((_, el) => {
