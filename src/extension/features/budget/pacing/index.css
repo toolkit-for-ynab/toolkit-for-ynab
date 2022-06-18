@@ -1,6 +1,6 @@
 .tk-budget-table-cell-pacing {
-  width: 15%;
-  justify-content: flex-end !important;
+  width: 9%;
+  justify-content: center !important;
   padding: 0 0 0 1rem !important;
   text-align: right !important;
 }
