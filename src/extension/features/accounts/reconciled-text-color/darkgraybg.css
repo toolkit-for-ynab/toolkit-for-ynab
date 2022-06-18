@@ -19,3 +19,7 @@ body.theme-dark {
 .tk-is-reconciled .ynab-grid-cell-payeeName svg rect {
   fill: var(--tk-reconciled-font-color);
 }
+
+.tk-is-reconciled .ynab-grid-cell-subCategoryName .category-not-needed {
+  color: var(--tk-reconciled-font-color) !important;
+}
