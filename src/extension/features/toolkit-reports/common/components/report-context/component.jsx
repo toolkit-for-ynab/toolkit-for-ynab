@@ -52,7 +52,7 @@ const REPORT_COMPONENTS = [
     component: OutflowOverTime,
     key: ReportKeys.OutflowOverTime,
     filterSettings: {
-      disableCategoryFilter: false,
+      disableCategoryFilter: true,
       includeTrackingAccounts: true,
     },
   },
