@@ -65,6 +65,17 @@ export class FilterCategories extends Feature {
       return;
     }
 
+    if (/^available$/g.test(text)) {
+      $('.budget-table-container .is-sub-category').each((_, el) => {
+        let element = getEmberView(el.id);
+        if (element.category.available <= 0) {
+          $(`#${element.elementId}`).addClass('tk-categories-filter-hidden');
+        }
+      });
+
+      return;
+    }
+
     $('.budget-table-container .is-master-category').addClass('tk-categories-filter-hidden');
 
     $('.budget-table-container .is-sub-category').each((_, el) => {
