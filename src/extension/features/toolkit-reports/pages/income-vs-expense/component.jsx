@@ -11,6 +11,7 @@ import {
 import { MonthlyTotalsRow } from 'toolkit-reports/pages/income-vs-expense/components/monthly-totals-row';
 import './styles.scss';
 import { MonthlySavingsRatioRow } from './components/monthly-savings-ratio-row';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 export const MONTHLY_TOTALS_KEY = '__totals';
 
@@ -47,6 +48,16 @@ export class IncomeVsExpenseComponent extends React.Component {
 
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
 
+  _localStorageKey = 'income-vs-expense-collapse-state';
+
+  constructor() {
+    super();
+
+    this.state = {
+      collapsedSources: this._parseState(getToolkitStorageKey(this._localStorageKey)),
+    };
+  }
+
   static propTypes = {
     filters: PropTypes.shape(FiltersPropType),
     filteredTransactions: PropTypes.array.isRequired,
@@ -56,8 +67,24 @@ export class IncomeVsExpenseComponent extends React.Component {
     collapsedSources: new Set(),
   };
 
+  _saveState(state) {
+    return JSON.stringify(Array.from([...state.collapsedSources]));
+  }
+
+  _parseState(storage) {
+    if (storage === null) {
+      return new Set();
+    }
+
+    return new Set(JSON.parse(storage));
+  }
+
   componentDidMount() {
     this._calculateData();
+  }
+
+  componentWillUnmount() {
+    setToolkitStorageKey(this._localStorageKey, this._saveState(this.state));
   }
 
   componentDidUpdate(prevProps) {
