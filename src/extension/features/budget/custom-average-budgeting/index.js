@@ -8,10 +8,6 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { Feature } from '../../feature';
 
 export class CustomAverageBudgeting extends Feature {
-  constructor() {
-    super();
-  }
-
   shouldInvoke() {
     return isCurrentRouteBudgetPage() && isCurrentMonthSelected();
   }
@@ -35,7 +31,6 @@ export class CustomAverageBudgeting extends Feature {
 
   _calculateAverage() {
     const timeframe = this._calculateLookback().split('`');
-    console.log(timeframe);
     let sum = 0;
     getEntityManager().transactionsCollection._internalDataArray.forEach((transaction) => {
       const formattedDate = transaction.date.format('M|YYYY');
@@ -44,7 +39,6 @@ export class CustomAverageBudgeting extends Feature {
         timeframe.includes(formattedDate) &&
         transaction.subCategoryId === this._getSelectedCategoryId()
       ) {
-        console.log('found transaction', transaction);
         sum += parseFloat(ynab.formatCurrency(transaction.amount));
       }
     });
