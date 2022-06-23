@@ -6,20 +6,23 @@ export class AutomaticallyMarkAsCleared extends Feature {
     return isCurrentRouteAccountsPage();
   }
 
-  observe(changedNodes) {
-    if (!changedNodes.has('ynab-grid-cell js-ynab-grid-cell ynab-grid-cell-accountName user-data'))
-      return;
+  invoke() {
+    let eventKeys = ['register/grid-edit', 'register/grid-split'];
 
-    if (this.shouldInvoke()) {
-      this.invoke();
-    }
+    eventKeys.forEach((key) => {
+      this.addToolkitEmberHook(key, 'didInsertElement', (element) => this.triggerCleared(element));
+    });
+
+    // Calling click at DOM node and not jQuery because jQuery sometimes doesn't work properly
   }
 
-  invoke() {
-    // Calling click at DOM node and not jQuery because jQuery sometimes doesn't work properly
-    let $markClearedButton = $('.ember-view .ynab-cleared:not(.is-cleared)');
-    if ($markClearedButton.length !== 0) {
-      $markClearedButton[0].click();
+  triggerCleared(element) {
+    const $buttons = $(element).children('.ynab-grid-cell-cleared').children('button');
+    if ($buttons.length !== 0) {
+      if ($($buttons[0]).hasClass('is-cleared')) {
+        return;
+      }
+      $buttons[0].click();
     }
   }
 }
