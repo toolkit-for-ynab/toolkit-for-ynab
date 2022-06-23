@@ -18,23 +18,16 @@ export class Pacing extends Feature {
     return isCurrentRouteBudgetPage();
   }
 
-  observe(changedNodes) {
-    if (!this.shouldInvoke()) return;
-
-    if (
-      changedNodes.has(
-        'budget-table-row js-budget-table-row is-sub-category is-debt-payment-category'
-      )
-    ) {
-      this.invoke();
-    }
-  }
-
   destroy() {
     $('.tk-budget-table-cell-pacing').remove();
   }
 
   invoke() {
+    this.addToolkitEmberHook('budget-table', 'didRender', this.addPacing);
+    this.addToolkitEmberHook('budget-table', 'didUpdate', this.addPacing);
+  }
+
+  addPacing() {
     if (!isCurrentMonthSelected()) {
       $('.tk-budget-table-cell-pacing').remove();
       return;
