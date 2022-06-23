@@ -12,31 +12,17 @@ export class CustomAverageBudgeting extends Feature {
     return isCurrentRouteBudgetPage() && isCurrentMonthSelected();
   }
 
-  _calculateLookback() {
-    const today = new Date();
-    let d;
-    let month;
-    let year;
-    const arr = [];
-
-    for (var i = this.settings.enabled; i >= 1; i -= 1) {
-      d = new Date(today.getFullYear(), today.getMonth() - i, 1);
-      month = d.getMonth() + 1;
-      year = d.getFullYear();
-      arr.push(`${month}|${year}`);
-    }
-
-    return arr.join('`');
-  }
-
   _calculateAverage() {
-    const timeframe = this._calculateLookback().split('`');
+    const today = new Date();
+    const firstDate = new Date();
+    firstDate.setMonth(firstDate.getMonth() - this.settings.enabled);
     let sum = 0;
     getEntityManager().transactionsCollection._internalDataArray.forEach((transaction) => {
-      const formattedDate = transaction.date.format('M|YYYY');
+      const transactionDate = transaction.date;
 
       if (
-        timeframe.includes(formattedDate) &&
+        transactionDate.isBefore(today) &&
+        transactionDate.isAfter(firstDate) &&
         transaction.subCategoryId === this._getSelectedCategoryId()
       ) {
         sum += parseFloat(ynab.formatCurrency(transaction.amount));
@@ -47,7 +33,7 @@ export class CustomAverageBudgeting extends Feature {
       return 0;
     }
 
-    return Math.abs(parseFloat((sum / timeframe.length).toFixed(2)) * 1000);
+    return Math.abs(parseFloat((sum / this.settings.enabled).toFixed(2)) * 1000);
   }
 
   _getSelectedCategoryId() {
@@ -67,6 +53,8 @@ export class CustomAverageBudgeting extends Feature {
   }
 
   _renderButton() {
+    if (this._getSelectedCategoryId() == null) return;
+
     const target = $('.option-groups div').eq(0);
     const button = $(`
     <button id="tk-average-months" class="budget-inspector-button" title="Assign your historical average spent over the past ${
@@ -87,9 +75,7 @@ export class CustomAverageBudgeting extends Feature {
   }
 
   invoke() {
-    if (this._getSelectedCategoryId() !== null) {
-      this._renderButton();
-    }
+    this._renderButton();
   }
 
   observe(changedNodes) {
