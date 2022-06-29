@@ -23,86 +23,83 @@ export class Pacing extends Feature {
   }
 
   invoke() {
-    if (!isCurrentMonthSelected()) {
-      $('.tk-budget-table-cell-pacing').remove();
-      return;
-    }
+    this.addToolkitEmberHook('budget-table-row', 'didRender', this.addPacing);
+  }
 
+  ensureHeader() {
     if (!$('.budget-table-header .tk-budget-table-cell-pacing').length) {
       $('.budget-table-header .budget-table-cell-available').after(
         `<li class="tk-budget-table-cell-pacing">${l10n('toolkit.pacing', 'PACING')}</li>`
       );
     }
-
-    $('.budget-table-row').each((_, element) => {
-      if (element.classList.contains('is-master-category')) {
-        if (!element.querySelector('.tk-budget-table-cell-pacing')) {
-          $('.budget-table-cell-available', element).after(
-            `<li class="tk-budget-table-cell-pacing"></li>`
-          );
-        }
-
-        return;
-      }
-
-      if (element.classList.contains('is-debt-payment-category')) {
-        if (!element.querySelector('.tk-budget-table-cell-pacing')) {
-          $('.budget-table-cell-available', element).after(
-            `<li class="tk-budget-table-cell-pacing"></li>`
-          );
-        }
-
-        return;
-      }
-
-      const category = getEmberView(element.id, 'category');
-      if (!category) {
-        return;
-      }
-
-      const pacingCalculation = pacingForCategory(category);
-
-      const $display = this.generateDisplay(
-        category.get('subCategory.entityId'),
-        pacingCalculation
-      );
-
-      $display.on('click', (event) => {
-        const deemphasizedCategories = getDeemphasizedCategories();
-        const subCategoryId = event.target.getAttribute('data-tk-sub-category-id');
-
-        if (deemphasizedCategories.contains(subCategoryId)) {
-          $(event.target).removeClass('deemphasized');
-          setDeemphasizedCategories(
-            deemphasizedCategories.filter((id) => {
-              return id !== subCategoryId;
-            })
-          );
-        } else {
-          $(event.target).addClass('deemphasized');
-          deemphasizedCategories.push(subCategoryId);
-          setDeemphasizedCategories(deemphasizedCategories);
-        }
-
-        if (['pacing', 'both'].indexOf(ynabToolKit.options.BudgetProgressBars) !== -1) {
-          ynabToolKit.invokeFeature('BudgetProgressBars');
-        }
-
-        event.stopPropagation();
-      });
-
-      if ($('.tk-budget-table-cell-pacing', element).length) {
-        $('.tk-budget-table-cell-pacing', element).remove();
-      }
-
-      $('.budget-table-cell-available', element).after($display);
-    });
   }
 
-  onRouteChanged() {
-    if (this.shouldInvoke()) {
-      this.invoke();
+  addPacing(element) {
+    if (!isCurrentMonthSelected()) {
+      $('.tk-budget-table-cell-pacing').remove();
+      return;
     }
+
+    this.ensureHeader();
+
+    if (element.classList.contains('is-master-category')) {
+      if (!element.querySelector('.tk-budget-table-cell-pacing')) {
+        $('.budget-table-cell-available', element).after(
+          `<li class="tk-budget-table-cell-pacing"></li>`
+        );
+      }
+
+      return;
+    }
+
+    if (element.classList.contains('is-debt-payment-category')) {
+      if (!element.querySelector('.tk-budget-table-cell-pacing')) {
+        $('.budget-table-cell-available', element).after(
+          `<li class="tk-budget-table-cell-pacing"></li>`
+        );
+      }
+
+      return;
+    }
+
+    const category = getEmberView(element.id, 'category');
+    if (!category) {
+      return;
+    }
+
+    const pacingCalculation = pacingForCategory(category);
+
+    const $display = this.generateDisplay(category.get('subCategory.entityId'), pacingCalculation);
+
+    $display.on('click', (event) => {
+      const deemphasizedCategories = getDeemphasizedCategories();
+      const subCategoryId = event.target.getAttribute('data-tk-sub-category-id');
+
+      if (deemphasizedCategories.contains(subCategoryId)) {
+        $(event.target).removeClass('deemphasized');
+        setDeemphasizedCategories(
+          deemphasizedCategories.filter((id) => {
+            return id !== subCategoryId;
+          })
+        );
+      } else {
+        $(event.target).addClass('deemphasized');
+        deemphasizedCategories.push(subCategoryId);
+        setDeemphasizedCategories(deemphasizedCategories);
+      }
+
+      if (['pacing', 'both'].indexOf(ynabToolKit.options.BudgetProgressBars) !== -1) {
+        ynabToolKit.invokeFeature('BudgetProgressBars');
+      }
+
+      event.stopPropagation();
+    });
+
+    if ($('.tk-budget-table-cell-pacing', element).length) {
+      $('.tk-budget-table-cell-pacing', element).remove();
+    }
+
+    $('.budget-table-cell-available', element).after($display);
   }
 
   generateDisplay(subCategoryId, pacingCalculation) {
