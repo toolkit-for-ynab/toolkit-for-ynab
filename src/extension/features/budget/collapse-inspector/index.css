@@ -9,12 +9,16 @@
   position: relative;
   left: 7px;
   margin: 0px;
+  background: var(--sidebar_background);
+  border-radius: 4px;
 }
 
 .tk-collapse-inspector .sidebar-collapse {
   position: relative;
   left: -5px;
   margin: 0px;
+  background: var(--sidebar_background);
+  border-radius: 4px;
 }
 
 .budget-inspector[tk-collapse-inspector] {
