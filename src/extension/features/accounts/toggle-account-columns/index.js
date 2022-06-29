@@ -13,22 +13,24 @@ export const ShowMemoButton = ({ defaultIsShown, id, toggleState }) => {
   };
 
   return (
-    <div className="modal-account-view-menu" id={id}>
-      <button
-        onClick={toggleHidden}
-        aria-label={l10n('toolkit.checkShowMenuColumn', 'Check Show Memo Column')}
-        role="checkbox"
-      >
-        <div
-          className={`flaticon stroke ynab-checkbox-button-square ${
-            defaultIsShown ? 'is-checked' : ''
-          }`}
-        ></div>
-      </button>
-      <label onClick={toggleHidden} className="label-checkbox">
-        &nbsp;{l10n('toolkit.showMemoColumn', 'Show Memo Column')}
-      </label>
-    </div>
+    <li>
+      <div className="modal-account-view-menu" id={id}>
+        <button
+          onClick={toggleHidden}
+          aria-label={l10n('toolkit.checkShowMenuColumn', 'Check Show Memo Column')}
+          role="checkbox"
+        >
+          <div
+            className={`flaticon stroke ynab-checkbox-button-square ${
+              defaultIsShown ? 'is-checked' : ''
+            }`}
+          ></div>
+        </button>
+        <label onClick={toggleHidden} className="label-checkbox">
+          &nbsp;&nbsp;{l10n('toolkit.showMemoColumn', 'Show Memo Column')}
+        </label>
+      </div>
+    </li>
   );
 };
 
@@ -48,11 +50,13 @@ export class ToggleAccountColumns extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook(
-      'modals/register/register-view-options',
-      'didRender',
-      this.insertToggles
-    );
+    this.addToolkitEmberHook('modal', 'didRender', this.insertToggles, {
+      guard: () => document.querySelector('.modal-account-view-options') !== null,
+    });
+
+    if (isCurrentRouteAccountsPage()) {
+      this.updateShowMemoState(this.getShowMemoState());
+    }
   }
 
   destroy() {
@@ -67,7 +71,7 @@ export class ToggleAccountColumns extends Feature {
           defaultIsShown={this.getShowMemoState()}
           toggleState={this.updateShowMemoState}
         />,
-        element.getElementsByClassName('modal-content')[0]
+        element.getElementsByClassName('modal-account-view-options-status')[0]
       );
     }
   }

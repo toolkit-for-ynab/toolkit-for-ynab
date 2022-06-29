@@ -16,7 +16,7 @@
   --tk-button-primary-hover-color: var(--tk-action-primary-hover);
 }
 
-html[data-theme='dark'] {
+@mixin dark-mode {
   // base colors
   --tk-text-color: #f1f1f1;
   --tk-background-color: #232325;
@@ -30,6 +30,16 @@ html[data-theme='dark'] {
     -webkit-filter: invert(1) hue-rotate(180deg) brightness(1.2);
     filter: invert(1) hue-rotate(180deg) brightness(1.2);
   }
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme='auto'] {
+    @include dark-mode();
+  }
+}
+
+html[data-theme='dark'] {
+  @include dark-mode();
 }
 
 .logo {

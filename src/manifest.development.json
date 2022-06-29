@@ -1,6 +1,6 @@
 {
   "name": "Toolkit for YNAB (Development)",
-  "browser_action": {
+  "action": {
     "default_icon": "assets/images/icons/button.png",
     "default_title": "Toolkit for YNAB (Development)",
     "default_popup": "popup/index.html"

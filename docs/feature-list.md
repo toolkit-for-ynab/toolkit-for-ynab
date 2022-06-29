@@ -20,10 +20,6 @@ Make the navigation tab names (Budget, Reports, etc) and their padding smaller a
 
 Choose between smaller and cleaner scrollbars across the application.
 
-## Budget Quick Switch
-
-Add the list of budgets to the User Menu (click your e-mail) allowing you to switch between budgets without going to the "Open Budget" screen.
-
 ## Emphasize Accounts Needing Import
 
 Adds an underline to account names in the sidebar that have transactions to be imported. Hovering over the account name will display the number of transactions waiting to be imported.
@@ -395,7 +391,11 @@ The color which will be used for the Default and Classic YNAB Themes. The defaul
 
 ## Swap Flag/Cleared Columns
 
-Place the Cleared column on the left and the Flagged column on the right sides of an account screen.</details>
+Place the Cleared column on the left and the Flagged column on the right sides of an account screen.
+
+## Use Cleared Balance for "Record Payment"
+
+Change the default credit card payment value to use the Cleared Balance instead of the Working Balance to avoid overpaying credit card bills. _**Note**: If you don't have enough budgeted in Payment to cover the selected option, it will use the Payment value instead to avoid overbudgeting_</details>
 
 <details><summary>Reports (Click to Expand/Collapse)</summary>
 

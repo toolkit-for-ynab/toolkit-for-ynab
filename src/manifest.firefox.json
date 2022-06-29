@@ -9,8 +9,7 @@
   ],
   "web_accessible_resources": ["assets/*", "web-accessibles/*"],
   "background": {
-    "scripts": ["background/background.js"],
-    "persistent": false
+    "scripts": ["background/background.js"]
   },
   "options_ui": {
     "open_in_tab": true,

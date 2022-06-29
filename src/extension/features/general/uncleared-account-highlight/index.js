@@ -26,11 +26,6 @@ export class UnclearedAccountHighlight extends Feature {
     );
   }
 
-  getIndicatorState(account) {
-    const accountCalculation = account.getAccountCalculation();
-    console.log(accountCalculation);
-  }
-
   updateSidebarIndicator(element) {
     // the nav-account-icons-right container is hard-coded as 1rem, when we add the
     // cleared icon to it, that's not enough space if there's already an icon in the space
