@@ -5,7 +5,7 @@ import Highcharts from 'highcharts';
 import moment from 'moment';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 
-export function ForecastComponent({ filteredTransactions }) {
+export function ForecastComponent({ filteredTransactions, allReportableTransactions, filters }) {
   const [netWorth, setNetWorth] = useState();
   const [forecasts, setForecasts] = useState([]);
   const [chart, setChart] = useState();
@@ -14,7 +14,11 @@ export function ForecastComponent({ filteredTransactions }) {
   const confidences = [10, 25, 50, 75, 90];
 
   useEffect(() => {
-    const newForecasts = generateForecasts(filteredTransactions);
+    const newForecasts = generateForecasts(
+      filteredTransactions,
+      allReportableTransactions,
+      filters
+    );
     setForecasts(newForecasts);
     setNetWorth(newForecasts[0][0]);
   }, [filteredTransactions]);
