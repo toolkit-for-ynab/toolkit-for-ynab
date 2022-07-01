@@ -42,10 +42,23 @@ declare global {
     };
   }
 
+  interface YNABTransactionViewModel {
+    visibleTransactionDisplayItems: Transaction[];
+  }
+
+  interface YNABGlobal {
+    YNABSharedLib: {
+      dateFormatter: {
+        formatDate(date: DateWithoutTime): string;
+      };
+      getBudgetViewModel_AllAccountsViewModel(): Promise<YNABTransactionViewModel>;
+    };
+  }
+
   type FeatureSetting = boolean | string;
 
   const Ember: Ember;
   const ynabToolKit: YNABToolkitObject;
-  const ynab: any;
+  const ynab: YNABGlobal;
   const YNABFEATURES: any;
 }
