@@ -3,7 +3,7 @@ import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { Feature } from '../../feature';
-import { componentAppend } from 'toolkit/extension/utils/react';
+import { componentAfter } from 'toolkit/extension/utils/react';
 
 const QuickBudgetButton = ({ setting, onClick, average }) => (
   <button
@@ -34,9 +34,10 @@ export class CustomAverageBudgeting extends Feature {
     const today = new Date();
     const startMonth = ynab.utilities.DateWithoutTime.createFromYearMonthDate(
       today.getFullYear(),
-      today.getMonth() - this.settings.enabled - 1,
+      today.getMonth() - this.settings.enabled,
       1
     );
+
     const endMonth = ynab.utilities.DateWithoutTime.createFromYearMonthDate(
       today.getFullYear(),
       today.getMonth() - 1,
@@ -44,11 +45,13 @@ export class CustomAverageBudgeting extends Feature {
     );
 
     let sum = 0;
+    const monthsIncluded = new Set();
     getEntityManager().transactionsCollection.forEach((transaction) => {
       if (
         transaction.subCategoryId === this._getSelectedCategoryId() &&
         transaction.date.isBetweenMonths(startMonth, endMonth)
       ) {
+        monthsIncluded.add(transaction.date.format('YYYYMMM'));
         sum += transaction.amount;
       }
     });
@@ -57,7 +60,7 @@ export class CustomAverageBudgeting extends Feature {
       return 0;
     }
 
-    return (sum / this.settings.enabled).toFixed(2);
+    return Math.abs(sum / monthsIncluded.size);
   };
 
   _getSelectedCategoryId = () => {
@@ -73,18 +76,20 @@ export class CustomAverageBudgeting extends Feature {
 
     const budgetRow = document.querySelector(`[data-entity-id="${this._getSelectedCategoryId()}"]`);
     const emberView = getEmberView(budgetRow.id);
-    emberView.category.budgeted += this._calculateAverage();
+    emberView.category.budgeted = this._calculateAverage();
   };
 
   _renderButton = (element) => {
     if (this._getSelectedCategoryId() == null) return;
-
-    const target = $('.inspector-quick-budget .option-groups div', element).eq(0);
+    const target = $(
+      '.inspector-quick-budget .option-groups button:contains("Average Spent")',
+      element
+    );
     if (target.length === 0 || document.querySelector('#tk-average-months') !== null) {
       return;
     }
 
-    componentAppend(
+    componentAfter(
       <QuickBudgetButton
         setting={this.settings.enabled}
         average={this._calculateAverage()}
