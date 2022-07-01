@@ -50,41 +50,21 @@ export class IncomeVsExpenseComponent extends React.Component {
 
   _localStorageKey = 'income-vs-expense-collapse-state';
 
-  constructor() {
-    super();
-
-    this.state = {
-      collapsedSources: this._parseState(getToolkitStorageKey(this._localStorageKey)),
-    };
-  }
+  state = {
+    collapsedSources: new Set(getToolkitStorageKey(this._localStorageKey, [])),
+  };
 
   static propTypes = {
     filters: PropTypes.shape(FiltersPropType),
     filteredTransactions: PropTypes.array.isRequired,
   };
 
-  state = {
-    collapsedSources: new Set(),
-  };
-
-  _saveState(state) {
-    return JSON.stringify(Array.from([...state.collapsedSources]));
-  }
-
-  _parseState(storage) {
-    if (storage === null) {
-      return new Set();
-    }
-
-    return new Set(JSON.parse(storage));
-  }
-
   componentDidMount() {
     this._calculateData();
   }
 
   componentWillUnmount() {
-    setToolkitStorageKey(this._localStorageKey, this._saveState(this.state));
+    setToolkitStorageKey(this._localStorageKey, [...this.state.collapsedSources]);
   }
 
   componentDidUpdate(prevProps) {
