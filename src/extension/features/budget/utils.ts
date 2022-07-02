@@ -2,7 +2,7 @@ export const GOAL_TABLE_CELL_CLASSNAME = 'tk-budget-table-cell-goal';
 
 import './utils.styles.scss';
 
-export function ensureGoalColumn(element: HTMLElement): boolean {
+export function ensureGoalColumn(element: HTMLElement | null): boolean {
   if (!element) {
     return false;
   }

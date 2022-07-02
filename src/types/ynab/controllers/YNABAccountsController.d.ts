@@ -1,0 +1,3 @@
+interface YNABAccountsController {
+  selectedAccountId: string;
+}

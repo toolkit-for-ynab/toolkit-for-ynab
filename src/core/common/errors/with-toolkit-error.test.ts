@@ -102,7 +102,7 @@ describe('toolkit error utils', () => {
             featureSetting: 'false',
             functionName: 'observe',
             routeName: '/omitted/budget/201802',
-            serializedError: mockError.stack.toString(),
+            serializedError: mockError!.stack!.toString(),
           },
           type: 'ynab-toolkit-error',
         },

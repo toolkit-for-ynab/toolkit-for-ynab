@@ -9,7 +9,7 @@ localToolkitStorage.getStorageItem('toolkit-feature:options.dark-mode').then((da
     darkMode = darkMode ? 'dark' : 'light';
   }
 
-  document.querySelector('html').dataset['theme'] = darkMode;
+  document.querySelector('html')!.dataset['theme'] = darkMode;
 
   ReactDOM.render(<ToolkitPopup />, document.getElementById('root'));
 });

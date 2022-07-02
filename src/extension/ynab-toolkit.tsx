@@ -38,19 +38,6 @@ window.__toolkitUtils = {
   ...Collections,
 };
 
-interface ToolkitEmberHook {
-  context: Feature;
-  fn(element: Element): void;
-  guard?: (element: Element) => boolean;
-}
-
-type ToolkitEnabledComponent = Ember['Component'] & {
-  element?: Element;
-  _tk_didRender_hooks_?: ToolkitEmberHook[];
-  _tk_didInsertElement_hooks_?: ToolkitEmberHook[];
-  _tk_didUpdate_hooks_?: ToolkitEmberHook[];
-};
-
 export class YNABToolkit {
   private featureInstances: Feature[] = [];
 
@@ -96,6 +83,11 @@ export class YNABToolkit {
 
   private invokeFeature = (featureName: FeatureName, options?: { force: boolean }) => {
     const feature = this.featureInstances.find((f) => f.constructor.name === featureName);
+    if (!feature) {
+      console.error(`Feature not found: ${featureName}`);
+      return;
+    }
+
     const wrappedShouldInvoke = feature.shouldInvoke.bind(feature);
     const wrappedInvoke = feature.invoke.bind(feature);
     const isEnabled = isFeatureEnabled(feature.settings.enabled);
@@ -107,6 +99,11 @@ export class YNABToolkit {
   private destroyFeature = (featureName: FeatureName) => {
     document.head.querySelector(`#tk-feature-styles-${featureName}`)?.remove();
     const feature = this.featureInstances.find((f) => f.constructor.name === featureName);
+    if (!feature) {
+      console.error(`Feature not found: ${featureName}`);
+      return;
+    }
+
     feature.removeListeners();
     feature.removeToolkitEmberHooks();
 
@@ -126,6 +123,7 @@ export class YNABToolkit {
         } catch (exception) {
           const featureName = feature.constructor.name as FeatureName;
           const featureSetting = window.ynabToolKit.options[featureName];
+
           logToolkitError({
             exception,
             featureName,
@@ -214,7 +212,7 @@ export class YNABToolkit {
   private addToolkitEmberHooks = () => {
     EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
       Ember.Component.prototype[lifecycleName] = function () {
-        const self = this as ToolkitEnabledComponent;
+        const self = this;
         const hooks = self[emberComponentToolkitHookKey(lifecycleName)];
         if (hooks) {
           hooks.forEach(({ context, fn, guard }) => {
@@ -231,9 +229,11 @@ export class YNABToolkit {
 
   private invokeAllHooks = () => {
     window.ynabToolKit.hookedComponents.forEach((key) => {
-      forEachRenderedComponent(key, (view: ToolkitEnabledComponent) => {
+      forEachRenderedComponent(key, (view) => {
         EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
-          const hooks = view[emberComponentToolkitHookKey(lifecycleName)];
+          const hooks = (view as any as EmberComponent)[
+            emberComponentToolkitHookKey(lifecycleName)
+          ];
           if (hooks) {
             hooks.forEach((hook) => {
               if (hook.guard && !hook.guard(view.element)) {
@@ -252,7 +252,7 @@ export class YNABToolkit {
     componentAppend(
       <div id="tk-modal-container">
         <ToolkitReleaseModal
-          onClose={() => document.querySelector('#tk-modal-container').remove()}
+          onClose={() => document.querySelector('#tk-modal-container')?.remove()}
         />
       </div>,
       document.querySelector('.layout')

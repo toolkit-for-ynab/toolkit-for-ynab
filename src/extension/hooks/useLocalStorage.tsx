@@ -1,9 +1,9 @@
 // https://usehooks.com/useLocalStorage/
 import { useState } from 'react';
+import { STORAGE_KEY_PREFIX } from 'toolkit/extension/utils/toolkit';
 
-const STORAGE_KEY_PREFIX = 'ynab-toolkit-';
-export function useLocalStorage(key, initialValue) {
-  const [storedValue, setStoredValue] = useState(() => {
+export function useLocalStorage<T>(key: string, initialValue: T) {
+  const [storedValue, setStoredValue] = useState<T>(() => {
     // Get the saved value if any, otherwise use the initial value
     try {
       let localStorageKey = `${STORAGE_KEY_PREFIX}${key}`;
@@ -15,7 +15,7 @@ export function useLocalStorage(key, initialValue) {
   });
 
   // Wrapper function around setStoredValue to save into Local Storage
-  const setValue = (value) => {
+  const setValue = (value: T | ((storedValue: T) => T)) => {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
@@ -26,5 +26,5 @@ export function useLocalStorage(key, initialValue) {
     }
   };
 
-  return [storedValue, setValue];
+  return [storedValue, setValue] as const;
 }

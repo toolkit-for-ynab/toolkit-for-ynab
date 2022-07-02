@@ -32,7 +32,7 @@ export function withToolkitError(wrappedFunction: Function, feature: Feature | F
  * the background script so it can inform Sentry of the error.
  */
 interface LogToolkitErrorInput {
-  exception: Error;
+  exception: unknown;
   featureName: FeatureName | 'unknown';
   featureSetting: boolean | string;
   functionName?: string;
@@ -44,6 +44,9 @@ export function logToolkitError({
   featureSetting,
   functionName,
 }: LogToolkitErrorInput) {
+  const errorMessage = exception instanceof Error ? exception.message : 'none';
+  const errorStack = exception instanceof Error ? exception.stack : '';
+
   const routeName = window.location.pathname.replace(
     /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g,
     'omitted'
@@ -52,11 +55,11 @@ export function logToolkitError({
   - Feature: ${featureName}
   - Feature Setting: ${featureSetting}
   - Function: ${functionName || 'anonymous'}
-  - Message: ${exception.message || 'none'}`;
+  - Message: ${errorMessage}`;
 
-  console.error(message, exception.stack || '');
+  console.error(message, errorStack || '');
 
-  const serializedError = exception.stack ? exception.stack.toString() : exception.message;
+  const serializedError = errorStack ? errorStack.toString() : errorMessage;
   window.postMessage(
     {
       type: 'ynab-toolkit-error',
