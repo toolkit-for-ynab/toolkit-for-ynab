@@ -1,4 +1,4 @@
-import { YNABToolkitObject } from 'toolkit/types/window';
+import { YNABToolkitObject } from 'toolkit/types/toolkit';
 
 export enum InboundMessageType {
   Bootstrap = 'tk-bootstrap',

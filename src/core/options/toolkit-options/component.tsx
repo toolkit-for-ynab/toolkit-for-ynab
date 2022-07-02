@@ -31,7 +31,7 @@ function ColorPicker({
   onChange,
   value,
 }: {
-  resetColor?: string;
+  resetColor: string;
   onChange(hex: string): void;
   value: string;
   id: string;
@@ -172,7 +172,7 @@ function DarkModeToggle() {
   // toggle goes light -> dark -> auto -> light ....
 
   const [darkMode, setDarkMode] = React.useState(
-    document.querySelector('html').dataset['theme'] || 'light'
+    document.querySelector('html')!.dataset['theme'] || 'light'
   );
 
   function setMode(mode: string) {
@@ -216,7 +216,7 @@ function ImportExportModal({
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }) {
-  const textAreaRef = React.useRef(null);
+  const textAreaRef = React.useRef<HTMLTextAreaElement | null>(null);
   const [isLoading, setIsLoading] = React.useState(false);
   const [allToolkitSettings, setAllToolkitSettings] = React.useState('');
 

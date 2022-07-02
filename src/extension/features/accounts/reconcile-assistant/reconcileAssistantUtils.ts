@@ -51,12 +51,12 @@ export function findMatchingSum(
 }
 
 export function getUnclearedTransactions(transactions: Array<Transaction>): Array<Transaction> {
-  return transactions.filter((txn) => txn.cleared && txn.isUncleared() && !txn.isTombstone);
+  return transactions.filter((txn) => txn.cleared && txn.isUncleared?.() && !txn.isTombstone);
 }
 
 /**
  * Reducer method to sum up all transactions
  */
 export function transactionReducer(accumulator: number, txn: Transaction): number {
-  return accumulator + txn.amount;
+  return accumulator + (txn.amount ?? 0);
 }

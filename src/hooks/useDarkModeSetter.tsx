@@ -3,7 +3,7 @@ import { localToolkitStorage } from 'toolkit/core/common/storage';
 
 export function useDarkModeSetter() {
   function handleDarkModeChanged(_: string, newDarkMode: string) {
-    document.querySelector('html').dataset['theme'] = newDarkMode;
+    document.querySelector('html')!.dataset['theme'] = newDarkMode;
   }
 
   React.useEffect(() => {

@@ -1,8 +1,11 @@
 import {
   EMBER_COMPONENT_TOOLKIT_HOOKS,
   emberComponentToolkitHookKey,
+  SupportedEmberHook,
 } from 'toolkit/extension/ynab-toolkit';
 import { factoryLookup } from 'toolkit/extension/utils/ember';
+import { YNABAccountType } from 'toolkit/types/ynab/window/ynab-enums';
+import { Feature } from '../features/feature';
 
 const MONTHS_SHORT = [
   'Jan',
@@ -18,6 +21,7 @@ const MONTHS_SHORT = [
   'Nov',
   'Dec',
 ];
+
 const MONTHS_LONG = [
   'January',
   'February',
@@ -32,14 +36,15 @@ const MONTHS_LONG = [
   'November',
   'December',
 ];
-const STORAGE_KEY_PREFIX = 'ynab-toolkit-';
 
-export const MonthStyle = {
-  Short: 0,
-  Long: 1,
-};
+export const STORAGE_KEY_PREFIX = 'ynab-toolkit-';
 
-export function getToolkitStorageKey(key, defaultValue) {
+export enum MonthStyle {
+  Short,
+  Long,
+}
+
+export function getToolkitStorageKey<T>(key: string, defaultValue?: T) {
   let serializedValue = localStorage.getItem(STORAGE_KEY_PREFIX + key);
 
   if (serializedValue === null || serializedValue === 'undefined') {
@@ -53,19 +58,19 @@ export function getToolkitStorageKey(key, defaultValue) {
   }
 }
 
-export function setToolkitStorageKey(key, value) {
+export function setToolkitStorageKey(key: string, value: unknown) {
   return localStorage.setItem(STORAGE_KEY_PREFIX + key, JSON.stringify(value));
 }
 
-export function removeToolkitStorageKey(key) {
+export function removeToolkitStorageKey(key: string) {
   return localStorage.removeItem(STORAGE_KEY_PREFIX + key);
 }
 
-export function l10n(_key, defaultValue) {
+export function l10n(key: string, defaultValue: string) {
   return defaultValue;
 }
 
-export function l10nMonth(monthIndex, short = MonthStyle.Long) {
+export function l10nMonth(monthIndex: number, short = MonthStyle.Long) {
   if (short === MonthStyle.Short) {
     return l10n(`months.${MONTHS_SHORT[monthIndex]}`, MONTHS_SHORT[monthIndex]);
   }
@@ -73,8 +78,8 @@ export function l10nMonth(monthIndex, short = MonthStyle.Long) {
   return l10n(`months.${MONTHS_LONG[monthIndex]}`, MONTHS_LONG[monthIndex]);
 }
 
-export function l10nAccountType(accountType) {
-  switch (ynab.enums.AccountType[accountType]) {
+export function l10nAccountType(accountType: YNABAccountType) {
+  switch (accountType) {
     case ynab.enums.AccountType.Checking:
       return l10n('Checking', 'Checking');
     case ynab.enums.AccountType.Savings:
@@ -87,14 +92,10 @@ export function l10nAccountType(accountType) {
       return l10n('LineOfCredit', 'Line of Credit');
     case ynab.enums.AccountType.Mortgage:
       return l10n('Mortgage', 'Mortgage');
-    case ynab.enums.AccountType.CarLoan:
-      return l10n('CarLoan', 'Car Loan');
     case ynab.enums.AccountType.StudentLoan:
       return l10n('StudentLoan', 'Student Loan');
     case ynab.enums.AccountType.PersonalLoan:
       return l10n('PersonalLoan', 'Personal Loan');
-    case ynab.enums.AccountType.ConsumerLoan:
-      return l10n('ConsumerLoan', 'Consumer Loan');
     case ynab.enums.AccountType.MedicalDebt:
       return l10n('MedicalDebt', 'Medical Debt');
     case ynab.enums.AccountType.OtherDebt:
@@ -106,8 +107,14 @@ export function l10nAccountType(accountType) {
   }
 }
 
-export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn, guard) {
-  const componentPrototype = factoryLookup(componentKey)?.class?.prototype;
+export function addToolkitEmberHook(
+  context: Feature,
+  componentKey: string,
+  lifecycleHook: SupportedEmberHook,
+  fn: (element: Element) => void,
+  guard?: (element: Element) => boolean
+) {
+  const componentPrototype = factoryLookup<EmberComponent>(componentKey)?.class?.prototype;
   if (!componentPrototype) {
     return;
   }
@@ -127,8 +134,12 @@ export function addToolkitEmberHook(context, componentKey, lifecycleHook, fn, gu
   ynabToolKit.hookedComponents.add(componentKey);
 }
 
-export function removeToolkitEmberHook(componentKey, lifecycleHook, fn) {
-  const componentPrototype = factoryLookup(componentKey)?.class?.prototype;
+export function removeToolkitEmberHook(
+  componentKey: string,
+  lifecycleHook: SupportedEmberHook,
+  fn: (element: Element) => void
+) {
+  const componentPrototype = factoryLookup<EmberComponent>(componentKey)?.class?.prototype;
   if (!componentPrototype) {
     return;
   }

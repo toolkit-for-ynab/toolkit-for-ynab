@@ -33,6 +33,10 @@ export function ReconcileAssistantContainer({
     // If we get an invalid number such as a string, 0 will be returned and will match ynab's functionality
     let convertedInputValue: number = stripCurrency(reconcileInputValue);
     const account = getSelectedAccount();
+    if (!account) {
+      return;
+    }
+
     const { clearedBalance } = account.getAccountCalculation();
 
     // Note: For credit cards, we'll automatically invert to follow ynab's behavior

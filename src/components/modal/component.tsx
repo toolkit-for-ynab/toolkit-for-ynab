@@ -29,7 +29,7 @@ export function Modal({
   submitText = 'Save',
   cancelText = 'Cancel',
 }: PublicProps) {
-  const modalRef = React.useRef(null);
+  const modalRef = React.useRef<HTMLDivElement | null>(null);
 
   function handleCancel() {
     if (onCancel) {
@@ -46,7 +46,7 @@ export function Modal({
   }, []);
 
   const handleClick = React.useCallback((event: MouseEvent) => {
-    if (modalRef.current && !modalRef.current.contains(event.target)) {
+    if (modalRef.current?.contains(event.target as Node)) {
       handleCancel();
     }
   }, []);
