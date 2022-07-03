@@ -46,7 +46,7 @@ export function Modal({
   }, []);
 
   const handleClick = React.useCallback((event: MouseEvent) => {
-    if (modalRef.current?.contains(event.target as Node)) {
+    if (!modalRef.current?.contains(event.target as Node)) {
       handleCancel();
     }
   }, []);
