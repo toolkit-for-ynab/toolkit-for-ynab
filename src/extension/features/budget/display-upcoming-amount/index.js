@@ -22,7 +22,7 @@ export class DisplayUpcomingAmount extends Feature {
     $('.tk-activity-upcoming-amount').remove();
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
-      const category = getEmberView(element.id, 'category');
+      const category = getEmberView(element.id).category;
       if (!category) {
         return;
       }

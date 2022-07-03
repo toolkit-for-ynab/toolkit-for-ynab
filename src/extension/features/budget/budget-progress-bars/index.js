@@ -137,7 +137,7 @@ export class BudgetProgressBars extends Feature {
     element.dataset.tkProgressBars = this.settings.enabled;
 
     if (element.classList.contains('is-sub-category')) {
-      const subCategory = getEmberView(element.id, 'category');
+      const subCategory = getEmberView(element.id).category;
       if (!subCategory) {
         return;
       }

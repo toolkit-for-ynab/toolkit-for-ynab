@@ -29,7 +29,7 @@ export class ShowCategoryBalance extends Feature {
   }
 
   addCategoryBalance(element) {
-    const transaction = getEmberView(element.id, 'content');
+    const transaction = getEmberView(element.id).content;
     if (!transaction) {
       return;
     }

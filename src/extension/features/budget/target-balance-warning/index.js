@@ -16,7 +16,7 @@ export class TargetBalanceWarning extends Feature {
   }
 
   modifyBudgetRow(element) {
-    const category = getEmberView(element.id, 'category');
+    const category = getEmberView(element.id).category;
     if (!category) {
       return;
     }
@@ -36,7 +36,7 @@ export class TargetBalanceWarning extends Feature {
   }
 
   modifyInspector(element) {
-    const category = getEmberView(element.id, 'activeCategory');
+    const category = getEmberView(element.id).activeCategory;
     if (!category) {
       return;
     }

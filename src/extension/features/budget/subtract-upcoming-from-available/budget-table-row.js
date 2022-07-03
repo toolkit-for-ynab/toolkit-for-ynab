@@ -10,7 +10,7 @@ export function handleBudgetTableRow(element) {
   const $categoryObjects = getCategoryObjects(element);
   if (!$categoryObjects) return;
 
-  const category = getEmberView(element.id, 'category');
+  const category = getEmberView(element.id).category;
   if (!category) return;
 
   const categoryData = categories.setAndGetCategoryData(category);
