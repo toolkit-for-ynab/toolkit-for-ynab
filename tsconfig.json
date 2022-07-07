@@ -8,12 +8,13 @@
     "moduleResolution": "node",
     "noImplicitAny": true,
     "esModuleInterop": true,
+    "strict": true,
+    "strictNullChecks": true,
     "paths": {
+      "*": ["./types/*.d.ts"],
       "toolkit/*": ["./src/*"],
       "toolkit-reports/*": ["./src/features/toolkit-reports/*"]
     }
   },
-  "include": [
-    "./src/**/*"
-  ]
+  "include": ["./src/**/*"]
 }

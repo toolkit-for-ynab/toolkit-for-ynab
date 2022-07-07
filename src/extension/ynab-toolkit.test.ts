@@ -7,7 +7,7 @@ import { allToolkitSettings } from 'toolkit/core/settings';
 import { isYNABReady } from 'toolkit/extension/utils/ynab';
 import { readyYNAB, unreadyYNAB } from 'toolkit/test/setup';
 import { OutboundMessageType, InboundMessageType, BootstrapMessage } from 'toolkit/core/messages';
-import { YNABToolkitObject } from 'toolkit/types/window';
+import { YNABToolkitObject } from 'toolkit/types/toolkit';
 
 const mockIsYNABReady = isYNABReady as jest.Mock;
 
@@ -21,13 +21,13 @@ const setup = (setupOptions = {}) => {
   let messageCallback: EventListener;
   const addEventListenerSpy = jest
     .spyOn(window, 'addEventListener')
-    .mockImplementation((_, callback: EventListener) => {
+    .mockImplementation((_, callback: any) => {
       messageCallback = callback;
     });
 
   const postMessageSpy = jest.spyOn(window, 'postMessage');
   const callMessageListener = (...args: any[]) => {
-    messageCallback.apply(null, args);
+    messageCallback.apply(null, args as any);
   };
 
   const ynabToolkit = new YNABToolkit();

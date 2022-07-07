@@ -60,7 +60,7 @@ export class ImportNotification extends Feature {
     this.isActive = true;
 
     $('.nav-account-row').each((index, row) => {
-      let account = getEmberView($(row).attr('id'), 'data');
+      let account = getEmberView($(row).attr('id')).data;
       let accountName = $('.nav-account-name', row);
       if (accountName.length) {
         // Remove the title attribute and our underline class in case the account no longer has txns to be imported

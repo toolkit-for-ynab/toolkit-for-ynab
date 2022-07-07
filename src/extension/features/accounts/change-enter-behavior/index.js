@@ -35,8 +35,9 @@ export class ChangeEnterBehavior extends Feature {
       event.preventDefault();
       event.stopPropagation();
 
-      // Remove focus to the input so ynab can apply value
-      $(this).trigger('blur');
+      // Trigger a down arrow keypress so YNAB can apply the value
+      const downArrowKeyPress = jQuery.Event('keydown', { keyCode: 40 });
+      $(this).trigger(downArrowKeyPress);
 
       // Added to support CtrlEnterCleared when ChangeEnterBehavior is enabled
       if (ynabToolKit.options.CtrlEnterCleared === true && (event.metaKey || event.ctrlKey)) {

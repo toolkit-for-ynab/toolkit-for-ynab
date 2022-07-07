@@ -46,9 +46,11 @@ function generateForecast(weeks, netWorth) {
   }, []);
 }
 
-export function generateForecasts(transactions) {
+export function generateForecasts(transactions, allReportableTransactions, filters) {
   const weeks = makeWeeks(transactions);
-  const netWorth = calculateNetWorth(transactions);
+  const netWorth = calculateNetWorth(
+    allReportableTransactions.filter((t) => !filters.accountFilterIds.has(t.accountId))
+  );
 
   return range(0, 99)
     .map(() => generateForecast(weeks, netWorth))

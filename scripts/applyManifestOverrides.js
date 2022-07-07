@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const yargs = require('yargs').argv;
 
-const validOverrides = ['beta', 'development', 'ios'];
+const validOverrides = ['beta', 'development', 'ios', 'firefox'];
 if (!validOverrides.includes(yargs.type)) {
   console.log(`Invalid OVERRIDE provided. Must be one of: [${validOverrides.join('|')}]`);
   process.exit(1);
@@ -14,6 +14,12 @@ const buildDirectory = path.join(workspaceRoot, 'dist', 'extension');
 const manifestPath = path.join(buildDirectory, 'manifest.json');
 
 const manifest = require(manifestPath);
+
+if (yargs.type === 'ios' || yargs.type === 'firefox') {
+  delete manifest.host_permissions;
+  delete manifest.action;
+}
+
 const changes = require(path.join(workspaceRoot, 'src', `manifest.${type}.json`));
 
 // Clobber any keys in the beta manifest across.

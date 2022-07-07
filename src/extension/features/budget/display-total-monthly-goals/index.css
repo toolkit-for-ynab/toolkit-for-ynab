@@ -1,21 +1,21 @@
 .tk-monthly-goals-overview .colorize-currency .currency.positive {
-  color: var(--budget_balance_positive_background);
+  color: var(--label_positive);
 }
 
 .tk-monthly-goals-overview .colorize-currency .currency.negative {
-  color: var(--budget_balance_negative_background);
+  color: var(--label_negative);
 }
 
 .tk-monthly-goals-overview .total-income.warning .currency {
-  color: var(--budget_balance_warning_background);
+  color: var(--status_cautious);
 }
 
 .tk-monthly-goals-overview .goal-remaining-balance.positive .currency {
-  color: var(--budget_balance_positive_background);
+  color: var(--label_positive);
 }
 
 .tk-monthly-goals-overview .goal-remaining-balance.negative .currency {
-  color: var(--budget_balance_negative_background);
+  color: var(--label_negative);
 }
 
 .tk-monthly-goals-overview .extra-bottom-space {

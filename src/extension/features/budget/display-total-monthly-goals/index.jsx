@@ -36,7 +36,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   extractCategoryGoalInformation(element) {
-    const category = getEmberView(element.id, 'category');
+    const category = getEmberView(element.id).category;
     if (!category) {
       return;
     }
@@ -69,7 +69,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
     return [
       budgetedCalculation?.immediateIncome || 0,
       budgetedCalculation?.budgeted || 0,
-      budgetedCalculation?.cashOutflows || 0,
+      budgetedCalculation?.cashOutflows + budgetedCalculation?.creditOutflows || 0,
     ];
   }
 
@@ -102,7 +102,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
         if (goalData.isChecked) {
           categoryGoals.checkedTotalGoalsAmount.savings += goalData.goal;
         }
-      } else if (goalData.type === 'NEED') {
+      } else if (['NEED', 'DEBT'].includes(goalData.type)) {
         categoryGoals.totalGoalsAmount.spending += goalData.goal;
         if (goalData.isChecked) {
           categoryGoals.checkedTotalGoalsAmount.spending += goalData.goal;
@@ -131,7 +131,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
 
     componentBefore(
       this.createInspectorElement(income, budgeted, spent, savingsGoals, spendingGoals),
-      target
+      target[0]
     );
   }
 

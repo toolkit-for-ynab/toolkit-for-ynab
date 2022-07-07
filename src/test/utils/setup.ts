@@ -2,9 +2,9 @@ interface StorageOptions {
   storage?: any;
 }
 
-export function setupWithWebExtensionStorage<Suite, Options>(
-  setupFn: (opts: Options) => Suite
-): (opts?: Options & StorageOptions) => Suite {
+export function setupWithWebExtensionStorage<Suite, SuiteOptions>(
+  setupFn: (opts?: SuiteOptions) => Suite
+): (opts?: SuiteOptions & StorageOptions) => Suite {
   return (options) => {
     const mockStorage = options?.storage || {};
     (chrome.storage as any).mock.setStorageData(mockStorage);
@@ -16,9 +16,9 @@ interface LocalStorageOptions {
   localStorage?: Record<string, any>;
 }
 
-export function setupWithLocalStorage<Suite, Options>(
-  setupFn: (opts: Options) => Suite
-): (opts?: Options & LocalStorageOptions) => Suite {
+export function setupWithLocalStorage<Suite, SuiteOptions>(
+  setupFn: (opts?: SuiteOptions) => Suite
+): (opts?: SuiteOptions & LocalStorageOptions) => Suite {
   return (options) => {
     const mockLocalStorage = options?.localStorage || {};
 

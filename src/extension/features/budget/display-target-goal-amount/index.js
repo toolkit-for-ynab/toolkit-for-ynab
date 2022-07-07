@@ -41,7 +41,7 @@ export class DisplayTargetGoalAmount extends Feature {
     }
 
     const userSetting = this.settings.enabled;
-    const category = getEmberView(element.id, 'category');
+    const category = getEmberView(element.id).category;
     if (!category) {
       return;
     }
@@ -73,6 +73,7 @@ export class DisplayTargetGoalAmount extends Feature {
         case ynab.constants.SubCategoryGoalType.MonthlyFunding:
         case ynab.constants.SubCategoryGoalType.Needed:
         case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
+        case ynab.constants.SubCategoryGoalType.DebtPayment:
           goalAmount = goalTarget;
           goalFundedThreshold = goalTarget;
           break;

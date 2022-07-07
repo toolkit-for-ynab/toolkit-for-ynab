@@ -29,12 +29,16 @@ export class ShowCategoryBalance extends Feature {
   }
 
   addCategoryBalance(element) {
-    const transaction = getEmberView(element.id, 'content');
+    const transaction = getEmberView(element.id).content;
     if (!transaction) {
       return;
     }
 
     const allBudgetMonthsViewModel = getAllBudgetMonthsViewModel();
+    if (!allBudgetMonthsViewModel) {
+      return;
+    }
+
     const subCategoryCalculations = allBudgetMonthsViewModel.get(
       'monthlySubCategoryBudgetCalculationsCollection'
     );

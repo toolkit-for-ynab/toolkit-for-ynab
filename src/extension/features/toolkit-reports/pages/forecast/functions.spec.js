@@ -16,14 +16,19 @@ function makeTransactions(inputs) {
 }
 
 function getForecastsResult(inputGroups) {
-  return generateForecasts(makeTransactions(inputGroups));
+  const transactions = makeTransactions(inputGroups);
+  return generateForecasts(transactions, transactions, {
+    accountFilterIds: new Set(),
+  });
 }
 
 describe('forecast page functions', () => {
   beforeEach(() => random.mockImplementation((list) => list[0]));
 
   it('returns various confidences', async () => {
-    const result = generateForecasts();
+    const result = generateForecasts([], [], {
+      accountFilterIds: new Set(),
+    });
 
     expect(result).toHaveLength(100);
   });

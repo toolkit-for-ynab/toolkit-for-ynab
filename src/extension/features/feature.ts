@@ -1,11 +1,11 @@
 import { observeListener, routeChangeListener } from 'toolkit/extension/ynab-toolkit';
-import { logToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
+import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 import { SupportedEmberHook } from '../ynab-toolkit';
 import { addToolkitEmberHook, removeToolkitEmberHook } from '../utils/toolkit';
 import { forEachRenderedComponent } from '../utils/ember';
 
 export class Feature {
-  private __hooks = new Map<string, (element: HTMLElement) => void>();
+  private __hooks = new Map<string, (element: Element) => void>();
   featureName = this.constructor.name as FeatureName;
 
   settings = {
@@ -66,9 +66,9 @@ export class Feature {
     routeChangeListener.removeFeature(this);
   }
 
-  debounce(fn: (element: HTMLElement) => void, timeout: number): (element: HTMLElement) => void {
+  debounce(fn: (element: Element) => void, timeout: number): (element: Element) => void {
     const timers = new Map<string, number>();
-    return (element: HTMLElement) => {
+    return (element: Element) => {
       if (timers.has(element.id)) {
         window.clearTimeout(timers.get(element.id));
       }
@@ -85,30 +85,43 @@ export class Feature {
   addToolkitEmberHook(
     componentKey: string,
     lifecycleHook: SupportedEmberHook,
-    fn: (element: HTMLElement) => void,
-    options?: { debounce: number }
+    fn: (element: Element) => void,
+    options?: { debounce?: number; guard?: (element: Element) => boolean }
   ): void {
-    if (options && options.debounce) {
-      fn = this.debounce(fn, options.debounce);
-    }
-
-    addToolkitEmberHook(this, componentKey, lifecycleHook, fn);
-    this.__hooks.set(`${componentKey}:${lifecycleHook}`, fn);
-
-    forEachRenderedComponent(componentKey, (view: { element: HTMLElement }) => {
-      if (view.element) {
-        fn.call(this, view.element);
+    const wrappedAddToolkitEmberHook = withToolkitError(() => {
+      if (options?.debounce != null) {
+        fn = this.debounce(fn, options.debounce);
       }
-    });
+
+      addToolkitEmberHook(this, componentKey, lifecycleHook, fn, options?.guard);
+
+      this.__hooks.set(`${componentKey}:${lifecycleHook}`, fn);
+
+      forEachRenderedComponent(componentKey, (view: { element: Element }) => {
+        if (view.element) {
+          if (options?.guard && !options.guard(view.element)) {
+            return;
+          }
+
+          fn.call(this, view.element);
+        }
+      });
+    }, this.featureName);
+
+    wrappedAddToolkitEmberHook();
   }
 
   removeToolkitEmberHook(
     componentKey: string,
     lifecycleHook: SupportedEmberHook,
-    fn: (element: HTMLElement) => void
+    fn: (element: Element) => void
   ): void {
-    removeToolkitEmberHook(componentKey, lifecycleHook, fn);
-    this.__hooks.delete(`${componentKey}:${lifecycleHook}`);
+    const wrappedRemoveToolkitEmberHook = withToolkitError(() => {
+      removeToolkitEmberHook(componentKey, lifecycleHook, fn);
+      this.__hooks.delete(`${componentKey}:${lifecycleHook}`);
+    }, this.featureName);
+
+    wrappedRemoveToolkitEmberHook();
   }
 
   removeToolkitEmberHooks(): void {

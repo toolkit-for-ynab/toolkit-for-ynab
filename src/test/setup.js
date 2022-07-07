@@ -22,6 +22,12 @@ export function readyYNAB(options = {}) {
   global.Em = ember;
   global.$ = $;
   global.ynabToolKit = options.ynabToolKit || { options: toolkitOptions };
+  global.__ynabapp__ = {
+    lookup: jest.fn(),
+    __container__: {
+      cache: {},
+    },
+  };
 }
 
 export function unreadyYNAB() {
@@ -29,6 +35,7 @@ export function unreadyYNAB() {
   global.Em = undefined;
   global.$ = undefined;
   global.ynabToolKit = undefined;
+  global.__ynabapp__ = undefined;
 }
 
 beforeEach(() => {

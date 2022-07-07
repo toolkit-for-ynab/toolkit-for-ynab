@@ -18,7 +18,6 @@ export class CalculateIRR extends Feature {
     let { filterFrom, filterTo } = this._getFilterDates(filters);
     let totalIrr = this._calculateIRR(selectedAccountId);
     if (totalIrr === Infinity) {
-      console.log('YNAB Toolkit - Calculate IRR Error:  Infinity Result');
       return this.destroy();
     }
     if (Number.isNaN(totalIrr)) {
@@ -206,8 +205,6 @@ export class CalculateIRR extends Feature {
     } while (continueLoop && ++iteration < iterMax);
 
     if (continueLoop) {
-      console.log('YNAB Toolkit - Calculate IRR Error:  Max Iterations Exceeded');
-      console.log(iterationLog);
       return NaN;
     }
 
