@@ -1,5 +1,5 @@
 interface EmberView {
-  element: Element;
+  element: HTMLElement;
   _debugContainerKey: boolean | string;
 
   get(key: keyof EmberView): EmberView[];

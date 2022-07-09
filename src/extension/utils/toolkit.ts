@@ -111,8 +111,8 @@ export function addToolkitEmberHook(
   context: Feature,
   componentKey: string,
   lifecycleHook: SupportedEmberHook,
-  fn: (element: Element) => void,
-  guard?: (element: Element) => boolean
+  fn: (element: HTMLElement) => void,
+  guard?: (element: HTMLElement) => boolean
 ) {
   const componentPrototype = factoryLookup<EmberComponent>(componentKey)?.class?.prototype;
   if (!componentPrototype) {
@@ -137,7 +137,7 @@ export function addToolkitEmberHook(
 export function removeToolkitEmberHook(
   componentKey: string,
   lifecycleHook: SupportedEmberHook,
-  fn: (element: Element) => void
+  fn: (element: HTMLElement) => void
 ) {
   const componentPrototype = factoryLookup<EmberComponent>(componentKey)?.class?.prototype;
   if (!componentPrototype) {

@@ -5,8 +5,8 @@ import { Feature } from 'toolkit/extension/features/feature';
 declare global {
   interface ToolkitEmberHook {
     context: Feature;
-    fn(element: Element): void;
-    guard?: (element: Element) => boolean;
+    fn(element: HTMLElement): void;
+    guard?: (element: HTMLElement) => boolean;
   }
 
   interface EmberComponentPrototype {
