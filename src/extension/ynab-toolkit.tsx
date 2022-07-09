@@ -216,11 +216,11 @@ export class YNABToolkit {
         const hooks = self[emberComponentToolkitHookKey(lifecycleName)];
         if (hooks) {
           hooks.forEach(({ context, fn, guard }) => {
-            if (guard && !guard(self.element)) {
+            if (guard && !guard(self.element as HTMLElement)) {
               return;
             }
 
-            fn.call(context, self.element);
+            fn.call(context, self.element as HTMLElement);
           });
         }
       };
