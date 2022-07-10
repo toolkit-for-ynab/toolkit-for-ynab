@@ -21,7 +21,7 @@ body.tk-custom-colours-enabled {
     rules - some manual tweaking will be required
 
     If a new accent variable is referenced it needs to be added to the
-    TK_CUSTOMIZE_COLOUR_ACCENTS at the top of index.jsx to be defined and updated
+    TK_CUSTOMIZE_COLOUR_ACCENTS at the top of index.js to be defined and updated
 
     Base colours:
     Positive: #6d9f38

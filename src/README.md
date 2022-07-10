@@ -31,7 +31,7 @@ follow these steps:
    report or modify existing Toolkit Reports, those changes belong in the `toolkit-reports/` folder.
 2. Create a sub-directory for your feature in the respective folder. Try to name the folder the
    same as you will name the class. The name of the folder for the following example would be `my-cool-feature`.
-3. Create an `index.jsx` file which has the following:
+3. Create an `index.js` file which has the following:
    <!-- spacing is intentionally weird here because of markdown -->
 
 ```javascript
@@ -140,7 +140,7 @@ return any global CSS styles you'd like to have placed in a `<style>` tag in the
 
 For example, a CSS based feature to hide the referral program banner would look like this:
 
-**index.jsx**
+**index.js**
 
 ```javascript
 import { Feature } from 'toolkit/core/feature';
