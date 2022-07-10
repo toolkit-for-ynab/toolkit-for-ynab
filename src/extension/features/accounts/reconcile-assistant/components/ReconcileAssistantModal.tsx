@@ -185,6 +185,6 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
         </div>
       </div>
     </div>,
-    document.getElementById(portalId)
+    document.getElementById(portalId)!
   );
 };

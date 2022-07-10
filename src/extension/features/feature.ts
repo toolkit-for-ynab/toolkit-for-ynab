@@ -114,8 +114,7 @@ export class Feature {
   removeToolkitEmberHook(
     componentKey: string,
     lifecycleHook: SupportedEmberHook,
-    fn: (element: HTMLElement) => void,
-    options?: { guard?: string }
+    fn: (element: HTMLElement) => void
   ): void {
     const wrappedRemoveToolkitEmberHook = withToolkitError(() => {
       removeToolkitEmberHook(componentKey, lifecycleHook, fn);

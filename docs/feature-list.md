@@ -78,6 +78,10 @@ Obscure dollar amounts everywhere until hovered. In toggle mode, a lock icon wil
 
 Add a textbox to the budget page allowing you to filter categories.
 
+## Add Custom Average Month Quick Budget
+
+Select an average month count to calculate a quick budget option with
+
 ## Add Date of Money Tooltip
 
 Hovering "Age of Money" will display the date of the income.

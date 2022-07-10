@@ -22,7 +22,7 @@ export class DisplayTotalOverspent extends Feature {
     let checkedCount = 0;
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
-      const category = getEmberView(element.id, 'category');
+      const category = getEmberView(element.id).category;
       if (!category) {
         return;
       }

@@ -5,3 +5,7 @@
 .tk-is-reconciled .ynab-grid-cell-payeeName svg rect {
   fill: #00661d;
 }
+
+.tk-is-reconciled .ynab-grid-cell-subCategoryName .category-not-needed {
+  color: var(--tk-reconciled-font-color) !important;
+}

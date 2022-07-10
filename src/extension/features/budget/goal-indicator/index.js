@@ -27,7 +27,7 @@ export class GoalIndicator extends Feature {
       return;
     }
 
-    const category = getEmberView(element.id, 'category');
+    const category = getEmberView(element.id).category;
     if (!category) {
       return;
     }

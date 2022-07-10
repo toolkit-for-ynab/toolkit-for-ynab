@@ -74,7 +74,7 @@ export class ToolkitStorage {
     return this.removeStorageItem(featureSettingKey(settingName), options);
   }
 
-  getStorageItem(itemKey: string, options: Partial<GetOptions> & { default?: string } = {}) {
+  getStorageItem(itemKey: string | null, options: Partial<GetOptions> & { default?: string } = {}) {
     return this._get(itemKey, options).then((value) => {
       if (typeof value === 'undefined' && typeof options.default !== 'undefined') {
         return options.default;
@@ -108,7 +108,7 @@ export class ToolkitStorage {
   onStorageItemChanged(storageKey: string, callback: StorageListener) {
     if (this.storageListeners.has(storageKey)) {
       const listeners = this.storageListeners.get(storageKey);
-      this.storageListeners.set(storageKey, [...listeners, callback]);
+      this.storageListeners.set(storageKey, [...listeners!, callback]);
     } else {
       this.storageListeners.set(storageKey, [callback]);
     }
@@ -119,7 +119,7 @@ export class ToolkitStorage {
       const listeners = this.storageListeners.get(storageKey);
       this.storageListeners.set(
         storageKey,
-        listeners.filter((listener) => listener !== callback)
+        listeners!.filter((listener) => listener !== callback)
       );
     }
   }
@@ -146,14 +146,14 @@ export class ToolkitStorage {
     for (const [key, value] of Object.entries(changes)) {
       if (this.storageListeners.has(key)) {
         const listeners = this.storageListeners.get(key);
-        listeners.forEach((listener) => {
+        listeners!.forEach((listener) => {
           listener(key, value.newValue);
         });
       }
     }
   };
 
-  _get(key: string, options: Partial<GetOptions>): Promise<any> {
+  _get(key: string | null, options: Partial<GetOptions>): Promise<any> {
     const getOptions: GetOptions = {
       parse: true,
       storageArea: this.storageArea,

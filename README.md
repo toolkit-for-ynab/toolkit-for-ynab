@@ -39,14 +39,6 @@ Note: Since the extension is built with Web Extensions and that is not supported
 the extension itself is not supported on Safari. When/if Safari decides to support Web Extensions
 we will do what we can to provide support for their browser.
 
-### Roadmap
-
-Features under consideration and the general status of the project and roadmap is
-on [our Trello Board](https://trello.com/b/EzOvXlil/ynab-enhanced-roadmap). Feel
-free to vote and comment. To suggest a new feature, please [submit an issue](https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/new)
-on GitHub. Once the feature has been added to the Trello board, you will be informed
-allowing you to vote and follow the Trello card for any updates.
-
 ### Contributions
 
 Contributions are greatly welcomed. If you want to contribute, it's best if you can let

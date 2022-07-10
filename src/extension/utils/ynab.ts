@@ -1,6 +1,19 @@
 import { getRouter, controllerLookup } from './ember';
-export function transitionTo() {
-  getRouter().transitionTo(...arguments);
+
+export function getApplicationController() {
+  return controllerLookup<YNABApplicationController>('application');
+}
+
+export function getAccountsController() {
+  return controllerLookup<YNABAccountsController>('accounts');
+}
+
+export function getBudgetController() {
+  return controllerLookup<YNABBudgetController>('budget');
+}
+
+export function getReportsController() {
+  return controllerLookup<YNABReportsController>('reports');
 }
 
 export function getEntityManager() {
@@ -8,8 +21,8 @@ export function getEntityManager() {
 }
 
 export function getCurrentBudgetDate() {
-  const date = controllerLookup('budget').monthString;
-  return { year: date.slice(0, 4), month: date.slice(4, 6) };
+  const date = getBudgetController()?.monthString;
+  return { year: date?.slice(0, 4), month: date?.slice(4, 6) };
 }
 
 export function isCurrentRouteBudgetPage() {
@@ -31,29 +44,37 @@ export function isCurrentRouteAccountsPage() {
 }
 
 export function getSelectedAccount() {
-  const { selectedAccountId } = controllerLookup('accounts');
-  return getEntityManager().getAccountById(selectedAccountId);
+  const selectedAccountId = getAccountsController()?.selectedAccountId;
+  if (selectedAccountId) {
+    return getEntityManager().getAccountById(selectedAccountId);
+  }
+
+  return null;
 }
 
 export function getCurrentRouteName() {
-  return controllerLookup('application')?.currentRouteName;
+  return getApplicationController()?.currentRouteName;
 }
 
 export function getAllBudgetMonthsViewModel() {
-  return controllerLookup('budget')?.budgetViewModel?.allBudgetMonthsViewModel;
+  return getBudgetController()?.budgetViewModel?.allBudgetMonthsViewModel;
 }
 
 export function getBudgetViewModel() {
-  return controllerLookup('budget')?.budgetViewModel;
+  return getBudgetController()?.budgetViewModel;
 }
 
 export function getSelectedMonth() {
-  const monthString = controllerLookup('budget').get('monthString');
-  return ynab.utilities.DateWithoutTime.createFromString(monthString, 'YYYYMM');
+  const monthString = getBudgetController()?.monthString;
+  if (monthString) {
+    return ynab.utilities.DateWithoutTime.createFromString(monthString, 'YYYYMM');
+  }
+
+  return null;
 }
 
 export function getApplicationService() {
-  return controllerLookup('application').get('applicationService');
+  return getApplicationController()?.applicationService;
 }
 
 export function isCurrentMonthSelected() {

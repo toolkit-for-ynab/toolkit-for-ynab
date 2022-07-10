@@ -41,7 +41,7 @@ export class DisplayTargetGoalAmount extends Feature {
     }
 
     const userSetting = this.settings.enabled;
-    const category = getEmberView(element.id, 'category');
+    const category = getEmberView(element.id).category;
     if (!category) {
       return;
     }

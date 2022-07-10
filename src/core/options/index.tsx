@@ -12,7 +12,7 @@ getUserSettings().then(() => {
       darkMode = darkMode ? 'dark' : 'light';
     }
 
-    document.querySelector('html').dataset['theme'] = darkMode;
+    document.querySelector('html')!.dataset['theme'] = darkMode;
 
     ReactDOM.render(<ToolkitOptions />, document.getElementById('root'));
   });

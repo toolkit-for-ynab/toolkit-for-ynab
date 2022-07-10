@@ -1,3 +1,5 @@
+type FeatureSetting = boolean | string;
+
 interface FeatureSettingBaseConfig {
   name: FeatureName;
   section: 'general' | 'accounts' | 'budget' | 'reports' | 'advanced' | 'toolkitReports' | 'system';
