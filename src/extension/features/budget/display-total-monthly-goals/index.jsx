@@ -69,7 +69,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
     return [
       budgetedCalculation?.immediateIncome || 0,
       budgetedCalculation?.budgeted || 0,
-      budgetedCalculation?.cashOutflows + budgetedCalculation?.creditOutflows || 0,
+      budgetedCalculation?.cashOutflows + 2 * (budgetedCalculation?.creditOutflows || 0),
     ];
   }
 
