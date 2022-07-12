@@ -12,13 +12,15 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import resources from '../resources';
 import '../styles.scss';
 
+import type { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+
 interface ReconcileAssistantModalProps {
   portalId: string;
   isOpen: boolean;
   setModalOpened: (isOpen: boolean) => void;
   clearedTotal: number;
   target: number;
-  transactions: Array<Transaction>;
+  transactions: Array<YNABTransaction>;
 }
 
 export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = ({
@@ -29,13 +31,15 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
   target,
   transactions,
 }) => {
-  const [transactionPowerset, setTransactionPowerset] = useState<Array<Array<Transaction>>>([]);
-  const [matchingTransactions, setMatchingTransactions] = useState<Array<Array<Transaction>>>([]);
-  const [chosenTransactionSet, setChosenSelectionSet] = useState<Array<Transaction>>([]);
+  const [transactionPowerset, setTransactionPowerset] = useState<Array<Array<YNABTransaction>>>([]);
+  const [matchingTransactions, setMatchingTransactions] = useState<Array<Array<YNABTransaction>>>(
+    []
+  );
+  const [chosenTransactionSet, setChosenSelectionSet] = useState<Array<YNABTransaction>>([]);
   const [transactionArrIndex, setTransactionArrIndex] = useState<number>(0);
 
   useEffect(() => {
-    let unclearedTransactions: Array<Transaction> = getUnclearedTransactions(transactions);
+    let unclearedTransactions: Array<YNABTransaction> = getUnclearedTransactions(transactions);
     setTransactionPowerset(generatePowerset(unclearedTransactions));
   }, [isOpen, transactions]);
 

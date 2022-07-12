@@ -1,75 +1,49 @@
-interface DateWithoutTime {
-  addMonths(count: number): DateWithoutTime;
-  clone(): DateWithoutTime;
-  getMonth(): number;
-  getYear(): number;
-  isAfter(date: DateWithoutTime): boolean;
-  isBefore(date: DateWithoutTime): boolean;
-  startOfMonth(): DateWithoutTime;
-  toISOString(): string;
-}
+import { YNABAccount } from './account';
 
-interface MasterCategory {
+export interface YNABTransaction {
+  accepted: boolean;
+  account: YNABAccount;
+  accountId: string;
+  amount: number;
+  baseSubTransactions: Array<YNABTransaction>;
+  budgetVersionId: string;
+  cashAmount: number;
+  checkNumber: string | null;
+  cleared: keyof YNABConstants['TransactionState'];
+  creditAmount: number;
+  creditAmountAdjusted: number;
+  date: DateWithoutTime;
+  dateEnteredFromSchedule: DateWithoutTime | null;
   entityId: string;
-  sortableIndex: number;
-}
-
-interface SubCategory {
-  entityId?: string;
-  masterCategoryId?: string;
-  sortableIndex: number;
-}
-
-interface Payee {
-  entityId?: string;
-  isStartingBalancePayee(): boolean;
-  name: string;
-}
-
-interface Transaction {
-  accepted?: boolean;
-  account?: any;
-  accountId?: string;
-  amount?: number;
-  baseSubTransactions?: Array<any>;
-  budgetVersionId?: string;
-  cashAmount?: any;
-  checkNumber?: any;
-  cleared?: string;
-  creditAmount?: any;
-  creditAmountAdjusted?: any;
-  date?: DateWithoutTime;
-  dateEnteredFromSchedule?: any;
-  entityId?: string;
-  flag?: any;
-  importedDate?: any;
-  importedPayee?: string;
+  flag: string | null;
+  importedDate: DateWithoutTime | null;
+  importedPayee: YNABPayee | null;
   isScheduledSubTransaction?: boolean;
   isScheduledTransaction?: boolean;
   isSplit?: boolean;
   isTombstone?: boolean;
-  matchedTransaction?: any;
-  matchedTransactionId?: any;
-  memo?: string;
-  month?: any;
-  originalImportedPayee?: string;
-  parentTransaction?: Transaction;
-  payee?: any;
-  payeeId?: string;
-  scheduledTransactionId?: string;
-  scheduledTransactions?: any;
-  source?: string;
-  subCategory?: any;
-  subCategoryCreditAmountPreceding?: any;
-  subCategoryId?: string;
-  subTransactions?: any;
-  transferAccountId?: string;
-  transferAccounts?: any;
-  transferSubTransaction?: any;
-  transferSubTransactionId?: string;
-  transferTransaction?: any;
-  transferTransactionId?: string;
-  ynabId?: string;
+  matchedTransaction: YNABTransaction | null;
+  matchedTransactionId: string | null;
+  memo: string;
+  month: DateWithoutTime;
+  originalImportedPayee: YNABPayee | null;
+  parentTransaction?: YNABTransaction;
+  payee: YNABPayee | null;
+  payeeId: string | null;
+  scheduledTransactionId: string | null;
+  scheduledTransaction: YNABTransaction | null;
+  source: keyof YNABConstants['TransactionSource'] | null;
+  subCategory: YNABSubCategory | null;
+  subCategoryCreditAmountPreceding: number;
+  subCategoryId: string | null;
+  subTransactions: YNABTransaction[];
+  transferAccountId: string | null;
+  transferAccounts: YNABAccount[] | null;
+  transferSubTransaction: YNABTransaction | null;
+  transferSubTransactionId: string | null;
+  transferTransaction: YNABTransaction | null;
+  transferTransactionId: string | null;
+  ynabId: string | null;
 
   isUncleared?: () => boolean;
 }
