@@ -1,4 +1,5 @@
 import { YNABEnums } from './ynab-enums';
+import { YNABSharedLib } from './ynab-shared-lib';
 
 interface YNABGlobal {
   YNABSharedLib: YNABSharedLib;

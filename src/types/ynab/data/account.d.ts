@@ -1,6 +1,9 @@
 import { YNABAccountType } from '../window/ynab-enums';
+import { YNABTransaction } from './transaction';
 
-interface YNABAccount {
+export interface YNABAccount {
+  accountName: string;
   getAccountType(): YNABAccountType;
   getAccountCalculation(): YNABAccountCalculation;
+  getTransactions(): YNABTransaction[];
 }

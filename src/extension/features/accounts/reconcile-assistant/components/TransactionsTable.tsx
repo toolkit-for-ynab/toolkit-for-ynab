@@ -2,8 +2,10 @@ import React from 'react';
 import resources from '../resources';
 import { TransactionRow } from './TransactionRow';
 
+import type { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+
 interface TransactionsTableProps {
-  transactions: Array<Transaction>;
+  transactions: Array<YNABTransaction>;
 }
 
 export const TransactionsTable = ({ transactions }: TransactionsTableProps) => (
