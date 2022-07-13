@@ -21,7 +21,7 @@ export function getEntityManager() {
 }
 
 export function getCurrentBudgetDate() {
-  const date = getBudgetController()?.monthString;
+  const date = getBudgetService()?.monthString;
   return { year: date?.slice(0, 4), month: date?.slice(4, 6) };
 }
 
@@ -65,7 +65,7 @@ export function getBudgetViewModel() {
 }
 
 export function getSelectedMonth() {
-  const monthString = getBudgetController()?.monthString;
+  const monthString = getBudgetService()?.monthString;
   if (monthString) {
     return ynab.utilities.DateWithoutTime.createFromString(monthString, 'YYYYMM');
   }
@@ -75,6 +75,10 @@ export function getSelectedMonth() {
 
 export function getApplicationService() {
   return getApplicationController()?.applicationService;
+}
+
+export function getBudgetService() {
+  return getBudgetController()?.budgetService;
 }
 
 export function isCurrentMonthSelected() {

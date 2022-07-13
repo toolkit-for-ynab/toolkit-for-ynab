@@ -1,0 +1,3 @@
+interface YNABBudgetService {
+  monthString: string;
+}
