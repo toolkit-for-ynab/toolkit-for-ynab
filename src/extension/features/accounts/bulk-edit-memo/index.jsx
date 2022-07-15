@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { componentLookup, controllerLookup } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { componentAfter } from 'toolkit/extension/utils/react';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
@@ -10,7 +10,7 @@ const EditMemo = () => {
   const [memoInputValue, setMemoInputValue] = useState('');
 
   const handleConfirm = () => {
-    const checkedRows = controllerLookup('accounts').get('areChecked');
+    const checkedRows = componentLookup('top-accounts').areChecked;
     const { transactionsCollection } = getEntityManager();
     getEntityManager().performAsSingleChangeSet(() => {
       checkedRows.forEach((transaction) => {
@@ -51,7 +51,7 @@ const EditMemo = () => {
         {!isEditMode && (
           <button onClick={() => setIsEditMode(true)}>
             <i className="flaticon stroke document-1 ynab-new-icon"></i>
-            {controllerLookup('accounts').get('areChecked').length === 1
+            {componentLookup('top-accounts').areChecked.length === 1
               ? l10n('toolkit.editMemo', 'Edit Memo')
               : l10n('toolkit.editMemoOther', 'Edit Memos')}
           </button>

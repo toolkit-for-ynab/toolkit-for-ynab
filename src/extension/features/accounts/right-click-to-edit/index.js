@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { controllerLookup, serviceLookup } from 'toolkit/extension/utils/ember';
+import { controllerLookup, componentLookup, serviceLookup } from 'toolkit/extension/utils/ember';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class RightClickToEdit extends Feature {
@@ -28,7 +28,8 @@ export class RightClickToEdit extends Feature {
       $row = $row.prevAll('.ynab-grid-body-parent:first');
     }
 
-    const { areChecked, visibleTransactionDisplayItems } = controllerLookup('accounts');
+    const areChecked = componentLookup('top-accounts').areChecked;
+    const { visibleTransactionDisplayItems } = controllerLookup('accounts');
     const clickedTransactionId = $row.data().rowId;
     const clickedTransaction = visibleTransactionDisplayItems.find(
       ({ entityId }) => entityId === clickedTransactionId

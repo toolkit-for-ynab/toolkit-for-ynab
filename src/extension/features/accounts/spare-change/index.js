@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { componentLookup } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class SpareChange extends Feature {
@@ -15,18 +15,18 @@ export class SpareChange extends Feature {
   // invoke has potential of being pretty processing heavy (needing to sort content, then update calculation for every row)
   // wrapping it in a debounce means that if the user continuously scrolls down we won't clog up the event loop.
   invoke() {
-    controllerLookup('accounts').addObserver('areChecked', this.calculateSpareChange);
+    componentLookup('top-accounts').addObserver('areChecked', this.calculateSpareChange);
   }
 
   destroy() {
-    controllerLookup('accounts').removeObserver('areChecked', this.calculateSpareChange);
+    componentLookup('top-accounts').removeObserver('areChecked', this.calculateSpareChange);
     $('#tk-spare-change').remove();
   }
 
   calculateSpareChange() {
     // Running this code straight away in the callback seems to break some YNAB features - schedule it to run later
     Ember.run.once(this, () => {
-      const { areChecked } = controllerLookup('accounts');
+      const areChecked = componentLookup('top-accounts').areChecked;
       if (!areChecked.length) {
         $('#tk-spare-change').remove();
         return;
