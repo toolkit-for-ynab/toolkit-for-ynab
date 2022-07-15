@@ -5,10 +5,10 @@ interface YNABBudgetMonthDisplayItem {
 
 interface YNABBudgetController {
   applicationService: YNABApplicationService;
+  budgetService: YNABBudgetService;
   budgetViewModel?: {
     allBudgetMonthsViewModel: {};
   };
   checkedRowsCount: number;
   checkedRows: YNABBudgetMonthDisplayItem[];
-  monthString: string;
 }
