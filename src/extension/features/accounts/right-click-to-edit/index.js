@@ -29,7 +29,9 @@ export class RightClickToEdit extends Feature {
     }
 
     const areChecked = componentLookup('top-accounts').areChecked;
-    const { visibleTransactionDisplayItems } = controllerLookup('accounts');
+    const {
+      transactionEditorService: { visibleTransactionDisplayItems },
+    } = controllerLookup('accounts');
     const clickedTransactionId = $row.data().rowId;
     const clickedTransaction = visibleTransactionDisplayItems.find(
       ({ entityId }) => entityId === clickedTransactionId
