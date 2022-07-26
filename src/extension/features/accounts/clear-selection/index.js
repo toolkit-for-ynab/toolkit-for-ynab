@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { controllerLookup, componentLookup } from 'toolkit/extension/utils/ember';
+import { controllerLookup, containerLookup } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class ClearSelection extends Feature {
@@ -8,7 +8,7 @@ export class ClearSelection extends Feature {
 
     try {
       accountsController.set('areAllTransactionsSet', false);
-      componentLookup('top-accounts').areChecked.setEach('isChecked', false);
+      containerLookup('service:accounts').areChecked.setEach('isChecked', false);
       accountsController.send('closeModal');
     } catch (exception) {
       accountsController.send('closeModal');
