@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { componentLookup } from 'toolkit/extension/utils/ember';
+import { containerLookup } from 'toolkit/extension/utils/ember';
 
 export class DeselectTransactionsOnSave extends Feature {
   shouldInvoke() {
@@ -32,7 +32,7 @@ export class DeselectTransactionsOnSave extends Feature {
 
   handleSaveButtonClicked = () => {
     setTimeout(() => {
-      componentLookup('top-accounts').areChecked.setEach('isChecked', false);
+      containerLookup('service:accounts').areChecked.setEach('isChecked', false);
     }, 0);
   };
 }
