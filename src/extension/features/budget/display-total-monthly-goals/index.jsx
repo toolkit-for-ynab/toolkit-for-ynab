@@ -70,8 +70,19 @@ export class DisplayTotalMonthlyGoals extends Feature {
     return [
       budgetedCalculation?.immediateIncome || 0,
       budgetedCalculation?.budgeted || 0,
-      budgetedCalculation?.cashOutflows + 2 * (budgetedCalculation?.creditOutflows || 0),
+      budgetedCalculation?.outflows - this.getCreditActivity(),
     ];
+  }
+
+  getCreditActivity() {
+    let creditCardActivity = 0;
+    $("button[title='Credit Card Payments']")
+      .parents('.is-debt-payment-category.is-master-category')
+      .each((_, element) => {
+        const category = getEmberView(element.id).category;
+        creditCardActivity = category.activity;
+      });
+    return creditCardActivity;
   }
 
   calculateTotalGoals() {
