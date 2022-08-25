@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
+import { isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import {
   getDeemphasizedCategories,
