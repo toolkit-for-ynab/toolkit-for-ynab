@@ -45,6 +45,12 @@ export class CheckCreditBalances extends Feature {
       changedNodes.has(
         'budget-table-row js-budget-table-row is-sub-category is-debt-payment-category'
       ) ||
+      changedNodes.has(
+        'budget-table-row js-budget-table-row budget-table-row-ul is-sub-category is-debt-payment-category is-checked'
+      ) ||
+      changedNodes.has(
+        'budget-table-row js-budget-table-row budget-table-row-ul is-sub-category is-debt-payment-category'
+      ) ||
       changedNodes.has('to-be-budgeted-amount')
     ) {
       this.invoke();
@@ -245,5 +251,15 @@ export class CheckCreditBalances extends Feature {
         }
       }
     });
+
+    $('#tk-rectify-difference')
+      .attr('disabled', true)
+      .empty()
+      .append(l10n('toolkit.checkCreditBalances', 'Rectify Difference'))
+      .append(
+        $('<strong>', { class: 'user-data', title: '$0.00' }).append(
+          $('<span>', { class: 'user-data currency zero' }).text(`+$0.00`)
+        )
+      );
   }
 }
