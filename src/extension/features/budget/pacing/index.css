@@ -1,8 +1,11 @@
 .tk-budget-table-cell-pacing {
+  display: flex;
   width: 13%;
   justify-content: flex-end !important;
-  padding: 0 0 0 1rem !important;
+  padding: 5px;
   text-align: right !important;
+  border-top: 1px solid var(--divider_standard);
+  height: 1.9375rem;
 }
 
 .tk-budget-table-cell-pacing .deemphasized,
@@ -23,4 +26,19 @@
 
 .tk-budget-table-cell-pacing .indicator.deemphasized {
   background-color: #cfd5d7 !important;
+}
+
+.budget-table-header .tk-budget-table-cell-pacing {
+  height: 2.5rem;
+  border-top: 0;
+  border-bottom: 1px solid var(--divider_standard);
+  font-size: .6875rem;
+  color: var(--label_secondary);
+  flex-direction: column;
+  justify-content: center !important;
+  font-weight: 700;
+}
+
+.is-master-category .tk-budget-table-cell-pacing {
+  height: 2.5rem;
 }
