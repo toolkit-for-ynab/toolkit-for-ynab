@@ -197,7 +197,7 @@ Ensure all negative balances are highlighted red instead of yellow, even with cr
 
 ## Live on Last Month's Income
 
-Add a section the budget inspector showing your variance between last month's income and this month's assigned budget for users who still live by the old Rule #4.
+Add a section to the budget inspector showing your variance between last month's income and this month's assigned budget for users who still live by the old Rule #4.
 
 ## Paid in Full Credit Card Assist
 

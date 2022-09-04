@@ -5,7 +5,7 @@ module.exports = {
   section: 'budget',
   title: "Live on Last Month's Income",
   description:
-    "Add a section the budget inspector showing your variance between last month's income and this month's assigned budget for users who still live by the old Rule #4.",
+    "Add a section to the budget inspector showing your variance between last month's income and this month's assigned budget for users who still live by the old Rule #4.",
   options: [
     { name: 'Use previous month', value: '1' },
     { name: 'Use month before last', value: '2' },
