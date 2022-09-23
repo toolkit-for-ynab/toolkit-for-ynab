@@ -40,8 +40,12 @@ export class ToggleTransactionFilters extends Feature {
     return true;
   }
 
-  invoke() {
-    this.addToolkitEmberHook('accounts/account-header', 'didRender', this.injectButtons);
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (changedNodes.has('accounts-toolbar')) {
+      this.injectButtons($('.accounts-toolbar'));
+    }
   }
 
   injectCSS() {
