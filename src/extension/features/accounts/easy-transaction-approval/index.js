@@ -27,6 +27,10 @@ export class EasyTransactionApproval extends Feature {
 
   handleKeydown(event) {
     if (event.code === 'KeyA' || event.code === 'Enter') {
+      const isInputEvent = event.target.nodeName === 'INPUT';
+
+      if (isInputEvent) return;
+
       const { transactionsCollection } = getEntityManager();
       getEntityManager().batchChangeProperties(() => {
         containerLookup('service:accounts').areChecked.forEach((transaction) => {
