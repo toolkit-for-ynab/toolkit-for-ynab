@@ -5,6 +5,5 @@ interface YNABBudgetService {
         format: (input: string) => string;
       };
     };
-    monthString: string;
   };
 }
