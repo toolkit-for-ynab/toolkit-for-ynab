@@ -65,12 +65,7 @@ export function getBudgetViewModel() {
 }
 
 export function getSelectedMonth() {
-  const monthString = getBudgetService()?.monthString;
-  if (monthString) {
-    return ynab.utilities.DateWithoutTime.createFromString(monthString, 'YYYYMM');
-  }
-
-  return null;
+  return getBudgetViewModel()?.month;
 }
 
 export function getApplicationService() {

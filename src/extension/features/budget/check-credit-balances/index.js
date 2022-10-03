@@ -1,5 +1,9 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getSelectedMonth, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import {
+  getBudgetService,
+  isCurrentMonthSelected,
+  isCurrentRouteBudgetPage,
+} from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
@@ -9,17 +13,20 @@ export class CheckCreditBalances extends Feature {
   }
 
   shouldInvoke() {
-    const today = ynab.utilities.DateWithoutTime.createForToday();
-    return isCurrentRouteBudgetPage() && today.equalsByMonth(getSelectedMonth());
+    return isCurrentRouteBudgetPage() && isCurrentMonthSelected();
   }
 
   invoke() {
-    this.addToolkitEmberHook(
-      'budget/budget-inspector',
-      'didRender',
-      this.addRectifyDifferenceButton
-    );
+    this.addRectifyDifferenceButton();
     this.addToolkitEmberHook('budget-table-row', 'didRender', this.checkCategoryForDifference);
+  }
+
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (changedNodes.has('budget-inspector-button')) {
+      this.addRectifyDifferenceButton();
+    }
   }
 
   onRouteChanged() {
@@ -34,15 +41,17 @@ export class CheckCreditBalances extends Feature {
       .forEach((el) => el.removeAttribute('data-tk-pif-assist'));
   }
 
-  addRectifyDifferenceButton(inspectorElement) {
-    const inspector = getEmberView(inspectorElement.id);
-    if (!inspector) return;
+  addRectifyDifferenceButton() {
+    if (!isCurrentMonthSelected()) return;
+
+    const inspectorElement = document.querySelector('.budget-inspector');
+    if (!inspectorElement) return;
 
     const buttonDivExists = document.querySelector('#tk-rectify-difference');
     if (buttonDivExists) buttonDivExists.remove();
 
     // We only want to add the button if one category is selected. The budget inspector only sets activeCategory if one category is selected.
-    const category = inspector.activeCategory;
+    const category = getBudgetService().activeCategory;
     if (!category) return;
     if (!category.isCreditCardPaymentCategory) return;
 
@@ -78,6 +87,8 @@ export class CheckCreditBalances extends Feature {
   }
 
   checkCategoryForDifference(categoryElement) {
+    if (!isCurrentMonthSelected()) return;
+
     const category = getEmberView(categoryElement.id).category;
     if (!category) return;
     if (!category.isCreditCardPaymentCategory) return;
