@@ -21,7 +21,7 @@ export function getEntityManager() {
 }
 
 export function getCurrentBudgetDate() {
-  const date = getBudgetService()?.monthString;
+  const date = getBudgetService()?.budgetHeaderValues?.monthlyBudget?.month?.format('YYYYMM');
   return { year: date?.slice(0, 4), month: date?.slice(4, 6) };
 }
 
@@ -65,7 +65,8 @@ export function getBudgetViewModel() {
 }
 
 export function getSelectedMonth() {
-  const monthString = getBudgetService()?.monthString;
+  const monthString =
+    getBudgetService()?.budgetHeaderValues?.monthlyBudget?.month?.format('YYYYMM');
   if (monthString) {
     return ynab.utilities.DateWithoutTime.createFromString(monthString, 'YYYYMM');
   }
