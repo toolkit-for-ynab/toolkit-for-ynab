@@ -21,7 +21,7 @@ export function getEntityManager() {
 }
 
 export function getCurrentBudgetDate() {
-  const date = getBudgetService()?.monthString;
+  const date = getSelectedMonth()?.format('YYYYMM');
   return { year: date?.slice(0, 4), month: date?.slice(4, 6) };
 }
 
