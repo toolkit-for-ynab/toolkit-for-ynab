@@ -8,6 +8,7 @@ interface YNABBudgetController {
   budgetService: YNABBudgetService;
   budgetViewModel?: {
     allBudgetMonthsViewModel: {};
+    month: DateWithoutTime;
   };
   checkedRowsCount: number;
   checkedRows: YNABBudgetMonthDisplayItem[];
