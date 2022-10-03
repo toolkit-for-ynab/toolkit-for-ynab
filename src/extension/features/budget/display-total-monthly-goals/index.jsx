@@ -196,6 +196,16 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('budget/budget-inspector', 'didRender', this.addMonthlyGoalsOverview);
+    return null;
+  }
+
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) {
+      return;
+    }
+
+    if (changedNodes.has('budget-inspector-button')) {
+      this.addMonthlyGoalsOverview();
+    }
   }
 }
