@@ -239,7 +239,7 @@ Removes the highlight colour from positive (or zero) category balances and colou
 
 ## Add "Auto Distribute" Button To Split Transactions
 
-Distrubutes the remaining total of a split transaction proportionally to all other splits which contain an amount.
+Distributes the remaining total of a split transaction proportionally to all other splits which contain an amount.
 
 ## Add "Check Number" Column
 
