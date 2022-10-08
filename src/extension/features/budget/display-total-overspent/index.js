@@ -3,17 +3,7 @@ import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 
 export class DisplayTotalOverspent extends Feature {
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    //
-  }
-
   observe(changedNodes) {
-    if (!this.shouldInvoke()) return;
-
     if (changedNodes.has('budget-inspector-button')) {
       this.addTotalOverspent();
     }

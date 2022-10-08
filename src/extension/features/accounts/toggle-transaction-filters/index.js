@@ -36,17 +36,7 @@ ToggleButton.propTypes = {
 };
 
 export class ToggleTransactionFilters extends Feature {
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    //
-  }
-
   observe(changedNodes) {
-    if (!this.shouldInvoke()) return;
-
     if (changedNodes.has('accounts-toolbar')) {
       this.injectButtons($('.accounts-toolbar'));
     }

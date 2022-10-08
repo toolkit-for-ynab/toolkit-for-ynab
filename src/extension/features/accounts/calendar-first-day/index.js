@@ -1,14 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 
 export class CalendarFirstDay extends Feature {
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    //
-  }
-
   observe(changedNodes) {
     if (!changedNodes.has('accounts-calendar')) return;
 

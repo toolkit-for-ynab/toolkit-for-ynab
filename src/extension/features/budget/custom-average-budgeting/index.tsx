@@ -30,17 +30,7 @@ const QuickBudgetButton = ({
 );
 
 export class CustomAverageBudgeting extends Feature {
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    //
-  }
-
   observe(changedNodes: Set<string>) {
-    if (!this.shouldInvoke()) return;
-
     if (changedNodes.has('budget-inspector-button')) {
       this._renderButton();
     }

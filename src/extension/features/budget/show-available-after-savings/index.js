@@ -5,17 +5,7 @@ import { getBudgetBreakdownEntries } from '../subtract-upcoming-from-available/b
 import { isSavingsCategory } from '../subtract-upcoming-from-available/categories';
 
 export class ShowAvailableAfterSavings extends Feature {
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    //
-  }
-
   observe(changedNodes) {
-    if (!this.shouldInvoke()) return;
-
     if (changedNodes.has('budget-inspector-button')) {
       this.handleBudgetBreakdown();
     }

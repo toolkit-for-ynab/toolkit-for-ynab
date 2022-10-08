@@ -4,17 +4,7 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n, l10nMonth, MonthStyle } from 'toolkit/extension/utils/toolkit';
 
 export class LiveOnLastMonthsIncome extends Feature {
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    //
-  }
-
   observe(changedNodes) {
-    if (!this.shouldInvoke()) return;
-
     if (changedNodes.has('budget-inspector-button')) {
       this.injectLastMonthsIncome();
     }
