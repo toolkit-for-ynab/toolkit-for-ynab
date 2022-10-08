@@ -40,6 +40,10 @@ export class ToggleTransactionFilters extends Feature {
     return true;
   }
 
+  invoke() {
+    //
+  }
+
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 

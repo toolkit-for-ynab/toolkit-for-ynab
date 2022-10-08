@@ -1,7 +1,7 @@
 /* eslint-disable no-continue */
 import { formatCurrency, getCurrencyClass } from 'toolkit/extension/utils/currency';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
+import { getBudgetService } from 'toolkit/extension/utils/ynab';
 import * as categories from './categories';
 import { resetInspectorMessage } from './destroy-helpers';
 import { setInspectorMessageOriginalValues } from './destroy-helpers';
@@ -9,21 +9,21 @@ import { shouldRun } from './index';
 
 // This file handles the case when YNAB provides its own available after upcoming when one category is selected.
 
-export function handleBudgetBreakdownAvailableBalance(element) {
+export function handleBudgetBreakdownAvailableBalance() {
   resetInspectorMessage();
 
   if (!shouldRun()) return;
 
-  const $budgetBreakdownAvailableBalance = $('.budget-breakdown-available-balance', element);
+  const $budgetBreakdownAvailableBalance = $('.budget-breakdown-available-balance');
   if (!$budgetBreakdownAvailableBalance.length) return;
 
   const $inspectorMessageObjects = getInspectorMessageObjects();
   if (!$inspectorMessageObjects) return;
 
-  const budgetBreakdown = getEmberView(element.id);
-  if (!budgetBreakdown) return;
+  const inspectorCategories = getBudgetService()?.inspectorCategories;
+  if (!inspectorCategories) return;
 
-  const totals = categories.getTotals(budgetBreakdown);
+  const totals = categories.getTotals(inspectorCategories);
   if (!totals) return;
 
   inspectorMessageValues(totals, $inspectorMessageObjects);
