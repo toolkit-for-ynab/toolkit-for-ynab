@@ -1,4 +1,4 @@
-import { getRouter, controllerLookup } from './ember';
+import { getRouter, controllerLookup, serviceLookup } from './ember';
 
 export function getApplicationController() {
   return controllerLookup<YNABApplicationController>('application');
@@ -73,7 +73,11 @@ export function getApplicationService() {
 }
 
 export function getBudgetService() {
-  return getBudgetController()?.budgetService;
+  return serviceLookup<YNABBudgetService>('budget');
+}
+
+export function getRegisterGridService() {
+  return serviceLookup<YNABRegisterGridService>('registerGrid');
 }
 
 export function isCurrentMonthSelected() {
