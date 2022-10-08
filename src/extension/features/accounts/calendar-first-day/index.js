@@ -6,7 +6,13 @@ export class CalendarFirstDay extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('calendar', 'didInsertElement', this.adjustDays);
+    //
+  }
+
+  observe(changedNodes) {
+    if (!changedNodes.has('accounts-calendar')) return;
+
+    this.adjustDays(document.querySelector('.accounts-calendar'));
   }
 
   adjustDays(element) {
