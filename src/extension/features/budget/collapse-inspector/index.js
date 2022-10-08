@@ -16,9 +16,15 @@ export class CollapseInspector extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('budget/budget-inspector', 'didRender', this.updateDOM);
-
     this.setInspectorCollapsed(getToolkitStorageKey('collapse-inspector', false));
+  }
+
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (changedNodes.has('budget-inspector')) {
+      this.updateDOM();
+    }
   }
 
   collapseButton() {

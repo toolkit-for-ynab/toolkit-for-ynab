@@ -13,8 +13,16 @@ export class SubtractUpcomingFromAvailable extends Feature {
 
   invoke() {
     setCategoriesObject();
-    this.addToolkitEmberHook('budget-breakdown', 'didRender', this.handleBudgetBreakdown);
     this.addToolkitEmberHook('budget-table-row', 'didRender', handleBudgetTableRow);
+  }
+
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (changedNodes.has('budget-inspector-button')) {
+      handleBudgetBreakdownAvailableBalance();
+      handleBudgetBreakdownMonthlyTotals();
+    }
   }
 
   onRouteChanged() {
@@ -25,11 +33,6 @@ export class SubtractUpcomingFromAvailable extends Feature {
     destroyHelpers.resetInspectorMessage();
     destroyHelpers.removeBudgetBreakdownEntries();
     destroyHelpers.resetCategoryValues();
-  }
-
-  handleBudgetBreakdown(element) {
-    handleBudgetBreakdownAvailableBalance(element);
-    handleBudgetBreakdownMonthlyTotals(element);
   }
 }
 
