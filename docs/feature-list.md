@@ -261,6 +261,10 @@ Add an option to toggle the memo column under the account page's "View" menu
 
 Add a button to expand/collapse all splits for the current account register.
 
+## Add Reset Column Widths Button
+
+Adds button to reset column widths on in the accounts View menu.
+
 ## Add Scrollbars to Edit Menu
 
 Resize the edit menu to fit on the screen and add scrollbars.
