@@ -65,6 +65,20 @@ export class FilterCategories extends Feature {
       return;
     }
 
+    if (/^underfunded$/.test(text)) {
+      $('.budget-table-container .is-sub-category').each((_, el) => {
+        let element = getEmberView(el.id);
+        if (element.category.goalUnderFundedAmount === 0) {
+          console.log(element.category);
+          $(`#${element.elementId}`).addClass('tk-categories-filter-hidden');
+        }
+      });
+
+      $('.budget-table-container .is-master-category').addClass('tk-categories-filter-hidden');
+
+      return;
+    }
+
     if (/^available$/g.test(text)) {
       $('.budget-table-container .is-sub-category').each((_, el) => {
         let element = getEmberView(el.id);
@@ -72,6 +86,8 @@ export class FilterCategories extends Feature {
           $(`#${element.elementId}`).addClass('tk-categories-filter-hidden');
         }
       });
+
+      $('.budget-table-container .is-master-category').addClass('tk-categories-filter-hidden');
 
       return;
     }
