@@ -44,7 +44,7 @@ export class Feature {
     });
   }
 
-  observe(): void {
+  observe(changedNodes: Set<string>): void {
     /* stubbed listener function */
   }
 

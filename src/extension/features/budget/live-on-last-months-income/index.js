@@ -4,19 +4,17 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n, l10nMonth, MonthStyle } from 'toolkit/extension/utils/toolkit';
 
 export class LiveOnLastMonthsIncome extends Feature {
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    this.addToolkitEmberHook('budget-breakdown', 'didRender', this.injectLastMonthsIncome);
+  observe(changedNodes) {
+    if (changedNodes.has('budget-inspector-button')) {
+      this.injectLastMonthsIncome();
+    }
   }
 
   destroy() {
     document.querySelector('#tk-last-months-income')?.remove();
   }
 
-  injectLastMonthsIncome(element) {
+  injectLastMonthsIncome() {
     // Get current month and year
     const currentBudgetDate = getCurrentBudgetDate();
     const currentYear = parseInt(currentBudgetDate.year);
@@ -54,7 +52,7 @@ export class LiveOnLastMonthsIncome extends Feature {
 
     // Add the income from last month section and structure, if not already in place
     if ($('#tk-last-months-income').length === 0) {
-      $('.budget-breakdown-monthly-totals', element).after(
+      $('.budget-breakdown-monthly-totals').after(
         $('<section>', {
           class: 'card',
           id: 'tk-last-months-income',
@@ -91,15 +89,15 @@ export class LiveOnLastMonthsIncome extends Feature {
     const budgeted = currentBudgetCalculation?.budgeted || 0;
 
     // Create variance line
-    $('#tk-last-months-income .tk-title', element).text(
+    $('#tk-last-months-income .tk-title').text(
       `${l10n('toolkit.incomeIn', 'Income In')} ${incomeMonthName}`
     );
-    $('#tk-last-months-income .tk-value', element).text(formatCurrency(income));
+    $('#tk-last-months-income .tk-value').text(formatCurrency(income));
 
-    $('#tk-assigned-in-month .tk-title', element).text(
+    $('#tk-assigned-in-month .tk-title').text(
       `${l10n('toolkit.assignedIn', 'Assigned in')} ${currentMonthName}`
     );
-    $('#tk-assigned-in-month .tk-value', element).text(formatCurrency(budgeted));
-    $('#tk-variance-in-month .tk-value', element).text(formatCurrency(income - budgeted));
+    $('#tk-assigned-in-month .tk-value').text(formatCurrency(budgeted));
+    $('#tk-variance-in-month .tk-value').text(formatCurrency(income - budgeted));
   }
 }
