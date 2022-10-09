@@ -49,7 +49,7 @@ const EditMemo = () => {
           </div>
         )}
         {!isEditMode && (
-          <button onClick={() => setIsEditMode(true)}>
+          <button className="button-list" onClick={() => setIsEditMode(true)}>
             <i className="flaticon stroke document-1 ynab-new-icon"></i>
             {containerLookup('service:accounts').areChecked.length === 1
               ? l10n('toolkit.editMemo', 'Edit Memo')

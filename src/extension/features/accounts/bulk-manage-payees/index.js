@@ -32,13 +32,13 @@ export class BulkManagePayees extends Feature {
     // The second <li> functions as a separator on the menu after the feature menu item.
     $('.modal-account-edit-transaction-move').before(
       $(`<li id="tk-manage-payees">
-          <button class="toolkit-modal-select-budget-manage-payees">
+          <button class="button-list toolkit-modal-select-budget-manage-payees">
             <i class="ynab-new-icon ember-view flaticon stroke group"><!----></i>${menuText}
           </button>
         </li>
         <li><hr /><li>
       `).on('click', () => {
-        serviceLookup('accounts').send('openPayeeModal');
+        serviceLookup('accounts').openPayeeModal();
       })
     );
   }
