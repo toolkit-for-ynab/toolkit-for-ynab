@@ -1,48 +1,43 @@
 import * as React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
-import { componentAppend } from 'toolkit/extension/utils/react';
+import { getBudgetService } from 'toolkit/extension/utils/ynab';
+import * as ReactDOM from 'react-dom';
 import ReactMarkdown from 'react-markdown';
+
+const MARKDOWN_NOTES_CONTAINER_ID = 'tk-note-container';
 
 export class NotesAsMarkdown extends Feature {
   injectCSS() {
     return require('./styles.css');
   }
 
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    this.addToolkitEmberHook('budget/inspector/inspector-notes', 'didRender', this.applyMarkdown);
+  observe(changedNodes) {
+    if (changedNodes.has('inspector-notes') || changedNodes.has('inspector-notes is-editing')) {
+      this.applyMarkdown();
+    }
   }
 
   destroy() {
     document.querySelector('.inspector-category-note.tk-hidden')?.classList.remove('tk-hidden');
-    document.querySelector('.tk-markdown-note')?.remove();
+    document.getElementById(MARKDOWN_NOTES_CONTAINER_ID)?.remove();
   }
 
-  applyMarkdown = (element) => {
-    const view = getEmberView(element.getAttribute('id'));
-    const ynabNoteContainer = element.querySelector('.inspector-category-note');
-    if (!view || !ynabNoteContainer) {
+  applyMarkdown() {
+    const ynabNoteComponent = document.querySelector('.inspector-notes');
+    const ynabNoteContent = ynabNoteComponent.querySelector('.inspector-category-note');
+    if (!ynabNoteComponent || !ynabNoteContent) {
       return;
     }
 
-    const toolkitNoteContainer = element.querySelector('.tk-markdown-note');
-    const markdownGuide = ynabNoteContainer.querySelector('.tk-markdown-guide');
-    if (toolkitNoteContainer) {
-      toolkitNoteContainer.remove();
-    }
+    this._ensureContainerElement();
+    const toolkitNoteContainer = document.getElementById(MARKDOWN_NOTES_CONTAINER_ID);
 
-    if (markdownGuide) {
-      markdownGuide.remove();
-    }
+    const isEditing = ynabNoteComponent.classList.contains('is-editing');
+    if (isEditing) {
+      toolkitNoteContainer.classList.add('tk-hidden');
+      ynabNoteContent.classList.remove('tk-hidden');
 
-    if (view.isEditing) {
-      ynabNoteContainer.classList.remove('tk-hidden');
-
-      const textarea = ynabNoteContainer.querySelector('textarea');
+      const textarea = ynabNoteContent.querySelector('textarea');
       if (textarea) {
         textarea.style.height = '8rem';
         textarea.focus();
@@ -51,37 +46,48 @@ export class NotesAsMarkdown extends Feature {
       return;
     }
 
-    const handleClick = (event) => {
+    const note = getBudgetService()?.activeCategory?.subCategory?.note;
+    if (note) {
+      ynabNoteContent.classList.add('tk-hidden');
+      toolkitNoteContainer.classList.remove('tk-hidden');
+      ReactDOM.render(
+        <ReactMarkdown
+          linkTarget="_blank"
+          components={{
+            link: ({ href, children }) => (
+              <a href={href} target="_blank" rel="noopener noreferrer">
+                {children}
+              </a>
+            ),
+          }}
+        >
+          {note}
+        </ReactMarkdown>,
+        toolkitNoteContainer
+      );
+    } else {
+      toolkitNoteContainer.classList.add('tk-hidden');
+      ynabNoteContent.classList.remove('tk-hidden');
+    }
+  }
+
+  _ensureContainerElement() {
+    const ynabNoteComponent = document.querySelector('.inspector-notes');
+    if (!ynabNoteComponent) return;
+
+    if (document.getElementById(MARKDOWN_NOTES_CONTAINER_ID) !== null) return;
+
+    const toolkitNoteContainer = document.createElement('div');
+    toolkitNoteContainer.id = MARKDOWN_NOTES_CONTAINER_ID;
+    toolkitNoteContainer.addEventListener('click', (event) => {
       if (event.target.tagName === 'A') {
         event.stopPropagation();
         return;
       }
 
-      view.set('isEditing', true);
-    };
+      document.querySelector('.inspector-category-note').click();
+    });
 
-    const note = view.get('activeCategory.subCategory.note');
-    if (note) {
-      ynabNoteContainer.classList.add('tk-hidden');
-      componentAppend(
-        <div className="tk-markdown-note" onClick={handleClick}>
-          <ReactMarkdown
-            linkTarget="_blank"
-            components={{
-              link: ({ href, children }) => (
-                <a href={href} target="_blank" rel="noopener noreferrer">
-                  {children}
-                </a>
-              ),
-            }}
-          >
-            {note}
-          </ReactMarkdown>
-        </div>,
-        element
-      );
-    } else {
-      ynabNoteContainer.classList.remove('tk-hidden');
-    }
-  };
+    ynabNoteComponent.appendChild(toolkitNoteContainer);
+  }
 }
