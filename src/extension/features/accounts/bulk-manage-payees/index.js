@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { serviceLookup } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class BulkManagePayees extends Feature {
@@ -38,7 +38,7 @@ export class BulkManagePayees extends Feature {
         </li>
         <li><hr /><li>
       `).on('click', () => {
-        controllerLookup('accounts').send('openPayeeModal');
+        serviceLookup('accounts').send('openPayeeModal');
       })
     );
   }

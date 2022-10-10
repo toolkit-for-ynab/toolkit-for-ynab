@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
-import { getBudgetController, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { getEmberView } from 'toolkit/extension/utils/ember';
+import { getBudgetService, getEntityManager } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { Feature } from '../../feature';
 import { componentAfter } from 'toolkit/extension/utils/react';
@@ -30,12 +30,10 @@ const QuickBudgetButton = ({
 );
 
 export class CustomAverageBudgeting extends Feature {
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    this.addToolkitEmberHook('budget-breakdown', 'didRender', this._renderButton);
+  observe(changedNodes: Set<string>) {
+    if (changedNodes.has('budget-inspector-button')) {
+      this._renderButton();
+    }
   }
 
   _calculateAverage = () => {
@@ -49,7 +47,7 @@ export class CustomAverageBudgeting extends Feature {
     );
 
     const endDate = new Date();
-    endDate.setMonth(startDate.getMonth() - 1);
+    endDate.setMonth(endDate.getMonth() - 1);
     const endMonth = ynab.utilities.DateWithoutTime.createFromYearMonthDate(
       endDate.getFullYear(),
       endDate.getMonth(),
@@ -101,8 +99,8 @@ export class CustomAverageBudgeting extends Feature {
   };
 
   _getSelectedCategoryId = () => {
-    if (getBudgetController()?.checkedRowsCount === 1) {
-      return getBudgetController()?.checkedRows[0].categoryId;
+    if (getBudgetService()?.checkedRowsCount === 1) {
+      return getBudgetService()?.checkedRows[0].categoryId;
     }
 
     return null;
@@ -118,12 +116,9 @@ export class CustomAverageBudgeting extends Feature {
     }
   };
 
-  _renderButton = (element: Element) => {
+  _renderButton = () => {
     if (this._getSelectedCategoryId() == null) return;
-    const target = $(
-      '.inspector-quick-budget .option-groups button:contains("Average Spent")',
-      element
-    );
+    const target = $('.inspector-quick-budget .option-groups button:contains("Average Spent")');
     if (target.length === 0 || document.querySelector('#tk-average-months') !== null) {
       return;
     }

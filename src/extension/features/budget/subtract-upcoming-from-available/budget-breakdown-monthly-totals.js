@@ -1,24 +1,24 @@
 /* eslint-disable no-continue */
 import { formatCurrency, getCurrencyClass } from 'toolkit/extension/utils/currency';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
+import { getBudgetService } from 'toolkit/extension/utils/ynab';
 import * as categories from './categories';
 import { removeBudgetBreakdownEntries } from './destroy-helpers';
 import { shouldRun } from './index';
 
-export function handleBudgetBreakdownMonthlyTotals(element) {
+export function handleBudgetBreakdownMonthlyTotals() {
   // Remove budget breakdown entries if they exist.
   removeBudgetBreakdownEntries();
 
   if (!shouldRun()) return;
 
-  const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
+  const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals');
   if (!$budgetBreakdownMonthlyTotals.length) return;
 
-  const budgetBreakdown = getEmberView(element.id);
-  if (!budgetBreakdown) return;
+  const inspectorCategories = getBudgetService()?.inspectorCategories;
+  if (!inspectorCategories) return;
 
-  const totals = categories.getTotals(budgetBreakdown);
+  const totals = categories.getTotals(inspectorCategories);
   if (!totals) return;
 
   setBudgetBreakdown(totals, $budgetBreakdownMonthlyTotals);

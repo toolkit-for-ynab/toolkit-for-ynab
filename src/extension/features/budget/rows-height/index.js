@@ -2,7 +2,6 @@ import { Feature } from 'toolkit/extension/features/feature';
 
 export class RowsHeight extends Feature {
   injectCSS() {
-    console.log('this.settings.enabled:', this.settings.enabled);
     if (this.settings.enabled === '1') {
       return require('./compact.css');
     }
