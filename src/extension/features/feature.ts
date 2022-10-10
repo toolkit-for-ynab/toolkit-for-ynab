@@ -44,11 +44,11 @@ export class Feature {
     });
   }
 
-  observe(): void {
+  observe(changedNodes: Set<any>): void {
     /* stubbed listener function */
   }
 
-  onRouteChanged(): void {
+  onRouteChanged(route: any): void {
     /* stubbed listener function */
   }
 
