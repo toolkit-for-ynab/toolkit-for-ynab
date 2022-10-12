@@ -12,29 +12,30 @@ export class ReconcileBalance extends Feature {
   }
 
   shouldInvoke() {
-    let { selectedAccountId } = controllerLookup('accounts');
-    return selectedAccountId && isCurrentRouteAccountsPage();
+    return isCurrentRouteAccountsPage();
   }
 
   invoke() {
     // Get the current account id and calculate the current reconciled balance
-    let { selectedAccountId } = controllerLookup('accounts');
-    let reconciledBalance = formatCurrency(this._calculateReconciledBalance(selectedAccountId));
+    let accountsController = controllerLookup<YNABAccountsController>('accounts');
+    if (accountsController !== undefined) {
+      let { selectedAccountId } = accountsController;
+      let reconciledBalance = formatCurrency(this._calculateReconciledBalance(selectedAccountId));
+      // Retrieve or create the reconcile balance container
+      let balanceContainer = $(`#${TK_RECONCILE_BALANCE_ID}`);
+      if (!balanceContainer || balanceContainer.length === 0) {
+        $(YNAB_ACCOUNTS_HEADER_BALANCES).prepend(
+          `<div class="tk-accounts-header-balances-reconciled">
+          <span id="${TK_RECONCILE_BALANCE_ID}">${reconciledBalance}</span>
+          <div class="tk-accounts-header-reconcile-balance-label">Reconciled Balance</div>
+        </div>`
+        );
+      }
 
-    // Retrieve or create the reconcile balance container
-    let balanceContainer = $(`#${TK_RECONCILE_BALANCE_ID}`);
-    if (!balanceContainer || balanceContainer.length === 0) {
-      $(YNAB_ACCOUNTS_HEADER_BALANCES).prepend(
-        `<div class="tk-accounts-header-balances-reconciled">
-        <span id="${TK_RECONCILE_BALANCE_ID}">${reconciledBalance}</span>
-        <div class="tk-accounts-header-reconcile-balance-label">Reconciled Balance</div>
-      </div>`
-      );
+      // Update the reconcile balance with the most up to date balance
+      balanceContainer.text(reconciledBalance);
+      this._setFeatureVisibility(true);
     }
-
-    // Update the reconcile balance with the most up to date balance
-    balanceContainer.text(reconciledBalance);
-    this._setFeatureVisibility(true);
   }
 
   destroy() {
@@ -49,25 +50,31 @@ export class ReconcileBalance extends Feature {
     }
   }
 
-  observe(changedNodes) {
+  observe(changedNodes: Set<string>) {
     if (!this.shouldInvoke()) return;
 
+    console.log(changedNodes);
+
     // When the reconciled balance icon changes, reevaluate our balance
-    if (changedNodes.has('is-reconciled-icon svg-icon lock')) {
+    if (
+      changedNodes.has('is-reconciled-icon svg-icon lock') ||
+      changedNodes.has('accounts-header-reconcile button')
+    ) {
       this.invoke();
     }
   }
 
   /**
+   *
    * Calculate the a given accounts reconciled balance
-   * @param {String} accountId The account id to get the reconciled balance for
-   * @returns {Number} balance The reconciled balance of the account
+   *
    */
-  _calculateReconciledBalance = (accountId) => {
+
+  _calculateReconciledBalance = (accountId: string) => {
     const account = getEntityManager().getAccountById(accountId);
 
     return account.getTransactions().reduce((reduced, transaction) => {
-      if (transaction.cleared && !transaction.isTombstone && transaction.isReconciled()) {
+      if (transaction.cleared && !transaction.isTombstone && transaction.isReconciled?.()) {
         return reduced + transaction.amount;
       }
 
@@ -75,11 +82,7 @@ export class ReconcileBalance extends Feature {
     }, 0);
   };
 
-  /**
-   * Helper method to show and hide the reconcile balance container
-   * @param {Boolean} visible True to show the container, false to hide
-   */
-  _setFeatureVisibility = (visible) => {
+  _setFeatureVisibility = (visible: boolean) => {
     let featureContainer = $('.tk-accounts-header-balances-reconciled');
     if (featureContainer && featureContainer.length) {
       featureContainer.toggle(visible);

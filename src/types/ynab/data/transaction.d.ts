@@ -46,4 +46,5 @@ export interface YNABTransaction {
   ynabId: string | null;
 
   isUncleared?: () => boolean;
+  isReconciled?: () => boolean;
 }
