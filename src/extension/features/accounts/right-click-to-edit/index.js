@@ -30,7 +30,8 @@ export class RightClickToEdit extends Feature {
 
     const areChecked = containerLookup('service:accounts').areChecked;
     const accountsController = controllerLookup('accounts');
-    const { visibleTransactionDisplayItems } = accountsController?.transactionEditorService;
+    const visibleTransactionDisplayItems =
+      accountsController?.transactionEditorService?.visibleTransactionDisplayItems;
 
     const clickedTransactionId = $row.data().rowId;
     const clickedTransaction = visibleTransactionDisplayItems.find(
