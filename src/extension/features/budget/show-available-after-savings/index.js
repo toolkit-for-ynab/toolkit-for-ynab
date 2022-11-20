@@ -31,7 +31,7 @@ export class ShowAvailableAfterSavings extends Feature {
   showAvailableAfterSavings(context) {
     const inspectorCategories = getBudgetService().inspectorCategories;
 
-    const totalAvailable = inspectorCategories.reduce((p, c) => p + c.available);
+    const totalAvailable = inspectorCategories.reduce((p, c) => p + c.available, 0);
     const totalSavings = getTotalSavings(inspectorCategories);
     const totalAvailableAfterSavings = totalAvailable - totalSavings;
 
