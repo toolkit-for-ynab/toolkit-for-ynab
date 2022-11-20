@@ -18,24 +18,23 @@ export class ReconcileBalance extends Feature {
   invoke() {
     // Get the current account id and calculate the current reconciled balance
     let accountsController = controllerLookup<YNABAccountsController>('accounts');
-    if (accountsController !== undefined) {
-      let { selectedAccountId } = accountsController;
-      let reconciledBalance = formatCurrency(this._calculateReconciledBalance(selectedAccountId));
-      // Retrieve or create the reconcile balance container
-      let balanceContainer = $(`#${TK_RECONCILE_BALANCE_ID}`);
-      if (!balanceContainer || balanceContainer.length === 0) {
-        $(YNAB_ACCOUNTS_HEADER_BALANCES).prepend(
-          `<div class="tk-accounts-header-balances-reconciled">
+    if (accountsController === undefined) return;
+    let { selectedAccountId } = accountsController;
+    let reconciledBalance = formatCurrency(this._calculateReconciledBalance(selectedAccountId));
+    // Retrieve or create the reconcile balance container
+    let balanceContainer = $(`#${TK_RECONCILE_BALANCE_ID}`);
+    if (!balanceContainer || balanceContainer.length === 0) {
+      $(YNAB_ACCOUNTS_HEADER_BALANCES).prepend(
+        `<div class="tk-accounts-header-balances-reconciled">
           <span id="${TK_RECONCILE_BALANCE_ID}">${reconciledBalance}</span>
           <div class="tk-accounts-header-reconcile-balance-label">Reconciled Balance</div>
         </div>`
-        );
-      }
-
-      // Update the reconcile balance with the most up to date balance
-      balanceContainer.text(reconciledBalance);
-      this._setFeatureVisibility(true);
+      );
     }
+
+    // Update the reconcile balance with the most up to date balance
+    balanceContainer.text(reconciledBalance);
+    this._setFeatureVisibility(true);
   }
 
   destroy() {
@@ -53,12 +52,10 @@ export class ReconcileBalance extends Feature {
   observe(changedNodes: Set<string>) {
     if (!this.shouldInvoke()) return;
 
-    console.log(changedNodes);
-
     // When the reconciled balance icon changes, reevaluate our balance
     if (
       changedNodes.has('is-reconciled-icon svg-icon lock') ||
-      changedNodes.has('accounts-header-reconcile button')
+      changedNodes.has('modal-account-reconcile-reconciled')
     ) {
       this.invoke();
     }
