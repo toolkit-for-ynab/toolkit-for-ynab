@@ -3,4 +3,5 @@ interface YNABSubCategory {
   masterCategoryId?: string;
   note: string;
   sortableIndex: number;
+  goalTargetAmount?: number;
 }
