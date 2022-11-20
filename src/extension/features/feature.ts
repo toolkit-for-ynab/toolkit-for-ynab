@@ -48,7 +48,7 @@ export class Feature {
     /* stubbed listener function */
   }
 
-  onRouteChanged(route: any): void {
+  onRouteChanged(): void {
     /* stubbed listener function */
   }
 
