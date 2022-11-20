@@ -32,6 +32,10 @@ body.theme-classic {
   background-color: var(--tk-color-goal-warning-underfunded-hover);
 }
 
+.ynab-new-budget-bar-v2-segment.is-partially-funded {
+  background-color: var(--tk-color-goal-warning-underfunded);
+}
+
 /* inspector */
 .budget-inspector
   .budget-inspector-category-overview
