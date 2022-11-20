@@ -220,10 +220,10 @@ export class CalculateIRR extends Feature {
 
     for (var i = 0; i < inputs.transaction.length; i++) {
       let yearFraction = inputs.transaction[i].date.daysApart(currentDate) / 365;
-      npv -= (inputs.transaction[i].amount / 1000) * Math.pow(rate, yearFraction);
+      npv -= (inputs.transaction[i].amount / 1000) * rate ** yearFraction;
     }
     let yearFraction = currentDate.daysApart(inputs.fromDate) / 365;
-    npv -= (inputs.startingValue / 1000) * Math.pow(rate, yearFraction);
+    npv -= (inputs.startingValue / 1000) * rate ** yearFraction;
 
     return npv;
   };
@@ -236,11 +236,10 @@ export class CalculateIRR extends Feature {
 
     for (var i = 0; i < inputs.transaction.length; i++) {
       let yearFraction = inputs.transaction[i].date.daysApart(currentDate) / 365;
-      npv1 -=
-        yearFraction * (inputs.transaction[i].amount / 1000) * Math.pow(rate, yearFraction - 1);
+      npv1 -= yearFraction * (inputs.transaction[i].amount / 1000) * rate ** (yearFraction - 1);
     }
     let yearFraction = currentDate.daysApart(inputs.fromDate) / 365;
-    npv1 -= yearFraction * (inputs.startingValue / 1000) * Math.pow(rate, yearFraction - 1);
+    npv1 -= yearFraction * (inputs.startingValue / 1000) * rate ** (yearFraction - 1);
 
     return npv1;
   };
