@@ -53,6 +53,15 @@ export class DisplayUpcomingAmount extends Feature {
     });
   }
 
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    // This changes when overspending filter gets toggled
+    if (changedNodes.has('budget-table-container')) {
+      this.invoke();
+    }
+  }
+
   onRouteChanged() {
     if (!this.shouldInvoke()) return;
     this.invoke();
