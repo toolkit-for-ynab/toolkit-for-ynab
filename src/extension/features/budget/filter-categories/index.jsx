@@ -61,7 +61,21 @@ export class FilterCategories extends Feature {
 
   applySearch = (text) => {
     $('.tk-categories-filter-hidden').removeClass('tk-categories-filter-hidden');
+
     if (!text) {
+      return;
+    }
+
+    if (/^underfunded$/.test(text)) {
+      $('.budget-table-container .is-sub-category').each((_, el) => {
+        let element = getEmberView(el.id);
+        if (element.category.goalUnderFundedAmount === 0) {
+          $(`#${element.elementId}`).addClass('tk-categories-filter-hidden');
+        }
+      });
+
+      $('.budget-table-container .is-master-category').addClass('tk-categories-filter-hidden');
+
       return;
     }
 
@@ -70,9 +84,11 @@ export class FilterCategories extends Feature {
         let element = getEmberView(el.id);
         if (element.category.available === 0) {
           $(`#${element.elementId}`).addClass('tk-categories-filter-hidden');
+          $(`#${element.elementId}`)
+            .prev('.budget-table-container .is-master-category')
+            .addClass('tk-categories.filter-hidden');
         }
       });
-
       return;
     }
 
@@ -81,9 +97,11 @@ export class FilterCategories extends Feature {
         let element = getEmberView(el.id);
         if (element.category.available <= 0) {
           $(`#${element.elementId}`).addClass('tk-categories-filter-hidden');
+          $(`#${element.elementId}`)
+            .prev('.budget-table-container .is-master-category')
+            .addClass('tk-categories.filter-hidden');
         }
       });
-
       return;
     }
 
