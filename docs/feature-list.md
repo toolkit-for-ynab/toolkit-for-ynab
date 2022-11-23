@@ -299,7 +299,7 @@ Move the notification bar to the bottom as an overlay preventing transactions fr
 
 ## Bulk Edit Memos
 
-Add an option to the "Edit Transaction(s)" menu to "Edit Memo(s)" for all selected transactions.
+Add an option to the "Edit Transaction(s)" menu to "Edit Memo(s)" for all selected transactions. Allows adding a prefix or a suffix to selected memos.
 
 ## Bulk Edit Payees
 
