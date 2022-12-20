@@ -1,8 +1,0 @@
-.tk-goal-indicator {
-  color: gray;
-  padding-left: 0.5em;
-}
-
-.tk-goal-indicator:last-child {
-  padding-right: 0.5em;
-}
