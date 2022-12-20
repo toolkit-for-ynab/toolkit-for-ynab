@@ -77,7 +77,7 @@ function run(callback) {
 
 function gatherNewSettings() {
   return new Promise((resolve, reject) => {
-    glob(path.join(NEW_SETTINGS_PROJECT_DIR, '**', 'settings.js'), (error, files) => {
+    glob(`${NEW_SETTINGS_PROJECT_DIR}/**/settings.{js,ts}`, (error, files) => {
       if (error) return reject(error);
 
       resolve(
