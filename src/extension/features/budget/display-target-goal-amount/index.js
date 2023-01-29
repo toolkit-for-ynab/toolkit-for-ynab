@@ -46,8 +46,20 @@ export class DisplayTargetGoalAmount extends Feature {
 
       if (category) {
         category.subCategories.forEach((subcategory) => {
-          if (subcategory.goalTargetAmount) {
-            categorySum += subcategory.goalTargetAmount;
+          if (subcategory.monthlySubCategoryBudgetCalculation) {
+            if (subcategory.monthlySubCategoryBudgetCalculation.isGoalValidForMonth) {
+              switch (subcategory.goalType) {
+                case ynab.constants.SubCategoryGoalType.TargetBalance:
+                  categorySum += subcategory.goalTargetAmount || 0;
+                  break;
+                case ynab.constants.SubCategoryGoalType.MonthlyFunding:
+                case ynab.constants.SubCategoryGoalType.Needed:
+                case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
+                case ynab.constants.SubCategoryGoalType.DebtPayment:
+                  categorySum += subcategory.monthlySubCategoryBudgetCalculation.goalTarget;
+                  break;
+              }
+            }
           }
         });
       }

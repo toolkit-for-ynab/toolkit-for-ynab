@@ -6,3 +6,7 @@
 .tk-goal-indicator:last-child {
   padding-right: 0.5em;
 }
+
+.is-master-category .tk-budget-table-cell-goal .tk-goal-sum-amount {
+  margin-right: 1.5em;
+}
