@@ -1,0 +1,17 @@
+/* Sidebar Numbers */
+.nav-account.loan .negative {
+  background-color: #fff !important;
+  background-color: var(--sidebar_account_negative_balance_background) !important;
+  color: #ca481d !important;
+  color: var(--label_negative) !important;
+  border-radius: 1em;
+  display: block;
+  font-weight: 700 !important;
+  margin: 0 -0.265rem 0.2rem 0.5rem !important;
+  margin-bottom: 0.2em;
+  margin-right: -0.265rem;
+  padding: 0 0.4em !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
