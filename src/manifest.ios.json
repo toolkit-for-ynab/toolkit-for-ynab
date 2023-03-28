@@ -1,7 +1,11 @@
 {
   "content_scripts": [
     {
-      "matches": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"],
+      "matches": [
+        "http://*.youneedabudget.com/*",
+        "https://*.youneedabudget.com/*",
+        "https://app.ynab.com/*"
+      ],
       "all_frames": true,
       "run_at": "document_idle",
       "js": ["content-scripts/extension-bridge.js"]
@@ -23,5 +27,10 @@
     "default_title": "Toolkit for YNAB",
     "default_popup": "popup/index.html"
   },
-  "permissions": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*", "storage"]
+  "permissions": [
+    "http://*.youneedabudget.com/*",
+    "https://*.youneedabudget.com/*",
+    "https://app.ynab.com/*",
+    "storage"
+  ]
 }
