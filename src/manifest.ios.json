@@ -4,7 +4,8 @@
       "matches": [
         "http://*.youneedabudget.com/*",
         "https://*.youneedabudget.com/*",
-        "https://app.ynab.com/*"
+        "https://*.ynab.com/*",
+        "http://*.ynab.com/*"
       ],
       "all_frames": true,
       "run_at": "document_idle",
@@ -30,7 +31,8 @@
   "permissions": [
     "http://*.youneedabudget.com/*",
     "https://*.youneedabudget.com/*",
-    "https://app.ynab.com/*",
+    "https://*.ynab.com/*",
+    "http://*.ynab.com/*",
     "storage"
   ]
 }
