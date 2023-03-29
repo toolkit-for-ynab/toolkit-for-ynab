@@ -5,7 +5,12 @@
   "version": "3.5.0",
   "content_scripts": [
     {
-      "matches": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"],
+      "matches": [
+        "http://*.youneedabudget.com/*", 
+        "https://*.youneedabudget.com/*",
+        "http://*.ynab.com/*",
+        "https://*.ynab.com/*"
+      ],
       "all_frames": true,
       "run_at": "document_idle",
       "js": ["content-scripts/extension-bridge.js"]
