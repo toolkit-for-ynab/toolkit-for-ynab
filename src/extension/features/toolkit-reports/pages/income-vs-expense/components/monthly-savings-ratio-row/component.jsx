@@ -17,7 +17,7 @@ export const MonthlySavingsRatioRow = (props) => {
   );
 
   let allMonthsRatioTotal = 0;
-  if (allMonthsIncomeTotal >= allMonthsExpenseTotal) {
+  if (allMonthsIncomeTotal !== 0 && allMonthsIncomeTotal >= allMonthsExpenseTotal) {
     allMonthsRatioTotal = 1 - allMonthsExpenseTotal / allMonthsIncomeTotal;
   }
 
@@ -38,7 +38,7 @@ export const MonthlySavingsRatioRow = (props) => {
           const incomeTotal = incomeMonthData.get('total');
           const expenseTotal = Math.abs(expenseMonthData.get('total'));
           let ratio = 0;
-          if (incomeTotal >= expenseTotal) {
+          if (incomeTotal !== 0 && incomeTotal >= expenseTotal) {
             ratio = 1 - expenseTotal / incomeTotal;
           }
 
