@@ -24,6 +24,10 @@ Choose between smaller and cleaner scrollbars across the application.
 
 Adds an underline to account names in the sidebar that have transactions to be imported. Hovering over the account name will display the number of transactions waiting to be imported.
 
+## Emphasize Negative Loans
+
+Emphasize loans with negative balances similar to how other negative accounts are emphasized.
+
 ## Emphasize Negative Numbers
 
 Make all round borders on all negative numbers square making them a bit more of an eyesore so you want to get rid of them!
@@ -308,6 +312,10 @@ Add an option to the "Edit Transaction(s)" menu to "Manage Payee(s)" for all sel
 ## Calculate Internal Rate of Return
 
 Calculate Internal Rate of Return for Tracking Accounts. Set Tracking Account contributions to this color to calculate IRR
+
+## Compact Account Header
+
+Compact the account header. Something reminescent of the old-style account headers.
 
 ## Confirm Transaction Edit Cancellation
 
