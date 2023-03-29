@@ -30,7 +30,12 @@
   "web_accessible_resources": [
     {
       "resources": ["assets/*", "web-accessibles/*"],
-      "matches": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"]
+      "matches": [
+        "http://*.youneedabudget.com/*", 
+        "https://*.youneedabudget.com/*",
+        "http://*.ynab.com/*",
+        "https://*.ynab.com/*"
+      ]
     }
   ],
   "background": {
@@ -48,5 +53,10 @@
     "default_popup": "popup/index.html"
   },
   "permissions": ["storage"],
-  "host_permissions": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"]
+  "host_permissions": [
+    "http://*.youneedabudget.com/*", 
+    "https://*.youneedabudget.com/*",
+    "http://*.ynab.com/*",
+    "https://*.ynab.com/*"
+  ],
 }
