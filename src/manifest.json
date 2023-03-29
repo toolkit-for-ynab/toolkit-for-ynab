@@ -5,7 +5,12 @@
   "version": "3.5.0",
   "content_scripts": [
     {
-      "matches": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"],
+      "matches": [
+        "http://*.youneedabudget.com/*",
+        "https://*.youneedabudget.com/*",
+        "https://*.ynab.com/*",
+        "http://*.ynab.com/*"
+      ],
       "all_frames": true,
       "run_at": "document_idle",
       "js": ["content-scripts/extension-bridge.js"]
@@ -25,7 +30,12 @@
   "web_accessible_resources": [
     {
       "resources": ["assets/*", "web-accessibles/*"],
-      "matches": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"]
+      "matches": [
+        "http://*.youneedabudget.com/*",
+        "https://*.youneedabudget.com/*",
+        "https://*.ynab.com/*",
+        "http://*.ynab.com/*"
+      ]
     }
   ],
   "background": {
@@ -43,5 +53,10 @@
     "default_popup": "popup/index.html"
   },
   "permissions": ["storage"],
-  "host_permissions": ["http://*.youneedabudget.com/*", "https://*.youneedabudget.com/*"]
+  "host_permissions": [
+    "http://*.youneedabudget.com/*",
+    "https://*.youneedabudget.com/*",
+    "https://*.ynab.com/*",
+    "http://*.ynab.com/*"
+  ]
 }
