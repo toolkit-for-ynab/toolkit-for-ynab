@@ -22,6 +22,8 @@ export class SplitTransactionTabExpand extends Feature {
   applyNewTabBehavior(event) {
     // If tab was pressed, simulate a mouse click on the "Add another split" button
     if (event.keyCode === 9 && !event.shiftKey) {
+      $(event.target).trigger('blur');
+
       let addSplitButton = $('.ynab-grid-split-add-sub-transaction');
       if (addSplitButton.length !== 0) {
         // The YNAB app checks the detail property isn't 0, so .click() won't work
