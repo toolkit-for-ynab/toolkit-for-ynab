@@ -1,13 +1,6 @@
-.tk-markdown-note {
+#tk-note-container {
   position: relative;
   min-height: 8rem;
-}
-
-.tk-markdown-guide {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  font-size: 0.7rem;
 }
 
 .inspector-notes.is-editing .inspector-category-note {

@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
+import { getBudgetService } from 'toolkit/extension/utils/ynab';
 
 export class TargetBalanceWarning extends Feature {
   shouldInvoke() {
@@ -8,7 +9,14 @@ export class TargetBalanceWarning extends Feature {
 
   invoke() {
     this.addToolkitEmberHook('budget-table-row', 'didRender', this.modifyBudgetRow);
-    this.addToolkitEmberHook('budget-breakdown', 'didRender', this.modifyInspector);
+  }
+
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (changedNodes.has('budget-inspector-button')) {
+      this.modifyInspector();
+    }
   }
 
   destroy() {
@@ -35,8 +43,8 @@ export class TargetBalanceWarning extends Feature {
     }
   }
 
-  modifyInspector(element) {
-    const category = getEmberView(element.id).activeCategory;
+  modifyInspector() {
+    const category = getBudgetService()?.activeCategory;
     if (!category) {
       return;
     }
@@ -45,6 +53,8 @@ export class TargetBalanceWarning extends Feature {
     if (goalType !== 'TB') {
       return;
     }
+
+    const element = $('.budget-inspector');
 
     $('.ynab-new-budget-available-number', element).addClass('goal');
 

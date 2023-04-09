@@ -5,6 +5,7 @@ import { IncomeVsExpense } from 'toolkit-reports/pages/income-vs-expense';
 import { NetWorth } from 'toolkit-reports/pages/net-worth';
 import { InflowOutflow } from 'toolkit-reports/pages/inflow-outflow';
 import { BalanceOverTime } from 'toolkit-reports/pages/balance-over-time';
+import { OutflowOverTime } from 'toolkit-reports/pages/outflow-over-time';
 import { SpendingByPayee } from 'toolkit-reports/pages/spending-by-payee';
 import { SpendingByCategory } from 'toolkit-reports/pages/spending-by-category';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
@@ -42,6 +43,14 @@ const REPORT_COMPONENTS = [
   {
     component: BalanceOverTime,
     key: ReportKeys.BalanceOverTime,
+    filterSettings: {
+      disableCategoryFilter: true,
+      includeTrackingAccounts: true,
+    },
+  },
+  {
+    component: OutflowOverTime,
+    key: ReportKeys.OutflowOverTime,
     filterSettings: {
       disableCategoryFilter: true,
       includeTrackingAccounts: true,

@@ -33,3 +33,9 @@
 .budget-inspector[tk-collapse-inspector] .budget-inspector-content > *:not(.tk-collapse-inspector) {
   display: none;
 }
+
+@media print {
+  .budget-inspector[tk-collapse-inspector] {
+    display: none;
+  }
+}

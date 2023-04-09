@@ -1,4 +1,4 @@
-import { getRouter, controllerLookup } from './ember';
+import { getRouter, controllerLookup, serviceLookup } from './ember';
 
 export function getApplicationController() {
   return controllerLookup<YNABApplicationController>('application');
@@ -21,7 +21,7 @@ export function getEntityManager() {
 }
 
 export function getCurrentBudgetDate() {
-  const date = getBudgetController()?.monthString;
+  const date = getSelectedMonth()?.format('YYYYMM');
   return { year: date?.slice(0, 4), month: date?.slice(4, 6) };
 }
 
@@ -65,16 +65,19 @@ export function getBudgetViewModel() {
 }
 
 export function getSelectedMonth() {
-  const monthString = getBudgetController()?.monthString;
-  if (monthString) {
-    return ynab.utilities.DateWithoutTime.createFromString(monthString, 'YYYYMM');
-  }
-
-  return null;
+  return getBudgetViewModel()?.month;
 }
 
 export function getApplicationService() {
   return getApplicationController()?.applicationService;
+}
+
+export function getBudgetService() {
+  return serviceLookup<YNABBudgetService>('budget');
+}
+
+export function getRegisterGridService() {
+  return serviceLookup<YNABRegisterGridService>('registerGrid');
 }
 
 export function isCurrentMonthSelected() {

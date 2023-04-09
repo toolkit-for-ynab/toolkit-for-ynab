@@ -3,11 +3,11 @@ const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
 
-const FEATURES_PROJECT_DIR = path.join('src', 'extension', 'features');
+const FEATURES_PROJECT_DIR = 'src/extension/features';
 const FEATURES_INDEX_PROJECT_PATH = path.join(FEATURES_PROJECT_DIR, 'index.ts');
 
 function run(callback) {
-  glob(`${FEATURES_PROJECT_DIR}/*/**/settings.js`, (error, files) => {
+  glob(`${FEATURES_PROJECT_DIR}/**/settings.js`, (error, files) => {
     if (error) return callback(error);
 
     let imports = [];

@@ -1,5 +1,4 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class ScrollableEditMenu extends Feature {
   injectCSS() {
@@ -7,7 +6,7 @@ export class ScrollableEditMenu extends Feature {
   }
 
   shouldInvoke() {
-    return isCurrentRouteAccountsPage();
+    return true;
   }
 
   invoke() {

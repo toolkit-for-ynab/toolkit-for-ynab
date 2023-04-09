@@ -27,9 +27,9 @@ export function ensureGoalColumn(element: HTMLElement | null): boolean {
     return false;
   }
 
-  const $goalContainer = $('<li>', { class: GOAL_TABLE_CELL_CLASSNAME }).text(
-    isBudgetHeaderLabels ? 'GOAL' : ''
-  );
+  const $goalContainer = $('<div>', {
+    class: `${GOAL_TABLE_CELL_CLASSNAME} budget-table-row-li`,
+  }).text(isBudgetHeaderLabels ? 'GOAL' : '');
 
   $('.budget-table-cell-name', element).after($goalContainer);
   if (!isBudgetHeaderLabels) {

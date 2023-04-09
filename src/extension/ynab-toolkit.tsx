@@ -192,9 +192,9 @@ export class YNABToolkit {
   private setupErrorTracking = () => {
     window.addEventListener('error', ({ error }) => {
       let serializedError = '';
-      if (error.message && error.stack) {
+      if (error?.message && error?.stack) {
         serializedError = `${error.message}\n${error.stack.toString()}`;
-      } else if (error.message) {
+      } else if (error?.message) {
         serializedError = error.message;
       }
 
@@ -216,11 +216,11 @@ export class YNABToolkit {
         const hooks = self[emberComponentToolkitHookKey(lifecycleName)];
         if (hooks) {
           hooks.forEach(({ context, fn, guard }) => {
-            if (guard && !guard(self.element)) {
+            if (guard && !guard(self.element as HTMLElement)) {
               return;
             }
 
-            fn.call(context, self.element);
+            fn.call(context, self.element as HTMLElement);
           });
         }
       };

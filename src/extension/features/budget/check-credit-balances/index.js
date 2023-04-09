@@ -1,12 +1,11 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import {
-  getSelectedMonth,
-  getEntityManager,
+  getBudgetService,
+  isCurrentMonthSelected,
   isCurrentRouteBudgetPage,
 } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class CheckCreditBalances extends Feature {
   injectCSS() {
@@ -14,236 +13,126 @@ export class CheckCreditBalances extends Feature {
   }
 
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
-  }
-
-  destroy() {
-    $('#tk-rectify-difference').remove();
-    $('[data-tk-pif-assist]').removeAttr('data-tk-pif-assist');
+    return isCurrentRouteBudgetPage() && isCurrentMonthSelected();
   }
 
   invoke() {
-    const today = ynab.utilities.DateWithoutTime.createForToday();
-
-    if (today.equalsByMonth(getSelectedMonth())) {
-      this.processDebtAccounts();
-    } else {
-      $('#tk-rectify-difference').remove();
-    }
+    this.addRectifyDifferenceButton();
+    this.addToolkitEmberHook('budget-table-row', 'didRender', this.checkCategoryForDifference);
   }
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (
-      changedNodes.has('budget-number user-data') ||
-      changedNodes.has('navlink-budget active') ||
-      changedNodes.has('budget-inspector') ||
-      changedNodes.has(
-        'budget-table-row js-budget-table-row is-sub-category is-debt-payment-category is-checked'
-      ) ||
-      changedNodes.has(
-        'budget-table-row js-budget-table-row is-sub-category is-debt-payment-category'
-      ) ||
-      changedNodes.has('to-be-budgeted-amount')
-    ) {
-      this.invoke();
+    if (changedNodes.has('budget-inspector-button')) {
+      this.addRectifyDifferenceButton();
     }
   }
 
   onRouteChanged() {
     if (!this.shouldInvoke()) return;
-
     this.invoke();
   }
 
-  getDebtCategories() {
-    const entityManager = getEntityManager();
-    const debtMasterCategory = entityManager.masterCategoriesCollection.find((c) => {
-      return c.get('internalName') === ynab.constants.InternalCategories.DebtPaymentMasterCategory;
-    });
-
-    const debtAccounts = getEntityManager()
-      .getAllSubCategories()
-      .filter((c) => {
-        return (
-          !c.get('isTombstone') && c.get('masterCategoryId') === debtMasterCategory.get('entityId')
-        );
-      });
-
-    return debtAccounts || [];
+  destroy() {
+    document.querySelectorAll('#tk-rectify-difference').forEach((el) => el.remove());
+    document
+      .querySelectorAll('[data-tk-pif-assist]')
+      .forEach((el) => el.removeAttribute('data-tk-pif-assist'));
   }
 
-  processDebtAccounts() {
-    const debtCategories = this.getDebtCategories();
-    let foundButton = false;
-    let inspectorWarning = false;
-
-    debtCategories.forEach((debtCategory) => {
-      const { accountCalculationsCollection, monthlySubCategoryBudgetCalculationsCollection } =
-        getEntityManager();
-
-      // Not sure why but sometimes on a reload (F5 or CTRL-R) of YNAB, the accountId field
-      // is null which if not handled throws an error and kills the feature.
-      if (debtCategory.accountId !== null) {
-        const debtCategoryId = debtCategory.get('entityId');
-        const debtAccountId = debtCategory.get('accountId');
-
-        const currentMonth = getSelectedMonth().format('YYYY-MM');
-        const monthlyBudget = monthlySubCategoryBudgetCalculationsCollection.findItemByEntityId(
-          `mcbc/${currentMonth}/${debtCategoryId}`
-        );
-        const calculation = accountCalculationsCollection.find(
-          (c) => c.get('accountId') === debtAccountId
-        );
-        if (!calculation) {
-          return;
-        }
-
-        const balance = calculation.clearedBalance + calculation.unclearedBalance;
-        let available = 0;
-        if (monthlyBudget) {
-          available = monthlyBudget.balance;
-        }
-
-        // ensure that available is >= zero, otherwise don't update
-        if (available >= 0) {
-          // If cleared balance is positive, bring available to 0, otherwise offset by the correct amount
-          let difference = 0;
-          if (balance > 0) {
-            difference = -available;
-          } else {
-            difference = -(available + balance);
-          }
-
-          const isInspectorShowing = this.updateInspectorButton(debtCategory.name, difference);
-          foundButton ||= isInspectorShowing;
-
-          if (balance < 0 && available !== balance * -1) {
-            this.addWarning(debtCategoryId);
-            inspectorWarning ||= isInspectorShowing;
-          } else {
-            this.removeWarning(debtCategoryId);
-          }
-        }
-      }
-    });
-
-    if (!foundButton) {
-      $('#tk-rectify-difference').remove();
-    }
+  addRectifyDifferenceButton() {
+    if (!isCurrentMonthSelected()) return;
 
     const inspectorElement = document.querySelector('.budget-inspector');
-    if (inspectorElement) {
-      if (inspectorWarning) {
-        inspectorElement.setAttribute('data-tk-pif-assist', 'true');
-      } else {
-        inspectorElement.removeAttribute('data-tk-pif-assist');
-      }
-    }
+    if (!inspectorElement) return;
+
+    const buttonDivExists = document.querySelector('#tk-rectify-difference');
+    if (buttonDivExists) buttonDivExists.remove();
+
+    // We only want to add the button if one category is selected. The budget inspector only sets activeCategory if one category is selected.
+    const category = getBudgetService().activeCategory;
+    if (!category) return;
+    if (!category.isCreditCardPaymentCategory) return;
+
+    const difference = this.calculateDifference(category);
+    // If there is a difference, add warning. If available is less than 0, YNAB will show underfunded warning so we don't need to add ours.
+    if (difference && category.available >= 0)
+      inspectorElement.setAttribute('data-tk-pif-assist', 'true');
+    else inspectorElement.removeAttribute('data-tk-pif-assist');
+
+    const formattedDifference =
+      difference >= 0 ? `+${formatCurrency(difference)}` : formatCurrency(difference);
+    const categoryElement = document.querySelector(`[data-entity-id="${category.categoryId}"]`);
+    const currencyInput = categoryElement.querySelector('.ynab-new-currency-input');
+    if (!currencyInput) return;
+    const input = currencyInput.querySelector('input');
+    const rectifyDifference = (event) => {
+      currencyInput.click();
+      input.value = ynab.formatCurrency(category.budgeted + difference);
+      input.blur();
+      event.currentTarget.setAttribute('disabled', true); // Disable button once it's clicked.
+    };
+    const buttonDiv = this.createButton(formattedDifference, rectifyDifference);
+
+    const quickBudget = document.querySelector('.inspector-quick-budget');
+    if (!quickBudget) return;
+    const quickBudgetButtons = quickBudget.querySelector('.option-groups');
+    if (quickBudgetButtons) quickBudgetButtons.appendChild(buttonDiv);
+
+    const button = document.querySelector('#tk-rectify-difference-btn');
+    if (!button) return;
+    if (difference) button.removeAttribute('disabled');
+    else button.setAttribute('disabled', true);
   }
 
-  addWarning(debtCategoryId) {
-    const debtRowElement = document.querySelector(`[data-entity-id="${debtCategoryId}"]`);
-    if (debtRowElement) {
-      debtRowElement.setAttribute('data-tk-pif-assist', 'true');
-    }
+  checkCategoryForDifference(categoryElement) {
+    if (!isCurrentMonthSelected()) return;
+
+    const category = getEmberView(categoryElement.id).category;
+    if (!category) return;
+    if (!category.isCreditCardPaymentCategory) return;
+
+    const difference = this.calculateDifference(category);
+    if (difference && category.available >= 0)
+      categoryElement.setAttribute('data-tk-pif-assist', 'true');
+    else categoryElement.removeAttribute('data-tk-pif-assist');
   }
 
-  removeWarning(debtCategoryId) {
-    const debtRowElement = document.querySelector(`[data-entity-id="${debtCategoryId}"]`);
-    if (debtRowElement) {
-      debtRowElement.removeAttribute('data-tk-pif-assist');
-    }
+  calculateDifference(category) {
+    const balance = category.subCategoryAccountBalance;
+    const available = category.available;
+    return balance > 0 ? -available : -(available + balance); // If balance is positive, bring available to 0. Otherwise offset by the correct amount.
   }
 
-  updateInspectorButton(name, difference) {
-    let inspectorName = $('.inspector-category-name.user-data').text().trim();
+  // Returns an element that is structured like the other budget inspector buttons.
+  createButton(formattedDifference, onClick) {
+    const buttonAmount = document.createElement('span');
+    buttonAmount.setAttribute('class', 'user-data currency zero');
+    buttonAmount.innerText = formattedDifference;
 
-    if (name && name === inspectorName) {
-      let fDifference = formatCurrency(difference);
-      let positive = '';
-      if (ynab.unformat(difference) >= 0) {
-        positive = '+';
-      }
+    const buttonContent = document.createElement('strong');
+    buttonContent.setAttribute('class', 'user-data');
+    buttonContent.setAttribute('title', formattedDifference);
+    buttonContent.appendChild(buttonAmount);
 
-      let button = $('#tk-rectify-difference');
-      if (!button.length) {
-        button = $('<a>', {
-          id: 'tk-rectify-difference',
-          class: 'budget-inspector-button',
-        }).on('click', this.updateCreditBalances);
+    const buttonContentDiv = document.createElement('div');
+    buttonContentDiv.appendChild(buttonContent);
 
-        $('.inspector-quick-budget').append(button);
-      }
+    const buttonText = document.createElement('div');
+    buttonText.innerText = 'Rectify Difference';
 
-      button
-        .data('name', name)
-        .data('difference', difference)
-        .empty()
-        .append(l10n('toolkit.checkCreditBalances', 'Rectify Difference'))
-        .append(
-          $('<strong>', { class: 'user-data', title: fDifference }).append(
-            $('<span>', { class: 'user-data currency zero' }).text(
-              `${positive}${formatCurrency(difference)}`
-            )
-          )
-        );
+    const button = document.createElement('button');
+    button.setAttribute('id', 'tk-rectify-difference-btn');
+    button.setAttribute('class', 'budget-inspector-button');
+    button.addEventListener('click', onClick);
+    button.appendChild(buttonText);
+    button.appendChild(buttonContentDiv);
 
-      if (difference !== 0) {
-        button.removeAttr('disabled');
-      } else {
-        button.attr('disabled', true);
-      }
+    const buttonDiv = document.createElement('div');
+    buttonDiv.setAttribute('id', 'tk-rectify-difference');
+    buttonDiv.appendChild(button);
 
-      return true;
-    }
-    return false;
-  }
-
-  updateCreditBalances() {
-    if (ynabToolKit.options.QuickBudgetWarning) {
-      // no need to confirm quick budget if zero budgeted
-      if (
-        !$(
-          'div.budget-table ul.budget-table-row.is-checked li.budget-table-cell-budgeted .currency'
-        ).hasClass('zero')
-      ) {
-        if (!window.confirm('Are you sure you want to budget this amount?')) {
-          // eslint-disable-line no-alert
-          return;
-        }
-      }
-    }
-
-    let name = $(this).data('name');
-    let difference = $(this).data('difference');
-    let debtPaymentCategories = $('.is-debt-payment-category.is-sub-category');
-
-    $(debtPaymentCategories).each(function () {
-      let view = getEmberView(this.id);
-      if (!view || !view.category) {
-        return;
-      }
-
-      const accountName = view.category.displayName;
-      if (accountName === name) {
-        let input = $(this)
-          .find('.budget-table-cell-budgeted div.ynab-new-currency-input')
-          .trigger('click')
-          .find('input');
-
-        let newValue = view.category.budgeted + difference;
-
-        // format the calculated value back to selected number format
-        input.val(ynab.formatCurrency(newValue));
-
-        if (!ynabToolKit.options.QuickBudgetWarning) {
-          // only seems to work if the confirmation doesn't pop up?
-          // haven't figured out a way to properly blur otherwise
-          input.trigger('blur');
-        }
-      }
-    });
+    return buttonDiv;
   }
 }

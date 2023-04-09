@@ -11,5 +11,11 @@ export class RowsHeight extends Feature {
     if (this.settings.enabled === '3') {
       return require('./slim-fonts.css');
     }
+    if (this.settings.enabled === '4') {
+      return require('./medium.css');
+    }
+    if (this.settings.enabled === '5') {
+      return require('./large.css');
+    }
   }
 }

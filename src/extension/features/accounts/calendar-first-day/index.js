@@ -1,12 +1,10 @@
 import { Feature } from 'toolkit/extension/features/feature';
 
 export class CalendarFirstDay extends Feature {
-  shouldInvoke() {
-    return true;
-  }
+  observe(changedNodes) {
+    if (!changedNodes.has('accounts-calendar')) return;
 
-  invoke() {
-    this.addToolkitEmberHook('calendar', 'didInsertElement', this.adjustDays);
+    this.adjustDays(document.querySelector('.accounts-calendar'));
   }
 
   adjustDays(element) {

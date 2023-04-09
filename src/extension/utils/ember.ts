@@ -1,5 +1,9 @@
-export function getEmberView(viewId: string) {
-  return getViewRegistry()[viewId];
+export function getEmberView<T extends unknown>(viewId: string | undefined): T | undefined {
+  if (!viewId) {
+    return undefined;
+  }
+
+  return getViewRegistry()[viewId] as T | undefined;
 }
 
 export function getRouter() {

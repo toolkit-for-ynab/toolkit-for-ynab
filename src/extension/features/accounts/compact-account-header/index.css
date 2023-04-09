@@ -1,0 +1,22 @@
+.new-account-header .account-info-small-text {
+  display: none !important;
+}
+
+.new-account-header .accounts-header-actions .reconcile-button-and-label {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.new-account-header .accounts-header-balances .accounts-header-balances-amount-negative,
+.new-account-header .accounts-header-balances .accounts-header-balances-cleared .currency.negative,
+.new-account-header
+  .accounts-header-balances
+  .accounts-header-balances-uncleared
+  .currency.negative,
+.new-account-header .accounts-header-balances .accounts-header-balances-working .currency.negative,
+.new-account-header .accounts-header-balances .accounts-header-overspending .currency.negative,
+.new-account-header .accounts-header-balances .accounts-header-payment .currency.negative,
+.new-account-header .accounts-header-balances .accounts-header-selected-total .currency.negative {
+  color: #ca481d !important;
+}

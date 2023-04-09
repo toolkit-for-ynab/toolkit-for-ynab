@@ -29,10 +29,47 @@ export class DisplayTargetGoalAmount extends Feature {
 
   invoke() {
     this.addToolkitEmberHook('budget-table-row', 'didRender', this.addTargetGoalAmount);
+    this.addToolkitEmberHook('budget-table-row', 'didRender', this._addSums);
   }
 
   destroy() {
     $('.tk-target-goal-amount').remove();
+  }
+
+  _addSums() {
+    $('.tk-goal-sum-amount').remove();
+
+    let masterCategories = $('.budget-table-row.is-master-category');
+    [...masterCategories].forEach((element) => {
+      var categorySum = 0;
+      let category = getEmberView(element.id);
+
+      if (category) {
+        category.subCategories.forEach((subcategory) => {
+          if (subcategory.monthlySubCategoryBudgetCalculation) {
+            if (subcategory.monthlySubCategoryBudgetCalculation.isGoalValidForMonth) {
+              switch (subcategory.goalType) {
+                case ynab.constants.SubCategoryGoalType.TargetBalance:
+                  categorySum += subcategory.goalTargetAmount || 0;
+                  break;
+                case ynab.constants.SubCategoryGoalType.MonthlyFunding:
+                case ynab.constants.SubCategoryGoalType.Needed:
+                case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
+                case ynab.constants.SubCategoryGoalType.DebtPayment:
+                  categorySum += subcategory.monthlySubCategoryBudgetCalculation.goalTarget;
+                  break;
+              }
+            }
+          }
+        });
+      }
+
+      var span = document.createElement('span');
+      span.classList.add('tk-goal-sum-amount');
+      span.innerText = `${formatCurrency(categorySum)}`;
+
+      $(element).children('.tk-budget-table-cell-goal').append(span);
+    });
   }
 
   addTargetGoalAmount(element) {

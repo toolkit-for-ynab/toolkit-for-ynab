@@ -24,6 +24,10 @@ Choose between smaller and cleaner scrollbars across the application.
 
 Adds an underline to account names in the sidebar that have transactions to be imported. Hovering over the account name will display the number of transactions waiting to be imported.
 
+## Emphasize Negative Loans
+
+Emphasize loans with negative balances similar to how other negative accounts are emphasized.
+
 ## Emphasize Negative Numbers
 
 Make all round borders on all negative numbers square making them a bit more of an eyesore so you want to get rid of them!
@@ -197,7 +201,7 @@ Ensure all negative balances are highlighted red instead of yellow, even with cr
 
 ## Live on Last Month's Income
 
-Add a section the budget inspector showing your variance between last month's income and this month's assigned budget for users who still live by the old Rule #4.
+Add a section to the budget inspector showing your variance between last month's income and this month's assigned budget for users who still live by the old Rule #4.
 
 ## Paid in Full Credit Card Assist
 
@@ -239,7 +243,7 @@ Removes the highlight colour from positive (or zero) category balances and colou
 
 ## Add "Auto Distribute" Button To Split Transactions
 
-Distrubutes the remaining total of a split transaction proportionally to all other splits which contain an amount.
+Distributes the remaining total of a split transaction proportionally to all other splits which contain an amount.
 
 ## Add "Check Number" Column
 
@@ -260,6 +264,10 @@ Add an option to toggle the memo column under the account page's "View" menu
 ## Add "Toggle Splits" Button
 
 Add a button to expand/collapse all splits for the current account register.
+
+## Add Reset Column Widths Button
+
+Adds button to reset column widths on in the accounts View menu.
 
 ## Add Scrollbars to Edit Menu
 
@@ -295,7 +303,7 @@ Move the notification bar to the bottom as an overlay preventing transactions fr
 
 ## Bulk Edit Memos
 
-Add an option to the "Edit Transaction(s)" menu to "Edit Memo(s)" for all selected transactions.
+Add an option to the "Edit Transaction(s)" menu to "Edit Memo(s)" for all selected transactions. Allows adding a prefix or a suffix to selected memos.
 
 ## Bulk Edit Payees
 
@@ -305,13 +313,13 @@ Add an option to the "Edit Transaction(s)" menu to "Manage Payee(s)" for all sel
 
 Calculate Internal Rate of Return for Tracking Accounts. Set Tracking Account contributions to this color to calculate IRR
 
+## Compact Account Header
+
+Compact the account header. Something reminescent of the old-style account headers.
+
 ## Confirm Transaction Edit Cancellation
 
 Display a confirmation prompt when transaction cancelling a transaction edit by pressing "Enter" guarding against accidentely discarding complex split transactions.
-
-## Custom Flag Names
-
-Add functionality to provide custom flag names in the "Add Flag" menu. A tooltip will also be added to all flags on hover. _**Note**: Custom flag names are stored locally in the browser and will **not** be carried over to other browsers/computers. Custom flag names will be lost if browser data is cleared though the flag colors themselves will remain on the transactions._
 
 ## Deselect Transactions on Save
 

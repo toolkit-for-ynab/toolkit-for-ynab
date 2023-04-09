@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { controllerLookup, serviceLookup } from 'toolkit/extension/utils/ember';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export class CalculateIRR extends Feature {
@@ -9,12 +9,13 @@ export class CalculateIRR extends Feature {
   }
 
   shouldInvoke() {
-    let { selectedAccount } = controllerLookup('accounts');
+    let { selectedAccount } = serviceLookup('accounts');
     return isCurrentRouteAccountsPage() && selectedAccount && !selectedAccount.onBudget;
   }
 
   invoke() {
-    let { selectedAccount, selectedAccountId, filters } = controllerLookup('accounts');
+    let { filters } = controllerLookup('accounts');
+    let { selectedAccount, selectedAccountId } = serviceLookup('accounts');
     let { filterFrom, filterTo } = this._getFilterDates(filters);
     let totalIrr = this._calculateIRR(selectedAccountId);
     if (totalIrr === Infinity) {
@@ -219,10 +220,10 @@ export class CalculateIRR extends Feature {
 
     for (var i = 0; i < inputs.transaction.length; i++) {
       let yearFraction = inputs.transaction[i].date.daysApart(currentDate) / 365;
-      npv -= (inputs.transaction[i].amount / 1000) * Math.pow(rate, yearFraction);
+      npv -= (inputs.transaction[i].amount / 1000) * rate ** yearFraction;
     }
     let yearFraction = currentDate.daysApart(inputs.fromDate) / 365;
-    npv -= (inputs.startingValue / 1000) * Math.pow(rate, yearFraction);
+    npv -= (inputs.startingValue / 1000) * rate ** yearFraction;
 
     return npv;
   };
@@ -235,11 +236,10 @@ export class CalculateIRR extends Feature {
 
     for (var i = 0; i < inputs.transaction.length; i++) {
       let yearFraction = inputs.transaction[i].date.daysApart(currentDate) / 365;
-      npv1 -=
-        yearFraction * (inputs.transaction[i].amount / 1000) * Math.pow(rate, yearFraction - 1);
+      npv1 -= yearFraction * (inputs.transaction[i].amount / 1000) * rate ** (yearFraction - 1);
     }
     let yearFraction = currentDate.daysApart(inputs.fromDate) / 365;
-    npv1 -= yearFraction * (inputs.startingValue / 1000) * Math.pow(rate, yearFraction - 1);
+    npv1 -= yearFraction * (inputs.startingValue / 1000) * rate ** (yearFraction - 1);
 
     return npv1;
   };

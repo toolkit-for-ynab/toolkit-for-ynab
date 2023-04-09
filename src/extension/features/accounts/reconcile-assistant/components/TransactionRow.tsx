@@ -1,8 +1,10 @@
 import React from 'react';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 
+import type { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+
 interface TransactionRowProps {
-  transaction: Transaction;
+  transaction: YNABTransaction;
 }
 
 export const TransactionRow = ({ transaction }: TransactionRowProps) => (

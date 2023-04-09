@@ -1,16 +1,14 @@
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import { Feature } from 'toolkit/extension/features/feature';
 import { l10n } from 'toolkit/extension/utils/toolkit';
+import { getBudgetService } from 'toolkit/extension/utils/ynab';
 import { getBudgetBreakdownEntries } from '../subtract-upcoming-from-available/budget-breakdown-monthly-totals';
 import { isSavingsCategory } from '../subtract-upcoming-from-available/categories';
 
 export class ShowAvailableAfterSavings extends Feature {
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    this.addToolkitEmberHook('budget-breakdown', 'didRender', this.handleBudgetBreakdown);
+  observe(changedNodes) {
+    if (changedNodes.has('budget-inspector-button')) {
+      this.handleBudgetBreakdown();
+    }
   }
 
   destroy() {
@@ -21,21 +19,20 @@ export class ShowAvailableAfterSavings extends Feature {
     $('#tk-total-available-after-savings').remove();
   }
 
-  handleBudgetBreakdown(element) {
+  handleBudgetBreakdown() {
     this.removeAvailableAfterSavings();
 
-    const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals', element);
+    const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals');
     if (!$budgetBreakdownMonthlyTotals.length) return;
 
-    const budgetBreakdown = getEmberView(element.id);
-    if (!budgetBreakdown) return;
-
-    this.showAvailableAfterSavings(budgetBreakdown, $budgetBreakdownMonthlyTotals);
+    this.showAvailableAfterSavings($budgetBreakdownMonthlyTotals);
   }
 
-  showAvailableAfterSavings(budgetBreakdown, context) {
-    const totalAvailable = budgetBreakdown.budgetTotals.available;
-    const totalSavings = getTotalSavings(budgetBreakdown);
+  showAvailableAfterSavings(context) {
+    const inspectorCategories = getBudgetService().inspectorCategories;
+
+    const totalAvailable = inspectorCategories.reduce((p, c) => p + c.available, 0);
+    const totalSavings = getTotalSavings(inspectorCategories);
     const totalAvailableAfterSavings = totalAvailable - totalSavings;
 
     if (totalAvailableAfterSavings === totalAvailable) return;
@@ -52,10 +49,10 @@ export class ShowAvailableAfterSavings extends Feature {
   }
 }
 
-export function getTotalSavings(budgetBreakdown) {
+export function getTotalSavings(inspectorCategories) {
   let totalSavings = 0;
 
-  for (const category of budgetBreakdown.inspectorCategories) {
+  for (const category of inspectorCategories) {
     if (isSavingsCategory(category))
       totalSavings += category.available < 0 ? 0 : category.available; // If available is less than 0, it will already have been subtracted from YNAB's total available.
   }

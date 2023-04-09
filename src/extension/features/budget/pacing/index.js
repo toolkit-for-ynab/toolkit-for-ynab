@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
+import { isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import {
   getDeemphasizedCategories,
@@ -15,7 +15,7 @@ export class Pacing extends Feature {
   }
 
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
+    return true;
   }
 
   destroy() {
@@ -29,7 +29,7 @@ export class Pacing extends Feature {
   ensureHeader() {
     if (!$('.budget-table-header .tk-budget-table-cell-pacing').length) {
       $('.budget-table-header .budget-table-cell-available').after(
-        `<li class="tk-budget-table-cell-pacing">${l10n('toolkit.pacing', 'PACING')}</li>`
+        `<div class="tk-budget-table-cell-pacing">${l10n('toolkit.pacing', 'PACING')}</div>`
       );
     }
   }
@@ -45,7 +45,7 @@ export class Pacing extends Feature {
     if (element.classList.contains('is-master-category')) {
       if (!element.querySelector('.tk-budget-table-cell-pacing')) {
         $('.budget-table-cell-available', element).after(
-          `<li class="tk-budget-table-cell-pacing"></li>`
+          `<div class="tk-budget-table-cell-pacing"></div>`
         );
       }
 
@@ -55,7 +55,7 @@ export class Pacing extends Feature {
     if (element.classList.contains('is-debt-payment-category')) {
       if (!element.querySelector('.tk-budget-table-cell-pacing')) {
         $('.budget-table-cell-available', element).after(
-          `<li class="tk-budget-table-cell-pacing"></li>`
+          `<div class="tk-budget-table-cell-pacing"></div>`
         );
       }
 
@@ -111,13 +111,13 @@ export class Pacing extends Feature {
     const tooltip = this.generateTooltip(pacingCalculation);
 
     const $display = $(`
-      <li class="tk-budget-table-cell-pacing">
-        <div
+      <div class="tk-budget-table-cell-pacing">
+        <button
           title="${tooltip}"
           data-tk-sub-category-id="${subCategoryId}"
           class="ynab-new-budget-available-number tk-pacing-number currency ${temperatureClass} ${deemphasizedClass} ${indicatorClass}"
         />
-      </li>
+      </div>
     `);
 
     const daysFormat = Math.abs(daysOffTarget) === 1 ? 'day' : 'days';
