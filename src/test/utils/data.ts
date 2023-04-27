@@ -16,6 +16,7 @@ export function mockTransaction(overrides?: Partial<YNABTransaction>): YNABTrans
   return {
     accepted: true,
     account: mockAccount(),
+    accountName: 'account-name',
     accountId: 'account-id',
     amount: 1000,
     baseSubTransactions: [],
@@ -52,6 +53,7 @@ export function mockTransaction(overrides?: Partial<YNABTransaction>): YNABTrans
     source: null,
     subCategory: null,
     subCategoryCreditAmountPreceding: 0,
+    subCategoryNameWrapped: 'subCategoryNameWrapped',
     subCategoryId: null,
     subTransactions: [],
     transferAccountId: null,
@@ -62,6 +64,9 @@ export function mockTransaction(overrides?: Partial<YNABTransaction>): YNABTrans
     transferTransactionId: null,
     ynabId: null,
     isUncleared: jest.fn(),
+    get(key) {
+      return this[key];
+    },
     ...overrides,
   };
 }

@@ -3,6 +3,7 @@ import { YNABAccount } from './account';
 export interface YNABTransaction {
   accepted: boolean;
   account: YNABAccount;
+  accountName: string;
   accountId: string;
   amount: number;
   baseSubTransactions: Array<YNABTransaction>;
@@ -28,6 +29,7 @@ export interface YNABTransaction {
   month: DateWithoutTime;
   originalImportedPayee: YNABPayee | null;
   parentTransaction?: YNABTransaction;
+  parentEntityId?: string;
   payee: YNABPayee | null;
   payeeId: string | null;
   scheduledTransactionId: string | null;
@@ -36,6 +38,7 @@ export interface YNABTransaction {
   subCategory: YNABSubCategory | null;
   subCategoryCreditAmountPreceding: number;
   subCategoryId: string | null;
+  subCategoryNameWrapped: string;
   subTransactions: YNABTransaction[];
   transferAccountId: string | null;
   transferAccounts: YNABAccount[] | null;
@@ -47,4 +50,5 @@ export interface YNABTransaction {
 
   isUncleared?: () => boolean;
   isReconciled?: () => boolean;
+  get: <T extends keyof YNABTransaction>(key: T) => YNABTransaction[T];
 }
