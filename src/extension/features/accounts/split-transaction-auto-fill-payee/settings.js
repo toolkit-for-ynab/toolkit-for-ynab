@@ -5,5 +5,5 @@ module.exports = {
   section: 'accounts',
   title: 'Automatically Fill Split Transaction Payee',
   description:
-    'Automatically fill each additional split transaction row with the current previous payee.',
+    'Automatically fill the split transaction payee value, if empty, with the original payee.',
 };

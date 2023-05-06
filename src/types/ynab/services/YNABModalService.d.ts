@@ -2,6 +2,7 @@ import { YNABTransaction } from '../data/transaction';
 
 type YNABModalService = {
   isModalOpen?: boolean;
+  closeModal?: (e?: unknown) => void;
 } & (
   | {
       currentModal?: 'modals/budget/activity';

@@ -42,7 +42,7 @@ export class DefaultCCToCleared extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (changedNodes.has('js-toolbar-buttons-overflow button  active')) {
+    if (changedNodes.has('button js-toolbar-buttons-overflow active')) {
       document
         .querySelector('.record-payment')
         ?.addEventListener('click', this.applyNewButtonBehavior);
@@ -74,6 +74,8 @@ export class DefaultCCToCleared extends Feature {
       // make sure we're not going overbudget
       if (ynabPaymentValue >= absClearedBal) {
         inflowField.value = clearedBalToFill;
+        inflowField.dispatchEvent(new Event('change'));
+        inflowField.dispatchEvent(new Event('blur'));
       }
 
       // reset state
