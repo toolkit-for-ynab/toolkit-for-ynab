@@ -7,4 +7,5 @@ interface YNABEntityManager {
   getSubTransactionsBySubCategoryId(subCategoryId: string): YNABTransaction[];
   getTransactionsBySubCategoryId(subCategoryId: string): YNABTransaction[];
   transactionsCollection: YNABTransactionCollection;
+  payeesCollection: YNABPayeeCollection;
 }

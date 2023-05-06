@@ -1,4 +1,5 @@
-import { getRouter, controllerLookup, serviceLookup } from './ember';
+import { YNABModalService } from 'toolkit/types/ynab/services/YNABModalService';
+import { controllerLookup, serviceLookup } from './ember';
 
 export function getApplicationController() {
   return controllerLookup<YNABApplicationController>('application');
@@ -43,6 +44,17 @@ export function isCurrentRouteAccountsPage() {
   );
 }
 
+export function isCurrentRouteReportPage(
+  report?: 'spending' | 'income-expense' | 'net-worth' | 'any'
+) {
+  const currentRoute = getCurrentRouteName();
+  if (report === 'any' || !report) {
+    return currentRoute?.includes('reports.');
+  }
+
+  return currentRoute === `reports.${report}`;
+}
+
 export function getSelectedAccount() {
   const selectedAccountId = getAccountsController()?.selectedAccountId;
   if (selectedAccountId) {
@@ -74,6 +86,10 @@ export function getApplicationService() {
 
 export function getBudgetService() {
   return serviceLookup<YNABBudgetService>('budget');
+}
+
+export function getModalService() {
+  return serviceLookup<YNABModalService>('modal') || {};
 }
 
 export function getRegisterGridService() {
