@@ -21,13 +21,13 @@ export class SplitTransactionAutoAdjust extends Feature {
       for (let i = 1; i < outflows.length; i++) {
         if (outflows[i].value === '' && inflows[i].value === '') {
           if (remaining < 0) {
-            $(outflows[i]).val(ynab.formatCurrency(-remaining * 1000));
-            $(outflows[i]).trigger('change');
-            $(outflows[i]).trigger('blur');
+            outflows[i].value = ynab.formatCurrency(-remaining * 1000);
+            outflows[i].dispatchEvent(new Event('change'));
+            outflows[i].dispatchEvent(new Event('blur'));
           } else if (remaining > 0) {
-            $(inflows[i]).val(ynab.formatCurrency(remaining * 1000));
-            $(inflows[i]).trigger('change');
-            $(inflows[i]).trigger('blur');
+            inflows[i].value = ynab.formatCurrency(remaining * 1000);
+            inflows[i].dispatchEvent(new Event('change'));
+            inflows[i].dispatchEvent(new Event('blur'));
           }
           break;
         }
