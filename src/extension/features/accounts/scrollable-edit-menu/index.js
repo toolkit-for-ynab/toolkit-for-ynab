@@ -10,9 +10,14 @@ export class ScrollableEditMenu extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('modal', 'didRender', this.addScrollWrappers, {
-      guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
-    });
+    this.addToolkitEmberHook(
+      'modals/register/edit-transactions',
+      'didRender',
+      this.addScrollWrappers,
+      {
+        guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
+      }
+    );
   }
 
   destroy() {}
