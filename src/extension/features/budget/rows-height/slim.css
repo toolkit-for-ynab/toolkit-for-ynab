@@ -6,11 +6,20 @@
   height: 1.5rem !important;
 }
 
+.budget-table-cell-available {
+  position: relative;
+}
+
 .budget-table-cell-available-payment {
   font-size: 0px;
   position: absolute;
   right: -15px;
-  top: 5px;
+  top: 6px;
+}
+
+.budget-table-cell-name [title='Credit Card Payments']::before {
+  position: relative;
+  top: -3px;
 }
 
 .budget-table-row.is-master-category,
