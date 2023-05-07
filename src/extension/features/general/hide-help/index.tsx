@@ -4,6 +4,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { HideHelpButton } from './HideHelpButton';
 import { serviceLookup } from 'toolkit/extension/utils/ember';
+import { YNABModalService } from 'toolkit/types/ynab/services/YNABModalService';
 
 export class HideHelp extends Feature {
   injectCSS() {
