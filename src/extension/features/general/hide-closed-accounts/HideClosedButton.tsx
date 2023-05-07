@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { l10n, getToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { serviceLookup } from 'toolkit/extension/utils/ember';
+import { YNABModalService } from 'toolkit/types/ynab/services/YNABModalService';
 
 interface Props {
   toggleHiddenState: (state: boolean) => void;
