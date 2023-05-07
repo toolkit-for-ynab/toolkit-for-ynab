@@ -17,7 +17,7 @@ export class BudgetProgressBars extends Feature {
     Array.from(document.querySelectorAll('[data-tk-progress-bars]')).forEach((element) => {
       const { tkProgressBars } = element.dataset;
       if (tkProgressBars === 'both') {
-        $('li.budget-table-cell-budgeted, li.budget-table-cell-name', element).css({
+        $('div.budget-table-cell-budgeted, div.budget-table-cell-name', element).css({
           background: '',
         });
       } else {
@@ -46,7 +46,7 @@ export class BudgetProgressBars extends Feature {
     const { goalPercentageComplete } = monthlySubCategoryBudgetCalculation;
     const toElement =
       this.settings.enabled === 'both'
-        ? element.querySelector('li.budget-table-cell-budgeted')
+        ? element.querySelector('div.budget-table-cell-budgeted')
         : element;
 
     $(toElement).css(
@@ -67,7 +67,7 @@ export class BudgetProgressBars extends Feature {
 
     const toElement =
       this.settings.enabled === 'both'
-        ? element.querySelector('li.budget-table-cell-name')
+        ? element.querySelector('div.budget-table-cell-name')
         : element;
 
     const { isDeemphasized, budgetedPace, monthPace } = pacingForCategory(category);
@@ -126,7 +126,7 @@ export class BudgetProgressBars extends Feature {
     const { tkProgressBars } = element.dataset;
     if (tkProgressBars !== userSetting) {
       if (tkProgressBars === 'both') {
-        $('li.budget-table-cell-budgeted, li.budget-table-cell-name', element).css({
+        $('div.budget-table-cell-budgeted, div.budget-table-cell-name', element).css({
           background: '',
         });
       } else {
