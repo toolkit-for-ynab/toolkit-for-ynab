@@ -1,4 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class ToBeBudgetedWarning extends Feature {
   injectCSS() {
@@ -6,12 +7,21 @@ export class ToBeBudgetedWarning extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteBudgetPage();
   }
 
-  invoke() {
-    this.addToolkitEmberHook('to-be-budgeted', 'didRender', this.addClasses);
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (
+      changedNodes.has('budget-header-item budget-header-totals') ||
+      changedNodes.has('budget-header-item budget-header-calendar tk-highlight-current-month')
+    ) {
+      this.addClasses(document.querySelector('.to-be-budgeted'));
+    }
   }
+
+  invoke() {}
 
   addClasses(element) {
     if (element.classList.contains('is-positive')) {

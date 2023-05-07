@@ -291,7 +291,7 @@ Automatically fill each additional split transaction row with the current remain
 
 ## Automatically Fill Split Transaction Payee
 
-Automatically fill each additional split transaction row with the current previous payee.
+Automatically fill the split transaction payee value, if empty, with the original payee.
 
 ## Automatically Mark Transaction as Cleared
 
