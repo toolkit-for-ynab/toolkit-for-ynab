@@ -162,9 +162,14 @@ export class BulkEditMemo extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('modal', 'didInsertElement', this.injectBulkEditMemo, {
-      guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
-    });
+    this.addToolkitEmberHook(
+      'modals/register/edit-transactions',
+      'didInsertElement',
+      this.injectBulkEditMemo,
+      {
+        guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
+      }
+    );
   }
 
   destroy() {

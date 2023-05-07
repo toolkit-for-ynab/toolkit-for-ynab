@@ -7,13 +7,16 @@ export class SplitTransactionAutoFillPayee extends Feature {
   }
 
   invoke() {
-    const cells = $('.is-editing .ynab-grid-cell-payeeName .ember-text-field').toArray();
+    const cells = document.querySelectorAll(
+      '.is-editing .ynab-grid-cell-payeeName .ember-text-field'
+    );
+
     cells.forEach((cell, i) => {
-      if (i !== 0 && !$(cell).data('tk-auto-filled-payee')) {
-        $(cell).data('tk-auto-filled-payee', true);
-        $(cell).val(cells[0].value);
-        $(cell).trigger('change');
-        $(cell).trigger('blur');
+      if (i !== 0 && !cell.dataset.tkAutoFilledPayee && !cell.value) {
+        cell.dataset.tkAutoFilledPayee = true;
+        cell.value = cells[0].value;
+        cell.dispatchEvent(new Event('change'));
+        cell.dispatchEvent(new Event('blur'));
       }
     });
   }
