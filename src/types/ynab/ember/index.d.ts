@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { run } from '@ember/runloop';
 import { Feature } from 'toolkit/extension/features/feature';
+import { YNABApp } from '../window';
 
 declare global {
   interface ToolkitEmberHook {
@@ -35,5 +36,8 @@ declare global {
   interface Ember {
     run: typeof run;
     Component: EmberComponent;
+    Namespace: {
+      NAMESPACES: [YNABApp];
+    };
   }
 }

@@ -1,6 +1,8 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { controllerLookup, containerLookup, serviceLookup } from 'toolkit/extension/utils/ember';
-import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage, ynabRequire } from 'toolkit/extension/utils/ynab';
+
+const { next } = ynabRequire('@ember/runloop');
 
 export class RightClickToEdit extends Feature {
   isCurrentlyRunning = false;
@@ -62,7 +64,7 @@ export class RightClickToEdit extends Feature {
 
     this.isCurrentlyRunning = true;
 
-    Ember.run.next(this, function () {
+    next(this, function () {
       $('.ynab-grid').off('contextmenu', '.ynab-grid-body-row > div', this.displayContextMenu);
       $('.ynab-grid').on('contextmenu', '.ynab-grid-body-row > div', this.displayContextMenu);
 

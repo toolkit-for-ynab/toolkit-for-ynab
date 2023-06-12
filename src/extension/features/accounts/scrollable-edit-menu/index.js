@@ -1,4 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { Ember } from 'toolkit/extension/utils/ember';
 
 export class ScrollableEditMenu extends Feature {
   injectCSS() {

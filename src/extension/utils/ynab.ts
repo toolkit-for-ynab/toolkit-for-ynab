@@ -1,5 +1,9 @@
 import { YNABModalService } from 'toolkit/types/ynab/services/YNABModalService';
-import { controllerLookup, serviceLookup } from './ember';
+import { controllerLookup, getRouter, serviceLookup } from './ember';
+
+export function ynabRequire<T = any>(module: string): T {
+  return window.requireModule<T>(module);
+}
 
 export function getApplicationController() {
   return controllerLookup<YNABApplicationController>('application');
@@ -65,7 +69,7 @@ export function getSelectedAccount() {
 }
 
 export function getCurrentRouteName() {
-  return getApplicationController()?.currentRouteName;
+  return getRouter()?.currentRouteName;
 }
 
 export function getAllBudgetMonthsViewModel() {
@@ -109,7 +113,6 @@ export function isCurrentMonthSelected() {
 
 export function isYNABReady() {
   return (
-    typeof Ember !== 'undefined' &&
     typeof $ !== 'undefined' &&
     !$('.ember-view.is-loading').length &&
     typeof ynabToolKit !== 'undefined' &&
