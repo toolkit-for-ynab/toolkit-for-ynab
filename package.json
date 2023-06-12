@@ -114,7 +114,7 @@
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
     "@types/chrome": "^0.0.202",
-    "@types/ember": "^4.0.2",
+    "@types/ember": "^4.0.3",
     "@types/jest": "^29.2.3",
     "@types/jquery": "^3.5.14",
     "@types/react": "^17.0.11",

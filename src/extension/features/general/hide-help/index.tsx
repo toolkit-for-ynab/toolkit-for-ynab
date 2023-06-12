@@ -12,11 +12,7 @@ export class HideHelp extends Feature {
   }
 
   shouldInvoke() {
-    return (
-      $('#tk-hide-help').length === 0 &&
-      !!serviceLookup<YNABModalService>('modal')?.isModalOpen &&
-      !!document.querySelector('.ynab-new-settings-menu')
-    );
+    return true;
   }
 
   insertHideHelp(element: Element) {
@@ -43,8 +39,6 @@ export class HideHelp extends Feature {
   }
 
   observe(nodes: Set<string>) {
-    if (!this.shouldInvoke()) return;
-
     if (nodes.has('modal-overlay active  ynab-u ynab-new-settings-menu')) {
       this.invoke();
     }

@@ -6,14 +6,14 @@ import * as Collections from 'toolkit/extension/utils/collections';
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
-import { forEachRenderedComponent } from './utils/ember';
+import { Ember, forEachRenderedComponent } from './utils/ember';
 import { compareSemanticVersion } from './utils/helpers';
 import { componentAppend } from './utils/react';
 import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-modal';
 import { Feature } from './features/feature';
 import { InboundMessage, InboundMessageType, OutboundMessageType } from 'toolkit/core/messages';
 import { ObserveListener, RouteChangeListener } from './listeners';
-import { getUnclearedTransactions } from './features/accounts/reconcile-assistant/reconcileAssistantUtils';
+const { later } = ynabUtils.ynabRequire('@ember/runloop');
 
 export let observeListener: ObserveListener;
 export let routeChangeListener: RouteChangeListener;
@@ -305,9 +305,9 @@ export class YNABToolkit {
         // Hook up listeners and then invoke any features that are ready to go.
         self.invokeFeatureInstances();
 
-        Ember.run.later(self.invokeAllHooks, 100);
+        later(self.invokeAllHooks, 100);
       } else if (typeof Ember !== 'undefined') {
-        Ember.run.later(poll, 250);
+        later(poll, 250);
       } else {
         setTimeout(poll, 250);
       }
