@@ -1,4 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { Ember } from 'toolkit/extension/utils/ember';
 
 export class ScrollableEditMenu extends Feature {
   injectCSS() {
@@ -10,9 +11,14 @@ export class ScrollableEditMenu extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('modal', 'didRender', this.addScrollWrappers, {
-      guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
-    });
+    this.addToolkitEmberHook(
+      'modals/register/edit-transactions',
+      'didRender',
+      this.addScrollWrappers,
+      {
+        guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
+      }
+    );
   }
 
   destroy() {}

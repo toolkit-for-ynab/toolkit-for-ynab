@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
+import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
 const TOOLKIT_RECONCILED_CLASS = 'tk-is-reconciled';
 const YNAB_IS_CHECKED_CLASS = 'is-checked';
@@ -26,11 +26,18 @@ export class ReconciledTextColor extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('register/grid-sub', 'didInsertElement', this.addClass);
-    this.addToolkitEmberHook('register/grid-row', 'didInsertElement', this.addClass);
+    const gridRows = document.querySelectorAll('.ynab-grid-body-row');
+    gridRows.forEach((row) => {
+      if (row.dataset && row.dataset.rowId) {
+        this.addClass(row);
+      }
+    });
+  }
 
-    this.addToolkitEmberHook('register/grid-sub', 'didUpdate', this.addClass);
-    this.addToolkitEmberHook('register/grid-row', 'didUpdate', this.addClass);
+  observe() {
+    if (document.querySelector('.ynab-grid-body') !== null) {
+      this.invoke();
+    }
   }
 
   destroy() {
@@ -38,15 +45,19 @@ export class ReconciledTextColor extends Feature {
   }
 
   addClass(element) {
-    let content;
-    const emberView = getEmberView(element.id);
-    if (emberView) {
-      content = emberView.content;
+    const $element = $(element);
+
+    let transaction;
+    if (element.dataset && element.dataset.rowId) {
+      transaction = getEntityManager().getTransactionById(element.dataset.rowId);
     }
 
-    const $element = $(element);
+    if (!transaction) {
+      return;
+    }
+
     const isChecked = $element.hasClass(YNAB_IS_CHECKED_CLASS);
-    const isReconciled = content.cleared === ynab.constants.TransactionState.Reconciled;
+    const isReconciled = transaction.cleared === ynab.constants.TransactionState.Reconciled;
 
     if (isChecked) {
       $element.removeClass(TOOLKIT_RECONCILED_CLASS);
@@ -57,7 +68,7 @@ export class ReconciledTextColor extends Feature {
     // I'm not sure how intensive it would be to go find the IDs of sub transactions in a
     // split so rather than do that, just continue down the line of sub transactions after
     // a split and update the classes accordingly
-    if (content.isSplit) {
+    if (transaction.isSplit) {
       let $nextTransaction = $element.next();
       while ($nextTransaction.hasClass(YNAB_GRID_BODY_SUB_CLASS)) {
         if (isChecked) {

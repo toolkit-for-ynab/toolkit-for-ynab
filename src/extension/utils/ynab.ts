@@ -1,4 +1,9 @@
-import { getRouter, controllerLookup, serviceLookup } from './ember';
+import { YNABModalService } from 'toolkit/types/ynab/services/YNABModalService';
+import { controllerLookup, getRouter, serviceLookup } from './ember';
+
+export function ynabRequire<T = any>(module: string): T {
+  return window.requireModule<T>(module);
+}
 
 export function getApplicationController() {
   return controllerLookup<YNABApplicationController>('application');
@@ -43,6 +48,17 @@ export function isCurrentRouteAccountsPage() {
   );
 }
 
+export function isCurrentRouteReportPage(
+  report?: 'spending' | 'income-expense' | 'net-worth' | 'any'
+) {
+  const currentRoute = getCurrentRouteName();
+  if (report === 'any' || !report) {
+    return currentRoute?.includes('reports.');
+  }
+
+  return currentRoute === `reports.${report}`;
+}
+
 export function getSelectedAccount() {
   const selectedAccountId = getAccountsController()?.selectedAccountId;
   if (selectedAccountId) {
@@ -53,7 +69,7 @@ export function getSelectedAccount() {
 }
 
 export function getCurrentRouteName() {
-  return getApplicationController()?.currentRouteName;
+  return getRouter()?.currentRouteName;
 }
 
 export function getAllBudgetMonthsViewModel() {
@@ -76,6 +92,10 @@ export function getBudgetService() {
   return serviceLookup<YNABBudgetService>('budget');
 }
 
+export function getModalService() {
+  return serviceLookup<YNABModalService>('modal') || {};
+}
+
 export function getRegisterGridService() {
   return serviceLookup<YNABRegisterGridService>('registerGrid');
 }
@@ -93,7 +113,6 @@ export function isCurrentMonthSelected() {
 
 export function isYNABReady() {
   return (
-    typeof Ember !== 'undefined' &&
     typeof $ !== 'undefined' &&
     !$('.ember-view.is-loading').length &&
     typeof ynabToolKit !== 'undefined' &&

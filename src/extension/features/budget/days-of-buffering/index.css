@@ -6,7 +6,7 @@
 .tk-days-of-buffering > div {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
 }
 
 /* Stop totals being crushed on smaller screens */

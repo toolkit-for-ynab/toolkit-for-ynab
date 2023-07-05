@@ -40,6 +40,9 @@ interface YNABConstants {
     BudgetIndex: 'budget.index';
     BudgetPicker: 'users.budgets';
     BudgetSelect: 'budget.select';
+    ReportSpending: 'reports.spending';
+    ReportNetWorth: 'reports.net-worth';
+    ReportIncomeExpense: 'reports.income-expense';
   };
 
   SubCategoryGoalType: {

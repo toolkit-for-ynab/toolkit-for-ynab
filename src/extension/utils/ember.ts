@@ -1,3 +1,6 @@
+export const Ember = window.requireModule<{ default: Ember }>('ember').default;
+export const __ynabapp__ = Ember.Namespace.NAMESPACES[0];
+
 export function getEmberView<T extends unknown>(viewId: string | undefined): T | undefined {
   if (!viewId) {
     return undefined;

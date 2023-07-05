@@ -1,7 +1,9 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteAccountsPage, ynabRequire } from 'toolkit/extension/utils/ynab';
 import { containerLookup } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+
+const { once } = ynabRequire('@ember/runloop');
 
 export class SpareChange extends Feature {
   injectCSS() {
@@ -25,7 +27,7 @@ export class SpareChange extends Feature {
 
   calculateSpareChange() {
     // Running this code straight away in the callback seems to break some YNAB features - schedule it to run later
-    Ember.run.once(this, () => {
+    once(this, () => {
       const areChecked = containerLookup('service:accounts').areChecked;
       if (!areChecked.length) {
         $('#tk-spare-change').remove();
