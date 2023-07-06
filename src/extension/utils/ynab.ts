@@ -73,11 +73,11 @@ export function getCurrentRouteName() {
 }
 
 export function getAllBudgetMonthsViewModel() {
-  return getBudgetController()?.budgetViewModel?.allBudgetMonthsViewModel;
+  return getBudgetService()?.budgetViewModel?.allBudgetMonthsViewModel;
 }
 
 export function getBudgetViewModel() {
-  return getBudgetController()?.budgetViewModel;
+  return getBudgetService()?.budgetViewModel;
 }
 
 export function getSelectedMonth() {
