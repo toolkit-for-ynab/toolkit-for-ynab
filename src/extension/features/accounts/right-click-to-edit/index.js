@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { controllerLookup, containerLookup, serviceLookup } from 'toolkit/extension/utils/ember';
+import { serviceLookup } from 'toolkit/extension/utils/ember';
 import { isCurrentRouteAccountsPage, ynabRequire } from 'toolkit/extension/utils/ynab';
 
 const { next } = ynabRequire('@ember/runloop');
@@ -30,10 +30,10 @@ export class RightClickToEdit extends Feature {
       $row = $row.prevAll('.ynab-grid-body-parent:first');
     }
 
-    const areChecked = containerLookup('service:accounts').areChecked;
-    const accountsController = controllerLookup('accounts');
+    const accountsService = serviceLookup('accounts');
+    const areChecked = accountsService.areChecked;
     const visibleTransactionDisplayItems =
-      accountsController?.transactionEditorService?.visibleTransactionDisplayItems;
+      accountsService?.transactionEditorService?.visibleTransactionDisplayItems;
 
     const clickedTransactionId = $row.data().rowId;
     const clickedTransaction = visibleTransactionDisplayItems.find(
