@@ -7,6 +7,7 @@ import {
   filterTransactions,
   groupTransactions,
   toHighchartsSeries,
+  filterTransactionsByDate,
 } from './utils';
 import { OutflowGraph } from './OutflowGraph';
 import { useLocalStorage } from 'toolkit/extension/hooks/useLocalStorage';
@@ -14,6 +15,8 @@ import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/comm
 
 export const OutflowOverTimeComponent = ({ allReportableTransactions, filters }) => {
   const [outflowSeries, setOutflowSeries] = useState([]);
+
+  // Using CumulativeSum will show a growing trendline over the dates.
   const [cumulativeSum, setCumulativeSum] = useLocalStorage(
     'outflow-over-time-useCumulativeSum',
     true
@@ -21,6 +24,9 @@ export const OutflowOverTimeComponent = ({ allReportableTransactions, filters })
 
   useEffect(() => {
     const filterOutAccounts = filters.accountFilterIds;
+
+    // These dates are used to appropriately filter based on the report context.
+    const { fromDate, toDate } = filters.dateFilter;
     const calculateOutflow = cumulativeSum
       ? calculateCumulativeOutflowPerDate
       : calculateOutflowPerDate;
@@ -28,7 +34,12 @@ export const OutflowOverTimeComponent = ({ allReportableTransactions, filters })
     setOutflowSeries(
       toHighchartsSeries(
         calculateOutflow(
-          groupTransactions(filterTransactions(allReportableTransactions, filterOutAccounts))
+          groupTransactions(
+            filterTransactions(
+              filterTransactionsByDate(allReportableTransactions, fromDate, toDate),
+              filterOutAccounts
+            )
+          )
         )
       )
     );

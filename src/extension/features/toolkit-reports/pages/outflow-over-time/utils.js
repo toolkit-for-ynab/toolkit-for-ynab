@@ -14,6 +14,19 @@ export const filterTransactions = (transactions, filterOutAccounts) => {
     });
 };
 
+/**
+ * Filter the passed transactions to only include those within the specified date range.
+ * @param {Array} transactions - The array of transactions to be filtered.
+ * @param {Date} startDate - The start date of the desired date range.
+ * @param {Date} endDate - The end date of the desired date range.
+ * @returns {Array} - A new array containing only the transactions that fall within the specified date range.
+ */
+export const filterTransactionsByDate = (transactions, startDate, endDate) => {
+  return transactions.filter((transaction) => {
+    return transaction.date >= startDate && transaction.date <= endDate;
+  });
+};
+
 export const groupTransactions = (transactions) => {
   const groupedByMonth = lodash.groupBy(transactions, 'month');
   const groupedByMonthAndDate = {};
