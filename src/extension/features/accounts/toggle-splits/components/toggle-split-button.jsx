@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import { getEmberView } from 'toolkit/extension/utils/ember';
-import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import { getAccountsService, getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export class ToggleSplitButton extends React.Component {
   state = {
@@ -53,16 +52,16 @@ export class ToggleSplitButton extends React.Component {
       }, collapsedSplitsMap);
     });
 
-    const emberView = getEmberView($('.ynab-grid').attr('id'));
-    if (emberView) {
-      emberView.set('collapsedSplits', collapsedSplitsMap);
+    const accountService = getAccountsService();
+    if (accountService) {
+      accountService.collapsedSplits = collapsedSplitsMap;
     }
   };
 
   showAllSplits = () => {
-    const emberView = getEmberView($('.ynab-grid').attr('id'));
-    if (emberView) {
-      emberView.set('collapsedSplits', {});
+    const accountsService = getAccountsService();
+    if (accountsService) {
+      accountsService.collapsedSplits = {};
     }
   };
 }
