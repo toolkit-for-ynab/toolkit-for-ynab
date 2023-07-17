@@ -1,0 +1,3 @@
+interface YNABAccountsService {
+  selectedAccountId: string;
+}

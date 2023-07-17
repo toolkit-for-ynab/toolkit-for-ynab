@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { serviceLookup } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 const YNAB_ACCOUNTS_HEADER_BALANCES = '.accounts-header-balances';
@@ -17,9 +17,12 @@ export class ReconcileBalance extends Feature {
 
   invoke() {
     // Get the current account id and calculate the current reconciled balance
-    let accountsController = controllerLookup<YNABAccountsController>('accounts');
-    if (accountsController === undefined) return;
-    let { selectedAccountId } = accountsController;
+    let accountService = serviceLookup<YNABAccountsService>('accounts');
+    if (!accountService) {
+      return;
+    }
+
+    let { selectedAccountId } = accountService;
     let reconciledBalance = formatCurrency(this._calculateReconciledBalance(selectedAccountId));
     // Retrieve or create the reconcile balance container
     let balanceContainer = $(`#${TK_RECONCILE_BALANCE_ID}`);
@@ -69,6 +72,9 @@ export class ReconcileBalance extends Feature {
 
   _calculateReconciledBalance = (accountId: string) => {
     const account = getEntityManager().getAccountById(accountId);
+    if (!account) {
+      return;
+    }
 
     return account.getTransactions().reduce((reduced, transaction) => {
       if (transaction.cleared && !transaction.isTombstone && transaction.isReconciled?.()) {

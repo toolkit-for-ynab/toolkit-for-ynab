@@ -1,15 +1,15 @@
-import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+import { getApplicationService } from './ynab';
 
 export const PACING_DEEMPHASIZED_KEY = 'pacing-deemphasized-categories';
 
 export function getDeemphasizedCategories() {
-  const budgetVersionId = controllerLookup('application').get('budgetVersionId');
+  const budgetVersionId = getApplicationService().get('budgetVersionId');
   return getToolkitStorageKey(`${PACING_DEEMPHASIZED_KEY}.${budgetVersionId}`, []);
 }
 
 export function setDeemphasizedCategories(categories) {
-  const budgetVersionId = controllerLookup('application').get('budgetVersionId');
+  const budgetVersionId = getApplicationService().get('budgetVersionId');
   return setToolkitStorageKey(`${PACING_DEEMPHASIZED_KEY}.${budgetVersionId}`, categories);
 }
 

@@ -3,7 +3,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { containerLookup } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { componentAfter } from 'toolkit/extension/utils/react';
-import { getEntityManager, getAccountsController } from 'toolkit/extension/utils/ynab';
+import { getEntityManager, getModalService } from 'toolkit/extension/utils/ynab';
 
 const DEFAULT_DISPLAY_MODE = 'defaultDisplayMode';
 const MENU_DISPLAY_MODE = 'menuDisplayMode';
@@ -44,7 +44,7 @@ const EditMemo = () => {
     });
 
     setDisplayMode(DEFAULT_DISPLAY_MODE);
-    getAccountsController().send('closeModal');
+    getModalService().closeModal();
   };
 
   const selectedTransactionsCount = containerLookup('service:accounts').areChecked.length;
