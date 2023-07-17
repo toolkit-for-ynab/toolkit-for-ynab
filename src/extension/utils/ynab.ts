@@ -73,7 +73,7 @@ export function getApplicationService() {
 }
 
 export function getAccountsService() {
-  return serviceLookup<YNABBudgetService>('accounts');
+  return serviceLookup<YNABAccountsService>('accounts');
 }
 
 export function getBudgetService() {
