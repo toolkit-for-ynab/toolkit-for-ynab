@@ -1,6 +1,6 @@
 import { getFirstMonthOfBudget, getToday } from 'toolkit/extension/utils/date';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { getApplicationService } from 'toolkit/extension/utils/ynab';
 
 const FilterType = {
   Account: 'account-filters',
@@ -38,7 +38,7 @@ export function storeDateFilters(reportKey, filters) {
 }
 
 function generateStorageKey(reportKey, filterType) {
-  const budgetVersionId = controllerLookup('application').get('budgetVersionId');
+  const budgetVersionId = getApplicationService().budgetVersionId;
   return `${budgetVersionId}-${reportKey}-${filterType}`;
 }
 

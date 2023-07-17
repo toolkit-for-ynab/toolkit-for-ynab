@@ -1,4 +1,3 @@
-import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 import { getRouter } from 'toolkit/extension/utils/ember';
 import { ynabRequire } from '../utils/ynab';
@@ -11,8 +10,7 @@ export class RouteChangeListener {
     routeChangeListener.features = [];
 
     function emitSameBudgetRouteChange() {
-      const applicationController = controllerLookup('application');
-      const currentRoute = applicationController.get('currentRouteName');
+      const currentRoute = getRouter().get('currentRouteName');
       routeChangeListener.features.forEach((feature) => {
         const observe = feature.onRouteChanged.bind(feature, currentRoute);
         const wrapped = withToolkitError(observe, feature);
@@ -21,8 +19,7 @@ export class RouteChangeListener {
     }
 
     function emitBudgetRouteChange() {
-      const applicationController = controllerLookup('application');
-      const currentRoute = applicationController.get('currentRouteName');
+      const currentRoute = getRouter().get('currentRouteName');
       routeChangeListener.features.forEach((feature) => {
         const observe = feature.onBudgetChanged.bind(feature, currentRoute);
         const wrapped = withToolkitError(observe, feature);

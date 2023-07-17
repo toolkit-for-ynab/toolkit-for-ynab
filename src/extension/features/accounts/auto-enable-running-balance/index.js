@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
+import { getAccountsService, isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { serviceLookup } from 'toolkit/extension/utils/ember';
 
 export class AutoEnableRunningBalance extends Feature {
@@ -8,7 +8,7 @@ export class AutoEnableRunningBalance extends Feature {
   }
 
   invoke() {
-    const { selectedAccountId } = serviceLookup('accounts');
+    const { selectedAccountId } = getAccountsService();
     const registerGridService = serviceLookup('register-grid');
     if (!registerGridService) {
       return;

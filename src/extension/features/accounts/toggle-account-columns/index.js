@@ -2,14 +2,17 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { componentAppend } from 'toolkit/extension/utils/react';
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
+import {
+  getAccountsService,
+  getModalService,
+  isCurrentRouteAccountsPage,
+} from 'toolkit/extension/utils/ynab';
 import { l10n, getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
 
 export const ShowMemoButton = ({ defaultIsShown, id, toggleState }) => {
   const toggleHidden = () => {
     toggleState(!defaultIsShown);
-    controllerLookup('application').send('closeModal');
+    getModalService().closeModal();
   };
 
   return (
@@ -77,7 +80,7 @@ export class ToggleAccountColumns extends Feature {
   }
 
   getShowMemoState = () => {
-    const { selectedAccountId } = controllerLookup('accounts');
+    const { selectedAccountId } = getAccountsService();
     if (!selectedAccountId) {
       return true;
     }
@@ -86,7 +89,7 @@ export class ToggleAccountColumns extends Feature {
   };
 
   updateShowMemoState = (state) => {
-    const { selectedAccountId } = controllerLookup('accounts');
+    const { selectedAccountId } = getAccountsService();
     if (!selectedAccountId) {
       return;
     }

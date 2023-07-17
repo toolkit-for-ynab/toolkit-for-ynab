@@ -1,6 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
+import { getBudgetService, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class DateOfMoney extends Feature {
   injectCSS() {
@@ -27,7 +26,7 @@ export class DateOfMoney extends Feature {
       return;
     }
 
-    const budgetController = controllerLookup('budget');
+    const budgetController = getBudgetService();
     const ageOfMoney = budgetController.get(
       'budgetViewModel.monthlyBudgetCalculationForCurrentMonth.ageOfMoney'
     );

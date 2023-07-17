@@ -1,11 +1,11 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
-import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
+import { getBudgetService, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { getEmberView } from 'toolkit/extension/utils/ember';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 export class ToggleMasterCategories extends Feature {
   get isAnyCategoryCollapsed() {
-    const { budgetMonthDisplayItems } = controllerLookup('budget');
+    const { budgetMonthDisplayItems } = getBudgetService();
     return budgetMonthDisplayItems.some(({ isCollapsed }) => isCollapsed);
   }
 
@@ -56,10 +56,7 @@ export class ToggleMasterCategories extends Feature {
     if (getToolkitStorageKey('catSoloMode', false)) {
       this.handleToggleSoloMode(event);
     } else {
-      controllerLookup('budget').send(
-        'toggleCollapseMasterCategories',
-        !this.isAnyCategoryCollapsed
-      );
+      getBudgetService().send('toggleCollapseMasterCategories', !this.isAnyCategoryCollapsed);
     }
 
     this.updateToggleIcon();
@@ -91,7 +88,7 @@ export class ToggleMasterCategories extends Feature {
       this.handleRowExpandedToggle
     );
 
-    const budgetController = controllerLookup('budget');
+    const budgetController = getBudgetService();
     budgetController.send('toggleCollapseMasterCategories', true);
     budgetController.budgetMonthDisplayItems
       .find(({ isMasterCategory }) => isMasterCategory)
@@ -127,7 +124,7 @@ export class ToggleMasterCategories extends Feature {
     const clickedMasterCategoryId = getEmberView(event.currentTarget.parentElement.id)
       ?.masterCategory?.entityId;
 
-    controllerLookup('budget').budgetMonthDisplayItems.forEach((item) => {
+    getBudgetService().budgetMonthDisplayItems.forEach((item) => {
       if (!item.isMasterCategory) {
         return;
       }

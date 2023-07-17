@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Feature } from 'toolkit/extension/features/feature';
-import { serviceLookup } from 'toolkit/extension/utils/ember';
 import { componentBefore } from 'toolkit/extension/utils/react';
+import { getAccountsService } from 'toolkit/extension/utils/ynab';
 
 const ToggleButton = ({ stateField }) => {
-  const accountsService = serviceLookup('accounts');
+  const accountsService = getAccountsService();
   const [isShown, setIsShown] = React.useState(accountsService.get(`filters.${stateField}`));
 
   React.useEffect(() => {
