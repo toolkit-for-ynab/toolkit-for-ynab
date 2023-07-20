@@ -37,7 +37,7 @@ export class DaysOfBuffering extends Feature {
       }
 
       onBudgetBalance = onBudgetAccounts.reduce((reduced, current) => {
-        const calculation = current.getAccountCalculation();
+        const calculation = current.accountCalculation;
         if (calculation && !calculation.getAccountIsTombstone()) {
           reduced += calculation.getBalance();
         }
