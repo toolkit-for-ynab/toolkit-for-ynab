@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getBudgetService, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
-import { getEmberView } from 'toolkit/extension/utils/ember';
+import { controllerLookup, getEmberView } from 'toolkit/extension/utils/ember';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 
 export class ToggleMasterCategories extends Feature {
@@ -56,7 +56,10 @@ export class ToggleMasterCategories extends Feature {
     if (getToolkitStorageKey('catSoloMode', false)) {
       this.handleToggleSoloMode(event);
     } else {
-      getBudgetService().send('toggleCollapseMasterCategories', !this.isAnyCategoryCollapsed);
+      controllerLookup('budget').send(
+        'toggleCollapseMasterCategories',
+        !this.isAnyCategoryCollapsed
+      );
     }
 
     this.updateToggleIcon();
@@ -88,10 +91,9 @@ export class ToggleMasterCategories extends Feature {
       this.handleRowExpandedToggle
     );
 
-    const budgetController = getBudgetService();
-    budgetController.send('toggleCollapseMasterCategories', true);
-    budgetController.budgetMonthDisplayItems
-      .find(({ isMasterCategory }) => isMasterCategory)
+    controllerLookup('budget').send('toggleCollapseMasterCategories', true);
+    getBudgetService()
+      .budgetMonthDisplayItems.find(({ isMasterCategory }) => isMasterCategory)
       ?.set('isCollapsed', false);
   }
 
