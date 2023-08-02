@@ -31,7 +31,6 @@
     "windowReload": true,
     "ynab": true,
     "ynabToolKit": true,
-    "YNABFEATURES": true,
     "browser": true,
     "Components": true,
     "__ynabapp__": true
