@@ -103,7 +103,6 @@ export function isYNABReady() {
   return (
     typeof $ !== 'undefined' &&
     !$('.ember-view.is-loading').length &&
-    typeof ynabToolKit !== 'undefined' &&
-    typeof YNABFEATURES !== 'undefined'
+    typeof ynabToolKit !== 'undefined'
   );
 }
