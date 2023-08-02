@@ -45,7 +45,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
       categoryName: category.displayName,
       type: category.goalType,
       goal: parseInt(category.goalTarget || 0, 10),
-      isChecked: category.get('isChecked'),
+      isChecked: category.isChecked,
     };
   }
 

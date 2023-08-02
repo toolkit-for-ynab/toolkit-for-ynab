@@ -6,17 +6,17 @@ import { getAccountsService } from 'toolkit/extension/utils/ynab';
 
 const ToggleButton = ({ stateField }) => {
   const accountsService = getAccountsService();
-  const [isShown, setIsShown] = React.useState(accountsService.get(`filters.${stateField}`));
+  const [isShown, setIsShown] = React.useState(accountsService.filters?.[stateField]);
 
   React.useEffect(() => {
     accountsService.addObserver(`filters.${stateField}`, () => {
-      setIsShown(accountsService.get(`filters.${stateField}`));
+      setIsShown(accountsService.filters?.[stateField]);
     });
   }, []);
 
   const toggleSetting = () => {
-    const filters = accountsService.get('filters');
-    filters.set(`propertiesToSet.${stateField}`, !filters.get(stateField));
+    const filters = accountsService.filters;
+    filters.set(`propertiesToSet.${stateField}`, !filters?.[stateField]);
     filters.applyFilters();
   };
 

@@ -69,21 +69,20 @@ export class SpendingByPayeeComponent extends React.Component {
         return;
       }
 
-      const transactionSubCategoryId = transaction.get('subCategoryId');
+      const transactionSubCategoryId = transaction.subCategoryId;
       const transactionSubCategory =
         this._subCategoriesCollection.findItemByEntityId(transactionSubCategoryId);
       if (!transactionSubCategory || transactionSubCategory.isImmediateIncomeCategory()) {
         return;
       }
 
-      const transactionPayeeId =
-        transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
+      const transactionPayeeId = transaction.payeeId ?? transaction?.parentTransaction?.payeeId;
       const transactionPayee = this._payeesCollection.findItemByEntityId(transactionPayeeId);
       if (!transactionPayee) {
         return;
       }
 
-      const transactionAmount = transaction.get('amount');
+      const transactionAmount = transaction.amount;
       const payeeReportData =
         spendingByPayeeData.get(transactionPayeeId) || createPayeeMap(transactionPayee);
       payeeReportData.set('total', payeeReportData.get('total') + transactionAmount);
@@ -135,8 +134,8 @@ export class SpendingByPayeeComponent extends React.Component {
     spendingByPayeeData.forEach((spendingData, payeeIndex) => {
       const payee = spendingData.get('source');
       const payeeTotal = spendingData.get('total');
-      const payeeId = payee.get('entityId');
-      const payeeName = payee.get('name');
+      const payeeId = payee?.entityId;
+      const payeeName = payee?.name;
 
       totalSpending += payeeTotal;
 

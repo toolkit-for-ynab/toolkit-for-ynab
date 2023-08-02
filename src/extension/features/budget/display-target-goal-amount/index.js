@@ -84,18 +84,13 @@ export class DisplayTargetGoalAmount extends Feature {
     }
 
     const goalType = category.goalType;
-    const { subCategory, monthlySubCategoryBudget, monthlySubCategoryBudgetCalculation } =
-      category.getProperties(
-        'subCategory',
-        'monthlySubCategoryBudget',
-        'monthlySubCategoryBudgetCalculation'
-      );
+    const { subCategory, monthlySubCategoryBudget, monthlySubCategoryBudgetCalculation } = category;
 
     if (!subCategory || !monthlySubCategoryBudgetCalculation || !monthlySubCategoryBudget) {
       return;
     }
 
-    const goalTargetAmount = subCategory.get('goalTargetAmount');
+    const goalTargetAmount = subCategory.goalTargetAmount;
     const { budgeted, goalTarget, isGoalValidForMonth } = monthlySubCategoryBudgetCalculation;
 
     let goalAmount = null;

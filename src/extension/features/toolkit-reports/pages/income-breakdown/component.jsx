@@ -136,7 +136,7 @@ export class IncomeBreakdownComponent extends React.Component {
     const expenses = new Map();
 
     this.props.filteredTransactions.forEach((transaction) => {
-      const transactionSubCategoryId = transaction.get('subCategoryId');
+      const transactionSubCategoryId = transaction.subCategoryId;
       if (!transactionSubCategoryId) {
         return;
       }
@@ -148,8 +148,7 @@ export class IncomeBreakdownComponent extends React.Component {
       }
 
       if (transactionSubCategory.isImmediateIncomeCategory()) {
-        const transactionPayeeId =
-          transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
+        const transactionPayeeId = transaction.payeeId || transaction.parentTransactionPayeeId;
         if (!transactionPayeeId) {
           return;
         }
@@ -174,10 +173,10 @@ export class IncomeBreakdownComponent extends React.Component {
 
   _assignExpenseTransaction(expenses, transaction, transactionSubCategory) {
     const transactionMasterCategory = this._masterCategoriesCollection.findItemByEntityId(
-      transactionSubCategory.get('masterCategoryId')
+      transactionSubCategory.masterCategoryId
     );
 
-    let amount = transaction.get('amount');
+    let amount = transaction.amount;
     let subCategoryMap;
     if (expenses.has(transactionMasterCategory)) {
       subCategoryMap = expenses.get(transactionMasterCategory);
@@ -192,7 +191,7 @@ export class IncomeBreakdownComponent extends React.Component {
   }
 
   _assignIncomeTransaction(incomes, transaction, transactionPayee) {
-    let amount = transaction.get('amount');
+    let amount = transaction.amount;
     if (incomes.has(transactionPayee)) {
       amount += incomes.get(transactionPayee);
     }
@@ -218,7 +217,7 @@ export class IncomeBreakdownComponent extends React.Component {
       }
       if (showIncome) {
         seriesData.push({
-          from: payee.get('entityId'),
+          from: payee?.entityId,
           to: 'Budget',
           weight: amount,
         });
@@ -235,7 +234,7 @@ export class IncomeBreakdownComponent extends React.Component {
       subCategoryMap.forEach((amount, subCatogory) => {
         if (amount > 0) {
           positiveCategoriesSeries.push({
-            from: subCatogory.get('entityId'),
+            from: subCatogory?.entityId,
             to: 'Budget',
             weight: amount,
           });
@@ -248,8 +247,8 @@ export class IncomeBreakdownComponent extends React.Component {
           return;
         }
         subCategorySeries.push({
-          from: masterCategory.get('entityId'),
-          to: subCatogory.get('entityId'),
+          from: masterCategory?.entityId,
+          to: subCatogory?.entityId,
           weight: absAmount,
           outgoing: true,
         });
@@ -262,7 +261,7 @@ export class IncomeBreakdownComponent extends React.Component {
       categorySeries.push({
         masterEntry: {
           from: 'Budget',
-          to: masterCategory.get('entityId'),
+          to: masterCategory?.entityId,
           weight: masterCategoryTotal,
         },
         subEntries: subCategorySeries.sort((a, b) => b.weight - a.weight),
@@ -295,9 +294,12 @@ export class IncomeBreakdownComponent extends React.Component {
         to: totalExpense > totalIncome ? 'Budget' : 'NET GAIN',
         weight: Math.abs(totalIncome - totalExpense),
       };
-      totalExpense > totalIncome && totalIncome === 0
-        ? seriesData.unshift(lossGainData)
-        : seriesData.push(lossGainData);
+
+      if (totalExpense > totalIncome && totalIncome === 0) {
+        seriesData.unshift(lossGainData);
+      } else {
+        seriesData.push(lossGainData);
+      }
     }
 
     return { totalIncome, seriesData };
@@ -311,21 +313,21 @@ export class IncomeBreakdownComponent extends React.Component {
     expenses.forEach((subCategoryMap, masterCategory) => {
       subCategoryMap.forEach((_amount, subCatogory) => {
         nodeData.push({
-          id: subCatogory.get('entityId'),
-          name: subCatogory.get('name'),
+          id: subCatogory?.entityId,
+          name: subCatogory?.name,
         });
       });
 
       nodeData.push({
-        id: masterCategory.get('entityId'),
-        name: masterCategory.get('name'),
+        id: masterCategory?.entityId,
+        name: masterCategory?.name,
       });
     });
 
     incomes.forEach((_amount, payee) => {
       nodeData.push({
-        id: payee.get('entityId'),
-        name: payee.get('name'),
+        id: payee?.entityId,
+        name: payee?.name,
       });
     });
 

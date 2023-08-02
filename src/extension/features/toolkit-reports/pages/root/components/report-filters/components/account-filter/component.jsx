@@ -42,7 +42,7 @@ export class AccountFilterComponent extends React.Component {
   get closedAccounts() {
     const closedAccounts = this._accountsCollection.getClosedAccounts();
     return closedAccounts.toArray().filter((account) => {
-      if (account.get('onBudget') === false && !this.props.includeTrackingAccounts) {
+      if (account.onBudget === false && !this.props.includeTrackingAccounts) {
         return false;
       }
 

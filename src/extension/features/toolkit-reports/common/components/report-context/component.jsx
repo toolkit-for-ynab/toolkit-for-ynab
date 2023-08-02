@@ -143,14 +143,12 @@ export function withReportContextProvider(InnerComponent) {
 
     componentDidMount() {
       ynab.YNABSharedLib.getBudgetViewModel_AllAccountsViewModel().then((transactionsViewModel) => {
-        const visibleTransactionDisplayItems = transactionsViewModel.get(
-          'visibleTransactionDisplayItems'
-        );
+        const visibleTransactionDisplayItems = transactionsViewModel.visibleTransactionDisplayItems;
         const allReportableTransactions = visibleTransactionDisplayItems.filter(
           (transaction) =>
-            !transaction.get('isSplit') &&
-            !transaction.get('isScheduledTransaction') &&
-            !transaction.get('isScheduledSubTransaction')
+            !transaction.isSplit &&
+            !transaction.isScheduledTransaction &&
+            !transaction.isScheduledSubTransaction
         );
 
         this.setState(
