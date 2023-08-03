@@ -46,7 +46,7 @@ export class RightClickToEdit extends Feature {
 
     if (!clickedTransaction.isChecked) {
       areChecked.setEach('isChecked', false);
-      clickedTransaction.set('isChecked', true);
+      clickedTransaction.isChecked = true;
     }
 
     serviceLookup('modal').openModal('modals/account/edit-transactions', {

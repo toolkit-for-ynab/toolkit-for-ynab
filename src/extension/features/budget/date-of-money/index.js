@@ -27,9 +27,8 @@ export class DateOfMoney extends Feature {
     }
 
     const budgetController = getBudgetService();
-    const ageOfMoney = budgetController.get(
-      'budgetViewModel.monthlyBudgetCalculationForCurrentMonth.ageOfMoney'
-    );
+    const ageOfMoney =
+      budgetController?.budgetViewModel?.monthlyBudgetCalculationForCurrentMonth?.ageOfMoney;
 
     // Calculate the Date Of Money by subtracting AOM from today's date
     const today = ynab.utilities.DateWithoutTime.createForToday();

@@ -35,8 +35,8 @@ const EditMemo = () => {
     const { transactionsCollection } = getEntityManager();
     getEntityManager().performAsSingleChangeSet(() => {
       checkedRows.forEach((transaction) => {
-        const entity = transactionsCollection.findItemByEntityId(transaction.get('entityId'));
-        const memoPrevValue = transaction.get('memo') || '';
+        const entity = transactionsCollection.findItemByEntityId(transaction.entityId);
+        const memoPrevValue = transaction.memo || '';
         if (entity) {
           entity.set('memo', makeNewMemo(memoPrevValue));
         }

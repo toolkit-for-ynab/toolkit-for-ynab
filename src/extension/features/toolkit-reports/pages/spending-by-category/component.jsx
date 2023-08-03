@@ -86,18 +86,18 @@ export class SpendingByCategoryComponent extends React.Component {
         return;
       }
 
-      const transactionSubCategoryId = transaction.get('subCategoryId');
+      const transactionSubCategoryId = transaction.subCategoryId;
       const transactionSubCategory =
         this._subCategoriesCollection.findItemByEntityId(transactionSubCategoryId);
       if (!transactionSubCategory || transactionSubCategory.isImmediateIncomeCategory()) {
         return;
       }
 
-      const transactionMasterCategoryId = transactionSubCategory.get('masterCategoryId');
+      const transactionMasterCategoryId = transactionSubCategory.masterCategoryId;
       const transactionMasterCategory = this._masterCategoriesCollection.findItemByEntityId(
         transactionMasterCategoryId
       );
-      const transactionAmount = transaction.get('amount');
+      const transactionAmount = transaction.amount;
       const masterCategoryData =
         spendingByMasterCategory.get(transactionMasterCategoryId) ||
         createMasterCategoryMap(transactionMasterCategory);
@@ -151,8 +151,8 @@ export class SpendingByCategoryComponent extends React.Component {
     spendingByMasterCategory.forEach((spendingData, masterCategoryIndex) => {
       const masterCategory = spendingData.get('source');
       const masterCategoryTotal = spendingData.get('total');
-      const masterCategoryId = masterCategory.get('entityId');
-      const masterCategoryName = masterCategory.get('name');
+      const masterCategoryId = masterCategory?.entityId;
+      const masterCategoryName = masterCategory?.name;
 
       totalSpending += masterCategoryTotal;
 
@@ -167,8 +167,8 @@ export class SpendingByCategoryComponent extends React.Component {
       drillDownData.push({
         data: spendingData.get('sources').map((subCategoryData, subCategoryIndex) => ({
           color: PIE_CHART_COLORS[subCategoryIndex % PIE_CHART_COLORS.length],
-          id: subCategoryData.get('source').get('entityId'),
-          name: subCategoryData.get('source').get('name'),
+          id: subCategoryData.get('source')?.entityId,
+          name: subCategoryData.get('source')?.name,
           y: subCategoryData.get('total'),
           transactions: subCategoryData.get('transactions'),
         })),

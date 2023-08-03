@@ -2,7 +2,7 @@ import Highcharts from 'highcharts';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { localizedMonthAndYear, sortByGettableDate } from 'toolkit/extension/utils/date';
+import { localizedMonthAndYear, sortByDate } from 'toolkit/extension/utils/date';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { Legend } from './components/legend';
@@ -145,7 +145,7 @@ export class InflowOutflowComponent extends React.Component {
     let accountInflows = new Map();
     let accountOutflows = new Map();
     const allReportData = { inflows: [], outflows: [], labels: [] };
-    const transactions = this.props.filteredTransactions.slice().sort(sortByGettableDate);
+    const transactions = this.props.filteredTransactions.slice().sort(sortByDate);
 
     let lastMonth = null;
     function pushCurrentAccountData() {
@@ -167,7 +167,7 @@ export class InflowOutflowComponent extends React.Component {
     }
 
     transactions.forEach((transaction) => {
-      const transactionMonth = transaction.get('date').clone().startOfMonth();
+      const transactionMonth = transaction.date.clone().startOfMonth();
       if (lastMonth === null) {
         lastMonth = transactionMonth;
       }
@@ -178,13 +178,13 @@ export class InflowOutflowComponent extends React.Component {
         lastMonth = transactionMonth;
       }
 
-      const transactionAccountId = transaction.get('accountId');
+      const transactionAccountId = transaction.accountId;
 
       if (transaction.getIsOnBudgetTransfer()) {
         return;
       }
 
-      const transactionAmount = transaction.get('amount');
+      const transactionAmount = transaction.amount;
       let prevInflow = accountInflows.has(transactionAccountId)
         ? accountInflows.get(transactionAccountId)
         : 0;
@@ -209,7 +209,7 @@ export class InflowOutflowComponent extends React.Component {
     const { fromDate, toDate } = this.props.filters.dateFilter;
     if (transactions.length) {
       let currentIndex = 0;
-      const transactionMonth = transactions[0].get('date').clone().startOfMonth();
+      const transactionMonth = transactions[0].date.clone().startOfMonth();
       const lastFilterMonth = toDate.clone().addMonths(1).startOfMonth();
       while (transactionMonth.isBefore(lastFilterMonth)) {
         if (!allReportData.labels.includes(localizedMonthAndYear(transactionMonth))) {

@@ -69,7 +69,7 @@ export class Pacing extends Feature {
 
     const pacingCalculation = pacingForCategory(category);
 
-    const $display = this.generateDisplay(category.get('subCategory.entityId'), pacingCalculation);
+    const $display = this.generateDisplay(category?.subCategory?.entityId, pacingCalculation);
 
     $display.on('click', (event) => {
       const deemphasizedCategories = getDeemphasizedCategories();

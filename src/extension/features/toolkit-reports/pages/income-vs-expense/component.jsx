@@ -136,11 +136,11 @@ export class IncomeVsExpenseComponent extends React.Component {
       const prevPayees = prevState.incomes.get('sources');
       const prevMasterCategories = prevState.expenses.get('sources');
       prevPayees.forEach((payee) => {
-        collapsedSources.add(payee.get('source').get('entityId'));
+        collapsedSources.add(payee.get('source')?.entityId);
       });
 
       prevMasterCategories.forEach((category) => {
-        collapsedSources.add(category.get('source').get('entityId'));
+        collapsedSources.add(category.get('source')?.entityId);
       });
 
       return { collapsedSources };
@@ -180,7 +180,7 @@ export class IncomeVsExpenseComponent extends React.Component {
     ]);
 
     this.props.filteredTransactions.forEach((transaction) => {
-      const transactionSubCategoryId = transaction.get('subCategoryId');
+      const transactionSubCategoryId = transaction.subCategoryId;
       if (!transactionSubCategoryId) {
         return;
       }
@@ -192,8 +192,7 @@ export class IncomeVsExpenseComponent extends React.Component {
       }
 
       if (transactionSubCategory.isImmediateIncomeCategory()) {
-        const transactionPayeeId =
-          transaction.get('payeeId') || transaction.get('parentTransaction.payeeId');
+        const transactionPayeeId = transaction.payeeId || transaction.parentTransaction?.payeeId;
         if (!transactionPayeeId) {
           return;
         }
@@ -221,7 +220,7 @@ export class IncomeVsExpenseComponent extends React.Component {
 
   _assignIncomeTransaction(incomes, transaction, transactionPayee) {
     const allPayeesData = incomes.get('payees');
-    const transactionPayeeId = transactionPayee.get('entityId');
+    const transactionPayeeId = transactionPayee?.entityId;
     const incomePayeeData =
       allPayeesData.get(transactionPayeeId) ||
       createPayeeMap(transactionPayee, this._createEmptyMonthMapFromFilters());
@@ -240,8 +239,8 @@ export class IncomeVsExpenseComponent extends React.Component {
     this._addTransactionToMonthlyTotals(transaction, expenses.get('monthlyTotals'));
 
     // specific sub-category
-    const transactionSubCategoryId = transactionSubCategory.get('entityId');
-    const transactionMasterCategoryId = transactionSubCategory.get('masterCategoryId');
+    const transactionSubCategoryId = transactionSubCategory?.entityId;
+    const transactionMasterCategoryId = transactionSubCategory.masterCategoryId;
     const allMasterCategoriesReportData = expenses.get('masterCategories');
     const masterCategory = this._masterCategoriesCollection.findItemByEntityId(
       transactionMasterCategoryId
@@ -262,8 +261,8 @@ export class IncomeVsExpenseComponent extends React.Component {
   }
 
   _addTransactionToMonthlyTotals(transaction, monthlyTotalsMap) {
-    const transactionAmount = transaction.get('amount');
-    const transactionMonth = transaction.get('date').clone().startOfMonth();
+    const transactionAmount = transaction.amount;
+    const transactionMonth = transaction.date.clone().startOfMonth();
     const monthlyTotalsKey = transactionMonth.toISOString();
 
     const monthlyTotalsData = monthlyTotalsMap.get(monthlyTotalsKey);
@@ -334,8 +333,8 @@ export class IncomeVsExpenseComponent extends React.Component {
 
     const payeesArray = mapToArray(incomes.get('payees'))
       .sort((a, b) => {
-        const nameA = a.get('payee').get('name');
-        const nameB = b.get('payee').get('name');
+        const nameA = a?.payee?.name;
+        const nameB = b?.payee?.name;
         if (nameA < nameB) {
           return -1;
         }

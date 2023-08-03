@@ -34,7 +34,7 @@ export class EasyTransactionApproval extends Feature {
       const { transactionsCollection } = getEntityManager();
       getEntityManager().batchChangeProperties(() => {
         containerLookup('service:accounts').areChecked.forEach((transaction) => {
-          const entity = transactionsCollection.findItemByEntityId(transaction.get('entityId'));
+          const entity = transactionsCollection.findItemByEntityId(transaction?.entityId);
           if (entity) {
             entity.set('accepted', true);
           }

@@ -2,7 +2,7 @@ import Highcharts from 'highcharts';
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { localizedMonthAndYear, sortByGettableDate } from 'toolkit/extension/utils/date';
+import { localizedMonthAndYear, sortByDate } from 'toolkit/extension/utils/date';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { Legend } from './components/legend';
@@ -58,7 +58,9 @@ export class NetWorthComponent extends React.Component {
                 debts={this.state.hoveredData.debts}
                 debtRatio={this.state.hoveredData.debtRatio}
                 netWorth={this.state.hoveredData.netWorth}
-                changePreviousMonth={this.state.hoveredData.netWorth - (this.state.hoveredData.previousWorth || 0)}
+                changePreviousMonth={
+                  this.state.hoveredData.netWorth - (this.state.hoveredData.previousWorth || 0)
+                }
               />
             )}
           </div>
@@ -172,7 +174,7 @@ export class NetWorthComponent extends React.Component {
 
     const accounts = new Map();
     const allReportData = { assets: [], labels: [], debts: [], netWorths: [], debtRatios: [] };
-    const transactions = this.props.allReportableTransactions.slice().sort(sortByGettableDate);
+    const transactions = this.props.allReportableTransactions.slice().sort(sortByDate);
 
     let lastMonth = null;
     function pushCurrentAccountData() {
@@ -195,7 +197,7 @@ export class NetWorthComponent extends React.Component {
     }
 
     transactions.forEach((transaction) => {
-      const transactionMonth = transaction.get('date').clone().startOfMonth();
+      const transactionMonth = transaction.date.clone().startOfMonth();
       if (lastMonth === null) {
         lastMonth = transactionMonth;
       }
@@ -206,12 +208,12 @@ export class NetWorthComponent extends React.Component {
         lastMonth = transactionMonth;
       }
 
-      const transactionAccountId = transaction.get('accountId');
+      const transactionAccountId = transaction.accountId;
       if (this.props.filters.accountFilterIds.has(transactionAccountId)) {
         return;
       }
 
-      const transactionAmount = transaction.get('amount');
+      const transactionAmount = transaction.amount;
       if (accounts.has(transactionAccountId)) {
         accounts.set(transactionAccountId, accounts.get(transactionAccountId) + transactionAmount);
       } else {
@@ -230,7 +232,7 @@ export class NetWorthComponent extends React.Component {
     const { fromDate, toDate } = this.props.filters.dateFilter;
     if (transactions.length) {
       let currentIndex = 0;
-      const transactionMonth = transactions[0].get('date').clone().startOfMonth();
+      const transactionMonth = transactions[0].date.clone().startOfMonth();
       const lastFilterMonth = toDate.clone().addMonths(1).startOfMonth();
       while (transactionMonth.isBefore(lastFilterMonth)) {
         if (!allReportData.labels.includes(localizedMonthAndYear(transactionMonth))) {
