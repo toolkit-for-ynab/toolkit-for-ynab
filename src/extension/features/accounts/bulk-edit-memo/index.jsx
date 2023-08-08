@@ -32,13 +32,12 @@ const EditMemo = () => {
 
   const handleConfirm = () => {
     const checkedRows = containerLookup('service:accounts').areChecked;
-    const { transactionsCollection } = getEntityManager();
     getEntityManager().performAsSingleChangeSet(() => {
       checkedRows.forEach((transaction) => {
-        const entity = transactionsCollection.findItemByEntityId(transaction.entityId);
+        const entity = getEntityManager().getTransactionById(transaction.entityId);
         const memoPrevValue = transaction.memo || '';
         if (entity) {
-          entity.set('memo', makeNewMemo(memoPrevValue));
+          entity.memo = makeNewMemo(memoPrevValue);
         }
       });
     });

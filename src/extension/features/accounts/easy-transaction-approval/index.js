@@ -31,12 +31,11 @@ export class EasyTransactionApproval extends Feature {
 
       if (isInputEvent) return;
 
-      const { transactionsCollection } = getEntityManager();
       getEntityManager().batchChangeProperties(() => {
         containerLookup('service:accounts').areChecked.forEach((transaction) => {
-          const entity = transactionsCollection.findItemByEntityId(transaction?.entityId);
+          const entity = getEntityManager().getTransactionById(transaction?.entityId);
           if (entity) {
-            entity.set('accepted', true);
+            entity.accepted = true;
           }
         });
       });
@@ -55,11 +54,10 @@ export class EasyTransactionApproval extends Feature {
 
     const rowId = event.currentTarget?.parentElement?.parentElement?.dataset?.rowId;
     if (rowId) {
-      const { transactionsCollection } = getEntityManager();
       getEntityManager().batchChangeProperties(() => {
-        const entity = transactionsCollection.findItemByEntityId(rowId);
+        const entity = getEntityManager().getTransactionById(rowId);
         if (entity) {
-          entity.set('accepted', true);
+          entity.accepted = true;
         }
       });
     }
