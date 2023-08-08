@@ -3,11 +3,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { containerLookup } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { componentAfter } from 'toolkit/extension/utils/react';
-import {
-  getTransactionById,
-  getEntityManager,
-  getModalService,
-} from 'toolkit/extension/utils/ynab';
+import { getEntityManager, getModalService } from 'toolkit/extension/utils/ynab';
 
 const DEFAULT_DISPLAY_MODE = 'defaultDisplayMode';
 const MENU_DISPLAY_MODE = 'menuDisplayMode';
@@ -38,7 +34,7 @@ const EditMemo = () => {
     const checkedRows = containerLookup('service:accounts').areChecked;
     getEntityManager().performAsSingleChangeSet(() => {
       checkedRows.forEach((transaction) => {
-        const entity = getTransactionById(transaction.entityId);
+        const entity = getEntityManager().getTransactionById(transaction.entityId);
         const memoPrevValue = transaction.memo || '';
         if (entity) {
           entity.memo = makeNewMemo(memoPrevValue);

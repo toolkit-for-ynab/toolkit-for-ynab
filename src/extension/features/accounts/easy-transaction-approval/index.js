@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { containerLookup } from 'toolkit/extension/utils/ember';
-import { getTransactionById, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export class EasyTransactionApproval extends Feature {
   shouldInvoke() {
@@ -33,7 +33,7 @@ export class EasyTransactionApproval extends Feature {
 
       getEntityManager().batchChangeProperties(() => {
         containerLookup('service:accounts').areChecked.forEach((transaction) => {
-          const entity = getTransactionById(transaction?.entityId);
+          const entity = getEntityManager().getTransactionById(transaction?.entityId);
           if (entity) {
             entity.accepted = true;
           }
@@ -55,7 +55,7 @@ export class EasyTransactionApproval extends Feature {
     const rowId = event.currentTarget?.parentElement?.parentElement?.dataset?.rowId;
     if (rowId) {
       getEntityManager().batchChangeProperties(() => {
-        const entity = getTransactionById(rowId);
+        const entity = getEntityManager().getTransactionById(rowId);
         if (entity) {
           entity.accepted = true;
         }
