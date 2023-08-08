@@ -9,6 +9,10 @@ export function getEntityManager() {
   return ynab.YNABSharedLib.defaultInstance.entityManager;
 }
 
+export function getTransactionById(id: string) {
+  return getEntityManager().getTransactionById(id);
+}
+
 export function getCurrentBudgetDate() {
   const date = getSelectedMonth()?.format('YYYYMM');
   return { year: date?.slice(0, 4), month: date?.slice(4, 6) };
