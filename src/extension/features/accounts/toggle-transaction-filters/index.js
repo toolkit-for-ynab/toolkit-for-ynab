@@ -1,22 +1,22 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Feature } from 'toolkit/extension/features/feature';
-import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { componentBefore } from 'toolkit/extension/utils/react';
+import { getAccountsService } from 'toolkit/extension/utils/ynab';
 
 const ToggleButton = ({ stateField }) => {
-  const accountsController = controllerLookup('accounts');
-  const [isShown, setIsShown] = React.useState(accountsController.get(`filters.${stateField}`));
+  const accountsService = getAccountsService();
+  const [isShown, setIsShown] = React.useState(accountsService.filters?.[stateField]);
 
   React.useEffect(() => {
-    accountsController.addObserver(`filters.${stateField}`, () => {
-      setIsShown(accountsController.get(`filters.${stateField}`));
+    accountsService.addObserver(`filters.${stateField}`, () => {
+      setIsShown(accountsService.filters?.[stateField]);
     });
   }, []);
 
   const toggleSetting = () => {
-    const filters = accountsController.get('filters');
-    filters.set(`propertiesToSet.${stateField}`, !filters.get(stateField));
+    const filters = accountsService.filters;
+    filters.set(`propertiesToSet.${stateField}`, !filters?.[stateField]);
     filters.applyFilters();
   };
 

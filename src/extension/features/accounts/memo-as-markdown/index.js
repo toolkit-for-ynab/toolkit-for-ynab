@@ -30,7 +30,7 @@ export class MemoAsMarkdown extends Feature {
       }
     };
 
-    const note = view.get('attrs.content.value.memo');
+    const note = view?.attrs?.content?.value?.memo;
     const originalMemo = element.querySelector('.ynab-grid-cell-memo span');
     if (note && originalMemo) {
       $(originalMemo).hide();

@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { controllerLookup, serviceLookup } from 'toolkit/extension/utils/ember';
+import { getAccountsService, isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
+import { serviceLookup } from 'toolkit/extension/utils/ember';
 
 export class AutoEnableRunningBalance extends Feature {
   shouldInvoke() {
@@ -8,13 +8,13 @@ export class AutoEnableRunningBalance extends Feature {
   }
 
   invoke() {
-    const { selectedAccountId } = controllerLookup('accounts');
+    const { selectedAccountId } = getAccountsService();
     const registerGridService = serviceLookup('register-grid');
     if (!registerGridService) {
       return;
     }
 
-    const { balance } = registerGridService.get('displayColumns');
+    const { balance } = registerGridService.displayColumns;
     if (selectedAccountId && !balance) {
       try {
         // misspelled -- should remove once/if fixed

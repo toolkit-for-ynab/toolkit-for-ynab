@@ -199,6 +199,10 @@ Shows a light gray background on category rows when hovered over.
 
 Ensure all negative balances are highlighted red instead of yellow, even with credit card spending.
 
+## Hyperlinks in the memo field
+
+Any memo on the budget screen that starts with "https://", will be displayed as a hyperlink. Use this to link to files in your favourite cloud storage (iCloud, OneDrive, Dropbox, etc.) Note - "http", rather than "https", links are ignored for security reasons.
+
 ## Live on Last Month's Income
 
 Add a section to the budget inspector showing your variance between last month's income and this month's assigned budget for users who still live by the old Rule #4.
@@ -248,10 +252,6 @@ Distributes the remaining total of a split transaction proportionally to all oth
 ## Add "Check Number" Column
 
 Adds a check number column to your account view. YNAB currently has a way to save check numbers but does not officially support it. There are no guarantees that YNAB will continue to store this value. For that reason, it is still recommended that you store check numbers in the memo field
-
-## Add "Clear Selection" Button
-
-Add an option to the "Edit Transaction(s)" menu to "Clear Selection" clearing all selected transactions.
 
 ## Add "Scheduled" and "Reconciled" Toggle Buttons
 

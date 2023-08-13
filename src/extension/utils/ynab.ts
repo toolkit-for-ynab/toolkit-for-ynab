@@ -1,24 +1,8 @@
 import { YNABModalService } from 'toolkit/types/ynab/services/YNABModalService';
-import { controllerLookup, getRouter, serviceLookup } from './ember';
+import { getRouter, serviceLookup } from './ember';
 
 export function ynabRequire<T = any>(module: string): T {
   return window.requireModule<T>(module);
-}
-
-export function getApplicationController() {
-  return controllerLookup<YNABApplicationController>('application');
-}
-
-export function getAccountsController() {
-  return controllerLookup<YNABAccountsController>('accounts');
-}
-
-export function getBudgetController() {
-  return controllerLookup<YNABBudgetController>('budget');
-}
-
-export function getReportsController() {
-  return controllerLookup<YNABReportsController>('reports');
 }
 
 export function getEntityManager() {
@@ -60,7 +44,7 @@ export function isCurrentRouteReportPage(
 }
 
 export function getSelectedAccount() {
-  const selectedAccountId = getAccountsController()?.selectedAccountId;
+  const selectedAccountId = serviceLookup<YNABAccountsService>('accounts')?.selectedAccountId;
   if (selectedAccountId) {
     return getEntityManager().getAccountById(selectedAccountId);
   }
@@ -73,11 +57,11 @@ export function getCurrentRouteName() {
 }
 
 export function getAllBudgetMonthsViewModel() {
-  return getBudgetController()?.budgetViewModel?.allBudgetMonthsViewModel;
+  return getBudgetService()?.budgetViewModel?.allBudgetMonthsViewModel;
 }
 
 export function getBudgetViewModel() {
-  return getBudgetController()?.budgetViewModel;
+  return getBudgetService()?.budgetViewModel;
 }
 
 export function getSelectedMonth() {
@@ -85,7 +69,11 @@ export function getSelectedMonth() {
 }
 
 export function getApplicationService() {
-  return getApplicationController()?.applicationService;
+  return serviceLookup<YNABApplicationService>('application');
+}
+
+export function getAccountsService() {
+  return serviceLookup<YNABAccountsService>('accounts');
 }
 
 export function getBudgetService() {
@@ -115,7 +103,6 @@ export function isYNABReady() {
   return (
     typeof $ !== 'undefined' &&
     !$('.ember-view.is-loading').length &&
-    typeof ynabToolKit !== 'undefined' &&
-    typeof YNABFEATURES !== 'undefined'
+    typeof ynabToolKit !== 'undefined'
   );
 }

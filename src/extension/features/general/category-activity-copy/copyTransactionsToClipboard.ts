@@ -13,23 +13,21 @@ interface Activities {
 export default function copyTransactionsToClipboard(transactions: YNABTransaction[]) {
   const entityManager = getEntityManager();
   const activities = transactions.map<Activities>((transaction) => {
-    const parentEntityId = transaction.get('parentEntityId');
-    let payeeId = transaction.get('payeeId');
+    const parentEntityId = transaction?.parentEntityId;
+    let payeeId = transaction?.payeeId;
 
     if (parentEntityId) {
-      payeeId = entityManager.transactionsCollection
-        .findItemByEntityId(parentEntityId)
-        .get('payeeId');
+      payeeId = entityManager.transactionsCollection.findItemByEntityId(parentEntityId)?.payeeId;
     }
 
     const payee = entityManager.payeesCollection.findItemByEntityId(payeeId);
     return {
-      Account: transaction.get('accountName'),
-      Date: ynab.formatDateLong(transaction.get('date').toString()),
-      Payee: payee && payee.get('name') ? payee.get('name') : 'Unknown',
-      Category: transaction.get('subCategoryNameWrapped'),
-      Memo: transaction.get('memo'),
-      Amount: ynab.formatCurrency(transaction.get('amount')),
+      Account: transaction?.accountName,
+      Date: ynab.formatDateLong(transaction?.date.toString()),
+      Payee: payee?.name ?? 'Unknown',
+      Category: transaction?.subCategoryNameWrapped,
+      Memo: transaction?.memo,
+      Amount: ynab.formatCurrency(transaction?.amount),
     };
   });
 

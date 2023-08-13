@@ -1,6 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { controllerLookup, serviceLookup } from 'toolkit/extension/utils/ember';
+import { getAccountsService, isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
 export class CalculateIRR extends Feature {
@@ -9,13 +8,12 @@ export class CalculateIRR extends Feature {
   }
 
   shouldInvoke() {
-    let { selectedAccount } = serviceLookup('accounts');
+    let { selectedAccount } = getAccountsService();
     return isCurrentRouteAccountsPage() && selectedAccount && !selectedAccount.onBudget;
   }
 
   invoke() {
-    let { filters } = controllerLookup('accounts');
-    let { selectedAccount, selectedAccountId } = serviceLookup('accounts');
+    let { filters, selectedAccount, selectedAccountId } = getAccountsService();
     let { filterFrom, filterTo } = this._getFilterDates(filters);
     let totalIrr = this._calculateIRR(selectedAccountId);
     if (totalIrr === Infinity) {

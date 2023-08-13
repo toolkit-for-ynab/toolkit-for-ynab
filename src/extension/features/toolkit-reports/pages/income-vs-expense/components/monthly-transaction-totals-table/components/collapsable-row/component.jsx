@@ -29,7 +29,7 @@ export class CollapsableRow extends React.Component {
             {this._renderChildRows()}
             <MonthlyTotalsRow
               className="tk-totals-table__child-summary-row"
-              titleCell={`Total ${source.get('name')}`}
+              titleCell={`Total ${source?.name}`}
               monthlyTotals={monthlyTotals}
             />
           </div>
@@ -44,7 +44,7 @@ export class CollapsableRow extends React.Component {
     return (
       <div className="tk-flex">
         <i className={`flaticon stroke ${isCollapsed ? 'up' : 'down'}`} />
-        <div>{source.get('name')}</div>
+        <div>{source?.name}</div>
       </div>
     );
   }
@@ -56,9 +56,9 @@ export class CollapsableRow extends React.Component {
 
       return (
         <MonthlyTotalsRow
-          key={source.get('entityId')}
+          key={source?.entityId}
           className="tk-totals-table__child-row"
-          titleCell={source.get('name')}
+          titleCell={source?.name}
           monthlyTotals={monthlyTotals}
         />
       );
@@ -66,6 +66,6 @@ export class CollapsableRow extends React.Component {
   }
 
   _toggleCollapse = () => {
-    this.props.onToggleCollapse(this.props.source.get('entityId'));
+    this.props.onToggleCollapse(this.props.source?.entityId);
   };
 }

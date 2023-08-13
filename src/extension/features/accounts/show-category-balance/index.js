@@ -39,9 +39,8 @@ export class ShowCategoryBalance extends Feature {
       return;
     }
 
-    const subCategoryCalculations = allBudgetMonthsViewModel.get(
-      'monthlySubCategoryBudgetCalculationsCollection'
-    );
+    const subCategoryCalculations =
+      allBudgetMonthsViewModel.monthlySubCategoryBudgetCalculationsCollection;
     const categoryLookupPrefix = `mcbc/${getCurrentDate('YYYY-MM')}`;
 
     const budgetData = subCategoryCalculations.findItemByEntityId(

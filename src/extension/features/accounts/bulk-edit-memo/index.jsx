@@ -3,7 +3,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { containerLookup } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { componentAfter } from 'toolkit/extension/utils/react';
-import { getEntityManager, getAccountsController } from 'toolkit/extension/utils/ynab';
+import { getEntityManager, getModalService } from 'toolkit/extension/utils/ynab';
 
 const DEFAULT_DISPLAY_MODE = 'defaultDisplayMode';
 const MENU_DISPLAY_MODE = 'menuDisplayMode';
@@ -32,19 +32,18 @@ const EditMemo = () => {
 
   const handleConfirm = () => {
     const checkedRows = containerLookup('service:accounts').areChecked;
-    const { transactionsCollection } = getEntityManager();
     getEntityManager().performAsSingleChangeSet(() => {
       checkedRows.forEach((transaction) => {
-        const entity = transactionsCollection.findItemByEntityId(transaction.get('entityId'));
-        const memoPrevValue = transaction.get('memo') || '';
+        const entity = getEntityManager().getTransactionById(transaction.entityId);
+        const memoPrevValue = transaction.memo || '';
         if (entity) {
-          entity.set('memo', makeNewMemo(memoPrevValue));
+          entity.memo = makeNewMemo(memoPrevValue);
         }
       });
     });
 
     setDisplayMode(DEFAULT_DISPLAY_MODE);
-    getAccountsController().send('closeModal');
+    getModalService().closeModal();
   };
 
   const selectedTransactionsCount = containerLookup('service:accounts').areChecked.length;

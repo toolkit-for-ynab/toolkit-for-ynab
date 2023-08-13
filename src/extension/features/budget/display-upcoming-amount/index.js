@@ -37,7 +37,7 @@ export class DisplayUpcomingAmount extends Feature {
 
         let upcoming = $('<div>', {
           class: 'tk-activity-upcoming-amount currency',
-          title: `Total upcoming transaction amount in this month for ${subCategory.get('name')}`,
+          title: `Total upcoming transaction amount in this month for ${subCategory.name}`,
           text: formatCurrency(monthlySubCategoryBudgetCalculation.upcomingTransactions),
         });
 

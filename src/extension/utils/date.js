@@ -34,6 +34,20 @@ export function sortByGettableDate(a, b) {
   return 0;
 }
 
+export function sortByDate(a, b) {
+  const dateA = a.date;
+  const dateB = b.date;
+
+  if (dateA.isBefore(dateB)) {
+    return -1;
+  }
+  if (dateA.isAfter(dateB)) {
+    return 1;
+  }
+
+  return 0;
+}
+
 function ynabDate(format) {
   if (typeof format !== 'string') {
     return ynab.YNABSharedLib.dateFormatter.formatDate();

@@ -1,6 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { serviceLookup } from 'toolkit/extension/utils/ember';
+import { getAccountsService, isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { formatCurrency, stripCurrency } from 'toolkit/extension/utils/currency';
 
 export class DefaultCCToCleared extends Feature {
@@ -8,7 +7,7 @@ export class DefaultCCToCleared extends Feature {
 
   shouldInvoke() {
     // grab the current account
-    let { selectedAccount } = serviceLookup('accounts');
+    let { selectedAccount } = getAccountsService();
     return (
       // only activate if we're on an accounts page and it's a credit card account
       isCurrentRouteAccountsPage() &&
@@ -58,7 +57,7 @@ export class DefaultCCToCleared extends Feature {
     // transaction entry model to appear
     if (didChangeInput && this.didClickRecord) {
       // grab amounts from account
-      let { selectedAccount } = serviceLookup('accounts');
+      let { selectedAccount } = getAccountsService();
       const clearedBal = selectedAccount.accountCalculation.clearedBalance;
 
       // we want to fill in the absolute value of cleared bal, since it's positive infow,

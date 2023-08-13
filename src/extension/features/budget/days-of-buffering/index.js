@@ -37,7 +37,7 @@ export class DaysOfBuffering extends Feature {
       }
 
       onBudgetBalance = onBudgetAccounts.reduce((reduced, current) => {
-        const calculation = current.getAccountCalculation();
+        const calculation = current.accountCalculation;
         if (calculation && !calculation.getAccountIsTombstone()) {
           reduced += calculation.getBalance();
         }
@@ -122,7 +122,7 @@ export class DaysOfBuffering extends Feature {
   _calculateDaysOfBuffering = (balance, transactions) => {
     const { dates, totalOutflow, uniqueDates } = transactions.reduce(
       (reduced, current) => {
-        const { amount, date } = current.getProperties('amount', 'date');
+        const { amount, date } = current;
         reduced.dates.push(date.toUTCMoment());
         reduced.uniqueDates.set(date.format());
         reduced.totalOutflow += amount;
@@ -168,17 +168,17 @@ export class DaysOfBuffering extends Feature {
     if (this.lookbackDays === 0) {
       isEligibleDate = true;
     } else {
-      isEligibleDate = transaction.get('date').daysApart(today) < this.lookbackDays;
+      isEligibleDate = transaction.date.daysApart(today) < this.lookbackDays;
     }
 
     return (
       isEligibleDate &&
-      !transaction.get('isTombstone') &&
-      !transaction.get('payee.isInternal') &&
+      !transaction.isTombstone &&
+      !transaction.payee?.isInternal &&
       !transaction.isTransferTransaction() &&
-      transaction.get('account.onBudget') &&
-      transaction.get('amount') < 0 &&
-      transaction.get('accepted')
+      transaction.account.onBudget &&
+      transaction.amount < 0 &&
+      transaction.accepted
     );
   };
 
