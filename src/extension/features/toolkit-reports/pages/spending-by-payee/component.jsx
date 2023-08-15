@@ -65,7 +65,7 @@ export class SpendingByPayeeComponent extends React.Component {
     const spendingByPayeeData = new Map();
 
     this.props.filteredTransactions.forEach((transaction) => {
-      if (transaction.getIsOnBudgetTransfer()) {
+      if (transaction.isOnBudgetTransfer) {
         return;
       }
 

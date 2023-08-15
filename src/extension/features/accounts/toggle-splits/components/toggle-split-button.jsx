@@ -44,7 +44,7 @@ export class ToggleSplitButton extends React.Component {
 
     [scheduledTransactionsCollection, transactionsCollection].forEach((collection) => {
       collection.reduce((reduced, transaction) => {
-        if (transaction.getIsSplit()) {
+        if (transaction.isSplit) {
           reduced[transaction?.entityId] = true;
         }
 
