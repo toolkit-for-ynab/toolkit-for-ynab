@@ -36,10 +36,9 @@ export class DaysOfBuffering extends Feature {
         onBudgetAccounts = onBudgetAccounts.filter((acc) => acc.accountType !== 'CreditCard');
       }
 
-      onBudgetBalance = onBudgetAccounts.reduce((reduced, current) => {
-        const calculation = current.accountCalculation;
-        if (calculation && !calculation.getAccountIsTombstone()) {
-          reduced += calculation.getBalance();
+      onBudgetBalance = onBudgetAccounts.reduce((reduced, { accountCalculation }) => {
+        if (accountCalculation && !accountCalculation.isTombstone) {
+          reduced += accountCalculation.balance;
         }
 
         return reduced;
