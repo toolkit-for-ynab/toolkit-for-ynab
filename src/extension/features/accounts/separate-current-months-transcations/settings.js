@@ -1,8 +1,9 @@
 module.exports = {
-  name: 'MyCoolFeature',
+  name: 'SeparateCurrentMonthsTransactions',
   type: 'checkbox',
   default: false,
-  section: 'budget',
-  title: 'My Cool Feature!',
-  description: 'This is my brand new feature.',
+  section: 'accounts',
+  title: 'Separate Current Months Transactions',
+  description:
+    "Provide a line in the list of transactions that separate the current month's transactions",
 };
