@@ -54,7 +54,7 @@ export class MonthlyTransactionTotalsTable extends React.Component {
 
     return this.props.data.get('sources').map((sourceData) => {
       const source = sourceData.get('source');
-      const sourceId = source.get('entityId');
+      const sourceId = source?.entityId ?? source.get('entityId');
 
       return (
         <CollapsableRow
