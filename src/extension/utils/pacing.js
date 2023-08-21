@@ -4,12 +4,12 @@ import { getApplicationService } from './ynab';
 export const PACING_DEEMPHASIZED_KEY = 'pacing-deemphasized-categories';
 
 export function getDeemphasizedCategories() {
-  const budgetVersionId = getApplicationService().get('budgetVersionId');
+  const budgetVersionId = getApplicationService().budgetVersionId;
   return getToolkitStorageKey(`${PACING_DEEMPHASIZED_KEY}.${budgetVersionId}`, []);
 }
 
 export function setDeemphasizedCategories(categories) {
-  const budgetVersionId = getApplicationService().get('budgetVersionId');
+  const budgetVersionId = getApplicationService().budgetVersionId;
   return setToolkitStorageKey(`${PACING_DEEMPHASIZED_KEY}.${budgetVersionId}`, categories);
 }
 
@@ -21,7 +21,7 @@ export function pacingForCategory(budgetMonthDisplayItem) {
     throw new Error('Invalid Argument to calculate pacing. Expected BudgetMonthDisplayItem');
   }
 
-  const subCategory = budgetMonthDisplayItem.get('subCategory');
+  const subCategory = budgetMonthDisplayItem.subCategory;
   if (!subCategory) {
     throw new Error('Pacing can only be calculated for subCategories.');
   }
@@ -29,10 +29,10 @@ export function pacingForCategory(budgetMonthDisplayItem) {
   const today = ynab.utilities.DateWithoutTime.createForToday();
   const startOfCurrentMonth = today.clone().startOfMonth();
   const endOfCurrentMonth = today.clone().endOfMonth();
-  const categoryMonth = budgetMonthDisplayItem.get('budgetMonth');
+  const categoryMonth = budgetMonthDisplayItem.budgetMonth;
 
-  const balancePriorToSpending = budgetMonthDisplayItem.get('balancePriorToSpending');
-  const activity = budgetMonthDisplayItem.get('activity');
+  const balancePriorToSpending = budgetMonthDisplayItem.balancePriorToSpending;
+  const activity = budgetMonthDisplayItem.activity;
   const budgetedPace = -activity / balancePriorToSpending;
 
   let monthPace = today.getDate() / today.daysInMonth();
@@ -42,17 +42,17 @@ export function pacingForCategory(budgetMonthDisplayItem) {
     monthPace = 0;
   }
 
-  const subCategoryId = subCategory.get('entityId');
+  const subCategoryId = subCategory?.entityId;
   const entityManager = budgetMonthDisplayItem.getEntityManager();
   const allTransactions = entityManager.getTransactionsBySubCategoryId(subCategoryId);
   const allSubTransactions = entityManager.getSubTransactionsBySubCategoryId(subCategoryId);
   const transactions = allTransactions
     .filter((transaction) => {
-      return transaction.get('date').equalsByMonth(today);
+      return transaction.date.equalsByMonth(today);
     })
     .concat(
       allSubTransactions.filter((transaction) => {
-        return transaction.get('transaction').get('date').equalsByMonth(today);
+        return transaction.transaction?.date.equalsByMonth(today);
       })
     );
 

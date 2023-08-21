@@ -10,7 +10,7 @@ export class RouteChangeListener {
     routeChangeListener.features = [];
 
     function emitSameBudgetRouteChange() {
-      const currentRoute = getRouter().get('currentRouteName');
+      const currentRoute = getRouter().currentRouteName;
       routeChangeListener.features.forEach((feature) => {
         const observe = feature.onRouteChanged.bind(feature, currentRoute);
         const wrapped = withToolkitError(observe, feature);
@@ -19,7 +19,7 @@ export class RouteChangeListener {
     }
 
     function emitBudgetRouteChange() {
-      const currentRoute = getRouter().get('currentRouteName');
+      const currentRoute = getRouter().currentRouteName;
       routeChangeListener.features.forEach((feature) => {
         const observe = feature.onBudgetChanged.bind(feature, currentRoute);
         const wrapped = withToolkitError(observe, feature);

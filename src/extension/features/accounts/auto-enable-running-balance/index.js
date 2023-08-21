@@ -14,7 +14,7 @@ export class AutoEnableRunningBalance extends Feature {
       return;
     }
 
-    const { balance } = registerGridService.get('displayColumns');
+    const { balance } = registerGridService.displayColumns;
     if (selectedAccountId && !balance) {
       try {
         // misspelled -- should remove once/if fixed
