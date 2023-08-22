@@ -8,26 +8,12 @@ export class SeparateCurrentMonthsTransactions extends Feature {
   }
 
   invoke() {
-    // const transactionDatesCollection = document.getElementsByClassName(
-    //   'ynab-grid-cell ynab-grid-cell-date user-data'
-    // );
-    // const currentMonth = new Date(Date.now()).getMonth();
-    // const currentYear = new Date(Date.now()).getFullYear();
-    // const transactionDates = [...transactionDatesCollection];
-    // const firstNodeDate = transactionDates.find((node) => {
-    //   let transactionDate = new Date(node.textContent.trim());
-    //   if (
-    //     currentMonth !== transactionDate.getMonth() ||
-    //     currentYear !== transactionDate.getFullYear()
-    //   ) {
-    //     return true;
-    //   }
-    // });
-    // try {
-    //   firstNodeDate.classList.add('test');
-    // } finally {
-    //   console.log('catch');
-    // }
+    const transaction = this.findNextMonthsTransaction();
+    transaction.classList.add('currentMonthSeparator');
+  }
+
+  injectCSS() {
+    return require('./index.css');
   }
 
   observe(changedNodes) {
@@ -36,5 +22,24 @@ export class SeparateCurrentMonthsTransactions extends Feature {
     if (changedNodes.has('ynab-grid-cell ynab-grid-cell-date user-data')) {
       this.invoke();
     }
+  }
+
+  findNextMonthsTransaction() {
+    const transactionDatesCollection = document.getElementsByClassName(
+      'ynab-grid-cell ynab-grid-cell-date user-data'
+    );
+
+    const currentMonth = new Date(Date.now()).getMonth();
+    const currentYear = new Date(Date.now()).getFullYear();
+
+    const transactionDates = [...transactionDatesCollection];
+
+    const firstNodeDate = transactionDates.find((node) => {
+      let transactionDate = new Date(node.textContent.trim());
+      return (
+        currentMonth !== transactionDate.getMonth() || currentYear !== transactionDate.getFullYear()
+      );
+    });
+    return firstNodeDate.parentElement;
   }
 }
