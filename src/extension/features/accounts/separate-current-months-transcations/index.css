@@ -1,3 +1,3 @@
 .currentMonthSeparator {
-  background-color: red;
+  border-top: 0.3125rem solid var(--background_tertiary);
 }

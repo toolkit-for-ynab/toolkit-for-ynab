@@ -8,8 +8,9 @@ export class SeparateCurrentMonthsTransactions extends Feature {
   }
 
   invoke() {
-    const transaction = this.findNextMonthsTransaction();
+    const transaction = this.findPreviousMonthsTransaction();
     transaction.classList.add('currentMonthSeparator');
+    console.log(this.isDateSorted() ? 'not sorted' : 'sorted');
   }
 
   injectCSS() {
@@ -24,22 +25,43 @@ export class SeparateCurrentMonthsTransactions extends Feature {
     }
   }
 
-  findNextMonthsTransaction() {
+  isDateSorted() {
+    const dateHeadersCollection = document.getElementsByClassName(
+      'ynab-grid-header-cell js-ynab-grid-header-cell ynab-grid-cell-date'
+    );
+
+    const dateHeader = [...dateHeadersCollection][0];
+    return !dateHeader.classList.contains('is-sorting');
+  }
+
+  findPreviousMonthsTransaction() {
     const transactionDatesCollection = document.getElementsByClassName(
       'ynab-grid-cell ynab-grid-cell-date user-data'
     );
 
     const currentMonth = new Date(Date.now()).getMonth();
     const currentYear = new Date(Date.now()).getFullYear();
+    const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+    const previousYear = currentYear;
 
     const transactionDates = [...transactionDatesCollection];
 
-    const firstNodeDate = transactionDates.find((node) => {
-      let transactionDate = new Date(node.textContent.trim());
+    const previousMonthsTransactions = transactionDates.filter((transaction) => {
+      let transactionDate = new Date(transaction.textContent.trim());
       return (
-        currentMonth !== transactionDate.getMonth() || currentYear !== transactionDate.getFullYear()
+        previousMonth === transactionDate.getMonth() &&
+        previousYear === transactionDate.getFullYear()
       );
     });
-    return firstNodeDate.parentElement;
+
+    previousMonthsTransactions.sort((a, b) => {
+      let transactionADate = new Date(a.textContent.trim());
+      let transactionBDate = new Date(b.textContent.trim());
+      return transactionBDate.getDate() - transactionADate.getDate();
+    });
+
+    const previousMonthsTransaction = previousMonthsTransactions[0];
+
+    return previousMonthsTransaction.parentElement;
   }
 }
