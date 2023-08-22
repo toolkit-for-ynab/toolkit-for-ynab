@@ -72,7 +72,7 @@ export class CheckNumbers extends Feature {
       .addClass('accounts-text-field')
       .addClass('ynab-grid-cell-tk-check-number-input')
       .on('blur', function () {
-        transaction.set('checkNumber', $(this).val());
+        transaction.checkNumber = $(this).val();
       });
 
     $inputBox.val(transaction.checkNumber);
