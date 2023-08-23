@@ -2,7 +2,7 @@
   "author": "Toolkit for YNAB",
   "name": "Toolkit for YNAB",
   "description": "UI customizations and tweaks for the web version of YNAB.",
-  "version": "3.7.3",
+  "version": "3.8.0",
   "content_scripts": [
     {
       "matches": [
