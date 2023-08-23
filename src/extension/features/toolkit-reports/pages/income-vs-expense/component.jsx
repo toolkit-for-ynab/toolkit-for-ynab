@@ -136,11 +136,14 @@ export class IncomeVsExpenseComponent extends React.Component {
       const prevPayees = prevState.incomes.get('sources');
       const prevMasterCategories = prevState.expenses.get('sources');
       prevPayees.forEach((payee) => {
-        collapsedSources.add(payee.get('source')?.entityId);
+        const entityId = payee.get('source')?.entityId ?? payee.get('source')?.get('entityId');
+        collapsedSources.add(entityId);
       });
 
       prevMasterCategories.forEach((category) => {
-        collapsedSources.add(category.get('source')?.entityId);
+        const entityId =
+          category.get('source')?.entityId ?? category.get('source')?.get('entityId');
+        collapsedSources.add(entityId);
       });
 
       return { collapsedSources };

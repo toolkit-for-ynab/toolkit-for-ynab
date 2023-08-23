@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { CollapsableRow } from './components/collapsable-row';
+import { CollapsibleRow } from './components/collapsable-row';
 import { MonthlyTotalsRow } from 'toolkit-reports/pages/income-vs-expense/components/monthly-totals-row';
 import './styles.scss';
 
@@ -57,7 +57,7 @@ export class MonthlyTransactionTotalsTable extends React.Component {
       const sourceId = source?.entityId ?? source.get('entityId');
 
       return (
-        <CollapsableRow
+        <CollapsibleRow
           key={sourceId}
           source={source}
           sources={sourceData.get('sources')}
