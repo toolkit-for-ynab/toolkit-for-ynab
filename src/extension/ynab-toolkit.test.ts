@@ -124,14 +124,13 @@ describe('YNABToolkit', () => {
         readyYNAB();
         mockIsYNABReady.mockReturnValueOnce(true);
         setup({ sendBootstrap: true });
-        expect(ynabToolKit.invokeFeature).toEqual(expect.any(Function));
+        expect(window.ynabToolKit.invokeFeature).toEqual(expect.any(Function));
       });
 
       it('should apply the globalCSS to the HEAD', () => {
         readyYNAB();
         mockIsYNABReady.mockReturnValueOnce(true);
         setup({ sendBootstrap: true });
-
         expect($('head #tk-global-styles').length).toEqual(1);
       });
     });

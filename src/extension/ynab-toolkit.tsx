@@ -289,8 +289,8 @@ export class YNABToolkit {
         // add a global invokeFeature to the global ynabToolKit for legacy features
         // once legacy features have been removed, this should be a global exported function
         // from this file that features can require and use
-        ynabToolKit.invokeFeature = self.invokeFeature;
-        ynabToolKit.destroyFeature = self.destroyFeature;
+        window.ynabToolKit.invokeFeature = self.invokeFeature;
+        window.ynabToolKit.destroyFeature = self.destroyFeature;
 
         self.addToolkitEmberHooks();
 
@@ -306,8 +306,6 @@ export class YNABToolkit {
         self.invokeFeatureInstances();
 
         later(self.invokeAllHooks, 100);
-      } else if (typeof Ember !== 'undefined') {
-        later(poll, 250);
       } else {
         setTimeout(poll, 250);
       }
