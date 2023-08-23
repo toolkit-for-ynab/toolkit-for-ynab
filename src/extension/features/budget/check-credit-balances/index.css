@@ -19,3 +19,10 @@
   background: var(--budget_balance_warning_background) !important;
   color: var(--budget_balance_warning_text) !important;
 }
+
+svg.cc-budget-mismatch {
+  fill: var(--message_warning_accent);
+  margin-left: 0.5em;
+  height: 13px;
+  width: 13px;
+}
