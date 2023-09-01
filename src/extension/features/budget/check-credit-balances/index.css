@@ -20,9 +20,14 @@
   color: var(--budget_balance_warning_text) !important;
 }
 
-svg.cc-budget-mismatch {
-  fill: var(--message_warning_accent);
-  margin-left: 0.5em;
-  height: 13px;
-  width: 13px;
+span.cc-budget-mismatch {
+  border: 1px solid var(--message_warning_accent);
+  color: var(--message_warning_accent);
+  border-radius: 0.5em;
+  margin-left: 0.25em;
+  padding: 0 0.25em;
+  height: 1.25em;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
 }

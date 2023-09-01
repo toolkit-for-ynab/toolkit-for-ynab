@@ -103,7 +103,7 @@ export class CheckCreditBalances extends Feature {
       // Upsert the indicator on the accounts nav
       let mismatchIndicator = accountBudgetLabel?.querySelector('.cc-budget-mismatch');
       if (mismatchIndicator) {
-        mismatchIndicator.style.display = 'inline';
+        mismatchIndicator.style.display = 'inline-flex';
       } else if (accountBudgetLabel) {
         const accountNameElem = accountBudgetLabel.querySelector('.nav-account-name');
         $(accountNameElem).append(this.alertIcon());
@@ -122,10 +122,7 @@ export class CheckCreditBalances extends Feature {
 
   alertIcon() {
     return $(`
-      <svg class="ynab-new-icon view-button-icon cc-budget-mismatch">
-        <title>Account balance does not match available funds in budget.</title>
-        <use href="#icon_sprite_general_warning"></use>
-      </svg>
+      <span class="cc-budget-mismatch" title="Account balance does not match available funds in budget.">≠</span>
     `);
   }
 
