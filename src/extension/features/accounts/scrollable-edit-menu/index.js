@@ -6,19 +6,13 @@ export class ScrollableEditMenu extends Feature {
     return require('./index.css');
   }
 
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    this.addToolkitEmberHook(
-      'modals/register/edit-transactions',
-      'didRender',
-      this.addScrollWrappers,
-      {
-        guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
-      }
-    );
+  observe(changedNodes) {
+    if (
+      changedNodes.has('modal-overlay active  ynab-u modal-popup modal-account-register-action-bar')
+    ) {
+      const element = document.querySelector('.modal-account-register-action-bar');
+      this.addScrollWrappers(element);
+    }
   }
 
   destroy() {}
@@ -74,7 +68,7 @@ export class ScrollableEditMenu extends Feature {
 
   addScrollWrappers(modalContainer) {
     const view = Ember.ViewUtils.getElementView(
-      document.querySelector('.modal-account-edit-transaction-list')
+      document.querySelector('.modal-account-register-action-bar')
     );
     view.isScrolledIfOverflowedOutOfWindow = true;
     view.makeScrollableIfOverflowed = this.overrideMSIO;
