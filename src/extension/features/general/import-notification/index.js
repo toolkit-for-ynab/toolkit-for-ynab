@@ -73,8 +73,10 @@ export class ImportNotification extends Feature {
         if (
           (typeof account.getDirectConnectEnabled === 'function' &&
             account.getDirectConnectEnabled()) ||
+          account.directConnectEnabled ||
           (typeof account.getIsDirectImportActive === 'function' &&
-            account.getIsDirectImportActive())
+            account.getIsDirectImportActive()) ||
+          account.isDirectImportActive
         ) {
           let t = new ynab.managers.DirectImportManager(
             ynab.YNABSharedLib.defaultInstance.entityManager,
