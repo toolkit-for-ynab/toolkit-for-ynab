@@ -65,11 +65,11 @@ export const OutflowGraph = ({ series }) => {
         series: {
           cursor: 'pointer',
           events: {
-            click: (event) => {
-              if (event.point.transactions && event.point.transactions.length > 0) {
-                let date = new Date(event.point.x);
-                let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date);
-                showTransactionModal(formattedDate, event.point.transactions);
+            click: ({ point: { custom } }) => {
+              if (custom && custom.length > 0) {
+                const date = custom[0].date.toNativeDate();
+                const formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date);
+                showTransactionModal(formattedDate, custom);
               }
             },
           },
