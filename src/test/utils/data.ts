@@ -1,12 +1,12 @@
-import moment from 'moment';
 import { YNABAccount } from 'toolkit/types/ynab/data/account';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import { YNABAccountType } from 'toolkit/types/ynab/window/ynab-enums';
 
 export function mockAccount(overrides?: Partial<YNABAccount>): YNABAccount {
   return {
     accountName: 'accountName',
-    getAccountType: jest.fn(),
-    getAccountCalculation: jest.fn(),
+    accountType: YNABAccountType.Cash,
+    accountCalculation: { clearedBalance: 0 },
     getTransactions: jest.fn(),
     ...overrides,
   };

@@ -39,10 +39,10 @@ export function ReconcileAssistantContainer({
       return;
     }
 
-    const { clearedBalance } = account.getAccountCalculation();
+    const { clearedBalance } = account.accountCalculation;
 
     // Note: For credit cards, we'll automatically invert to follow ynab's behavior
-    if (convertedInputValue > 0 && account.getAccountType() === 'CreditCard') {
+    if (convertedInputValue > 0 && account.accountType === 'CreditCard') {
       convertedInputValue *= -1;
     }
 

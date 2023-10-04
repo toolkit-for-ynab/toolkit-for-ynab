@@ -3,7 +3,7 @@ import { YNABTransaction } from './transaction';
 
 export interface YNABAccount {
   accountName: string;
-  getAccountType(): YNABAccountType;
-  getAccountCalculation(): YNABAccountCalculation;
+  accountType: YNABAccountType;
+  accountCalculation: YNABAccountCalculation;
   getTransactions(): YNABTransaction[];
 }
