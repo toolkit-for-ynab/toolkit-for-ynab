@@ -8,12 +8,16 @@ export class CalculateIRR extends Feature {
   }
 
   shouldInvoke() {
-    let { selectedAccount } = getAccountsService();
-    return isCurrentRouteAccountsPage() && selectedAccount && !selectedAccount.onBudget;
+    let { selectedAccountId } = getAccountsService();
+    return isCurrentRouteAccountsPage() && !!selectedAccountId;
   }
 
   invoke() {
     let { filters, selectedAccount, selectedAccountId } = getAccountsService();
+    if (selectedAccountId.onBudget) {
+      return;
+    }
+
     let { filterFrom, filterTo } = this._getFilterDates(filters);
     let totalIrr = this._calculateIRR(selectedAccountId);
     if (totalIrr === Infinity) {

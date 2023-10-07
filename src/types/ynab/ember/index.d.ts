@@ -34,6 +34,7 @@ declare global {
   }
 
   interface Ember {
+    _captureRenderTree(app: YNABApp['__container__']): RenderTreeNode[];
     run: typeof run;
     Component: EmberComponent;
     Namespace: {

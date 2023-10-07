@@ -24,6 +24,12 @@ module.exports = function (env) {
       'content-scripts/extension-bridge': path.resolve(
         `${CODE_SOURCE_DIR}/core/content-scripts/extension-bridge.js`
       ),
+      'content-scripts/enable-ember-debug': path.resolve(
+        `${CODE_SOURCE_DIR}/core/content-scripts/enable-ember-debug.js`
+      ),
+      'web-accessibles/enable-ember-debug': path.resolve(
+        `${CODE_SOURCE_DIR}/core/web-accessibles/enable-ember-debug.js`
+      ),
       'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`),
     },
 

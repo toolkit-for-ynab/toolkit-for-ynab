@@ -1,5 +1,5 @@
 interface YNABAccountsService {
-  selectedAccountId: string;
+  selectedAccountId: string | null;
   collapsedSplits: {
     [transactionID: string]: boolean;
   };
