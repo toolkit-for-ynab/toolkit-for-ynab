@@ -1,4 +1,3 @@
-import lodash from 'lodash';
 import type { Moment } from 'moment';
 
 declare module 'moment' {
@@ -17,10 +16,10 @@ interface YNABTransaction {
   month: string;
 }
 
-export const filterTransactions = (
+export function filterTransactions(
   transactions: readonly YNABTransaction[],
   filterOutAccounts: ReadonlySet<string>
-) => {
+) {
   return transactions
     .filter((transaction) => {
       return (
@@ -36,7 +35,7 @@ export const filterTransactions = (
       }
       return !filterOutAccounts.has(transactionsWithoutInflow.accountId);
     });
-};
+}
 
 /**
  * Filter the passed transactions to only include those within the specified date range.
@@ -45,80 +44,113 @@ export const filterTransactions = (
  * @param endDate The end date of the desired date range.
  * @returns A new array containing only the transactions that fall within the specified date range.
  */
-export const filterTransactionsByDate = (
+export function filterTransactionsByDate(
   transactions: readonly YNABTransaction[],
   startDate: Moment,
   endDate: Moment
-) => {
+) {
   return transactions.filter((transaction) => {
     return transaction.date >= startDate && transaction.date <= endDate;
   });
-};
+}
 
 type GroupedTransactions = Record<string, Record<string, YNABTransaction[]>>;
 
-export const groupTransactions = (transactions: readonly YNABTransaction[]) => {
-  const groupedByMonth = lodash.groupBy(transactions, 'month');
+export function groupTransactions(transactions: readonly YNABTransaction[]) {
+  const groupedByMonth = groupBy(transactions, 'month');
   const groupedByMonthAndDate: GroupedTransactions = {};
 
-  Object.keys(groupedByMonth).forEach((key) => {
-    groupedByMonthAndDate[key] = lodash.groupBy(groupedByMonth[key], (transaction) =>
+  for (const key of Object.keys(groupedByMonth)) {
+    groupedByMonthAndDate[key] = groupBy(groupedByMonth[key], (transaction) =>
       transaction.date.toUTCMoment().date()
     );
-  });
+  }
 
   return groupedByMonthAndDate;
-};
+}
 
 interface OutflowData {
   transactions: YNABTransaction[];
   value: number;
 }
 
-export const calculateOutflowPerDate = (transactions: GroupedTransactions) => {
-  return lodash.mapValues(transactions, (monthData) => {
-    return lodash.mapValues(monthData, (dateData): OutflowData => {
-      return {
+export function calculateOutflowPerDate(transactions: GroupedTransactions) {
+  return mapValues(transactions, (monthData) =>
+    mapValues(
+      monthData,
+      (dateData): OutflowData => ({
         transactions: dateData,
         value: dateData.reduce((s, a) => s + a.outflow!, 0),
-      };
-    });
-  });
-};
+      })
+    )
+  );
+}
 
-export const calculateCumulativeOutflowPerDate = (transactions: GroupedTransactions) => {
-  return lodash.mapValues(calculateOutflowPerDate(transactions), (monthData) => {
-    const pairs = lodash.toPairs(monthData);
-    const dates = pairs.map((d) => d[0]);
-    const outflows = pairs.map((d) => d[1]);
-    const cumulativeSum = lodash.reduce(
-      outflows,
-      (acc, n) => {
-        acc.push({
+export function calculateCumulativeOutflowPerDate(transactions: GroupedTransactions) {
+  return mapValues(calculateOutflowPerDate(transactions), (monthData) => {
+    const cumulativeSum = Object.entries(monthData).reduce((acc, [key, n]) => {
+      acc.push([
+        key,
+        {
           ...n,
-          value: (acc.length > 0 ? acc[acc.length - 1].value : 0) + n.value,
-        });
-        return acc;
-      },
-      [] as OutflowData[]
-    );
-    return lodash.fromPairs(lodash.zip(dates, cumulativeSum) as [string, OutflowData][]);
+          value: (acc.length > 0 ? acc[acc.length - 1][1].value : 0) + n.value,
+        },
+      ]);
+      return acc;
+    }, [] as [keyof typeof monthData, OutflowData][]);
+    return Object.fromEntries(cumulativeSum);
   });
-};
+}
 
-export const toHighchartsSeries = (transactions: Record<string, Record<string, OutflowData>>) => {
-  return lodash.toPairs(transactions).map((monthData) => {
-    const [month, data] = monthData;
-    return {
-      name: month,
-      data: lodash.toPairs(data).map((dateData) => {
-        const [date, { value, transactions }] = dateData;
-        return {
-          x: parseInt(date),
-          y: value,
-          custom: transactions,
-        };
-      }),
-    };
-  });
-};
+export function toHighchartsSeries(transactions: Record<string, Record<string, OutflowData>>) {
+  return Object.entries(transactions).map(([month, data]) => ({
+    name: month,
+    data: Object.entries(data).map(([date, { value, transactions }]) => ({
+      x: parseInt(date),
+      y: value,
+      custom: transactions,
+    })),
+  }));
+}
+
+// typescript version of lodash's mapValues (without shorthand support)
+// it's just a slightly better typed / more readable fromEntries+entries use
+function mapValues<T extends object, V>(obj: T, map: (item: T[keyof T]) => V) {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, item]) => [key, map(item)] as const)
+  ) as Record<keyof T, V>;
+}
+
+// typescript version of lodash's groupBy
+// overloads for more precise inference / better errors
+// basic version
+function groupBy<T extends object, K extends number | string>(
+  list: readonly T[],
+  key: (item: T) => K
+): Record<K, T[]>;
+// shorthand version
+function groupBy<T extends object, K extends keyof T>(
+  list: readonly (T & Record<K, number | string>)[],
+  key: K
+): Record<T[K] & (number | string), T[]>;
+// generics in the implementation are more for checking the implementation
+// there will be type errors in callsites if the overloads are removed
+function groupBy<T extends object, K extends keyof T | ((item: T) => number | string)>(
+  list: readonly (T & Record<Extract<K, keyof T>, number | string>)[],
+  keyProp: K
+) {
+  type ResultK =
+    | (T[Extract<K, keyof T>] & (number | string))
+    | ReturnType<Extract<K, (item: T) => number | string>>;
+
+  const keyFn =
+    typeof keyProp === 'function'
+      ? (keyProp as (item: T) => ResultK)
+      : (item: T) => item[keyProp as keyof T] as ResultK;
+
+  return list.reduce((acc, item) => {
+    const key = keyFn(item);
+    void (acc[key] ?? (acc[key] = [])).push(item);
+    return acc;
+  }, {} as Record<ResultK, T[]>);
+}
