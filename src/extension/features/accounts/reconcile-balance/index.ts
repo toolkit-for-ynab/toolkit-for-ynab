@@ -23,6 +23,10 @@ export class ReconcileBalance extends Feature {
     }
 
     let { selectedAccountId } = accountService;
+    if (!selectedAccountId) {
+      return;
+    }
+
     let reconciledBalance = formatCurrency(this._calculateReconciledBalance(selectedAccountId));
     // Retrieve or create the reconcile balance container
     let balanceContainer = $(`#${TK_RECONCILE_BALANCE_ID}`);

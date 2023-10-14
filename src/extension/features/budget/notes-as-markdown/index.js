@@ -24,8 +24,12 @@ export class NotesAsMarkdown extends Feature {
 
   applyMarkdown() {
     const ynabNoteComponent = document.querySelector('.inspector-notes');
+    if (!ynabNoteComponent) {
+      return;
+    }
+
     const ynabNoteContent = ynabNoteComponent.querySelector('.inspector-category-note');
-    if (!ynabNoteComponent || !ynabNoteContent) {
+    if (!ynabNoteContent) {
       return;
     }
 

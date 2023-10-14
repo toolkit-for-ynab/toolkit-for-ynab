@@ -33,6 +33,7 @@ export const emberComponentToolkitHookKey = (
 ): `_tk_${SupportedEmberHook}_hooks_` => `_tk_${hookName}_hooks_`;
 
 window.__toolkitUtils = {
+  ...(window.__toolkitUtils as any),
   ...ynabUtils,
   ...emberUtils,
   ...Collections,
