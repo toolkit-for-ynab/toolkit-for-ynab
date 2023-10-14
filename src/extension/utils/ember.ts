@@ -20,7 +20,10 @@ export function getEmberView<T = EmberView>(viewId: string | undefined): T | nul
   return view;
 }
 
-export function findEmberDebugNodes(
+// This function calculates the entire render tree of the application which means
+// it's quite expensive to run. We should only call this on a need-to basis and
+// we should make sure to cache our calls (similar to the above `getEmberView` call).
+function findEmberDebugNodes(
   matcher: (node: RenderTreeNode) => boolean,
   findOne = false
 ): RenderTreeNode[] {
@@ -29,6 +32,8 @@ export function findEmberDebugNodes(
   findEmberDebugNodeHelper(renderTree[0], nodes, matcher, findOne);
   return nodes;
 }
+
+window.__toolkitUtils = { ...(window.__toolkitUtils as any), findEmberDebugNodes };
 
 function findEmberDebugNodeHelper(
   node: RenderTreeNode,
