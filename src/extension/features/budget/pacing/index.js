@@ -23,7 +23,35 @@ export class Pacing extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('budget-table-row', 'didRender', this.addPacing);
+    if (!isCurrentMonthSelected()) {
+      $('.tk-budget-table-cell-pacing').remove();
+      return;
+    }
+
+    if ($('.tk-budget-table-cell-pacing').length) {
+      return;
+    }
+
+    this.ensureHeader();
+
+    $('.js-budget-table-row').each((_, el) => {
+      this.addPacing(el);
+    });
+  }
+
+  invokeTimerId = null;
+
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (
+      changedNodes.has('budget-table-row js-budget-table-row budget-table-row-ul is-sub-category')
+    ) {
+      clearTimeout(this.invokeTimerId);
+      this.invokeTimerId = setTimeout(() => {
+        this.invoke();
+      }, 100);
+    }
   }
 
   ensureHeader() {
@@ -35,13 +63,6 @@ export class Pacing extends Feature {
   }
 
   addPacing(element) {
-    if (!isCurrentMonthSelected()) {
-      $('.tk-budget-table-cell-pacing').remove();
-      return;
-    }
-
-    this.ensureHeader();
-
     if (element.classList.contains('is-master-category')) {
       if (!element.querySelector('.tk-budget-table-cell-pacing')) {
         $('.budget-table-cell-available', element).after(
@@ -62,7 +83,7 @@ export class Pacing extends Feature {
       return;
     }
 
-    const category = getEmberView(element.id).category;
+    const category = getEmberView(element.id)?.category;
     if (!category) {
       return;
     }
@@ -76,14 +97,14 @@ export class Pacing extends Feature {
       const subCategoryId = event.target.getAttribute('data-tk-sub-category-id');
 
       if (deemphasizedCategories.contains(subCategoryId)) {
-        $(event.target).removeClass('deemphasized');
+        $display.removeClass('deemphasized');
         setDeemphasizedCategories(
           deemphasizedCategories.filter((id) => {
             return id !== subCategoryId;
           })
         );
       } else {
-        $(event.target).addClass('deemphasized');
+        $display.addClass('deemphasized');
         deemphasizedCategories.push(subCategoryId);
         setDeemphasizedCategories(deemphasizedCategories);
       }
@@ -111,12 +132,12 @@ export class Pacing extends Feature {
     const tooltip = this.generateTooltip(pacingCalculation);
 
     const $display = $(`
-      <div class="tk-budget-table-cell-pacing">
+      <div class="tk-budget-table-cell-pacing budget-table-row-li budget-table-cell-available">
         <button
           title="${tooltip}"
           data-tk-sub-category-id="${subCategoryId}"
-          class="ynab-new-budget-available-number tk-pacing-number currency ${temperatureClass} ${deemphasizedClass} ${indicatorClass}"
-        />
+          class="ynab-new-budget-available-number currency ${temperatureClass} ${deemphasizedClass} ${indicatorClass}"
+        ><span class="tk-pacing-number currency ${temperatureClass}"></span></button>
       </div>
     `);
 
