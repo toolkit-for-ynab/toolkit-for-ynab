@@ -69,7 +69,11 @@ This extension uses three main things in its build process:
 5. Run `yarn build:development` from within the folder you cloned which will build the Toolkit.
 
 - Whilst developing, you may prefer to run `yarn watch` which will monitor the project
-  directory for changes and run `yarn build:development` automatically for you.
+  directory for changes and run `yarn build:development` automatically for you. If you're
+  not going to add new features and plan to work only on existing ones (i.e. your changes
+  don't require regenerating indexes) you can use `yarn watch:webpack`, this will compile
+  changes only your changes to code, without regenerating indexes which might noticeably
+  speed up the development.
 
 5.  Deploying the extension:
 

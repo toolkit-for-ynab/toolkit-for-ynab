@@ -2,6 +2,7 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const BUILD_ROOT = './dist';
 const BUILD_PATH = `${BUILD_ROOT}/extension`;
@@ -71,6 +72,9 @@ module.exports = function (env) {
           use: [
             {
               loader: 'babel-loader',
+              options: {
+                cacheDirectory: true,
+              },
             },
           ],
         },
@@ -109,6 +113,7 @@ module.exports = function (env) {
 
     plugins: [
       new webpack.ProgressPlugin(),
+      new ForkTsCheckerWebpackPlugin(),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(env.buildType),
       }),
