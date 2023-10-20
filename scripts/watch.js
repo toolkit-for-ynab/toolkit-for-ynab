@@ -13,7 +13,7 @@ function debounce(fn, timeout = 50) {
   };
 }
 
-const debounceSpawn = debounce(spawnBuildProcess, spawnBuildProcess);
+const debounceSpawn = debounce(spawnBuildProcess, 25);
 
 const buildProcesses = [];
 const watcher = require('chokidar').watch(['src/**'], {
