@@ -44,7 +44,7 @@ export class ChangeEnterBehavior extends Feature {
         $markClearedButton.trigger('click');
       }
 
-      const $saveButton = $('.ynab-grid-actions-buttons .button.button-primary');
+      const $saveButton = $('.ynab-grid-actions-buttons .button-save');
       $saveButton.trigger('click');
     }
   }
