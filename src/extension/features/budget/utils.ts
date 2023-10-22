@@ -38,3 +38,7 @@ export function ensureGoalColumn(element: HTMLElement | null): boolean {
 
   return true;
 }
+
+export function budgetRowInChangesSet(changes: Set<string>) {
+  return changes.has('budget-table-row js-budget-table-row budget-table-row-ul is-sub-category');
+}

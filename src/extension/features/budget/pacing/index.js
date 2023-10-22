@@ -1,3 +1,4 @@
+import debounce from 'debounce';
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
@@ -8,6 +9,7 @@ import {
 } from 'toolkit/extension/utils/pacing';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
+import { budgetRowInChangesSet } from 'toolkit/extension/features/budget/utils';
 
 export class Pacing extends Feature {
   injectCSS() {
@@ -39,18 +41,13 @@ export class Pacing extends Feature {
     });
   }
 
-  invokeTimerId = null;
+  debouncedInvoke = debounce(this.invoke, 100);
 
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (
-      changedNodes.has('budget-table-row js-budget-table-row budget-table-row-ul is-sub-category')
-    ) {
-      clearTimeout(this.invokeTimerId);
-      this.invokeTimerId = setTimeout(() => {
-        this.invoke();
-      }, 100);
+    if (budgetRowInChangesSet(changedNodes)) {
+      this.debouncedInvoke();
     }
   }
 
