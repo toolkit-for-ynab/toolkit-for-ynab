@@ -334,18 +334,12 @@ export class IncomeVsExpenseComponent extends React.Component {
     const monthlyTotalsArray = mapToArray(incomes.get('monthlyTotals'));
     monthlyTotalsArray.sort(sortByGettableDate);
 
+    const collator = new Intl.Collator();
     const payeesArray = mapToArray(incomes.get('payees'))
       .sort((a, b) => {
-        const nameA = a?.payee?.name;
-        const nameB = b?.payee?.name;
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-
-        return 0;
+        const nameA = a.get('payee')?.name;
+        const nameB = b.get('payee')?.name;
+        return collator.compare(nameA, nameB);
       })
       .map((payeeData) => {
         const payeeMonthlyTotalsArray = mapToArray(payeeData.get('monthlyTotals'));
