@@ -2,6 +2,7 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const BUILD_ROOT = './dist';
 const BUILD_PATH = `${BUILD_ROOT}/extension`;
@@ -23,6 +24,12 @@ module.exports = function (env) {
       'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/popup/index.tsx`),
       'content-scripts/extension-bridge': path.resolve(
         `${CODE_SOURCE_DIR}/core/content-scripts/extension-bridge.js`
+      ),
+      'content-scripts/enable-ember-debug': path.resolve(
+        `${CODE_SOURCE_DIR}/core/content-scripts/enable-ember-debug.js`
+      ),
+      'web-accessibles/enable-ember-debug': path.resolve(
+        `${CODE_SOURCE_DIR}/core/web-accessibles/enable-ember-debug.js`
       ),
       'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`),
     },
@@ -65,6 +72,9 @@ module.exports = function (env) {
           use: [
             {
               loader: 'babel-loader',
+              options: {
+                cacheDirectory: true,
+              },
             },
           ],
         },
@@ -103,6 +113,7 @@ module.exports = function (env) {
 
     plugins: [
       new webpack.ProgressPlugin(),
+      new ForkTsCheckerWebpackPlugin(),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(env.buildType),
       }),

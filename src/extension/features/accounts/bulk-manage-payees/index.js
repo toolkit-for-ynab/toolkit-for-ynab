@@ -3,19 +3,13 @@ import { serviceLookup } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 
 export class BulkManagePayees extends Feature {
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    this.addToolkitEmberHook(
-      'modals/register/edit-transactions',
-      'didRender',
-      this.insertManagePayees,
-      {
-        guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
-      }
-    );
+  observe(changedNodes) {
+    if (
+      changedNodes.has('modal-overlay active  ynab-u modal-popup modal-account-register-action-bar')
+    ) {
+      const element = document.querySelector('.modal-account-register-action-bar');
+      this.insertManagePayees(element);
+    }
   }
 
   destroy() {

@@ -71,7 +71,7 @@ export class ObserveListener {
       return;
     }
 
-    console.debug(this.changedNodes);
+    console.debug('Changed nodes', this.changedNodes);
 
     if (this.changedNodes.size !== this.lastChangedNodes.size) {
       this.lastChangedNodes = this.changedNodes;

@@ -1,5 +1,6 @@
 import React from 'react';
 import fuzzysort from 'fuzzysort';
+import debounce from 'debounce';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
@@ -51,7 +52,19 @@ export class FilterCategories extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('budget-table', 'didRender', this.handleTableRender);
+    const table = document.querySelector('.budget-table');
+    if (!table) return;
+    this.handleTableRender();
+  }
+
+  debouncedInvoke = debounce(this.invoke, 200);
+
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (changedNodes.has('budget-table')) {
+      this.debouncedInvoke();
+    }
   }
 
   destroy() {

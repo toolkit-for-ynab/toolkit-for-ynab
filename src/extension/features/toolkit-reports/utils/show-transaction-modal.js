@@ -1,11 +1,12 @@
-import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getModalService } from 'toolkit/extension/utils/ynab';
 
 export function showTransactionModal(title, transactions) {
-  const reportsController = controllerLookup('reports/spending');
-  reportsController.set('modalTitle', title);
-  reportsController.set('modalTransactions', transactions);
-  getModalService().openModal('modals/reports/transactions', {
-    controller: reportsController,
+  const modalService = getModalService();
+  // glitch: clicking on a transaction may not correctly navigate
+  // depending on the currently active route
+  modalService.setDataForModal({
+    modalTitle: title,
+    modalTransactions: transactions,
   });
+  modalService.openModal('modals/reports/transactions');
 }

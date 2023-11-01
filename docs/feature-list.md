@@ -199,17 +199,13 @@ Shows a light gray background on category rows when hovered over.
 
 Ensure all negative balances are highlighted red instead of yellow, even with credit card spending.
 
-## Hyperlinks in the memo field
-
-Any memo on the budget screen that starts with "https://", will be displayed as a hyperlink. Use this to link to files in your favourite cloud storage (iCloud, OneDrive, Dropbox, etc.) Note - "http", rather than "https", links are ignored for security reasons.
-
 ## Live on Last Month's Income
 
 Add a section to the budget inspector showing your variance between last month's income and this month's assigned budget for users who still live by the old Rule #4.
 
 ## Paid in Full Credit Card Assist
 
-Highlights credit card category balances with a yellow warning if the balance of the category does not match the account balance. Adds a button to the Inspector to rectify the difference.
+Highlights credit card category balances with a yellow warning and adds an alert icon next to the account if the balance of the category does not match the account balance. Adds a button to the Inspector to rectify the difference.
 
 ## Show Available After Savings
 
@@ -325,10 +321,6 @@ Display a confirmation prompt when transaction cancelling a transaction edit by 
 
 Deselect all transactions after a transaction is saved.
 
-## Edit Transaction on Right Click
-
-Right clicking on a transaction will show the contextual menu, allowing easy access to the Edit Transaction(s) menu.
-
 ## Emphasize Inflows
 
 Make values in the inflow column green.
@@ -348,6 +340,10 @@ Enables Markdown parsing for memos, allowing support for links and other formatt
 ## Enlarge Small Icons
 
 Makes the uncleared, cleared and reconciled icons slightly larger and easier to click.
+
+## Hyperlinks in the memo field
+
+Add support for links in memos on the accounts page.
 
 ## Keyboard Shortcut: Approve Transaction [A] or [Enter]
 

@@ -112,15 +112,15 @@ describe('Utils', () => {
 
       const expected = {
         '2022-01': {
-          4: 100,
-          7: 500,
-          8: 300,
-          12: 1500,
-          19: 100,
+          4: { value: 100, transactions: transactions['2022-01'][4] },
+          7: { value: 500, transactions: transactions['2022-01'][7] },
+          8: { value: 300, transactions: transactions['2022-01'][8] },
+          12: { value: 1500, transactions: transactions['2022-01'][12] },
+          19: { value: 100, transactions: transactions['2022-01'][19] },
         },
         '2022-02': {
-          13: 200,
-          19: 700,
+          13: { value: 200, transactions: transactions['2022-02'][13] },
+          19: { value: 700, transactions: transactions['2022-02'][19] },
         },
       };
 
@@ -150,15 +150,15 @@ describe('Utils', () => {
 
       const expected = {
         '2022-01': {
-          4: 100,
-          7: 600,
-          8: 900,
-          12: 2400,
-          19: 2500,
+          4: { value: 100, transactions: transactions['2022-01'][4] },
+          7: { value: 600, transactions: transactions['2022-01'][7] },
+          8: { value: 900, transactions: transactions['2022-01'][8] },
+          12: { value: 2400, transactions: transactions['2022-01'][12] },
+          19: { value: 2500, transactions: transactions['2022-01'][19] },
         },
         '2022-02': {
-          13: 200,
-          19: 900,
+          13: { value: 200, transactions: transactions['2022-02'][13] },
+          19: { value: 900, transactions: transactions['2022-02'][19] },
         },
       };
 
@@ -172,17 +172,18 @@ describe('Utils', () => {
     });
 
     it('should transform the transactions to Highcharts Series', () => {
+      const rawData = Symbol(); // placeholder to check for passthrough
       const transactions = {
         '2022-01': {
-          4: 100,
-          7: 600,
-          8: 900,
-          12: 2400,
-          19: 2500,
+          4: { value: 100, transactions: rawData },
+          7: { value: 600, transactions: rawData },
+          8: { value: 900, transactions: rawData },
+          12: { value: 2400, transactions: rawData },
+          19: { value: 2500, transactions: rawData },
         },
         '2022-02': {
-          13: 200,
-          19: 900,
+          13: { value: 200, transactions: rawData },
+          19: { value: 900, transactions: rawData },
         },
       };
 
@@ -190,18 +191,18 @@ describe('Utils', () => {
         {
           name: '2022-01',
           data: [
-            { x: 4, y: 100 },
-            { x: 7, y: 600 },
-            { x: 8, y: 900 },
-            { x: 12, y: 2400 },
-            { x: 19, y: 2500 },
+            { x: 4, y: 100, custom: rawData },
+            { x: 7, y: 600, custom: rawData },
+            { x: 8, y: 900, custom: rawData },
+            { x: 12, y: 2400, custom: rawData },
+            { x: 19, y: 2500, custom: rawData },
           ],
         },
         {
           name: '2022-02',
           data: [
-            { x: 13, y: 200 },
-            { x: 19, y: 900 },
+            { x: 13, y: 200, custom: rawData },
+            { x: 19, y: 900, custom: rawData },
           ],
         },
       ];

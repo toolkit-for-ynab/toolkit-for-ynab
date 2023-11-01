@@ -136,11 +136,14 @@ export class IncomeVsExpenseComponent extends React.Component {
       const prevPayees = prevState.incomes.get('sources');
       const prevMasterCategories = prevState.expenses.get('sources');
       prevPayees.forEach((payee) => {
-        collapsedSources.add(payee.get('source')?.entityId);
+        const entityId = payee.get('source')?.entityId ?? payee.get('source')?.get('entityId');
+        collapsedSources.add(entityId);
       });
 
       prevMasterCategories.forEach((category) => {
-        collapsedSources.add(category.get('source')?.entityId);
+        const entityId =
+          category.get('source')?.entityId ?? category.get('source')?.get('entityId');
+        collapsedSources.add(entityId);
       });
 
       return { collapsedSources };
@@ -331,18 +334,12 @@ export class IncomeVsExpenseComponent extends React.Component {
     const monthlyTotalsArray = mapToArray(incomes.get('monthlyTotals'));
     monthlyTotalsArray.sort(sortByGettableDate);
 
+    const collator = new Intl.Collator();
     const payeesArray = mapToArray(incomes.get('payees'))
       .sort((a, b) => {
-        const nameA = a?.payee?.name;
-        const nameB = b?.payee?.name;
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-
-        return 0;
+        const nameA = a.get('payee')?.name;
+        const nameB = b.get('payee')?.name;
+        return collator.compare(nameA, nameB);
       })
       .map((payeeData) => {
         const payeeMonthlyTotalsArray = mapToArray(payeeData.get('monthlyTotals'));

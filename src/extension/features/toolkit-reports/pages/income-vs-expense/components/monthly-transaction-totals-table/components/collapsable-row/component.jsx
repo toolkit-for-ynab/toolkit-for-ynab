@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { MonthlyTotalsRow } from 'toolkit-reports/pages/income-vs-expense/components/monthly-totals-row';
 
-export class CollapsableRow extends React.Component {
+export class CollapsibleRow extends React.Component {
   static propTypes = {
     isCollapsed: PropTypes.bool.isRequired,
     onToggleCollapse: PropTypes.func.isRequired,
@@ -29,7 +29,7 @@ export class CollapsableRow extends React.Component {
             {this._renderChildRows()}
             <MonthlyTotalsRow
               className="tk-totals-table__child-summary-row"
-              titleCell={`Total ${source?.name}`}
+              titleCell={`Total ${source?.name ?? source.get('name')}`}
               monthlyTotals={monthlyTotals}
             />
           </div>
@@ -44,7 +44,7 @@ export class CollapsableRow extends React.Component {
     return (
       <div className="tk-flex">
         <i className={`flaticon stroke ${isCollapsed ? 'up' : 'down'}`} />
-        <div>{source?.name}</div>
+        <div>{source?.name ?? source.get('name')}</div>
       </div>
     );
   }
@@ -66,6 +66,6 @@ export class CollapsableRow extends React.Component {
   }
 
   _toggleCollapse = () => {
-    this.props.onToggleCollapse(this.props.source?.entityId);
+    this.props.onToggleCollapse(this.props.source?.entityId ?? this.props.source?.get('entityId'));
   };
 }

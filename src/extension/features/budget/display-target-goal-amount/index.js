@@ -1,9 +1,11 @@
+import debounce from 'debounce';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import {
   ensureGoalColumn,
   GOAL_TABLE_CELL_CLASSNAME,
+  budgetRowInChangesSet,
 } from 'toolkit/extension/features/budget/utils';
 
 export const Settings = {
@@ -27,10 +29,22 @@ export class DisplayTargetGoalAmount extends Feature {
     return true;
   }
 
-  invoke() {
-    this.addToolkitEmberHook('budget-table-row', 'didRender', this.addTargetGoalAmount);
-    this.addToolkitEmberHook('budget-table-row', 'didRender', this._addSums);
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (budgetRowInChangesSet(changedNodes)) {
+      this.debouncedInvoke();
+    }
   }
+
+  invoke() {
+    $('.js-budget-table-row').each((_, el) => {
+      this.addTargetGoalAmount(el);
+    });
+    this._addSums();
+  }
+
+  debouncedInvoke = debounce(this.invoke, 100);
 
   destroy() {
     $('.tk-target-goal-amount').remove();

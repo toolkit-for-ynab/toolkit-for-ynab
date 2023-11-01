@@ -156,19 +156,13 @@ export class BulkEditMemo extends Feature {
     return require('./index.css');
   }
 
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    this.addToolkitEmberHook(
-      'modals/register/edit-transactions',
-      'didInsertElement',
-      this.injectBulkEditMemo,
-      {
-        guard: () => document.querySelector('.modal-account-edit-transaction-list') !== null,
-      }
-    );
+  observe(changedNodes) {
+    if (
+      changedNodes.has('modal-overlay active  ynab-u modal-popup modal-account-register-action-bar')
+    ) {
+      const element = document.querySelector('.modal-account-register-action-bar');
+      this.injectBulkEditMemo(element);
+    }
   }
 
   destroy() {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import { getAccountsService, getEntityManager } from 'toolkit/extension/utils/ynab';
+import { getAccountsService, getRegisterGridService } from 'toolkit/extension/utils/ynab';
 
 export class ToggleSplitButton extends React.Component {
   state = {
@@ -39,17 +39,13 @@ export class ToggleSplitButton extends React.Component {
   };
 
   hideAllSplits = () => {
-    const { scheduledTransactionsCollection, transactionsCollection } = getEntityManager();
     const collapsedSplitsMap = {};
 
-    [scheduledTransactionsCollection, transactionsCollection].forEach((collection) => {
-      collection.reduce((reduced, transaction) => {
-        if (transaction.getIsSplit()) {
-          reduced[transaction?.entityId] = true;
-        }
-
-        return reduced;
-      }, collapsedSplitsMap);
+    const { visibleTransactionDisplayItems } = getRegisterGridService();
+    visibleTransactionDisplayItems.forEach((transaction) => {
+      if (transaction.isSplit) {
+        collapsedSplitsMap[transaction?.entityId] = true;
+      }
     });
 
     const accountService = getAccountsService();

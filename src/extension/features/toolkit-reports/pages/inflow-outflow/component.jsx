@@ -180,7 +180,7 @@ export class InflowOutflowComponent extends React.Component {
 
       const transactionAccountId = transaction.accountId;
 
-      if (transaction.getIsOnBudgetTransfer()) {
+      if (transaction.isOnBudgetTransfer) {
         return;
       }
 

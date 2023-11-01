@@ -1,12 +1,12 @@
 .tk-categories-filter-input {
   float: right;
-  border-radius: 0.4em;
-  border: 1px solid #009cc2;
-  color: #009cc2;
-  font-style: italic;
+  border-radius: 0.35rem;
+  border: 1px solid var(--action_primary);
+  color: var(--label_primary);
   outline: none;
-  padding: 0.3rem 0.3rem 0.3rem 1.6rem;
+  padding: 0.3rem 1.2rem 0.3rem 1.6rem;
   z-index: 10;
+  font-size: 0.875rem;
 }
 
 .tk-categories-filter-input:focus {
@@ -18,19 +18,24 @@
 }
 
 .tk-categories-filter-icon {
-  color: #009cc2;
-  left: 0.6em;
+  color: var(--action_primary);
+  left: 0.5rem;
   position: absolute;
-  top: 0.55em;
+  top: 0.55rem;
   z-index: 11;
+  font-size: 0.8rem;
 }
 
 .tk-categories-filter-cancel-icon {
-  color: #009cc2;
+  /* Reset inherited styles from YNAB stylesheets */
+  padding: 0 !important;
+  display: block !important;
+
+  color: var(--action_primary);
   cursor: pointer;
   position: absolute;
-  right: 0;
-  top: 0.45rem;
+  right: 0.25rem;
+  top: 0.05rem;
   z-index: 11;
 }
 

@@ -94,9 +94,36 @@ export class CheckCreditBalances extends Feature {
     if (!category.isCreditCardPaymentCategory) return;
 
     const difference = this.calculateDifference(category);
-    if (difference && category.available >= 0)
+    const categoryAccountId = category.subCategoryAccount?.entityId;
+    const accountBudgetLabel = categoryAccountId
+      ? document.querySelector(`a[data-account-id='${categoryAccountId}']`)
+      : undefined;
+
+    if (difference) {
+      // Upsert the indicator on the accounts nav
+      let mismatchIndicator = accountBudgetLabel?.querySelector('.cc-budget-mismatch');
+      if (mismatchIndicator) {
+        mismatchIndicator.style.display = 'inline-flex';
+      } else if (accountBudgetLabel) {
+        const accountNameElem = accountBudgetLabel.querySelector('.nav-account-name');
+        $(accountNameElem).append(this.alertIcon());
+      }
+      // set the background in the budget nav
       categoryElement.setAttribute('data-tk-pif-assist', 'true');
-    else categoryElement.removeAttribute('data-tk-pif-assist');
+    } else {
+      // hide the indicator in the accounts nav
+      accountBudgetLabel?.querySelectorAll('.cc-budget-mismatch').forEach((elem) => {
+        elem.style.display = 'none';
+      });
+      // unset the background in the budget nav
+      categoryElement.removeAttribute('data-tk-pif-assist');
+    }
+  }
+
+  alertIcon() {
+    return $(`
+      <span class="cc-budget-mismatch" title="Account balance does not match available funds in budget.">≠</span>
+    `);
   }
 
   calculateDifference(category) {
