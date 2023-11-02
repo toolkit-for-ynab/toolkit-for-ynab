@@ -12,9 +12,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-      - uses: borales/actions-yarn@v3.0.0
+      - uses: borales/actions-yarn@v4
         with:
           cmd: install
-      - uses: borales/actions-yarn@v3.0.0
+      - uses: borales/actions-yarn@v4
         with:
           cmd: lint
