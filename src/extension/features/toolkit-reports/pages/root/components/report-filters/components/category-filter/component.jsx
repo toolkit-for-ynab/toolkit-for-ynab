@@ -95,7 +95,7 @@ export class CategoryFilterComponent extends React.Component {
           </button>
         </div>
         <div className="tk-category-filter__category-list tk-pd-x-05">{categoriesList}</div>
-        <div className="tk-flex tk-justify-content-center tk-mg-t-1">
+        <div className="tk-flex tk-justify-content-end tk-mg-t-1">
           <button className="tk-button tk-button--hollow" onClick={this.props.onCancel}>
             Cancel
           </button>

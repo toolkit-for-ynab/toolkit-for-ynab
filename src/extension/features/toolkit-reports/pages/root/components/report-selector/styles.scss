@@ -1,18 +1,20 @@
 .tk-report-selector {
-  background-color: var(--tk-ive-report-header-background-color);
-  color: #ffffff;
+  background-color: var(--header_background);
+  color: var(--sidebar_label_primary);
   height: 3em;
 
   &__item {
     cursor: pointer;
     border-radius: 1000px;
-    color: #ffffff;
+    color: var(--label_secondary);
     font-size: 0.9em;
     padding: 0.4em 1em;
     margin-right: 1em;
+    font-weight: 500;
 
     &--active {
-      background-color: #16a336;
+      color: var(--sidebar_label_primary);
+      background-color: var(--sidebar_button_background_selected);
     }
   }
 }

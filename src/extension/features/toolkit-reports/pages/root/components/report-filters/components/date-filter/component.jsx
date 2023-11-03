@@ -123,7 +123,7 @@ export class DateFilterComponent extends React.Component {
             </select>
           </div>
         </div>
-        <div className="tk-flex tk-justify-content-center tk-mg-t-1">
+        <div className="tk-flex tk-justify-content-end tk-mg-t-1">
           <button className="tk-button tk-button--hollow" onClick={this.props.onCancel}>
             Cancel
           </button>

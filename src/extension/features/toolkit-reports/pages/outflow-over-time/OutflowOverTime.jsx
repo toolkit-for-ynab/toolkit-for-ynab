@@ -48,14 +48,12 @@ export const OutflowOverTimeComponent = ({ allReportableTransactions, filters })
   return (
     <div className="tk-flex tk-flex-column tk-flex-grow">
       <div className="tk-flex tk-pd-05 tk-border-b">
-        <div className="tk-pd-x-1">
-          <LabeledCheckbox
-            id="tk-balance-over-time-stepgraph-option"
-            checked={cumulativeSum}
-            label="Cumulative sum"
-            onChange={() => setCumulativeSum(!cumulativeSum)}
-          />
-        </div>
+        <LabeledCheckbox
+          id="tk-balance-over-time-stepgraph-option"
+          checked={cumulativeSum}
+          label="Cumulative sum"
+          onChange={() => setCumulativeSum(!cumulativeSum)}
+        />
       </div>
       <OutflowGraph series={outflowSeries} />
     </div>

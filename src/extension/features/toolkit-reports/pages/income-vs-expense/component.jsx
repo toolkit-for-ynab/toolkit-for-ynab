@@ -81,14 +81,17 @@ export class IncomeVsExpenseComponent extends React.Component {
 
     return (
       <>
-        <div className="tk-flex tk-mg-l-1">
+        <div className="tk-flex tk-mg-l-1 tk-mg-y-05">
           <button
-            className="tk-button tk-button--small tk-button--text"
+            className="tk-button tk-button--hollow tk-button--small tk-button--text"
             onClick={this._collapseAll}
           >
             Collapse All
           </button>
-          <button className="tk-button tk-button--small tk-button--text" onClick={this._expandAll}>
+          <button
+            className="tk-button tk-button--hollow tk-button--small tk-button--text"
+            onClick={this._expandAll}
+          >
             Expand All
           </button>
         </div>
