@@ -23,9 +23,9 @@
 
     &--active {
       color: var(--sidebar_label_primary);
-      background-color: var(--sidebar_button_background_selected);
+      background-color: var(--button_primary_background);
       &:hover {
-        background-color: var(--sidebar_button_background_selected);
+        background-color: var(--button_primary_background);
       }
     }
   }
