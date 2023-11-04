@@ -8,7 +8,7 @@
     background: var(--background_primary);
 
     &:hover {
-      background-color: var(--table_row_background_selected);
+      background-color: var(--background_table_row_selected);
     }
 
     body.theme-classic &:hover {
