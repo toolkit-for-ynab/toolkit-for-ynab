@@ -1,0 +1,290 @@
+body {
+  /* Default values */
+  --tk-custom-colours-negative: #d55e00;
+  --tk-custom-colours-positive: #009e73;
+  --tk-custom-colours-warning: #797dec;
+
+  // Default theme
+  &.tk-custom-colours-enabled {
+    /*
+    Each accent colour is defined by scaling the base colour in the LCH colour space
+    The accent variables are named --tk-custom-colours-{base}-l{% lightness}c{% chroma}
+    e.g. l100c100 is equivalent to the base colour, l150c100 would be 50% brighter,
+         l100c050 would be the same brightness, but 50% as saturated
+    
+    themer.html in this folder is a tool that can be used to convert CSS rules from
+    the YNAB stylesheet automatically into accent variables
+
+    To build the themes copy the base colours below into the themer along with YNAB
+    CSS rules - then standardise the LC colours across the positive/negative/warning
+    rules - some manual tweaking will be required
+
+    If a new accent variable is referenced it needs to be added to the
+    TK_CUSTOMIZE_COLOUR_ACCENTS at the top of index.js to be defined and updated
+
+    Base colours:
+    Positive: #6d9f38
+    Warning: #e0a41a
+    Negative: #ca481d
+  */
+
+    /* Negative */
+    --callout_section_negative_accent: var(--tk-custom-colours-negative-l100c100) !important;
+    --callout_section_negative_button_background: var(
+      --tk-custom-colours-negative-l100c100
+    ) !important;
+    --callout_section_negative_button_background_active: var(
+      --tk-custom-colours-negative-l075c080
+    ) !important;
+    --callout_section_negative_button_foreground: var(
+      --tk-custom-colours-negative-l215c010
+    ) !important;
+    --callout_section_negative_label: var(--tk-custom-colours-negative-l025c035) !important;
+    --callout_section_negative_strong_background: var(
+      --tk-custom-colours-negative-l175c040
+    ) !important;
+    --callout_section_negative_strong_background_emphasis: var(
+      --tk-custom-colours-negative-l150c070
+    ) !important;
+    --callout_section_negative_subtle_background: var(
+      --tk-custom-colours-negative-l215c010
+    ) !important;
+    --callout_section_negative_subtle_background_emphasis: var(
+      --tk-custom-colours-negative-l175c040
+    ) !important;
+    --category_balance_alternate_negative_background: var(
+      --tk-custom-colours-negative-l100c100
+    ) !important;
+    --category_balance_alternate_negative_background_active: var(
+      --tk-custom-colours-negative-l075c080
+    ) !important;
+    --category_balance_negative_background: var(--tk-custom-colours-negative-l175c040) !important;
+    --category_balance_negative_background_active: var(
+      --tk-custom-colours-negative-l150c070
+    ) !important;
+    --category_balance_negative_label: var(--tk-custom-colours-negative-l025c035) !important;
+    --label_negative: var(--tk-custom-colours-negative-l100c100) !important;
+    --label_negative_active: var(--tk-custom-colours-negative-l075c080) !important;
+    --label_negative_disabled: var(--tk-custom-colours-negative-l200c020) !important;
+    --status_negative: var(--tk-custom-colours-negative-l100c100) !important;
+
+    /* Positive */
+    --callout_section_positive_accent: var(--tk-custom-colours-positive-l100c100) !important;
+    --callout_section_positive_button_background: var(
+      --tk-custom-colours-positive-l075c080
+    ) !important;
+    --callout_section_positive_button_background_active: var(
+      --tk-custom-colours-positive-l050c060
+    ) !important;
+    --callout_section_positive_button_foreground: var(
+      --tk-custom-colours-positive-l140c010
+    ) !important;
+    --callout_section_positive_label: var(--tk-custom-colours-positive-l025c030) !important;
+    --callout_section_positive_strong_background: var(
+      --tk-custom-colours-positive-l125c055
+    ) !important;
+    --callout_section_positive_strong_background_emphasis: var(
+      --tk-custom-colours-positive-l115c100
+    ) !important;
+    --callout_section_positive_subtle_background: var(
+      --tk-custom-colours-positive-l140c010
+    ) !important;
+    --callout_section_positive_subtle_background_emphasis: var(
+      --tk-custom-colours-positive-l125c055
+    ) !important;
+    --category_balance_positive_background: var(--tk-custom-colours-positive-l125c055) !important;
+    --category_balance_positive_background_active: var(
+      --tk-custom-colours-positive-l120c080
+    ) !important;
+    --category_balance_positive_label: var(--tk-custom-colours-positive-l025c030) !important;
+    --label_positive: var(--tk-custom-colours-positive-l075c080) !important;
+    --label_positive_active: var(--tk-custom-colours-positive-l050c060) !important;
+    --loan_charts_positive: var(--tk-custom-colours-positive-l115c100) !important;
+    --status_positive: var(--tk-custom-colours-positive-l100c100) !important;
+
+    /* Warning */
+    --callout_section_warning_accent: var(--tk-custom-colours-warning-l090c095) !important;
+    --callout_section_warning_button_background: var(
+      --tk-custom-colours-warning-l100c100
+    ) !important;
+    --callout_section_warning_button_foreground: var(
+      --tk-custom-colours-warning-l020c030
+    ) !important;
+    --callout_section_warning_strong_background: var(
+      --tk-custom-colours-warning-l110c055
+    ) !important;
+    --callout_section_warning_strong_background_emphasis: var(
+      --tk-custom-colours-warning-l090c095
+    ) !important;
+    --callout_section_warning_strong_background_label: var(
+      --tk-custom-colours-warning-l020c030
+    ) !important;
+    --callout_section_warning_subtle_background: var(
+      --tk-custom-colours-warning-l120c010
+    ) !important;
+    --callout_section_warning_subtle_background_emphasis: var(
+      --tk-custom-colours-warning-l110c055
+    ) !important;
+    --callout_section_warning_subtle_background_label: var(
+      --tk-custom-colours-warning-l020c030
+    ) !important;
+    --category_balance_alternate_warning_background: var(
+      --tk-custom-colours-warning-l100c100
+    ) !important;
+    --category_balance_alternate_warning_background_active: var(
+      --tk-custom-colours-warning-l090c095
+    ) !important;
+    --category_balance_warning_background: var(--tk-custom-colours-warning-l105c080) !important;
+    --category_balance_warning_background_active: var(
+      --tk-custom-colours-warning-l100c100
+    ) !important;
+    --category_balance_warning_label: var(--tk-custom-colours-warning-l020c030) !important;
+    --label_warning: var(--tk-custom-colours-warning-l045c055) !important;
+    --loan_charts_warning: var(--tk-custom-colours-warning-l100c100) !important;
+    --status_warning: var(--tk-custom-colours-warning-l090c095) !important;
+    --views_warning_background: var(--tk-custom-colours-warning-l110c055) !important;
+    --views_warning_background_hover: var(--tk-custom-colours-warning-l105c080) !important;
+    --views_warning_background_selected: var(--tk-custom-colours-warning-l115c030) !important;
+    --views_warning_background_selected_hover: var(--tk-custom-colours-warning-l110c055) !important;
+    --views_warning_label: var(--tk-custom-colours-warning-l020c030) !important;
+    --views_warning_label_selected: var(--tk-custom-colours-warning-l020c030) !important;
+    --views_warning_selected_accent: var(--tk-custom-colours-warning-l090c095) !important;
+  }
+
+  // Square corners
+  &.tk-custom-colours-enabled[tk-custom-colours-negative-square] {
+    .ynab-new-budget-available-number.negative {
+      border-radius: 0em !important;
+      -webkit-border-radius: 0em !important;
+    }
+
+    .left-to-budget-is-negative .to-be-budgeted {
+      border-radius: 0em !important;
+      -webkit-border-radius: 0em !important;
+    }
+  }
+
+  &.tk-custom-colours-enabled[tk-custom-colours-positive-square] {
+    .ynab-new-budget-available-number.positive {
+      border-radius: 0em !important;
+      -webkit-border-radius: 0em !important;
+    }
+
+    .left-to-budget-is-positive .to-be-budgeted {
+      border-radius: 0em !important;
+      -webkit-border-radius: 0em !important;
+    }
+  }
+
+  &.tk-custom-colours-enabled[tk-custom-colours-warning-square] {
+    .ynab-new-budget-available-number.cautious {
+      border-radius: 0em !important;
+      -webkit-border-radius: 0em !important;
+    }
+  }
+}
+
+.tk-custom-colours-grid {
+  display: none !important;
+}
+
+body.tk-custom-colours-enabled .tk-custom-colours-grid {
+  display: grid !important;
+}
+
+// Options menu
+.tk-custom-colours-option {
+  input[type='checkbox'] {
+    width: auto;
+    border: var(--background_tertiary);
+    height: unset;
+    margin: 0;
+  }
+
+  .tk-custom-colours-option-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    h3 {
+      width: auto !important;
+      margin-bottom: 0;
+    }
+  }
+
+  .tk-custom-colours-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.5rem 1rem;
+
+    .tk-custom-colours-square-option {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+  }
+
+  .tk-custom-colours-positive,
+  .tk-custom-colours-warning,
+  .tk-custom-colours-negative {
+    position: relative;
+    border-color: var(--divider-standard);
+    border-radius: 0.5rem;
+    border-width: 0.125rem;
+    border-style: solid;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .tk-custom-colours-picker {
+    width: 100%;
+    height: 100px;
+    margin: 0px;
+    border: 0px;
+    border-radius: 0px;
+    cursor: pointer;
+  }
+
+  .tk-custom-colours-picker-icon {
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M92 8c-5-4-12-4-17 0L62 22l-4-4a5 5 0 10-7 7l4 4-42 41c-2 2-3 5-3 8a81 81 0 01-1 6l-3 3v4l3 3h4l3-3h1l5-1c3 0 6-1 8-3l41-42 4 4a5 5 0 107-7L70 29l9 8 13-12c4-5 4-12 0-17zM65 43L45 63h-4l-3-3h-4l-1 1-14 14h-1v-1l24-23 15-16h4l4 4v4z"/></svg>');
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
+  .tk-custom-colours-picker-reset {
+    width: 16px;
+    height: 16px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54.3 55.6"><path d="M54.3 0l-9 7.3a27.4 27.4 0 10-17.7 48.3c11.8 0 22-7.4 25.9-18l-10-2.4a17.3 17.3 0 01-16 10.6c-9.7 0-17.4-7.7-17.4-17.5 0-9.7 7.7-17.7 17.5-17.7 3.6 0 6.9 1.1 9.6 3l-9 7.2 26.1 4.9V0z"/></svg>');
+    background-size: 16px 16px;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+  }
+
+  .tk-custom-colours-square div {
+    width: 219px;
+    text-align: center;
+    padding-bottom: 0.5em;
+  }
+
+  .tk-custom-colours-square {
+    input {
+      margin: 0 0.3em 0 0;
+    }
+
+    input,
+    label {
+      width: auto;
+      display: inline;
+      font-weight: normal;
+    }
+  }
+}
