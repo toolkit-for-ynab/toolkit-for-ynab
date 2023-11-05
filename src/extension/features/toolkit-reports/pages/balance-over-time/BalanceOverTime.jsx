@@ -136,41 +136,33 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
   }
   return (
     <div className="tk-flex tk-flex-column tk-flex-grow">
-      <div className="tk-flex tk-pd-05 tk-border-b">
-        <div className="tk-pd-x-1">
+      <div className="tk-flex tk-pd-05 tk-border-b tk-gap-1">
+        <LabeledCheckbox
+          id="tk-balance-over-time-groupaccounts-option"
+          checked={shouldGroupAccounts}
+          label="Group Accounts"
+          onChange={() => setShouldGroupAccounts(!shouldGroupAccounts)}
+        />
+        {shouldGroupAccounts && (
           <LabeledCheckbox
             id="tk-balance-over-time-groupaccounts-option"
-            checked={shouldGroupAccounts}
-            label="Group Accounts"
-            onChange={() => setShouldGroupAccounts(!shouldGroupAccounts)}
+            checked={shouldGroupAccountsByType}
+            label="by type"
+            onChange={() => setShouldGroupAccountsByType(!shouldGroupAccountsByType)}
           />
-        </div>
-        {shouldGroupAccounts && (
-          <div className="tk-pd-x-1">
-            <LabeledCheckbox
-              id="tk-balance-over-time-groupaccounts-option"
-              checked={shouldGroupAccountsByType}
-              label="by type"
-              onChange={() => setShouldGroupAccountsByType(!shouldGroupAccountsByType)}
-            />
-          </div>
         )}
-        <div className="tk-pd-x-1">
-          <LabeledCheckbox
-            id="tk-balance-over-time-trendline-option"
-            checked={useTrendLine}
-            label="Show Trendline"
-            onChange={() => setUseTrendLine(!useTrendLine)}
-          />
-        </div>
-        <div className="tk-pd-x-1">
-          <LabeledCheckbox
-            id="tk-balance-over-time-stepgraph-option"
-            checked={useStepGraph}
-            label="Use Step Graph"
-            onChange={() => setUseStepGraph(!useStepGraph)}
-          />
-        </div>
+        <LabeledCheckbox
+          id="tk-balance-over-time-trendline-option"
+          checked={useTrendLine}
+          label="Show Trendline"
+          onChange={() => setUseTrendLine(!useTrendLine)}
+        />
+        <LabeledCheckbox
+          id="tk-balance-over-time-stepgraph-option"
+          checked={useStepGraph}
+          label="Use Step Graph"
+          onChange={() => setUseStepGraph(!useStepGraph)}
+        />
       </div>
       <RunningBalanceGraph series={series} numDatapointsLimit={NUM_DATAPOINTS_LIMIT} />
     </div>

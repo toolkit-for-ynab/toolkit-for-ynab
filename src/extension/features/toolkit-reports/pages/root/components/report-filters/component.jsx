@@ -20,12 +20,18 @@ export class ReportFiltersComponent extends React.Component {
   render() {
     const { disableCategoryFilter } = this.props.selectedReport.filterSettings;
     const { accountFilterIds, categoryFilterIds, dateFilter } = this.props.filters;
-    const categoryButtonClasses = classnames('tk-button', 'tk-button--medium', 'tk-button--text', {
-      'tk-button--disabled': disableCategoryFilter,
-    });
+    const categoryButtonClasses = classnames(
+      'tk-button',
+      'tk-button--hollow',
+      'tk-button--medium',
+      'tk-button--text',
+      {
+        'tk-button--disabled': disableCategoryFilter,
+      }
+    );
 
     return (
-      <div className="tk-flex tk-pd-05 tk-flex-shrink-none tk-border-b">
+      <div className="tk-flex tk-pd-05 tk-flex-shrink-none tk-border-y">
         <div className="tk-flex">
           <div className="tk-mg-r-05">
             <button onClick={this._showCategoryFilterModal} className={categoryButtonClasses}>
@@ -35,7 +41,7 @@ export class ReportFiltersComponent extends React.Component {
           <div className="tk-mg-r-05">
             <button
               onClick={this._showAccountFilterModal}
-              className="tk-button tk-button--medium tk-button--text"
+              className="tk-button tk-button--hollow tk-button--medium tk-button--text"
             >
               {accountFilterIds.size ? 'Some Accounts' : 'All Accounts'}
             </button>
@@ -43,7 +49,7 @@ export class ReportFiltersComponent extends React.Component {
           <div className="tk-mg-r-05">
             <button
               onClick={this._showDateSelectorModal}
-              className="tk-button tk-button--medium tk-button--text"
+              className="tk-button tk-button--hollow tk-button--medium tk-button--text"
             >
               {`${localizedMonthAndYear(dateFilter.fromDate)} - ${localizedMonthAndYear(
                 dateFilter.toDate

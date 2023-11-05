@@ -1,5 +1,4 @@
 @import './buttons.scss';
-@import './variables.scss';
 
 /* space fillers */
 .tk-full-height {
@@ -60,6 +59,14 @@
 }
 .tk-align-self-end {
   align-self: flex-end;
+}
+
+.tk-flex-grow {
+  flex-grow: 1;
+}
+
+.tk-gap-1 {
+  gap: 1rem;
 }
 
 /* padding helpers */
@@ -221,25 +228,25 @@
 
 /* borders */
 .tk-border {
-  border: solid $grey-8 1px;
+  border: solid var(--separator_standard) 1px;
 }
 .tk-border-t {
-  border-top: solid $grey-8 1px;
+  border-top: solid var(--separator_standard) 1px;
 }
 .tk-border-l {
-  border-left: solid $grey-8 1px;
+  border-left: solid var(--separator_standard) 1px;
 }
 .tk-border-b {
-  border-bottom: solid $grey-8 1px;
+  border-bottom: solid var(--separator_standard) 1px;
 }
 .tk-border-r {
-  border-right: solid $grey-8 1px;
+  border-right: solid var(--separator_standard) 1px;
 }
 .tk-border-x {
-  border-right: solid $grey-8 1px;
-  border-left: solid $grey-8 1px;
+  border-right: solid var(--separator_standard) 1px;
+  border-left: solid var(--separator_standard) 1px;
 }
 .tk-border-y {
-  border-top: solid $grey-8 1px;
-  border-bottom: solid $grey-8 1px;
+  border-top: solid var(--separator_standard) 1px;
+  border-bottom: solid var(--separator_standard) 1px;
 }
