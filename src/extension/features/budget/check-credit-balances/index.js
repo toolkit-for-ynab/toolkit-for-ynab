@@ -18,7 +18,6 @@ export class CheckCreditBalances extends Feature {
 
   invoke() {
     this.addRectifyDifferenceButton();
-    this.addToolkitEmberHook('budget-table-row', 'didRender', this.checkCategoryForDifference);
   }
 
   observe(changedNodes) {
@@ -26,6 +25,13 @@ export class CheckCreditBalances extends Feature {
 
     if (changedNodes.has('budget-inspector-button')) {
       this.addRectifyDifferenceButton();
+    }
+
+    if (changedNodes.has('budget-table-container')) {
+      const debtRows = document.querySelectorAll('.is-debt-payment-category');
+      debtRows.forEach((row) => {
+        this.checkCategoryForDifference(row);
+      });
     }
   }
 
@@ -57,9 +63,11 @@ export class CheckCreditBalances extends Feature {
 
     const difference = this.calculateDifference(category);
     // If there is a difference, add warning. If available is less than 0, YNAB will show underfunded warning so we don't need to add ours.
-    if (difference && category.available >= 0)
+    if (difference && category.available >= 0) {
       inspectorElement.setAttribute('data-tk-pif-assist', 'true');
-    else inspectorElement.removeAttribute('data-tk-pif-assist');
+    } else {
+      inspectorElement.removeAttribute('data-tk-pif-assist');
+    }
 
     const formattedDifference =
       difference >= 0 ? `+${formatCurrency(difference)}` : formatCurrency(difference);
@@ -87,6 +95,7 @@ export class CheckCreditBalances extends Feature {
   }
 
   checkCategoryForDifference(categoryElement) {
+    console.log('checkCategoryForDifference');
     if (!isCurrentMonthSelected()) return;
 
     const category = getEmberView(categoryElement.id).category;
