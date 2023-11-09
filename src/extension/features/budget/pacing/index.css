@@ -8,10 +8,10 @@
   height: 2.25rem;
 }
 
-.tk-budget-table-cell-pacing.deemphasized button,
-.tk-budget-table-cell-pacing.deemphasized:hover button,
-.tk-budget-table-cell-pacing.deemphasized span,
-.tk-budget-table-cell-pacing.deemphasized:hover span {
+.tk-budget-table-cell-pacing button.deemphasized,
+.tk-budget-table-cell-pacing button.deemphasized:hover,
+.tk-budget-table-cell-pacing button.deemphasized span,
+.tk-budget-table-cell-pacing button.deemphasized:hover span {
   color: #cfd5d7 !important;
   background-color: transparent !important;
 }
@@ -26,8 +26,8 @@
   text-align: left;
 }
 
-.tk-budget-table-cell-pacing.deemphasized button.indicator,
-.tk-budget-table-cell-pacing.deemphasized:hover button.indicator {
+.tk-budget-table-cell-pacing button.deemphasized.indicator,
+.tk-budget-table-cell-pacing button.deemphasized.indicator:hover {
   background-color: #cfd5d7 !important;
 }
 
