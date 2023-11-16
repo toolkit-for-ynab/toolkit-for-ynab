@@ -18,6 +18,7 @@
 
 /* Budget Numbers, pacing */
 .budget-table-row .ynab-new-budget-available-number.negative,
+.budget-table-row .ynab-new-budget-available-number.cautious.credit,
 .budget-table-row .budget-table-cell-pacing span.negative,
 .budget-table-row .budget-table-cell-pacing span.cautious {
   border-radius: 0em !important;

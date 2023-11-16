@@ -5,7 +5,7 @@ import { l10n } from 'toolkit/extension/utils/toolkit';
 export class BulkManagePayees extends Feature {
   observe(changedNodes) {
     if (
-      changedNodes.has('modal-overlay active  ynab-u modal-popup modal-account-register-action-bar')
+      changedNodes.has('modal-overlay active ynab-u modal-popup modal-account-register-action-bar')
     ) {
       const element = document.querySelector('.modal-account-register-action-bar');
       this.insertManagePayees(element);
@@ -32,7 +32,9 @@ export class BulkManagePayees extends Feature {
     $('.modal-account-edit-transaction-move').before(
       $(`<li id="tk-manage-payees">
           <button class="button-list toolkit-modal-select-budget-manage-payees">
-            <i class="ynab-new-icon ember-view flaticon stroke group"><!----></i>${menuText}
+            <svg class="ynab-new-icon " width="16" height="16">
+              <use href="#icon_sprite_arrows_circle_fill"></use>
+            </svg>${menuText}
           </button>
         </li>
         <li><hr /><li>

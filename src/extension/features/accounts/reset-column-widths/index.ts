@@ -21,7 +21,7 @@ export class ResetColumnWidths extends Feature {
   }
 
   observe(changedNodes: Set<string>) {
-    if (changedNodes.has('modal-overlay active  ynab-u modal-generic modal-account-view-options')) {
+    if (changedNodes.has('modal')) {
       this.addButton();
     }
   }

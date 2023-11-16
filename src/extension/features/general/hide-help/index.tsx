@@ -39,7 +39,7 @@ export class HideHelp extends Feature {
   }
 
   observe(nodes: Set<string>) {
-    if (nodes.has('modal-overlay active  ynab-u ynab-new-settings-menu')) {
+    if (nodes.has('modal-overlay active ynab-u ynab-new-settings-menu')) {
       this.invoke();
     }
   }

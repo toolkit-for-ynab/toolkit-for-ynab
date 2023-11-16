@@ -19,8 +19,16 @@ export class ToggleSplitButton extends React.Component {
   render() {
     return (
       <button className="button tk-toggle-splits" onClick={this.toggleSplits}>
-        {this.state.areAllSplitsExpanded && <i className="flaticon stroke down" />}
-        {!this.state.areAllSplitsExpanded && <i className="flaticon stroke right" />}
+        {this.state.areAllSplitsExpanded && (
+          <svg className="ynab-new-icon" width="10" height="10">
+            <use href={`#icon_sprite_caret_down`} />
+          </svg>
+        )}
+        {!this.state.areAllSplitsExpanded && (
+          <svg className="ynab-new-icon" width="10" height="10">
+            <use href={`#icon_sprite_caret_right`} />
+          </svg>
+        )}
         {l10n('toolkit.toggleSplits', 'Toggle Splits')}
       </button>
     );

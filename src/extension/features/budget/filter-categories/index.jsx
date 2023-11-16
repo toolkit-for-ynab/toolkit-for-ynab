@@ -22,7 +22,11 @@ function CategorySearchInput({ applySearch }) {
 
   return (
     <div id="tk-categories-filter" className="tk-categories-filter-wrapper">
-      <i className="tk-categories-filter-icon flaticon stroke magnifying-glass-1"></i>
+      <div style={{ position: 'absolute', left: '8px', top: '8px' }}>
+        <svg className="ynab-new-icon" width="16" height="16">
+          <use href="#icon_sprite_search" />
+        </svg>
+      </div>
       <input
         id="tk-categories-filter-input"
         spellCheck={false}
@@ -35,9 +39,13 @@ function CategorySearchInput({ applySearch }) {
         value={value}
       />
       <button
-        className="flaticon solid x-1 button tk-categories-filter-cancel-icon"
+        className="button tk-categories-filter-cancel-icon"
         onClick={() => handleSetValue('')}
-      ></button>
+      >
+        <svg className="ynab-new-icon" width="12" height="12">
+          <use href="#icon_sprite_close" />
+        </svg>
+      </button>
     </div>
   );
 }

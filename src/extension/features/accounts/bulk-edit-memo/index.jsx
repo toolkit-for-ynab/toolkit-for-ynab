@@ -69,7 +69,9 @@ const EditMemo = () => {
       <li className="tk-bulk-edit-memo">
         {displayMode === DEFAULT_DISPLAY_MODE && (
           <button className="button-list" onClick={() => setDisplayMode(MENU_DISPLAY_MODE)}>
-            <i className="flaticon stroke document-1 ynab-new-icon"></i>
+            <svg className="ynab-new-icon" width="16" height="16">
+              <use href="#icon_sprite_document"></use>
+            </svg>
             {makeEditLabel()}
           </button>
         )}
@@ -158,7 +160,7 @@ export class BulkEditMemo extends Feature {
 
   observe(changedNodes) {
     if (
-      changedNodes.has('modal-overlay active  ynab-u modal-popup modal-account-register-action-bar')
+      changedNodes.has('modal-overlay active ynab-u modal-popup modal-account-register-action-bar')
     ) {
       const element = document.querySelector('.modal-account-register-action-bar');
       this.injectBulkEditMemo(element);

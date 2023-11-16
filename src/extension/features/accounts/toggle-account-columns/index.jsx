@@ -48,17 +48,9 @@ export class ToggleAccountColumns extends Feature {
     return require('./index.css');
   }
 
-  shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    this.addToolkitEmberHook('modal', 'didRender', this.insertToggles, {
-      guard: () => document.querySelector('.modal-account-view-options') !== null,
-    });
-
-    if (isCurrentRouteAccountsPage()) {
-      this.updateShowMemoState(this.getShowMemoState());
+  observe(changedNodes) {
+    if (changedNodes.has('modal-overlay active ynab-u modal-generic modal-account-view-options')) {
+      this.insertToggles(document.querySelector('.modal-account-view-options'));
     }
   }
 

@@ -92,27 +92,25 @@ export class ToggleMasterCategories extends Feature {
     );
 
     controllerLookup('budget').send('toggleCollapseMasterCategories', true);
-    getBudgetService()
-      .budgetMonthDisplayItems.find(({ isMasterCategory }) => isMasterCategory)
-      ?.set('isCollapsed', false);
   }
 
   updateToggleIcon() {
     let $toggle = $('#tk-master-category-toggle');
     if (!$toggle.length) {
-      $toggle = $('<div>', {
-        id: 'tk-master-category-toggle',
-        class: 'flaticon stroke',
-      });
+      $toggle =
+        $(`<svg id="tk-master-category-toggle" className="ynab-new-icon" width="10" height="10">
+          <use id="tk-master-category-toggle-direction" href="#icon_sprite_caret_down" />
+        </svg>`);
     }
 
     const isSoloModeEnabled = getToolkitStorageKey('catSoloMode', false);
     if (isSoloModeEnabled) {
-      $toggle.removeClass(['down', 'right']).addClass('minus');
+      $('#tk-master-category-toggle-direction', $toggle).attr('href', '#icon_sprite_subtract');
     } else {
-      $toggle
-        .removeClass(['minus', this.isAnyCategoryCollapsed ? 'down' : 'right'])
-        .addClass(this.isAnyCategoryCollapsed ? 'right' : 'down');
+      $('#tk-master-category-toggle-direction', $toggle).attr(
+        'href',
+        `#icon_sprite_caret_${this.isAnyCategoryCollapsed ? 'right' : 'down'}`
+      );
     }
 
     $('.budget-table-header .budget-table-cell-collapse').html($toggle);
@@ -132,9 +130,9 @@ export class ToggleMasterCategories extends Feature {
       }
 
       if (item?.masterCategory?.entityId === clickedMasterCategoryId) {
-        item.set('isCollapsed', false);
+        item.isCollapsed = !item.isCollapsed;
       } else {
-        item.set('isCollapsed', true);
+        item.isCollapsed = false;
       }
     });
   };

@@ -22,11 +22,9 @@ const ToggleButton = ({ stateField }) => {
 
   return (
     <button className={`button ${!isShown && 'button-disabled '}`} onClick={toggleSetting}>
-      <i
-        className={`tk-toggle tk-toggle--${stateField} flaticon solid ${
-          stateField === 'reconciled' ? 'lock-1' : 'calendar-1'
-        } is-reconciled`}
-      />
+      <svg className="ynab-new-icon" width="16" height="16">
+        <use href={stateField === 'reconciled' ? '#icon_sprite_lock' : '#icon_sprite_calendar'} />
+      </svg>
     </button>
   );
 };
@@ -37,7 +35,7 @@ ToggleButton.propTypes = {
 
 export class ToggleTransactionFilters extends Feature {
   observe(changedNodes) {
-    if (changedNodes.has('accounts-toolbar')) {
+    if (changedNodes.has('accounts-toolbar-right')) {
       this.injectButtons($('.accounts-toolbar'));
     }
   }
