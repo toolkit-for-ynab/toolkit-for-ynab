@@ -99,6 +99,10 @@ Add a calculation which shows how long your money would likely last if you never
 
 Option to exclude credit cards from the days of buffering calculation, this will usually eliminate negative calculations for Days of Buffering but it should be noted that this will also inflate you "Days of Buffering" as far as the actual calculation goes.
 
+## Add Fund Half
+
+Adds a button or buttons to fund half of your category's monthly Target amount. Perfect for budget categories you fund half of twice a month. Low Half/High Half refers to which you assign when the monthly Target amount is an odd number. Works with multiple selected budget categories.
+
 ## Add Goal Indicator
 
 Add an indicator to subcategories with goals. Types: (M)onthly goal, target by (D)ate goal, (T)arget without date, (S)pending goals, and (U)pcoming transactions.
