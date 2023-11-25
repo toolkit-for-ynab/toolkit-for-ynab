@@ -11,6 +11,6 @@ interface YNABAccountsService {
     set: (field: string, value: any) => void;
     applyFilters: VoidFunction;
   };
-  // Field might be recursive (e.g. 'filters.scheduled')
+  // Field here might be nested (e.g. 'filters.scheduled')
   addObserver: (field: string, cb: (target: YNABAccountsService, field: string) => void) => void;
 }
