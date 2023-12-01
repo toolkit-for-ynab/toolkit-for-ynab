@@ -1,8 +1,7 @@
 interface YNABBudgetMonthDisplayItem {
   categoryId: string;
-  displayName: string;
   budgeted: number;
-  underfundedAmount: number;
+  goalTarget: number;
 }
 
 interface YNABBudgetService {
