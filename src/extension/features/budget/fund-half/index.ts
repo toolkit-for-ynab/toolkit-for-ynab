@@ -3,8 +3,8 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getBudgetService, getEntityManager } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 
-// The concept here is that for odd amounts there is a low half and a high half.
-// Example:  For $65.05 the low half is $32.52 (x2 = $65.04).  The high half is $35.53 (x2 - $65.06).
+// The concept here is that for odd monthly Target amounts there is a low half and a high half.
+// Example:  For $65.05 the low half is $32.52 (x2 = $65.04).  The high half is $32.53 (x2 - $65.06).
 enum HalfType {
   Exact = 'Exact',
   Low = 'Low',
@@ -24,14 +24,10 @@ export class FundHalf extends Feature {
     return true;
   }
 
-  // invoke() {
-  //   //console.log('AssignHalf is working!');
-  // }
-
-  halfAssignButton(text: string, amount: number, halfType: HalfType) {
+  halfFundButton(text: string, amount: number, halfType: HalfType) {
     const formattedAmount = formatCurrency(amount, true);
     return $(`
-    <button class="budget-inspector-button assign-half" type="button" data-half-type="${HalfType[halfType]}">
+    <button class="budget-inspector-button fund-half" type="button" data-half-type="${HalfType[halfType]}">
         <div>${text}</div>
         <div>
             <strong class="user-data" title="${formattedAmount}">
@@ -53,9 +49,8 @@ export class FundHalf extends Feature {
   updateDOM() {
     if (!$('.budget-inspector').length) return;
     if (!$('.inspector-quick-budget').length) return;
-    if ($('.budget-inspector-button.assign-half').length) return;
+    if ($('.budget-inspector-button.fund-half').length) return;
 
-    //debugger
     const selectedBudgetCategories = this._getSelectedBudgetCategories();
     if (selectedBudgetCategories != null) {
       const underfundedButtonText = $($('.inspector-quick-budget .option-groups > div')[0]).find(
@@ -63,11 +58,8 @@ export class FundHalf extends Feature {
       );
       const underfundedButton = $(underfundedButtonText).parent();
 
-      this.lowHalf = this._getSelectedCategoriesAssignmentAmounts(
-        selectedBudgetCategories,
-        HalfType.Low
-      );
-      this.highHalf = this._getSelectedCategoriesAssignmentAmounts(
+      this.lowHalf = this._getSelectedCategoriesFundAmounts(selectedBudgetCategories, HalfType.Low);
+      this.highHalf = this._getSelectedCategoriesFundAmounts(
         selectedBudgetCategories,
         HalfType.High
       );
@@ -79,24 +71,23 @@ export class FundHalf extends Feature {
       this.highHalf.forEach((a) => (highHalfSum += a.amount));
 
       if (lowHalfSum === highHalfSum) {
-        // We only need one button.  This may be a case where all selected budget category's underfunded amounts were even numbers.
+        // We only need one button.  This may be a case where all selected budget category's Target amounts were even numbers.
         // Or the case where there are multiple odd amounts that equalized the amounts.
         $(underfundedButton)
           .parent()
-          .append(this.halfAssignButton('Assign Half', lowHalfSum, HalfType.Exact));
+          .append(this.halfFundButton('Fund Half', lowHalfSum, HalfType.Exact));
       } else {
         $(underfundedButton)
           .parent()
-          .append(this.halfAssignButton('Assign Low Half', lowHalfSum, HalfType.Low));
+          .append(this.halfFundButton('Fund Low Half', lowHalfSum, HalfType.Low));
 
         $(underfundedButton)
           .parent()
-          .append(this.halfAssignButton('Assign High Half', highHalfSum, HalfType.High));
+          .append(this.halfFundButton('Fund High Half', highHalfSum, HalfType.High));
       }
     }
 
-    $('button.budget-inspector-button.assign-half').on('mousedown', (event) => {
-      //$(event.target).prop('disabled', true)
+    $('button.budget-inspector-button.fund-half').on('mousedown', (event) => {
       const halfTypeString = event.delegateTarget.attributes.getNamedItem('data-half-type')!.value;
 
       // This will treat HalfType Exact like Low.
@@ -104,7 +95,7 @@ export class FundHalf extends Feature {
         halfTypeString.valueOf() !== HalfType.High ? this.lowHalf : this.highHalf;
 
       selectedBudgetCategories.forEach((selectedBudgetCategory) => {
-        this._assignAmountToBudgetCategory(
+        this._fundAmountToBudgetCategory(
           selectedBudgetCategory.budgetCategoryId,
           selectedBudgetCategory.amount
         );
@@ -112,14 +103,12 @@ export class FundHalf extends Feature {
     });
   }
 
-  _getSelectedCategoriesAssignmentAmounts(
+  _getSelectedCategoriesFundAmounts(
     selectedBudgetCategories: YNABBudgetMonthDisplayItem[],
     halfType: HalfType
   ): BudgetCategoryAmount[] {
     const selectedBudgetCategoryAmounts: BudgetCategoryAmount[] = [];
     selectedBudgetCategories.forEach((selectedBudgetCategory) => {
-      debugger;
-
       const budgeCategoryAmount: BudgetCategoryAmount = {
         budgetCategoryId: selectedBudgetCategory.categoryId,
         amount: this._getHalfAmount(selectedBudgetCategory.goalTarget, halfType),
@@ -159,7 +148,7 @@ export class FundHalf extends Feature {
     }
   };
 
-  _assignAmountToBudgetCategory(budgetRowId: string, amount: number) {
+  _fundAmountToBudgetCategory(budgetRowId: string, amount: number) {
     const budgetRow = document.querySelector(`[data-entity-id="${budgetRowId}"]`);
     const emberView = getEmberView<BudgetTableRowComponent>(budgetRow?.id);
     if (emberView) {
