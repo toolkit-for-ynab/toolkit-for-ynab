@@ -5,7 +5,7 @@ export function useToolkitDisabled() {
   const [isToolkitDisabled, setIsToolkitDisabled] = React.useState(false);
 
   const handleToolkitDisabledChanged = React.useCallback(
-    (_, isDisabled) => setIsToolkitDisabled(isDisabled),
+    (_: unknown, isDisabled: boolean) => setIsToolkitDisabled(isDisabled),
     []
   );
 

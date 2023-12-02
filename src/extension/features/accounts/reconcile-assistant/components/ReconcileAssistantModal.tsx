@@ -23,14 +23,14 @@ interface ReconcileAssistantModalProps {
   transactions: Array<YNABTransaction>;
 }
 
-export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = ({
+export const ReconcileAssistantModal = ({
   portalId,
   isOpen,
   setModalOpened,
   clearedTotal,
   target,
   transactions,
-}) => {
+}: ReconcileAssistantModalProps) => {
   const [transactionPowerset, setTransactionPowerset] = useState<Array<Array<YNABTransaction>>>([]);
   const [matchingTransactions, setMatchingTransactions] = useState<Array<Array<YNABTransaction>>>(
     []
@@ -165,30 +165,34 @@ export const ReconcileAssistantModal: React.FC<ReconcileAssistantModalProps> = (
   };
 
   // Note: YNAB has their zIndex at 9998. Keep the current ynab modal from disappearing.
-  return ReactDOM.createPortal(
-    <div className="tk-modal-container" style={{ zIndex: 10000 }}>
-      <div className="tk-modal-content tk-modal-stack tk-confirmation-modal">
-        {/* Modal Header */}
-        <div className="tk-align-self-start" style={{ fontSize: '1.5rem' }}>
-          <p>{resources.modalHeader}</p>
-        </div>
+  return (
+    <>
+      {ReactDOM.createPortal(
+        <div className="tk-modal-container" style={{ zIndex: 10000 }}>
+          <div className="tk-modal-content tk-modal-stack tk-confirmation-modal">
+            {/* Modal Header */}
+            <div className="tk-align-self-start" style={{ fontSize: '1.5rem' }}>
+              <p>{resources.modalHeader}</p>
+            </div>
 
-        {/* Modal Body */}
-        <div className="tk-reconcile-assistant-modal-body">{modalBodyContent()}</div>
+            {/* Modal Body */}
+            <div className="tk-reconcile-assistant-modal-body">{modalBodyContent()}</div>
 
-        {/* Modal Action Buttons */}
-        <div className="tk-align-self-end">
-          {shouldShowClearButton() && (
-            <button className="tk-button tk-mg-r-05" onClick={handleConfirmation}>
-              {resources.clearButtonText}
-            </button>
-          )}
-          <button className="tk-button" onClick={onModalClose}>
-            {resources.closeButtonText}
-          </button>
-        </div>
-      </div>
-    </div>,
-    document.getElementById(portalId)!
+            {/* Modal Action Buttons */}
+            <div className="tk-align-self-end">
+              {shouldShowClearButton() && (
+                <button className="tk-button tk-mg-r-05" onClick={handleConfirmation}>
+                  {resources.clearButtonText}
+                </button>
+              )}
+              <button className="tk-button" onClick={onModalClose}>
+                {resources.closeButtonText}
+              </button>
+            </div>
+          </div>
+        </div>,
+        document.getElementById(portalId)!
+      )}
+    </>
   );
 };

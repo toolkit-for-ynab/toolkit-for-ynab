@@ -1,36 +1,55 @@
 :root {
-  --tk-button-primary-color: #4495d7;
-  --tk-button-primary-hover-color: #2b7cbe;
+  --tk-button-secondary-text: hsl(120, 100%, 14%);
+  --tk-button-secondary-bg: hsl(114.29, 44.68%, 90.78%);
+  --tk-button-secondary-bg-hover: hsl(115.61, 44.09%, 81.76%);
+  --tk-button-primary-text: hsl(114.55, 47.83%, 95.49%);
+  --tk-button-primary-bg: hsl(137.84, 100%, 29.02%);
+  --tk-button-primary-bg-hover: hsl(130, 62.38%, 39.61%);
 }
 
 .button {
-  border: 3px solid gray;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  color: var(--tk-text-color);
-  font-size: 1rem;
+  border: none;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
 
-  &:hover {
-    cursor: pointer;
+  &.size-s {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 999999px;
   }
 
-  &__primary {
-    background-color: var(--tk-button-primary-color);
-    border-color: var(--tk-button-primary-color);
-    color: #f1f1f1;
+  &.size-m {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+    border-radius: 0.5rem;
+  }
+
+  &.primary {
+    background: var(--tk-button-primary-bg);
+    color: var(--tk-button-primary-text);
 
     &:hover {
-      border-color: var(--tk-button-primary-hover-color);
-      background-color: var(--tk-button-primary-hover-color);
+      background: var(--tk-button-primary-bg-hover);
     }
   }
 
-  &__hollow {
-    background-color: transparent;
-    color: var(--tk-text-color);
+  &.secondary {
+    background: var(--tk-button-secondary-bg);
+    color: var(--tk-button-secondary-text);
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
+      background: var(--tk-button-secondary-bg-hover);
+    }
+  }
+
+  &.transparent {
+    color: inherit;
+    background: transparent;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.075);
     }
   }
 }

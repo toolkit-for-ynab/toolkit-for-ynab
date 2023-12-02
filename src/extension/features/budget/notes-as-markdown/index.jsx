@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getBudgetService } from 'toolkit/extension/utils/ynab';
-import * as ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
 import ReactMarkdown from 'react-markdown';
 
 const MARKDOWN_NOTES_CONTAINER_ID = 'tk-note-container';
@@ -54,9 +54,8 @@ export class NotesAsMarkdown extends Feature {
     if (note) {
       ynabNoteContent.classList.add('tk-hidden');
       toolkitNoteContainer.classList.remove('tk-hidden');
-      ReactDOM.render(
+      ReactDOM.createRoot(toolkitNoteContainer).render(
         <ReactMarkdown
-          linkTarget="_blank"
           components={{
             link: ({ href, children }) => (
               <a href={href} target="_blank" rel="noopener noreferrer">
@@ -66,8 +65,7 @@ export class NotesAsMarkdown extends Feature {
           }}
         >
           {note}
-        </ReactMarkdown>,
-        toolkitNoteContainer
+        </ReactMarkdown>
       );
     } else {
       toolkitNoteContainer.classList.add('tk-hidden');

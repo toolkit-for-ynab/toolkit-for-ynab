@@ -1,13 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import './styles.scss';
 import { Button } from '../button';
 import classNames from 'classnames';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface PublicProps {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -29,7 +30,7 @@ export function Modal({
   submitText = 'Save',
   cancelText = 'Cancel',
 }: PublicProps) {
-  const modalRef = React.useRef<HTMLDivElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   function handleCancel() {
     if (onCancel) {
@@ -39,19 +40,19 @@ export function Modal({
     setIsOpen(false);
   }
 
-  const closeOnEscape = React.useCallback((event: KeyboardEvent) => {
+  const closeOnEscape = useCallback((event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       handleCancel();
     }
   }, []);
 
-  const handleClick = React.useCallback((event: MouseEvent) => {
+  const handleClick = useCallback((event: MouseEvent) => {
     if (!modalRef.current?.contains(event.target as Node)) {
       handleCancel();
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener('mousedown', handleClick, false);
     document.addEventListener('keydown', closeOnEscape, false);
 
@@ -61,7 +62,7 @@ export function Modal({
     };
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen) {
       document.body.classList.add('tk-overflow-hidden');
     } else {
@@ -69,46 +70,65 @@ export function Modal({
     }
   }, [isOpen]);
 
-  return isOpen
-    ? ReactDOM.createPortal(
-        <div className="modal-wrapper">
-          <div className="modal-overlay" />
-          <div
-            className={classNames('modal', className)}
-            role="dialog"
-            aria-labelledby="modal-title"
-            aria-modal="true"
-            ref={modalRef}
-          >
-            <FontAwesomeIcon className="modal__close" icon={faTimes} onClick={handleCancel} />
-            {title && (
-              <div className="modal__header">
-                <h1 id="modal-title" className="modal__title">
-                  {title}
-                </h1>
-              </div>
-            )}
-            <div className="modal__content">{children}</div>
-            <div className="modal__footer">
-              <Button className="modal__cancel" onClick={handleCancel} variant="hollow">
-                {cancelText}
-              </Button>
-              <Button className="modal__confirm" onClick={onSubmit} variant="primary">
-                {submitText}
-              </Button>
-            </div>
-          </div>
-        </div>,
+  return (
+    <>
+      {ReactDOM.createPortal(
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div className="modal-wrapper">
+              <motion.div
+                className="modal-overlay"
+                initial={{ opacity: 0 }}
+                exit={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.1 }}
+              />
+              <motion.div
+                className={classNames('modal', className)}
+                role="dialog"
+                aria-labelledby="modal-title"
+                aria-modal="true"
+                ref={modalRef}
+                initial={{ y: '-500px', opacity: 0 }}
+                exit={{ y: '-500px', opacity: 0 }}
+                animate={{
+                  y: 0,
+                  opacity: 1,
+                }}
+                transition={{ duration: 0.2 }}
+              >
+                <Button
+                  variant="transparent"
+                  size="s"
+                  onClick={handleCancel}
+                  className="modal__close"
+                >
+                  <FontAwesomeIcon icon={faTimes} />
+                </Button>
+                {title && (
+                  <div className="modal__header">
+                    <h1 id="modal-title" className="modal__title">
+                      {title}
+                    </h1>
+                  </div>
+                )}
+                <div className="modal__content">{children}</div>
+                <div className="modal__footer">
+                  <Button className="modal__cancel" onClick={handleCancel}>
+                    {cancelText}
+                  </Button>
+                  {!!onSubmit && (
+                    <Button className="modal__confirm" onClick={onSubmit} variant="primary">
+                      {submitText}
+                    </Button>
+                  )}
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
         document.body
-      )
-    : null;
-}
-
-export function useModal(defaultIsOpen: boolean = false) {
-  const [isOpen, setIsOpen] = React.useState(defaultIsOpen);
-
-  return {
-    isOpen,
-    setIsOpen,
-  };
+      )}
+    </>
+  );
 }
