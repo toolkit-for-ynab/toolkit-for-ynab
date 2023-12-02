@@ -1,4 +1,4 @@
-import type { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 
 declare module 'moment' {
   interface Moment {
@@ -104,7 +104,7 @@ export function calculateCumulativeOutflowPerDate(transactions: GroupedTransacti
 
 export function toHighchartsSeries(transactions: Record<string, Record<string, OutflowData>>) {
   return Object.entries(transactions).map(([month, data]) => ({
-    name: month,
+    name: moment(month, 'YYYY-MM').format('MMM YYYY'),
     data: Object.entries(data).map(([date, { value, transactions }]) => ({
       x: parseInt(date),
       y: value,

@@ -27,7 +27,6 @@ body.theme-dark {
 }
 .budget-header .budget-header-item .budget-header-calendar-prev,
 .budget-header .budget-header-item .budget-header-calendar-next,
-.budget-header .budget-header-item .flaticon,
 .budget-header .budget-header-item .budget-header-calendar-note {
   -moz-transition: color 0.2s linear;
   -webkit-transition: color 0.2s linear;
@@ -40,8 +39,7 @@ body.theme-dark {
   background: var(--tk-current-month-background-color) !important;
 }
 .budget-header .tk-highlight-current-month .budget-header-calendar-prev,
-.budget-header .tk-highlight-current-month .budget-header-calendar-next,
-.budget-header .tk-highlight-current-month .flaticon {
+.budget-header .tk-highlight-current-month .budget-header-calendar-next {
   color: var(--tk-current-month-control-color);
 }
 

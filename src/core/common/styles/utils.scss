@@ -226,6 +226,18 @@ $grey-8: hsl(190, 18%, 85%);
   margin-bottom: 2rem;
 }
 
+.tk-gap-025 {
+  gap: 0.25rem;
+}
+
+.tk-gap-05 {
+  gap: 0.5rem;
+}
+
+.tk-gap-1 {
+  gap: 1rem;
+}
+
 /* borders */
 .tk-border {
   border: solid $grey-8 1px;

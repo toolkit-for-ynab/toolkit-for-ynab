@@ -40,17 +40,15 @@ export const SeriesLegendComponent = (props) => {
       <div className="tk-full-height">
         {sortedSeries.map((seriesData) => (
           <div
-            className="tk-series-legend__table-row tk-flex tk-justify-content-between"
+            className="tk-series-legend__table-row tk-flex tk-align-items-center"
             key={seriesData.id}
             onMouseEnter={() => props.onDataHover(seriesData.id)}
           >
-            <div className="tk-flex">
-              <div
-                className="tk-series-legend__legend-icon tk-mg-r-05"
-                style={{ backgroundColor: seriesData.color }}
-              />
-              <div>{seriesData.name}</div>
-            </div>
+            <div
+              className="tk-series-legend__legend-icon tk-mg-r-05"
+              style={{ backgroundColor: seriesData.color }}
+            />
+            <div className="tk-flex-grow">{seriesData.name}</div>
             <div>
               <Currency value={seriesData.y} />
             </div>

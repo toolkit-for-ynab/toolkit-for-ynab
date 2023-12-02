@@ -1,6 +1,6 @@
 {
   "name": "toolkit-for-ynab",
-  "version": "3.9.0",
+  "version": "3.10.1",
   "private": true,
   "scripts": {
     "prepare": "husky install",
@@ -165,7 +165,7 @@
     "yargs": "^17.6.2"
   },
   "engines": {
-    "node": ">=18.12.1 <=19",
+    "node": ">=18.12.1",
     "yarn": ">=1.10.0"
   }
 }

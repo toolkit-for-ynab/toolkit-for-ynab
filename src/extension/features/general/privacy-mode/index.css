@@ -1,13 +1,13 @@
 .tk-privacy-mode .currency,          /* global .currency handler */
 .tk-privacy-mode .highcharts-data-label .highcharts-text-outline~.highcharts-text-outline, /* outlining in Toolkit Pie Chart, only the highlight of currency */
-.tk-privacy-mode .button-prefs-user  /* user e-mail */ {
+.tk-privacy-mode .sidebar-nav-budget-email-email  /* user e-mail */ {
   filter: url('#text-blur');
 }
 
 .tk-privacy-mode *:hover > .currency,            /* global .currency handler */
 .tk-privacy-mode *:hover > * > .currency,        /* global .currency handler */
 .tk-privacy-mode .currency:hover,                /* global .currency handler */
-.tk-privacy-mode .button-prefs-user:hover,       /* user e-mail */
+.tk-privacy-mode .sidebar-nav-budget-email-email:hover,       /* user e-mail */
 .tk-privacy-mode .c3-tooltip-container .currency, /* ynab report tooltips */
 .tk-privacy-mode .highcharts-data-label:hover .highcharts-text-outline, /* currency highlight in Toolkit Pie Chart */
 .tk-privacy-mode .highcharts-data-label:hover .currency /* currency in Toolkit Pie Chart */ {

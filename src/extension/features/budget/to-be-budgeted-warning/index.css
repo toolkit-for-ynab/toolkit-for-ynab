@@ -12,18 +12,10 @@
 }
 
 body {
-  --banner_warning_button_background: var(--status_cautious);
-  --banner_warning_button_background_active: var(--label_warning);
-  --banner_warning_button_label: var(--banner_positive_button_label);
-}
-
-body.theme-classic {
-  --banner_warning_button_background: var(--banner_positive_button_background);
-  --banner_warning_button_background_active: var(--message_warning_background);
-  --banner_warning_button_label: var(--budget_balance_warning_background);
-}
-
-body.theme-dark {
-  --banner_warning_button_background: var(--budget_balance_warning_background_active);
-  --banner_warning_button_background_active: #e5af22; /* unfortunately only 2 warning colors in dark theme */
+  --budget_balance_warning_background: var(--callout_section_warning_strong_background);
+  --banner_warning_button_background: var(--callout_section_warning_button_background);
+  --banner_warning_button_background_active: var(
+    --callout_section_warning_strong_background_emphasis
+  );
+  --banner_warning_button_label: var(--callout_section_warning_button_foreground);
 }

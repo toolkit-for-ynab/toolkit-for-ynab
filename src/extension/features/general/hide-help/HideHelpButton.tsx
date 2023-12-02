@@ -19,7 +19,9 @@ export const HideHelpButton = ({ toggleHiddenState }: Props) => {
   return (
     <li onClick={toggleHidden} id="tk-hide-help">
       <button>
-        <i className="flaticon stroke help-2" />
+        <svg className="ynab-new-icon" width="16" height="16">
+          <use href="#icon_sprite_question_mark_circle"></use>
+        </svg>
         {` ${label}`} Help Button
       </button>
     </li>

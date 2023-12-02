@@ -46,8 +46,8 @@ export class CategoryActivityCopy extends Feature {
     if (!this.shouldInvoke()) return;
 
     if (
-      nodes.has('modal-overlay active  ynab-u modal-popup modal-budget-activity') ||
-      nodes.has('modal-overlay active  pure-u modal-popup modal-budget-activity')
+      nodes.has('modal-overlay active ynab-u modal-popup modal-budget-activity') ||
+      nodes.has('modal-overlay active pure-u modal-popup modal-budget-activity')
     ) {
       this.invoke();
     }

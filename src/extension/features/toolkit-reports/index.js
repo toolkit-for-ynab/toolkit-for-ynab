@@ -46,7 +46,12 @@ export class ToolkitReports extends Feature {
         class: `navlink ${TOOLKIT_REPORTS_NAVLINK_CLASS}`,
       }).append(
         $('<a>', { class: 'tk-navlink' })
-          .append($('<i>', { class: 'flaticon stroke document-4' }))
+          .append(
+            $(`<svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M21 10C21 6.13401 17.866 3 14 3V10H21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11 21C15.4183 21 19 17.4183 19 13H11V5C6.58172 5 3 8.58172 3 13C3 17.4183 6.58172 21 11 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`)
+          )
           .append(
             $('<div>', { class: 'tk-navlink__label' }).text(
               l10n('toolkit.reports', 'Toolkit Reports')

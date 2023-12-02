@@ -8,7 +8,7 @@ export class ScrollableEditMenu extends Feature {
 
   observe(changedNodes) {
     if (
-      changedNodes.has('modal-overlay active  ynab-u modal-popup modal-account-register-action-bar')
+      changedNodes.has('modal-overlay active ynab-u modal-popup modal-account-register-action-bar')
     ) {
       const element = document.querySelector('.modal-account-register-action-bar');
       this.addScrollWrappers(element);

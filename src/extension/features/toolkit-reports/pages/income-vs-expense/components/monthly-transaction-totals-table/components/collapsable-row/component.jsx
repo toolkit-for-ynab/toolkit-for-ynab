@@ -42,8 +42,10 @@ export class CollapsibleRow extends React.Component {
     const { isCollapsed, source } = this.props;
 
     return (
-      <div className="tk-flex">
-        <i className={`flaticon stroke ${isCollapsed ? 'up' : 'down'}`} />
+      <div className="tk-flex tk-align-items-center tk-gap-025">
+        <svg className="ynab-new-icon" width="10" height="10">
+          <use href={`#icon_sprite_caret_${isCollapsed ? 'up' : 'down'}`} />
+        </svg>
         <div>{source?.name ?? source.get('name')}</div>
       </div>
     );

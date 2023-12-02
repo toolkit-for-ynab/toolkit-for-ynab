@@ -12,18 +12,16 @@ export class HideClosedAccounts extends Feature {
   }
 
   shouldInvoke() {
-    return (
-      $('#tk-hide-closed-accounts').length === 0 &&
-      !!serviceLookup<YNABModalService>('modal')?.isModalOpen &&
-      !!document.querySelector('.ynab-new-settings-menu')
-    );
+    return false;
   }
 
   invoke() {
     const initialState = getToolkitStorageKey('hide-closed', true);
     this.setHiddenState(initialState);
     const modalElement = document.querySelector('.ynab-new-settings-menu');
-    if (modalElement) this.insertHideClosed(modalElement);
+    if (modalElement) {
+      this.insertHideClosed(modalElement);
+    }
   }
 
   destroy() {
@@ -31,19 +29,19 @@ export class HideClosedAccounts extends Feature {
     $('body').removeClass('tk-hide-closed');
   }
 
-  observe(nodes: Set<string>) {
-    if (!this.shouldInvoke()) return;
-
-    if (nodes.has('modal-overlay active  ynab-u ynab-new-settings-menu')) {
+  observe(changedNodes: Set<string>) {
+    if (changedNodes.has('modal-overlay active ynab-u ynab-new-settings-menu')) {
       this.invoke();
     }
   }
 
   insertHideClosed(element: Element) {
-    componentAppend(
-      <HideClosedButton toggleHiddenState={this.setHiddenState} />,
-      element.getElementsByClassName('modal-list')[0]
-    );
+    if ($('#tk-hide-closed-accounts').length === 0) {
+      componentAppend(
+        <HideClosedButton toggleHiddenState={this.setHiddenState} />,
+        element.getElementsByClassName('modal-list')[0]
+      );
+    }
   }
 
   setHiddenState = (state: boolean) => {

@@ -47,7 +47,7 @@ export class IncomeBreakdownComponent extends React.Component {
       this.state;
     return (
       <div className="tk-flex-grow tk-flex tk-flex-column">
-        <div className="tk-flex tk-pd-05 tk-border-b">
+        <div className="tk-flex tk-pd-05 tk-border-b tk-gap-1">
           <div className="tk-income-breakdown__filter">
             <LabeledCheckbox
               id="tk-income-breakdown-hide-income-selector"

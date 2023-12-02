@@ -4,19 +4,26 @@ import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/ut
 const YNAB_THEME_SWITCHER = 'js-ynab-new-theme-switcher-themes';
 
 const TK_CUSTOMIZE_COLOUR_ACCENTS = [
-  'l025c020',
-  'l030c045',
+  'l120c010',
+  'l020c030',
+  'l025c030',
+  'l025c035',
   'l045c055',
-  'l090c090',
+  'l050c060',
+  'l075c080',
+  'l090c095',
   'l100c100',
-  'l110c100',
-  'l120c050',
-  'l120c100',
-  'l125c065',
-  'l140c060',
-  'l140c075',
-  'l150c060',
-  'l160c015',
+  'l105c080',
+  'l110c055',
+  'l115c030',
+  'l115c100',
+  'l120c080',
+  'l125c055',
+  'l140c010',
+  'l150c070',
+  'l175c040',
+  'l200c020',
+  'l215c010',
 ];
 
 /*
@@ -143,7 +150,7 @@ function lchToHex(l, c, h) {
 
 export class CustomizeColourScheme extends Feature {
   injectCSS() {
-    return require('./index.css');
+    return require('./index.scss');
   }
 
   shouldInvoke() {
@@ -316,7 +323,7 @@ export class CustomizeColourScheme extends Feature {
     const square = this.getSquare(name);
 
     const option = $(
-      `<div>
+      `<div class="tk-custom-colours-square-option">
         <input type="checkbox" id="tk-custom-colours-${name}-square" ${square ? 'checked' : ''}>
         <label for="tk-custom-colours-${name}-square">Square Corners</label>
       </div>`
@@ -348,33 +355,27 @@ export class CustomizeColourScheme extends Feature {
       $(window).trigger('resize');
     });
 
-    const pickerGrid = $(`<div class="ynab-new-theme-switcher-grid"></div>`);
-    pickerGrid.append(this.createColourOption('positive', 'Positive'));
-    pickerGrid.append(this.createColourOption('warning', 'Warning'));
-    pickerGrid.append(this.createColourOption('negative', 'Negative'));
+    const grid = $(`<div class="tk-custom-colours-grid"></div>`);
+    grid.append(this.createSquareOption('positive'));
+    grid.append(this.createSquareOption('warning'));
+    grid.append(this.createSquareOption('negative'));
+    grid.append(this.createColourOption('positive', 'Positive'));
+    grid.append(this.createColourOption('warning', 'Warning'));
+    grid.append(this.createColourOption('negative', 'Negative'));
 
-    const squareGrid = $(
-      `<div class="ynab-new-theme-switcher-grid tk-custom-colours-square"></div>`
-    );
-    squareGrid.append(this.createSquareOption('positive'));
-    squareGrid.append(this.createSquareOption('warning'));
-    squareGrid.append(this.createSquareOption('negative'));
-
-    optionsMenu.append(squareGrid);
-    optionsMenu.append(pickerGrid);
+    optionsMenu.append(grid);
     themeSwitcher.append(optionsMenu);
 
     // Trigger a resize event so the modal adjusts position for its new height
     $(window).trigger('resize');
 
-    // Todo: not this
-    $('.ynab-new-theme-switcher .modal-actions .button-primary').on('click', () => {
+    $('.modal .modal-fresh-footer .ynab-button.primary').on('click', () => {
       this.saveSettings();
     });
-    $('.ynab-new-theme-switcher .modal-actions button:last-child').on('click', () => {
+    $('.modal .modal-fresh-footer .ynab-button.secondary').on('click', () => {
       this.cancelChanges();
     });
-    $('.ynab-new-theme-switcher .modal-close').on('click', () => {
+    $('.modal .modal-fresh-close').on('click', () => {
       this.cancelChanges();
     });
   }

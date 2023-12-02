@@ -88,20 +88,20 @@ export class Pacing extends Feature {
     const pacingCalculation = pacingForCategory(category);
 
     const $display = this.generateDisplay(category?.subCategory?.entityId, pacingCalculation);
-
-    $display.on('click', (event) => {
+    const $button = $display.find('button');
+    $button.on('click', (event) => {
       const deemphasizedCategories = getDeemphasizedCategories();
-      const subCategoryId = event.target.getAttribute('data-tk-sub-category-id');
+      const subCategoryId = event.currentTarget.getAttribute('data-tk-sub-category-id');
 
       if (deemphasizedCategories.contains(subCategoryId)) {
-        $display.removeClass('deemphasized');
+        $button.removeClass('deemphasized');
         setDeemphasizedCategories(
           deemphasizedCategories.filter((id) => {
             return id !== subCategoryId;
           })
         );
       } else {
-        $display.addClass('deemphasized');
+        $button.addClass('deemphasized');
         deemphasizedCategories.push(subCategoryId);
         setDeemphasizedCategories(deemphasizedCategories);
       }
