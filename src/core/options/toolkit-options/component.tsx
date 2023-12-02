@@ -436,7 +436,7 @@ function TocItem({
 
 export function ToolkitOptions() {
   useDarkModeSetter();
-  // TODO: used in import/export modal
+
   const isToolkitDisabled = useToolkitDisabled();
   const manifest = getBrowser().runtime.getManifest();
   const [searchQuery, setSearchQuery] = useState('');
