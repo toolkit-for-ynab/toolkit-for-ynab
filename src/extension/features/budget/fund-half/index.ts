@@ -136,6 +136,7 @@ export class FundHalf extends Feature {
   _getHalfAmount = (amount: number, halfType: HalfType) => {
     amount = amount / 10;
     if (amount & 1) {
+      //  If the amount is odd?
       const someHalf = +(amount / 2).toFixed(0);
       const otherHalf = amount - someHalf;
       if (halfType === HalfType.Low) {
@@ -144,6 +145,7 @@ export class FundHalf extends Feature {
         return Math.max(someHalf * 10, otherHalf * 10);
       }
     } else {
+      //  Amount is even so just divide it in half.
       return (amount / 2) * 10;
     }
   };
