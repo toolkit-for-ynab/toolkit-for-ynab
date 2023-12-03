@@ -7,6 +7,8 @@ import { mapToArray } from 'toolkit/extension/utils/helpers';
 import { SeriesLegend } from '../../common/components/series-legend';
 import { ALL_OTHER_DATA_COLOR, PIE_CHART_COLORS } from 'toolkit-reports/common/constants/colors';
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
+import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
+import { AdditionalReportSettings } from 'toolkit-reports/common/components/additional-settings';
 import './styles.scss';
 
 const createPayeeMap = (payee) =>
@@ -29,6 +31,7 @@ export class SpendingByPayeeComponent extends React.Component {
     seriesData: null,
     spendingByPayeeData: null,
     payeeCount: 20,
+    useBarChart: false,
   };
 
   componentDidMount() {
@@ -45,19 +48,31 @@ export class SpendingByPayeeComponent extends React.Component {
     const { seriesData, spendingByPayeeData } = this.state;
 
     return (
-      <div className="tk-flex tk-flex-grow">
-        <div className="tk-highcharts-report-container" id="tk-spending-by-payee" />
-        <div className="tk-spending-by-payee__totals-legend tk-flex">
-          {seriesData && spendingByPayeeData && (
-            <SeriesLegend
-              onDataHover={this._onLegendDataHover}
-              series={seriesData}
-              sourceName="Payees"
-              tableName="Spending"
-            />
-          )}
+      <>
+        <AdditionalReportSettings>
+          <LabeledCheckbox
+            id="tk-income-breakdown-hide-income-selector"
+            checked={this.state.useBarChart}
+            label="Bar chart"
+            onChange={(e) =>
+              this.setState({ useBarChart: e.currentTarget.checked }, this._renderReport)
+            }
+          />
+        </AdditionalReportSettings>
+        <div className="tk-flex tk-flex-grow">
+          <div className="tk-highcharts-report-container" id="tk-spending-by-payee" />
+          <div className="tk-spending-by-payee__totals-legend tk-flex">
+            {seriesData && spendingByPayeeData && (
+              <SeriesLegend
+                onDataHover={this._onLegendDataHover}
+                series={seriesData}
+                sourceName="Payees"
+                tableName="Spending"
+              />
+            )}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -163,7 +178,7 @@ export class SpendingByPayeeComponent extends React.Component {
       credits: false,
       chart: {
         height: '70%',
-        type: 'pie',
+        type: this.state.useBarChart ? 'column' : 'pie',
         renderTo: 'tk-spending-by-payee',
         backgroundColor: 'transparent',
       },
@@ -191,11 +206,15 @@ export class SpendingByPayeeComponent extends React.Component {
         },
       },
       tooltip: {
-        enabled: false,
+        enabled: this.state.useBarChart,
+        formatter: function () {
+          let formattedNumber = formatCurrency(this.y);
+          return `${this.point.name}<br><span class="currency">${formattedNumber}</span>`;
+        },
       },
       title: {
         align: 'center',
-        verticalAlign: 'middle',
+        verticalAlign: this.state.useBarChart ? 'top' : 'middle',
         text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
         style: { color: 'var(--label_primary)' },
       },
@@ -207,6 +226,25 @@ export class SpendingByPayeeComponent extends React.Component {
           innerSize: '50%',
         },
       ],
+      xAxis: {
+        type: 'category',
+        labels: {
+          style: {
+            color: 'var(--label_primary)',
+            textOutline: 'none',
+          },
+        },
+      },
+      yAxis: {
+        labels: {
+          formatter: function () {
+            return formatCurrency(this.value);
+          },
+        },
+        title: {
+          text: '',
+        },
+      },
     });
 
     this.setState({ chart, seriesData });

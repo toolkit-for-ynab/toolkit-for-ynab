@@ -7,6 +7,7 @@ import { WarningMessage } from './WarningMessage';
 import { useLocalStorage } from 'toolkit/extension/hooks/useLocalStorage';
 import { l10nAccountType } from 'toolkit/extension/utils/toolkit';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import { AdditionalReportSettings } from 'toolkit-reports/common/components/additional-settings';
 import {
   dataPointsToHighChartSeries,
   generateRunningBalanceMap,
@@ -136,7 +137,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
   }
   return (
     <div className="tk-flex tk-flex-column tk-flex-grow">
-      <div className="tk-flex tk-pd-05 tk-border-b tk-gap-1">
+      <AdditionalReportSettings>
         <LabeledCheckbox
           id="tk-balance-over-time-groupaccounts-option"
           checked={shouldGroupAccounts}
@@ -163,7 +164,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
           label="Use Step Graph"
           onChange={() => setUseStepGraph(!useStepGraph)}
         />
-      </div>
+      </AdditionalReportSettings>
       <RunningBalanceGraph series={series} numDatapointsLimit={NUM_DATAPOINTS_LIMIT} />
     </div>
   );
