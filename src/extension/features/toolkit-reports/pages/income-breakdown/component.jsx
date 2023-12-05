@@ -148,7 +148,7 @@ export class IncomeBreakdownComponent extends React.Component {
       }
 
       if (transactionSubCategory.isImmediateIncomeCategory()) {
-        const transactionPayeeId = transaction.payeeId || transaction.parentTransactionPayeeId;
+        const transactionPayeeId = transaction.payeeId || transaction.parentTransaction?.payeeId;
         if (!transactionPayeeId) {
           return;
         }
