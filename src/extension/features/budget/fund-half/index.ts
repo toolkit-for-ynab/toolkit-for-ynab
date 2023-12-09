@@ -24,6 +24,8 @@ export class FundHalf extends Feature {
     return true;
   }
 
+  invoke() {}
+
   halfFundButton(text: string, amount: number, halfType: HalfType) {
     const formattedAmount = formatCurrency(amount, true);
     return $(`
@@ -53,10 +55,10 @@ export class FundHalf extends Feature {
 
     const selectedBudgetCategories = this._getSelectedBudgetCategories();
     if (selectedBudgetCategories != null) {
-      const underfundedButtonText = $($('.inspector-quick-budget .option-groups > div')[0]).find(
-        "button div:contains('Underfunded')"
-      );
-      const underfundedButton = $(underfundedButtonText).parent();
+      const underfundedButtonText = $('.inspector-quick-budget .option-groups > div')
+        .eq(0)
+        .find("button div:contains('Underfunded')");
+      const underfundedButton = underfundedButtonText.parent();
 
       this.lowHalf = this._getSelectedCategoriesFundAmounts(selectedBudgetCategories, HalfType.Low);
       this.highHalf = this._getSelectedCategoriesFundAmounts(
@@ -73,15 +75,15 @@ export class FundHalf extends Feature {
       if (lowHalfSum === highHalfSum) {
         // We only need one button.  This may be a case where all selected budget category's Target amounts were even numbers.
         // Or the case where there are multiple odd amounts that equalized the amounts.
-        $(underfundedButton)
+        underfundedButton
           .parent()
           .append(this.halfFundButton('Fund Half', lowHalfSum, HalfType.Exact));
       } else {
-        $(underfundedButton)
+        underfundedButton
           .parent()
           .append(this.halfFundButton('Fund Low Half', lowHalfSum, HalfType.Low));
 
-        $(underfundedButton)
+        underfundedButton
           .parent()
           .append(this.halfFundButton('Fund High Half', highHalfSum, HalfType.High));
       }
@@ -135,7 +137,7 @@ export class FundHalf extends Feature {
 
   _getHalfAmount = (amount: number, halfType: HalfType) => {
     amount = amount / 10;
-    if (amount & 1) {
+    if (amount % 2 === 1) {
       //  If the amount is odd?
       const someHalf = +(amount / 2).toFixed(0);
       const otherHalf = amount - someHalf;
