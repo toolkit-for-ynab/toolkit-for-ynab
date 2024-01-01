@@ -15,13 +15,3 @@ export const GitHubLink = ({ children }: { children: React.ReactNode }) => (
     {children}
   </a>
 );
-
-export const TrelloLink = ({ children }: { children: React.ReactNode }) => (
-  <a
-    target="_blank"
-    rel="noreferrer noopener"
-    href="https://trello.com/b/EzOvXlil/toolkit-for-ynab-roadmap"
-  >
-    {children}
-  </a>
-);

@@ -1,25 +1,31 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import './styles.scss';
+import { MouseEventHandler, ReactNode } from 'react';
 
 interface PublicProps {
   className?: string;
-  children: React.ReactNode;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  variant?: 'default' | 'primary' | 'hollow';
+  children: ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  variant?: 'primary' | 'secondary' | 'transparent';
+  size?: 's' | 'm';
 }
 
 export function Button({
   className,
   children,
   onClick = () => {},
-  variant = 'default',
+  variant = 'secondary',
+  size = 'm',
 }: PublicProps) {
   return (
     <button
       className={classNames('button', className, {
-        button__primary: variant === 'primary' || variant === 'default',
-        button__hollow: variant === 'hollow',
+        primary: variant === 'primary',
+        secondary: variant === 'secondary',
+        transparent: variant === 'transparent',
+        'size-s': size === 's',
+        'size-m': size === 'm',
       })}
       onClick={onClick}
     >
