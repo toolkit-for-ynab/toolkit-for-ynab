@@ -12,6 +12,7 @@ import {
 import { OutflowGraph } from './OutflowGraph';
 import { useLocalStorage } from 'toolkit/extension/hooks/useLocalStorage';
 import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
+import { AdditionalReportSettings } from 'toolkit-reports/common/components/additional-settings';
 
 export const OutflowOverTimeComponent = ({ allReportableTransactions, filters }) => {
   const [outflowSeries, setOutflowSeries] = useState([]);
@@ -47,14 +48,14 @@ export const OutflowOverTimeComponent = ({ allReportableTransactions, filters })
 
   return (
     <div className="tk-flex tk-flex-column tk-flex-grow">
-      <div className="tk-flex tk-pd-05 tk-border-b">
+      <AdditionalReportSettings>
         <LabeledCheckbox
           id="tk-balance-over-time-stepgraph-option"
           checked={cumulativeSum}
           label="Cumulative sum"
           onChange={() => setCumulativeSum(!cumulativeSum)}
         />
-      </div>
+      </AdditionalReportSettings>
       <OutflowGraph series={outflowSeries} />
     </div>
   );
