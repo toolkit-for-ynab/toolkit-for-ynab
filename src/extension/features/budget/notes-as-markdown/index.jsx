@@ -12,7 +12,13 @@ export class NotesAsMarkdown extends Feature {
   }
 
   observe(changedNodes) {
-    if (changedNodes.has('inspector-notes') || changedNodes.has('inspector-notes is-editing')) {
+    const startedEditing = changedNodes.has('inspector-notes is-editing');
+    const finishedEditing = changedNodes.has('inspector-notes');
+    const notesNodeChanged =
+      changedNodes.has('inspector-category-note user-data') ||
+      changedNodes.has('inspector-category-note user-data tk-hidden');
+    const isUpdateCausedByToolkit = !changedNodes.has('ynab-new-inspector-goals-view-goal');
+    if (startedEditing || finishedEditing || (notesNodeChanged && !isUpdateCausedByToolkit)) {
       this.applyMarkdown();
     }
   }
