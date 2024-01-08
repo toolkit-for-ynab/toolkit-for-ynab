@@ -8,8 +8,8 @@ export function componentAppend(renderable, element) {
 
   const div = document.createElement('div');
   ReactDOM.createRoot(div).render(renderable);
-  while (element && div.children.length) {
-    element.append(div.firstChild);
+  if (element) {
+    element.append(div);
   }
 }
 
@@ -19,9 +19,10 @@ export function componentPrepend(renderable, element) {
     return;
   }
 
+  const div = document.createElement('div');
   ReactDOM.createRoot(div).render(renderable);
-  while (element && div.children.length) {
-    element.prepend(div.firstChild);
+  if (element) {
+    element.prepend(div);
   }
 }
 
@@ -31,9 +32,10 @@ export function componentAfter(renderable, element) {
     return;
   }
 
+  const div = document.createElement('div');
   ReactDOM.createRoot(div).render(renderable);
-  while (element && div.children.length) {
-    element.after(div.firstChild);
+  if (element) {
+    element.after(div);
   }
 }
 
@@ -43,8 +45,9 @@ export function componentBefore(renderable, element) {
     return;
   }
 
+  const div = document.createElement('div');
   ReactDOM.createRoot(div).render(renderable);
-  while (element && div.children.length) {
-    element.before(div.firstChild);
+  if (element) {
+    element.before(div);
   }
 }
