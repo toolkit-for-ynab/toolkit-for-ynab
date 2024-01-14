@@ -6,6 +6,7 @@ import { Collections } from 'toolkit/extension/utils/collections';
 import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
+import { AdditionalReportSettings } from 'toolkit-reports/common/components/additional-settings';
 import './styles.scss';
 
 export class IncomeBreakdownComponent extends React.Component {
@@ -47,7 +48,7 @@ export class IncomeBreakdownComponent extends React.Component {
       this.state;
     return (
       <div className="tk-flex-grow tk-flex tk-flex-column">
-        <div className="tk-flex tk-pd-05 tk-border-b tk-gap-1">
+        <AdditionalReportSettings>
           <div className="tk-income-breakdown__filter">
             <LabeledCheckbox
               id="tk-income-breakdown-hide-income-selector"
@@ -89,7 +90,7 @@ export class IncomeBreakdownComponent extends React.Component {
               onChange={this.togglePositiveCategories}
             />
           </div>
-        </div>
+        </AdditionalReportSettings>
         <div className="tk-flex tk-flex-grow">
           <div className="tk-highcharts-report-container" id="tk-income-breakdown" />
         </div>
@@ -148,7 +149,7 @@ export class IncomeBreakdownComponent extends React.Component {
       }
 
       if (transactionSubCategory.isImmediateIncomeCategory()) {
-        const transactionPayeeId = transaction.payeeId || transaction.parentTransactionPayeeId;
+        const transactionPayeeId = transaction.payeeId || transaction.parentTransaction?.payeeId;
         if (!transactionPayeeId) {
           return;
         }

@@ -8,6 +8,7 @@ const Options = {
   ThisMonth: 'This Month',
   LastMonth: 'Last Month',
   LatestThree: 'Latest Three Months',
+  LatestSix: 'Latest Six Months',
   ThisYear: 'This Year',
   LastYear: 'Last Year',
   AllDates: 'All Dates',
@@ -64,6 +65,13 @@ export class DateFilterComponent extends React.Component {
             onClick={this._handleOptionSelected}
           >
             {Options.LatestThree}
+          </button>
+          <button
+            name={Options.LatestSix}
+            className="tk-button tk-button--small tk-button--text tk-mg-l-05"
+            onClick={this._handleOptionSelected}
+          >
+            {Options.LatestSix}
           </button>
           <button
             name={Options.ThisYear}
@@ -260,6 +268,9 @@ export class DateFilterComponent extends React.Component {
         break;
       case Options.LatestThree:
         selectedDates = this._getSelectedFromDates(today.clone().subtractMonths(2), today);
+        break;
+      case Options.LatestSix:
+        selectedDates = this._getSelectedFromDates(today.clone().subtractMonths(5), today);
         break;
       case Options.ThisYear:
         selectedDates = this._getSelectedFromDates(today.clone().startOfYear(), today);

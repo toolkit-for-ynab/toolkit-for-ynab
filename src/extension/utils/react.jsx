@@ -1,4 +1,4 @@
-import * as ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
 
 export function componentAppend(renderable, element) {
   if (element != null && !(element instanceof HTMLElement)) {
@@ -7,9 +7,9 @@ export function componentAppend(renderable, element) {
   }
 
   const div = document.createElement('div');
-  ReactDOM.render(renderable, div);
-  while (element && div.children.length) {
-    element.append(div.firstChild);
+  ReactDOM.createRoot(div).render(renderable);
+  if (element) {
+    element.append(div);
   }
 }
 
@@ -20,9 +20,9 @@ export function componentPrepend(renderable, element) {
   }
 
   const div = document.createElement('div');
-  ReactDOM.render(renderable, div);
-  while (element && div.children.length) {
-    element.prepend(div.firstChild);
+  ReactDOM.createRoot(div).render(renderable);
+  if (element) {
+    element.prepend(div);
   }
 }
 
@@ -33,9 +33,9 @@ export function componentAfter(renderable, element) {
   }
 
   const div = document.createElement('div');
-  ReactDOM.render(renderable, div);
-  while (element && div.children.length) {
-    element.after(div.firstChild);
+  ReactDOM.createRoot(div).render(renderable);
+  if (element) {
+    element.after(div);
   }
 }
 
@@ -46,8 +46,8 @@ export function componentBefore(renderable, element) {
   }
 
   const div = document.createElement('div');
-  ReactDOM.render(renderable, div);
-  while (element && div.children.length) {
-    element.before(div.firstChild);
+  ReactDOM.createRoot(div).render(renderable);
+  if (element) {
+    element.before(div);
   }
 }

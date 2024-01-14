@@ -20,7 +20,7 @@ describe('Reconcile Assistant', () => {
       feature = new ReconcileAssistant();
     });
 
-    it('should invoke the correct methods', () => {
+    it('should invoke the correct methods', async () => {
       // Mock out the functions
       let shouldInvoke = jest.spyOn(feature, 'shouldInvoke').mockImplementation(() => {
         return true;
@@ -29,7 +29,6 @@ describe('Reconcile Assistant', () => {
       let _createModalPortalMock = jest.spyOn(feature, '_createModalPortal');
       document.body.innerHTML = `<div id="${RECONCILE_ASSISTANT_CONTAINER_ID}"></div>`;
       expect(document.getElementById(RECONCILE_ASSISTANT_CONTAINER_ID).children.length).toBe(0);
-
       // Ensure each method has been called
       feature.invoke();
       expect(shouldInvoke).toHaveBeenCalledTimes(1);
@@ -37,6 +36,15 @@ describe('Reconcile Assistant', () => {
 
       // Resolve the set timeout
       jest.runOnlyPendingTimers();
+
+      // React mounting is async, so wait a bit more for assistant to get mounted
+      // TODO: would be good to replace it with react-testing-library
+      jest.useRealTimers();
+      await new Promise((r) => {
+        setTimeout(r, 100);
+      });
+      jest.useFakeTimers();
+
       expect(_createFeatureContainerMock).toHaveBeenCalledTimes(1);
       expect(_createModalPortalMock).toHaveBeenCalledTimes(1);
       expect(document.querySelector('.button-primary.button')).toBeTruthy();

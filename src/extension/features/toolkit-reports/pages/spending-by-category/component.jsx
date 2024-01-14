@@ -8,6 +8,8 @@ import { mapToArray } from 'toolkit/extension/utils/helpers';
 import { SeriesLegend } from '../../common/components/series-legend';
 import { PIE_CHART_COLORS } from 'toolkit-reports/common/constants/colors';
 import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
+import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
+import { AdditionalReportSettings } from 'toolkit-reports/common/components/additional-settings';
 import './styles.scss';
 
 const createMasterCategoryMap = (masterCategory) =>
@@ -38,6 +40,7 @@ export class SpendingByCategoryComponent extends React.Component {
     drillDownData: null,
     seriesData: null,
     spendingByMasterCategory: null,
+    useBarChart: false,
   };
 
   componentDidMount() {
@@ -62,19 +65,31 @@ export class SpendingByCategoryComponent extends React.Component {
     }
 
     return (
-      <div className="tk-flex tk-flex-grow">
-        <div className="tk-highcharts-report-container" id="tk-spending-by-category" />
-        <div className="tk-spending-by-category__totals-legend tk-flex">
-          {legendSeries && spendingByMasterCategory && (
-            <SeriesLegend
-              onDataHover={this._onLegendDataHover}
-              series={legendSeries}
-              sourceName="Categories"
-              tableName="Spending"
-            />
-          )}
+      <>
+        <AdditionalReportSettings>
+          <LabeledCheckbox
+            id="tk-income-breakdown-hide-income-selector"
+            checked={this.state.useBarChart}
+            label="Bar chart"
+            onChange={(e) =>
+              this.setState({ useBarChart: e.currentTarget.checked }, this._renderReport)
+            }
+          />
+        </AdditionalReportSettings>
+        <div className="tk-flex tk-flex-grow">
+          <div className="tk-highcharts-report-container" id="tk-spending-by-category" />
+          <div className="tk-spending-by-category__totals-legend tk-flex">
+            {legendSeries && spendingByMasterCategory && (
+              <SeriesLegend
+                onDataHover={this._onLegendDataHover}
+                series={legendSeries}
+                sourceName="Categories"
+                tableName="Spending"
+              />
+            )}
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -188,7 +203,7 @@ export class SpendingByCategoryComponent extends React.Component {
       credits: false,
       chart: {
         height: '70%',
-        type: 'pie',
+        type: this.state.useBarChart ? 'column' : 'pie',
         renderTo: 'tk-spending-by-category',
         backgroundColor: 'transparent',
         events: {
@@ -234,11 +249,15 @@ export class SpendingByCategoryComponent extends React.Component {
         },
       },
       tooltip: {
-        enabled: false,
+        enabled: this.state.useBarChart,
+        formatter: function () {
+          let formattedNumber = formatCurrency(this.y);
+          return `${this.point.name}<br><span class="currency">${formattedNumber}</span>`;
+        },
       },
       title: {
         align: 'center',
-        verticalAlign: 'middle',
+        verticalAlign: this.state.useBarChart ? 'top' : 'middle',
         text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
         style: { color: 'var(--label_primary)' },
       },
@@ -254,6 +273,25 @@ export class SpendingByCategoryComponent extends React.Component {
         series: drillDownData,
         activeDataLabelStyle: {
           color: 'var(--label_primary)',
+        },
+      },
+      xAxis: {
+        type: 'category',
+        labels: {
+          style: {
+            color: 'var(--label_primary)',
+            textOutline: 'none',
+          },
+        },
+      },
+      yAxis: {
+        labels: {
+          formatter: function () {
+            return formatCurrency(this.value);
+          },
+        },
+        title: {
+          text: '',
         },
       },
     });

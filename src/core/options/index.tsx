@@ -1,4 +1,4 @@
-import * as ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
 import * as React from 'react';
 import { ToolkitOptions } from './toolkit-options';
 import 'toolkit/core/common/styles/utils.scss';
@@ -14,6 +14,6 @@ getUserSettings().then(() => {
 
     document.querySelector('html')!.dataset['theme'] = darkMode;
 
-    ReactDOM.render(<ToolkitOptions />, document.getElementById('root'));
+    ReactDOM.createRoot(document.getElementById('root')!).render(<ToolkitOptions />);
   });
 });

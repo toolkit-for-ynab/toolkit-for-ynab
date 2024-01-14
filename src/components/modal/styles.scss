@@ -1,5 +1,5 @@
 :root {
-  --tk-modal-overlay-color: #000000;
+  --tk-modal-overlay-color: rgba(0, 0, 0, 0.5);
   --tk-modal-background-color: #ffffff;
   --tk-modal-text-color: #383e41;
 }
@@ -15,6 +15,9 @@
   bottom: 0;
   left: 0;
   z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-overlay {
@@ -24,28 +27,24 @@
   bottom: 0;
   left: 0;
   background-color: var(--tk-modal-overlay-color);
-  opacity: 85%;
 }
 
 .modal {
   background-color: var(--tk-modal-background-color);
   color: var(--tk-modal-text-color);
-  position: relative;
-  top: 20%;
-  min-width: 30%;
   padding: 2rem;
-  margin: auto;
   border-radius: 5px;
+  min-width: min(90vw, 600px);
+  max-width: min(90vw, 800px);
+  max-height: 90vh;
+  overflow: auto;
+  position: relative;
 
   &__close {
     position: absolute;
     top: 1rem;
     right: 1rem;
     cursor: pointer;
-  }
-
-  &__cancel {
-    margin-right: 1rem;
   }
 
   &__title {
@@ -61,5 +60,6 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    gap: 1rem;
   }
 }
