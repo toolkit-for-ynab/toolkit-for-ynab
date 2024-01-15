@@ -1,3 +1,4 @@
-.ynab-grid-cell-cleared {
-  width: 1.625rem;
+.ynab-grid-cell-cleared,
+.ynab-grid-cell-flag {
+  width: 42px !important;
 }

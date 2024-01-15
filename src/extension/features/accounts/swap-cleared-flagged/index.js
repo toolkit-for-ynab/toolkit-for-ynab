@@ -10,26 +10,6 @@ export class SwapClearedFlagged extends Feature {
   }
 
   invoke() {
-    const rows = [
-      'register/grid-header',
-      'register/grid-sub',
-      'register/grid-row',
-      'register/grid-scheduled',
-      'register/grid-scheduled-sub',
-      'register/grid-actions',
-      'register/grid-pending',
-      'register/grid-split',
-      'register/grid-edit',
-    ];
-
-    this.addToolkitEmberHook('register/grid-header', 'didRender', this.swapColumns);
-
-    rows.forEach((key) => {
-      this.addToolkitEmberHook(key, 'didInsertElement', this.swapColumns);
-    });
-  }
-
-  destroy() {
     const header = document.querySelector('.ynab-grid-header-row');
     if (header) {
       this.swapColumns(header);
@@ -37,6 +17,17 @@ export class SwapClearedFlagged extends Feature {
 
     for (const element of document.querySelectorAll('.ynab-grid-body-row')) {
       this.swapColumns(element);
+    }
+  }
+
+  destroy() {
+    this.invoke();
+  }
+
+  observe(changedNodes) {
+    if (!changedNodes.has('ynab-grid-body')) return;
+    if (this.shouldInvoke()) {
+      this.invoke();
     }
   }
 
