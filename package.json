@@ -32,7 +32,7 @@
     "gen": "yarn gen:settings && yarn gen:featureIndex",
     "gen:featureIndex": "node scripts/generateFeatureIndex",
     "gen:settings": "node scripts/generateSettings",
-    "gen:docs": "yarn gen:settings && node scripts/generateDocs",
+    "gen:docs": "yarn gen:settings && ts-node scripts/generateDocs.ts",
     "l10n:update": "node scripts/updateLocalizationStrings.js",
     "l10n:pull": "scripts/get_l10ns",
     "sentry:create": "sentry-cli releases -o toolkit-for-ynab -p toolkit-for-ynab new $npm_package_version",
