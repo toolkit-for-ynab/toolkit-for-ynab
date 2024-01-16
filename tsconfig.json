@@ -17,7 +17,7 @@
       "toolkit-reports/*": ["./src/features/toolkit-reports/*"]
     }
   },
-  "include": ["./src/**/*"]
+  "include": ["./src", "./scripts"],
   "ts-node": {
     "transpileOnly": true,
     "files": true,
