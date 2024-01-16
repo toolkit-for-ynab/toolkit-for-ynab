@@ -18,4 +18,9 @@
     }
   },
   "include": ["./src/**/*"]
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "swc": true
+  }
 }
