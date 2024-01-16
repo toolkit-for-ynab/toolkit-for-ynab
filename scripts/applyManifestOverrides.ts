@@ -3,24 +3,21 @@
 import fs from 'fs';
 import path from 'path';
 import yargs from 'yargs';
+import { MANIFEST_PATH, WORKSPACE_ROOT } from './lib/paths';
 
 const validOverrides = ['beta', 'development', 'ios', 'firefox'] as const;
 
 async function main() {
-  const { type } = await yargs.choices('type', validOverrides).parse();
+  const { type } = await yargs.choices('type', validOverrides).demandOption('type').parse();
 
-  const workspaceRoot = path.join(__dirname, '..');
-  const buildDirectory = path.join(workspaceRoot, 'dist', 'extension');
-  const manifestPath = path.join(buildDirectory, 'manifest.json');
-
-  const manifest = require(manifestPath);
+  const manifest = require(MANIFEST_PATH);
 
   if (type === 'ios' || type === 'firefox') {
     delete manifest.host_permissions;
     delete manifest.action;
   }
 
-  const changes = require(path.join(workspaceRoot, 'src', `manifest.${type}.json`));
+  const changes = require(path.join(WORKSPACE_ROOT, 'src', `manifest.${type}.json`));
 
   // Clobber any keys in the beta manifest across.
   Object.assign(manifest, changes);
@@ -32,10 +29,10 @@ async function main() {
   }
 
   // Delete the old one.
-  fs.unlinkSync(manifestPath);
+  fs.unlinkSync(MANIFEST_PATH);
 
   // And write our new one.
-  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+  fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2));
 
   console.log(`${type} manifest applied.`);
 }
