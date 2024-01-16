@@ -1,16 +1,15 @@
 #!/usr/bin/env ts-node
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
 
-const allToolkitSettings = JSON.parse(
-  fs.readFileSync(path.join(__dirname, 'settings.json'), 'utf8')
-);
-const outputFile = path.join(__dirname, '../docs/feature-list.md');
+import allToolkitSettings from './settings.json';
+import { FEATURE_LIST_MD } from './lib/paths';
+
+type Setting = typeof allToolkitSettings[number];
 
 const settingsMap = allToolkitSettings.reduce((map, setting) => {
-  if (map.has(setting.section)) {
-    const sectionSettings = map.get(setting.section);
+  const sectionSettings = map.get(setting.section);
+  if (sectionSettings) {
     sectionSettings.push(setting);
     sectionSettings.sort((a, b) => {
       if (a.title > b.title) {
@@ -24,7 +23,7 @@ const settingsMap = allToolkitSettings.reduce((map, setting) => {
   }
 
   return map;
-}, new Map());
+}, new Map<string, Setting[]>());
 
 const docSettingsOrder = [
   { key: 'general', name: 'General' },
@@ -41,6 +40,10 @@ docOutput += docSettingsOrder
     let settingSection = `<details><summary>${name} (Click to Expand/Collapse)</summary>\n`;
 
     const sectionSettings = settingsMap.get(key);
+    if (!sectionSettings) {
+      throw new Error(`Key '${key}' missing in 'settings.json', expected from 'docSettingsOrder'.`);
+    }
+
     settingSection += sectionSettings
       .map(({ description, title }) => {
         return `\n## ${title}\n${description}`;
@@ -51,6 +54,6 @@ docOutput += docSettingsOrder
   })
   .join('\n');
 
-fs.writeFile(outputFile, docOutput, (error) => {
+fs.writeFile(FEATURE_LIST_MD, docOutput, (error) => {
   if (error) process.exit(1);
 });
