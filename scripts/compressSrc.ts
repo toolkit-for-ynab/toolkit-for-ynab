@@ -1,67 +1,70 @@
 #!/usr/bin/env ts-node
 
-const archiver = require('archiver');
-const fs = require('fs');
-const path = require('path');
-const yargs = require('yargs').argv;
+import archiver from 'archiver';
+import fs from 'fs';
+import path from 'path';
+import yargs from 'yargs';
+import { BROWSER_NAMES } from './consts';
 
-const workspaceRoot = path.join(__dirname, '..');
-const extensionDirectory = path.join(workspaceRoot, 'dist', 'extension');
-const outputDirectory = path.join(workspaceRoot, 'dist');
+async function main() {
+  const { browser } = await yargs.choices('browser', BROWSER_NAMES).parse();
 
-if (!fs.existsSync(extensionDirectory)) {
-  console.error(
-    "The dist/web-extension directory doesn't exist yet. Run `yarn build` before running this script."
-  );
-  process.exit(1);
-}
+  const workspaceRoot = path.join(__dirname, '..');
+  const extensionDirectory = path.join(workspaceRoot, 'dist', 'extension');
+  const outputDirectory = path.join(workspaceRoot, 'dist');
 
-if (!['chrome', 'firefox', 'edge'].includes(yargs.browser)) {
-  console.log(`${yargs.browser} is not a valid browser option`);
-  process.exit(1);
-}
-
-// It's nice to create zip files with the version number in the name
-const version = require(path.join(extensionDirectory, 'manifest.json')).version;
-const zipFile = path.join(
-  outputDirectory,
-  `toolkit-for-ynab-source-v${version}-${yargs.browser}.zip`
-);
-
-// Create our zip file
-const output = fs.createWriteStream(zipFile);
-const archive = archiver('zip', { zlib: { level: 9 } });
-
-output.on('close', () => {
-  console.log('Archive sucessfully created.');
-});
-
-archive.on('warning', (error) => {
-  if (error.code === 'ENOENT') {
-    console.warn('Warning while archiving: ', error);
-  } else {
-    throw error;
+  if (!fs.existsSync(extensionDirectory)) {
+    console.error(
+      "The dist/web-extension directory doesn't exist yet. Run `yarn build` before running this script."
+    );
+    process.exit(1);
   }
-});
 
-archive.pipe(output);
-archive.on('error', (error) => {
-  throw error;
-});
+  // It's nice to create zip files with the version number in the name
+  const version = require(path.join(extensionDirectory, 'manifest.json')).version;
+  const zipFile = path.join(outputDirectory, `toolkit-for-ynab-source-v${version}-${browser}.zip`);
 
-// append everything except for dist/, putting all contents at the root of archive
-const files = fs.readdirSync(workspaceRoot);
+  // Create our zip file
+  const output = fs.createWriteStream(zipFile);
+  const archive = archiver('zip', { zlib: { level: 9 } });
 
-for (const file of files) {
-  if (file !== '.DS_Store' && file !== '.git' && file !== 'dist' && file !== 'node_modules') {
+  output.on('close', () => {
+    console.log('Archive successfully created.');
+  });
+
+  archive.on('warning', (error) => {
+    if (error.code === 'ENOENT') {
+      console.warn('Warning while archiving: ', error);
+    } else {
+      throw error;
+    }
+  });
+
+  archive.pipe(output);
+  archive.on('error', (error) => {
+    throw error;
+  });
+
+  // Append everything except for ignored dirs, putting all contents at
+  // the root of the archive
+  const ignoredDirs = new Set(['.DS_Store', '.git', 'dist', 'node_modules']);
+  const files = fs.readdirSync(workspaceRoot);
+
+  for (const file of files.filter((file) => !ignoredDirs.has(file))) {
     const stats = fs.statSync(file);
 
+    // Source and destination are given the same value
     if (stats.isDirectory()) {
-      archive.directory(file);
+      archive.directory(file, file);
     } else {
-      archive.file(file);
+      archive.file(file, { name: file });
     }
   }
+
+  archive.finalize();
 }
 
-archive.finalize();
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

@@ -4,11 +4,10 @@ import archiver from 'archiver';
 import fs from 'fs';
 import path from 'path';
 import yargs from 'yargs';
-
-const allowedBrowsers = ['chrome', 'firefox', 'edge'] as const;
+import { BROWSER_NAMES } from './consts';
 
 async function main() {
-  const { browser } = await yargs.choices('browser', allowedBrowsers).parse();
+  const { browser } = await yargs.choices('browser', BROWSER_NAMES).parse();
   const workspaceRoot = path.join(__dirname, '..');
   const extensionDirectory = path.join(workspaceRoot, 'dist', 'extension');
   const outputDirectory = path.join(workspaceRoot, 'dist');
