@@ -1,42 +1,46 @@
 #!/usr/bin/env ts-node
 
-const fs = require('fs');
-const path = require('path');
-const yargs = require('yargs').argv;
+import fs from 'fs';
+import path from 'path';
+import yargs from 'yargs';
 
-const validOverrides = ['beta', 'development', 'ios', 'firefox'];
-if (!validOverrides.includes(yargs.type)) {
-  console.log(`Invalid OVERRIDE provided. Must be one of: [${validOverrides.join('|')}]`);
+const validOverrides = ['beta', 'development', 'ios', 'firefox'] as const;
+
+async function main() {
+  const { type } = await yargs.choices('type', validOverrides).parse();
+
+  const workspaceRoot = path.join(__dirname, '..');
+  const buildDirectory = path.join(workspaceRoot, 'dist', 'extension');
+  const manifestPath = path.join(buildDirectory, 'manifest.json');
+
+  const manifest = require(manifestPath);
+
+  if (type === 'ios' || type === 'firefox') {
+    delete manifest.host_permissions;
+    delete manifest.action;
+  }
+
+  const changes = require(path.join(workspaceRoot, 'src', `manifest.${type}.json`));
+
+  // Clobber any keys in the beta manifest across.
+  Object.assign(manifest, changes);
+
+  // If we're in a github action, append the build number to the version number.
+  if (process.env.GITHUB_RUN_NUMBER) {
+    manifest.version += `.${process.env.GITHUB_RUN_NUMBER}`;
+    console.log(`using version: ${manifest.version}`);
+  }
+
+  // Delete the old one.
+  fs.unlinkSync(manifestPath);
+
+  // And write our new one.
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+
+  console.log(`${type} manifest applied.`);
+}
+
+main().catch((e) => {
+  console.error(e);
   process.exit(1);
-}
-
-const type = yargs.type;
-const workspaceRoot = path.join(__dirname, '..');
-const buildDirectory = path.join(workspaceRoot, 'dist', 'extension');
-const manifestPath = path.join(buildDirectory, 'manifest.json');
-
-const manifest = require(manifestPath);
-
-if (yargs.type === 'ios' || yargs.type === 'firefox') {
-  delete manifest.host_permissions;
-  delete manifest.action;
-}
-
-const changes = require(path.join(workspaceRoot, 'src', `manifest.${type}.json`));
-
-// Clobber any keys in the beta manifest across.
-Object.assign(manifest, changes);
-
-// If we're in a github action, append the build number to the version number.
-if (process.env.GITHUB_RUN_NUMBER) {
-  manifest.version += `.${process.env.GITHUB_RUN_NUMBER}`;
-  console.log(`using version: ${manifest.version}`);
-}
-
-// Delete the old one.
-fs.unlinkSync(manifestPath);
-
-// And write our new one.
-fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
-
-console.log(`${type} manifest applied.`);
+});
