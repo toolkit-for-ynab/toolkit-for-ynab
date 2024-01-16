@@ -1,3 +1,5 @@
+#!/usr/bin/env ts-node
+
 const archiver = require('archiver');
 const fs = require('fs');
 const path = require('path');
