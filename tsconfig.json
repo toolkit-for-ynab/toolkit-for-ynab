@@ -10,6 +10,7 @@
     "esModuleInterop": true,
     "strict": true,
     "strictNullChecks": true,
+    "resolveJsonModule": true,
     "sourceMap": true,
     "paths": {
       "*": ["./types/*.d.ts"],
@@ -17,5 +18,10 @@
       "toolkit-reports/*": ["./src/features/toolkit-reports/*"]
     }
   },
-  "include": ["./src/**/*"]
+  "include": ["./src", "./scripts"],
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "swc": true
+  }
 }
