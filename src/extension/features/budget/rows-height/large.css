@@ -11,7 +11,7 @@
 }
 
 .budget-table-cell-available-payment {
-  font-size: 0px;
+  font-size: 0px !important;
   position: absolute;
   right: -15px;
   top: 9px;
