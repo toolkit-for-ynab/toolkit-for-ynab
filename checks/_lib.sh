@@ -6,7 +6,8 @@ find_check_files() {
   all_files="$(find ./checks \
     -type f \
     -name '*.sh' \
-    -not -name '_lib.sh' | sort)"
+    -not -name '_lib.sh' \
+    -not -name '_template.sh' | sort)"
 
   # Dummy variables/functions are set so that
   # the call to unset below doesn't fail if
