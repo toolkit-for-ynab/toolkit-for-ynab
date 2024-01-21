@@ -6,6 +6,7 @@ import {
 import { factoryLookup } from 'toolkit/extension/utils/ember';
 import type { YNABAccountType } from 'toolkit/types/ynab/window/ynab-enums';
 import { Feature } from '../features/feature';
+import type { EmberComponent } from 'toolkit/types/ynab/ember';
 
 const MONTHS_SHORT = [
   'Jan',

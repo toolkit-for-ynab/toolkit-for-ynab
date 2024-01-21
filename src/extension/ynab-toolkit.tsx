@@ -13,6 +13,7 @@ import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-mod
 import { Feature } from './features/feature';
 import { InboundMessage, InboundMessageType, OutboundMessageType } from 'toolkit/core/messages';
 import { ObserveListener, RouteChangeListener } from './listeners';
+import type { EmberComponent } from 'toolkit/types/ynab/ember';
 const { later } = ynabUtils.ynabRequire('@ember/runloop');
 
 export let observeListener: ObserveListener;
