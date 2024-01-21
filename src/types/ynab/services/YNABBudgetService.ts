@@ -1,12 +1,12 @@
 import type { DateWithoutTime } from '../window/ynab-utilities';
 
-interface YNABBudgetMonthDisplayItem {
+export interface YNABBudgetMonthDisplayItem {
   categoryId: string;
   budgeted: number;
   goalTarget: number;
 }
 
-interface YNABBudgetService {
+export interface YNABBudgetService {
   activeCategory: {};
   budgetViewModel?: {
     allBudgetMonthsViewModel: {};
