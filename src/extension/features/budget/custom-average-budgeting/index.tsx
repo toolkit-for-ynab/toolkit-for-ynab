@@ -5,6 +5,7 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { Feature } from '../../feature';
 import { componentAfter } from 'toolkit/extension/utils/react';
 import type { FeatureSetting } from 'toolkit/types/toolkit/features';
+import type { BudgetTableRowComponent } from 'toolkit/types/ynab/components/BudgetTableRow';
 
 const QuickBudgetButton = ({
   setting,

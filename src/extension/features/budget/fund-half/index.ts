@@ -3,6 +3,7 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getBudgetService } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import type { YNABBudgetMonthDisplayItem } from 'toolkit/types/ynab/services/YNABBudgetService';
+import type { BudgetTableRowComponent } from 'toolkit/types/ynab/components/BudgetTableRow';
 
 // The concept here is that for odd monthly Target amounts there is a low half and a high half.
 // Example:  For $65.05 the low half is $32.52 (x2 = $65.04).  The high half is $32.53 (x2 - $65.06).
