@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { run } from '@ember/runloop';
 import { Feature } from 'toolkit/extension/features/feature';
-import { YNABApp } from '../window';
+import type { YNABApp } from '../window';
 
 declare global {
   interface ToolkitEmberHook {

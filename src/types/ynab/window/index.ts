@@ -1,7 +1,7 @@
-import { YNABEnums } from './ynab-enums';
-import { YNABSharedLib } from './ynab-shared-lib';
+import type { YNABEnums } from './ynab-enums';
+import type { YNABSharedLib } from './ynab-shared-lib';
 
-interface YNABGlobal {
+export interface YNABGlobal {
   YNABSharedLib: YNABSharedLib;
   YNABSharedLibWebInstance: unknown;
   collections: unknown;
@@ -16,7 +16,7 @@ interface YNABGlobal {
   utilities: YNABUtilities;
 }
 
-interface YNABApp {
+export interface YNABApp {
   __container__: {
     lookup<T extends unknown>(key: string): T | undefined;
     factoryFor<T extends unknown>(key: string): T | undefined;
