@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { run } from '@ember/runloop';
 import { Feature } from 'toolkit/extension/features/feature';
 import type { YNABApp } from '../window';
+import { RenderTreeNode } from './ember-view';
 
 interface ToolkitEmberHook {
   context: Feature;
