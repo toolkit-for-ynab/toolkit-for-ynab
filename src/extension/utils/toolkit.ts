@@ -4,7 +4,7 @@ import {
   SupportedEmberHook,
 } from 'toolkit/extension/ynab-toolkit';
 import { factoryLookup } from 'toolkit/extension/utils/ember';
-import { YNABAccountType } from 'toolkit/types/ynab/window/ynab-enums';
+import type { YNABAccountType } from 'toolkit/types/ynab/window/ynab-enums';
 import { Feature } from '../features/feature';
 
 const MONTHS_SHORT = [

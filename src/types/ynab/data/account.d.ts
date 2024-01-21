@@ -1,5 +1,5 @@
-import { YNABAccountType } from '../window/ynab-enums';
-import { YNABTransaction } from './transaction';
+import type { YNABAccountType } from '../window/ynab-enums';
+import type { YNABTransaction } from './transaction';
 
 export interface YNABAccount {
   accountName: string;
