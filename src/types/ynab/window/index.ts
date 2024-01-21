@@ -1,3 +1,4 @@
+import type { YNABConstants } from './ynab-constants';
 import type { YNABEnums } from './ynab-enums';
 import type { YNABSharedLib } from './ynab-shared-lib';
 

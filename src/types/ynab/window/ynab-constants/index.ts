@@ -1,4 +1,4 @@
-interface YNABConstants {
+export interface YNABConstants {
   DisplayEntityType: {
     BudgetHeaderDisplayItem: 'budgetHeaderDisplayItem';
     BudgetMonthDisplayItem: 'budgetMonthDisplayItem';

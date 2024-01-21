@@ -1,4 +1,5 @@
-import { YNABAccount } from './account';
+import type { YNABConstants } from '../window/ynab-constants';
+import type { YNABAccount } from './account';
 
 export interface YNABTransaction {
   accepted: boolean;
