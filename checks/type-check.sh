@@ -4,5 +4,5 @@ PRECOMMIT=0
 PREPUSH=1
 
 check() {
-  yarn tsc
+  yarn type-check
 }
