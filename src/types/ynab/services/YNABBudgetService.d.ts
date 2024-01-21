@@ -1,3 +1,5 @@
+import type { DateWithoutTime } from '../window/ynab-utilities';
+
 interface YNABBudgetMonthDisplayItem {
   categoryId: string;
   budgeted: number;

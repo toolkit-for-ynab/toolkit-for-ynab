@@ -1,6 +1,7 @@
 import type { YNABConstants } from './ynab-constants';
 import type { YNABEnums } from './ynab-enums';
 import type { YNABSharedLib } from './ynab-shared-lib';
+import type { YNABUtilities } from './ynab-utilities';
 
 export interface YNABGlobal {
   YNABSharedLib: YNABSharedLib;

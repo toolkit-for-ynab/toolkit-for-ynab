@@ -1,4 +1,5 @@
-import { YNABEntityManager } from '../ynab-entity-manager';
+import type { YNABEntityManager } from '../ynab-entity-manager';
+import type { DateWithoutTime } from '../ynab-utilities';
 
 interface YNABSharedLibInstance {
   entityManager: YNABEntityManager;

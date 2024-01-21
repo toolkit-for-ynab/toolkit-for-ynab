@@ -1,4 +1,5 @@
 import type { YNABConstants } from '../window/ynab-constants';
+import { DateWithoutTime } from '../window/ynab-utilities';
 import type { YNABAccount } from './account';
 
 export interface YNABTransaction {
