@@ -1,4 +1,5 @@
 import type { YNABAccount } from '../../data/account';
+import type { YNABPayeeCollection } from '../../data/payee-collection';
 import type { YNABTransaction } from '../../data/transaction';
 import type { YNABTransactionCollection } from '../../data/transaction-collection';
 
