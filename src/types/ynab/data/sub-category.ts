@@ -1,4 +1,4 @@
-interface YNABSubCategory {
+export interface YNABSubCategory {
   entityId?: string;
   masterCategoryId?: string;
   note: string;
