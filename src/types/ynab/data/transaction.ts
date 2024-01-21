@@ -1,6 +1,7 @@
 import type { YNABConstants } from '../window/ynab-constants';
 import type { DateWithoutTime } from '../window/ynab-utilities';
 import type { YNABAccount } from './account';
+import type { YNABPayee } from './payee';
 import type { YNABSubCategory } from './sub-category';
 
 export interface YNABTransaction {
