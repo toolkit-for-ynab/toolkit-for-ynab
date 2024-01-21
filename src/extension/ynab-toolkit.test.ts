@@ -7,7 +7,7 @@ import { allToolkitSettings } from 'toolkit/core/settings';
 import { isYNABReady } from 'toolkit/extension/utils/ynab';
 import { readyYNAB, unreadyYNAB } from 'toolkit/test/setup';
 import { OutboundMessageType, InboundMessageType, BootstrapMessage } from 'toolkit/core/messages';
-import { YNABToolkitObject } from 'toolkit/types/toolkit';
+import type { YNABToolkitObject } from 'toolkit/types/toolkit';
 
 const mockIsYNABReady = isYNABReady as jest.Mock;
 
