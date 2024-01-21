@@ -163,6 +163,7 @@ function generateAllSettingsFile(allSettings) {
  * the next time you run ./build or build.bat!             *
  ***********************************************************
 */
+import type { FeatureSetting, FeatureSettingConfig } from 'toolkit/types/toolkit/features';
 if (typeof window.ynabToolKit === 'undefined') { window.ynabToolKit = {} as any; }
 
 declare global {

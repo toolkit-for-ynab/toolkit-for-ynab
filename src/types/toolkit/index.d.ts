@@ -1,3 +1,5 @@
+import type { FeatureSetting } from './features';
+
 export interface YNABToolkitObject {
   assets: {
     logo: string;

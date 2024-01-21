@@ -1,4 +1,5 @@
 import { allToolkitSettings } from 'toolkit/core/settings';
+import type { FeatureSettingConfig } from 'toolkit/types/toolkit/features';
 
 interface SettingsSection {
   settings: FeatureSettingConfig[];
