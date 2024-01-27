@@ -23,6 +23,7 @@ export interface YNABTransaction {
   isScheduledTransaction?: boolean;
   isSplit?: boolean;
   isTombstone?: boolean;
+  isOnBudgetTransfer?: boolean;
   matchedTransaction: YNABTransaction | null;
   matchedTransactionId: string | null;
   memo: string;

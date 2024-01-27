@@ -6,7 +6,7 @@ export type LabeledCheckbox = {
   checked: boolean;
   disabled?: boolean;
   label: string;
-  onChange: React.ChangeEventHandler;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 };
 
 export const LabeledCheckbox = ({

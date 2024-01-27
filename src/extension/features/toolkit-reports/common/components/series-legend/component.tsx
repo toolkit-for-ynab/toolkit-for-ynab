@@ -7,18 +7,13 @@ export type SeriesLegendProps = {
   filters: FiltersType;
   onDataHover: (id: string) => void;
   sourceName: string;
-  series: {
-    id: string;
-    color: string;
-    name: string;
-    y: number;
-  }[];
+  series: Highcharts.PointOptionsObject[];
   tableName: string;
 };
 
 export const SeriesLegendComponent = (props: SeriesLegendProps) => {
-  const sortedSeries = props.series.slice().sort((a, b) => b.y - a.y);
-  const seriesTotal = sortedSeries.reduce((reduced, current) => reduced + current.y, 0);
+  const sortedSeries = props.series.slice().sort((a, b) => b.y! - a.y!);
+  const seriesTotal = sortedSeries.reduce((reduced, current) => reduced + current.y!, 0);
   const { fromDate, toDate } = props.filters.dateFilter;
   const totalMonths = fromDate.monthsApart(toDate) + 1;
 
@@ -55,15 +50,15 @@ export const SeriesLegendComponent = (props: SeriesLegendProps) => {
           <div
             className="tk-series-legend__table-row tk-flex tk-align-items-center"
             key={seriesData.id}
-            onMouseEnter={() => props.onDataHover(seriesData.id)}
+            onMouseEnter={() => props.onDataHover(seriesData.id!)}
           >
             <div
               className="tk-series-legend__legend-icon tk-mg-r-05"
-              style={{ backgroundColor: seriesData.color }}
+              style={{ backgroundColor: seriesData.color as string }}
             />
-            <div className="tk-flex-grow">{seriesData.name}</div>
+            <div className="tk-flex-grow">{seriesData.name!}</div>
             <div>
-              <Currency value={seriesData.y} />
+              <Currency value={seriesData.y!} />
             </div>
           </div>
         ))}

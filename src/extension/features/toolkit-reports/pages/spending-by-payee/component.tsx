@@ -13,26 +13,49 @@ import { showTransactionModal } from 'toolkit/extension/features/toolkit-reports
 import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
 import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-reports/common/components/additional-settings';
 import './styles.scss';
+import { ReportContextType } from '../../common/components/report-context';
+import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import { PointWithPayload } from '../../utils/types';
 
-const createPayeeMap = (payee) =>
-  new Map([
-    ['payee', payee],
-    ['total', 0],
-    ['transactions', []],
-  ]);
+type PayeeMap = {
+  payee: YNABPayee;
+  total: number;
+  transactions: YNABTransaction[];
+};
 
-export class SpendingByPayeeComponent extends React.Component {
+type NormalizedPayeeData = {
+  payee: YNABPayee;
+  total: number;
+  transactions: YNABTransaction[];
+};
+
+type Point = PointWithPayload<{ transactions: YNABTransaction[]; id: string }>;
+
+const createPayeeMap = (payee: YNABPayee): PayeeMap => ({
+  payee: payee,
+  total: 0,
+  transactions: [] as YNABTransaction[],
+});
+
+type SpendingByPayeeState = {
+  seriesData: Highcharts.SeriesVariablepieOptions['data'];
+  spendingByPayeeData: NormalizedPayeeData[];
+  payeeCount: number;
+  useBarChart: boolean;
+  chart?: Highcharts.Chart;
+};
+
+export class SpendingByPayeeComponent extends React.Component<
+  Pick<ReportContextType, 'filteredTransactions'>,
+  SpendingByPayeeState
+> {
   _subCategoriesCollection = Collections.subCategoriesCollection;
 
   _payeesCollection = Collections.payeesCollection;
 
-  static propTypes = {
-    filteredTransactions: PropTypes.array.isRequired,
-  };
-
-  state = {
-    seriesData: null,
-    spendingByPayeeData: null,
+  state: SpendingByPayeeState = {
+    seriesData: [],
+    spendingByPayeeData: [],
     payeeCount: 20,
     useBarChart: false,
   };
@@ -41,7 +64,7 @@ export class SpendingByPayeeComponent extends React.Component {
     this._calculateData();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Pick<ReportContextType, 'filteredTransactions'>) {
     if (this.props.filteredTransactions !== prevProps.filteredTransactions) {
       this._calculateData();
     }
@@ -80,7 +103,7 @@ export class SpendingByPayeeComponent extends React.Component {
   }
 
   _calculateData() {
-    const spendingByPayeeData = new Map();
+    const spendingByPayeeData = new Map<string, PayeeMap>();
 
     this.props.filteredTransactions.forEach((transaction) => {
       if (transaction.isOnBudgetTransfer) {
@@ -94,7 +117,8 @@ export class SpendingByPayeeComponent extends React.Component {
         return;
       }
 
-      const transactionPayeeId = transaction.payeeId ?? transaction?.parentTransaction?.payeeId;
+      const transactionPayeeId = (transaction.payeeId ??
+        transaction?.parentTransaction?.payeeId) as string;
       const transactionPayee = this._payeesCollection.findItemByEntityId(transactionPayeeId);
       if (!transactionPayee) {
         return;
@@ -103,8 +127,8 @@ export class SpendingByPayeeComponent extends React.Component {
       const transactionAmount = transaction.amount;
       const payeeReportData =
         spendingByPayeeData.get(transactionPayeeId) || createPayeeMap(transactionPayee);
-      payeeReportData.set('total', payeeReportData.get('total') + transactionAmount);
-      payeeReportData.set('transactions', payeeReportData.get('transactions').concat(transaction));
+      payeeReportData.total += transactionAmount;
+      payeeReportData.transactions = [...payeeReportData.transactions, transaction];
 
       spendingByPayeeData.set(transactionPayeeId, payeeReportData);
     });
@@ -118,7 +142,7 @@ export class SpendingByPayeeComponent extends React.Component {
     );
   }
 
-  _onLegendDataHover = (hoveredId) => {
+  _onLegendDataHover = (hoveredId: string) => {
     const { chart } = this.state;
     if (!chart) {
       return;
@@ -128,7 +152,7 @@ export class SpendingByPayeeComponent extends React.Component {
       return;
     }
 
-    chart.series[0].points.forEach((point) => {
+    (chart.series[0].points as Point[]).forEach((point) => {
       if (point.id === hoveredId) {
         point.setState('hover');
       } else {
@@ -141,7 +165,7 @@ export class SpendingByPayeeComponent extends React.Component {
     const { spendingByPayeeData, payeeCount } = this.state;
 
     let totalSpending = 0;
-    const seriesData = [];
+    const seriesData: Highcharts.SeriesVariablepieOptions['data'] = [];
     const allOtherPayees = {
       color: ALL_OTHER_DATA_COLOR,
       id: '__all-other-payees',
@@ -150,8 +174,8 @@ export class SpendingByPayeeComponent extends React.Component {
     };
 
     spendingByPayeeData.forEach((spendingData, payeeIndex) => {
-      const payee = spendingData.get('source');
-      const payeeTotal = spendingData.get('total');
+      const payee = spendingData.payee;
+      const payeeTotal = spendingData.total;
       const payeeId = payee?.entityId;
       const payeeName = payee?.name;
 
@@ -162,12 +186,14 @@ export class SpendingByPayeeComponent extends React.Component {
           color: PIE_CHART_COLORS[payeeIndex % PIE_CHART_COLORS.length],
           events: {
             click: (event) => {
-              showTransactionModal(event.point.name, event.point.transactions);
+              const point = event.point as Point;
+              showTransactionModal(point.name, point.transactions);
             },
           },
           id: payeeId,
           name: payeeName,
-          transactions: spendingData.get('transactions'),
+          // @ts-ignore We can attach arbitrary data, but Highchart types doesn't support this
+          transactions: spendingData.transactions,
           y: payeeTotal,
         });
       } else {
@@ -178,7 +204,7 @@ export class SpendingByPayeeComponent extends React.Component {
     seriesData.push(allOtherPayees);
 
     const chart = new Highcharts.Chart({
-      credits: false,
+      credits: { enabled: false },
       chart: {
         height: '70%',
         type: this.state.useBarChart ? 'column' : 'pie',
@@ -226,8 +252,9 @@ export class SpendingByPayeeComponent extends React.Component {
           name: 'Total Spending',
           data: seriesData,
           size: '80%',
+          type: this.state.useBarChart ? 'bar' : 'pie',
           innerSize: '50%',
-        },
+        } as Highcharts.SeriesOptionsRegistry['SeriesPieOptions' | 'SeriesBarOptions'],
       ],
       xAxis: {
         type: 'category',
@@ -253,19 +280,19 @@ export class SpendingByPayeeComponent extends React.Component {
     this.setState({ chart, seriesData });
   };
 
-  _sortAndNormalizeData(spendingByPayeeData) {
+  _sortAndNormalizeData(spendingByPayeeData: Map<string, PayeeMap>) {
     const spendingByPayeeArray = mapToArray(spendingByPayeeData);
 
     return spendingByPayeeArray
       .sort((a, b) => {
-        return a.get('total') - b.get('total');
+        return a.total - b.total;
       })
       .map((payeeData) => {
-        return new Map([
-          ['source', payeeData.get('payee')],
-          ['total', payeeData.get('total') * -1],
-          ['transactions', payeeData.get('transactions')],
-        ]);
+        return {
+          payee: payeeData.payee,
+          total: payeeData.total * -1,
+          transactions: payeeData.transactions,
+        };
       });
   }
 }

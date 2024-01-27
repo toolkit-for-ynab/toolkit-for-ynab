@@ -1,4 +1,4 @@
-export function mapToArray(map) {
+export function mapToArray<K, V>(map: Map<K, V>) {
   const array = [];
   for (const [, value] of map) {
     array.push(value);
@@ -7,7 +7,7 @@ export function mapToArray(map) {
   return array;
 }
 
-export function compareSemanticVersion(left, right) {
+export function compareSemanticVersion(left: string, right: string) {
   const leftSplit = left.split('.').map((val) => parseInt(val, 10));
   const rightSplit = right.split('.').map((val) => parseInt(val, 10));
 
