@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { showTransactionModal } from 'toolkit/extension/features/toolkit-reports/utils/show-transaction-modal';
 import Highcharts from 'highcharts';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { PointWithPayload } from '../../utils/types';
 
-export const OutflowGraph = ({ series }) => {
+// TODO: proper type for custom
+type Point = PointWithPayload<{ custom: any }>;
+
+export const OutflowGraph = ({ series }: { series: Highcharts.SeriesLineOptions[] }) => {
   const GRAPH_ID = 'tk-outflow-over-time-report-graph';
 
   useEffect(() => {
@@ -65,11 +68,12 @@ export const OutflowGraph = ({ series }) => {
         series: {
           cursor: 'pointer',
           events: {
-            click: ({ point: { custom } }) => {
-              if (custom && custom.length > 0) {
-                const date = custom[0].date.toNativeDate();
+            click: (event) => {
+              const point = event.point as Point;
+              if (point.custom && point.custom.length > 0) {
+                const date = point.custom[0].date.toNativeDate();
                 const formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date);
-                showTransactionModal(formattedDate, custom);
+                showTransactionModal(formattedDate, point.custom);
               }
             },
           },
@@ -98,8 +102,4 @@ export const OutflowGraph = ({ series }) => {
   }, [series]);
 
   return <div className="tk-highcharts-report-container" id={GRAPH_ID} />;
-};
-
-OutflowGraph.propTypes = {
-  series: PropTypes.array.isRequired,
 };

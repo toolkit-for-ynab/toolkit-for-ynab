@@ -27,7 +27,7 @@ export interface YNABTransaction {
   matchedTransaction: YNABTransaction | null;
   matchedTransactionId: string | null;
   memo: string;
-  month: DateWithoutTime;
+  month: string;
   originalImportedPayee: YNABPayee | null;
   parentTransaction?: YNABTransaction;
   parentEntityId?: string;
@@ -48,6 +48,8 @@ export interface YNABTransaction {
   transferTransaction: YNABTransaction | null;
   transferTransactionId: string | null;
   ynabId: string | null;
+  inflow: number;
+  outflow: number;
 
   isUncleared?: () => boolean;
   isReconciled?: () => boolean;
