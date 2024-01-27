@@ -3,7 +3,6 @@ require('highcharts/modules/sankey')(Highcharts);
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Collections } from 'toolkit/extension/utils/collections';
-import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
 import { AdditionalReportSettings } from 'toolkit-reports/common/components/additional-settings';
@@ -17,7 +16,7 @@ export class IncomeBreakdownComponent extends React.Component {
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
 
   static propTypes = {
-    filters: PropTypes.shape(FiltersPropType),
+    filters: PropTypes.any.isRequired, // TODO: FiltersType,
     filteredTransactions: PropTypes.array.isRequired,
   };
 

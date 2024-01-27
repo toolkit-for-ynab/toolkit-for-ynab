@@ -4,12 +4,11 @@ import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { localizedMonthAndYear, sortByDate } from 'toolkit/extension/utils/date';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { Legend } from './components/legend';
 
 export class InflowOutflowComponent extends React.Component {
   static propTypes = {
-    filters: PropTypes.shape(FiltersPropType),
+    filters: PropTypes.any.isRequired, // TODO: FiltersType
     filteredTransactions: PropTypes.array.isRequired,
   };
 

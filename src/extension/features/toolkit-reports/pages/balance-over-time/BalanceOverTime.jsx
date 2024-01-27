@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { RunningBalanceGraph } from './RunningBalanceGraph';
-import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
+import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
 import { WarningMessage } from './WarningMessage';
 import { useLocalStorage } from 'toolkit/extension/hooks/useLocalStorage';
 import { l10nAccountType } from 'toolkit/extension/utils/toolkit';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
-import { AdditionalReportSettings } from 'toolkit-reports/common/components/additional-settings';
+import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-reports/common/components/additional-settings';
 import {
   dataPointsToHighChartSeries,
   generateRunningBalanceMap,
@@ -172,6 +171,6 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
 
 // Props are given from context
 BalanceOverTimeComponent.propTypes = {
-  filters: PropTypes.shape(FiltersPropType).isRequired,
+  filters: PropTypes.any.isRequired, // TODO: FiltersType
   allReportableTransactions: PropTypes.array.isRequired,
 };

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { showTransactionModal } from 'toolkit-reports/utils/show-transaction-modal';
+import { showTransactionModal } from 'toolkit/extension/features/toolkit-reports/utils/show-transaction-modal';
 import Highcharts from 'highcharts';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { NUM_DATAPOINTS_LIMIT } from './utils';

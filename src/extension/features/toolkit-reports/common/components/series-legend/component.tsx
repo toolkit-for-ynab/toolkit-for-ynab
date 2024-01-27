@@ -1,9 +1,22 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { Currency } from 'toolkit-reports/common/components/currency';
 import './styles.scss';
+import { FiltersType } from '../report-context';
 
-export const SeriesLegendComponent = (props) => {
+export type SeriesLegendProps = {
+  filters: FiltersType;
+  onDataHover: (id: string) => void;
+  sourceName: string;
+  series: {
+    id: string;
+    color: string;
+    name: string;
+    y: number;
+  }[];
+  tableName: string;
+};
+
+export const SeriesLegendComponent = (props: SeriesLegendProps) => {
   const sortedSeries = props.series.slice().sort((a, b) => b.y - a.y);
   const seriesTotal = sortedSeries.reduce((reduced, current) => reduced + current.y, 0);
   const { fromDate, toDate } = props.filters.dateFilter;
@@ -57,19 +70,4 @@ export const SeriesLegendComponent = (props) => {
       </div>
     </div>
   );
-};
-
-SeriesLegendComponent.propTypes = {
-  filters: PropTypes.any.isRequired,
-  onDataHover: PropTypes.func.isRequired,
-  sourceName: PropTypes.string.isRequired,
-  series: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      color: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      y: PropTypes.number.isRequired,
-    })
-  ),
-  tableName: PropTypes.string.isRequired,
 };

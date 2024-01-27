@@ -1,4 +1,4 @@
-import { withReportContext } from 'toolkit-reports/common/components/report-context';
+import { withReportContext } from 'toolkit/extension/features/toolkit-reports/common/components/report-context';
 import { DateFilterComponent } from './component';
 
 function mapContextToProps(context) {

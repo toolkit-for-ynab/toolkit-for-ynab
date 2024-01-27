@@ -1,6 +1,9 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { ReportKeys, REPORT_TYPES } from 'toolkit-reports/common/constants/report-types';
+import {
+  ReportKeys,
+  REPORT_TYPES,
+} from 'toolkit/extension/features/toolkit-reports/common/constants/report-types';
 import { IncomeVsExpense } from 'toolkit-reports/pages/income-vs-expense';
 import { NetWorth } from 'toolkit-reports/pages/net-worth';
 import { InflowOutflow } from 'toolkit-reports/pages/inflow-outflow';
@@ -14,19 +17,11 @@ import {
   storeAccountFilters,
   storeCategoryFilters,
   storeDateFilters,
-} from 'toolkit-reports/utils/storage';
+} from 'toolkit/extension/features/toolkit-reports/utils/storage';
 import { IncomeBreakdown } from '../../../pages/income-breakdown/container';
 import { Forecast } from '../../../pages/forecast';
-
-export const SelectedReportContextPropType = {
-  component: PropTypes.func.isRequired,
-  key: PropTypes.string.isRequired,
-  filterSettings: PropTypes.shape({
-    disableCategoryFilter: PropTypes.bool,
-    disableTrackingAccounts: PropTypes.bool,
-    includeTrackingAccounts: PropTypes.bool,
-  }),
-};
+import { ComponentType, createContext } from 'react';
+import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 
 export const FiltersPropType = {
   accountFilterIds: PropTypes.any.isRequired,
@@ -37,9 +32,37 @@ export const FiltersPropType = {
   }),
 };
 
+export type SelectedReportContextPropType = {
+  component: React.ComponentType;
+  key: string;
+  filterSettings: {
+    disableCategoryFilter?: boolean;
+    disableTrackingAccounts?: boolean;
+    includeTrackingAccounts?: boolean;
+  };
+};
+export const SelectedReportContextPropType = {
+  component: PropTypes.func.isRequired,
+  key: PropTypes.string.isRequired,
+  filterSettings: PropTypes.shape({
+    disableCategoryFilter: PropTypes.bool,
+    disableTrackingAccounts: PropTypes.bool,
+    includeTrackingAccounts: PropTypes.bool,
+  }),
+};
+
+export type FiltersType = {
+  accountFilterIds: Set<string>;
+  categoryFilterIds: Set<string>;
+  dateFilter: {
+    fromDate: DateWithoutTime;
+    toDate: DateWithoutTime;
+  };
+};
+
 const ACTIVE_REPORT_KEY = 'active-report';
 
-const REPORT_COMPONENTS = [
+const REPORT_COMPONENTS: SelectedReportContextPropType[] = [
   {
     component: BalanceOverTime,
     key: ReportKeys.BalanceOverTime,
@@ -114,7 +137,16 @@ const REPORT_COMPONENTS = [
   },
 ];
 
-const { Provider, Consumer } = React.createContext({
+export type ReportContextType = {
+  filteredTransactions: YNABTransaction[];
+  filters: null | FiltersType;
+  selectedReport: SelectedReportContextPropType;
+  setActiveReportKey: (newKey: string) => void;
+  setFilters: (newFilters: any) => void;
+  allReportableTransactions: YNABTransaction[];
+};
+
+const { Provider, Consumer } = createContext<ReportContextType>({
   filteredTransactions: [],
   filters: null,
   selectedReport: REPORT_COMPONENTS[0],
@@ -123,13 +155,20 @@ const { Provider, Consumer } = React.createContext({
   allReportableTransactions: [],
 });
 
-export function withReportContextProvider(InnerComponent) {
-  return class WithReportContextProvider extends React.Component {
+export type WithReportContextHocState = {
+  activeReportKey: string;
+  filteredTransactions: YNABTransaction[];
+  filters: FiltersType;
+  allReportableTransactions: YNABTransaction[];
+};
+
+export function withReportContextProvider<T extends {}>(InnerComponent: ComponentType<T>) {
+  return class WithReportContextProvider extends React.Component<T, WithReportContextHocState> {
     get selectedReport() {
       return REPORT_COMPONENTS.find(({ key }) => key === this.state.activeReportKey);
     }
 
-    constructor(props) {
+    constructor(props: T) {
       super(props);
       const activeReportKey = getToolkitStorageKey(ACTIVE_REPORT_KEY, REPORT_TYPES[0].key);
 
@@ -142,25 +181,31 @@ export function withReportContextProvider(InnerComponent) {
     }
 
     componentDidMount() {
-      ynab.YNABSharedLib.getBudgetViewModel_AllAccountsViewModel().then((transactionsViewModel) => {
-        const visibleTransactionDisplayItems = transactionsViewModel.visibleTransactionDisplayItems;
-        const allReportableTransactions = visibleTransactionDisplayItems.filter(
-          (transaction) =>
-            !transaction.isSplit &&
-            !transaction.isScheduledTransaction &&
-            !transaction.isScheduledSubTransaction
-        );
+      ynab.YNABSharedLib.getBudgetViewModel_AllAccountsViewModel().then(
+        (transactionsViewModel: any) => {
+          const visibleTransactionDisplayItems =
+            transactionsViewModel.visibleTransactionDisplayItems;
+          console.log('Visible transactions:', visibleTransactionDisplayItems);
+          const allReportableTransactions = (
+            visibleTransactionDisplayItems as YNABTransaction[]
+          ).filter(
+            (transaction) =>
+              !transaction.isSplit &&
+              !transaction.isScheduledTransaction &&
+              !transaction.isScheduledSubTransaction
+          );
 
-        this.setState(
-          {
-            filteredTransactions: [],
-            allReportableTransactions,
-          },
-          () => {
-            this._applyFilters(this.state.activeReportKey);
-          }
-        );
-      });
+          this.setState(
+            {
+              filteredTransactions: [],
+              allReportableTransactions,
+            },
+            () => {
+              this._applyFilters(this.state.activeReportKey);
+            }
+          );
+        }
+      );
     }
 
     render() {
@@ -182,7 +227,7 @@ export function withReportContextProvider(InnerComponent) {
       );
     }
 
-    _setActiveReportKey = (activeReportKey) => {
+    _setActiveReportKey = (activeReportKey: string) => {
       setToolkitStorageKey(ACTIVE_REPORT_KEY, activeReportKey);
 
       // const filters = getStoredFilters(activeReportKey);
@@ -190,7 +235,7 @@ export function withReportContextProvider(InnerComponent) {
       this._applyFilters(activeReportKey);
     };
 
-    _setFilters = (filters) => {
+    _setFilters = (filters: FiltersType) => {
       storeAccountFilters(this.state.activeReportKey, filters.accountFilterIds);
       storeCategoryFilters(this.state.activeReportKey, filters.categoryFilterIds);
       storeDateFilters(this.state.activeReportKey, filters.dateFilter);
@@ -199,7 +244,7 @@ export function withReportContextProvider(InnerComponent) {
       this._applyFilters(this.state.activeReportKey);
     };
 
-    _applyFilters = (activeReportKey) => {
+    _applyFilters = (activeReportKey: string) => {
       const filters = getStoredFilters(activeReportKey);
       const { filterSettings } = this._findReportSettingsByKey(activeReportKey);
       const { allReportableTransactions } = this.state;
@@ -213,7 +258,9 @@ export function withReportContextProvider(InnerComponent) {
 
         const isFilteredAccount = accountFilterIds.has(accountId);
         const isFilteredCategory =
-          !filterSettings.disableCategoryFilter && categoryFilterIds.has(subCategoryId);
+          !filterSettings.disableCategoryFilter &&
+          subCategoryId &&
+          categoryFilterIds.has(subCategoryId);
         const isFilteredDate =
           dateFilter && (date.isBefore(dateFilter.fromDate) || date.isAfter(dateFilter.toDate));
 
@@ -227,17 +274,20 @@ export function withReportContextProvider(InnerComponent) {
       this.setState({ filteredTransactions, filters, activeReportKey });
     };
 
-    _findReportSettingsByKey(findKey) {
-      return REPORT_COMPONENTS.find(({ key }) => key === findKey);
+    _findReportSettingsByKey(findKey: string) {
+      return REPORT_COMPONENTS.find(({ key }) => key === findKey)!;
     }
   };
 }
 
-export function withReportContext(mapContextToProps) {
-  return function (InnerComponent) {
-    return function WithReportContextProvider(props) {
+export function withReportContext<T extends { [key: string]: any }>(
+  mapContextToProps: (ctx: ReportContextType) => T
+) {
+  return function <P extends {}>(InnerComponent: ComponentType<P>) {
+    return function WithReportContextProvider(props: Omit<P, keyof T>) {
       return (
         <Consumer>
+          {/* @ts-ignore */}
           {(value) => <InnerComponent {...props} {...mapContextToProps(value)} />}
         </Consumer>
       );

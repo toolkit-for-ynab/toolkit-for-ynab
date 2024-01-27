@@ -15,7 +15,7 @@
     "paths": {
       "*": ["./types/*.d.ts"],
       "toolkit/*": ["./src/*"],
-      "toolkit-reports/*": ["./src/features/toolkit-reports/*"]
+      "toolkit-reports/*": ["./src/extension/features/toolkit-reports/*"]
     }
   },
   "include": ["./src", "./scripts"],

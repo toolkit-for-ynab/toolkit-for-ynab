@@ -1,13 +1,21 @@
-import * as React from 'react';
 import { ModalContainer } from '../components/modal-container';
+import React, { ComponentType, createContext } from 'react';
 
-const { Provider, Consumer } = React.createContext({
+export type ModalContextType = {
+  showModal: <T extends {}>(modal: ComponentType<T>, props: T) => void;
+  closeModal: () => void;
+};
+
+const { Provider, Consumer } = createContext<ModalContextType>({
   showModal: () => {},
   closeModal: () => {},
 });
 
-export function withModalContextProvider(InnerComponent) {
-  return class WithModalContextProvider extends React.Component {
+export function withModalContextProvider<T extends {}>(InnerComponent: ComponentType<T>) {
+  return class WithModalContextProvider extends React.Component<
+    T,
+    { modal: null | ComponentType<any>; modalProps: any }
+  > {
     state = {
       modal: null,
       modalProps: null,
@@ -29,7 +37,7 @@ export function withModalContextProvider(InnerComponent) {
           {Modal && (
             <ModalContainer
               closeModal={this._closeModal}
-              modal={this.state.modal}
+              modal={Modal}
               modalProps={this.state.modalProps}
             />
           )}
@@ -41,18 +49,19 @@ export function withModalContextProvider(InnerComponent) {
       this.setState({ modal: null, modalProps: null });
     };
 
-    _showModal = (modal, modalProps) => {
+    _showModal = <T extends {}>(modal: ComponentType<T>, modalProps: T) => {
       this.setState({ modal, modalProps });
     };
   };
 }
 
-export function withModalContext(mapContextToProps) {
-  return function (InnerComponent) {
+export function withModalContext<T extends {}>(mapContextToProps: (ctx: ModalContextType) => T) {
+  return function <P extends {}>(InnerComponent: ComponentType<P>) {
     return class WithModalContextProvider extends React.Component {
       render() {
         return (
           <Consumer>
+            {/* @ts-ignore */}
             {(value) => <InnerComponent {...this.props} {...mapContextToProps(value)} />}
           </Consumer>
         );

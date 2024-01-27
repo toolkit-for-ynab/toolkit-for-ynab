@@ -1,8 +1,8 @@
-import { withModalContext } from 'toolkit-reports/common/components/modal';
+import { withModalContext } from 'toolkit/extension/features/toolkit-reports/common/components/modal';
 import { CategoryFilter } from './components/category-filter';
 import { DateFilter } from './components/date-filter';
 import { AccountFilter } from './components/account-filter';
-import { withReportContext } from 'toolkit-reports/common/components/report-context';
+import { withReportContext } from 'toolkit/extension/features/toolkit-reports/common/components/report-context';
 import { ReportFiltersComponent } from './component';
 
 function mapReportContextToProps(context) {

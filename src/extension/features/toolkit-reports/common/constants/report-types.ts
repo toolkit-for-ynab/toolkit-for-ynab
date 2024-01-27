@@ -8,7 +8,7 @@ export const ReportKeys = {
   BalanceOverTime: 'balance-over-time',
   OutflowOverTime: 'outflow-over-time',
   Forecast: 'forecast',
-};
+} as const;
 
 export const ReportNames = {
   NetWorth: 'Net Worth',
@@ -20,7 +20,7 @@ export const ReportNames = {
   BalanceOverTime: 'Balance Over Time',
   OutflowOverTime: 'Outflow Over Time',
   Forecast: 'Forecast',
-};
+} as const;
 
 export const REPORT_TYPES = [
   {

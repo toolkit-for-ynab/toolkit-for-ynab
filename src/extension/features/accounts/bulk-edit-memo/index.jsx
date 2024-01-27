@@ -43,7 +43,7 @@ const EditMemo = () => {
     });
 
     setDisplayMode(DEFAULT_DISPLAY_MODE);
-    getModalService().closeModal();
+    getModalService()?.closeModal();
   };
 
   const selectedTransactionsCount = containerLookup('service:accounts').areChecked.length;

@@ -12,7 +12,9 @@ interface DateWithoutTime {
   isBefore(date: DateWithoutTime): boolean;
   isBetweenMonths(start: DateWithoutTime, end: DateWithoutTime): boolean;
   startOfMonth(): DateWithoutTime;
+  createFromISOString(inp: string): DateWithoutTime;
   toISOString(): string;
+  monthsApart(date: DateWithoutTime): number;
 }
 
 interface YNABUtilities {

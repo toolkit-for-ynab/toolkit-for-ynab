@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Collections } from 'toolkit/extension/utils/collections';
-import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { sortByGettableDate } from 'toolkit/extension/utils/date';
 import { mapToArray } from 'toolkit/extension/utils/helpers';
 import {
@@ -55,7 +54,7 @@ export class IncomeVsExpenseComponent extends React.Component {
   };
 
   static propTypes = {
-    filters: PropTypes.shape(FiltersPropType),
+    filters: PropTypes.any.isRequired, // TODO: FiltersType
     filteredTransactions: PropTypes.array.isRequired,
   };
 

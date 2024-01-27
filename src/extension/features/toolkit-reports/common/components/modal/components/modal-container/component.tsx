@@ -1,14 +1,14 @@
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import React from 'react';
 import './style.scss';
+import { ComponentType } from 'react';
 
-export class ModalContainer extends React.Component {
-  static propTypes = {
-    closeModal: PropTypes.func.isRequired,
-    modal: PropTypes.any.isRequired,
-    modalProps: PropTypes.any,
-  };
+type ModalContainerProps = {
+  modal: ComponentType<any>;
+  modalProps: any;
+  closeModal: () => void;
+};
 
+export class ModalContainer extends React.Component<ModalContainerProps> {
   render() {
     const Modal = this.props.modal;
 
@@ -21,10 +21,10 @@ export class ModalContainer extends React.Component {
     );
   }
 
-  _handleClickOutside = (event) => {
+  _handleClickOutside = (event: React.MouseEvent) => {
     this.props.closeModal();
   };
-  _handleClickInside = (event) => {
+  _handleClickInside = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
 }

@@ -4,12 +4,11 @@ import { localizedMonthAndYear } from 'toolkit/extension/utils/date';
 import { SelectedReportContextPropType } from 'toolkit-reports/common/components/report-context/component';
 import classnames from 'classnames';
 import './styles.scss';
-import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 
 export class ReportFiltersComponent extends React.Component {
   static propTypes = {
     closeModal: PropTypes.func.isRequired,
-    filters: PropTypes.shape(FiltersPropType),
+    filters: PropTypes.any.isRequired, // TODO: FiltersType
     selectedReport: PropTypes.shape(SelectedReportContextPropType),
     setFilters: PropTypes.func.isRequired,
     showAccountFilterModal: PropTypes.func.isRequired,

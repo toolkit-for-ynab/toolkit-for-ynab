@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import {
   calculateCumulativeOutflowPerDate,
   calculateOutflowPerDate,
@@ -62,6 +61,6 @@ export const OutflowOverTimeComponent = ({ allReportableTransactions, filters })
 };
 
 OutflowOverTimeComponent.propTypes = {
-  filters: PropTypes.shape(FiltersPropType).isRequired,
+  filters: PropTypes.any.isRequired, // TODO: FiltersType
   allReportableTransactions: PropTypes.array.isRequired,
 };

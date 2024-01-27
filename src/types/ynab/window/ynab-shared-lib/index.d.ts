@@ -9,7 +9,11 @@ interface YNABDateFormatter {
   formatDateLong(date?: DateWithoutTime | string): string;
 }
 
-interface YNABSharedLib {
+interface YNABSharedLibImpl {
   dateFormatter: YNABDateFormatter;
   defaultInstance: YNABSharedLibInstance;
 }
+
+type ExtendWithAny<T extends {}> = { [key: string]: any } & T;
+
+type YNABSharedLib = ExtendWithAny<YNABSharedLibImpl>;

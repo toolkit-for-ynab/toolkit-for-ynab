@@ -1,1 +1,3 @@
-interface YNABApplicationService {}
+interface YNABApplicationService {
+  budgetVersionId: string;
+}

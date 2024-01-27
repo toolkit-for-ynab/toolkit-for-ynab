@@ -4,7 +4,6 @@ import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { localizedMonthAndYear, sortByDate } from 'toolkit/extension/utils/date';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import { FiltersPropType } from 'toolkit-reports/common/components/report-context/component';
 import { Legend } from './components/legend';
 import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
@@ -16,7 +15,7 @@ const STORAGE_KEYS = {
 
 export class NetWorthComponent extends React.Component {
   static propTypes = {
-    filters: PropTypes.shape(FiltersPropType),
+    filters: PropTypes.any.isRequired, // TODO: FiltersType
     allReportableTransactions: PropTypes.array.isRequired,
   };
 

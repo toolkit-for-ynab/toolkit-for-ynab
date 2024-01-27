@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { withModalContextProvider } from 'toolkit-reports/common/components/modal';
+import { withModalContextProvider } from 'toolkit/extension/features/toolkit-reports/common/components/modal';
 import {
   SelectedReportContextPropType,
   withReportContext,
