@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Currency } from 'toolkit-reports/common/components/currency';
+import { Currency } from 'toolkit/extension/features/toolkit-reports/common/components/currency';
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
 import './styles.scss';
 
@@ -65,5 +65,5 @@ Legend.propTypes = {
   assets: PropTypes.number.isRequired,
   debts: PropTypes.number.isRequired,
   netWorth: PropTypes.number.isRequired,
-  changePreviousMonth: PropTypes.number.isRequired
+  changePreviousMonth: PropTypes.number.isRequired,
 };

@@ -1,21 +1,27 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { localizedMonthAndYear } from 'toolkit/extension/utils/date';
-import { SelectedReportContextPropType } from 'toolkit-reports/common/components/report-context/component';
+import {
+  FiltersType,
+  SelectedReportContextPropType,
+} from 'toolkit-reports/common/components/report-context/component';
 import classnames from 'classnames';
 import './styles.scss';
+import { AccountFilter } from './components/account-filter';
+import { CategoryFilter } from './components/category-filter';
+import { DateFilter } from './components/date-filter';
 
-export class ReportFiltersComponent extends React.Component {
-  static propTypes = {
-    closeModal: PropTypes.func.isRequired,
-    filters: PropTypes.any.isRequired, // TODO: FiltersType
-    selectedReport: PropTypes.shape(SelectedReportContextPropType),
-    setFilters: PropTypes.func.isRequired,
-    showAccountFilterModal: PropTypes.func.isRequired,
-    showCategoryFilterModal: PropTypes.func.isRequired,
-    showDateSelectorModal: PropTypes.func.isRequired,
-  };
+export type ReportFiltersProps = {
+  closeModal: VoidFunction;
+  filters: FiltersType;
+  selectedReport: SelectedReportContextPropType;
+  setFilters: (filter: FiltersType) => void;
+  showAccountFilterModal: (props: React.ComponentProps<typeof AccountFilter>) => void;
+  showCategoryFilterModal: (props: React.ComponentProps<typeof CategoryFilter>) => void;
+  showDateSelectorModal: (props: React.ComponentProps<typeof DateFilter>) => void;
+};
 
+export class ReportFiltersComponent extends React.Component<ReportFiltersProps> {
   render() {
     const { disableCategoryFilter } = this.props.selectedReport.filterSettings;
     const { accountFilterIds, categoryFilterIds, dateFilter } = this.props.filters;
@@ -60,7 +66,7 @@ export class ReportFiltersComponent extends React.Component {
     );
   }
 
-  _handleAccountsChanged = (accountFilterIds) => {
+  _handleAccountsChanged = (accountFilterIds: FiltersType['accountFilterIds']) => {
     this.props.closeModal();
     this._applyFilters({ accountFilterIds });
   };
@@ -74,7 +80,7 @@ export class ReportFiltersComponent extends React.Component {
     });
   };
 
-  _handleCategoriesChanged = (categoryFilterIds) => {
+  _handleCategoriesChanged = (categoryFilterIds: FiltersType['categoryFilterIds']) => {
     this.props.closeModal();
     this._applyFilters({ categoryFilterIds });
   };
@@ -91,7 +97,7 @@ export class ReportFiltersComponent extends React.Component {
     });
   };
 
-  _handleDatesChanged = (dateFilter) => {
+  _handleDatesChanged = (dateFilter: FiltersType['dateFilter']) => {
     this.props.closeModal();
     this._applyFilters({ dateFilter });
   };
@@ -104,7 +110,7 @@ export class ReportFiltersComponent extends React.Component {
     });
   };
 
-  _applyFilters(newFilters) {
+  _applyFilters(newFilters: Partial<FiltersType>) {
     this.props.setFilters({
       ...this.props.filters,
       ...newFilters,

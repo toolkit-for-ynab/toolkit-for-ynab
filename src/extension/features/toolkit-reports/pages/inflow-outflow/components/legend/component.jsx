@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Currency } from 'toolkit-reports/common/components/currency';
+import { Currency } from 'toolkit/extension/features/toolkit-reports/common/components/currency';
 import { Percentage } from 'toolkit/extension/features/toolkit-reports/common/components/percentage';
 import './styles.scss';
 import classnames from 'classnames';

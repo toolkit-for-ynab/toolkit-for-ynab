@@ -4,8 +4,8 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Collections } from 'toolkit/extension/utils/collections';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
-import { AdditionalReportSettings } from 'toolkit-reports/common/components/additional-settings';
+import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
+import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-reports/common/components/additional-settings';
 import './styles.scss';
 
 export class IncomeBreakdownComponent extends React.Component {

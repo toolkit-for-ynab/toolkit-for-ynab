@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import { localizedMonthAndYear } from 'toolkit/extension/utils/date';
 import { MonthStyle } from 'toolkit/extension/utils/toolkit';
-import { Currency } from 'toolkit-reports/common/components/currency';
+import { Currency } from 'toolkit/extension/features/toolkit-reports/common/components/currency';
 import './styles.scss';
 
 function getViewZeroAsEmptySetting() {

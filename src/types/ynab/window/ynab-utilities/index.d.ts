@@ -15,6 +15,13 @@ interface DateWithoutTime {
   createFromISOString(inp: string): DateWithoutTime;
   toISOString(): string;
   monthsApart(date: DateWithoutTime): number;
+  startOfYear(): DateWithoutTime;
+  endOfYear(): DateWithoutTime;
+  setYear(year: number | string): DateWithoutTime;
+  subtractYears(years: number): DateWithoutTime;
+  setMonth(month: number | string): DateWithoutTime;
+  subtractMonths(months: number): DateWithoutTime;
+  endOfMonth(): DateWithoutTime;
 }
 
 interface YNABUtilities {

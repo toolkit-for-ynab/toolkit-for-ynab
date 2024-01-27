@@ -1,23 +1,27 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { Collections } from 'toolkit/extension/utils/collections';
-import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
+import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
 import './styles.scss';
+import { FiltersType } from 'toolkit/extension/features/toolkit-reports/common/components/report-context';
 
-function sortableIndexCompare(a, b) {
+function sortableIndexCompare(a: { sortableIndex: number }, b: { sortableIndex: number }) {
   return a.sortableIndex - b.sortableIndex;
 }
 
-export class CategoryFilterComponent extends React.Component {
+export type CategoryFilterProps = {
+  activeReportKey: string;
+  categoryFilterIds: FiltersType['categoryFilterIds'];
+  onCancel: VoidFunction;
+  onSave: (categories: FiltersType['categoryFilterIds']) => void;
+};
+
+export class CategoryFilterComponent extends React.Component<
+  CategoryFilterProps,
+  { categoryFilterIds: FiltersType['categoryFilterIds'] }
+> {
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
   _subCategoriesCollection = Collections.subCategoriesCollection;
-
-  static propTypes = {
-    activeReportKey: PropTypes.string.isRequired,
-    categoryFilterIds: PropTypes.any.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
-  };
 
   state = {
     categoryFilterIds: this.props.categoryFilterIds,
@@ -25,8 +29,8 @@ export class CategoryFilterComponent extends React.Component {
 
   render() {
     const { categoryFilterIds } = this.state;
-    const categoriesList = [];
-    this._masterCategoriesCollection.forEach((masterCategory) => {
+    const categoriesList: React.ReactNode[] = [];
+    this._masterCategoriesCollection.forEach((masterCategory: YNABMasterCategory) => {
       const { entityId: masterCategoryId } = masterCategory;
       if (
         masterCategory.isTombstone ||
@@ -37,15 +41,15 @@ export class CategoryFilterComponent extends React.Component {
       }
 
       const isHiddenMasterCategory = masterCategory.isHiddenMasterCategory();
-      const subCategories =
+      const subCategories: YNABSubCategory[] =
         this._subCategoriesCollection.findItemsByMasterCategoryId(masterCategoryId);
       if (!subCategories) {
         return;
       }
 
-      const areAllSubCategoriesIgnored = subCategories.every(({ entityId }) =>
-        categoryFilterIds.has(entityId)
-      );
+      const areAllSubCategoriesIgnored = subCategories.every(({ entityId }) => {
+        return entityId && categoryFilterIds.has(entityId);
+      });
 
       categoriesList.push(
         <div key={masterCategoryId} className="tk-category-filter__labeled-checkbox--parent">
@@ -67,8 +71,8 @@ export class CategoryFilterComponent extends React.Component {
         categoriesList.push(
           <div className="tk-mg-l-1" key={subCategoryId}>
             <LabeledCheckbox
-              id={subCategoryId}
-              checked={!this.state.categoryFilterIds.has(subCategoryId)}
+              id={subCategoryId!}
+              checked={!this.state.categoryFilterIds.has(subCategoryId!)}
               label={subCategory.name}
               onChange={this._handleSubCategoryToggled}
             />
@@ -116,12 +120,12 @@ export class CategoryFilterComponent extends React.Component {
   _handleSelectNone = () => {
     const { categoryFilterIds } = this.state;
 
-    this._masterCategoriesCollection.forEach((masterCategory) => {
+    this._masterCategoriesCollection.forEach((masterCategory: YNABMasterCategory) => {
       const { entityId: masterCategoryId } = masterCategory;
       const isHiddenMasterCategory = masterCategory.isHiddenMasterCategory();
 
       if (!masterCategory.isTombstone && (!masterCategory.internalName || isHiddenMasterCategory)) {
-        const subCategories =
+        const subCategories: YNABSubCategory[] =
           this._subCategoriesCollection.findItemsByMasterCategoryId(masterCategoryId);
         if (!subCategories) {
           return;
@@ -130,7 +134,7 @@ export class CategoryFilterComponent extends React.Component {
         subCategories.forEach((subCategory) => {
           const { entityId: subCategoryId } = subCategory;
           if (!subCategory.isTombstone || !subCategory.internalName || isHiddenMasterCategory) {
-            categoryFilterIds.add(subCategoryId);
+            categoryFilterIds.add(subCategoryId!);
           }
         });
       }
@@ -139,24 +143,25 @@ export class CategoryFilterComponent extends React.Component {
     this.setState({ categoryFilterIds });
   };
 
-  _handleMasterCategoryToggled = ({ currentTarget }) => {
+  _handleMasterCategoryToggled = ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, name } = currentTarget;
     const { categoryFilterIds } = this.state;
-    const subCategories = this._subCategoriesCollection.findItemsByMasterCategoryId(name);
+    const subCategories: YNABSubCategory[] =
+      this._subCategoriesCollection.findItemsByMasterCategoryId(name);
     if (!subCategories) {
       return;
     }
 
     if (checked) {
-      subCategories.forEach(({ entityId }) => categoryFilterIds.delete(entityId));
+      subCategories.forEach(({ entityId }) => categoryFilterIds.delete(entityId!));
     } else {
-      subCategories.forEach(({ entityId }) => categoryFilterIds.add(entityId));
+      subCategories.forEach(({ entityId }) => categoryFilterIds.add(entityId!));
     }
 
     this.setState({ categoryFilterIds });
   };
 
-  _handleSubCategoryToggled = ({ currentTarget }) => {
+  _handleSubCategoryToggled = ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, name } = currentTarget;
     const { categoryFilterIds } = this.state;
     if (checked) {

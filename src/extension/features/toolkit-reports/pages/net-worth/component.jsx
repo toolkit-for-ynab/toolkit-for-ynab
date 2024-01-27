@@ -5,9 +5,9 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { localizedMonthAndYear, sortByDate } from 'toolkit/extension/utils/date';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { Legend } from './components/legend';
-import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
+import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
-import { AdditionalReportSettings } from 'toolkit-reports/common/components/additional-settings';
+import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-reports/common/components/additional-settings';
 
 const STORAGE_KEYS = {
   inverseDebt: 'net-worth-inverse-debt',

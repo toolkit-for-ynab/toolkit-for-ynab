@@ -6,10 +6,10 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { Collections } from 'toolkit/extension/utils/collections';
 import { mapToArray } from 'toolkit/extension/utils/helpers';
 import { SeriesLegend } from '../../common/components/series-legend';
-import { PIE_CHART_COLORS } from 'toolkit-reports/common/constants/colors';
+import { PIE_CHART_COLORS } from 'toolkit/extension/features/toolkit-reports/common/constants/colors';
 import { showTransactionModal } from 'toolkit/extension/features/toolkit-reports/utils/show-transaction-modal';
-import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
-import { AdditionalReportSettings } from 'toolkit-reports/common/components/additional-settings';
+import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
+import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-reports/common/components/additional-settings';
 import './styles.scss';
 
 const createMasterCategoryMap = (masterCategory) =>

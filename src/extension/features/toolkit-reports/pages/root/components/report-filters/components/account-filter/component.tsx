@@ -1,31 +1,35 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { Collections } from 'toolkit/extension/utils/collections';
-import { LabeledCheckbox } from 'toolkit-reports/common/components/labeled-checkbox';
+import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
 import './styles.scss';
+import { FiltersType } from 'toolkit/extension/features/toolkit-reports/common/components/report-context';
+import { YNABAccount } from 'toolkit/types/ynab/data/account';
 
-export class AccountFilterComponent extends React.Component {
+export type AccountFilterProps = {
+  accountFilterIds: FiltersType['accountFilterIds'];
+  activeReportKey: string;
+  includeClosedAccountType?: string;
+  includeTrackingAccounts?: boolean;
+  onCancel: VoidFunction;
+  onSave: (accounts: FiltersType['accountFilterIds']) => void;
+};
+
+export class AccountFilterComponent extends React.Component<
+  AccountFilterProps,
+  { accountFilterIds: FiltersType['accountFilterIds'] }
+> {
   _accountsCollection = Collections.accountsCollection;
-
-  static propTypes = {
-    accountFilterIds: PropTypes.any.isRequired,
-    activeReportKey: PropTypes.string.isRequired,
-    includeClosedAccountType: PropTypes.string,
-    includeTrackingAccounts: PropTypes.bool.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
-  };
 
   state = {
     accountFilterIds: this.props.accountFilterIds,
   };
 
-  get onBudgetAccounts() {
+  get onBudgetAccounts(): YNABAccount[] {
     const onBudgetAccounts = this._accountsCollection.getOnBudgetAccounts();
     return onBudgetAccounts ? onBudgetAccounts.toArray() : [];
   }
 
-  get offBudgetAccounts() {
+  get offBudgetAccounts(): YNABAccount[] {
     if (!this.props.includeTrackingAccounts) {
       return [];
     }
@@ -34,14 +38,14 @@ export class AccountFilterComponent extends React.Component {
     return offBudgetAccounts ? offBudgetAccounts.toArray() : [];
   }
 
-  get loanAccounts() {
+  get loanAccounts(): YNABAccount[] {
     const loanAccounts = this._accountsCollection.getLoanAccounts();
     return loanAccounts ? loanAccounts.toArray() : [];
   }
 
-  get closedAccounts() {
+  get closedAccounts(): YNABAccount[] {
     const closedAccounts = this._accountsCollection.getClosedAccounts();
-    return closedAccounts.toArray().filter((account) => {
+    return (closedAccounts.toArray() as YNABAccount[]).filter((account) => {
       if (account.onBudget === false && !this.props.includeTrackingAccounts) {
         return false;
       }
@@ -57,7 +61,7 @@ export class AccountFilterComponent extends React.Component {
     const loanAccounts = this.loanAccounts;
     const closedAccounts = this.closedAccounts;
 
-    const onBudgetAccountsList = [];
+    const onBudgetAccountsList: React.ReactNode[] = [];
     onBudgetAccounts.forEach(({ entityId, accountName }) => {
       onBudgetAccountsList.push(
         <div className="tk-mg-l-1" key={entityId}>
@@ -71,7 +75,7 @@ export class AccountFilterComponent extends React.Component {
       );
     });
 
-    const offBudgetAccountsList = [];
+    const offBudgetAccountsList: React.ReactNode[] = [];
     offBudgetAccounts.forEach(({ entityId, accountName }) => {
       offBudgetAccountsList.push(
         <div className="tk-mg-l-1" key={entityId}>
@@ -85,7 +89,7 @@ export class AccountFilterComponent extends React.Component {
       );
     });
 
-    const loanAccountsList = [];
+    const loanAccountsList: React.ReactNode[] = [];
     loanAccounts.forEach(({ entityId, accountName }) => {
       loanAccountsList.push(
         <div className="tk-mg-l-1" key={entityId}>
@@ -99,7 +103,7 @@ export class AccountFilterComponent extends React.Component {
       );
     });
 
-    const closedAccountsList = [];
+    const closedAccountsList: React.ReactNode[] = [];
     closedAccounts.forEach(({ entityId, accountName }) => {
       closedAccountsList.push(
         <div className="tk-mg-l-1" key={entityId}>
@@ -233,7 +237,7 @@ export class AccountFilterComponent extends React.Component {
     this.setState({ accountFilterIds });
   };
 
-  _handleAllOnBudgetToggled = ({ currentTarget }) => {
+  _handleAllOnBudgetToggled = ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = currentTarget;
     const { accountFilterIds } = this.state;
     if (checked) {
@@ -245,7 +249,7 @@ export class AccountFilterComponent extends React.Component {
     this.setState({ accountFilterIds });
   };
 
-  _handleAllOffBudgetToggled = ({ currentTarget }) => {
+  _handleAllOffBudgetToggled = ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = currentTarget;
     const { accountFilterIds } = this.state;
     if (checked) {
@@ -257,7 +261,7 @@ export class AccountFilterComponent extends React.Component {
     this.setState({ accountFilterIds });
   };
 
-  _handleAllLoanToggled = ({ currentTarget }) => {
+  _handleAllLoanToggled = ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = currentTarget;
     const { accountFilterIds } = this.state;
     if (checked) {
@@ -269,7 +273,7 @@ export class AccountFilterComponent extends React.Component {
     this.setState({ accountFilterIds });
   };
 
-  _handleAllClosedToggled = ({ currentTarget }) => {
+  _handleAllClosedToggled = ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = currentTarget;
     const { accountFilterIds } = this.state;
     if (checked) {
@@ -281,7 +285,7 @@ export class AccountFilterComponent extends React.Component {
     this.setState({ accountFilterIds });
   };
 
-  _handleAccountToggled = ({ currentTarget }) => {
+  _handleAccountToggled = ({ currentTarget }: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, name } = currentTarget;
     const { accountFilterIds } = this.state;
     if (checked) {

@@ -1,26 +1,25 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { withModalContextProvider } from 'toolkit/extension/features/toolkit-reports/common/components/modal';
 import {
-  SelectedReportContextPropType,
+  ReportContextType,
   withReportContext,
   withReportContextProvider,
 } from 'toolkit-reports/common/components/report-context/component';
 import { ReportFilters } from './components/report-filters';
 import { ReportSelector } from './components/report-selector';
 import './styles.scss';
+import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 
-function mapContextToProps(context) {
+function mapContextToProps(context: ReportContextType) {
   return {
     selectedReport: context.selectedReport,
   };
 }
 
-export class RootComponent extends React.Component {
-  static propTypes = {
-    selectedReport: PropTypes.shape(SelectedReportContextPropType),
-  };
-
+export class RootComponent extends React.Component<
+  { selectedReport: ReportContextType['selectedReport'] },
+  { filteredTransactions: YNABTransaction[] }
+> {
   state = {
     filteredTransactions: [],
   };

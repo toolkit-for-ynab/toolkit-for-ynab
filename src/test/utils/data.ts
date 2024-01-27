@@ -4,6 +4,8 @@ import { YNABAccountType } from 'toolkit/types/ynab/window/ynab-enums';
 
 export function mockAccount(overrides?: Partial<YNABAccount>): YNABAccount {
   return {
+    entityId: '1',
+    onBudget: true,
     accountName: 'accountName',
     accountType: YNABAccountType.Cash,
     accountCalculation: { clearedBalance: 0 },

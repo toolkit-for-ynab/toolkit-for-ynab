@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import { getFirstMonthOfBudget, getToday } from 'toolkit/extension/utils/date';
 import { l10nMonth } from 'toolkit/extension/utils/toolkit';
 import './styles.scss';
+import { FiltersType } from 'toolkit/extension/features/toolkit-reports/common/components/report-context';
 
 const Options = {
   ThisMonth: 'This Month',
@@ -14,17 +15,21 @@ const Options = {
   AllDates: 'All Dates',
 };
 
-export class DateFilterComponent extends React.Component {
-  static propTypes = {
-    activeReportKey: PropTypes.string.isRequired,
-    dateFilter: PropTypes.shape({
-      fromDate: PropTypes.any.isRequired,
-      toDate: PropTypes.any.isRequired,
-    }).isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
-  };
+export type DateFilterProps = {
+  activeReportKey: string;
+  dateFilter: FiltersType['dateFilter'];
+  onCancel: VoidFunction;
+  onSave: (filter: FiltersType['dateFilter']) => void;
+};
 
+type DateFilterState = {
+  selectedFromMonth: string | number;
+  selectedFromYear: string | number;
+  selectedToMonth: string | number;
+  selectedToYear: string | number;
+};
+
+export class DateFilterComponent extends React.Component<DateFilterProps, DateFilterState> {
   get firstMonthOfBudget() {
     return getFirstMonthOfBudget();
   }
@@ -143,7 +148,7 @@ export class DateFilterComponent extends React.Component {
     );
   }
 
-  _getEligibleMonths(selectedYear) {
+  _getEligibleMonths(selectedYear: number) {
     const today = getToday();
     const date = ynab.utilities.DateWithoutTime.createForToday();
     date.startOfYear().setYear(selectedYear);
@@ -163,7 +168,7 @@ export class DateFilterComponent extends React.Component {
     return options;
   }
 
-  _renderEligibleMonths(selectedYear) {
+  _renderEligibleMonths(selectedYear: number) {
     const eligibleMonths = this._getEligibleMonths(selectedYear);
     return eligibleMonths.map(({ disabled, month }) => (
       <option key={month} disabled={disabled} value={month}>
@@ -190,11 +195,11 @@ export class DateFilterComponent extends React.Component {
     return options;
   }
 
-  _handleFromMonthSelected = ({ currentTarget }) => {
+  _handleFromMonthSelected = ({ currentTarget }: React.ChangeEvent<HTMLSelectElement>) => {
     this.setState({ selectedFromMonth: currentTarget.value });
   };
 
-  _handleFromYearSelected = ({ currentTarget }) => {
+  _handleFromYearSelected = ({ currentTarget }: React.ChangeEvent<HTMLSelectElement>) => {
     const { selectedFromMonth } = this.state;
     const toDate = ynab.utilities.DateWithoutTime.createForToday();
     toDate.setMonth(selectedFromMonth).setYear(currentTarget.value).startOfMonth();
@@ -209,11 +214,11 @@ export class DateFilterComponent extends React.Component {
     this.setState({ selectedFromMonth: selectedMonth, selectedFromYear: currentTarget.value });
   };
 
-  _handleToMonthSelected = ({ currentTarget }) => {
+  _handleToMonthSelected = ({ currentTarget }: React.ChangeEvent<HTMLSelectElement>) => {
     this.setState({ selectedToMonth: currentTarget.value });
   };
 
-  _handleToYearSelected = ({ currentTarget }) => {
+  _handleToYearSelected = ({ currentTarget }: React.ChangeEvent<HTMLSelectElement>) => {
     const { selectedToMonth } = this.state;
     const toDate = ynab.utilities.DateWithoutTime.createForToday();
     toDate.setMonth(selectedToMonth).setYear(currentTarget.value).startOfMonth();
@@ -228,7 +233,7 @@ export class DateFilterComponent extends React.Component {
     this.setState({ selectedToMonth: selectedMonth, selectedToYear: currentTarget.value });
   };
 
-  _getEligibleMonth(selectedMonth, selectedYear) {
+  _getEligibleMonth(selectedMonth: number, selectedYear: number): DateWithoutTime {
     const date = ynab.utilities.DateWithoutTime.createForToday();
     date.setMonth(selectedMonth).setYear(selectedYear).startOfMonth();
 
@@ -242,7 +247,10 @@ export class DateFilterComponent extends React.Component {
     return date;
   }
 
-  _getSelectedFromDates(fromDate, toDate) {
+  _getSelectedFromDates(
+    fromDate: FiltersType['dateFilter']['fromDate'],
+    toDate: FiltersType['dateFilter']['fromDate']
+  ) {
     const eligibleFromDate = this._getEligibleMonth(fromDate.getMonth(), fromDate.getYear());
     const eligibleToDate = this._getEligibleMonth(toDate.getMonth(), toDate.getYear());
 
@@ -254,7 +262,7 @@ export class DateFilterComponent extends React.Component {
     };
   }
 
-  _handleOptionSelected = ({ currentTarget }) => {
+  _handleOptionSelected = ({ currentTarget }: React.MouseEvent<HTMLButtonElement>) => {
     let selectedDates;
     const today = getToday();
 
@@ -285,7 +293,9 @@ export class DateFilterComponent extends React.Component {
         break;
     }
 
-    this.setState(selectedDates, this._save);
+    if (selectedDates) {
+      this.setState(selectedDates, this._save);
+    }
   };
 
   _save = () => {

@@ -1,15 +1,12 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { REPORT_TYPES } from 'toolkit/extension/features/toolkit-reports/common/constants/report-types';
 import classnames from 'classnames';
 import './styles.scss';
 
-export class ReportSelectorComponent extends React.Component {
-  static propTypes = {
-    activeReportKey: PropTypes.string.isRequired,
-    setActiveReportKey: PropTypes.func.isRequired,
-  };
-
+export class ReportSelectorComponent extends React.Component<{
+  activeReportKey: string;
+  setActiveReportKey: (key: string) => void;
+}> {
   render() {
     return (
       <div className="tk-report-selector">
@@ -33,7 +30,7 @@ export class ReportSelectorComponent extends React.Component {
     );
   }
 
-  _onSelect = ({ currentTarget }) => {
-    this.props.setActiveReportKey(currentTarget.dataset.reportKey);
+  _onSelect = ({ currentTarget }: React.MouseEvent<HTMLDivElement>) => {
+    this.props.setActiveReportKey(currentTarget.dataset.reportKey!);
   };
 }
