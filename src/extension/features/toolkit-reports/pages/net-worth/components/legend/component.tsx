@@ -4,7 +4,16 @@ import { Currency } from 'toolkit/extension/features/toolkit-reports/common/comp
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
 import './styles.scss';
 
-export const Legend = (props) => (
+export type LegenProps = {
+  assets: number;
+  debts: number;
+  netWorth: number;
+  changePreviousMonth: number;
+  label: string;
+  debtRatio: number;
+};
+
+export const Legend = (props: LegenProps) => (
   <React.Fragment>
     <div className="tk-mg-05 tk-pd-r-1 tk-border-r">
       <div className="tk-flex tk-mg-b-05 tk-align-items-center">
@@ -60,10 +69,3 @@ export const Legend = (props) => (
     </div>
   </React.Fragment>
 );
-
-Legend.propTypes = {
-  assets: PropTypes.number.isRequired,
-  debts: PropTypes.number.isRequired,
-  netWorth: PropTypes.number.isRequired,
-  changePreviousMonth: PropTypes.number.isRequired,
-};

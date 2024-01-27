@@ -8,26 +8,57 @@ import { Legend } from './components/legend';
 import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-reports/common/components/additional-settings';
+import { ReportContextType } from '../../common/components/report-context';
 
 const STORAGE_KEYS = {
   inverseDebt: 'net-worth-inverse-debt',
 };
 
-export class NetWorthComponent extends React.Component {
-  static propTypes = {
-    filters: PropTypes.any.isRequired, // TODO: FiltersType
-    allReportableTransactions: PropTypes.array.isRequired,
-  };
+export type NetWorthProps = Pick<ReportContextType, 'filters' | 'allReportableTransactions'>;
 
-  state = {
+type HoveredData = {
+  label: string;
+  assets: number;
+  debts: number;
+  debtRatio: number;
+  netWorth: number;
+  previousWorth?: number;
+};
+
+type ReportData = {
+  labels: string[];
+  debts: number[];
+  assets: number[];
+  netWorths: number[];
+  debtRatios: number[];
+};
+
+type NetWorthState = {
+  inverseDebt: boolean;
+  hoveredData?: HoveredData;
+  reportData: ReportData;
+  chart?: Highcharts.Chart;
+};
+
+export class NetWorthComponent extends React.Component<NetWorthProps, NetWorthState> {
+  state: NetWorthState = {
     inverseDebt: getToolkitStorageKey(STORAGE_KEYS.inverseDebt, false),
+    hoveredData: undefined,
+    reportData: {
+      labels: [],
+      debts: [],
+      assets: [],
+      netWorths: [],
+      debtRatios: [],
+    },
+    chart: undefined,
   };
 
   componentDidMount() {
     this._calculateData();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: NetWorthProps) {
     if (
       this.props.filters !== prevProps.filters ||
       this.props.allReportableTransactions !== prevProps.allReportableTransactions
@@ -83,7 +114,7 @@ export class NetWorthComponent extends React.Component {
 
     const pointHover = {
       events: {
-        mouseOver: function () {
+        mouseOver: function (this: Highcharts.Point) {
           _this.setState({
             hoveredData: {
               label: labels[this.index],
@@ -99,7 +130,7 @@ export class NetWorthComponent extends React.Component {
     };
 
     const chart = new Highcharts.Chart({
-      credits: false,
+      credits: { enabled: false },
       chart: {
         backgroundColor: 'transparent',
         renderTo: 'tk-net-worth-chart',
@@ -171,10 +202,16 @@ export class NetWorthComponent extends React.Component {
     }
 
     const accounts = new Map();
-    const allReportData = { assets: [], labels: [], debts: [], netWorths: [], debtRatios: [] };
+    const allReportData = {
+      assets: [] as number[],
+      labels: [] as string[],
+      debts: [] as number[],
+      netWorths: [] as number[],
+      debtRatios: [] as number[],
+    };
     const transactions = this.props.allReportableTransactions.slice().sort(sortByDate);
 
-    let lastMonth = null;
+    let lastMonth: DateWithoutTime | null = null;
     function pushCurrentAccountData() {
       let assets = 0;
       let debts = 0;
@@ -207,7 +244,7 @@ export class NetWorthComponent extends React.Component {
       }
 
       const transactionAccountId = transaction.accountId;
-      if (this.props.filters.accountFilterIds.has(transactionAccountId)) {
+      if (this.props.filters?.accountFilterIds.has(transactionAccountId)) {
         return;
       }
 
