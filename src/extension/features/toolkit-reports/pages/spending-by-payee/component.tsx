@@ -252,9 +252,9 @@ export class SpendingByPayeeComponent extends React.Component<
           name: 'Total Spending',
           data: seriesData,
           size: '80%',
-          type: this.state.useBarChart ? 'bar' : 'pie',
+          type: this.state.useBarChart ? 'column' : 'pie',
           innerSize: '50%',
-        } as Highcharts.SeriesOptionsRegistry['SeriesPieOptions' | 'SeriesBarOptions'],
+        } as Highcharts.SeriesOptionsRegistry['SeriesPieOptions' | 'SeriesColumnOptions'],
       ],
       xAxis: {
         type: 'category',

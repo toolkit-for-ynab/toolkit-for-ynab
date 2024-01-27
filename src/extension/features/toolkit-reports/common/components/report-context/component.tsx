@@ -10,7 +10,7 @@ import { InflowOutflow } from 'toolkit-reports/pages/inflow-outflow';
 import { BalanceOverTime } from 'toolkit-reports/pages/balance-over-time';
 import { OutflowOverTime } from 'toolkit-reports/pages/outflow-over-time';
 import { SpendingByPayee } from 'toolkit/extension/features/toolkit-reports/pages/spending-by-payee';
-import { SpendingByCategory } from 'toolkit-reports/pages/spending-by-category';
+import { SpendingByCategory } from 'toolkit/extension/features/toolkit-reports/pages/spending-by-category';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import {
   getStoredFilters,

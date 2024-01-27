@@ -1,7 +1,6 @@
 import Highcharts from 'highcharts';
 require('highcharts/modules/drilldown')(Highcharts);
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { Collections } from 'toolkit/extension/utils/collections';
 import { mapToArray } from 'toolkit/extension/utils/helpers';
@@ -11,35 +10,71 @@ import { showTransactionModal } from 'toolkit/extension/features/toolkit-reports
 import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
 import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-reports/common/components/additional-settings';
 import './styles.scss';
+import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import { ReportContextType } from '../../common/components/report-context';
+import { PointWithPayload } from '../../utils/types';
 
-const createMasterCategoryMap = (masterCategory) =>
-  new Map([
-    ['masterCategory', masterCategory],
-    ['subCategories', new Map()],
-    ['total', 0],
-  ]);
+type Point = PointWithPayload<{ id: string; transactions: YNABTransaction[] }>;
 
-const createSubCategoryMap = (subCategory) =>
-  new Map([
-    ['subCategory', subCategory],
-    ['total', 0],
-    ['transactions', []],
-  ]);
+type MasterCategoryMap = {
+  masterCategory: YNABMasterCategory;
+  subCategories: Map<string, SubCategoryMap>;
+  total: number;
+};
+type SubCategoryMap = {
+  subCategory: YNABSubCategory;
+  total: number;
+  transactions: YNABTransaction[];
+};
 
-export class SpendingByCategoryComponent extends React.Component {
+type NormalizedSubCategoryData = {
+  source: YNABSubCategory;
+  total: number;
+  transactions: YNABTransaction[];
+};
+
+type NormalizedMasterCategoryData = {
+  source: YNABMasterCategory;
+  sources: NormalizedSubCategoryData[];
+  total: number;
+};
+
+const createMasterCategoryMap = (masterCategory: YNABMasterCategory): MasterCategoryMap => ({
+  masterCategory: masterCategory,
+  subCategories: new Map(),
+  total: 0,
+});
+
+const createSubCategoryMap = (subCategory: YNABSubCategory): SubCategoryMap => ({
+  subCategory: subCategory,
+  total: 0,
+  transactions: [],
+});
+
+type SpendingByCategoryState = {
+  currentDrillDownId: null | string;
+  drillDownData:
+    | null
+    | Highcharts.SeriesOptionsRegistry['SeriesPieOptions' | 'SeriesColumnOptions'][];
+  seriesData: Highcharts.PointOptionsObject[];
+  spendingByMasterCategory: NormalizedMasterCategoryData[];
+  useBarChart: boolean;
+  chart?: Highcharts.Chart;
+};
+
+export class SpendingByCategoryComponent extends React.Component<
+  Pick<ReportContextType, 'filteredTransactions'>,
+  SpendingByCategoryState
+> {
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
 
   _subCategoriesCollection = Collections.subCategoriesCollection;
 
-  static propTypes = {
-    filteredTransactions: PropTypes.array.isRequired,
-  };
-
-  state = {
+  state: SpendingByCategoryState = {
     currentDrillDownId: null,
     drillDownData: null,
-    seriesData: null,
-    spendingByMasterCategory: null,
+    seriesData: [],
+    spendingByMasterCategory: [],
     useBarChart: false,
   };
 
@@ -47,7 +82,7 @@ export class SpendingByCategoryComponent extends React.Component {
     this._calculateData();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Pick<ReportContextType, 'filteredTransactions'>) {
     if (this.props.filteredTransactions !== prevProps.filteredTransactions) {
       this._calculateData();
     }
@@ -57,11 +92,10 @@ export class SpendingByCategoryComponent extends React.Component {
     const { currentDrillDownId, drillDownData, seriesData, spendingByMasterCategory } = this.state;
 
     let legendSeries = seriesData;
-    if (currentDrillDownId) {
+    if (currentDrillDownId && drillDownData) {
       const drillDownSeries = drillDownData.find(({ id }) => id === currentDrillDownId);
-      if (drillDownSeries && drillDownSeries.data) {
-        legendSeries = drillDownSeries.data;
-      }
+      // @ts-ignore custom payload on point
+      if (drillDownSeries && drillDownSeries.data) legendSeries = drillDownSeries.data;
     }
 
     return (
@@ -94,14 +128,14 @@ export class SpendingByCategoryComponent extends React.Component {
   }
 
   _calculateData() {
-    const spendingByMasterCategory = new Map();
+    const spendingByMasterCategory = new Map<string, MasterCategoryMap>();
 
     this.props.filteredTransactions.forEach((transaction) => {
       if (transaction.isOnBudgetTransfer) {
         return;
       }
 
-      const transactionSubCategoryId = transaction.subCategoryId;
+      const transactionSubCategoryId = transaction.subCategoryId!;
       const transactionSubCategory =
         this._subCategoriesCollection.findItemByEntityId(transactionSubCategoryId);
       if (!transactionSubCategory || transactionSubCategory.isImmediateIncomeCategory()) {
@@ -116,13 +150,13 @@ export class SpendingByCategoryComponent extends React.Component {
       const masterCategoryData =
         spendingByMasterCategory.get(transactionMasterCategoryId) ||
         createMasterCategoryMap(transactionMasterCategory);
-      masterCategoryData.set('total', masterCategoryData.get('total') + transactionAmount);
+      masterCategoryData.total += transactionAmount;
 
-      const subCategories = masterCategoryData.get('subCategories');
+      const subCategories = masterCategoryData.subCategories;
       const subCategoryData =
         subCategories.get(transactionSubCategoryId) || createSubCategoryMap(transactionSubCategory);
-      subCategoryData.set('total', subCategoryData.get('total') + transactionAmount);
-      subCategoryData.set('transactions', subCategoryData.get('transactions').concat(transaction));
+      subCategoryData.total += transactionAmount;
+      subCategoryData.transactions = [...subCategoryData.transactions, transaction];
 
       subCategories.set(transactionSubCategoryId, subCategoryData);
       spendingByMasterCategory.set(transactionMasterCategoryId, masterCategoryData);
@@ -137,7 +171,7 @@ export class SpendingByCategoryComponent extends React.Component {
     );
   }
 
-  _onLegendDataHover = (hoveredId) => {
+  _onLegendDataHover = (hoveredId: string) => {
     const { chart } = this.state;
     if (!chart) {
       return;
@@ -147,7 +181,7 @@ export class SpendingByCategoryComponent extends React.Component {
       return;
     }
 
-    chart.series[0].points.forEach((point) => {
+    (chart.series[0].points as Point[]).forEach((point) => {
       if (point.id === hoveredId) {
         point.setState('hover');
       } else {
@@ -161,11 +195,11 @@ export class SpendingByCategoryComponent extends React.Component {
     const { spendingByMasterCategory } = this.state;
 
     let totalSpending = 0;
-    const seriesData = [];
-    const drillDownData = [];
+    const seriesData: SpendingByCategoryState['seriesData'] = [];
+    const drillDownData: SpendingByCategoryState['drillDownData'] = [];
     spendingByMasterCategory.forEach((spendingData, masterCategoryIndex) => {
-      const masterCategory = spendingData.get('source');
-      const masterCategoryTotal = spendingData.get('total');
+      const masterCategory = spendingData.source;
+      const masterCategoryTotal = spendingData.total;
       const masterCategoryId = masterCategory?.entityId;
       const masterCategoryName = masterCategory?.name;
 
@@ -180,27 +214,30 @@ export class SpendingByCategoryComponent extends React.Component {
       });
 
       drillDownData.push({
-        data: spendingData.get('sources').map((subCategoryData, subCategoryIndex) => ({
+        // @ts-ignore custom payload on point
+        data: spendingData.sources.map((subCategoryData, subCategoryIndex) => ({
           color: PIE_CHART_COLORS[subCategoryIndex % PIE_CHART_COLORS.length],
-          id: subCategoryData.get('source')?.entityId,
-          name: subCategoryData.get('source')?.name,
-          y: subCategoryData.get('total'),
-          transactions: subCategoryData.get('transactions'),
+          id: subCategoryData.source?.entityId,
+          name: subCategoryData.source?.name,
+          y: subCategoryData.total,
+          transactions: subCategoryData.transactions,
         })),
         events: {
           click: (event) => {
-            showTransactionModal(event.point.name, event.point.transactions);
+            const point = event.point as Point;
+            showTransactionModal(point.name, point.transactions);
           },
         },
         id: masterCategoryId,
         innerSize: '50%',
         name: masterCategoryName,
         size: '80%',
+        type: this.state.useBarChart ? 'column' : 'pie',
       });
     });
 
     const chart = new Highcharts.Chart({
-      credits: false,
+      credits: { enabled: false },
       chart: {
         height: '70%',
         type: this.state.useBarChart ? 'column' : 'pie',
@@ -208,12 +245,11 @@ export class SpendingByCategoryComponent extends React.Component {
         backgroundColor: 'transparent',
         events: {
           drilldown: (event) => {
+            const point = event.point as Point;
             chart.setTitle({
-              text: `${event.point.name}<br><span class="currency">${formatCurrency(
-                event.point.y
-              )}</span>`,
+              text: `${point.name}<br><span class="currency">${formatCurrency(point.y)}</span>`,
             });
-            _this.setState({ currentDrillDownId: event.point.id });
+            _this.setState({ currentDrillDownId: point.id });
           },
           drillup: () => {
             chart.setTitle({
@@ -267,6 +303,7 @@ export class SpendingByCategoryComponent extends React.Component {
           data: seriesData,
           size: '80%',
           innerSize: '50%',
+          type: this.state.useBarChart ? 'column' : 'pie',
         },
       ],
       drilldown: {
@@ -299,34 +336,33 @@ export class SpendingByCategoryComponent extends React.Component {
     this.setState({ chart, seriesData, drillDownData });
   };
 
-  _sortAndNormalizeData(spendingByMasterCategory) {
+  _sortAndNormalizeData(spendingByMasterCategory: Map<string, MasterCategoryMap>) {
     const spendingByMasterCategoryArray = mapToArray(spendingByMasterCategory);
 
     return spendingByMasterCategoryArray
       .sort((a, b) => {
-        return a.get('total') - b.get('total');
+        return a.total - b.total;
       })
-      .map((masterCategoryData) => {
-        const subCategoriesArray = mapToArray(masterCategoryData.get('subCategories'));
+      .map((masterCategoryData): NormalizedMasterCategoryData => {
+        const subCategoriesArray = mapToArray(masterCategoryData.subCategories);
 
         const normalizedSubCategories = subCategoriesArray
           .sort((a, b) => {
-            return b.get('total') - a.get('total');
+            return b.total - a.total;
           })
           .map(
-            (subCategoryData) =>
-              new Map([
-                ['source', subCategoryData.get('subCategory')],
-                ['total', subCategoryData.get('total') * -1],
-                ['transactions', subCategoryData.get('transactions')],
-              ])
+            (subCategoryData): NormalizedSubCategoryData => ({
+              source: subCategoryData.subCategory,
+              total: subCategoryData.total * -1,
+              transactions: subCategoryData.transactions,
+            })
           );
 
-        return new Map([
-          ['source', masterCategoryData.get('masterCategory')],
-          ['sources', normalizedSubCategories],
-          ['total', masterCategoryData.get('total') * -1],
-        ]);
+        return {
+          source: masterCategoryData.masterCategory,
+          sources: normalizedSubCategories,
+          total: masterCategoryData.total * -1,
+        };
       });
   }
 }
