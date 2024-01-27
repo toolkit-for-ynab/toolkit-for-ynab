@@ -5,7 +5,15 @@ import { Percentage } from 'toolkit/extension/features/toolkit-reports/common/co
 import './styles.scss';
 import classnames from 'classnames';
 
-export const Legend = (props) => (
+type LegenProps = {
+  label: string;
+  inflows: number;
+  outflows: number;
+  diffs: number;
+  savings: number;
+};
+
+export const Legend = (props: LegenProps) => (
   <React.Fragment>
     <div className="tk-mg-05 tk-pd-r-1 tk-border-r">
       <div className="tk-flex tk-mg-b-05 tk-align-items-center">
@@ -55,9 +63,3 @@ export const Legend = (props) => (
     )}
   </React.Fragment>
 );
-
-Legend.propTypes = {
-  inflows: PropTypes.number.isRequired,
-  outflows: PropTypes.number.isRequired,
-  diffs: PropTypes.number.isRequired,
-};

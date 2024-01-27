@@ -1,24 +1,48 @@
 import Highcharts from 'highcharts';
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { localizedMonthAndYear, sortByDate } from 'toolkit/extension/utils/date';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { Legend } from './components/legend';
+import { ReportContextType } from '../../common/components/report-context';
 
-export class InflowOutflowComponent extends React.Component {
-  static propTypes = {
-    filters: PropTypes.any.isRequired, // TODO: FiltersType
-    filteredTransactions: PropTypes.array.isRequired,
+type InflowOutflowState = {
+  chart?: Highcharts.Chart;
+  hoveredData?: {
+    label: string;
+    inflows: number;
+    outflows: number;
+    diffs: number;
+    savings: number;
   };
+  reportData: {
+    inflows: number[];
+    outflows: number[];
+    diffs: number[];
+    savings: number[];
+    labels: string[];
+  };
+};
 
-  state = {};
+export class InflowOutflowComponent extends React.Component<
+  Pick<ReportContextType, 'filters' | 'filteredTransactions'>,
+  InflowOutflowState
+> {
+  state: InflowOutflowState = {
+    reportData: {
+      inflows: [],
+      outflows: [],
+      diffs: [],
+      savings: [],
+      labels: [],
+    },
+  };
 
   componentDidMount() {
     this._calculateData();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: Pick<ReportContextType, 'filters' | 'filteredTransactions'>) {
     if (
       this.props.filters !== prevProps.filters ||
       this.props.filteredTransactions !== prevProps.filteredTransactions
@@ -52,7 +76,7 @@ export class InflowOutflowComponent extends React.Component {
 
     const pointHover = {
       events: {
-        mouseOver: function () {
+        mouseOver: function (this: Highcharts.Point) {
           _this.setState({
             hoveredData: {
               label: labels[this.index],
@@ -67,7 +91,7 @@ export class InflowOutflowComponent extends React.Component {
     };
 
     const chart = new Highcharts.Chart({
-      credits: false,
+      credits: { enabled: false },
       chart: {
         backgroundColor: 'transparent',
         renderTo: 'tk-net-worth-chart',
@@ -143,10 +167,14 @@ export class InflowOutflowComponent extends React.Component {
 
     let accountInflows = new Map();
     let accountOutflows = new Map();
-    const allReportData = { inflows: [], outflows: [], labels: [] };
+    const allReportData = {
+      inflows: [] as number[],
+      outflows: [] as number[],
+      labels: [] as string[],
+    };
     const transactions = this.props.filteredTransactions.slice().sort(sortByDate);
 
-    let lastMonth = null;
+    let lastMonth: DateWithoutTime | null = null;
     function pushCurrentAccountData() {
       let inflows = 0;
       let outflows = 0;
