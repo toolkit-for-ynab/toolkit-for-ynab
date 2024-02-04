@@ -4,12 +4,17 @@ import { generateForecasts } from './functions';
 import Highcharts from 'highcharts';
 import moment from 'moment';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { ReportContextType } from '../../common/components/report-context';
 
-export function ForecastComponent({ filteredTransactions, allReportableTransactions, filters }) {
-  const [netWorth, setNetWorth] = useState();
-  const [forecasts, setForecasts] = useState([]);
-  const [chart, setChart] = useState();
-  const chartRef = useRef();
+export function ForecastComponent({
+  filteredTransactions,
+  allReportableTransactions,
+  filters,
+}: Pick<ReportContextType, 'allReportableTransactions' | 'filteredTransactions' | 'filters'>) {
+  const [netWorth, setNetWorth] = useState<number>(0);
+  const [forecasts, setForecasts] = useState<number[][]>([]);
+  const [chart, setChart] = useState<Highcharts.Chart | undefined>(undefined);
+  const chartRef = useRef<HTMLDivElement>(null);
 
   const confidences = [10, 25, 50, 75, 90];
 
@@ -34,7 +39,7 @@ export function ForecastComponent({ filteredTransactions, allReportableTransacti
 
     setChart(
       new Highcharts.Chart({
-        credits: false,
+        credits: { enabled: false },
         chart: {
           backgroundColor: 'transparent',
           renderTo: 'tk-forecast-chart',
@@ -54,7 +59,7 @@ export function ForecastComponent({ filteredTransactions, allReportableTransacti
             formatter: function () {
               return now
                 .clone()
-                .add(this.value + 1, 'w')
+                .add((this.value as number) + 1, 'w')
                 .format('MMM YYYY');
             },
           },
@@ -71,7 +76,7 @@ export function ForecastComponent({ filteredTransactions, allReportableTransacti
           formatter: function () {
             const series = this.series.name;
             const years = this.point.x / 52;
-            const apy = Math.log(this.point.y / netWorth) / years;
+            const apy = Math.log(this.point.y! / netWorth) / years;
             const apyString = `${(apy * 100).toFixed(1)}%`;
             const date = now
               .clone()

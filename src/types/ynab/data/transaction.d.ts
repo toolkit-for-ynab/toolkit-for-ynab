@@ -33,6 +33,7 @@ export interface YNABTransaction {
   parentEntityId?: string;
   payee: YNABPayee | null;
   payeeId: string | null;
+  payeeName: string;
   scheduledTransactionId: string | null;
   scheduledTransaction: YNABTransaction | null;
   source: keyof YNABConstants['TransactionSource'] | null;
