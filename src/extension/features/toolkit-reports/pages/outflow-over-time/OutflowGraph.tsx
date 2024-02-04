@@ -3,9 +3,9 @@ import { showTransactionModal } from 'toolkit/extension/features/toolkit-reports
 import Highcharts from 'highcharts';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { PointWithPayload } from '../../utils/types';
+import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 
-// TODO: proper type for custom
-type Point = PointWithPayload<{ custom: any }>;
+type Point = PointWithPayload<{ custom: YNABTransaction[] }>;
 
 export const OutflowGraph = ({ series }: { series: Highcharts.SeriesLineOptions[] }) => {
   const GRAPH_ID = 'tk-outflow-over-time-report-graph';

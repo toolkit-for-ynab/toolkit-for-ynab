@@ -49,7 +49,7 @@ const createSubCategoryMap = (
   monthlyTotals,
 });
 
-const createMonthlyTotalsMap = (date: Moment): MonthlyTotals => ({
+const createMonthlyTotalsMap = (date: DateWithoutTime): MonthlyTotals => ({
   date: date.clone(),
   total: 0,
   transactions: [],
@@ -166,9 +166,7 @@ export class IncomeVsExpenseComponent extends React.Component<
       prevPayees.forEach((source) => collapsedSources.add(source.source.entityId));
 
       prevMasterCategories.forEach((category) => {
-        // TODO?
-        // @ts-ignore unknown get property
-        const entityId = category.source?.entityId ?? category.source?.get('entityId');
+        const entityId = category.source?.entityId;
         collapsedSources.add(entityId);
       });
 
@@ -305,7 +303,7 @@ export class IncomeVsExpenseComponent extends React.Component<
     let monthlyTotalsData = monthlyTotalsMap[monthlyTotalsKey];
     if (!monthlyTotalsData) {
       monthlyTotalsData = {
-        date: transaction.date.clone().startOfMonth() as unknown as Moment,
+        date: transaction.date.clone().startOfMonth(),
         total: 0,
         transactions: [],
       };
@@ -318,14 +316,15 @@ export class IncomeVsExpenseComponent extends React.Component<
   _createEmptyMonthMapFromFilters() {
     const { fromDate, toDate } = this.props.filters!.dateFilter;
     const date = fromDate.clone();
+    console.log('Date', date);
     const dates = {
       // TODO: is this DateWithoutTime or Moment? Or is it the same shit?
-      [date.toISOString()]: createMonthlyTotalsMap(date as unknown as Moment),
+      [date.toISOString()]: createMonthlyTotalsMap(date),
     };
 
     while (!date.isAfter(toDate)) {
       // TODO: is this DateWithoutTime or Moment? Or is it the same shit?
-      dates[date.toISOString()] = createMonthlyTotalsMap(date as unknown as Moment);
+      dates[date.toISOString()] = createMonthlyTotalsMap(date);
       date.addMonths(1);
     }
 

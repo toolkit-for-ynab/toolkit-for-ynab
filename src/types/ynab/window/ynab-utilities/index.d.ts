@@ -23,7 +23,8 @@ interface DateWithoutTime {
   subtractMonths(months: number): DateWithoutTime;
   endOfMonth(): DateWithoutTime;
   toUTCMoment(): import('moment').Moment;
-  getUTCTime(): number; // TODO: check return type
+  toNativeDate(): Date;
+  getUTCTime(): number;
 }
 
 interface YNABUtilities {

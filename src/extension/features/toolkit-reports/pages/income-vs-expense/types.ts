@@ -3,7 +3,7 @@ import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 import { IncomeVsExpenseComponent } from './component';
 
 export type MonthlyTotals = {
-  date: Moment;
+  date: DateWithoutTime;
   total: number;
   transactions: YNABTransaction[];
 };
