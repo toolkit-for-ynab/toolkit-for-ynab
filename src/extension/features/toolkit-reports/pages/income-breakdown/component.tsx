@@ -7,23 +7,51 @@ import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
 import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-reports/common/components/additional-settings';
 import './styles.scss';
+import { ReportContextType } from '../../common/components/report-context';
+import { ChangeEventHandler } from 'react';
+import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import { PointWithPayload } from '../../utils/types';
 
-export class IncomeBreakdownComponent extends React.Component {
+type IncomeBreakdownProps = Pick<ReportContextType, 'filteredTransactions' | 'filters'>;
+
+type IncomeBreakdownState = {
+  incomes: Map<YNABPayee, number>;
+  expenses: Map<YNABMasterCategory, Map<YNABSubCategory, number>>;
+  showIncome: boolean;
+  showExpense: boolean;
+  showSubCategories: boolean;
+  showLossGain: boolean;
+  groupPositiveCategories: boolean;
+};
+
+type Point = PointWithPayload<{
+  id: string;
+  isNode: boolean;
+  linksTo: Point[];
+  linksFrom: Point[];
+  weight: number;
+  toNode: Point;
+  fromNode: Point;
+  name: string;
+  sum: number;
+}>;
+
+export class IncomeBreakdownComponent extends React.Component<
+  IncomeBreakdownProps,
+  IncomeBreakdownState
+> {
   _payeesCollection = Collections.payeesCollection;
 
   _subCategoriesCollection = Collections.subCategoriesCollection;
 
   _masterCategoriesCollection = Collections.masterCategoriesCollection;
 
-  static propTypes = {
-    filters: PropTypes.any.isRequired, // TODO: FiltersType,
-    filteredTransactions: PropTypes.array.isRequired,
-  };
-
-  constructor(props) {
+  constructor(props: IncomeBreakdownProps) {
     super(props);
 
     this.state = {
+      incomes: new Map(),
+      expenses: new Map(),
       showIncome: true,
       showExpense: true,
       showSubCategories: true,
@@ -32,7 +60,7 @@ export class IncomeBreakdownComponent extends React.Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: IncomeBreakdownProps) {
     if (this.props.filteredTransactions !== prevProps.filteredTransactions) {
       this._calculateData();
     }
@@ -97,31 +125,31 @@ export class IncomeBreakdownComponent extends React.Component {
     );
   }
 
-  toggleLossGainEntry = ({ currentTarget }) => {
+  toggleLossGainEntry: ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
     const { checked } = currentTarget;
     this.setState({ showLossGain: checked });
     this._calculateData();
   };
 
-  togglePositiveCategories = ({ currentTarget }) => {
+  togglePositiveCategories: ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
     const { checked } = currentTarget;
     this.setState({ groupPositiveCategories: checked });
     this._calculateData();
   };
 
-  toggleIncome = ({ currentTarget }) => {
+  toggleIncome: ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
     const { checked } = currentTarget;
     this.setState({ showIncome: checked });
     this._calculateData();
   };
 
-  toggleExpense = ({ currentTarget }) => {
+  toggleExpense: ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
     const { checked } = currentTarget;
     this.setState({ showExpense: checked });
     this._calculateData();
   };
 
-  toggleSubCategories = ({ currentTarget }) => {
+  toggleSubCategories: ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
     const { checked } = currentTarget;
     this.setState({ showSubCategories: checked });
     this._calculateData();
@@ -132,8 +160,8 @@ export class IncomeBreakdownComponent extends React.Component {
       return;
     }
 
-    const incomes = new Map();
-    const expenses = new Map();
+    const incomes: IncomeBreakdownState['incomes'] = new Map();
+    const expenses: IncomeBreakdownState['expenses'] = new Map();
 
     this.props.filteredTransactions.forEach((transaction) => {
       const transactionSubCategoryId = transaction.subCategoryId;
@@ -171,7 +199,11 @@ export class IncomeBreakdownComponent extends React.Component {
     );
   }
 
-  _assignExpenseTransaction(expenses, transaction, transactionSubCategory) {
+  _assignExpenseTransaction(
+    expenses: IncomeBreakdownState['expenses'],
+    transaction: YNABTransaction,
+    transactionSubCategory: YNABSubCategory
+  ) {
     const transactionMasterCategory = this._masterCategoriesCollection.findItemByEntityId(
       transactionSubCategory.masterCategoryId
     );
@@ -184,21 +216,27 @@ export class IncomeBreakdownComponent extends React.Component {
       subCategoryMap = new Map();
       expenses.set(transactionMasterCategory, subCategoryMap);
     }
-    subCategoryMap.set(
+    subCategoryMap?.set(
       transactionSubCategory,
       (subCategoryMap.get(transactionSubCategory) || 0) + amount
     );
   }
 
-  _assignIncomeTransaction(incomes, transaction, transactionPayee) {
+  _assignIncomeTransaction(
+    incomes: IncomeBreakdownState['incomes'],
+    transaction: YNABTransaction,
+    transactionPayee: YNABPayee
+  ) {
     let amount = transaction.amount;
     if (incomes.has(transactionPayee)) {
-      amount += incomes.get(transactionPayee);
+      amount += incomes.get(transactionPayee)!;
     }
     incomes.set(transactionPayee, amount);
   }
 
   _getSeriesData() {
+    type Entry = { from?: string; to?: string; weight: number; outgoing?: boolean };
+
     const {
       incomes,
       expenses,
@@ -208,7 +246,7 @@ export class IncomeBreakdownComponent extends React.Component {
       showIncome,
       groupPositiveCategories,
     } = this.state;
-    let seriesData = [];
+    let seriesData: Entry[] = [];
     let totalIncome = 0;
     let totalExpense = 0;
     incomes.forEach((amount, payee) => {
@@ -226,10 +264,10 @@ export class IncomeBreakdownComponent extends React.Component {
     });
 
     let positiveCategoriesAmount = 0;
-    let positiveCategoriesSeries = [];
-    let categorySeries = [];
+    let positiveCategoriesSeries: Entry[] = [];
+    let categorySeries: { masterEntry: Entry; subEntries: Entry[] }[] = [];
     expenses.forEach((subCategoryMap, masterCategory) => {
-      let subCategorySeries = [];
+      let subCategorySeries: Entry[] = [];
       let masterCategoryTotal = 0;
       subCategoryMap.forEach((amount, subCatogory) => {
         if (amount > 0) {
@@ -308,7 +346,7 @@ export class IncomeBreakdownComponent extends React.Component {
   _getNodeData() {
     const { expenses, incomes } = this.state;
 
-    let nodeData = [];
+    let nodeData: { id?: string; name?: string }[] = [];
 
     expenses.forEach((subCategoryMap, masterCategory) => {
       subCategoryMap.forEach((_amount, subCatogory) => {
@@ -336,7 +374,7 @@ export class IncomeBreakdownComponent extends React.Component {
 
   _renderReport = () => {
     const { totalIncome, seriesData } = this._getSeriesData();
-    const linksHover = (point, state) => {
+    const linksHover = (point: Point, state: 'hover' | '') => {
       if (point.isNode) {
         point.linksTo.forEach((l) => {
           l.setState(state);
@@ -347,7 +385,7 @@ export class IncomeBreakdownComponent extends React.Component {
       }
     };
     Highcharts.chart({
-      credits: false,
+      credits: { enabled: false },
       title: {
         text: '',
       },
@@ -359,10 +397,12 @@ export class IncomeBreakdownComponent extends React.Component {
         sankey: {
           point: {
             events: {
-              mouseOut: function () {
+              // @ts-ignore Incorrect types from Highchart library
+              mouseOut: function (this: Point) {
                 linksHover(this, '');
               },
-              mouseOver: function () {
+              // @ts-ignore Incorrect types from Highchart library
+              mouseOver: function (this: Point) {
                 linksHover(this, 'hover');
               },
             },
@@ -378,14 +418,16 @@ export class IncomeBreakdownComponent extends React.Component {
           },
           tooltip: {
             headerFormat: '',
-            pointFormatter: function () {
+            // @ts-ignore incorrect types in Highcharts library
+            pointFormatter: function (this: Point) {
               const formattedNumber = formatCurrency(this.weight);
               const percentage = (this.weight / totalIncome) * 100;
               return `${this.fromNode.name} → ${
                 this.toNode.name
               }: <b>${formattedNumber} (${percentage.toFixed(2)}%)</b>`;
             },
-            nodeFormatter: function () {
+            // @ts-ignore incorrect types in Highcharts library
+            nodeFormatter: function (this: Point) {
               let formattedNumber = formatCurrency(this.sum);
               return `${this.name}: <b>${formattedNumber}</b>`;
             },
