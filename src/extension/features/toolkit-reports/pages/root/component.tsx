@@ -3,18 +3,20 @@ import { withModalContextProvider } from 'toolkit/extension/features/toolkit-rep
 import {
   ReportContextType,
   withReportContext,
-  withReportContextProvider,
 } from 'toolkit-reports/common/components/report-context/component';
 import { ReportFilters } from './components/report-filters';
 import { ReportSelector } from './components/report-selector';
 import './styles.scss';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import { withReportContextProvider } from '../../common/components/report-context/reports-provider';
 
 function mapContextToProps(context: ReportContextType) {
   return {
     selectedReport: context.selectedReport,
   };
 }
+
+const Noop = () => null;
 
 export class RootComponent extends React.Component<
   { selectedReport: ReportContextType['selectedReport'] },
@@ -25,7 +27,7 @@ export class RootComponent extends React.Component<
   };
 
   render() {
-    const { component: Report } = this.props.selectedReport;
+    const Report = this.props.selectedReport ? this.props.selectedReport.component : Noop;
 
     return (
       <div className="tk-reports-root tk-flex tk-flex-column tk-full-height">

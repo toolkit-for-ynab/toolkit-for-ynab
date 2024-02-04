@@ -6,7 +6,7 @@ import { CategoryFilterComponent } from './component';
 
 function mapContextToProps(context: ReportContextType) {
   return {
-    activeReportKey: context.selectedReport.key,
+    activeReportKey: context.selectedReport!.key,
   };
 }
 
