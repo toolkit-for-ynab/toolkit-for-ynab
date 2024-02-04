@@ -1,22 +1,23 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { CollapsibleRow } from './components/collapsable-row';
-import { MonthlyTotalsRow } from 'toolkit-reports/pages/income-vs-expense/components/monthly-totals-row';
+import { MonthlyTotalsRow } from 'toolkit/extension/features/toolkit-reports/pages/income-vs-expense/components/monthly-totals-row';
 import './styles.scss';
+import { NormalizedExpenses, NormalizedIncomes } from '../../types';
 
 export const TableType = {
   Expense: 'expense',
   Income: 'income',
+} as const;
+
+type MonthlyTransactionTotalsTableProps = {
+  onCollapseSource: (id: string) => void;
+  collapsedSources: Set<string>;
+  type: typeof TableType[keyof typeof TableType];
+  data: NormalizedExpenses | NormalizedIncomes;
 };
 
-export class MonthlyTransactionTotalsTable extends React.Component {
-  static propTypes = {
-    onCollapseSource: PropTypes.func.isRequired,
-    collapsedSources: PropTypes.any.isRequired, // Set
-    type: PropTypes.string.isRequired,
-    data: PropTypes.any.isRequired,
-  };
-
+export class MonthlyTransactionTotalsTable extends React.Component<MonthlyTransactionTotalsTableProps> {
   get tableProperties() {
     return {
       classSuffix: this.props.type === TableType.Income ? '--income' : '--expense',
@@ -37,7 +38,7 @@ export class MonthlyTransactionTotalsTable extends React.Component {
   _renderTableHeader() {
     const { classSuffix, tableName } = this.tableProperties;
     const className = `tk-totals-table__header-row tk-totals-table__header-row${classSuffix} tk-totals-table__title-row`;
-    const monthlyTotals = this.props.data.get('monthlyTotals');
+    const monthlyTotals = this.props.data.monthlyTotals;
 
     return (
       <MonthlyTotalsRow
@@ -52,16 +53,16 @@ export class MonthlyTransactionTotalsTable extends React.Component {
   _renderTableBody() {
     const { collapsedSources } = this.props;
 
-    return this.props.data.get('sources').map((sourceData) => {
-      const source = sourceData.get('source');
-      const sourceId = source?.entityId ?? source.get('entityId');
+    return this.props.data.sources.map((sourceData) => {
+      const source = sourceData.source;
+      const sourceId = source?.entityId;
 
       return (
         <CollapsibleRow
           key={sourceId}
           source={source}
-          sources={sourceData.get('sources')}
-          monthlyTotals={sourceData.get('monthlyTotals')}
+          sources={sourceData.sources}
+          monthlyTotals={sourceData.monthlyTotals}
           isCollapsed={collapsedSources.has(sourceId)}
           onToggleCollapse={this.props.onCollapseSource}
         />
@@ -76,7 +77,7 @@ export class MonthlyTransactionTotalsTable extends React.Component {
     return (
       <MonthlyTotalsRow
         className={className}
-        monthlyTotals={this.props.data.get('monthlyTotals')}
+        monthlyTotals={this.props.data.monthlyTotals}
         titleCell={`Total ${tableName}`}
       />
     );

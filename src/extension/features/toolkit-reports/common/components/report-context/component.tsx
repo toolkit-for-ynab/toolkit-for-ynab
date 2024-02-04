@@ -4,7 +4,7 @@ import {
   ReportKeys,
   REPORT_TYPES,
 } from 'toolkit/extension/features/toolkit-reports/common/constants/report-types';
-import { IncomeVsExpense } from 'toolkit-reports/pages/income-vs-expense';
+import { IncomeVsExpense } from 'toolkit/extension/features/toolkit-reports/pages/income-vs-expense';
 import { NetWorth } from 'toolkit/extension/features/toolkit-reports/pages/net-worth';
 import { InflowOutflow } from 'toolkit/extension/features/toolkit-reports/pages/inflow-outflow';
 import { BalanceOverTime } from 'toolkit-reports/pages/balance-over-time';

@@ -1,16 +1,26 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { MonthlyTotalsRow } from 'toolkit-reports/pages/income-vs-expense/components/monthly-totals-row';
+import { MonthlyTotalsRow } from 'toolkit/extension/features/toolkit-reports/pages/income-vs-expense/components/monthly-totals-row';
+import { MonthlyTotals, NormalizedIncomes, PayeeMap } from '../../../../types';
 
-export class CollapsibleRow extends React.Component {
-  static propTypes = {
-    isCollapsed: PropTypes.bool.isRequired,
-    onToggleCollapse: PropTypes.func.isRequired,
-    monthlyTotals: PropTypes.array.isRequired,
-    source: PropTypes.any.isRequired,
-    sources: PropTypes.array.isRequired,
+type CollapsibleRowProps = {
+  isCollapsed: boolean;
+  onToggleCollapse: (id: string) => void;
+  monthlyTotals: MonthlyTotals[];
+  source: {
+    entityId?: string;
+    name: string;
   };
+  sources: {
+    source: {
+      entityId?: string;
+      name: string;
+    };
+    monthlyTotals: MonthlyTotals[];
+  }[];
+};
 
+export class CollapsibleRow extends React.Component<CollapsibleRowProps> {
   render() {
     const { isCollapsed, monthlyTotals, source } = this.props;
 
@@ -21,7 +31,7 @@ export class CollapsibleRow extends React.Component {
             isCollapsed ? 'tk-totals-table__title-row--collapsed' : ''
           }`}
           titleCell={this._renderCollapsableTitle()}
-          monthlyTotals={isCollapsed ? monthlyTotals : null}
+          monthlyTotals={isCollapsed ? monthlyTotals : undefined}
           onClick={this._toggleCollapse}
         />
         {!isCollapsed && (
@@ -29,7 +39,7 @@ export class CollapsibleRow extends React.Component {
             {this._renderChildRows()}
             <MonthlyTotalsRow
               className="tk-totals-table__child-summary-row"
-              titleCell={`Total ${source?.name ?? source.get('name')}`}
+              titleCell={`Total ${source?.name}`}
               monthlyTotals={monthlyTotals}
             />
           </div>
@@ -46,15 +56,15 @@ export class CollapsibleRow extends React.Component {
         <svg className="ynab-new-icon" width="10" height="10">
           <use href={`#icon_sprite_caret_${isCollapsed ? 'up' : 'down'}`} />
         </svg>
-        <div>{source?.name ?? source.get('name')}</div>
+        <div>{source?.name}</div>
       </div>
     );
   }
 
   _renderChildRows() {
     return this.props.sources.map((sourceData) => {
-      const source = sourceData.get('source');
-      const monthlyTotals = sourceData.get('monthlyTotals');
+      const source = sourceData.source;
+      const monthlyTotals = sourceData.monthlyTotals;
 
       return (
         <MonthlyTotalsRow
@@ -68,6 +78,6 @@ export class CollapsibleRow extends React.Component {
   }
 
   _toggleCollapse = () => {
-    this.props.onToggleCollapse(this.props.source?.entityId ?? this.props.source?.get('entityId'));
+    this.props.onToggleCollapse(this.props.source?.entityId!);
   };
 }
