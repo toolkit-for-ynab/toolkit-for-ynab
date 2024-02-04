@@ -1,17 +1,27 @@
 // Common util methods to help generate a running total
 import regression from 'regression';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
+import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 
 // Constant for how many datapoints to allow per graph line
 // https://api.highcharts.com/highcharts/plotOptions.series.turboThreshold
 // Change this as necessary. There is a datapoint everyday so 365 * Num Years desired
 export const NUM_DATAPOINTS_LIMIT = 20000;
 
-/**
- * Create a new datapoint
- * @return {Object} A new datapoint
- */
-export const NEW_DATAPOINT = () => {
+export type Datapoint = {
+  runningTotal: number;
+  netChange: number;
+  transactions: YNABTransaction[];
+};
+
+export type PointPayload = {
+  x: number;
+  y: number;
+  netChange: number;
+  transactions: YNABTransaction[];
+};
+
+export const createEmptyDatapoint = (): Datapoint => {
   return {
     runningTotal: 0,
     netChange: 0,
@@ -27,8 +37,8 @@ export const NEW_DATAPOINT = () => {
  * @param {*} reportedTransactions The transactions used to calculate the running total
  * @return {Map} Map of account ids to their datapointsMap (date -> datapoint)
  */
-export const generateRunningBalanceMap = (reportedTransactions) => {
-  let calculatedRunningBalanceMap = new Map();
+export const generateRunningBalanceMap = (reportedTransactions: YNABTransaction[]) => {
+  let calculatedRunningBalanceMap = new Map<string, Map<number, Datapoint>>();
   if (reportedTransactions.length === 0) return calculatedRunningBalanceMap;
 
   // Get the date of the very first transaction
@@ -63,7 +73,7 @@ export const generateRunningBalanceMap = (reportedTransactions) => {
  * @param {*} transactions The transactions to use
  * @return {Map} accountToTransactionsMap A Map containing account ids and their corresponding transactions
  */
-export const mapAccountsToTransactions = (transactions) => {
+export const mapAccountsToTransactions = (transactions: YNABTransaction[]) => {
   let accountToTransactionsMap = new Map();
   if (!transactions) return accountToTransactionsMap;
 
@@ -80,16 +90,8 @@ export const mapAccountsToTransactions = (transactions) => {
   return accountToTransactionsMap;
 };
 
-/**
- * Generate a Map with:
- * keys - Dates in UTC
- * values - Array of transactions for that account
- *
- * @param {*} transactions The transactions to use
- * @return {Map} dateToTransactionsmap A Map containing dates and their corresponding transactions in that date
- */
-export const mapDateToTransactions = (transactions) => {
-  let dateToTransactionsMap = new Map();
+export const mapDateToTransactions = (transactions: YNABTransaction[]) => {
+  let dateToTransactionsMap = new Map<number, YNABTransaction[]>();
   if (!transactions) return dateToTransactionsMap;
 
   // Map each transaction to their respective dates. DateUTC => [t1, t2, ... , tn]
@@ -99,7 +101,7 @@ export const mapDateToTransactions = (transactions) => {
       if (!dateToTransactionsMap.has(date)) {
         dateToTransactionsMap.set(date, []);
       }
-      dateToTransactionsMap.get(date).push(transaction);
+      dateToTransactionsMap.get(date)!.push(transaction);
     }
   });
   return dateToTransactionsMap;
@@ -107,16 +109,12 @@ export const mapDateToTransactions = (transactions) => {
 
 /**
  * Generate a map with keys of all days between the starting date and the end date
- *
- * @param {MomentDate} startDate The starting date (Moment Object)
- * @param {MomentDate} endDate The end date (Moment Object)
- * @return {Map} Map containing keys of all days between start and end date, mapping to empty object
  */
-export const generateEmptyDateMap = (startDate, endDate) => {
-  let emptyDateMap = new Map();
+export const generateEmptyDateMap = (startDate: Moment, endDate: Moment) => {
+  let emptyDateMap = new Map<number, Datapoint>();
   let currDate = startDate.clone();
   while (currDate.isSameOrBefore(endDate)) {
-    emptyDateMap.set(currDate.utc().valueOf(), NEW_DATAPOINT());
+    emptyDateMap.set(currDate.utc().valueOf(), createEmptyDatapoint());
     currDate.add(1, 'days');
   }
   return emptyDateMap;
@@ -129,16 +127,12 @@ export const generateEmptyDateMap = (startDate, endDate) => {
  *    - transactions: All the transactions for the given day
  *    - runningTotal: The current running total based off all transactions given (sum of inflows and outflows up to the current date)
  *    - netChange: How much has changed since the previous day
- * @param {*} accountId The accountId to filter by
- * @param {*} dateToAllTransactions Map of dates in utc to transactions
- * @param {Moment Object} startDate The start date
- * @param {Moment Object} endDate The end date
  */
 export const generateDataPointsForAccount = (
-  accountId,
-  dateToAllTransactions,
-  startDate,
-  endDate
+  accountId: string,
+  dateToAllTransactions: Map<number, YNABTransaction[]>,
+  startDate: Moment,
+  endDate: Moment
 ) => {
   let datapoints = generateEmptyDateMap(startDate, endDate);
   let currDate = startDate.clone();
@@ -150,9 +144,9 @@ export const generateDataPointsForAccount = (
     let datapointKey = currDateUTC.valueOf();
 
     // Get all the transactions for the current day (only search if theres any transactions for the given day)
-    let accountTransactionsForDay = [];
+    let accountTransactionsForDay: YNABTransaction[] = [];
     if (dateToAllTransactions.has(datapointKey)) {
-      let transactionsOnDate = dateToAllTransactions.get(datapointKey);
+      let transactionsOnDate = dateToAllTransactions.get(datapointKey)!;
       accountTransactionsForDay = transactionsOnDate.filter((transaction) => {
         return transaction.accountId && transaction.accountId === accountId;
       });
@@ -181,8 +175,8 @@ export const generateDataPointsForAccount = (
  * @param {Map} dataPointsMap Map of dates in UTC to data
  * @returns {Array} Array containing the HighChart Points
  */
-export const dataPointsToHighChartSeries = (dataPointsMap) => {
-  let resultData = [];
+export const dataPointsToHighChartSeries = (dataPointsMap: Map<number, Datapoint>) => {
+  let resultData: PointPayload[] = [];
   dataPointsMap.forEach((datapoint, date) => {
     resultData.push({
       x: date,
@@ -199,8 +193,11 @@ export const dataPointsToHighChartSeries = (dataPointsMap) => {
  * @param {*} datapoints The datapoints to generate the trendline for
  * @return {Array} array of datapoints for the trendline
  */
-export const generateTrendLine = (datapoints) => {
-  let normalizedDataPoints = datapoints.map((datapoint) => [datapoint.x, datapoint.y]);
+export const generateTrendLine = (datapoints: PointPayload[]) => {
+  let normalizedDataPoints = datapoints.map((datapoint): [number, number] => [
+    datapoint.x,
+    datapoint.y,
+  ]);
   let linearRegression = regression.linear(normalizedDataPoints, { precision: 10 });
   return linearRegression.points;
 };
@@ -211,15 +208,15 @@ export const generateTrendLine = (datapoints) => {
  * @param {} datapointsArray
  * @return {Map} Single map of dateUTC to corresponding datapoints
  */
-export const combineDataPoints = (datapointsArray) => {
+export const combineDataPoints = (datapointsArray: Map<number, Datapoint>[]) => {
   let combinedDataPoints = new Map();
   datapointsArray.forEach((datapoints) => {
     datapoints.forEach((data, dateUTC) => {
       if (!combinedDataPoints.has(dateUTC)) {
-        combinedDataPoints.set(dateUTC, NEW_DATAPOINT());
+        combinedDataPoints.set(dateUTC, createEmptyDatapoint());
       }
       let prevDataPoint = combinedDataPoints.get(dateUTC);
-      let newDataPoint = NEW_DATAPOINT();
+      let newDataPoint = createEmptyDatapoint();
       newDataPoint.runningTotal = prevDataPoint.runningTotal + data.runningTotal;
       newDataPoint.netChange = prevDataPoint.netChange + data.netChange;
       newDataPoint.transactions = prevDataPoint.transactions.concat(data.transactions);
@@ -235,8 +232,12 @@ export const combineDataPoints = (datapointsArray) => {
  * @param {*} toDate The end date to filter to
  * @param {Map} datapoints Map of dates in UTC to their corresponding datapoint
  */
-export const applyDateFiltersToDataPoints = (fromDate, toDate, datapoints) => {
-  let filteredDatapoints = new Map();
+export const applyDateFiltersToDataPoints = (
+  fromDate: DateWithoutTime,
+  toDate: DateWithoutTime,
+  datapoints: Map<number, Datapoint>
+) => {
+  let filteredDatapoints = new Map<number, Datapoint>();
   datapoints.forEach((data, dateUTC) => {
     if (dateUTC >= fromDate.getUTCTime() && dateUTC <= toDate.getUTCTime()) {
       filteredDatapoints.set(dateUTC, data);
@@ -249,6 +250,6 @@ export const applyDateFiltersToDataPoints = (fromDate, toDate, datapoints) => {
  * Check if a given series has reached the number of datapoints limit
  * @param {Object} series The individual series to check
  */
-export const checkSeriesLimitReached = (series) => {
+export const checkSeriesLimitReached = (series?: { data: unknown[] }) => {
   return series && series.data && series.data.length >= NUM_DATAPOINTS_LIMIT;
 };

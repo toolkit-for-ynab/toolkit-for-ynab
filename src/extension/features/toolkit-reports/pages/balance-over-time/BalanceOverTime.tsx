@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { RunningBalanceGraph } from './RunningBalanceGraph';
 import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
 import { WarningMessage } from './WarningMessage';
@@ -15,9 +14,22 @@ import {
   generateTrendLine,
   checkSeriesLimitReached,
   NUM_DATAPOINTS_LIMIT,
+  Datapoint,
+  PointPayload,
 } from './utils';
+import { ReportContextType } from '../../common/components/report-context';
+import { YNABAccountType } from 'toolkit/types/ynab/window/ynab-enums';
 
-export const BalanceOverTimeComponent = ({ allReportableTransactions, filters }) => {
+export type Serie = {
+  name: string;
+  step: string | undefined;
+  data: PointPayload[];
+};
+
+export const BalanceOverTimeComponent = ({
+  allReportableTransactions,
+  filters,
+}: Pick<ReportContextType, 'allReportableTransactions' | 'filters'>) => {
   const GROUPED_LABEL = 'Selected Accounts';
   const TRENDLINE_PREFIX = 'Trendline for ';
 
@@ -36,7 +48,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
   // Map of accounts to their corresponding datapoints for each date
   const [runningBalanceMap, setRunningBalanceMap] = useState(new Map());
   // The series to be fed into highcharts
-  const [series, setSeries] = useState([]);
+  const [series, setSeries] = useState<Serie[]>([]);
   const [datapointLimitReached, setDatapointLimitReached] = useState(false);
 
   // Whenver transactions change, update all our datapoints.
@@ -46,12 +58,13 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
 
   // When our filters change, or deciding to group accounts, calculated the new data used for the series.
   useEffect(() => {
+    if (!filters) return;
     const accountFilters = filters.accountFilterIds;
     const { fromDate, toDate } = filters.dateFilter;
     let newSeries = [];
 
     // Filter the overall running balance to only the datapoints what we want
-    let filteredData = new Map();
+    let filteredData = new Map<string, Map<number, Datapoint>>();
     runningBalanceMap.forEach((datapoints, accountId) => {
       if (!accountFilters.has(accountId)) {
         filteredData.set(accountId, applyDateFiltersToDataPoints(fromDate, toDate, datapoints));
@@ -61,8 +74,8 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
     if (shouldGroupAccounts && shouldGroupAccountsByType) {
       // Group datapoints by account type
       let groupedData = {
-        entities: {},
-        ids: [],
+        entities: {} as Record<YNABAccountType, Map<number, Datapoint>[]>,
+        ids: [] as YNABAccountType[],
       };
       filteredData.forEach((datapoints, accountId) => {
         const { accountType } = getEntityManager().getAccountById(accountId);
@@ -84,7 +97,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
       });
     } else if (shouldGroupAccounts) {
       // When grouping accounts, combined all the selected accounts datapoints to create a single series
-      let datapointsToCombine = [];
+      let datapointsToCombine: Map<number, Datapoint>[] = [];
       filteredData.forEach((datapoints) => {
         datapointsToCombine.push(datapoints);
       });
@@ -164,13 +177,7 @@ export const BalanceOverTimeComponent = ({ allReportableTransactions, filters })
           onChange={() => setUseStepGraph(!useStepGraph)}
         />
       </AdditionalReportSettings>
-      <RunningBalanceGraph series={series} numDatapointsLimit={NUM_DATAPOINTS_LIMIT} />
+      <RunningBalanceGraph series={series} />
     </div>
   );
-};
-
-// Props are given from context
-BalanceOverTimeComponent.propTypes = {
-  filters: PropTypes.any.isRequired, // TODO: FiltersType
-  allReportableTransactions: PropTypes.array.isRequired,
 };

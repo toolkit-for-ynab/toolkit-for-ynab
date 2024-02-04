@@ -5,7 +5,7 @@ interface YNABSharedLibInstance {
 }
 
 interface YNABDateFormatter {
-  formatDate(date?: DateWithoutTime | string, format?: string): string;
+  formatDate(date?: DateWithoutTime | string | Date, format?: string): string;
   formatDateLong(date?: DateWithoutTime | string): string;
 }
 

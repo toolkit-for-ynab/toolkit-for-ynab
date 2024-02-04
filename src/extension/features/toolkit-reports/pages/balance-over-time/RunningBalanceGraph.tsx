@@ -1,16 +1,25 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { showTransactionModal } from 'toolkit/extension/features/toolkit-reports/utils/show-transaction-modal';
 import Highcharts from 'highcharts';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { NUM_DATAPOINTS_LIMIT } from './utils';
+import { PointWithPayload } from '../../utils/types';
+import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import { Serie } from './BalanceOverTime';
 
-export const RunningBalanceGraph = ({ series }) => {
+type RunningBalanceGraphProps = {
+  series: Serie[];
+};
+
+type Point = PointWithPayload<{ netChange: number; transactions: YNABTransaction[]; x: number }>;
+
+export const RunningBalanceGraph = ({ series }: RunningBalanceGraphProps) => {
   const GRAPH_ID = 'tk-balance-over-time-report-graph';
 
   // On every change of series, rerender our graph to the report container
   useEffect(() => {
     let textColor = 'var(--label_primary)';
+    // @ts-ignore Incorrect typings for point from Highcharts
     Highcharts.chart(GRAPH_ID, {
       title: {
         text: 'Balance Over Time',
@@ -57,7 +66,7 @@ export const RunningBalanceGraph = ({ series }) => {
       },
       tooltip: {
         useHTML: true,
-        pointFormatter: function () {
+        pointFormatter: function (this: Point) {
           let coloredPoint = `<span style="color:${this.color}">\u25CF</span>`;
           let totalAmount = formatCurrency(this.y, false);
           let tooltip = `${coloredPoint} ${this.series.name}: <b>${totalAmount}</b><br/>`;
@@ -79,10 +88,11 @@ export const RunningBalanceGraph = ({ series }) => {
           cursor: 'pointer',
           events: {
             click: (event) => {
-              if (event.point.transactions && event.point.transactions.length > 0) {
-                let date = new Date(event.point.x);
+              const point = event.point as Point;
+              if (point.transactions && point.transactions.length > 0) {
+                let date = new Date(point.x);
                 let formattedDate = ynab.YNABSharedLib.dateFormatter.formatDate(date);
-                showTransactionModal(formattedDate, event.point.transactions);
+                showTransactionModal(formattedDate, point.transactions);
               }
             },
             legendItemClick: (event) => {
@@ -115,13 +125,4 @@ export const RunningBalanceGraph = ({ series }) => {
 
   // Generate our report container
   return <div className="tk-highcharts-report-container" id={GRAPH_ID} />;
-};
-
-// Proptypes to use this component
-// series The array of datapoints to use
-// numDatapointslimit The number of datapoints to control turboThreshold
-// https://api.highcharts.com/highcharts/plotOptions.series.turboThreshold
-RunningBalanceGraph.propTypes = {
-  series: PropTypes.array.isRequired,
-  numDatapointsLimit: PropTypes.number.isRequired,
 };
