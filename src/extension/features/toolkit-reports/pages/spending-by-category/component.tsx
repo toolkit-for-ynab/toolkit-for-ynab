@@ -94,7 +94,7 @@ export class SpendingByCategoryComponent extends React.Component<
     let legendSeries = seriesData;
     if (currentDrillDownId && drillDownData) {
       const drillDownSeries = drillDownData.find(({ id }) => id === currentDrillDownId);
-      // @ts-ignore custom payload on point
+      // @ts-expect-error custom payload on point
       if (drillDownSeries && drillDownSeries.data) legendSeries = drillDownSeries.data;
     }
 
@@ -214,7 +214,6 @@ export class SpendingByCategoryComponent extends React.Component<
       });
 
       drillDownData.push({
-        // @ts-ignore custom payload on point
         data: spendingData.sources.map((subCategoryData, subCategoryIndex) => ({
           color: PIE_CHART_COLORS[subCategoryIndex % PIE_CHART_COLORS.length],
           id: subCategoryData.source?.entityId,

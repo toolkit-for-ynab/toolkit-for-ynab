@@ -192,7 +192,7 @@ export class SpendingByPayeeComponent extends React.Component<
           },
           id: payeeId,
           name: payeeName,
-          // @ts-ignore We can attach arbitrary data, but Highchart types doesn't support this
+          // @ts-expect-error We can attach arbitrary data, but Highchart types doesn't support this
           transactions: spendingData.transactions,
           y: payeeTotal,
         });

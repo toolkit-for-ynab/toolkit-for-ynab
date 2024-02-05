@@ -167,11 +167,12 @@ export class InflowOutflowComponent extends React.Component<
 
     let accountInflows = new Map();
     let accountOutflows = new Map();
-    const allReportData = {
-      inflows: [] as number[],
-      outflows: [] as number[],
-      labels: [] as string[],
-    };
+    const allReportData: Pick<InflowOutflowState['reportData'], 'inflows' | 'outflows' | 'labels'> =
+      {
+        inflows: [],
+        outflows: [],
+        labels: [],
+      };
     const transactions = this.props.filteredTransactions.slice().sort(sortByDate);
 
     let lastMonth: DateWithoutTime | null = null;

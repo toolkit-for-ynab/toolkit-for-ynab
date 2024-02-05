@@ -1,10 +1,5 @@
 export function mapToArray<K, V>(map: Map<K, V>) {
-  const array = [];
-  for (const [, value] of map) {
-    array.push(value);
-  }
-
-  return array;
+  return [...map.values()];
 }
 
 export function compareSemanticVersion(left: string, right: string) {

@@ -5,10 +5,10 @@ import { MonthlyTotalsRow } from 'toolkit/extension/features/toolkit-reports/pag
 import './styles.scss';
 import { NormalizedExpenses, NormalizedIncomes } from '../../types';
 
-export const TableType = {
-  Expense: 'expense',
-  Income: 'income',
-} as const;
+export enum TableType {
+  Expense = 'expense',
+  Income = 'income',
+}
 
 type MonthlyTransactionTotalsTableProps = {
   onCollapseSource: (id: string) => void;

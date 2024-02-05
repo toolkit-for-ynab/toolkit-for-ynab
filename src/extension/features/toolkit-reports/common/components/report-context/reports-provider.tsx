@@ -103,7 +103,7 @@ export type WithReportContextHocState = {
   allReportableTransactions: YNABTransaction[];
 };
 
-export function withReportContextProvider<T extends {}>(InnerComponent: ComponentType<T>) {
+export function withReportContextProvider<T extends object>(InnerComponent: ComponentType<T>) {
   return class WithReportContextProvider extends React.Component<T, WithReportContextHocState> {
     get selectedReport() {
       return REPORT_COMPONENTS.find(({ key }) => key === this.state.activeReportKey);
@@ -125,11 +125,8 @@ export function withReportContextProvider<T extends {}>(InnerComponent: Componen
       ynab.YNABSharedLib.getBudgetViewModel_AllAccountsViewModel().then(
         (transactionsViewModel: any) => {
           const visibleTransactionDisplayItems =
-            transactionsViewModel.visibleTransactionDisplayItems;
-          console.log('Visible transactions:', visibleTransactionDisplayItems);
-          const allReportableTransactions = (
-            visibleTransactionDisplayItems as YNABTransaction[]
-          ).filter(
+            transactionsViewModel.visibleTransactionDisplayItems as YNABTransaction[];
+          const allReportableTransactions = visibleTransactionDisplayItems.filter(
             (transaction) =>
               !transaction.isSplit &&
               !transaction.isScheduledTransaction &&

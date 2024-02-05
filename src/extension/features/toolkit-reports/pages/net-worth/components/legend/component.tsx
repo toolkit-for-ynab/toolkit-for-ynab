@@ -4,7 +4,7 @@ import { Currency } from 'toolkit/extension/features/toolkit-reports/common/comp
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
 import './styles.scss';
 
-export type LegenProps = {
+export type LegendProps = {
   assets: number;
   debts: number;
   netWorth: number;
@@ -13,7 +13,7 @@ export type LegenProps = {
   debtRatio: number;
 };
 
-export const Legend = (props: LegenProps) => (
+export const Legend = (props: LegendProps) => (
   <React.Fragment>
     <div className="tk-mg-05 tk-pd-r-1 tk-border-r">
       <div className="tk-flex tk-mg-b-05 tk-align-items-center">

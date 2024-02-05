@@ -202,12 +202,12 @@ export class NetWorthComponent extends React.Component<NetWorthProps, NetWorthSt
     }
 
     const accounts = new Map();
-    const allReportData = {
-      assets: [] as number[],
-      labels: [] as string[],
-      debts: [] as number[],
-      netWorths: [] as number[],
-      debtRatios: [] as number[],
+    const allReportData: ReportData = {
+      assets: [],
+      labels: [],
+      debts: [],
+      netWorths: [],
+      debtRatios: [],
     };
     const transactions = this.props.allReportableTransactions.slice().sort(sortByDate);
 

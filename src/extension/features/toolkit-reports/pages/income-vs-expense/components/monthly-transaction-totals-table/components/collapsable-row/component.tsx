@@ -78,6 +78,7 @@ export class CollapsibleRow extends React.Component<CollapsibleRowProps> {
   }
 
   _toggleCollapse = () => {
-    this.props.onToggleCollapse(this.props.source?.entityId!);
+    const entityId = this.props.source?.entityId;
+    if (entityId) this.props.onToggleCollapse(entityId);
   };
 }
