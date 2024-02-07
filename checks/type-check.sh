@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-PRECOMMIT=0
-PREPUSH=1
+export PRECOMMIT=0
+export PREPUSH=1
 
 check() {
   yarn type-check
