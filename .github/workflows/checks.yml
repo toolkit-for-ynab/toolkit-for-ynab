@@ -1,0 +1,40 @@
+name: Checks
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    outputs:
+      files: ${{ steps.find.outputs.files }}
+    steps:
+      - uses: actions/checkout@v2
+      # Get the list of checks for the check job
+      - name: Find Check Files
+        id: find
+        run: |
+          . ./checks/_lib.sh
+          # Find check files, set them to the files arg in jq, and parse them as an array
+          as_array="$(jq -rcn --arg files "$(find_check_files all)" '$files | split("\n") as $arr | { check: $arr }')"
+          echo "files=$as_array">>"$GITHUB_OUTPUT"
+
+  check:
+    runs-on: ubuntu-latest
+    needs: [setup]
+    strategy:
+      matrix: ${{ fromJson(needs.setup.outputs.files) }}
+    name: ${{ matrix.check }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set Node.js from .nvmrc
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: Prepare
+        run: yarn build:check
+      - name: Run
+        run: |
+          . ${{ matrix.check }}
+          check

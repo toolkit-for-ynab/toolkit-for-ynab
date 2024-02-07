@@ -25,8 +25,8 @@
     "publish:chrome": "node scripts/publishForChrome.js",
     "publish:desktop": "node scripts/publishForDesktop.js",
     "prettier": "prettier --write \"{src,scripts}/**/*.{js,jsx,ts,tsx}\"",
-    "test": "yarn && yarn gen && jest",
-    "test:watch": "yarn && yarn gen && jest --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "watch": "yarn && node scripts/watch.js",
     "watch:webpack": "webpack --watch --env buildType=development",
     "gen": "yarn gen:settings && yarn gen:featureIndex",
@@ -36,7 +36,8 @@
     "l10n:update": "node scripts/updateLocalizationStrings.js",
     "l10n:pull": "scripts/get_l10ns",
     "sentry:create": "sentry-cli releases -o toolkit-for-ynab -p toolkit-for-ynab new $npm_package_version",
-    "sentry:upload": "sentry-cli releases -o toolkit-for-ynab -p toolkit-for-ynab files $$npm_package_version upload-sourcemaps ./dist/extension/"
+    "sentry:upload": "sentry-cli releases -o toolkit-for-ynab -p toolkit-for-ynab files $$npm_package_version upload-sourcemaps ./dist/extension/",
+    "type-check": "tsc --skipLibCheck"
   },
   "jest": {
     "clearMocks": true,
