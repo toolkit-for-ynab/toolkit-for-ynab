@@ -1,4 +1,4 @@
-type FeatureSetting = boolean | string;
+export type FeatureSetting = boolean | string;
 
 interface FeatureSettingBaseConfig {
   name: FeatureName;
@@ -31,7 +31,7 @@ interface FeatureSettingSystemConfig extends FeatureSettingBaseConfig {
   type: 'system';
 }
 
-type FeatureSettingConfig =
+export type FeatureSettingConfig =
   | FeatureSettingToggleConfig
   | FeatureSettingSelectConfig
   | FeatureSettingColorConfig

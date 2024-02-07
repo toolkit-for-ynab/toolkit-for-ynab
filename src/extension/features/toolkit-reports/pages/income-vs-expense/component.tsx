@@ -24,6 +24,10 @@ import {
   Incomes,
   Expenses,
 } from './types';
+import { YNABPayee } from 'toolkit/types/ynab/data/payee';
+import { YNABMasterCategory } from 'toolkit/types/ynab/data/master-category';
+import { YNABSubCategory } from 'toolkit/types/ynab/data/sub-category';
+import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
 
 export const MONTHLY_TOTALS_KEY = '__totals';
 

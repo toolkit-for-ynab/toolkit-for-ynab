@@ -1,15 +1,15 @@
-interface EmberView {
+export interface EmberView {
   elementId: string;
   element: HTMLElement;
   parentViewChildViews?: EmberView[];
   _debugContainerKey: boolean | string;
 }
 
-interface EmberViewRegistry {
+export interface EmberViewRegistry {
   [emberId: string]: EmberView | undefined;
 }
 
-interface RenderTreeNode {
+export interface RenderTreeNode {
   children: RenderTreeNode[];
   type: string;
   name: string;

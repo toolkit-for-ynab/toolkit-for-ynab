@@ -1,4 +1,5 @@
-import { YNABToolkitObject } from 'toolkit/types/toolkit';
+import type { YNABToolkitObject } from 'toolkit/types/toolkit';
+import type { FeatureSetting } from 'toolkit/types/toolkit/features';
 
 export enum InboundMessageType {
   Bootstrap = 'tk-bootstrap',

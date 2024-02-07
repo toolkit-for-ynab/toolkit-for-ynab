@@ -11,6 +11,9 @@ import { ReportContextType } from '../../common/components/report-context';
 import { ChangeEventHandler } from 'react';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 import { PointWithPayload } from '../../utils/types';
+import { YNABPayee } from 'toolkit/types/ynab/data/payee';
+import { YNABMasterCategory } from 'toolkit/types/ynab/data/master-category';
+import { YNABSubCategory } from 'toolkit/types/ynab/data/sub-category';
 
 type IncomeBreakdownProps = Pick<ReportContextType, 'filteredTransactions' | 'filters'>;
 

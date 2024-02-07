@@ -4,6 +4,8 @@ import { Collections } from 'toolkit/extension/utils/collections';
 import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
 import './styles.scss';
 import { FiltersType } from 'toolkit/extension/features/toolkit-reports/common/components/report-context';
+import { YNABMasterCategory } from 'toolkit/types/ynab/data/master-category';
+import { YNABSubCategory } from 'toolkit/types/ynab/data/sub-category';
 
 function sortableIndexCompare(a: { sortableIndex: number }, b: { sortableIndex: number }) {
   return a.sortableIndex - b.sortableIndex;

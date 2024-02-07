@@ -16,6 +16,7 @@ import './styles.scss';
 import { ReportContextType } from '../../common/components/report-context';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 import { PointWithPayload } from '../../utils/types';
+import { YNABPayee } from 'toolkit/types/ynab/data/payee';
 
 type PayeeMap = {
   payee: YNABPayee;

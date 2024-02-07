@@ -1,6 +1,9 @@
-import { Moment } from 'moment';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 import { IncomeVsExpenseComponent } from './component';
+import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
+import { YNABMasterCategory } from 'toolkit/types/ynab/data/master-category';
+import { YNABPayee } from 'toolkit/types/ynab/data/payee';
+import { YNABSubCategory } from 'toolkit/types/ynab/data/sub-category';
 
 export type MonthlyTotals = {
   date: DateWithoutTime;

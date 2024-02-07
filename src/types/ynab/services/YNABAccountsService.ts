@@ -1,5 +1,5 @@
 // Not complete definition
-interface YNABAccountsService {
+export interface YNABAccountsService {
   selectedAccountId: string | null;
   collapsedSplits: {
     [transactionID: string]: boolean;

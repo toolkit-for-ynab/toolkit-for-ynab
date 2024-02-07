@@ -1,3 +1,3 @@
-interface YNABRouter {
+export interface YNABRouter {
   currentRouteName: string;
 }

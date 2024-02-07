@@ -37,7 +37,10 @@ body.theme-dark {
 /* current month styles */
 .tk-highlight-current-month {
   background: var(--tk-current-month-background-color) !important;
+  background-clip: content-box !important;
+  border-radius: 1rem !important;
 }
+
 .budget-header .tk-highlight-current-month .budget-header-calendar-prev,
 .budget-header .tk-highlight-current-month .budget-header-calendar-next {
   color: var(--tk-current-month-control-color);

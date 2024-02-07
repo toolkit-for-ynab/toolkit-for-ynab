@@ -9,6 +9,7 @@ import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/comm
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-reports/common/components/additional-settings';
 import { ReportContextType } from '../../common/components/report-context';
+import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
 
 const STORAGE_KEYS = {
   inverseDebt: 'net-worth-inverse-debt',

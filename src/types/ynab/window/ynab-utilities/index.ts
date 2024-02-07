@@ -1,4 +1,4 @@
-interface DateWithoutTime {
+export interface DateWithoutTime {
   addMonths(count: number): DateWithoutTime;
   clone(): DateWithoutTime;
   createForToday(): DateWithoutTime;
@@ -27,6 +27,6 @@ interface DateWithoutTime {
   getUTCTime(): number;
 }
 
-interface YNABUtilities {
+export interface YNABUtilities {
   DateWithoutTime: DateWithoutTime;
 }

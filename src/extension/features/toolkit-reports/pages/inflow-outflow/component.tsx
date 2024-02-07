@@ -5,6 +5,7 @@ import { localizedMonthAndYear, sortByDate } from 'toolkit/extension/utils/date'
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { Legend } from './components/legend';
 import { ReportContextType } from '../../common/components/report-context';
+import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
 
 type InflowOutflowState = {
   chart?: Highcharts.Chart;

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ComponentType, createContext } from 'react';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
 
 export type SelectedReportContextPropType = {
   component: React.ComponentType;

@@ -2,6 +2,7 @@
 import regression from 'regression';
 import moment, { Moment } from 'moment';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
 
 // Constant for how many datapoints to allow per graph line
 // https://api.highcharts.com/highcharts/plotOptions.series.turboThreshold

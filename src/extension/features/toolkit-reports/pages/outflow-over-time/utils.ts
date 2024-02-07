@@ -1,5 +1,6 @@
 import moment, { Moment } from 'moment';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
 
 declare module 'moment' {
   interface Moment {

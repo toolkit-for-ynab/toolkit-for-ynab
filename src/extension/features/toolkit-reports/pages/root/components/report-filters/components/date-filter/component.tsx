@@ -4,6 +4,7 @@ import { getFirstMonthOfBudget, getToday } from 'toolkit/extension/utils/date';
 import { l10nMonth } from 'toolkit/extension/utils/toolkit';
 import './styles.scss';
 import { FiltersType } from 'toolkit/extension/features/toolkit-reports/common/components/report-context';
+import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
 
 const Options = {
   ThisMonth: 'This Month',

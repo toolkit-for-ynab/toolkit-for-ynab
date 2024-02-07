@@ -1,6 +1,6 @@
 import { YNABTransaction } from '../data/transaction';
 
-type YNABModalService = {
+export type YNABModalService = {
   isModalOpen?: boolean;
   closeModal?: (e?: unknown) => void;
   openModal?: (name: string) => void;

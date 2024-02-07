@@ -13,6 +13,8 @@ import './styles.scss';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 import { ReportContextType } from '../../common/components/report-context';
 import { PointWithPayload } from '../../utils/types';
+import { YNABMasterCategory } from 'toolkit/types/ynab/data/master-category';
+import { YNABSubCategory } from 'toolkit/types/ynab/data/sub-category';
 
 type Point = PointWithPayload<{ id: string; transactions: YNABTransaction[] }>;
 
