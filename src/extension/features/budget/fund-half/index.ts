@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { getBudgetService } from 'toolkit/extension/utils/ynab';
+import { getBudgetService, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import type { YNABBudgetMonthDisplayItem } from 'toolkit/types/ynab/services/YNABBudgetService';
 import type { BudgetTableRowComponent } from 'toolkit/types/ynab/components/BudgetTableRow';
@@ -51,6 +51,7 @@ export class FundHalf extends Feature {
   }
 
   updateDOM() {
+    if (!isCurrentMonthSelected()) return;
     if (!$('.budget-inspector').length) return;
     if (!$('.inspector-quick-budget').length) return;
     if ($('.budget-inspector-button.fund-half').length) return;
@@ -155,10 +156,19 @@ export class FundHalf extends Feature {
   };
 
   _fundAmountToBudgetCategory(budgetRowId: string, amount: number) {
-    const budgetRow = document.querySelector(`[data-entity-id="${budgetRowId}"]`);
-    const emberView = getEmberView<BudgetTableRowComponent>(budgetRow?.id);
-    if (emberView) {
-      emberView.category.budgeted += amount;
+    const budgetService = getBudgetService();
+    if (
+      budgetService !== undefined &&
+      budgetService != null &&
+      budgetService.checkedRowsCount > 0
+    ) {
+      const checkedRows = budgetService.checkedRows;
+      if (Array.isArray(checkedRows)) {
+        const categoryRow = checkedRows.find((row) => row.categoryId === budgetRowId);
+        if (categoryRow) {
+          categoryRow.budgeted += amount;
+        }
+      }
     }
   }
 }

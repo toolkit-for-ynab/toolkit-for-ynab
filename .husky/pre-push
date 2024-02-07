@@ -4,4 +4,5 @@
 . ./checks/_lib.sh
 
 set -e
-run_checks precommit
+run_checks prepush
+
