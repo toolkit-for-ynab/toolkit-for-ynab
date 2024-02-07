@@ -1,8 +1,9 @@
-import { YNABAccount } from '../../data/account';
-import { YNABTransaction } from '../../data/transaction';
-import { YNABTransactionCollection } from '../../data/transaction-collection';
+import type { YNABAccount } from '../../data/account';
+import type { YNABPayeeCollection } from '../../data/payee-collection';
+import type { YNABTransaction } from '../../data/transaction';
+import type { YNABTransactionCollection } from '../../data/transaction-collection';
 
-interface YNABEntityManager {
+export interface YNABEntityManager {
   getAccountById(entityId: string): YNABAccount;
   getTransactionById(transactionId: string): YNABTransaction;
   getSubTransactionsBySubCategoryId(subCategoryId: string): YNABTransaction[];

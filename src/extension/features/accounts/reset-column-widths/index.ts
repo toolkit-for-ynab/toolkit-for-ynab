@@ -1,5 +1,4 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { serviceLookup } from 'toolkit/extension/utils/ember';
 import { getRegisterGridService } from 'toolkit/extension/utils/ynab';
 
 export class ResetColumnWidths extends Feature {

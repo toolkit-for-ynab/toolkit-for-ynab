@@ -1,6 +1,7 @@
-import { YNABAccount } from 'toolkit/types/ynab/data/account';
-import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import type { YNABAccount } from 'toolkit/types/ynab/data/account';
+import type { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 import { YNABAccountType } from 'toolkit/types/ynab/window/ynab-enums';
+import type { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
 
 export function mockAccount(overrides?: Partial<YNABAccount>): YNABAccount {
   return {
@@ -26,7 +27,7 @@ export function mockTransaction(overrides?: Partial<YNABTransaction>): YNABTrans
     cleared: 'Cleared',
     creditAmount: 0,
     creditAmountAdjusted: 0,
-    // @ts-ignore -- we don't have a test impl of DateWithoutTime yet. we could use moment()
+    // We don't have a test impl of DateWithoutTime yet. we could use moment()
     // but that's going to break tests probably
     date: null as unknown as DateWithoutTime,
     dateEnteredFromSchedule: null,
@@ -41,7 +42,7 @@ export function mockTransaction(overrides?: Partial<YNABTransaction>): YNABTrans
     matchedTransaction: null,
     matchedTransactionId: null,
     memo: 'memo',
-    // @ts-ignore -- we don't have a test impl of DateWithoutTime yet. we could use moment()
+    // We don't have a test impl of DateWithoutTime yet. we could use moment()
     // but that's going to break tests probably
     month: null as unknown as DateWithoutTime,
     originalImportedPayee: null,

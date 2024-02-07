@@ -1,4 +1,4 @@
-interface YNABPayee {
+export interface YNABPayee {
   entityId?: string;
   isStartingBalancePayee(): boolean;
   name: string;

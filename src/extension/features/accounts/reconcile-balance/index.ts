@@ -3,6 +3,7 @@ import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { serviceLookup } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import type { YNABAccountsService } from 'toolkit/types/ynab/services/YNABAccountsService';
 const YNAB_ACCOUNTS_HEADER_BALANCES = '.accounts-header-balances';
 const TK_RECONCILE_BALANCE_ID = 'tk-reconcile-balance';
 

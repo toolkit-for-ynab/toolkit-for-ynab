@@ -1,5 +1,9 @@
 import { YNABModalService } from 'toolkit/types/ynab/services/YNABModalService';
 import { getRouter, serviceLookup } from './ember';
+import { YNABBudgetService } from 'toolkit/types/ynab/services/YNABBudgetService';
+import type { YNABAccountsService } from 'toolkit/types/ynab/services/YNABAccountsService';
+import type { YNABRegisterGridService } from 'toolkit/types/ynab/services/YNABRegisterGridService';
+import type { YNABApplicationService } from 'toolkit/types/ynab/services/YNABApplicationService';
 
 export function ynabRequire<T = any>(module: string): T {
   return window.requireModule<T>(module);

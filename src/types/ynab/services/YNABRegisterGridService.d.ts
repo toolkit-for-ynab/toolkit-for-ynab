@@ -1,3 +1,3 @@
-interface YNABRegisterGridService {
+export interface YNABRegisterGridService {
   saveColumnSizes(): void;
 }

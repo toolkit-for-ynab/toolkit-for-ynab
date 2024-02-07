@@ -1,5 +1,5 @@
-import { YNABGlobal } from './ynab/window';
-import { YNABToolkitObject } from './toolkit';
+import type { YNABGlobal } from './ynab/window';
+import type { YNABToolkitObject } from './toolkit';
 
 declare global {
   const ynab: YNABGlobal;
