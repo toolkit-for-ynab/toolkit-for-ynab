@@ -2,7 +2,6 @@
 
 . ./checks/_lib.sh
 
-
 export PRECOMMIT=0
 export PREPUSH=0
 
@@ -13,7 +12,7 @@ check_var() {
   value=$2
   var_name=$3
 
-  if [ -z $value ]; then
+  if [ -z "$value" ]; then
     echo "$file must have a '$var_name' variable."
     return 1
   fi
@@ -40,8 +39,8 @@ check() {
       return 1
     fi
 
-    check_var "$1" $PRECOMMIT PRECOMMIT
-    check_var "$1" $PREPUSH PREPUSH
+    check_var "$file" "$PRECOMMIT" PRECOMMIT
+    check_var "$file" "$PREPUSH" PREPUSH
 
     echo "$file OK"
   done

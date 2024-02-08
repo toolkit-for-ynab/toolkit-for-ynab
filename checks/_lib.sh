@@ -18,44 +18,44 @@ find_check_files() {
   PRECOMMIT=1
   PREPUSH=1
   # END dummy variables
-  
+
   while read -r file; do
     unset check PRECOMMIT PREPUSH
     . "$file"
     case $1 in
-      precommit)
-        if [ $PRECOMMIT = 1 ]; then
-          echo "$file"
-        fi
-        ;;
-      prepush)
-        if [ $PREPUSH = 1 ]; then
-          echo "$file"
-        fi
-        ;;
-      all)
+    precommit)
+      if [ "$PRECOMMIT" = 1 ]; then
         echo "$file"
-        ;;
-      *)
-        echo "Unrecognized argument: $1" >2
-        return 1
-        ;;
+      fi
+      ;;
+    prepush)
+      if [ "$PREPUSH" = 1 ]; then
+        echo "$file"
+      fi
+      ;;
+    all)
+      echo "$file"
+      ;;
+    *)
+      echo "Unrecognized argument: $1" 1>&2
+      return 1
+      ;;
     esac
-  done<<<$all_files
+  done <<<"$all_files"
 }
 
 # $1 - any of 'precommit', 'prepush', or 'all'
 run_checks() {
   echo "Running $1 checks"
-  for file in $(find_check_files $1); do
-    printf "\nRunning check $file\n\n"
+  for file in $(find_check_files "$1"); do
+    printf '\nRunning check %s\n\n' "$file"
 
-    . $file
+    . "$file"
     check
   done
 }
 
 is_ci() {
   # The CI variable is present when running in GitHub actions/workflows.
-  [ -n $CI ]
+  [ -n "$CI" ]
 }
