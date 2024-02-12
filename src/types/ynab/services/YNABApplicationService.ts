@@ -1,1 +1,3 @@
-export interface YNABApplicationService {}
+export interface YNABApplicationService {
+    budgetVersionId: string;
+}

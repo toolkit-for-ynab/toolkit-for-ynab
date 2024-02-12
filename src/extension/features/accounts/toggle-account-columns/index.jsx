@@ -12,7 +12,7 @@ import { l10n, getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extens
 export const ShowMemoButton = ({ defaultIsShown, id, toggleState }) => {
   const toggleHidden = () => {
     toggleState(!defaultIsShown);
-    getModalService().closeModal();
+    getModalService()?.closeModal();
   };
 
   return (

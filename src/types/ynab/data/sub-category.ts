@@ -4,4 +4,7 @@ export interface YNABSubCategory {
   note: string;
   sortableIndex: number;
   goalTargetAmount?: number;
+  isTombstone: boolean;
+  internalName: string;
+  name: string;
 }

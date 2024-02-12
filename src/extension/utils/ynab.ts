@@ -85,7 +85,7 @@ export function getBudgetService() {
 }
 
 export function getModalService() {
-  return serviceLookup<YNABModalService>('modal') || {};
+  return serviceLookup<YNABModalService>('modal');
 }
 
 export function getRegisterGridService() {

@@ -27,15 +27,17 @@ export interface YNABTransaction {
   isScheduledTransaction?: boolean;
   isSplit?: boolean;
   isTombstone?: boolean;
+  isOnBudgetTransfer?: boolean;
   matchedTransaction: YNABTransaction | null;
   matchedTransactionId: string | null;
   memo: string;
-  month: DateWithoutTime;
+  month: string;
   originalImportedPayee: YNABPayee | null;
   parentTransaction?: YNABTransaction;
   parentEntityId?: string;
   payee: YNABPayee | null;
   payeeId: string | null;
+  payeeName: string;
   scheduledTransactionId: string | null;
   scheduledTransaction: YNABTransaction | null;
   source: keyof YNABConstants['TransactionSource'] | null;
@@ -51,6 +53,8 @@ export interface YNABTransaction {
   transferTransaction: YNABTransaction | null;
   transferTransactionId: string | null;
   ynabId: string | null;
+  inflow: number;
+  outflow: number;
 
   isUncleared?: () => boolean;
   isReconciled?: () => boolean;

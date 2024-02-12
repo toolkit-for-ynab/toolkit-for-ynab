@@ -15,10 +15,11 @@
     "paths": {
       "*": ["./types/*.d.ts"],
       "toolkit/*": ["./src/*"],
-      "toolkit-reports/*": ["./src/features/toolkit-reports/*"]
+      "toolkit-reports/*": ["./src/extension/features/toolkit-reports/*"]
     }
   },
   "include": ["./src", "./scripts"],
+  "exclude": ["./dist", "./.yarn", "./node_modules"],
   "ts-node": {
     "transpileOnly": true,
     "files": true,
