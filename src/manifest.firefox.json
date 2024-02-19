@@ -10,6 +10,17 @@
       "all_frames": true,
       "run_at": "document_idle",
       "js": ["content-scripts/extension-bridge.js"]
+    },
+    {
+      "matches": [
+        "http://*.youneedabudget.com/*",
+        "https://*.youneedabudget.com/*",
+        "https://*.ynab.com/*",
+        "http://*.ynab.com/*"
+      ],
+      "all_frames": true,
+      "run_at": "document_start",
+      "js": ["content-scripts/enable-ember-debug.js"]
     }
   ],
   "web_accessible_resources": ["assets/*", "web-accessibles/*"],
