@@ -27,5 +27,5 @@ body.theme-classic {
 .budget-table-row.is-checked,
 .budget-table-row.is-checked .budget-table-cell-name,
 .budget-table-row.is-checked .budget-table-cell-budgeted {
-  background: var(--background_table_row_selected) !important;
+  background: var(--backgroundTableRowSelected) !important;
 }

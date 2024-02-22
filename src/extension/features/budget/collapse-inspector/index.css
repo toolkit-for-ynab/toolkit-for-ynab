@@ -15,7 +15,7 @@
   position: relative;
   left: 7px;
   margin: 0px;
-  background: var(--sidebar_background);
+  background: var(--sidebarBackground);
   border-radius: 4px;
 }
 
@@ -23,7 +23,7 @@
   position: relative;
   left: -5px;
   margin: 0px;
-  background: var(--sidebar_background);
+  background: var(--sidebarBackground);
   border-radius: 4px;
 }
 

@@ -12,10 +12,8 @@
 }
 
 body {
-  --budget_balance_warning_background: var(--callout_section_warning_strong_background);
-  --banner_warning_button_background: var(--callout_section_warning_button_background);
-  --banner_warning_button_background_active: var(
-    --callout_section_warning_strong_background_emphasis
-  );
-  --banner_warning_button_label: var(--callout_section_warning_button_foreground);
+  --budget_balance_warning_background: var(--calloutSectionWarningStrongBackground);
+  --banner_warning_button_background: var(--calloutSectionWarningButtonBackground);
+  --banner_warning_button_background_active: var(--calloutSectionWarningStrongBackgroundEmphasis);
+  --banner_warning_button_label: var(--calloutSectionWarningButtonForeground);
 }
