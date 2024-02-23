@@ -4,6 +4,8 @@ import {
   ensureGoalColumn,
   GOAL_TABLE_CELL_CLASSNAME,
 } from 'toolkit/extension/features/budget/utils';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 
 export class GoalIndicator extends Feature {
   injectCSS() {
@@ -11,15 +13,25 @@ export class GoalIndicator extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteBudgetPage();
   }
 
   destroy() {
     $('.tk-goal-indicator').remove();
   }
 
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (isClassInChangedNodes('budget-table-row', changedNodes)) {
+      this.invoke();
+    }
+  }
+
   invoke() {
-    this.addToolkitEmberHook('budget-table-row', 'didRender', this.addGoalIndicator);
+    $('.budget-table-row').each((_, element) => {
+      this.addGoalIndicator(element);
+    });
   }
 
   addGoalIndicator(element) {
