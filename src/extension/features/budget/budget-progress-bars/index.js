@@ -1,6 +1,8 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { pacingForCategory } from 'toolkit/extension/utils/pacing';
 import { getEmberView } from 'toolkit/extension/utils/ember';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 
 const PROGRESS_INDICATOR_WIDTH = 0.001; // Current month progress indicator width
 
@@ -10,7 +12,7 @@ export class BudgetProgressBars extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteBudgetPage();
   }
 
   destroy() {
@@ -26,9 +28,17 @@ export class BudgetProgressBars extends Feature {
     });
   }
 
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (isClassInChangedNodes('budget-table-row', changedNodes)) {
+      this.invoke();
+    }
+  }
+
   invoke() {
-    this.addToolkitEmberHook('budget-table-row', 'didRender', this.addProgressBars, {
-      debounce: 50,
+    $('.budget-table-row').each((_, element) => {
+      this.addProgressBars(element);
     });
   }
 
