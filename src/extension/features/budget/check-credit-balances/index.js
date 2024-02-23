@@ -6,7 +6,7 @@ import {
 } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { budgetInspectorButtonInChangesSet } from 'toolkit/extension/features/budget/utils';
+import { budgetInspectorButtonInChangedNodes } from 'toolkit/extension/features/budget/utils';
 
 export class CheckCreditBalances extends Feature {
   injectCSS() {
@@ -24,7 +24,7 @@ export class CheckCreditBalances extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (budgetInspectorButtonInChangesSet(changedNodes)) {
+    if (budgetInspectorButtonInChangedNodes(changedNodes)) {
       this.addRectifyDifferenceButton();
     }
 

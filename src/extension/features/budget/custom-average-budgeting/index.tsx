@@ -6,7 +6,7 @@ import { Feature } from '../../feature';
 import { componentAfter } from 'toolkit/extension/utils/react';
 import type { FeatureSetting } from 'toolkit/types/toolkit/features';
 import type { BudgetTableRowComponent } from 'toolkit/types/ynab/components/BudgetTableRow';
-import { budgetInspectorButtonInChangesSet } from 'toolkit/extension/features/budget/utils';
+import { budgetInspectorButtonInChangedNodes } from 'toolkit/extension/features/budget/utils';
 
 const QuickBudgetButton = ({
   setting,
@@ -34,7 +34,7 @@ const QuickBudgetButton = ({
 
 export class CustomAverageBudgeting extends Feature {
   observe(changedNodes: Set<string>) {
-    if (budgetInspectorButtonInChangesSet(changedNodes)) {
+    if (budgetInspectorButtonInChangedNodes(changedNodes)) {
       this._renderButton();
     }
   }
