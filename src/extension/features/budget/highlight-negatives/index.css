@@ -1,6 +1,6 @@
 .budget-table-row .ynab-new-budget-available-number.cautious.credit {
-  background-color: var(--category_balance_negative_background) !important;
-  color: var(--category_balance_negative_label) !important;
+  background-color: var(--categoryBalanceNegativeBackground) !important;
+  color: var(--categoryBalanceNegativeLabel) !important;
 }
 
 body.tk-custom-colours-enabled[tk-custom-colours-negative-square]

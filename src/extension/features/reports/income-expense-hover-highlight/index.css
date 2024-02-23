@@ -7,7 +7,7 @@ body.theme-classic {
 }
 
 body.theme-new-default {
-  --tk-expense-rep-hl-color: var(--default_text);
+  --tk-expense-rep-hl-color: var(--textPrimary);
   --tk-expense-rep-hl-pos: #577f2c;
   --tk-expense-rep-hl-neg: #ff6b6b;
   --tk-text-stroke: 0;
@@ -21,7 +21,7 @@ body.theme-classic {
 .income-expense-row:hover:not(.income-expense-h1):not(.income-expense-first-column)
   .income-expense-column,
 .income-expense-row:hover:not(.income-expense-h1) .income-expense-first-column {
-  background: var(--background_table_row_selected) !important;
+  background: var(--backgroundTableRowSelected) !important;
   color: var(--tk-expense-rep-hl-color) !important;
 }
 

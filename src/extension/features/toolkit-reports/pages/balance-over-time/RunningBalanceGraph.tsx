@@ -18,7 +18,7 @@ export const RunningBalanceGraph = ({ series }: RunningBalanceGraphProps) => {
 
   // On every change of series, rerender our graph to the report container
   useEffect(() => {
-    let textColor = 'var(--label_primary)';
+    let textColor = 'var(--labelPrimary)';
     // @ts-ignore Incorrect typings for point from Highcharts
     Highcharts.chart(GRAPH_ID, {
       title: {

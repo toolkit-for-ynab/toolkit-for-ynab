@@ -5,10 +5,10 @@
   &__child-row,
   &__child-summary-row,
   &__title-row--collapsed {
-    background: var(--background_primary);
+    background: var(--backgroundPrimary);
 
     &:hover {
-      background-color: var(--background_table_row_selected);
+      background-color: var(--backgroundTableRowSelected);
     }
 
     body.theme-classic &:hover {

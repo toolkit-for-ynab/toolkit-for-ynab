@@ -3,7 +3,7 @@
 }
 
 .tk-toggle-privacy {
-  color: var(--sidebar_text_default);
+  color: var(--sidebarLabelPrimary);
   padding: 1rem;
 }
 

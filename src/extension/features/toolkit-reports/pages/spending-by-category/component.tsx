@@ -274,7 +274,7 @@ export class SpendingByCategoryComponent extends React.Component<
               )}%)`;
             },
             style: {
-              color: 'var(--label_primary)',
+              color: 'var(--labelPrimary)',
               textOutline: 'none',
             },
           },
@@ -296,7 +296,7 @@ export class SpendingByCategoryComponent extends React.Component<
         align: 'center',
         verticalAlign: this.state.useBarChart ? 'top' : 'middle',
         text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
-        style: { color: 'var(--label_primary)' },
+        style: { color: 'var(--labelPrimary)' },
       },
       series: [
         {
@@ -310,14 +310,14 @@ export class SpendingByCategoryComponent extends React.Component<
       drilldown: {
         series: drillDownData,
         activeDataLabelStyle: {
-          color: 'var(--label_primary)',
+          color: 'var(--labelPrimary)',
         },
       },
       xAxis: {
         type: 'category',
         labels: {
           style: {
-            color: 'var(--label_primary)',
+            color: 'var(--labelPrimary)',
             textOutline: 'none',
           },
         },

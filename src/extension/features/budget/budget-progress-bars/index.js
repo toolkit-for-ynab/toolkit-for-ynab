@@ -54,7 +54,7 @@ export class BudgetProgressBars extends Feature {
       `linear-gradient(
         to right,
         var(--tk-color-goal-fill) ${goalPercentageComplete}%,
-        var(--table_row_background) ${goalPercentageComplete}%
+        var(--backgroundTableRow) ${goalPercentageComplete}%
       )`
     );
   };
@@ -85,9 +85,9 @@ export class BudgetProgressBars extends Feature {
           generateProgressBarStyle(
             [
               'var(--tk-color-pacing-fill)',
-              'var(--table_row_background)',
+              'var(--backgroundTableRow)',
               'var(--tk-color-progress-bar-month-indicator)',
-              'var(--table_row_background)',
+              'var(--backgroundTableRow)',
             ],
             [cappedBudgetedPace, monthPace - PROGRESS_INDICATOR_WIDTH, monthPace]
           )
@@ -100,7 +100,7 @@ export class BudgetProgressBars extends Feature {
               'var(--tk-color-pacing-fill)',
               'var(--tk-color-progress-bar-month-indicator)',
               'var(--tk-color-pacing-fill)',
-              'var(--table_row_background)',
+              'var(--backgroundTableRow)',
             ],
             [monthPace - PROGRESS_INDICATOR_WIDTH, monthPace, cappedBudgetedPace]
           )
@@ -111,9 +111,9 @@ export class BudgetProgressBars extends Feature {
         'background',
         generateProgressBarStyle(
           [
-            'var(--table_row_background)',
+            'var(--backgroundTableRow)',
             'var(--tk-color-progress-bar-month-indicator)',
-            'var(--table_row_background)',
+            'var(--backgroundTableRow)',
           ],
           [monthPace - PROGRESS_INDICATOR_WIDTH, monthPace]
         )
