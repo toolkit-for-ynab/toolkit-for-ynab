@@ -29,7 +29,7 @@ export function ensureGoalColumn(element: HTMLElement | null): boolean {
 
   const $goalContainer = $('<div>', {
     class: `${GOAL_TABLE_CELL_CLASSNAME} budget-table-row-li`,
-  }).text(isBudgetHeaderLabels ? 'GOAL' : '');
+  }).text(isBudgetHeaderLabels ? 'TARGET' : '');
 
   $('.budget-table-cell-name', element).after($goalContainer);
   if (!isBudgetHeaderLabels) {
