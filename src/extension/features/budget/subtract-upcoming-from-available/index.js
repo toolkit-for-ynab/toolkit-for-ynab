@@ -2,19 +2,15 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getSelectedMonth } from 'toolkit/extension/utils/ynab';
 import { handleBudgetBreakdownAvailableBalance } from './budget-breakdown-available-balance';
 import { handleBudgetBreakdownMonthlyTotals } from './budget-breakdown-monthly-totals';
-import { handleBudgetTableRow } from './budget-table-row';
+import { handleBudgetTableRows } from './budget-table-row';
 import { setCategoriesObject } from './categories';
 import * as destroyHelpers from './destroy-helpers';
 import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class SubtractUpcomingFromAvailable extends Feature {
   shouldInvoke() {
-    return true;
-  }
-
-  invoke() {
-    setCategoriesObject();
-    this.addToolkitEmberHook('budget-table-row', 'didRender', handleBudgetTableRow);
+    return isCurrentRouteBudgetPage();
   }
 
   observe(changedNodes) {
@@ -24,11 +20,13 @@ export class SubtractUpcomingFromAvailable extends Feature {
       handleBudgetBreakdownAvailableBalance();
       handleBudgetBreakdownMonthlyTotals();
     }
+    if (isClassInChangedNodes('budget-table-row', changedNodes)) {
+      setCategoriesObject();
+      handleBudgetTableRows();
+    }
   }
 
-  onRouteChanged() {
-    setCategoriesObject();
-  }
+  invoke() {}
 
   destroy() {
     destroyHelpers.resetInspectorMessage();
