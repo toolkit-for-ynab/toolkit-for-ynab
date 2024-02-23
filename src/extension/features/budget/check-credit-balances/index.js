@@ -79,7 +79,8 @@ export class CheckCreditBalances extends Feature {
     const rectifyDifference = (event) => {
       currencyInput.click();
       input.value = ynab.formatCurrency(category.budgeted + difference);
-      input.blur();
+      input.dispatchEvent(new Event('change'));
+      input.dispatchEvent(new Event('blur'));
       event.currentTarget.setAttribute('disabled', true); // Disable button once it's clicked.
     };
     const buttonDiv = this.createButton(formattedDifference, rectifyDifference);
