@@ -30,3 +30,13 @@ export function compareSemanticVersion(left: string, right: string) {
 
   return 0;
 }
+
+export function isClassInChangedNodes(className: string, changedNodes: Set<string>) {
+  for (const node of changedNodes) {
+    if (!!node?.split(' ')?.some((c) => c === className)) {
+      return true;
+    }
+  }
+
+  return false;
+}

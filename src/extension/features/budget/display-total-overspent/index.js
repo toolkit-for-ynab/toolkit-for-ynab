@@ -1,11 +1,11 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { budgetInspectorButtonInChangedNodes } from 'toolkit/extension/features/budget/utils';
+import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 
 export class DisplayTotalOverspent extends Feature {
   observe(changedNodes) {
-    if (budgetInspectorButtonInChangedNodes(changedNodes)) {
+    if (isClassInChangedNodes('budget-inspector-button', changedNodes)) {
       this.addTotalOverspent();
     }
   }

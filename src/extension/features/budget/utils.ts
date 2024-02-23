@@ -42,17 +42,3 @@ export function ensureGoalColumn(element: HTMLElement | null): boolean {
 export function budgetRowInChangesSet(changes: Set<string>) {
   return changes.has('budget-table-row js-budget-table-row budget-table-row-ul is-sub-category');
 }
-
-export function budgetInspectorButtonInChangedNodes(changes: Set<string>) {
-  return isClassInChangedNodes('budget-inspector-button', changes);
-}
-
-export function isClassInChangedNodes(className: string, changes: Set<string>) {
-  for (const node of changes) {
-    if (!!node?.split(' ')?.some((x) => x === className)) {
-      return true;
-    }
-  }
-
-  return false;
-}

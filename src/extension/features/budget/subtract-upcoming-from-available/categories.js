@@ -102,7 +102,8 @@ export function setCategoriesObject() {
     allBudgetMonthsViewModel.monthlySubCategoryBudgetCalculationsCollection;
   if (!categoryCalculationsCollection) return;
 
-  const categoriesArray = categoryCalculationsCollection._internalDataArray;
+  const categoriesArray = categoryCalculationsCollection.collectionItems;
+  if (!categoriesArray) return;
 
   relevantCategorySet.clear();
   for (const category of categoriesArray) {
