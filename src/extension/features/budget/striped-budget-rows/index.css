@@ -2,7 +2,7 @@ body,
 body.theme-new-default {
   --tk-striped-budget-row-color: #f4f4f4;
   --tk-striped-budget-row-selected-color: #bbd2e4;
-  --table_header_background_default: #efefef;
+  --backgroundTableHeader: #efefef;
 }
 
 body.theme-classic {
@@ -13,7 +13,7 @@ body.theme-classic {
 body.theme-dark {
   --tk-striped-budget-row-color: #2b2b2e;
   --tk-striped-budget-row-selected-color: #2f4969;
-  --table_header_background_default: #343437;
+  --backgroundTableHeader: #343437;
 }
 
 .budget-table-row.is-sub-category:nth-of-type(even):not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {

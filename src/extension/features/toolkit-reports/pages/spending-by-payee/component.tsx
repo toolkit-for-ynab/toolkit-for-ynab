@@ -224,7 +224,7 @@ export class SpendingByPayeeComponent extends React.Component<
               )}%)`;
             },
             style: {
-              color: 'var(--label_primary)',
+              color: 'var(--labelPrimary)',
               textOutline: 'none',
             },
           },
@@ -246,7 +246,7 @@ export class SpendingByPayeeComponent extends React.Component<
         align: 'center',
         verticalAlign: this.state.useBarChart ? 'top' : 'middle',
         text: `Total Spending<br><span class="currency">${formatCurrency(totalSpending)}</span>`,
-        style: { color: 'var(--label_primary)' },
+        style: { color: 'var(--labelPrimary)' },
       },
       series: [
         {
@@ -261,7 +261,7 @@ export class SpendingByPayeeComponent extends React.Component<
         type: 'category',
         labels: {
           style: {
-            color: 'var(--label_primary)',
+            color: 'var(--labelPrimary)',
             textOutline: 'none',
           },
         },

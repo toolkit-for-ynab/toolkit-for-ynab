@@ -11,7 +11,7 @@ export const OutflowGraph = ({ series }: { series: Highcharts.SeriesLineOptions[
   const GRAPH_ID = 'tk-outflow-over-time-report-graph';
 
   useEffect(() => {
-    let textColor = 'var(--label_primary)';
+    let textColor = 'var(--labelPrimary)';
     Highcharts.chart(GRAPH_ID, {
       title: {
         text: 'Outflow Over Time',

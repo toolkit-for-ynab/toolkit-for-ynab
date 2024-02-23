@@ -142,7 +142,7 @@ export class NetWorthComponent extends React.Component<NetWorthProps, NetWorthSt
       xAxis: {
         categories: labels,
         labels: {
-          style: { color: 'var(--label_primary)' },
+          style: { color: 'var(--labelPrimary)' },
         },
       },
       yAxis: {
@@ -151,7 +151,7 @@ export class NetWorthComponent extends React.Component<NetWorthProps, NetWorthSt
           formatter: function () {
             return formatCurrency(this.value);
           },
-          style: { color: 'var(--label_primary)' },
+          style: { color: 'var(--labelPrimary)' },
         },
       },
       plotOptions: {

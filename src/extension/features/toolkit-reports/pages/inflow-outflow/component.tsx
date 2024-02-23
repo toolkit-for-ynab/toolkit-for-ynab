@@ -103,7 +103,7 @@ export class InflowOutflowComponent extends React.Component<
       xAxis: {
         categories: labels,
         labels: {
-          style: { color: 'var(--label_primary)' },
+          style: { color: 'var(--labelPrimary)' },
         },
       },
       yAxis: {
@@ -112,7 +112,7 @@ export class InflowOutflowComponent extends React.Component<
           formatter: function () {
             return formatCurrency(this.value);
           },
-          style: { color: 'var(--label_primary)' },
+          style: { color: 'var(--labelPrimary)' },
         },
       },
       plotOptions: {

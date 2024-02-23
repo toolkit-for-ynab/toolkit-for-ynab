@@ -1,8 +1,8 @@
 .tk-categories-filter-input {
   float: right;
   border-radius: 0.35rem;
-  border: 1px solid var(--action_primary);
-  color: var(--label_primary);
+  border: 1px solid var(--actionPrimary);
+  color: var(--labelPrimary);
   outline: none;
   padding: 0.3rem 1.2rem 0.3rem 1.6rem;
   z-index: 10;
@@ -18,7 +18,7 @@
 }
 
 .tk-categories-filter-icon {
-  color: var(--action_primary);
+  color: var(--actionPrimary);
   left: 0.5rem;
   position: absolute;
   top: 0.55rem;
@@ -31,7 +31,7 @@
   padding: 0 !important;
   display: block !important;
 
-  color: var(--action_primary);
+  color: var(--actionPrimary);
   cursor: pointer;
   position: absolute;
   right: 0.25rem;

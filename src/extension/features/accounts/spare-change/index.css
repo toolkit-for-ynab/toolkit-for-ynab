@@ -7,13 +7,13 @@
 }
 
 .tk-spare-change .currency.positive {
-  color: var(--header_label_positive);
+  color: var(--labelPositive);
 }
 
 .tk-spare-change .currency.negative {
-  color: var(--header_label_negative);
+  color: var(--labelNegative);
 }
 
 .tk-spare-change .currency.zero {
-  color: var(--header_label_zero);
+  color: var(--categoryBalanceZeroLabel);
 }

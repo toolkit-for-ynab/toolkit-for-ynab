@@ -1,6 +1,6 @@
 .tk-report-selector {
-  background-color: var(--header_background);
-  color: var(--sidebar_label_primary);
+  background-color: var(--headerBackground);
+  color: var(--sidebarLabelPrimary);
   padding: 0.5rem;
   display: flex;
   gap: 0.5rem;
@@ -14,18 +14,18 @@
     padding: 0.4em 1em;
     font-weight: 500;
     white-space: nowrap;
-    color: var(--button_secondary_label);
-    background-color: var(--button_secondary_background);
+    color: var(--buttonSecondaryLabel);
+    background-color: var(--buttonSecondaryBackground);
 
     &:hover {
-      background-color: var(--button_secondary_background_active);
+      background-color: var(--buttonSecondaryBackgroundActive);
     }
 
     &--active {
-      color: var(--sidebar_label_primary);
-      background-color: var(--button_primary_background);
+      color: var(--sidebarLabelPrimary);
+      background-color: var(--buttonPrimaryBackground);
       &:hover {
-        background-color: var(--button_primary_background);
+        background-color: var(--buttonPrimaryBackground);
       }
     }
   }

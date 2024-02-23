@@ -4,7 +4,7 @@
 }
 
 .tk-bulk-edit-memo .tk-grid-actions button.tk-memo-cancel {
-  border: 2px solid var(--secondary_action);
+  border: 2px solid var(--actionSecondary);
   padding: 0.4em 0.6em;
   margin-right: 5px;
 }
