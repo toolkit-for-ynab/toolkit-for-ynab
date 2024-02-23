@@ -6,6 +6,7 @@ import { getCurrentBudgetDate, getEntityManager } from 'toolkit/extension/utils/
 
 import { FormattedCurrency } from './FormattedCurrency';
 import { InspectorCard } from './InspectorCard';
+import { budgetInspectorButtonInChangesSet } from 'toolkit/extension/features/budget/utils';
 
 const BreakdownItem = ({ label, children, className = '' }) => {
   return (
@@ -204,7 +205,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
       return;
     }
 
-    if (changedNodes.has('budget-inspector-button')) {
+    if (budgetInspectorButtonInChangesSet(changedNodes)) {
       this.addMonthlyGoalsOverview();
     }
   }

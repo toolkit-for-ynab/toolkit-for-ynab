@@ -5,6 +5,7 @@ import { handleBudgetBreakdownMonthlyTotals } from './budget-breakdown-monthly-t
 import { handleBudgetTableRow } from './budget-table-row';
 import { setCategoriesObject } from './categories';
 import * as destroyHelpers from './destroy-helpers';
+import { budgetInspectorButtonInChangesSet } from 'toolkit/extension/features/budget/utils';
 
 export class SubtractUpcomingFromAvailable extends Feature {
   shouldInvoke() {
@@ -19,7 +20,7 @@ export class SubtractUpcomingFromAvailable extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (changedNodes.has('budget-inspector-button')) {
+    if (budgetInspectorButtonInChangesSet(changedNodes)) {
       handleBudgetBreakdownAvailableBalance();
       handleBudgetBreakdownMonthlyTotals();
     }
