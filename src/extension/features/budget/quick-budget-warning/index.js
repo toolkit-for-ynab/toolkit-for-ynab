@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
-import { budgetInspectorButtonInChangedNodes } from 'toolkit/extension/features/budget/utils';
+import { budgetInspectorButtonInChangesSet } from 'toolkit/extension/features/budget/utils';
 
 export class QuickBudgetWarning extends Feature {
   shouldInvoke() {
@@ -54,7 +54,7 @@ export class QuickBudgetWarning extends Feature {
       changedNodes.has('navlink-budget active') ||
       changedNodes.has('budget-inspector') ||
       changedNodes.has('inspector-quick-budget') ||
-      budgetInspectorButtonInChangedNodes(changedNodes)
+      budgetInspectorButtonInChangesSet(changedNodes)
     ) {
       this.invoke();
     }

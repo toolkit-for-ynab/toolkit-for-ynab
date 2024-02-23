@@ -43,13 +43,15 @@ export function budgetRowInChangesSet(changes: Set<string>) {
   return changes.has('budget-table-row js-budget-table-row budget-table-row-ul is-sub-category');
 }
 
-export function budgetInspectorButtonInChangedNodes(changedNodes: Set<string>) {
-  let isInSet = false;
-  for (const node of changedNodes) {
-    if (node?.includes('budget-inspector-button')) {
-      isInSet = true;
-    }
-  }
-
-  return isInSet;
+export function budgetInspectorButtonInChangesSet(changes: Set<string>) {
+  return (
+    changes.has('budget-inspector-button js-focus-on-start underfunded') ||
+    changes.has('budget-inspector-button underfunded') ||
+    changes.has('budget-inspector-button  assigned-last month') ||
+    changes.has('budget-inspector-button  paid-last month') ||
+    changes.has('budget-inspector-button  average-assigned') ||
+    changes.has('budget-inspector-button  average-paid') ||
+    changes.has('budget-inspector-button  set-available amount to zero') ||
+    changes.has('budget-inspector-button  reset-assigned amount')
+  );
 }
