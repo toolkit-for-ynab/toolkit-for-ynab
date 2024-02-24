@@ -97,7 +97,6 @@ export class CheckCreditBalances extends Feature {
   }
 
   checkCategoryForDifference(categoryElement) {
-    console.log('checkCategoryForDifference');
     if (!isCurrentMonthSelected()) return;
 
     const category = getEmberView(categoryElement.id).category;

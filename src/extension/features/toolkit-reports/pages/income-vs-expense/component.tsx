@@ -320,7 +320,6 @@ export class IncomeVsExpenseComponent extends React.Component<
   _createEmptyMonthMapFromFilters() {
     const { fromDate, toDate } = this.props.filters!.dateFilter;
     const date = fromDate.clone();
-    console.log('Date', date);
     const dates = {
       // TODO: is this DateWithoutTime or Moment? Or is it the same shit?
       [date.toISOString()]: createMonthlyTotalsMap(date),
