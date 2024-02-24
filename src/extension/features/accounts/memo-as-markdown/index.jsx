@@ -3,6 +3,8 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { componentPrepend } from 'toolkit/extension/utils/react';
 import ReactMarkdown from 'react-markdown';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
+import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 
 export class MemoAsMarkdown extends Feature {
   injectCSS() {
@@ -10,53 +12,75 @@ export class MemoAsMarkdown extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteAccountsPage();
   }
 
   applyMarkdown = (element) => {
-    const view = getEmberView(element.getAttribute('id'));
-    if (!view) {
+    const transactionRows = getEmberView(element.id)?.componentRows;
+    if (!transactionRows || !transactionRows.length) {
       return;
     }
-
-    const toolkitMemoContainer = element.querySelector('.tk-markdown-memo');
-    if (toolkitMemoContainer) {
-      return;
-    }
-
-    const handleClick = (event) => {
-      if (event.target.tagName === 'A') {
-        event.stopPropagation();
+    transactionRows.forEach((row) => {
+      if (!row.content?.entityId) {
+        return;
       }
-    };
+      const selector = `[data-row-id='${row.content.entityId}'].ynab-grid-body-row`;
+      const transactionElement = element.querySelector(selector);
+      if (!transactionElement) {
+        return;
+      }
 
-    const note = view?.attrs?.content?.value?.memo;
-    const originalMemo = element.querySelector('.ynab-grid-cell-memo span');
-    if (note && originalMemo) {
-      $(originalMemo).hide();
+      const toolkitMemoContainer = transactionElement.querySelector('.tk-markdown-memo');
+      if (toolkitMemoContainer) {
+        return;
+      }
 
-      componentPrepend(
-        <div className="tk-markdown-memo" onClick={handleClick}>
-          <ReactMarkdown
-            components={{
-              link: ({ href, children }) => (
-                <a href={href} target="_blank" rel="noopener noreferrer">
-                  {children}
-                </a>
-              ),
-            }}
-          >
-            {note}
-          </ReactMarkdown>
-        </div>,
-        element.querySelector('.ynab-grid-cell-memo')
-      );
-    }
+      const note = row?.content?.memo;
+      const originalMemo = transactionElement.querySelector('.ynab-grid-cell-memo span');
+      if (note && originalMemo) {
+        $(originalMemo).hide();
+
+        const handleClick = (event) => {
+          if (event.target.tagName === 'A') {
+            event.stopPropagation();
+          }
+        };
+
+        componentPrepend(
+          <div className="tk-markdown-memo" onClick={handleClick}>
+            <ReactMarkdown
+              components={{
+                link: ({ href, children }) => (
+                  <a href={href} target="_blank" rel="noopener noreferrer">
+                    {children}
+                  </a>
+                ),
+              }}
+            >
+              {note}
+            </ReactMarkdown>
+          </div>,
+          transactionElement.querySelector('.ynab-grid-cell-memo')
+        );
+      }
+    });
   };
 
   invoke() {
-    this.addToolkitEmberHook('register/grid-row', 'didRender', this.applyMarkdown);
-    this.addToolkitEmberHook('register/grid-sub', 'didRender', this.applyMarkdown);
+    const gridContainer = document.querySelector('.ynab-grid-container');
+    if (!gridContainer) {
+      return;
+    }
+
+    this.applyMarkdown(gridContainer);
+  }
+
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (isClassInChangedNodes('ynab-grid-body-row', changedNodes)) {
+      this.invoke();
+    }
   }
 
   destroy() {
