@@ -103,10 +103,6 @@ Option to exclude credit cards from the days of buffering calculation, this will
 
 Adds a button or buttons to fund half of your category's monthly Target amount. Perfect for budget categories you fund half of twice a month. Low Half/High Half refers to which you assign when the monthly Target amount is an odd number. Works with multiple selected budget categories.
 
-## Add Goal Indicator
-
-Add an indicator to subcategories with goals. Types: (M)onthly goal, target by (D)ate goal, (T)arget without date, (S)pending goals, and (U)pcoming transactions.
-
 ## Add Master Category Toggle
 
 Add a toggle to the budget table header to expand/collapse all categories at once. You can also enable "Solo Mode" by right clicking the toggle which will ensure only one category is expanded at a time.
@@ -119,9 +115,13 @@ Add a column for "pacing" which shows you how much money you have left in your b
 
 Pop up a confirmation prompt when using a quick budget option to prevent mistakingly altering your budget.
 
-## Add Total Monthly Goals
+## Add Target Indicator
 
-Add a 'Total Monthly Goals' section to the budget inspector, which displays the total amount of monthly funding goals. It's also possible to have a more detailed overview of the goals, and information of 'Income vs Spending' for the month.
+Add an indicator to subcategories with targets. Types: (M)onthly Savings Builder, Savings Balance By (D)ate, Savings (B)alance, Needed For (S)pending, (M)onthly (D)ebt Payment, and (U)pcoming transactions.
+
+## Add Total Monthly Targets
+
+Add a 'Total Monthly Targets' section to the budget inspector, which displays the total amount of monthly funding targets. It's also possible to have a more detailed overview of the targets, and information of 'Income vs Spending' for the month.
 
 ## Adjust Budget Row Height
 
@@ -163,9 +163,9 @@ The color which will be used for the Default and Classic YNAB Themes. The defaul
 
 Adds a credit card emoji 💳 to the "Credit Card Payments" category.
 
-## Display Target Goal and Emphasize Overbudget
+## Display Target and Emphasize Overbudget
 
-Adds a "Goal" column which displays the target goal amount for every category with a goal. Optionally emphasize the amount as red if you've budgeted beyond your goal or green if you've met/exceeded your goal.
+Adds a "Target" column which displays the target amount for every category with a target. Optionally emphasize the amount as red if you've budgeted beyond your target or green if you've met/exceeded your target.
 
 ## Emphasize Available to Assign
 
@@ -175,9 +175,9 @@ Changes the "Ready to Assign" background color to yellow if there is unallocated
 
 Change the month background color to better distinguish you're looking at the current month.
 
-## Emphasize Underfunded Goals
+## Emphasize Underfunded Targets
 
-Change the default orange goal underfunded warning to blue to better differentiate it from credit card overspending.
+Change the default orange target underfunded warning to blue to better differentiate it from credit card overspending.
 
 ## Emphasize Unmet Target Balances
 
