@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom/client';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { componentPrepend } from 'toolkit/extension/utils/react';
@@ -36,7 +37,9 @@ export class MemoAsMarkdown extends Feature {
       }
 
       const note = row?.content?.memo;
-      const originalMemo = transactionElement.querySelector('.ynab-grid-cell-memo span');
+      const originalMemo = transactionElement.querySelector(
+        '.ynab-grid-cell-memo span:not(.tk-markdown-memo)'
+      );
       if (note && originalMemo) {
         $(originalMemo).hide();
 
@@ -46,22 +49,26 @@ export class MemoAsMarkdown extends Feature {
           }
         };
 
-        componentPrepend(
-          <div className="tk-markdown-memo" onClick={handleClick}>
-            <ReactMarkdown
-              components={{
-                link: ({ href, children }) => (
-                  <a href={href} target="_blank" rel="noopener noreferrer">
-                    {children}
-                  </a>
-                ),
-              }}
-            >
-              {note}
-            </ReactMarkdown>
-          </div>,
-          transactionElement.querySelector('.ynab-grid-cell-memo')
+        const span = document.createElement('span');
+        span.className = 'tk-markdown-memo';
+        span.onclick = handleClick;
+        ReactDOM.createRoot(span).render(
+          <ReactMarkdown
+            components={{
+              link: ({ href, children }) => (
+                <a href={href} target="_blank" rel="noopener noreferrer">
+                  {children}
+                </a>
+              ),
+            }}
+          >
+            {note}
+          </ReactMarkdown>
         );
+        const memoCell = transactionElement.querySelector('.ynab-grid-cell-memo');
+        if (memoCell) {
+          memoCell.prepend(span);
+        }
       }
     });
   };
