@@ -2,10 +2,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
-import { componentPrepend } from 'toolkit/extension/utils/react';
 import ReactMarkdown from 'react-markdown';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
-import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 
 export class MemoAsMarkdown extends Feature {
   injectCSS() {
@@ -85,7 +83,7 @@ export class MemoAsMarkdown extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (isClassInChangedNodes('ynab-grid-body-row', changedNodes)) {
+    if (changedNodes.has('ynab-grid-body-row')) {
       this.invoke();
     }
   }

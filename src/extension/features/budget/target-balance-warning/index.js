@@ -1,7 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { getEmberView } from 'toolkit/extension/utils/ember';
 import { getBudgetService } from 'toolkit/extension/utils/ynab';
-import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 
 export class TargetBalanceWarning extends Feature {
   shouldInvoke() {
@@ -15,7 +14,7 @@ export class TargetBalanceWarning extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (isClassInChangedNodes('budget-inspector-button', changedNodes)) {
+    if (changedNodes.has('budget-inspector-button')) {
       this.modifyInspector();
     }
   }

@@ -6,10 +6,17 @@ const { later } = ynabRequire('@ember/runloop');
 const IGNORE_UPDATES = new Set([
   // every time you hover a budget row, one of these nodes change which is _just a lot_.
   'ynab-new-icon category-moves-moves-icon',
+  'ynab-new-icon',
+  'category-moves-moves-icon',
   'budget-table-cell-category-moves js-budget-toolbar-open-category-moves',
+  'budget-table-cell-category-moves',
+  'js-budget-toolbar-open-category-moves',
   'budget-table-cell-category-moves js-budget-toolbar-open-category-moves category-moves-hidden',
+  'category-moves-hidden',
   // when you scroll on an accounts page :D
-  'ynab-grid-container  scrolling',
+  'ynab-grid-container scrolling',
+  'ynab-grid-container',
+  'scrolling',
 ]);
 
 export class ObserveListener {
@@ -26,9 +33,19 @@ export class ObserveListener {
 
       const addChangedNodes = (nodes) => {
         nodes.each((index, element) => {
-          var nodeClass = $(element).attr('class');
-          if (nodeClass) {
-            this.changedNodes.add(nodeClass.replace(/ember-view/g, '').trim());
+          let nodeClass = $(element).attr('class') || '';
+          nodeClass = nodeClass.replace(/ember-view/g, '').trim();
+          if (nodeClass && !this.changedNodes.has(nodeClass)) {
+            this.changedNodes.add(nodeClass);
+
+            let splitClasses = nodeClass.split(' ');
+            if (splitClasses && splitClasses.length) {
+              splitClasses.forEach((splitClass) => {
+                if (splitClass && !this.changedNodes.has(splitClass)) {
+                  this.changedNodes.add(splitClass);
+                }
+              });
+            }
           }
         });
       };

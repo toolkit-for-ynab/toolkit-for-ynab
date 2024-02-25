@@ -2,7 +2,6 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { getBudgetService, isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
 import type { YNABBudgetMonthDisplayItem } from 'toolkit/types/ynab/services/YNABBudgetService';
-import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 
 // The concept here is that for odd monthly Target amounts there is a low half and a high half.
 // Example:  For $65.05 the low half is $32.52 (x2 = $65.04).  The high half is $32.53 (x2 - $65.06).
@@ -44,7 +43,7 @@ export class FundHalf extends Feature {
   observe(changedNodes: Set<string>) {
     if (!this.shouldInvoke()) return;
 
-    if (isClassInChangedNodes('budget-inspector-button', changedNodes)) {
+    if (changedNodes.has('budget-inspector-button')) {
       this.updateDOM();
     }
   }
