@@ -1,0 +1,23 @@
+.tk-forecast-help-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+.tk-forecast-help-modal {
+  padding: 1rem;
+  max-width: 40rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  p {
+    line-height: 1.5;
+  }
+
+  button {
+    align-self: center;
+  }
+}

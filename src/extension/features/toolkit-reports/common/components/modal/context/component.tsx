@@ -1,14 +1,18 @@
 import { ModalContainer } from '../components/modal-container';
-import React, { ComponentType, createContext } from 'react';
+import React, { ComponentType, createContext, useContext } from 'react';
 
 export type ModalContextType = {
   showModal: <T extends object>(modal: ComponentType<T>, props: T) => void;
   closeModal: () => void;
 };
 
-const { Provider, Consumer } = createContext<ModalContextType>({
-  showModal: () => {},
-  closeModal: () => {},
+const ModalContext = createContext<ModalContextType>({
+  showModal: () => {
+    throw new Error('Using ModalContext outside of ModalContext.Provider');
+  },
+  closeModal: () => {
+    throw new Error('Using ModalContext outside of ModalContext.Provider');
+  },
 });
 
 export function withModalContextProvider<T extends object>(InnerComponent: ComponentType<T>) {
@@ -26,21 +30,21 @@ export function withModalContextProvider<T extends object>(InnerComponent: Compo
 
       return (
         <React.Fragment>
-          <Provider
+          <ModalContext.Provider
             value={{
               closeModal: this._closeModal,
               showModal: this._showModal,
             }}
           >
             <InnerComponent {...this.props} />
-          </Provider>
-          {Modal && (
-            <ModalContainer
-              closeModal={this._closeModal}
-              modal={Modal}
-              modalProps={this.state.modalProps}
-            />
-          )}
+            {Modal && (
+              <ModalContainer
+                closeModal={this._closeModal}
+                modal={Modal}
+                modalProps={this.state.modalProps}
+              />
+            )}
+          </ModalContext.Provider>
         </React.Fragment>
       );
     }
@@ -62,12 +66,16 @@ export function withModalContext<T extends object>(
     return class WithModalContextProvider extends React.Component {
       render() {
         return (
-          <Consumer>
+          <ModalContext.Consumer>
             {/* @ts-ignore */}
             {(value) => <InnerComponent {...this.props} {...mapContextToProps(value)} />}
-          </Consumer>
+          </ModalContext.Consumer>
         );
       }
     };
   };
+}
+
+export function useModal() {
+  return useContext(ModalContext);
 }

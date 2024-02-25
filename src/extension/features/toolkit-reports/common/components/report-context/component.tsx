@@ -11,6 +11,7 @@ export type SelectedReportContextPropType = {
     disableTrackingAccounts?: boolean;
     includeTrackingAccounts?: boolean;
   };
+  filtersExtraComponent?: React.ComponentType<{}>;
 };
 
 export type FiltersType = {

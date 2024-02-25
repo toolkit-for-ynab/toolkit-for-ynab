@@ -24,6 +24,7 @@ export type ReportFiltersProps = {
 export class ReportFiltersComponent extends React.Component<ReportFiltersProps> {
   render() {
     const { disableCategoryFilter } = this.props.selectedReport.filterSettings;
+    const ExtraComponent = this.props.selectedReport.filtersExtraComponent;
     const { accountFilterIds, categoryFilterIds, dateFilter } = this.props.filters;
     const categoryButtonClasses = classnames(
       'tk-button',
@@ -62,6 +63,7 @@ export class ReportFiltersComponent extends React.Component<ReportFiltersProps> 
             </button>
           </div>
         </div>
+        {!!ExtraComponent && <ExtraComponent />}
       </div>
     );
   }
