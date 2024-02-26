@@ -35,13 +35,13 @@ export class ObserveListener {
         nodes.each((index, element) => {
           let nodeClass = $(element).attr('class') || '';
           nodeClass = nodeClass.replace(/ember-view/g, '').trim();
-          if (nodeClass && !this.changedNodes.has(nodeClass)) {
+          if (nodeClass) {
             this.changedNodes.add(nodeClass);
 
             let splitClasses = nodeClass.split(' ');
             if (splitClasses && splitClasses.length) {
               splitClasses.forEach((splitClass) => {
-                if (splitClass && !this.changedNodes.has(splitClass)) {
+                if (splitClass) {
                   this.changedNodes.add(splitClass);
                 }
               });
