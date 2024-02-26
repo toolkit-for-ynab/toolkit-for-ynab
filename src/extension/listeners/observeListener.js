@@ -38,14 +38,12 @@ export class ObserveListener {
           if (nodeClass) {
             this.changedNodes.add(nodeClass);
 
-            let splitClasses = nodeClass.split(' ');
-            if (splitClasses && splitClasses.length) {
-              splitClasses.forEach((splitClass) => {
-                if (splitClass) {
-                  this.changedNodes.add(splitClass);
-                }
-              });
-            }
+            const nodeClasses = nodeClass.split(' ');
+            nodeClasses.forEach((className) => {
+              if (className) {
+                this.changedNodes.add(className);
+              }
+            });
           }
         });
       };
