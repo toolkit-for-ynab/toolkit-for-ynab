@@ -67,11 +67,13 @@ export class DisplayTotalMonthlyGoals extends Feature {
       );
     });
 
+    const creditCardActivity = this.getCreditActivity();
+
     // For information about the total spent value see https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/2828
     return [
       budgetedCalculation?.immediateIncome || 0,
       budgetedCalculation?.budgeted || 0,
-      budgetedCalculation?.outflows - this.getCreditActivity(),
+      (budgetedCalculation?.outflows || creditCardActivity) - creditCardActivity,
     ];
   }
 
