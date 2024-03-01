@@ -1,15 +1,21 @@
 .tk-collapse-inspector {
   position: absolute;
   bottom: 0px;
-  margin-bottom: 5px !important;
-  width: 48px;
+}
+
+.tk-collapse-inspector button {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tk-collapse-inspector .sidebar-expand {
   position: relative;
   left: 7px;
   margin: 0px;
-  background: var(--sidebar_background);
+  background: var(--sidebarBackground);
   border-radius: 4px;
 }
 
@@ -17,7 +23,7 @@
   position: relative;
   left: -5px;
   margin: 0px;
-  background: var(--sidebar_background);
+  background: var(--sidebarBackground);
   border-radius: 4px;
 }
 

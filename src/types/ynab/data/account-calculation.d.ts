@@ -1,3 +1,0 @@
-interface YNABAccountCalculation {
-  clearedBalance: number;
-}

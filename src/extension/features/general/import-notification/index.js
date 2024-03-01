@@ -59,14 +59,18 @@ export class ImportNotification extends Feature {
   checkImportTransactions() {
     this.isActive = true;
 
-    $('.nav-account-row').each((index, row) => {
-      let account = getEmberView($(row).attr('id')).account;
-      let accountName = $('.nav-account-name', row);
+    $('.nav-account-row').each((_, element) => {
+      let account = getEmberView(element.id)?.account;
+      if (!account) {
+        return;
+      }
+
+      let accountName = $('.nav-account-name', element);
       if (accountName.length) {
         // Remove the title attribute and our underline class in case the account no longer has txns to be imported
         $(accountName).removeAttr('title').removeClass(this.importClass);
 
-        let currentTitle = $(row).find('.nav-account-name').prop('title');
+        let currentTitle = $(element).find('.nav-account-name').prop('title');
 
         // Check for both functions should be temporary until all users have been switched to new bank data
         // provider but of course we have no good way of knowing when that has occurred.

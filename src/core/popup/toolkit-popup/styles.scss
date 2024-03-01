@@ -1,79 +1,51 @@
-:root {
-  // base colors
-  --tk-header-color: #f2f2f7;
-  --tk-background-color: #ffffff;
-  --tk-text-color: #383e41;
-  --tk-action-primary: #4495d7;
-  --tk-action-primary-hover: #2b7cbe;
-
-  // src/components/toggle
-  --tk-toggle-switch-color: #636366;
-  --tk-toggle-checked-fill-color: var(--tk-action-primary);
-  --tk-toggle-unchecked-fill-color: #aeaeb2;
-
-  // src/components/button
-  --tk-button-primary-color: var(--tk-action-primary);
-  --tk-button-primary-hover-color: var(--tk-action-primary-hover);
-}
-
-@mixin dark-mode {
-  // base colors
-  --tk-text-color: #f1f1f1;
-  --tk-background-color: #232325;
-
-  // src/components/toggle
-  --tk-toggle-switch-color: #3a3a3c;
-  --tk-toggle-checked-fill-color: var(--tk-action-primary);
-  --tk-toggle-unchecked-fill-color: #8e8e93;
-
-  .logo {
-    -webkit-filter: invert(1) hue-rotate(180deg) brightness(1.2);
-    filter: invert(1) hue-rotate(180deg) brightness(1.2);
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  html[data-theme='auto'] {
-    @include dark-mode();
-  }
-}
-
-html[data-theme='dark'] {
-  @include dark-mode();
-}
-
-.logo {
-  cursor: pointer;
-}
+@use '../../common/styles/toolkit-ui-styles.scss' as ui;
 
 .popup {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   padding: 1rem;
-  text-align: center;
   background-color: var(--tk-background-color);
   color: var(--tk-text-color);
+  gap: 1.25rem;
 
-  &__title {
-    font-size: 0.9rem;
-    font-weight: lighter;
+  .logo {
+    align-self: center;
+    @include ui.dark-mode {
+      filter: drop-shadow(0px 0px 5px white);
+    }
   }
 
-  &__actions {
-    border-top: 1px solid var(--tk-text-color);
-    padding: 1rem 0px;
+  .status {
+    text-align: center;
+  }
+
+  .actions {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    button {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: center;
+      div {
+        width: 130px;
+      }
+    }
+
+    a {
+      display: flex;
+      text-decoration: none;
+
+      button {
+        flex-grow: 1;
+      }
+    }
   }
 
-  &__action {
-    font-size: 0.8rem;
+  .version {
+    align-self: flex-end;
   }
-
-  &__disabled-toggle {
-    height: 30px;
-  }
-}
-
-.disabled {
-  color: #b53c3e;
 }

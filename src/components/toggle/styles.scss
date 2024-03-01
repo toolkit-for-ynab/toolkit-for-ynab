@@ -1,5 +1,6 @@
 :root {
-  --tk-toggle-switch-color: #636366;
+  --tk-toggle-checked-switch-color: #636366;
+  --tk-toggle-unchecked-switch-color: #636366;
   --tk-toggle-checked-fill-color: #4495d7;
   --tk-toggle-unchecked-fill-color: #aeaeb2;
 }
@@ -17,10 +18,11 @@
     display: block;
     cursor: pointer;
     background-color: var(--tk-toggle-unchecked-fill-color);
-    border-radius: 13px;
-    height: 100%;
-    width: 100%;
+    border-radius: 99999px;
+    width: 4rem;
+    height: 2rem;
     transition: background-color 200ms ease;
+    box-shadow: inset rgba(0, 0, 0, 0.12) 0px 0px 2px 1px;
 
     &--labeled {
       display: flex;
@@ -30,14 +32,14 @@
 
     &::after {
       content: '';
-      background-color: var(--tk-toggle-switch-color);
-      height: calc(100% - 6px);
-      width: 50%;
-      border-radius: 12px;
+      background-color: var(--tk-toggle-unchecked-switch-color);
+      height: 1.5rem;
+      width: 1.5rem;
+      border-radius: 99999px;
       position: absolute;
-      left: 3px;
-      top: 3px;
-      transition: left 200ms ease;
+      left: 0.25rem;
+      top: 0.25rem;
+      transition: left 200ms ease, background-color 200ms ease;
     }
   }
 
@@ -58,6 +60,7 @@
   }
 
   .toggle__input:checked + .toggle__label::after {
-    left: calc(50% - 3px);
+    background-color: var(--tk-toggle-checked-switch-color);
+    left: 2.2rem;
   }
 }

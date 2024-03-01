@@ -23,132 +23,107 @@ body {
     TK_CUSTOMIZE_COLOUR_ACCENTS at the top of index.js to be defined and updated
 
     Base colours:
-    Positive: #6d9f38
+    Positive: #67c122
     Warning: #e0a41a
-    Negative: #ca481d
+    Negative: #c72c1e
   */
 
     /* Negative */
-    --callout_section_negative_accent: var(--tk-custom-colours-negative-l100c100) !important;
-    --callout_section_negative_button_background: var(
-      --tk-custom-colours-negative-l100c100
-    ) !important;
-    --callout_section_negative_button_background_active: var(
+    --calloutSectionNegativeAccent: var(--tk-custom-colours-negative-l100c100) !important;
+    --calloutSectionNegativeButtonBackground: var(--tk-custom-colours-negative-l100c100) !important;
+    --calloutSectionNegativeButtonBackgroundActive: var(
       --tk-custom-colours-negative-l075c080
     ) !important;
-    --callout_section_negative_button_foreground: var(
-      --tk-custom-colours-negative-l215c010
-    ) !important;
-    --callout_section_negative_label: var(--tk-custom-colours-negative-l025c035) !important;
-    --callout_section_negative_strong_background: var(
-      --tk-custom-colours-negative-l175c040
-    ) !important;
-    --callout_section_negative_strong_background_emphasis: var(
+    --calloutSectionNegativeButtonForeground: var(--tk-custom-colours-negative-l215c010) !important;
+    --calloutSectionNegativeLabel: var(--tk-custom-colours-negative-l025c035) !important;
+    --calloutSectionNegativeStrongBackground: var(--tk-custom-colours-negative-l175c040) !important;
+    --calloutSectionNegativeStrongBackgroundEmphasis: var(
       --tk-custom-colours-negative-l150c070
     ) !important;
-    --callout_section_negative_subtle_background: var(
-      --tk-custom-colours-negative-l215c010
-    ) !important;
-    --callout_section_negative_subtle_background_emphasis: var(
+    --calloutSectionNegativeSubtleBackground: var(--tk-custom-colours-negative-l215c010) !important;
+    --calloutSectionNegativeSubtleBackgroundEmphasis: var(
       --tk-custom-colours-negative-l175c040
     ) !important;
-    --category_balance_alternate_negative_background: var(
+    --categoryBalanceAlternateNegativeBackground: var(
       --tk-custom-colours-negative-l100c100
     ) !important;
-    --category_balance_alternate_negative_background_active: var(
+    --categoryBalanceAlternateNegativeBackgroundActive: var(
       --tk-custom-colours-negative-l075c080
     ) !important;
-    --category_balance_negative_background: var(--tk-custom-colours-negative-l175c040) !important;
-    --category_balance_negative_background_active: var(
+    --categoryBalanceAlternateNegativeLabel: var(--tk-custom-colours-negative-l215c010) !important;
+    --categoryBalanceNegativeBackground: var(--tk-custom-colours-negative-l175c040) !important;
+    --categoryBalanceNegativeBackgroundActive: var(
       --tk-custom-colours-negative-l150c070
     ) !important;
-    --category_balance_negative_label: var(--tk-custom-colours-negative-l025c035) !important;
-    --label_negative: var(--tk-custom-colours-negative-l100c100) !important;
-    --label_negative_active: var(--tk-custom-colours-negative-l075c080) !important;
-    --label_negative_disabled: var(--tk-custom-colours-negative-l200c020) !important;
-    --status_negative: var(--tk-custom-colours-negative-l100c100) !important;
+    --categoryBalanceNegativeLabel: var(--tk-custom-colours-negative-l025c035) !important;
+    --labelNegative: var(--tk-custom-colours-negative-l100c100) !important;
+    --labelNegativeActive: var(--tk-custom-colours-negative-l075c080) !important;
+    --labelNegativeDisabled: var(--tk-custom-colours-negative-l200c020) !important;
+    --statusNegative: var(--tk-custom-colours-negative-l100c100) !important;
 
     /* Positive */
-    --callout_section_positive_accent: var(--tk-custom-colours-positive-l100c100) !important;
-    --callout_section_positive_button_background: var(
-      --tk-custom-colours-positive-l075c080
-    ) !important;
-    --callout_section_positive_button_background_active: var(
+    --calloutSectionPositiveAccent: var(--tk-custom-colours-positive-l100c100) !important;
+    --calloutSectionPositiveButtonBackground: var(--tk-custom-colours-positive-l075c080) !important;
+    --calloutSectionPositiveButtonBackgroundActive: var(
       --tk-custom-colours-positive-l050c060
     ) !important;
-    --callout_section_positive_button_foreground: var(
-      --tk-custom-colours-positive-l140c010
-    ) !important;
-    --callout_section_positive_label: var(--tk-custom-colours-positive-l025c030) !important;
-    --callout_section_positive_strong_background: var(
-      --tk-custom-colours-positive-l125c055
-    ) !important;
-    --callout_section_positive_strong_background_emphasis: var(
+    --calloutSectionPositiveButtonForeground: var(--tk-custom-colours-positive-l140c010) !important;
+    --calloutSectionPositiveLabel: var(--tk-custom-colours-positive-l025c030) !important;
+    --calloutSectionPositiveStrongBackground: var(--tk-custom-colours-positive-l125c055) !important;
+    --calloutSectionPositiveStrongbackgroundEmphasis: var(
       --tk-custom-colours-positive-l115c100
     ) !important;
-    --callout_section_positive_subtle_background: var(
-      --tk-custom-colours-positive-l140c010
-    ) !important;
-    --callout_section_positive_subtle_background_emphasis: var(
+    --calloutSectionPositiveSubtleBackground: var(--tk-custom-colours-positive-l140c010) !important;
+    --calloutSectionPositiveSubtleBackgroundEmphasis: var(
       --tk-custom-colours-positive-l125c055
     ) !important;
-    --category_balance_positive_background: var(--tk-custom-colours-positive-l125c055) !important;
-    --category_balance_positive_background_active: var(
+    --categoryBalancePositiveBackground: var(--tk-custom-colours-positive-l125c055) !important;
+    --categoryBalancePositiveBackgroundActive: var(
       --tk-custom-colours-positive-l120c080
     ) !important;
-    --category_balance_positive_label: var(--tk-custom-colours-positive-l025c030) !important;
-    --label_positive: var(--tk-custom-colours-positive-l075c080) !important;
-    --label_positive_active: var(--tk-custom-colours-positive-l050c060) !important;
-    --loan_charts_positive: var(--tk-custom-colours-positive-l115c100) !important;
-    --status_positive: var(--tk-custom-colours-positive-l100c100) !important;
+    --categoryBalancePositiveLabel: var(--tk-custom-colours-positive-l025c030) !important;
+    --labelPositive: var(--tk-custom-colours-positive-l075c080) !important;
+    --labelPositiveActive: var(--tk-custom-colours-positive-l050c060) !important;
+    --loanChartsPositive: var(--tk-custom-colours-positive-l115c100) !important;
+    --statusPositive: var(--tk-custom-colours-positive-l100c100) !important;
 
     /* Warning */
-    --callout_section_warning_accent: var(--tk-custom-colours-warning-l090c095) !important;
-    --callout_section_warning_button_background: var(
-      --tk-custom-colours-warning-l100c100
+    --calloutSectionWarningAccent: var(--tk-custom-colours-warning-l190c165) !important;
+    --calloutSectionWarningButtonBackground: var(--tk-custom-colours-warning-l220c175) !important;
+    --calloutSectionWarningButtonForeground: var(--tk-custom-colours-warning-l050c055) !important;
+    --calloutSectionWarningStrongBackground: var(--tk-custom-colours-warning-l240c100) !important;
+    --calloutSectionWarningStrongBackgroundEmphasis: var(
+      --tk-custom-colours-warning-l190c165
     ) !important;
-    --callout_section_warning_button_foreground: var(
-      --tk-custom-colours-warning-l020c030
+    --calloutSectionWarningStrongBackgroundLabel: var(
+      --tk-custom-colours-warning-l050c055
     ) !important;
-    --callout_section_warning_strong_background: var(
-      --tk-custom-colours-warning-l110c055
+    --calloutSectionWarningSubtleBackground: var(--tk-custom-colours-warning-l260c015) !important;
+    --calloutSectionWarningSubtleBackgroundEmphasis: var(
+      --tk-custom-colours-warning-l240c100
     ) !important;
-    --callout_section_warning_strong_background_emphasis: var(
-      --tk-custom-colours-warning-l090c095
+    --calloutSectionWarningSubtleBackgroundLabel: var(
+      --tk-custom-colours-warning-l050c055
     ) !important;
-    --callout_section_warning_strong_background_label: var(
-      --tk-custom-colours-warning-l020c030
+    --categoryBalanceAlternateWarningBackground: var(
+      --tk-custom-colours-warning-l220c175
     ) !important;
-    --callout_section_warning_subtle_background: var(
-      --tk-custom-colours-warning-l120c010
+    --categoryBalanceAlternateWarningBackgroundActive: var(
+      --tk-custom-colours-warning-l190c165
     ) !important;
-    --callout_section_warning_subtle_background_emphasis: var(
-      --tk-custom-colours-warning-l110c055
-    ) !important;
-    --callout_section_warning_subtle_background_label: var(
-      --tk-custom-colours-warning-l020c030
-    ) !important;
-    --category_balance_alternate_warning_background: var(
-      --tk-custom-colours-warning-l100c100
-    ) !important;
-    --category_balance_alternate_warning_background_active: var(
-      --tk-custom-colours-warning-l090c095
-    ) !important;
-    --category_balance_warning_background: var(--tk-custom-colours-warning-l105c080) !important;
-    --category_balance_warning_background_active: var(
-      --tk-custom-colours-warning-l100c100
-    ) !important;
-    --category_balance_warning_label: var(--tk-custom-colours-warning-l020c030) !important;
-    --label_warning: var(--tk-custom-colours-warning-l045c055) !important;
-    --loan_charts_warning: var(--tk-custom-colours-warning-l100c100) !important;
-    --status_warning: var(--tk-custom-colours-warning-l090c095) !important;
-    --views_warning_background: var(--tk-custom-colours-warning-l110c055) !important;
-    --views_warning_background_hover: var(--tk-custom-colours-warning-l105c080) !important;
-    --views_warning_background_selected: var(--tk-custom-colours-warning-l115c030) !important;
-    --views_warning_background_selected_hover: var(--tk-custom-colours-warning-l110c055) !important;
-    --views_warning_label: var(--tk-custom-colours-warning-l020c030) !important;
-    --views_warning_label_selected: var(--tk-custom-colours-warning-l020c030) !important;
-    --views_warning_selected_accent: var(--tk-custom-colours-warning-l090c095) !important;
+    --categoryBalanceWarningBackground: var(--tk-custom-colours-warning-l230c145) !important;
+    --categoryBalanceWarningBackgroundActive: var(--tk-custom-colours-warning-l220c175) !important;
+    --categoryBalanceWarningLabel: var(--tk-custom-colours-warning-l050c055) !important;
+    --labelWarning: var(--tk-custom-colours-warning-l100c100) !important;
+    --loanChartsWarning: var(--tk-custom-colours-warning-l220c175) !important;
+    --statusWarning: var(--tk-custom-colours-warning-l220c175) !important;
+    --viewsWarningBackground: var(--tk-custom-colours-warning-l240c100) !important;
+    --viewsWarningBackgroundHover: var(--tk-custom-colours-warning-l230c145) !important;
+    --viewsWarningBackgroundSelected: var(--tk-custom-colours-warning-l250c050) !important;
+    --viewsWarningBackgroundSelectedHover: var(--tk-custom-colours-warning-l240c100) !important;
+    --viewsWarningLabel: var(--tk-custom-colours-warning-l050c055) !important;
+    --viewsWarningLabelSelected: var(--tk-custom-colours-warning-l050c055) !important;
+    --viewsWarningSelectedAccent: var(--tk-custom-colours-warning-l190c165) !important;
   }
 
   // Square corners
@@ -196,7 +171,7 @@ body.tk-custom-colours-enabled .tk-custom-colours-grid {
 .tk-custom-colours-option {
   input[type='checkbox'] {
     width: auto;
-    border: var(--background_tertiary);
+    border: var(--backgroundTertiary);
     height: unset;
     margin: 0;
   }
@@ -230,7 +205,7 @@ body.tk-custom-colours-enabled .tk-custom-colours-grid {
   .tk-custom-colours-warning,
   .tk-custom-colours-negative {
     position: relative;
-    border-color: var(--separator_standard);
+    border-color: var(--separatorStandard);
     border-radius: 0.5rem;
     border-width: 0.125rem;
     border-style: solid;

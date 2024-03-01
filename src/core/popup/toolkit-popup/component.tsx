@@ -1,10 +1,8 @@
-import { faBug, faCog, faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
+import { faBug, faCog, faStop, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import classNames from 'classnames';
 import * as React from 'react';
 import { Button } from 'toolkit/components/button';
 import { GitHubLink } from 'toolkit/components/links';
-import { Toggle } from 'toolkit/components/toggle';
 import { localToolkitStorage } from 'toolkit/core/common/storage';
 import { getBrowser, getBrowserName } from 'toolkit/core/common/web-extensions';
 import { useDarkModeSetter } from 'toolkit/hooks/useDarkModeSetter';
@@ -25,28 +23,25 @@ export function ToolkitPopup() {
   return (
     <div className="popup">
       <img
-        onClick={() => {
-          localToolkitStorage.setFeatureSetting('DisableToolkit', !isToolkitDisabled);
-        }}
         className="logo"
         src={runtime.getURL(
           `assets/images/logos/toolkitforynab-logo-200${isToolkitDisabled ? '-disabled' : ''}.png`
         )}
       ></img>
-      <h1 className="popup__title">
-        The {name} is currently{' '}
-        <span
-          className={classNames({
-            disabled: isToolkitDisabled,
-          })}
-        >
-          {isToolkitDisabled ? 'disabled' : 'enabled'}
-        </span>
-        ! Click the logo to {isToolkitDisabled ? 'enable' : 'disable'}.
-      </h1>
-      <div className="popup__actions">
+
+      <div className="status">
+        The {name} is currently {isToolkitDisabled ? 'disabled' : 'enabled'}
+      </div>
+      <div className="actions">
         <Button
-          className="popup__action"
+          onClick={() =>
+            localToolkitStorage.setFeatureSetting('DisableToolkit', !isToolkitDisabled)
+          }
+        >
+          <FontAwesomeIcon icon={isToolkitDisabled ? faPlay : faStop} />{' '}
+          <div>{isToolkitDisabled ? 'Enable' : 'Disable'}</div>
+        </Button>
+        <Button
           onClick={() => {
             if (getBrowserName() === 'edge') {
               tabs.create({
@@ -57,15 +52,15 @@ export function ToolkitPopup() {
             }
           }}
         >
-          <FontAwesomeIcon icon={faCog} /> Open Settings
+          <FontAwesomeIcon icon={faCog} /> <div>Open Settings</div>
         </Button>
         <GitHubLink>
-          <Button className="popup__action">
-            <FontAwesomeIcon icon={faBug} /> Report an Issue
+          <Button>
+            <FontAwesomeIcon icon={faBug} /> <div>Report an Issue</div>
           </Button>
         </GitHubLink>
       </div>
-      <div>Version {version}</div>
+      <div className="version">Version {version}</div>
     </div>
   );
 }

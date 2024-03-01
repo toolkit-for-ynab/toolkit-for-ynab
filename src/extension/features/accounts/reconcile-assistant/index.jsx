@@ -2,7 +2,7 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 import { ReconcileAssistantContainer } from './components/ReconcileAssistantContainer';
 import React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
 
 const YNAB_RECONCILE_BUTTON = '.accounts-header-reconcile';
 const YNAB_APPLICATION_BODY = '.ember-application';
@@ -39,12 +39,11 @@ export class ReconcileAssistant extends Feature {
       // Render the react component as part of the container
       let container = document.getElementById(RECONCILE_ASSISTANT_CONTAINER_ID);
       if (container) {
-        ReactDOM.render(
+        ReactDOM.createRoot(container).render(
           <ReconcileAssistantContainer
             reconcileInputValue={this._reconcileInputValue}
             portalId={RECONCILE_ASSISTANT_MODAL_PORTAL}
-          />,
-          container
+          />
         );
       }
     }, 50);

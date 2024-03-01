@@ -1,28 +1,28 @@
 /* row */
 .budget-table-row.is-sub-category.is-debt-payment-category[data-tk-pif-assist]
   .ynab-new-budget-available-number {
-  background-color: var(--budget_balance_warning_background) !important;
-  color: var(--budget_balance_warning_text) !important;
+  background-color: var(--categoryBalanceWarningBackground) !important;
+  color: var(--categoryBalanceWarningLabel) !important;
 }
 .budget-table-row.is-sub-category.is-debt-payment-category[data-tk-pif-assist]
   .ynab-new-budget-available-number:hover {
-  background-color: var(--budget_balance_warning_background_active) !important;
-  color: var(--budget_balance_warning_text) !important;
+  background-color: var(--categoryBalanceWarningBackgroundActive) !important;
+  color: var(--categoryBalanceWarningLabel) !important;
 }
 
 /* inspector */
 .budget-inspector[data-tk-pif-assist] .ynab-new-budget-available-number {
-  background: var(--budget_balance_warning_background) !important;
-  color: var(--budget_balance_warning_text) !important;
+  background: var(--categoryBalanceWarningBackground) !important;
+  color: var(--categoryBalanceWarningLabel) !important;
 }
 .budget-inspector[data-tk-pif-assist] .ynab-new-budget-available-number .currency {
-  background: var(--budget_balance_warning_background) !important;
-  color: var(--budget_balance_warning_text) !important;
+  background: var(--categoryBalanceWarningBackground) !important;
+  color: var(--categoryBalanceWarningLabel) !important;
 }
 
 span.cc-budget-mismatch {
-  border: 1px solid var(--message_warning_accent);
-  color: var(--message_warning_accent);
+  border: 1px solid var(--calloutSectionWarningAccent);
+  color: var(--calloutSectionWarningAccent);
   border-radius: 0.5em;
   margin-left: 0.25em;
   padding: 0 0.25em;

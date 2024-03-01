@@ -4,18 +4,25 @@
     "jsx": "react",
     "allowJs": true,
     "target": "es2021",
-    "outDir": "./outDir",
     "moduleResolution": "node",
     "noImplicitAny": true,
     "esModuleInterop": true,
     "strict": true,
     "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
     "sourceMap": true,
     "paths": {
       "*": ["./types/*.d.ts"],
       "toolkit/*": ["./src/*"],
-      "toolkit-reports/*": ["./src/features/toolkit-reports/*"]
+      "toolkit-reports/*": ["./src/extension/features/toolkit-reports/*"]
     }
   },
-  "include": ["./src/**/*"]
+  "include": ["./src", "./scripts"],
+  "exclude": ["./dist", "./.yarn", "./node_modules"],
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "swc": true
+  }
 }

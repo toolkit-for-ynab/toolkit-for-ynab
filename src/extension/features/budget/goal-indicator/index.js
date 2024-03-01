@@ -4,6 +4,8 @@ import {
   ensureGoalColumn,
   GOAL_TABLE_CELL_CLASSNAME,
 } from 'toolkit/extension/features/budget/utils';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 
 export class GoalIndicator extends Feature {
   injectCSS() {
@@ -11,15 +13,25 @@ export class GoalIndicator extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteBudgetPage();
   }
 
   destroy() {
     $('.tk-goal-indicator').remove();
   }
 
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (isClassInChangedNodes('budget-table-row', changedNodes)) {
+      this.invoke();
+    }
+  }
+
   invoke() {
-    this.addToolkitEmberHook('budget-table-row', 'didRender', this.addGoalIndicator);
+    $('.budget-table-row').each((_, element) => {
+      this.addGoalIndicator(element);
+    });
   }
 
   addGoalIndicator(element) {
@@ -27,18 +39,18 @@ export class GoalIndicator extends Feature {
       return;
     }
 
-    const category = getEmberView(element.id).category;
+    const category = getEmberView(element.id)?.category;
     if (!category) {
       return;
     }
 
     // these need to be defined inside `invoke` because ynab must be on the window
     const GoalTypeLabels = {
-      MF: ['M', 'Monthly budgeting goal'],
-      NEED: ['S', 'Spending goal'],
-      TB: ['T', 'Target balance goal'],
-      TBD: ['D', 'Target by date goal'],
-      DEBT: ['MD', 'Debt goal'],
+      MF: ['M', 'Monthly Savings Builder'],
+      NEED: ['S', 'Needed For Spending'],
+      TB: ['B', 'Savings Balance'],
+      TBD: ['D', 'Savings Balance By Date'],
+      DEBT: ['MD', 'Monthly Debt Payment'],
     };
 
     const goalContainer = element.querySelector(`.${GOAL_TABLE_CELL_CLASSNAME}`);
@@ -54,21 +66,23 @@ export class GoalIndicator extends Feature {
       return;
     }
 
-    if (goalTypeElement) {
-      if (!goalType) {
-        goalTypeElement.remove();
-      }
+    if (category.goalCreatedOn) {
+      if (goalTypeElement) {
+        if (!goalType) {
+          goalTypeElement.remove();
+        }
 
-      $(goalTypeElement).attr('title', GoalTypeLabels[goalType][1]);
-      $(goalTypeElement).text(GoalTypeLabels[goalType][0]);
-    } else if (goalType) {
-      $(goalContainer).append(
-        $('<div>', {
-          class: 'tk-goal-indicator',
-          title: GoalTypeLabels[goalType][1],
-          text: GoalTypeLabels[goalType][0],
-        })
-      );
+        $(goalTypeElement).attr('title', GoalTypeLabels[goalType][1]);
+        $(goalTypeElement).text(GoalTypeLabels[goalType][0]);
+      } else if (goalType) {
+        $(goalContainer).append(
+          $('<div>', {
+            class: 'tk-goal-indicator',
+            title: GoalTypeLabels[goalType][1],
+            text: GoalTypeLabels[goalType][0],
+          })
+        );
+      }
     }
 
     if (upcomingElement) {

@@ -2,10 +2,11 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { getCurrentBudgetDate, getEntityManager } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n, l10nMonth, MonthStyle } from 'toolkit/extension/utils/toolkit';
+import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 
 export class LiveOnLastMonthsIncome extends Feature {
   observe(changedNodes) {
-    if (changedNodes.has('budget-inspector-button')) {
+    if (isClassInChangedNodes('budget-inspector-button', changedNodes)) {
       this.injectLastMonthsIncome();
     }
   }

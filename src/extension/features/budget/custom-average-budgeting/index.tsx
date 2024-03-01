@@ -4,6 +4,9 @@ import { getBudgetService, getEntityManager } from 'toolkit/extension/utils/ynab
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { Feature } from '../../feature';
 import { componentAfter } from 'toolkit/extension/utils/react';
+import type { FeatureSetting } from 'toolkit/types/toolkit/features';
+import type { BudgetTableRowComponent } from 'toolkit/types/ynab/components/BudgetTableRow';
+import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 
 const QuickBudgetButton = ({
   setting,
@@ -31,7 +34,7 @@ const QuickBudgetButton = ({
 
 export class CustomAverageBudgeting extends Feature {
   observe(changedNodes: Set<string>) {
-    if (changedNodes.has('budget-inspector-button')) {
+    if (isClassInChangedNodes('budget-inspector-button', changedNodes)) {
       this._renderButton();
     }
   }

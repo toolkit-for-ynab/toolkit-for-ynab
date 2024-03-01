@@ -38,7 +38,6 @@ export class MemoAsMarkdown extends Feature {
       componentPrepend(
         <div className="tk-markdown-memo" onClick={handleClick}>
           <ReactMarkdown
-            linkTarget="_blank"
             components={{
               link: ({ href, children }) => (
                 <a href={href} target="_blank" rel="noopener noreferrer">

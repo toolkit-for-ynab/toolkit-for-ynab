@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
 import { localToolkitStorage } from 'toolkit/core/common/storage';
 import { ToolkitPopup } from './toolkit-popup';
 
@@ -11,5 +11,5 @@ localToolkitStorage.getStorageItem('toolkit-feature:options.dark-mode').then((da
 
   document.querySelector('html')!.dataset['theme'] = darkMode;
 
-  ReactDOM.render(<ToolkitPopup />, document.getElementById('root'));
+  ReactDOM.createRoot(document.getElementById('root')!).render(<ToolkitPopup />);
 });

@@ -1,4 +1,5 @@
 import { getBrowser } from 'toolkit/core/common/web-extensions';
+import type { FeatureSetting } from 'toolkit/types/toolkit/features';
 
 export const FEATURE_SETTING_PREFIX = 'toolkit-feature:';
 

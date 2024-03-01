@@ -10,13 +10,8 @@ and follow the template that is provided.
 ### Contributing Code
 
 If you want to contribute, it's best if you can let us know what you're
-working on so we don't double up on effort.
-
-You can see what is being worked on and by whom on the
-[roadmap](https://trello.com/b/EzOvXlil/toolkit-for-ynab-roadmap).
-
-If you can't find what you want to build on the roadmap, feel free to put
-a note up on the github issues board to let the team know you're working
-on something new.
+working on so we don't double up on effort. If you can't find what you
+want to build in issues, feel free to put a note up on the github issues
+board to let the team know you're working on something new.
 
 You can find documentation on how to build features [here](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/main/docs/building-features.md).

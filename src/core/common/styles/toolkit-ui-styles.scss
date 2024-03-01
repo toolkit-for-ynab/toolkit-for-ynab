@@ -1,0 +1,123 @@
+@use 'sass:selector';
+
+:root {
+  font-size: 16px;
+  // base colors
+  --tk-background-color: #ffffff;
+  --tk-text-color: #383e41;
+  --tk-accent: hsl(127, 50%, 47%);
+
+  // src/components/modal
+  --tk-modal-background-color: var(--tk-background-color);
+  --tk-modal-text-color: var(--tk-text-color);
+
+  --tk-alert-danger-background: hsla(15, 75%, 55%, 1);
+
+  // src/components/button
+  --tk-button-secondary-text: hsl(120, 100%, 14%);
+  --tk-button-secondary-bg: hsl(114.29, 44.68%, 90.78%);
+  --tk-button-secondary-bg-hover: hsl(115.61, 44.09%, 81.76%);
+  --tk-button-primary-text: hsl(114.55, 47.83%, 95.49%);
+  --tk-button-primary-bg: hsl(137.84, 100%, 29.02%);
+  --tk-button-primary-bg-hover: hsl(130, 62.38%, 39.61%);
+
+  --tk-search-text: var(--tk-button-secondary-text);
+  --tk-search-bg: var(--tk-button-secondary-bg);
+  --tk-search-bg-focus: var(--tk-button-primary-text);
+  --tk-search-outline-focus: hsl(120, 41.94%, 63.53%);
+  --tk-search-placeholder: hsla(120, 26.19%, 50.59%, 70%);
+
+  // src/components/toggle
+  --tk-toggle-checked-switch-color: white;
+  --tk-toggle-checked-fill-color: hsl(137.84, 100%, 29.02%);
+  --tk-toggle-unchecked-switch-color: hsl(137.84, 100%, 29.02%);
+  --tk-toggle-unchecked-fill-color: hsl(0deg, 0%, 96.22%);
+
+  // src/components/radio-group
+  --tk-radio-background-color: var(--tk-background-color);
+  --tk-radio-checked-color: hsl(132.73, 100%, 25.88%);
+  --tk-radio-unchecked-color: hsl(117, 42.86%, 72.55%);
+
+  // colorpicker
+  --tk-colorpicker-border: hsl(117, 42.86%, 72.55%);
+  --tk-colorpicker-action: hsl(120, 100%, 19.8%);
+}
+
+@mixin dark-mode {
+  @at-root #{selector.nest("html[data-theme='dark']", &)} {
+    @content;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    @at-root #{selector.nest("html[data-theme='auto']", &)} {
+      @content;
+    }
+  }
+}
+
+@mixin dark-mode-variables {
+  // base colors
+  --tk-background-color: hsl(120deg 26.36% 9.86%);
+  --tk-text-color: hsl(0deg 0% 92.55%);
+  --tk-accent: hsl(127, 50%, 47%);
+
+  // src/components/modal
+  --tk-modal-background-color: var(--tk-background-color);
+  --tk-modal-text-color: var(--tk-text-color);
+
+  --tk-alert-danger-background: hsla(15, 75%, 55%, 1);
+
+  // src/components/button
+  --tk-button-secondary-text: hsl(0deg 0% 94.36%);
+  --tk-button-secondary-bg: hsl(114.29deg 19.42% 25.3%);
+  --tk-button-secondary-bg-hover: hsl(114.29deg 19.42% 32.3%);
+  --tk-button-primary-text: hsl(114.55, 47.83%, 95.49%);
+  --tk-button-primary-bg: hsl(137.84, 100%, 29.02%);
+  --tk-button-primary-bg-hover: hsl(130, 62.38%, 39.61%);
+
+  --tk-search-text: var(--tk-button-secondary-text);
+  --tk-search-bg: var(--tk-button-secondary-bg);
+  --tk-search-bg-focus: var(--tk-button-secondary-bg-hover);
+  --tk-search-outline-focus: hsl(112.5deg 42.31% 44.34%);
+  --tk-search-placeholder: hsl(117, 9%, 48%);
+
+  // src/components/toggle
+  --tk-toggle-checked-switch-color: white;
+  --tk-toggle-checked-fill-color: hsl(137.84, 100%, 29.02%);
+  --tk-toggle-unchecked-switch-color: hsl(137.84, 100%, 29.02%);
+  --tk-toggle-unchecked-fill-color: var(--tk-button-secondary-bg);
+
+  // src/components/radio-group
+  --tk-radio-background-color: var(--tk-background-color);
+  --tk-radio-checked-color: hsl(137.84, 100%, 29.02%);
+  --tk-radio-unchecked-color: var(--tk-button-secondary-bg);
+
+  // colorpicker
+  --tk-colorpicker-border: var(--tk-button-secondary-bg);
+  --tk-colorpicker-action: hsl(120deg 22.19% 67.18%);
+
+  // links
+  @supports (color-scheme: dark light) {
+    color-scheme: dark light;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme='auto'] {
+    @include dark-mode-variables();
+  }
+}
+
+html[data-theme='dark'] {
+  @include dark-mode-variables();
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: var(--tk-text-color);
+  background-color: var(--tk-background-color);
+}
+
+a {
+  color: var(--tk-accent);
+}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
 import { Feature } from 'toolkit/extension/features/feature';
 import { Root } from './pages/root';
 import { l10n } from 'toolkit/extension/utils/toolkit';
@@ -88,9 +88,11 @@ export class ToolkitReports extends Feature {
     $(YNAB_CONTENT_CONTAINER_SELECTOR).children().first().show();
 
     // Unmount and hide the toolkit's report
+    if (this.reactRoot) {
+      this.reactRoot.unmount();
+    }
     const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
     if (container) {
-      ReactDOM.unmountComponentAtNode(container);
       $(container).css('height', '');
     }
 
@@ -103,7 +105,7 @@ export class ToolkitReports extends Feature {
     }
   }
 
-  _renderToolkitReports() {
+  _renderToolkitReports = () => {
     setTimeout(() => {
       // Hide the ynab report
       $(YNAB_CONTENT_CONTAINER_SELECTOR).children().first().hide();
@@ -112,10 +114,11 @@ export class ToolkitReports extends Feature {
       const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
       if (container) {
         $(container).css('height', '100%');
-        ReactDOM.render(React.createElement(Root), container);
+        this.reactRoot = ReactDOM.createRoot(container);
+        this.reactRoot.render(React.createElement(Root));
       }
     }, 50);
-  }
+  };
 
   onRouteChanged() {
     this.invoke();
