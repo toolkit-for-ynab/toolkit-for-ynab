@@ -18,6 +18,7 @@ import {
   storeDateFilters,
 } from '../../../utils/storage';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import { ForecastHelp } from '../../../pages/forecast/help';
 
 const ACTIVE_REPORT_KEY = 'active-report';
 
@@ -93,6 +94,7 @@ const REPORT_COMPONENTS: SelectedReportContextPropType[] = [
       disableTrackingAccounts: false,
       includeTrackingAccounts: true,
     },
+    filtersExtraComponent: ForecastHelp,
   },
 ];
 
