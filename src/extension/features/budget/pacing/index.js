@@ -25,18 +25,28 @@ export class Pacing extends Feature {
   }
 
   invoke() {
+    const pacingCells = $('.tk-budget-table-cell-pacing');
+
     if (!isCurrentMonthSelected()) {
-      $('.tk-budget-table-cell-pacing').remove();
+      pacingCells.remove();
       return;
     }
 
-    if ($('.tk-budget-table-cell-pacing').length) {
+    const budgetRows = $('.js-budget-table-row');
+    const budgetRowsWithoutPacing = budgetRows.filter(
+      (_, el) => !el.querySelector('.tk-budget-table-cell-pacing')
+    );
+    const nBudgetRowsWithoutPacing = budgetRowsWithoutPacing.length;
+
+    const shouldReRenderPacing = pacingCells.length === 0 || nBudgetRowsWithoutPacing > 0;
+
+    if (!shouldReRenderPacing) {
       return;
     }
 
     this.ensureHeader();
 
-    $('.js-budget-table-row').each((_, el) => {
+    budgetRowsWithoutPacing.each((_, el) => {
       this.addPacing(el);
     });
   }
