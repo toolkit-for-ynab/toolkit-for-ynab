@@ -1,6 +1,9 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { ToolkitMath } from 'toolkit/extension/utils/math';
 
+/** This attribute is used to mark inputs which have been changed by this feature. */
+const customInputAttribute = 'ynab-tk-evtl-listener';
+
 export class POSStyleCurrencyEntryMode extends Feature {
   constructor() {
     super();
@@ -9,6 +12,8 @@ export class POSStyleCurrencyEntryMode extends Feature {
     this.currencyFormatter = null;
     this.accountCurrency = null;
     this.decimalDigits = null;
+
+    this.handleKeydownWithBind = this.#handleKeydown.bind(this);
   }
 
   shouldInvoke() {
@@ -31,96 +36,19 @@ export class POSStyleCurrencyEntryMode extends Feature {
     const $editRows = $('.ynab-grid-body-row.is-editing');
     const $editInputs = $('.ynab-grid-cell-outflow input, .ynab-grid-cell-inflow input', $editRows);
     $editInputs.each((_, input) => {
-      if (!input.getAttribute('ynab-tk-evtl-listener')) {
-        input.setAttribute('ynab-tk-evtl-listener', true);
-        input.addEventListener('keydown', this.handleKeydown.bind(this), true);
+      if (!input.getAttribute(customInputAttribute)) {
+        input.setAttribute(customInputAttribute, true);
+        input.addEventListener('keydown', this.handleKeydownWithBind, true);
       }
     });
   }
 
   destroy() {
-    const $editInputs = $('input[ynab-tk-evtl-listener]');
+    const $editInputs = $(`input[${customInputAttribute}]`);
     $editInputs.each((_, input) => {
-      input.removeAttribute('ynab-tk-evtl-listener');
-      input.removeEventListener('keydown', this.handleKeydown.bind(this));
+      input.removeAttribute(customInputAttribute);
+      input.removeEventListener('keydown', this.handleKeydownWithBind);
     });
-  }
-
-  handleKeydown(event) {
-    if (event._wasHandled) {
-      return;
-    }
-
-    if (event.keyCode === 13) {
-      const currentValue = event.currentTarget.value;
-
-      const { currencyFormatter } =
-        ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
-      const accountCurrency = currencyFormatter.getCurrency();
-      const decimalDigits = accountCurrency.decimal_digits;
-      const decimalSeparator = accountCurrency.decimal_separator;
-
-      const formatFloatValue = (val) =>
-        currencyFormatter.format(currencyFormatter.convertToMilliUnits(val));
-
-      const convertWithPosFactor = (val) => val / 10 ** decimalDigits;
-
-      let newValueString;
-
-      // Digits only => POS style entry
-      if (/^-?\d+$/.test(currentValue)) {
-        const newValue = convertWithPosFactor(parseInt(currentValue));
-        newValueString = formatFloatValue(newValue);
-      }
-      // Digits with "-" suffix, shorthand for full denomination entry (e.g. "5-" == "5.00")
-      else if (/^-?\d+-$/.test(currentValue)) {
-        newValueString = currentValue.substring(0, currentValue.length - 1);
-      }
-      // Digits with math operators => POS style entry, preceded by math evaluation
-      else if (!currentValue.includes(decimalSeparator) && /[-*+/^%]/.test(currentValue)) {
-        // Transformation of decimal separator simplifies Toolkit's math computation logic
-        const normalizedExpression = currentValue.replace(
-          new RegExp(`/\\${decimalSeparator}/g`),
-          '.'
-        );
-        const mathResult = convertWithPosFactor(this.evaluateMath(normalizedExpression));
-
-        newValueString = formatFloatValue(mathResult);
-      } else {
-        newValueString = currentValue;
-      }
-
-      const currentTarget = event.currentTarget;
-
-      // overwrite value and stop propagation immediately
-      currentTarget.value = newValueString;
-      event.stopImmediatePropagation();
-
-      // trigger new event which is passed to YNAB code with the right value
-      const newKeydownEvent = new KeyboardEvent('keydown', {
-        code: event.code,
-        key: event.key,
-        keyCode: event.keyCode,
-        which: event.which,
-        bubbles: true,
-        cancelable: true,
-        // composed: true,
-      });
-      newKeydownEvent._wasHandled = true;
-
-      const newInputEvent = new Event('input', {
-        bubbles: true,
-        cancelable: true,
-        data: newValueString,
-      });
-
-      const domTarget = document.getElementById(currentTarget.id);
-
-      setTimeout(() => {
-        domTarget.dispatchEvent(newInputEvent);
-        domTarget.dispatchEvent(newKeydownEvent);
-      });
-    }
   }
 
   observe(changedNodes) {
@@ -131,15 +59,107 @@ export class POSStyleCurrencyEntryMode extends Feature {
     }
   }
 
-  evaluateMath(expression) {
+  #handleKeydown(event) {
+    // This method catches the KeyDown Event when enter is pressed, and then aborts event
+    // propagation before changing the value and dispatching artifical events, so YNAB
+    // only sees the new value
+
+    // do not catch artificial followup events
+    if (event._wasHandled) {
+      return;
+    }
+
+    if (event.keyCode === 13) {
+      const userInput = event.currentTarget.value;
+      const parsedValue = this.#determineValueFromPosInput(userInput);
+
+      event.currentTarget.value = parsedValue;
+      event.stopImmediatePropagation();
+      this.#dispatchArtificialEvents(event, parsedValue);
+    }
+  }
+
+  #dispatchArtificialEvents(event, newValue) {
+    // both the inputEvent and the keydownEvent need to be sent, because YNAB saves the current
+    // value from the input event, but performs the save action in the keydown event
+    const { newInputEvent, newKeydownEvent } = this.#createArtificialInputEvents(event, newValue);
+    const eventTarget = event.currentTarget;
+
+    setTimeout(() => {
+      eventTarget.dispatchEvent(newInputEvent);
+      eventTarget.dispatchEvent(newKeydownEvent);
+    });
+  }
+
+  #createArtificialInputEvents(originalEvent, parsedValue) {
+    const newKeydownEvent = new KeyboardEvent('keydown', {
+      code: originalEvent.code,
+      key: originalEvent.key,
+      keyCode: originalEvent.keyCode,
+      which: originalEvent.which,
+      bubbles: true,
+      cancelable: true,
+    });
+    newKeydownEvent._wasHandled = true; // marker for the artificial event
+
+    const newInputEvent = new Event('input', {
+      bubbles: true,
+      cancelable: true,
+      data: parsedValue,
+    });
+    return { newInputEvent, newKeydownEvent };
+  }
+
+  #determineValueFromPosInput(currentValue) {
+    const { currencyFormatter } =
+      ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
+    const accountCurrency = currencyFormatter.getCurrency();
+    const decimalDigits = accountCurrency.decimal_digits;
+    const decimalSeparator = accountCurrency.decimal_separator;
+
+    const formatFloatValue = (val) =>
+      currencyFormatter.format(currencyFormatter.convertToMilliUnits(val));
+
+    const convertWithPosFactor = (val) => val / 10 ** decimalDigits;
+
+    let newValueString;
+
+    // Digits only => POS style entry
+    if (/^-?\d+$/.test(currentValue)) {
+      const newValue = convertWithPosFactor(parseInt(currentValue));
+      newValueString = formatFloatValue(newValue);
+    }
+
+    // Digits with "-" suffix, shorthand for full denomination entry (e.g. "5-" == "5.00")
+    else if (/^-?\d+-$/.test(currentValue)) {
+      newValueString = currentValue.substring(0, currentValue.length - 1);
+    }
+
+    // Digits with math operators => POS style entry, preceded by math evaluation
+    else if (!currentValue.includes(decimalSeparator) && /[-*+/^%]/.test(currentValue)) {
+      // Transformation of decimal separator simplifies Toolkit's math computation logic
+      const normalizedExpression = currentValue.replace(
+        new RegExp(`/\\${decimalSeparator}/g`),
+        '.'
+      );
+      const mathResult = convertWithPosFactor(this.#evaluateMath(normalizedExpression));
+
+      newValueString = formatFloatValue(mathResult);
+    } else {
+      newValueString = currentValue;
+    }
+    return newValueString;
+  }
+
+  #evaluateMath(expression) {
     try {
-      return Math.round(this.mathEvaluator().evaluate(expression));
+      return Math.round(this.#mathEvaluator().evaluate(expression));
     } catch (_) {
       return 0;
     }
   }
 
-  mathEvaluator() {
+  #mathEvaluator() {
     if (this.mathEvaluatorInstance) {
       return this.mathEvaluatorInstance;
     }
