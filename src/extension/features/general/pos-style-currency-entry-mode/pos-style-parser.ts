@@ -1,32 +1,49 @@
 import { ToolkitMath } from 'toolkit/extension/utils/math';
 
+/* Parser for POS-style entry in YNAB. */
 export class POSStyleParser {
-  constructor(currencyFormatter) {
-    this.formatter = currencyFormatter;
-    this.maxValueMillis = 1e15;
+  readonly formatter: YNABCurrencyFormatter;
+  private currency: null | YNABCurrencyInformation = null;
+  private toolkitMathInstance: null | ToolkitMath = null;
+  private maxValueMillis: number = 1e15;
 
-    this.currency = null;
-    this.toolkitMathInstance = null;
+  constructor(currencyFormatter: YNABCurrencyFormatter) {
+    this.formatter = currencyFormatter;
   }
 
-  isOnlyDigitsAndSign(input) {
+  /** This method checks whether the input string consists of only digits and an
+   * optional sign (positive or negative). */
+  isOnlyDigitsAndSign(input: string): boolean {
     return /^-?\d+$/.test(input);
   }
 
-  isDigitsWithPostfix(input) {
+  /**
+   * The function isDigitsWithPostfix checks if a string consists of digits with a hyphen at the
+   * beginning.
+   */
+  isDigitsWithPostfix(input: string): boolean {
     return /^-?\d+-$/.test(input);
   }
 
-  isMathExpressionNoDecimals(input) {
-    const separatorRegex = new RegExp(`${this.currency.decimal_separator}`);
+  /**
+   * The function checks if a given input string is a mathematical expression without any decimal
+   * numbers.
+   */
+  isMathExpressionNoDecimals(input: string): boolean {
+    const separatorRegex = new RegExp(`${this.#loadCurrency().decimal_separator}`);
     return /[-*+/^%]/.test(input) && !input.endsWith('-') && !separatorRegex.test(input);
   }
 
-  determineValue(input) {
+  /**
+   * The function `determineValue` takes a string input and processes it based on the different cases
+   * that are expected in the entry of numbers. Those include POS-entry, classical entry with decimal
+   * points and mathematical expressions.
+   */
+  determineValue(input: string): string | number {
     this.#loadCurrency();
 
     const posMultiplier =
-      this.formatter.fixed_precision_amount / 10 ** this.currency.decimal_digits;
+      this.formatter.fixed_precision_amount / 10 ** this.#loadCurrency().decimal_digits;
 
     let result;
 
@@ -58,11 +75,14 @@ export class POSStyleParser {
     return result;
   }
 
-  #loadCurrency() {
-    this.currency = this.formatter.getCurrency();
+  #loadCurrency(): YNABCurrencyInformation {
+    if (this.currency == null) {
+      this.currency = this.formatter.getCurrency();
+    }
+    return this.currency;
   }
 
-  #normalizeEditValue(value) {
+  #normalizeEditValue(value: string | number | undefined) {
     if (value === '') return '';
     if (!value) return 0;
 
@@ -72,17 +92,11 @@ export class POSStyleParser {
     return formatted;
   }
 
-  #cleanString(value) {
-    const unformatInput = typeof value === 'string' ? value.replace(/−/, '-') : value;
-    const unformatted = this.formatter.unformat(unformatInput);
-    return this.formatter.convertToMilliUnits(unformatted);
-  }
-
-  #capValueMillis(e) {
+  #capValueMillis(e: number) {
     return Math.max(Math.min(e, this.maxValueMillis), -this.maxValueMillis);
   }
 
-  #evaluateMath(expression) {
+  #evaluateMath(expression: string) {
     try {
       return Math.round(this.#getToolkitMathInstance().evaluate(expression));
     } catch (_) {

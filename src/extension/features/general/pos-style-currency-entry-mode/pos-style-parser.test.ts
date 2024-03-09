@@ -1,10 +1,17 @@
 jest.mock('toolkit/extension/features/feature');
+import { POSStyleCurrencyEntryMode } from '.';
 import { createYnabGlobalStructureMock } from './__mocks__/currency-formatter';
 import { POSStyleParser } from './pos-style-parser';
 
-/* global globalThis */
+export interface YnabGlobalHasWebinstance {
+  YNABSharedLibWebInstance: YNABSharedLibWebInstance;
+}
 
-function setYnabGlobal(value) {
+declare module globalThis {
+  let ynab: YnabGlobalHasWebinstance;
+}
+
+function setYnabGlobal(value: YnabGlobalHasWebinstance) {
   Object.defineProperty(globalThis, 'ynab', {
     value: value,
     configurable: true,
@@ -13,7 +20,7 @@ function setYnabGlobal(value) {
 }
 
 describe('POSStyleParser', () => {
-  let extension;
+  let extension: POSStyleParser;
 
   const globalYnabBackup = globalThis.ynab;
 
@@ -42,7 +49,7 @@ describe('POSStyleParser', () => {
       const currency = extension.formatter.getCurrency();
       expect(currency.decimal_digits).toBe(2);
 
-      extension.formatter._currencyObj.decimal_digits = 3;
+      extension.formatter._currencyObj!.decimal_digits = 3;
       expect(currency.decimal_digits).toBe(3);
     });
 
@@ -94,11 +101,11 @@ describe('POSStyleParser', () => {
     });
 
     it('should round to a different number of digits, if specified', () => {
-      extension.formatter._currencyObj.decimal_digits = 3;
+      extension.formatter._currencyObj!.decimal_digits = 3;
 
-      expect(extension.determineValue(1)).toBe('0,001');
-      expect(extension.determineValue(999)).toBe('0,999');
-      expect(extension.determineValue(1000)).toBe('1,000');
+      expect(extension.determineValue('1')).toBe('0,001');
+      expect(extension.determineValue('999')).toBe('0,999');
+      expect(extension.determineValue('1000')).toBe('1,000');
       expect(extension.determineValue('5/3*100')).toBe('0,167');
     });
   });

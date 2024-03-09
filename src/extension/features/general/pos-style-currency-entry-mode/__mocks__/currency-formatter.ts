@@ -1,14 +1,25 @@
+import { YnabGlobalHasWebinstance } from '../pos-style-parser.test';
+
 const currencyTemplate = {
   decimal_digits: 2,
   decimal_separator: ',',
   example_format: '123.456,78',
 };
 
-function countSplits(string, splitChar) {
+function countSplits(string: string, splitChar: string) {
   return string.split(splitChar).length;
 }
 
+type RoundingFunction = (x: number) => number;
+
 export class CurrencyFormatter {
+  fixed_precision_amount: number;
+  _currencyObj: YNABCurrencyInformation;
+  convertFromMilliUnits: (e: number) => number;
+  convertToMilliUnits: (e: number, t?: RoundingFunction) => number;
+  roundMilliUnits: (e: number, t?: RoundingFunction) => number;
+  getFormatDefinition: () => YNABCurrencyInformation;
+
   constructor() {
     this.fixed_precision_amount = 1e3;
     this._currencyObj = { ...currencyTemplate };
@@ -18,38 +29,38 @@ export class CurrencyFormatter {
     this.getFormatDefinition = this.getCurrency;
   }
 
-  getCurrency() {
+  getCurrency(): YNABCurrencyInformation {
     return this._currencyObj;
   }
 
-  convertFromMilliDollars(e) {
+  convertFromMilliDollars(e: number) {
     e = +e;
     const t = this._currencyObj.decimal_digits;
     return +(e / this.fixed_precision_amount).toFixed(t);
   }
 
-  convertToMilliDollars(e, t = Math.round) {
+  convertToMilliDollars(e: number, t = Math.round): number {
     const n = +t(e * this.fixed_precision_amount);
     return this.roundMilliDollars(n, t);
   }
 
-  roundMilliDollars(e, t = Math.round) {
+  roundMilliDollars(e: number, t = Math.round): number {
     let n = this.getMinimumAmount();
     n = 1 / n;
     return t(e * n) / n;
   }
 
-  getMinimumAmount() {
+  getMinimumAmount(): number {
     return 10 ** (3 - Math.min(3, this._currencyObj.decimal_digits));
   }
 
-  roundToCorrectNumberOfDigits(e) {
+  roundToCorrectNumberOfDigits(e: number): number {
     e = +e;
     const t = this._currencyObj.decimal_digits;
     return +e.toFixed(t);
   }
 
-  format(e) {
+  format(e: number) {
     if (Number.isNaN(e)) e = 0;
     let n = this.convertFromMilliDollars(e).toFixed(this._currencyObj.decimal_digits);
     if (this._currencyObj.optional_decimals) n = parseFloat(n).toString();
@@ -64,14 +75,13 @@ export class CurrencyFormatter {
     return r;
   }
 
-  countChar(e, t) {
+  countChar(e: string, t: string): number {
     return e.split(t).length;
   }
 
-  unformat(e) {
+  unformat(e: null | undefined | number | string): number {
     if (e == null) return 0;
     let t = 0;
-    // if (void 0 === e) t = 0;
     if (undefined === e) t = 0;
     else if (typeof e === 'number') t = e;
     else if (typeof e === 'string') {
@@ -97,7 +107,7 @@ export class CurrencyFormatter {
   }
 }
 
-export const createYnabGlobalStructureMock = () => {
+export const createYnabGlobalStructureMock: () => YnabGlobalHasWebinstance = () => {
   return {
     YNABSharedLibWebInstance: {
       firstInstanceCreated: {
