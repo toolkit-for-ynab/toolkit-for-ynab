@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { ToolkitMath } from 'toolkit/extension/utils/math';
+import { POSStyleParser as PosStyleInputParser } from './pos-style-parser';
 
 /** This attribute is used to mark inputs which have been changed by this feature. */
 const customInputAttribute = 'ynab-tk-evtl-listener';
@@ -8,12 +8,13 @@ export class POSStyleCurrencyEntryMode extends Feature {
   constructor() {
     super();
 
-    this.mathEvaluatorInstance = null;
     this.currencyFormatter = null;
     this.accountCurrency = null;
     this.decimalDigits = null;
 
-    this.handleKeydownWithBind = this.#handleKeydown.bind(this);
+    this.posStyleParser = new PosStyleInputParser();
+
+    this.handleKeydownWithBind = this.handleKeydownInternal.bind(this);
   }
 
   shouldInvoke() {
@@ -59,7 +60,7 @@ export class POSStyleCurrencyEntryMode extends Feature {
     }
   }
 
-  #handleKeydown(event) {
+  handleKeydownInternal(event) {
     // This method catches the KeyDown Event when enter is pressed, and then aborts event
     // propagation before changing the value and dispatching artifical events, so YNAB
     // only sees the new value
@@ -71,7 +72,7 @@ export class POSStyleCurrencyEntryMode extends Feature {
 
     if (event.keyCode === 13) {
       const userInput = event.currentTarget.value;
-      const parsedValue = this.#determineValueFromPosInput(userInput);
+      const parsedValue = this.determineValueFromPosInput(userInput);
 
       event.currentTarget.value = parsedValue;
       event.stopImmediatePropagation();
@@ -108,64 +109,5 @@ export class POSStyleCurrencyEntryMode extends Feature {
       data: parsedValue,
     });
     return { newInputEvent, newKeydownEvent };
-  }
-
-  #determineValueFromPosInput(currentValue) {
-    const { currencyFormatter } =
-      ynab.YNABSharedLibWebInstance.firstInstanceCreated.formattingManager;
-    const accountCurrency = currencyFormatter.getCurrency();
-    const decimalDigits = accountCurrency.decimal_digits;
-    const decimalSeparator = accountCurrency.decimal_separator;
-
-    const formatFloatValue = (val) =>
-      currencyFormatter.format(currencyFormatter.convertToMilliUnits(val));
-
-    const convertWithPosFactor = (val) => val / 10 ** decimalDigits;
-
-    let newValueString;
-
-    // Digits only => POS style entry
-    if (/^-?\d+$/.test(currentValue)) {
-      const newValue = convertWithPosFactor(parseInt(currentValue));
-      newValueString = formatFloatValue(newValue);
-    }
-
-    // Digits with "-" suffix, shorthand for full denomination entry (e.g. "5-" == "5.00")
-    else if (/^-?\d+-$/.test(currentValue)) {
-      newValueString = currentValue.substring(0, currentValue.length - 1);
-    }
-
-    // Digits with math operators => POS style entry, preceded by math evaluation
-    else if (!currentValue.includes(decimalSeparator) && /[-*+/^%]/.test(currentValue)) {
-      // Transformation of decimal separator simplifies Toolkit's math computation logic
-      const normalizedExpression = currentValue.replace(
-        new RegExp(`/\\${decimalSeparator}/g`),
-        '.'
-      );
-      const mathResult = convertWithPosFactor(this.#evaluateMath(normalizedExpression));
-
-      newValueString = formatFloatValue(mathResult);
-    } else {
-      newValueString = currentValue;
-    }
-    return newValueString;
-  }
-
-  #evaluateMath(expression) {
-    try {
-      return Math.round(this.#mathEvaluator().evaluate(expression));
-    } catch (_) {
-      return 0;
-    }
-  }
-
-  #mathEvaluator() {
-    if (this.mathEvaluatorInstance) {
-      return this.mathEvaluatorInstance;
-    }
-
-    this.mathEvaluatorInstance = new ToolkitMath();
-
-    return this.mathEvaluatorInstance;
   }
 }
