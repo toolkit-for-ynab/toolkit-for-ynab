@@ -3,11 +3,10 @@ import { l10n } from 'toolkit/extension/utils/toolkit';
 import { getBudgetService } from 'toolkit/extension/utils/ynab';
 import { getBudgetBreakdownEntries } from '../subtract-upcoming-from-available/budget-breakdown-monthly-totals';
 import { isSavingsCategory } from '../subtract-upcoming-from-available/categories';
-import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 
 export class ShowAvailableAfterSavings extends Feature {
   observe(changedNodes) {
-    if (isClassInChangedNodes('budget-inspector-button', changedNodes)) {
+    if (changedNodes.has('budget-inspector-button')) {
       this.handleBudgetBreakdown();
     }
   }

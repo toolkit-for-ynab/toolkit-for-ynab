@@ -5,7 +5,6 @@ import { handleBudgetBreakdownMonthlyTotals } from './budget-breakdown-monthly-t
 import { handleBudgetTableRows } from './budget-table-row';
 import { setCategoriesObject } from './categories';
 import * as destroyHelpers from './destroy-helpers';
-import { isClassInChangedNodes } from 'toolkit/extension/utils/helpers';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export class SubtractUpcomingFromAvailable extends Feature {
@@ -16,11 +15,11 @@ export class SubtractUpcomingFromAvailable extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (isClassInChangedNodes('budget-inspector-button', changedNodes)) {
+    if (changedNodes.has('budget-inspector-button')) {
       handleBudgetBreakdownAvailableBalance();
       handleBudgetBreakdownMonthlyTotals();
     }
-    if (isClassInChangedNodes('budget-table-row', changedNodes)) {
+    if (changedNodes.has('budget-table-row')) {
       setCategoriesObject();
       handleBudgetTableRows();
     }
