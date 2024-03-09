@@ -33,7 +33,7 @@ export class POSStyleCurrencyEntryMode extends Feature {
     $editInputs.each((_, input) => {
       if (!input.getAttribute('ynab-tk-evtl-listener')) {
         input.setAttribute('ynab-tk-evtl-listener', true);
-        input.addEventListener('keydown', this.handleKeydown);
+        input.addEventListener('keydown', this.handleKeydown.bind(this), true);
       }
     });
   }
@@ -47,6 +47,10 @@ export class POSStyleCurrencyEntryMode extends Feature {
   }
 
   handleKeydown(event) {
+    if (event._wasHandled) {
+      return;
+    }
+
     if (event.keyCode === 13) {
       const currentValue = event.currentTarget.value;
 
@@ -82,10 +86,40 @@ export class POSStyleCurrencyEntryMode extends Feature {
         const mathResult = convertWithPosFactor(this.evaluateMath(normalizedExpression));
 
         newValueString = formatFloatValue(mathResult);
+      } else {
+        newValueString = currentValue;
       }
 
-      // todo the value added in YNAB is not influenced here - determine where it is set
-      event.currentTarget.value = newValueString;
+      const currentTarget = event.currentTarget;
+
+      // overwrite value and stop propagation immediately
+      currentTarget.value = newValueString;
+      event.stopImmediatePropagation();
+
+      // trigger new event which is passed to YNAB code with the right value
+      const newKeydownEvent = new KeyboardEvent('keydown', {
+        code: event.code,
+        key: event.key,
+        keyCode: event.keyCode,
+        which: event.which,
+        bubbles: true,
+        cancelable: true,
+        // composed: true,
+      });
+      newKeydownEvent._wasHandled = true;
+
+      const newInputEvent = new Event('input', {
+        bubbles: true,
+        cancelable: true,
+        data: newValueString,
+      });
+
+      const domTarget = document.getElementById(currentTarget.id);
+
+      setTimeout(() => {
+        domTarget.dispatchEvent(newInputEvent);
+        domTarget.dispatchEvent(newKeydownEvent);
+      });
     }
   }
 
