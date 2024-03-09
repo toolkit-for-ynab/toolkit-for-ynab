@@ -1,4 +1,5 @@
 export * from './settings';
+import type { FeatureSetting } from 'toolkit/types/toolkit/features';
 import { allToolkitSettings, settingMigrationMap } from './settings';
 import { ToolkitStorage } from 'toolkit/core/common/storage';
 

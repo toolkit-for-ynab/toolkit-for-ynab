@@ -1,7 +1,7 @@
 .tk-series-legend {
   font-size: 0.85rem;
   color: var(--default-text);
-  background: var(--default_background);
+  background: var(--backgroundPrimary);
 
   &__legend-icon {
     width: 1rem;
@@ -14,7 +14,7 @@
     border-radius: 0.35rem;
 
     &:hover {
-      background-color: var(--button_secondary_background);
+      background-color: var(--buttonSecondaryBackground);
     }
 
     &--header {

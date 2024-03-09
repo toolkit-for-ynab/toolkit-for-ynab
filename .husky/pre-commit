@@ -1,5 +1,7 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env bash
 
-yarn pretty-quick --staged
-yarn lint
+. "$(dirname "$0")/_/husky.sh"
+. ./checks/_lib.sh
+
+set -e
+run_checks precommit

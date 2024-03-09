@@ -148,23 +148,23 @@ export class DisplayTotalMonthlyGoals extends Feature {
     return (
       <div className={this.containerClass}>
         <InspectorCard
-          title="Total Monthly Goals"
+          title="Total Monthly Targets"
           mainAmount={totalGoals}
           className="total-monthly-goals-card"
         >
           {shouldShowGoalBreakdown && (
             <div className="ynab-breakdown">
-              <BreakdownItem label="Savings Goals">
+              <BreakdownItem label="Savings Targets">
                 <FormattedCurrency amount={savingsGoals} />
               </BreakdownItem>
-              <BreakdownItem label="Spending Goals" className="extra-bottom-space">
+              <BreakdownItem label="Spending Targets" className="extra-bottom-space">
                 <FormattedCurrency amount={spendingGoals} />
               </BreakdownItem>
-              <BreakdownItem label="Budgeted for Goals" className="colorize-currency">
+              <BreakdownItem label="Budgeted for Targets" className="colorize-currency">
                 <FormattedCurrency amount={budgeted} />
               </BreakdownItem>
               <BreakdownItem
-                label={`${needed > 0 ? 'Needed for' : 'Exceeded from'} Goals`}
+                label={`${needed > 0 ? 'Needed for' : 'Exceeded from'} Targets`}
                 className={`goal-remaining-balance ${needed > 0 ? 'negative' : 'positive'}`}
               >
                 <FormattedCurrency amount={Math.abs(needed)} />

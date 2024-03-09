@@ -4,19 +4,20 @@ import * as categories from './categories';
 import { setCategoryOriginalValues } from './destroy-helpers';
 import { shouldRun } from './index';
 
-export function handleBudgetTableRow(element) {
+export function handleBudgetTableRows() {
   if (!shouldRun()) return;
+  $('.budget-table-row').each((_, element) => {
+    const $categoryObjects = getCategoryObjects(element);
+    if (!$categoryObjects) return;
 
-  const $categoryObjects = getCategoryObjects(element);
-  if (!$categoryObjects) return;
+    const category = getEmberView(element.id).category;
+    if (!category) return;
 
-  const category = getEmberView(element.id).category;
-  if (!category) return;
+    const categoryData = categories.setAndGetCategoryData(category);
+    if (!categoryData) return;
 
-  const categoryData = categories.setAndGetCategoryData(category);
-  if (!categoryData) return;
-
-  categoryValues(categoryData, category, $categoryObjects);
+    categoryValues(categoryData, category, $categoryObjects);
+  });
 }
 
 function categoryValues(categoryData, category, $categoryObjects) {

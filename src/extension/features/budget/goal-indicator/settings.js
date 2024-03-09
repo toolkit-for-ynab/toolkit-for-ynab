@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'budget',
-  title: 'Add Goal Indicator',
+  title: 'Add Target Indicator',
   description:
-    'Add an indicator to subcategories with goals. Types: (M)onthly goal, target by (D)ate goal, (T)arget without date, (S)pending goals, and (U)pcoming transactions.',
+    'Add an indicator to subcategories with targets. Types: (M)onthly Savings Builder, Savings Balance By (D)ate, Savings (B)alance, Needed For (S)pending, (M)onthly (D)ebt Payment, and (U)pcoming transactions.',
 };

@@ -24,6 +24,7 @@ import ReactMarkdown from 'react-markdown';
 import { useToolkitDisabled } from 'toolkit/hooks/useToolkitDisabled';
 import { ReactNode, useEffect, useId, useRef, useState } from 'react';
 import { Button } from 'toolkit/components/button';
+import type { FeatureSetting, FeatureSettingConfig } from 'toolkit/types/toolkit/features';
 
 function ColorPicker({
   id,

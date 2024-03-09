@@ -30,7 +30,7 @@ export class CollapseInspector extends Feature {
   collapseButton() {
     return $(`
       <button class="sidebar-collapse" type="button">
-        <svg height="24" width="24" class="ynab-new-icon ember-view">
+        <svg height="12" width="12" class="ynab-new-icon ember-view">
           <use href="#icon_sprite_sidebar_open"></use>
           <title>Collapse Inspector</title>    
         </svg>
@@ -41,7 +41,7 @@ export class CollapseInspector extends Feature {
   expandButton() {
     return $(`
       <button class="sidebar-expand" type="button">
-        <svg height="24" width="24" class="ynab-new-icon ember-view">
+        <svg height="12" width="12" class="ynab-new-icon ember-view">
           <use href="#icon_sprite_sidebar_close"></use>
           <title>Expand Inspector</title>    
         </svg>

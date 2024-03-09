@@ -1,13 +1,13 @@
 body,
 body.theme-new-default {
-  --tk-current-month-background-color: var(--sidebar_button_background_selected);
+  --tk-current-month-background-color: var(--sidebarButtonBackgroundSelected);
   --tk-current-month-control-color: #bee6ef;
   --tk-current-month-header-color: #ffffff;
   --tk-current-month-note-color: rgba(255, 255, 255, 0.6);
 }
 
 body.theme-classic {
-  --tk-current-month-control-color: var(--primary_action);
+  --tk-current-month-control-color: var(--actionPrimary);
   --tk-current-month-header-color: #ffffff;
   --tk-current-month-note-color: rgba(255, 255, 255, 0.6);
 }
@@ -37,7 +37,10 @@ body.theme-dark {
 /* current month styles */
 .tk-highlight-current-month {
   background: var(--tk-current-month-background-color) !important;
+  background-clip: content-box !important;
+  border-radius: 1rem !important;
 }
+
 .budget-header .tk-highlight-current-month .budget-header-calendar-prev,
 .budget-header .tk-highlight-current-month .budget-header-calendar-next {
   color: var(--tk-current-month-control-color);

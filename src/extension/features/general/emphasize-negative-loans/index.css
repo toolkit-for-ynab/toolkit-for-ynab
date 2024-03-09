@@ -1,9 +1,9 @@
 /* Sidebar Numbers */
 .nav-account.loan .negative {
   background-color: #fff !important;
-  background-color: var(--sidebar_account_negative_balance_background) !important;
+  background-color: var(--sidebarAccountNegativeBalanceBackground) !important;
   color: #ca481d !important;
-  color: var(--label_negative) !important;
+  color: var(--labelNegative) !important;
   border-radius: 1em;
   display: block;
   font-weight: 700 !important;

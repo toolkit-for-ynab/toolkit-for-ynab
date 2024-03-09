@@ -1,4 +1,6 @@
 import moment, { Moment } from 'moment';
+import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
+import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
 
 declare module 'moment' {
   interface Moment {
@@ -6,18 +8,8 @@ declare module 'moment' {
   }
 }
 
-interface YNABTransaction {
-  outflow?: number;
-  inflow?: number;
-  accountId: string;
-  transferAccountId: string | null;
-  date: Moment;
-  /** YYYY-mm format */
-  month: string;
-}
-
 export function filterTransactions(
-  transactions: readonly YNABTransaction[],
+  transactions: YNABTransaction[],
   filterOutAccounts: ReadonlySet<string>
 ) {
   return transactions
@@ -45,9 +37,9 @@ export function filterTransactions(
  * @returns A new array containing only the transactions that fall within the specified date range.
  */
 export function filterTransactionsByDate(
-  transactions: readonly YNABTransaction[],
-  startDate: Moment,
-  endDate: Moment
+  transactions: YNABTransaction[],
+  startDate: DateWithoutTime,
+  endDate: DateWithoutTime
 ) {
   return transactions.filter((transaction) => {
     return transaction.date >= startDate && transaction.date <= endDate;
@@ -56,7 +48,7 @@ export function filterTransactionsByDate(
 
 type GroupedTransactions = Record<string, Record<string, YNABTransaction[]>>;
 
-export function groupTransactions(transactions: readonly YNABTransaction[]) {
+export function groupTransactions(transactions: YNABTransaction[]) {
   const groupedByMonth = groupBy(transactions, 'month');
   const groupedByMonthAndDate: GroupedTransactions = {};
 
@@ -102,9 +94,12 @@ export function calculateCumulativeOutflowPerDate(transactions: GroupedTransacti
   });
 }
 
-export function toHighchartsSeries(transactions: Record<string, Record<string, OutflowData>>) {
+export function toHighchartsSeries(
+  transactions: Record<string, Record<string, OutflowData>>
+): Highcharts.SeriesLineOptions[] {
   return Object.entries(transactions).map(([month, data]) => ({
     name: moment(month, 'YYYY-MM').format('MMM YYYY'),
+    type: 'line',
     data: Object.entries(data).map(([date, { value, transactions }]) => ({
       x: parseInt(date),
       y: value,

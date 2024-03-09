@@ -3,7 +3,7 @@ module.exports = {
   type: 'checkbox',
   default: false,
   section: 'budget',
-  title: 'Emphasize Underfunded Goals',
+  title: 'Emphasize Underfunded Targets',
   description:
-    'Change the default orange goal underfunded warning to blue to better differentiate it from credit card overspending.',
+    'Change the default orange target underfunded warning to blue to better differentiate it from credit card overspending.',
 };

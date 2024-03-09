@@ -4,13 +4,13 @@ import { useLocalStorage } from 'toolkit/extension/hooks/useLocalStorage';
 import { FormattedCurrency } from './FormattedCurrency';
 
 const RightArrow = () => (
-  <svg height="24" width="24" id="ember1340" className="ynab-new-icon card-chevron">
+  <svg height="12" width="12" id="ember1340" className="ynab-new-icon card-chevron">
     <use href="#icon_sprite_chevron_right"></use>
   </svg>
 );
 
 const DownArrow = () => (
-  <svg height="24" width="24" id="ember1340" className="ynab-new-icon card-chevron">
+  <svg height="12" width="12" id="ember1340" className="ynab-new-icon card-chevron">
     <use href="#icon_sprite_chevron_down"></use>
   </svg>
 );

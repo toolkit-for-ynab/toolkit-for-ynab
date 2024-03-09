@@ -19,7 +19,7 @@
 #tk-accounts-header-total-irr-label,
 #tk-accounts-header-filtered-irr-label {
   font-size: 0.75rem;
-  color: var(--header_label_primary);
+  color: var(--labelHeading);
   font-weight: 400;
   font-style: italic;
 }
