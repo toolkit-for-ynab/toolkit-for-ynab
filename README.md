@@ -94,7 +94,7 @@ This extension uses three main things in its build process:
 
       - Build and run in Firefox
 
-            $ web-ext run --source-dir dist/extension/
+            $ yarn run manifest:firefox && web-ext run --source-dir dist/extension/
 
       - You can also disable reloading like this:
 
