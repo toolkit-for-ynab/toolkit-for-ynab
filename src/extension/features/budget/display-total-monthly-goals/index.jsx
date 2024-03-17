@@ -66,12 +66,25 @@ export class DisplayTotalMonthlyGoals extends Feature {
       );
     });
 
+    const creditCardActivity = this.getCreditActivity();
+
     // For information about the total spent value see https://github.com/toolkit-for-ynab/toolkit-for-ynab/issues/2828
     return [
       budgetedCalculation?.immediateIncome || 0,
       budgetedCalculation?.budgeted || 0,
-      budgetedCalculation?.cashOutflows + 2 * (budgetedCalculation?.creditOutflows || 0),
+      (budgetedCalculation?.outflows || creditCardActivity) - creditCardActivity,
     ];
+  }
+
+  getCreditActivity() {
+    let creditCardActivity = 0;
+    $("button[title='Credit Card Payments']")
+      .parents('.is-debt-payment-category.is-master-category')
+      .each((_, element) => {
+        const category = getEmberView(element.id).category;
+        creditCardActivity = category.activity;
+      });
+    return creditCardActivity;
   }
 
   calculateTotalGoals() {
