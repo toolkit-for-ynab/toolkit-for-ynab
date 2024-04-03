@@ -3,11 +3,6 @@
 # Finds the check scripts in the check/ directory
 # Must be run from the repo root
 find_check_files() {
-  all_files="$(find ./checks \
-    -type f \
-    -name '*.sh' \
-    -not -name '_lib.sh' \
-    -not -name '_template.sh' | sort)"
 
   # Dummy variables/functions are set so that
   # the call to unset below doesn't fail if
@@ -19,7 +14,11 @@ find_check_files() {
   PREPUSH=1
   # END dummy variables
 
-  while read -r file; do
+  find ./checks -type f \
+    -name '*.sh' \
+    -not -name '_lib.sh' \
+    -not -name '_template.sh' | sort | while read -r file 
+  do
     unset check PRECOMMIT PREPUSH
     . "$file"
     case $1 in
@@ -41,7 +40,7 @@ find_check_files() {
       return 1
       ;;
     esac
-  done <<<"$all_files"
+  done
 }
 
 # $1 - any of 'precommit', 'prepush', or 'all'
