@@ -1,7 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { getBudgetMonthDisplaySubCategory } from '../utils';
 
 export class DisplayUpcomingAmount extends Feature {
   injectCSS() {
@@ -22,7 +22,8 @@ export class DisplayUpcomingAmount extends Feature {
     $('.tk-activity-upcoming-amount').remove();
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
-      const category = getEmberView(element.id).category;
+      const category = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
+
       if (!category) {
         return;
       }

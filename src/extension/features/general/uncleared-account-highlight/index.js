@@ -1,5 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
+
+import { getAccountsService } from 'toolkit/extension/utils/ynab';
 
 const INDICATOR_CLASS = 'tk-uncleared-account-indicator';
 const INDICATOR_ELEMENT = `<div class="${INDICATOR_CLASS} flaticon solid copyright"></div>`;
@@ -35,12 +36,13 @@ export class UnclearedAccountHighlight extends Feature {
     const navAccounts = element.querySelectorAll('.nav-account-row');
 
     navAccounts.forEach((navAccount) => {
-      const emberView = getEmberView(navAccount.id);
-      if (!emberView) {
+      const account = getAccountsService().activeAccounts.find(({ itemId }) => {
+        return itemId === element.dataset.accountId;
+      });
+      if (!account) {
         return;
       }
 
-      const account = emberView.data;
       const accountCalculation = account.getAccountCalculation();
       const shouldShowIndicator = !!accountCalculation.unclearedBalance;
       const isIndicatorShowing = navAccount.querySelector(`.${INDICATOR_CLASS}`) !== null;

@@ -1,11 +1,15 @@
 import React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import { componentBefore } from 'toolkit/extension/utils/react';
-import { getCurrentBudgetDate, getEntityManager } from 'toolkit/extension/utils/ynab';
+import {
+  getBudgetService,
+  getCurrentBudgetDate,
+  getEntityManager,
+} from 'toolkit/extension/utils/ynab';
 
 import { FormattedCurrency } from './FormattedCurrency';
 import { InspectorCard } from './InspectorCard';
+import { getBudgetMonthDisplaySubCategory } from '../utils';
 
 const BreakdownItem = ({ label, children, className = '' }) => {
   return (
@@ -36,7 +40,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   extractCategoryGoalInformation(element) {
-    const category = getEmberView(element.id).category;
+    const category = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
     if (!category) {
       return;
     }
@@ -77,14 +81,11 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   getCreditActivity() {
-    let creditCardActivity = 0;
-    $("button[title='Credit Card Payments']")
-      .parents('.is-debt-payment-category.is-master-category')
-      .each((_, element) => {
-        const category = getEmberView(element.id).category;
-        creditCardActivity = category.activity;
-      });
-    return creditCardActivity;
+    const budgetService = getBudgetService();
+    const category = budgetService.budgetMonthDisplayItems.find((item) => {
+      return item.isCreditCardPaymentCategory;
+    });
+    return category?.activity ?? 0;
   }
 
   calculateTotalGoals() {

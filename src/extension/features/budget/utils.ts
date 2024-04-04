@@ -1,6 +1,8 @@
 export const GOAL_TABLE_CELL_CLASSNAME = 'tk-budget-table-cell-goal';
 
+import { serviceLookup } from 'toolkit/extension/utils/ember';
 import './utils.styles.scss';
+import { getBudgetService } from 'toolkit/extension/utils/ynab';
 
 export function ensureGoalColumn(element: HTMLElement | null): boolean {
   if (!element) {
@@ -39,6 +41,34 @@ export function ensureGoalColumn(element: HTMLElement | null): boolean {
   return true;
 }
 
-export function budgetRowInChangesSet(changes: Set<string>) {
-  return changes.has('budget-table-row js-budget-table-row budget-table-row-ul is-sub-category');
+export function getBudgetMonthDisplaySubCategory(entityId: string | undefined | null) {
+  if (!entityId) {
+    return null;
+  }
+
+  const budgetService = getBudgetService();
+  if (!budgetService) {
+    return null;
+  }
+
+  return (
+    budgetService.budgetMonthDisplaySubCategoryItems.find(({ subCategoryId }) => {
+      return entityId === subCategoryId;
+    }) ?? null
+  );
+}
+
+export function getBudgetMonthDisplayMasterCategory(element: HTMLElement) {
+  const name = $('.budget-table-cell-name button', element).attr('title');
+
+  const budgetService = getBudgetService();
+  if (!budgetService) {
+    return null;
+  }
+
+  return (
+    budgetService.budgetMonthDisplayItems.find(({ isMasterCategory, masterCategory }) => {
+      return isMasterCategory && masterCategory.name === name;
+    }) ?? null
+  );
 }

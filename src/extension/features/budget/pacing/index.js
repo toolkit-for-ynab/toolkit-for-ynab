@@ -1,7 +1,6 @@
 import debounce from 'debounce';
 import { Feature } from 'toolkit/extension/features/feature';
 import { isCurrentMonthSelected } from 'toolkit/extension/utils/ynab';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import {
   getDeemphasizedCategories,
   pacingForCategory,
@@ -9,7 +8,10 @@ import {
 } from 'toolkit/extension/utils/pacing';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import { budgetRowInChangesSet } from 'toolkit/extension/features/budget/utils';
+import {
+  budgetRowInChangesSet,
+  getBudgetMonthDisplaySubCategory,
+} from 'toolkit/extension/features/budget/utils';
 
 export class Pacing extends Feature {
   injectCSS() {
@@ -90,7 +92,7 @@ export class Pacing extends Feature {
       return;
     }
 
-    const category = getEmberView(element.id)?.category;
+    const category = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
     if (!category) {
       return;
     }
