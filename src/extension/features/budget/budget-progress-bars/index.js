@@ -1,7 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
 import { pacingForCategory } from 'toolkit/extension/utils/pacing';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
+import { getBudgetMonthDisplaySubCategory } from '../utils';
 
 const PROGRESS_INDICATOR_WIDTH = 0.001; // Current month progress indicator width
 
@@ -42,7 +42,7 @@ export class BudgetProgressBars extends Feature {
   }
 
   addGoalProgress = (element) => {
-    const category = getEmberView(element.id)?.category;
+    const category = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
     if (!category || !category.goalType) {
       return;
     }
@@ -69,7 +69,7 @@ export class BudgetProgressBars extends Feature {
   };
 
   addPacingProgress = (element) => {
-    const category = getEmberView(element.id)?.category;
+    const category = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
     if (!category) {
       return;
     }
@@ -146,7 +146,7 @@ export class BudgetProgressBars extends Feature {
     element.dataset.tkProgressBars = this.settings.enabled;
 
     if (element.classList.contains('is-sub-category')) {
-      const subCategory = getEmberView(element.id).category;
+      const subCategory = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
       if (!subCategory) {
         return;
       }

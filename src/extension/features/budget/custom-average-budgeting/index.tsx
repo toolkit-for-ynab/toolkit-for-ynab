@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { getEmberView } from 'toolkit/extension/utils/ember';
+
 import { getBudgetService, getEntityManager } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { Feature } from '../../feature';
 import { componentAfter } from 'toolkit/extension/utils/react';
 import type { FeatureSetting } from 'toolkit/types/toolkit/features';
 import type { BudgetTableRowComponent } from 'toolkit/types/ynab/components/BudgetTableRow';
+import { getBudgetMonthDisplaySubCategory } from '../utils';
 
 const QuickBudgetButton = ({
   setting,
@@ -111,10 +112,11 @@ export class CustomAverageBudgeting extends Feature {
   _quickBudgetHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (event.currentTarget.id !== 'tk-average-months') return;
 
-    const budgetRow = document.querySelector(`[data-entity-id="${this._getSelectedCategoryId()}"]`);
-    const emberView = getEmberView<BudgetTableRowComponent>(budgetRow?.id);
-    if (emberView) {
-      emberView.category.budgeted = this._calculateAverage();
+    const selectedCategoryId = this._getSelectedCategoryId();
+    const budgetRow = document.querySelector(`[data-entity-id="${selectedCategoryId}"]`);
+    const category = getBudgetMonthDisplaySubCategory(selectedCategoryId);
+    if (category) {
+      category.budgeted = this._calculateAverage();
     }
   };
 

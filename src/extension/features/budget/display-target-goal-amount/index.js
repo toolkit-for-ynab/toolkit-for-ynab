@@ -1,12 +1,13 @@
 import debounce from 'debounce';
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import {
   ensureGoalColumn,
   GOAL_TABLE_CELL_CLASSNAME,
-  budgetRowInChangesSet,
+  getBudgetMonthDisplaySubCategory,
+  getBudgetMonthDisplayMasterCategory,
 } from 'toolkit/extension/features/budget/utils';
+import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
 export const Settings = {
   WarnBudgetOverTarget: '1',
@@ -26,13 +27,11 @@ export class DisplayTargetGoalAmount extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteBudgetPage();
   }
 
   observe(changedNodes) {
-    if (!this.shouldInvoke()) return;
-
-    if (budgetRowInChangesSet(changedNodes)) {
+    if (changedNodes.has('budget-table-row')) {
       this.debouncedInvoke();
     }
   }
@@ -56,11 +55,13 @@ export class DisplayTargetGoalAmount extends Feature {
     let masterCategories = $('.budget-table-row.is-master-category');
     [...masterCategories].forEach((element) => {
       var categorySum = 0;
-      let category = getEmberView(element.id);
+      const displayItem = getBudgetMonthDisplayMasterCategory(element);
 
-      if (category) {
-        category.subCategories.forEach((subcategory) => {
-          if (subcategory.monthlySubCategoryBudgetCalculation) {
+      if (displayItem?.masterCategory) {
+        displayItem.masterCategory.subCategories.forEach((subCat) => {
+          const subcategory = getBudgetMonthDisplaySubCategory(subCat.entityId);
+
+          if (subcategory?.monthlySubCategoryBudgetCalculation) {
             if (subcategory.monthlySubCategoryBudgetCalculation.isGoalValidForMonth) {
               switch (subcategory.goalType) {
                 case ynab.constants.SubCategoryGoalType.TargetBalance:
@@ -92,7 +93,7 @@ export class DisplayTargetGoalAmount extends Feature {
     }
 
     const userSetting = this.settings.enabled;
-    const category = getEmberView(element.id).category;
+    const category = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
     if (!category) {
       return;
     }

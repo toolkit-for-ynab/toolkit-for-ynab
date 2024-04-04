@@ -5,7 +5,7 @@ import {
   isCurrentRouteBudgetPage,
 } from 'toolkit/extension/utils/ynab';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
-import { getEmberView } from 'toolkit/extension/utils/ember';
+import { getBudgetMonthDisplaySubCategory } from '../utils';
 
 export class CheckCreditBalances extends Feature {
   injectCSS() {
@@ -98,7 +98,7 @@ export class CheckCreditBalances extends Feature {
   checkCategoryForDifference(categoryElement) {
     if (!isCurrentMonthSelected()) return;
 
-    const category = getEmberView(categoryElement.id).category;
+    const category = getBudgetMonthDisplaySubCategory(categoryElement.dataset.entityId);
     if (!category) return;
     if (!category.isCreditCardPaymentCategory) return;
 

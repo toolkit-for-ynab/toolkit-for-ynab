@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
+import { getBudgetMonthDisplaySubCategory } from '../utils';
 
 export class DisplayTotalOverspent extends Feature {
   observe(changedNodes) {
@@ -19,7 +19,7 @@ export class DisplayTotalOverspent extends Feature {
     let checkedCount = 0;
 
     $('.budget-table-row.is-sub-category').each((_, element) => {
-      const category = getEmberView(element.id).category;
+      const category = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
       if (!category) {
         return;
       }

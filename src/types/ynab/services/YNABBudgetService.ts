@@ -4,6 +4,9 @@ export interface YNABBudgetMonthDisplayItem {
   categoryId: string;
   budgeted: number;
   goalTarget: number;
+  subCategoryId: string;
+  masterCategory: any;
+  isMasterCategory: boolean;
 }
 
 export interface YNABBudgetService {
@@ -15,4 +18,6 @@ export interface YNABBudgetService {
   checkedRowsCount: number;
   checkedRows: YNABBudgetMonthDisplayItem[];
   inspectorCategories: [];
+  budgetMonthDisplayItems: YNABBudgetMonthDisplayItem[];
+  budgetMonthDisplaySubCategoryItems: YNABBudgetMonthDisplayItem[];
 }

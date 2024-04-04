@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import { getBudgetService } from 'toolkit/extension/utils/ynab';
+import { getBudgetMonthDisplaySubCategory } from '../utils';
 
 export class TargetBalanceWarning extends Feature {
   shouldInvoke() {
@@ -24,7 +24,7 @@ export class TargetBalanceWarning extends Feature {
   }
 
   modifyBudgetRow(element) {
-    const category = getEmberView(element.id).category;
+    const category = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
     if (!category) {
       return;
     }

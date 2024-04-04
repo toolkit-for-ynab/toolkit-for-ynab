@@ -1,9 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import ReactMarkdown from 'react-markdown';
-import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
+import { getRegisterGridService, isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class MemoAsMarkdown extends Feature {
   injectCSS() {
@@ -15,15 +14,16 @@ export class MemoAsMarkdown extends Feature {
   }
 
   applyMarkdown = (element) => {
-    const transactionRows = getEmberView(element.id)?.componentRows;
+    const transactionRows = getRegisterGridService().visibleTransactionDisplayItems;
     if (!transactionRows || !transactionRows.length) {
       return;
     }
+
     transactionRows.forEach((row) => {
-      if (!row.content?.entityId) {
+      if (!row.entityId) {
         return;
       }
-      const selector = `[data-row-id='${row.content.entityId}'].ynab-grid-body-row`;
+      const selector = `[data-row-id='${row.entityId}'].ynab-grid-body-row`;
       const transactionElement = element.querySelector(selector);
       if (!transactionElement) {
         return;
@@ -34,7 +34,7 @@ export class MemoAsMarkdown extends Feature {
         return;
       }
 
-      const note = row?.content?.memo;
+      const note = row?.memo;
       const originalMemo = transactionElement.querySelector(
         '.ynab-grid-cell-memo span:not(.tk-markdown-memo)'
       );

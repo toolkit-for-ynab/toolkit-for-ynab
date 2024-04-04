@@ -1,6 +1,6 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
+import { getAccountsService } from 'toolkit/extension/utils/ynab';
 
 export class ImportNotification extends Feature {
   isActive = false;
@@ -60,7 +60,9 @@ export class ImportNotification extends Feature {
     this.isActive = true;
 
     $('.nav-account-row').each((_, element) => {
-      let account = getEmberView(element.id)?.account;
+      const account = getAccountsService().activeAccounts.find(({ itemId }) => {
+        return itemId === element.dataset.accountId;
+      });
       if (!account) {
         return;
       }

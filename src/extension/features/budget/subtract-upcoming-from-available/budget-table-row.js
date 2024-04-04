@@ -1,8 +1,8 @@
 import { formatCurrency, getCurrencyClass } from 'toolkit/extension/utils/currency';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import * as categories from './categories';
 import { setCategoryOriginalValues } from './destroy-helpers';
 import { shouldRun } from './index';
+import { getBudgetMonthDisplaySubCategory } from '../utils';
 
 export function handleBudgetTableRows() {
   if (!shouldRun()) return;
@@ -10,7 +10,7 @@ export function handleBudgetTableRows() {
     const $categoryObjects = getCategoryObjects(element);
     if (!$categoryObjects) return;
 
-    const category = getEmberView(element.id).category;
+    const category = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
     if (!category) return;
 
     const categoryData = categories.setAndGetCategoryData(category);

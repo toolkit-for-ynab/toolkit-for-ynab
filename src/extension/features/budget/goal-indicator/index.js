@@ -1,7 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import {
   ensureGoalColumn,
+  getBudgetMonthDisplaySubCategory,
   GOAL_TABLE_CELL_CLASSNAME,
 } from 'toolkit/extension/features/budget/utils';
 import { isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
@@ -38,7 +38,7 @@ export class GoalIndicator extends Feature {
       return;
     }
 
-    const category = getEmberView(element.id)?.category;
+    const category = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
     if (!category) {
       return;
     }

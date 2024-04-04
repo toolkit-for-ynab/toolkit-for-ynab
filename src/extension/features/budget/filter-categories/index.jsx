@@ -2,9 +2,9 @@ import React from 'react';
 import fuzzysort from 'fuzzysort';
 import debounce from 'debounce';
 import { Feature } from 'toolkit/extension/features/feature';
-import { getEmberView } from 'toolkit/extension/utils/ember';
 import { l10n } from 'toolkit/extension/utils/toolkit';
 import { componentPrepend } from 'toolkit/extension/utils/react';
+import { getBudgetMonthDisplaySubCategory } from '../utils';
 
 function CategorySearchInput({ applySearch }) {
   const [value, setValue] = React.useState('');
@@ -89,9 +89,9 @@ export class FilterCategories extends Feature {
 
     if (/^underfunded$/.test(text)) {
       $('.budget-table-container .is-sub-category').each((_, el) => {
-        let element = getEmberView(el.id);
-        if (element.category.goalUnderFundedAmount === 0) {
-          $(`#${element.elementId}`).addClass('tk-categories-filter-hidden');
+        const category = getBudgetMonthDisplaySubCategory(el.dataset.entityId);
+        if (category.goalUnderFundedAmount === 0) {
+          $(`#${el.id}`).addClass('tk-categories-filter-hidden');
         }
       });
 
@@ -102,10 +102,10 @@ export class FilterCategories extends Feature {
 
     if (/^-available$/g.test(text)) {
       $('.budget-table-container .is-sub-category').each((_, el) => {
-        let element = getEmberView(el.id);
-        if (element.category.available === 0) {
-          $(`#${element.elementId}`).addClass('tk-categories-filter-hidden');
-          $(`#${element.elementId}`)
+        const category = getBudgetMonthDisplaySubCategory(el.dataset.entityId);
+        if (category.available === 0) {
+          $(`#${el.id}`).addClass('tk-categories-filter-hidden');
+          $(`#${el.id}`)
             .prev('.budget-table-container .is-master-category')
             .addClass('tk-categories.filter-hidden');
         }
@@ -115,10 +115,10 @@ export class FilterCategories extends Feature {
 
     if (/^available$/g.test(text)) {
       $('.budget-table-container .is-sub-category').each((_, el) => {
-        let element = getEmberView(el.id);
-        if (element.category.available <= 0) {
-          $(`#${element.elementId}`).addClass('tk-categories-filter-hidden');
-          $(`#${element.elementId}`)
+        const category = getBudgetMonthDisplaySubCategory(el.dataset.entityId);
+        if (category.available <= 0) {
+          $(`#${el.id}`).addClass('tk-categories-filter-hidden');
+          $(`#${el.id}`)
             .prev('.budget-table-container .is-master-category')
             .addClass('tk-categories.filter-hidden');
         }
@@ -128,9 +128,9 @@ export class FilterCategories extends Feature {
 
     if (/^goal$/g.test(text)) {
       $('.budget-table-container .is-sub-category').each((_, el) => {
-        let element = getEmberView(el.id);
-        if (element.goalTargetAmount === 0) {
-          $(`#${element.elementId}`).addClass('tk-categories-filter-hidden');
+        const category = getBudgetMonthDisplaySubCategory(el.dataset.entityId);
+        if (category.goalTargetAmount === 0) {
+          $(`#${el.id}`).addClass('tk-categories-filter-hidden');
         }
       });
 
@@ -139,9 +139,9 @@ export class FilterCategories extends Feature {
 
     if (/^-goal$/g.test(text)) {
       $('.budget-table-container .is-sub-category').each((_, el) => {
-        let element = getEmberView(el.id);
-        if (element.goalTargetAmount !== 0) {
-          $(`#${element.elementId}`).addClass('tk-categories-filter-hidden');
+        const category = getBudgetMonthDisplaySubCategory(el.dataset.entityId);
+        if (category.goalTargetAmount !== 0) {
+          $(`#${el.id}`).addClass('tk-categories-filter-hidden');
         }
       });
 
@@ -151,7 +151,7 @@ export class FilterCategories extends Feature {
     $('.budget-table-container .is-master-category').addClass('tk-categories-filter-hidden');
 
     $('.budget-table-container .is-sub-category').each((_, el) => {
-      const { category } = getEmberView(el.id);
+      const { category } = getBudgetMonthDisplaySubCategory(el.dataset.entityId);
       if (!category) {
         return;
       }
