@@ -5,7 +5,7 @@ import type { YNABUtilities } from './ynab-utilities';
 
 export interface YNABGlobal {
   YNABSharedLib: YNABSharedLib;
-  YNABSharedLibWebInstance: unknown;
+  YNABSharedLibWebInstance: YNABSharedLibWebInstance;
   collections: unknown;
   constants: YNABConstants;
   convertFromMilliDollars(milliDollars: number | string): number;
