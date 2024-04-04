@@ -249,10 +249,6 @@ Removes the highlight colour from positive (or zero) category balances and colou
 
 Distributes the remaining total of a split transaction proportionally to all other splits which contain an amount.
 
-## Add "Check Number" Column
-
-Adds a check number column to your account view. YNAB currently has a way to save check numbers but does not officially support it. There are no guarantees that YNAB will continue to store this value. For that reason, it is still recommended that you store check numbers in the memo field
-
 ## Add "Scheduled" and "Reconciled" Toggle Buttons
 
 Add buttons to quickly show/hide either scheduled or reconciled transactions with one click.
