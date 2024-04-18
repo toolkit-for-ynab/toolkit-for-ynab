@@ -7,7 +7,7 @@ module.exports = {
   description:
     'Display savings ratio (how much of income you do not spend) in Toolkit reports. Enable this to select target savings ratio. All values below this threshold will be painted red.',
   options: [
-    { name: '5%', value: '0.5' },
+    { name: '5%', value: '0.05' },
     { name: '10%', value: '0.10' },
     { name: '15%', value: '0.15' },
     { name: '20%', value: '0.20' },
