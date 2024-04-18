@@ -75,9 +75,8 @@ export class ToolkitReports extends Feature {
     $(YNAB_NAVLINK_SELECTOR).removeClass('active');
     $(YNAB_NAVACCOUNT_SELECTOR).removeClass('is-selected');
     $(TOOLKIT_REPORTS_NAVLINK_SELECTOR).addClass('active');
-    $(`${YNAB_NAVLINK_SELECTOR}, ${YNAB_NAVACCOUNT_SELECTOR}`).on(
-      'click',
-      this._removeToolkitReports
+    $(`${YNAB_NAVLINK_SELECTOR}, ${YNAB_NAVACCOUNT_SELECTOR}`).on('click', () =>
+      this._removeToolkitReports()
     );
   }
 
@@ -114,7 +113,9 @@ export class ToolkitReports extends Feature {
       const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
       if (container) {
         $(container).css('height', '100%');
-        this.reactRoot = ReactDOM.createRoot(container);
+        if (!this.reactRoot) {
+          this.reactRoot = ReactDOM.createRoot(container);
+        }
         this.reactRoot.render(React.createElement(Root));
       }
     }, 50);

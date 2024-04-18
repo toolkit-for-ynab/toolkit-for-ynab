@@ -7,8 +7,9 @@ import {
 import { ReportFilters } from './components/report-filters';
 import { ReportSelector } from './components/report-selector';
 import './styles.scss';
-import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 import { withReportContextProvider } from '../../common/components/report-context/reports-provider';
+import { useDocumentTitle } from 'toolkit/hooks/useDocumentTitle';
+import { REPORT_TYPES } from '../../common/constants/report-types';
 
 function mapContextToProps(context: ReportContextType) {
   return {
@@ -18,26 +19,23 @@ function mapContextToProps(context: ReportContextType) {
 
 const Noop = () => null;
 
-export class RootComponent extends React.Component<
-  { selectedReport: ReportContextType['selectedReport'] },
-  { filteredTransactions: YNABTransaction[] }
-> {
-  state = {
-    filteredTransactions: [],
-  };
+export const RootComponent = ({
+  selectedReport,
+}: {
+  selectedReport: ReportContextType['selectedReport'];
+}) => {
+  const Report = selectedReport ? selectedReport.component : Noop;
+  const name = REPORT_TYPES.find((r) => r.key === selectedReport?.key)?.name || 'Toolkit Reports';
+  useDocumentTitle(name);
 
-  render() {
-    const Report = this.props.selectedReport ? this.props.selectedReport.component : Noop;
-
-    return (
-      <div className="tk-reports-root tk-flex tk-flex-column tk-full-height">
-        <ReportSelector />
-        <ReportFilters />
-        <Report />
-      </div>
-    );
-  }
-}
+  return (
+    <div className="tk-reports-root tk-flex tk-flex-column tk-full-height">
+      <ReportSelector />
+      <ReportFilters />
+      <Report />
+    </div>
+  );
+};
 
 export const Root = withReportContextProvider(
   withModalContextProvider(withReportContext(mapContextToProps)(RootComponent))
