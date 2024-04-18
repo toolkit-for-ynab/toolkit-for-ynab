@@ -107,7 +107,7 @@ not see any data in the running balance column.
 
 shouldInvoke is called immediately once the page and YNAB is ready. This function
 should perform a synchronous operation to determine whether or not your feature
-should be invoked. You should also use this function in your `observe()`, or
+should be invoked. You can also use this function in your `observe()`, or
 `onRouteChanged()` functions to determine whether or not you should invoke.
 
 Example:
@@ -176,8 +176,8 @@ class name to reduce complexity.
 
 Note that it is extremely likely to receive many calls to observe when things
 change on the page and not all changes are sent in the first request. It is for
-this reason that you're you should check both `this.shouldInvoke()` and the
-`changedNodes` set inside `observe()`.
+this reason that you should make necessary checks before doing any actual work. For
+example by calling `this.shouldInvoke()` or checking for required node in `changedNodes`.
 
 Example:
 
@@ -190,9 +190,6 @@ observe(changedNodes) {
   }
 }
 ```
-
-Note: The first line of your `observe()` function should call `this.shouldInvoke()`
-and return immediately if the result is false.
 
 #### `onRouteChanged(currentRoute: string): void`
 
