@@ -29,6 +29,7 @@ import { YNABPayee } from 'toolkit/types/ynab/data/payee';
 import { YNABMasterCategory } from 'toolkit/types/ynab/data/master-category';
 import { YNABSubCategory } from 'toolkit/types/ynab/data/sub-category';
 import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
+import { normalizeNetIncomes } from './normalizer';
 
 export const MONTHLY_TOTALS_KEY = '__totals';
 
@@ -414,17 +415,6 @@ export class IncomeVsExpenseComponent extends React.Component<
     expenses: NormalizedExpenses,
     incomes: NormalizedIncomes
   ): NormalizedNetIncome[] {
-    const expensesMonthlyTotals = expenses.monthlyTotals;
-    const incomesMonthlyTotals = incomes.monthlyTotals;
-
-    return incomesMonthlyTotals.map((incomeMonthData, index) => {
-      const expenseMonthData = expensesMonthlyTotals[index];
-
-      return {
-        date: incomeMonthData.date.clone(),
-        total: incomeMonthData.total + expenseMonthData.total,
-        transactions: [...incomeMonthData.transactions, ...expenseMonthData.transactions],
-      };
-    });
+    return normalizeNetIncomes(expenses, incomes);
   }
 }
