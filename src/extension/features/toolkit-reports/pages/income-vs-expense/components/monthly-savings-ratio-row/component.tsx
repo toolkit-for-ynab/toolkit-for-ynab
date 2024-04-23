@@ -42,8 +42,8 @@ export const MonthlySavingsRatioRow = ({
       <React.Fragment>
         {monthlyIncomes.map((incomeMonthData, index) => {
           const expenseMonthData = monthlyExpenses[index];
-          const incomeTotal = incomeMonthData.total;
-          const expenseTotal = Math.abs(expenseMonthData.total);
+          const incomeTotal = incomeMonthData?.total ?? 0;
+          const expenseTotal = Math.abs(expenseMonthData?.total ?? 0);
           let ratio = 0;
           if (incomeTotal !== 0 && incomeTotal >= expenseTotal) {
             ratio = 1 - expenseTotal / incomeTotal;
