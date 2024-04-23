@@ -87,17 +87,26 @@ describe('normalizer', () => {
     it.todo('combines incomes and expenses transactions per month');
     it.todo('sums the totals of incomes and expenses per month');
 
-    it('handles initial months with only incomes and no expenses', () => {
-      const earlierStartDate = moment.utc('2016-06-01');
-      const laterStartDate = moment.utc('2016-08-01');
-      const totalMonths = 5;
-      const monthsFromLaterStartDate = totalMonths - 2;
+    it('handles incomes starting in earlier months than expenses, ends in the same month', () => {
       const transactionsPerMonth = 3;
+
+      const totalMonths = 6;
+      const numMonthsStartEarly = 2; // Must be less than totalMonths
+      const startEarlyMonth = 3; // March
+      const startLateMonth = startEarlyMonth + numMonthsStartEarly; // May
+      const endMonth = startEarlyMonth + totalMonths - 1; // August, -1 is to offset the fact that we start counting on the startng month, not after
+
+      const numMonthsForEarlyStart = totalMonths;
+      const numMonthsForLaterStart = totalMonths - numMonthsStartEarly;
+
+      const earlierStartDate = moment.utc(`2016-${startEarlyMonth.toString().padStart(2, '0')}-01`);
+      const laterStartDate = moment.utc(`2016-${startLateMonth.toString().padStart(2, '0')}-01`);
+      const expectedEndDate = moment.utc(`2016-${endMonth.toString().padStart(2, '0')}-01`);
 
       let mockExpenses: Partial<NormalizedExpenses> = {
         monthlyTotals: generateMockMonthlyTotals(
           laterStartDate,
-          monthsFromLaterStartDate,
+          numMonthsForLaterStart,
           transactionsPerMonth,
           true
         ),
@@ -105,7 +114,7 @@ describe('normalizer', () => {
       let mockIncome: Partial<NormalizedIncomes> = {
         monthlyTotals: generateMockMonthlyTotals(
           earlierStartDate,
-          totalMonths,
+          numMonthsForEarlyStart,
           transactionsPerMonth,
           false
         ),
@@ -117,20 +126,34 @@ describe('normalizer', () => {
       );
 
       expect(normalizedNetIncomes.length).toBe(totalMonths);
-      expect(normalizedNetIncomes[0].date.toUTCMoment()).toEqual(earlierStartDate);
+      expect(normalizedNetIncomes[0].date.toUTCMoment().toISOString()).toEqual(
+        earlierStartDate.toISOString()
+      );
+      expect(
+        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString()
+      ).toEqual(expectedEndDate.toISOString());
     });
 
-    it('handles initial months with only expenses and no incomes', () => {
-      const earlierStartDate = moment.utc('2016-06-01');
-      const laterStartDate = moment.utc('2016-08-01');
-      const totalMonths = 5;
-      const monthsFromLaterStartDate = totalMonths - 2;
+    it('handles expenses starting in earlier months than incomes, ends in the same month', () => {
       const transactionsPerMonth = 3;
+
+      const totalMonths = 6;
+      const numMonthsStartEarly = 2; // Must be less than totalMonths
+      const startEarlyMonth = 3; // March
+      const startLateMonth = startEarlyMonth + numMonthsStartEarly; // May
+      const endMonth = startEarlyMonth + totalMonths - 1; // August, -1 is to offset the fact that we start counting on the startng month, not after
+
+      const numMonthsForEarlyStart = totalMonths;
+      const numMonthsForLaterStart = totalMonths - numMonthsStartEarly;
+
+      const earlierStartDate = moment.utc(`2016-${startEarlyMonth.toString().padStart(2, '0')}-01`);
+      const laterStartDate = moment.utc(`2016-${startLateMonth.toString().padStart(2, '0')}-01`);
+      const expectedEndDate = moment.utc(`2016-${endMonth.toString().padStart(2, '0')}-01`);
 
       let mockExpenses: Partial<NormalizedExpenses> = {
         monthlyTotals: generateMockMonthlyTotals(
           earlierStartDate,
-          totalMonths,
+          numMonthsForEarlyStart,
           transactionsPerMonth,
           true
         ),
@@ -138,7 +161,7 @@ describe('normalizer', () => {
       let mockIncome: Partial<NormalizedIncomes> = {
         monthlyTotals: generateMockMonthlyTotals(
           laterStartDate,
-          monthsFromLaterStartDate,
+          numMonthsForLaterStart,
           transactionsPerMonth,
           false
         ),
@@ -150,7 +173,110 @@ describe('normalizer', () => {
       );
 
       expect(normalizedNetIncomes.length).toBe(totalMonths);
-      expect(normalizedNetIncomes[0].date.toUTCMoment()).toEqual(earlierStartDate);
+      expect(normalizedNetIncomes[0].date.toUTCMoment().toISOString()).toEqual(
+        earlierStartDate.toISOString()
+      );
+      expect(
+        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString()
+      ).toEqual(expectedEndDate.toISOString());
+    });
+
+    it('handles incomes starting in earlier months than expenses, expenses ending in a later month', () => {
+      const transactionsPerMonth = 3;
+
+      const totalMonths = 6;
+      const numMonthsStartEarly = 2; // Must be less than totalMonths
+      const numMonthsEndLate = 2; // Must be less than totalMonths
+      const startEarlyMonth = 3; // March
+      const startLateMonth = startEarlyMonth + numMonthsStartEarly; // May
+      const endLateMonth = startEarlyMonth + totalMonths - 1; // August, -1 is to offset the fact that we start counting total on the startng month, not after
+      const endEarlyMonth = endLateMonth - numMonthsEndLate; // June
+
+      const numMonthsForEarlyStart = endEarlyMonth - startEarlyMonth;
+      const numMonthsForLaterStart = totalMonths - numMonthsStartEarly;
+
+      const earlierStartDate = moment.utc(`2016-${startEarlyMonth.toString().padStart(2, '0')}-01`);
+      const laterStartDate = moment.utc(`2016-${startLateMonth.toString().padStart(2, '0')}-01`);
+      const expectedEndDate = moment.utc(`2016-${endLateMonth.toString().padStart(2, '0')}-01`);
+
+      let mockExpenses: Partial<NormalizedExpenses> = {
+        monthlyTotals: generateMockMonthlyTotals(
+          earlierStartDate,
+          numMonthsForEarlyStart,
+          transactionsPerMonth,
+          true
+        ),
+      };
+      let mockIncome: Partial<NormalizedIncomes> = {
+        monthlyTotals: generateMockMonthlyTotals(
+          laterStartDate,
+          numMonthsForLaterStart,
+          transactionsPerMonth,
+          false
+        ),
+      };
+
+      const normalizedNetIncomes = normalizeNetIncomes(
+        mockExpenses as NormalizedExpenses,
+        mockIncome as NormalizedIncomes
+      );
+
+      expect(normalizedNetIncomes.length).toBe(totalMonths);
+      expect(normalizedNetIncomes[0].date.toUTCMoment().toISOString()).toEqual(
+        earlierStartDate.toISOString()
+      );
+      expect(
+        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString()
+      ).toEqual(expectedEndDate.toISOString());
+    });
+
+    it('handles expense starting in earlier months than incomes, incomes ending in a later month', () => {
+      const transactionsPerMonth = 3;
+
+      const totalMonths = 6;
+      const numMonthsStartEarly = 2; // Must be less than totalMonths
+      const numMonthsEndLate = 2; // Must be less than totalMonths
+      const startEarlyMonth = 3; // March
+      const startLateMonth = startEarlyMonth + numMonthsStartEarly; // May
+      const endLateMonth = startEarlyMonth + totalMonths - 1; // August, -1 is to offset the fact that we start counting total on the startng month, not after
+      const endEarlyMonth = endLateMonth - numMonthsEndLate; // June
+
+      const numMonthsForEarlyStart = endEarlyMonth - startEarlyMonth;
+      const numMonthsForLaterStart = totalMonths - numMonthsStartEarly;
+
+      const earlierStartDate = moment.utc(`2016-${startEarlyMonth.toString().padStart(2, '0')}-01`);
+      const laterStartDate = moment.utc(`2016-${startLateMonth.toString().padStart(2, '0')}-01`);
+      const expectedEndDate = moment.utc(`2016-${endLateMonth.toString().padStart(2, '0')}-01`);
+
+      let mockExpenses: Partial<NormalizedExpenses> = {
+        monthlyTotals: generateMockMonthlyTotals(
+          laterStartDate,
+          numMonthsForLaterStart,
+          transactionsPerMonth,
+          true
+        ),
+      };
+      let mockIncome: Partial<NormalizedIncomes> = {
+        monthlyTotals: generateMockMonthlyTotals(
+          earlierStartDate,
+          numMonthsForEarlyStart,
+          transactionsPerMonth,
+          false
+        ),
+      };
+
+      const normalizedNetIncomes = normalizeNetIncomes(
+        mockExpenses as NormalizedExpenses,
+        mockIncome as NormalizedIncomes
+      );
+
+      expect(normalizedNetIncomes.length).toBe(totalMonths);
+      expect(normalizedNetIncomes[0].date.toUTCMoment().toISOString()).toEqual(
+        earlierStartDate.toISOString()
+      );
+      expect(
+        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString()
+      ).toEqual(expectedEndDate.toISOString());
     });
   });
 });
