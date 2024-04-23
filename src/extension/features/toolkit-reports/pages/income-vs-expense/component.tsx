@@ -23,6 +23,7 @@ import {
   NormalizedNetIncomes,
   Incomes,
   Expenses,
+  NormalizedNetIncome,
 } from './types';
 import { YNABPayee } from 'toolkit/types/ynab/data/payee';
 import { YNABMasterCategory } from 'toolkit/types/ynab/data/master-category';
@@ -409,7 +410,10 @@ export class IncomeVsExpenseComponent extends React.Component<
     };
   }
 
-  _normalizeNetIncomes(expenses: NormalizedExpenses, incomes: NormalizedIncomes) {
+  _normalizeNetIncomes(
+    expenses: NormalizedExpenses,
+    incomes: NormalizedIncomes
+  ): NormalizedNetIncome[] {
     const expensesMonthlyTotals = expenses.monthlyTotals;
     const incomesMonthlyTotals = incomes.monthlyTotals;
 
