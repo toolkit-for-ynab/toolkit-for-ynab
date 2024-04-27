@@ -11,7 +11,6 @@ import { MonthlySavingsRatioRow } from './components/monthly-savings-ratio-row';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { ReportContextType } from '../../common/components/report-context';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
-import { Moment } from 'moment';
 import {
   MonthlyTotalsMap,
   PayeeMap,
@@ -202,12 +201,12 @@ export class IncomeVsExpenseComponent extends React.Component<
 
     const incomes: Incomes = {
       payees: {},
-      monthlyTotals: {},
+      monthlyTotals: this._createEmptyMonthMapFromFilters(),
     };
 
     const expenses: Expenses = {
       masterCategories: {},
-      monthlyTotals: {},
+      monthlyTotals: this._createEmptyMonthMapFromFilters(),
     };
 
     this.props.filteredTransactions.forEach((transaction) => {
@@ -321,12 +320,10 @@ export class IncomeVsExpenseComponent extends React.Component<
     const { fromDate, toDate } = this.props.filters!.dateFilter;
     const date = fromDate.clone();
     const dates = {
-      // TODO: is this DateWithoutTime or Moment? Or is it the same shit?
       [date.toISOString()]: createMonthlyTotalsMap(date),
     };
 
     while (!date.isAfter(toDate)) {
-      // TODO: is this DateWithoutTime or Moment? Or is it the same shit?
       dates[date.toISOString()] = createMonthlyTotalsMap(date);
       date.addMonths(1);
     }
