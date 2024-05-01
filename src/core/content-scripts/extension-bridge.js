@@ -70,9 +70,15 @@ async function initializeYNABToolkit() {
 }
 
 async function init() {
+  console.log('init()');
   const isToolkitDisabled = await storage.getFeatureSetting('DisableToolkit');
   if (isToolkitDisabled) {
     console.log(`${getBrowser().runtime.getManifest().name} is disabled!`);
+    return;
+  }
+
+  if (toolkitInitiated) {
+    console.log(`${getBrowser().runtime.getManifest().name} is already initiated`);
     return;
   }
 
@@ -81,6 +87,7 @@ async function init() {
   script.setAttribute('type', 'text/javascript');
   script.setAttribute('src', getBrowser().runtime.getURL('web-accessibles/ynab-toolkit.js'));
   document.getElementsByTagName('head')[0].appendChild(script);
+  toolkitInitiated = true;
 
   // wait for the bundle to tell us it's loaded
   window.addEventListener('message', toolkitMessageHandler);
@@ -89,6 +96,8 @@ async function init() {
     storage.onFeatureSettingChanged(name, handleFeatureSettingChanged);
   });
 }
+
+let toolkitInitiated = false;
 
 init();
 storage.onToolkitDisabledChanged((_, isDisabled) => {
