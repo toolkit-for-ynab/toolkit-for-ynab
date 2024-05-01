@@ -2,9 +2,10 @@ import { Feature } from 'toolkit/extension/features/feature';
 import { POSStyleParser as PosStyleInputParser } from './pos-style-parser';
 
 /** This attribute is used to mark inputs which have been changed by this feature. */
-const customInputAttribute = 'ynab-tk-evtl-listener';
+const customInputAttribute = 'data-toolkit-pos-listener';
 
 type InternalKeyboardEvent = KeyboardEvent & { _wasHandled?: boolean };
+type InternalFocusEvent = FocusEvent & { _wasHandled?: boolean };
 
 /**
  * This features allows entry of currency values without decimal separators
@@ -16,12 +17,9 @@ export class POSStyleCurrencyEntryMode extends Feature {
   accountCurrency: YNABCurrencyInformation | null = null;
   decimalDigits: number | null = null;
   posStyleParser: PosStyleInputParser | null = null;
-  handleKeydownWithBind: (event: InternalKeyboardEvent) => void;
 
   constructor() {
     super();
-
-    this.handleKeydownWithBind = this.handleKeydownInternal.bind(this);
   }
 
   shouldInvoke() {
@@ -43,12 +41,21 @@ export class POSStyleCurrencyEntryMode extends Feature {
   }
 
   invoke() {
+    // There are 3 scenarios we need to handle:
+    // 1. User presses enter when input is focused
+    // 2. User presses Tab to move to the next input
+    // 3. User clicks away so input loses focus
+    // For all these cases we need to tap into 'event flow' and patch input value
+    // before YNAB gots a chance to react to original event. Scenarios 1 and 2 handled
+    // in handleKeydown function, scenario 3 handled in handleFocusout
+
     const $editRows = $('.ynab-grid-body-row.is-editing');
     const $editInputs = $('.ynab-grid-cell-outflow input, .ynab-grid-cell-inflow input', $editRows);
     $editInputs.each((_, input) => {
       if (!input.getAttribute(customInputAttribute)) {
         input.setAttribute(customInputAttribute, 'true');
-        input.addEventListener('keydown', this.handleKeydownWithBind, true);
+        input.addEventListener('keydown', this.handleKeydown, true);
+        input.addEventListener('focusout', this.handleFocusout, true);
       }
     });
   }
@@ -57,7 +64,8 @@ export class POSStyleCurrencyEntryMode extends Feature {
     const $editInputs = $(`input[${customInputAttribute}]`);
     $editInputs.each((_, input) => {
       input.removeAttribute(customInputAttribute);
-      input.removeEventListener('keydown', this.handleKeydownWithBind);
+      input.removeEventListener('keydown', this.handleKeydown, true);
+      input.removeEventListener('focusout', this.handleFocusout, true);
     });
   }
 
@@ -69,59 +77,80 @@ export class POSStyleCurrencyEntryMode extends Feature {
     }
   }
 
-  handleKeydownInternal(event: InternalKeyboardEvent) {
-    // This method catches the KeyDown Event when enter is pressed, and then aborts event
+  handleKeydown = (event: InternalKeyboardEvent) => {
+    // This method catches the KeyDown Event when enter or tab is pressed, and then aborts event
     // propagation before changing the value and dispatching artifical events, so YNAB
     // only sees the new value
 
     // do not catch artificial followup events
-    if (event._wasHandled) {
+    if (event._wasHandled || !(event.currentTarget instanceof HTMLInputElement)) {
       return;
     }
 
-    if (event.keyCode === 13) {
-      if (!(event.currentTarget instanceof HTMLInputElement)) {
-        return;
-      }
-      const userInput = event.currentTarget.value;
-      const parsedValue = this.posStyleParser!.determineValue(userInput);
-
-      const resultAsString = typeof parsedValue === 'string' ? parsedValue : parsedValue.toString();
-
-      event.currentTarget.value = resultAsString;
+    if (event.key === 'Enter' || event.key === 'Tab') {
+      const result = this.convertInputValue(event.currentTarget);
       event.stopImmediatePropagation();
-      this.#dispatchArtificialEvents(event, resultAsString);
+      this.#dispatchArtificialEvents(event, result);
     }
+  };
+
+  handleFocusout = (event: InternalFocusEvent) => {
+    // This method does roughly the same as handleKeydown but for focusout event
+
+    // do not catch artificial followup events
+    if (event._wasHandled || !(event.currentTarget instanceof HTMLInputElement)) {
+      return;
+    }
+
+    const result = this.convertInputValue(event.currentTarget);
+    event.stopImmediatePropagation();
+    this.#dispatchArtificialEvents(event, result);
+  };
+
+  convertInputValue(input: HTMLInputElement) {
+    const userInput = input.value;
+    const parsedValue = this.posStyleParser!.determineValue(userInput);
+    const resultAsString = typeof parsedValue === 'string' ? parsedValue : parsedValue.toString();
+    input.value = resultAsString;
+
+    return resultAsString;
   }
 
-  #dispatchArtificialEvents(event: InternalKeyboardEvent, newValue: string) {
-    // both the inputEvent and the keydownEvent need to be sent, because YNAB saves the current
-    // value from the input event, but performs the save action in the keydown event
-    const { newInputEvent, newKeydownEvent } = this.#createArtificialInputEvents(event, newValue);
-    const eventTarget = event.currentTarget as HTMLInputElement;
-
-    setTimeout(() => {
-      eventTarget.dispatchEvent(newInputEvent);
-      eventTarget.dispatchEvent(newKeydownEvent);
-    });
-  }
-
-  #createArtificialInputEvents(originalEvent: InternalKeyboardEvent, parsedValue: string) {
-    const newKeydownEvent: InternalKeyboardEvent = new KeyboardEvent('keydown', {
-      code: originalEvent.code,
-      key: originalEvent.key,
-      keyCode: originalEvent.keyCode,
-      which: originalEvent.which,
-      bubbles: true,
-      cancelable: true,
-    });
-    newKeydownEvent._wasHandled = true; // marker for the artificial event
-
+  #dispatchArtificialEvents(event: InternalKeyboardEvent | InternalFocusEvent, newValue: string) {
     const newInputEvent = new InputEvent('input', {
       bubbles: true,
       cancelable: true,
-      data: parsedValue,
+      data: newValue,
     });
-    return { newInputEvent, newKeydownEvent };
+
+    const eventTarget = event.currentTarget as HTMLInputElement;
+
+    if (event instanceof KeyboardEvent) {
+      // both the inputEvent and the keydownEvent need to be sent, because YNAB saves the current
+      // value from the input event, but performs the save action in the keydown event
+      const newKeydownEvent: InternalKeyboardEvent = new KeyboardEvent('keydown', {
+        code: event.code,
+        key: event.key,
+        keyCode: event.keyCode,
+        which: event.which,
+        bubbles: true,
+        cancelable: true,
+      });
+      newKeydownEvent._wasHandled = true; // marker for the artificial event
+      setTimeout(() => {
+        eventTarget.dispatchEvent(newInputEvent);
+        eventTarget.dispatchEvent(newKeydownEvent);
+      });
+    } else {
+      const newFocusoutEvent: InternalFocusEvent = new FocusEvent('focusout', {
+        bubbles: true,
+        cancelable: true,
+      });
+      newFocusoutEvent._wasHandled = true; // marker for the artificial event
+      setTimeout(() => {
+        eventTarget.dispatchEvent(newInputEvent);
+        eventTarget.dispatchEvent(newFocusoutEvent);
+      });
+    }
   }
 }
