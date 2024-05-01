@@ -6,6 +6,8 @@ import { InboundMessageType, OutboundMessageType } from '../messages';
 
 const storage = new ToolkitStorage();
 
+let toolkitInitiated = false;
+
 function sendToolkitBootstrap(options) {
   const browser = getBrowser();
   const environment = getEnvironment();
@@ -76,11 +78,19 @@ async function init() {
     return;
   }
 
+  if (toolkitInitiated) {
+    console.log(`${getBrowser().runtime.getManifest().name} is already initiated`);
+    return;
+  }
+
+  console.log(`${getBrowser().runtime.getManifest().name} initiated`);
+
   // Load the toolkit bundle onto the YNAB dom
   const script = document.createElement('script');
   script.setAttribute('type', 'text/javascript');
   script.setAttribute('src', getBrowser().runtime.getURL('web-accessibles/ynab-toolkit.js'));
   document.getElementsByTagName('head')[0].appendChild(script);
+  toolkitInitiated = true;
 
   // wait for the bundle to tell us it's loaded
   window.addEventListener('message', toolkitMessageHandler);

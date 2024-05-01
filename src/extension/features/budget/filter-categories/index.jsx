@@ -172,7 +172,7 @@ export class FilterCategories extends Feature {
     });
   };
 
-  handleTableRender = () => {
+  handleTableRender = debounce(() => {
     if (document.querySelector('#tk-categories-filter') === null) {
       componentPrepend(
         <CategorySearchInput applySearch={this.applySearch} />,
@@ -184,5 +184,5 @@ export class FilterCategories extends Feature {
     if (input) {
       this.applySearch(input.getAttribute('value'));
     }
-  };
+  }, 200);
 }
