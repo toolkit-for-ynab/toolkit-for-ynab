@@ -38,6 +38,12 @@ export type Expenses = {
   monthlyTotals: MonthlyTotalsMap;
 };
 
+export type NormalizedNetIncome = {
+  date: DateWithoutTime;
+  total: number;
+  transactions: YNABTransaction[];
+};
+
 export type NormalizedIncomes = ReturnType<IncomeVsExpenseComponent['_sortAndNormalizeIncomes']>;
 export type NormalizedExpenses = ReturnType<IncomeVsExpenseComponent['_sortAndNormalizeExpenses']>;
 export type NormalizedNetIncomes = ReturnType<IncomeVsExpenseComponent['_normalizeNetIncomes']>;
