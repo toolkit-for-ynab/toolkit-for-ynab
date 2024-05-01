@@ -8,10 +8,7 @@ import {
 } from 'toolkit/extension/utils/pacing';
 import { formatCurrency } from 'toolkit/extension/utils/currency';
 import { l10n } from 'toolkit/extension/utils/toolkit';
-import {
-  budgetRowInChangesSet,
-  getBudgetMonthDisplaySubCategory,
-} from 'toolkit/extension/features/budget/utils';
+import { getBudgetMonthDisplaySubCategory } from 'toolkit/extension/features/budget/utils';
 
 export class Pacing extends Feature {
   injectCSS() {
@@ -58,7 +55,9 @@ export class Pacing extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (budgetRowInChangesSet(changedNodes)) {
+    if (
+      changedNodes.has('budget-table-row js-budget-table-row budget-table-row-ul is-sub-category')
+    ) {
       this.debouncedInvoke();
     }
   }
