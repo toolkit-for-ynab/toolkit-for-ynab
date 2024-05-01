@@ -6,6 +6,8 @@ import { InboundMessageType, OutboundMessageType } from '../messages';
 
 const storage = new ToolkitStorage();
 
+let toolkitInitiated = false;
+
 function sendToolkitBootstrap(options) {
   const browser = getBrowser();
   const environment = getEnvironment();
@@ -70,7 +72,6 @@ async function initializeYNABToolkit() {
 }
 
 async function init() {
-  console.log('init()');
   const isToolkitDisabled = await storage.getFeatureSetting('DisableToolkit');
   if (isToolkitDisabled) {
     console.log(`${getBrowser().runtime.getManifest().name} is disabled!`);
@@ -81,6 +82,8 @@ async function init() {
     console.log(`${getBrowser().runtime.getManifest().name} is already initiated`);
     return;
   }
+
+  console.log(`${getBrowser().runtime.getManifest().name} initiated`);
 
   // Load the toolkit bundle onto the YNAB dom
   const script = document.createElement('script');
@@ -96,8 +99,6 @@ async function init() {
     storage.onFeatureSettingChanged(name, handleFeatureSettingChanged);
   });
 }
-
-let toolkitInitiated = false;
 
 init();
 storage.onToolkitDisabledChanged((_, isDisabled) => {
