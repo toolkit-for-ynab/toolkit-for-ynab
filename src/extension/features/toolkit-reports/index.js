@@ -75,8 +75,8 @@ export class ToolkitReports extends Feature {
     $(YNAB_NAVLINK_SELECTOR).removeClass('active');
     $(YNAB_NAVACCOUNT_SELECTOR).removeClass('is-selected');
     $(TOOLKIT_REPORTS_NAVLINK_SELECTOR).addClass('active');
-    $(`${YNAB_NAVLINK_SELECTOR}, ${YNAB_NAVACCOUNT_SELECTOR}`).on('click', () =>
-      this._removeToolkitReports()
+    $(`${YNAB_NAVLINK_SELECTOR}, ${YNAB_NAVACCOUNT_SELECTOR}`).on('click', (e) =>
+      this._removeToolkitReports(e)
     );
   }
 
@@ -89,6 +89,7 @@ export class ToolkitReports extends Feature {
     // Unmount and hide the toolkit's report
     if (this.reactRoot) {
       this.reactRoot.unmount();
+      this.reactRoot = null;
     }
     const container = document.getElementById(TOOLKIT_REPORTS_CONTAINER_ID);
     if (container) {
