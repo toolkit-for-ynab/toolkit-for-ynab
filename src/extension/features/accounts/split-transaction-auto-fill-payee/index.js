@@ -15,6 +15,7 @@ export class SplitTransactionAutoFillPayee extends Feature {
       if (i !== 0 && !cell.dataset.tkAutoFilledPayee && !cell.value) {
         cell.dataset.tkAutoFilledPayee = true;
         cell.value = cells[0].value;
+        cell.dispatchEvent(new Event('input'));
         cell.dispatchEvent(new Event('change'));
         cell.dispatchEvent(new Event('blur'));
       }
