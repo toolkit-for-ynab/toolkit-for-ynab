@@ -104,7 +104,7 @@ export class Pacing extends Feature {
       const deemphasizedCategories = getDeemphasizedCategories();
       const subCategoryId = event.currentTarget.getAttribute('data-tk-sub-category-id');
 
-      if (deemphasizedCategories.contains(subCategoryId)) {
+      if (deemphasizedCategories.includes(subCategoryId)) {
         $button.removeClass('deemphasized');
         setDeemphasizedCategories(
           deemphasizedCategories.filter((id) => {
