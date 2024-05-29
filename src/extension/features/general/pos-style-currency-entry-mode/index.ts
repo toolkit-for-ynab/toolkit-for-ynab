@@ -46,7 +46,7 @@ export class POSStyleCurrencyEntryMode extends Feature {
     // 2. User presses Tab to move to the next input
     // 3. User clicks away so input loses focus
     // For all these cases we need to tap into 'event flow' and patch input value
-    // before YNAB gots a chance to react to original event. Scenarios 1 and 2 handled
+    // before YNAB gets a chance to react to original event. Scenarios 1 and 2 handled
     // in handleKeydown function, scenario 3 handled in handleFocusout
 
     const $editRows = $('.ynab-grid-body-row.is-editing');
@@ -87,8 +87,14 @@ export class POSStyleCurrencyEntryMode extends Feature {
       return;
     }
 
+    if (!event.currentTarget.value) {
+      return;
+    }
+
     if (event.key === 'Enter' || event.key === 'Tab') {
-      const result = this.convertInputValue(event.currentTarget);
+      const value = event.currentTarget.value;
+      const result = this.convertInputValue(value);
+      event.currentTarget.value = result;
       event.stopImmediatePropagation();
       this.#dispatchArtificialEvents(event, result);
     }
@@ -102,17 +108,20 @@ export class POSStyleCurrencyEntryMode extends Feature {
       return;
     }
 
-    const result = this.convertInputValue(event.currentTarget);
+    if (!event.currentTarget.value) {
+      return;
+    }
+
+    const value = event.currentTarget.value;
+    const result = this.convertInputValue(value);
+    event.currentTarget.value = result;
     event.stopImmediatePropagation();
     this.#dispatchArtificialEvents(event, result);
   };
 
-  convertInputValue(input: HTMLInputElement) {
-    const userInput = input.value;
+  convertInputValue(userInput: string) {
     const parsedValue = this.posStyleParser!.determineValue(userInput);
     const resultAsString = typeof parsedValue === 'string' ? parsedValue : parsedValue.toString();
-    input.value = resultAsString;
-
     return resultAsString;
   }
 
