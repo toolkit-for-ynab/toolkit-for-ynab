@@ -44,7 +44,7 @@ export const MonthlySavingsRatioRow = ({
           const expenseMonthData = monthlyExpenses[index];
           const incomeTotal = incomeMonthData?.total ?? 0;
           const expenseTotal = expenseMonthData?.total ?? 0;
-          let ratio = undefined;
+          let ratio: undefined | number = undefined;
           if (incomeTotal !== 0) {
             // Clamp ratio to range [0, 1]
             ratio = Math.min(Math.max(expenseTotal / incomeTotal + 1, 0), 1);
