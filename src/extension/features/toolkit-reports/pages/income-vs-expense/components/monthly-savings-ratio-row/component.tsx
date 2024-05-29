@@ -21,16 +21,25 @@ export const MonthlySavingsRatioRow = ({
     (reduced, monthData) => reduced + monthData.total,
     0
   );
-  const allMonthsExpenseTotal = Math.abs(
-    monthlyExpenses.reduce((reduced, monthData) => reduced + monthData.total, 0)
+  const allMonthsExpenseTotal = monthlyExpenses.reduce(
+    (reduced, monthData) => reduced + monthData.total,
+    0
   );
 
-  let allMonthsRatioTotal = 0;
-  if (allMonthsIncomeTotal !== 0 && allMonthsIncomeTotal >= allMonthsExpenseTotal) {
-    allMonthsRatioTotal = 1 - allMonthsExpenseTotal / allMonthsIncomeTotal;
+  let allMonthsRatioTotal: undefined | number = undefined;
+  if (allMonthsIncomeTotal !== 0) {
+    allMonthsRatioTotal = Math.min(
+      Math.max(allMonthsExpenseTotal / allMonthsIncomeTotal + 1, 0),
+      1
+    );
   }
 
-  const allMonthsSuffix = allMonthsRatioTotal < threshold ? '--negative' : '--positive';
+  const allMonthsSuffix =
+    allMonthsRatioTotal === undefined
+      ? ''
+      : allMonthsRatioTotal < threshold
+      ? '--negative'
+      : '--positive';
   const allMonthsClassName = classnames('tk-monthly-totals-row__data-cell', {
     [`tk-monthly-totals-row__data-cell${allMonthsSuffix}`]: emphasizeTotals,
   });
@@ -43,13 +52,14 @@ export const MonthlySavingsRatioRow = ({
         {monthlyIncomes.map((incomeMonthData, index) => {
           const expenseMonthData = monthlyExpenses[index];
           const incomeTotal = incomeMonthData?.total ?? 0;
-          const expenseTotal = Math.abs(expenseMonthData?.total ?? 0);
-          let ratio = 0;
-          if (incomeTotal !== 0 && incomeTotal >= expenseTotal) {
-            ratio = 1 - expenseTotal / incomeTotal;
+          const expenseTotal = expenseMonthData?.total ?? 0;
+          let ratio: undefined | number = undefined;
+          if (incomeTotal !== 0) {
+            // Clamp ratio to range [0, 1]
+            ratio = Math.min(Math.max(expenseTotal / incomeTotal + 1, 0), 1);
           }
 
-          const suffix = ratio < threshold ? '--negative' : '--positive';
+          const suffix = ratio === undefined ? '' : ratio < threshold ? '--negative' : '--positive';
           const className = classnames('tk-monthly-totals-row__data-cell', {
             [`tk-monthly-totals-row__data-cell${suffix}`]: emphasizeTotals,
           });
@@ -58,6 +68,8 @@ export const MonthlySavingsRatioRow = ({
             <div key={incomeMonthData.date.toISOString()} className={className}>
               {titles ? (
                 localizedMonthAndYear(incomeMonthData.date, MonthStyle.Short)
+              ) : ratio === undefined ? (
+                'N/A'
               ) : (
                 <Percentage pretty numbersAfterPoint={1} value={ratio} />
               )}
@@ -67,6 +79,8 @@ export const MonthlySavingsRatioRow = ({
         <div key="average" className={allMonthsClassName}>
           {titles ? (
             'Average'
+          ) : allMonthsRatioTotal === undefined ? (
+            'N/A'
           ) : (
             <Percentage pretty numbersAfterPoint={1} value={allMonthsRatioTotal} />
           )}
@@ -74,6 +88,8 @@ export const MonthlySavingsRatioRow = ({
         <div key="total" className={allMonthsClassName}>
           {titles ? (
             'Total'
+          ) : allMonthsRatioTotal === undefined ? (
+            'N/A'
           ) : (
             <Percentage pretty numbersAfterPoint={1} value={allMonthsRatioTotal} />
           )}
