@@ -91,11 +91,13 @@ body {
     --calloutSectionWarningAccent: var(--tk-custom-colours-warning-l190c165) !important;
     --calloutSectionWarningButtonBackground: var(--tk-custom-colours-warning-l220c175) !important;
     --calloutSectionWarningButtonForeground: var(--tk-custom-colours-warning-l050c055) !important;
-    --calloutSectionWarningStrongBackground: var(--tk-custom-colours-warning-l240c100) !important;
-    --calloutSectionWarningStrongBackgroundEmphasis: var(
+    --calloutSectionWarningProminentBackground: var(
+      --tk-custom-colours-warning-l240c100
+    ) !important;
+    --calloutSectionWarningProminentBackgroundEmphasis: var(
       --tk-custom-colours-warning-l190c165
     ) !important;
-    --calloutSectionWarningStrongBackgroundLabel: var(
+    --calloutSectionWarningProminentBackgroundLabel: var(
       --tk-custom-colours-warning-l050c055
     ) !important;
     --calloutSectionWarningSubtleBackground: var(--tk-custom-colours-warning-l260c015) !important;
