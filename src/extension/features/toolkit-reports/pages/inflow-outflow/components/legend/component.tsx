@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { Currency } from 'toolkit/extension/features/toolkit-reports/common/components/currency';
 import { Percentage } from 'toolkit/extension/features/toolkit-reports/common/components/percentage';
 import './styles.scss';
@@ -46,7 +45,7 @@ export const Legend = (props: LegendProps) => (
     >
       <div className="tk-flex tk-mg-b-05 tk-align-items-center">
         <div className="tk-inflow-outflow-legend__icon-inflow-outflows" />
-        <div className="tk-mg-l-05">Difference</div>
+        <div>Difference</div>
       </div>
       <div>
         <Currency value={props.diffs} />
@@ -56,7 +55,7 @@ export const Legend = (props: LegendProps) => (
       <div className="tk-mg-05 tk-pd-r-1">
         <div className="tk-flex tk-mg-b-05 tk-align-items-center">
           <div className="tk-inflow-outflow-legend__icon-inflow-outflows" />
-          <div className="tk-mg-l-05">Savings Ratio</div>
+          <div>Savings Ratio</div>
         </div>
         <Percentage value={props.savings} numbersAfterPoint={1} pretty />
       </div>

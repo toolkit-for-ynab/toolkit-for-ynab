@@ -43,13 +43,14 @@ export const MonthlySavingsRatioRow = ({
         {monthlyIncomes.map((incomeMonthData, index) => {
           const expenseMonthData = monthlyExpenses[index];
           const incomeTotal = incomeMonthData?.total ?? 0;
-          const expenseTotal = Math.abs(expenseMonthData?.total ?? 0);
-          let ratio = 0;
-          if (incomeTotal !== 0 && incomeTotal >= expenseTotal) {
-            ratio = 1 - expenseTotal / incomeTotal;
+          const expenseTotal = expenseMonthData?.total ?? 0;
+          let ratio = undefined;
+          if (incomeTotal !== 0) {
+            // Clamp ratio to range [0, 1]
+            ratio = Math.min(Math.max(expenseTotal / incomeTotal + 1, 0), 1);
           }
 
-          const suffix = ratio < threshold ? '--negative' : '--positive';
+          const suffix = ratio === undefined ? '' : ratio < threshold ? '--negative' : '--positive';
           const className = classnames('tk-monthly-totals-row__data-cell', {
             [`tk-monthly-totals-row__data-cell${suffix}`]: emphasizeTotals,
           });
@@ -58,6 +59,8 @@ export const MonthlySavingsRatioRow = ({
             <div key={incomeMonthData.date.toISOString()} className={className}>
               {titles ? (
                 localizedMonthAndYear(incomeMonthData.date, MonthStyle.Short)
+              ) : ratio === undefined ? (
+                'N/A'
               ) : (
                 <Percentage pretty numbersAfterPoint={1} value={ratio} />
               )}
