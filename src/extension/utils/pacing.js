@@ -65,7 +65,7 @@ export function pacingForCategory(budgetMonthDisplayItem) {
   return {
     budgetedPace: Number.isNaN(budgetedPace) ? 0 : budgetedPace,
     daysOffTarget,
-    isDeemphasized: deemphasizedCategories.contains(subCategoryId),
+    isDeemphasized: deemphasizedCategories.includes(subCategoryId),
     monthPace,
     paceAmount,
     transactions,
