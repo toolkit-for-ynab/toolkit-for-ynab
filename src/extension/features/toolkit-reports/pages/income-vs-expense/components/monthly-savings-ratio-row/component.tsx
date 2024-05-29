@@ -21,16 +21,25 @@ export const MonthlySavingsRatioRow = ({
     (reduced, monthData) => reduced + monthData.total,
     0
   );
-  const allMonthsExpenseTotal = Math.abs(
-    monthlyExpenses.reduce((reduced, monthData) => reduced + monthData.total, 0)
+  const allMonthsExpenseTotal = monthlyExpenses.reduce(
+    (reduced, monthData) => reduced + monthData.total,
+    0
   );
 
-  let allMonthsRatioTotal = 0;
-  if (allMonthsIncomeTotal !== 0 && allMonthsIncomeTotal >= allMonthsExpenseTotal) {
-    allMonthsRatioTotal = 1 - allMonthsExpenseTotal / allMonthsIncomeTotal;
+  let allMonthsRatioTotal: undefined | number = undefined;
+  if (allMonthsIncomeTotal !== 0) {
+    allMonthsRatioTotal = Math.min(
+      Math.max(allMonthsExpenseTotal / allMonthsIncomeTotal + 1, 0),
+      1
+    );
   }
 
-  const allMonthsSuffix = allMonthsRatioTotal < threshold ? '--negative' : '--positive';
+  const allMonthsSuffix =
+    allMonthsRatioTotal === undefined
+      ? ''
+      : allMonthsRatioTotal < threshold
+      ? '--negative'
+      : '--positive';
   const allMonthsClassName = classnames('tk-monthly-totals-row__data-cell', {
     [`tk-monthly-totals-row__data-cell${allMonthsSuffix}`]: emphasizeTotals,
   });
@@ -70,6 +79,8 @@ export const MonthlySavingsRatioRow = ({
         <div key="average" className={allMonthsClassName}>
           {titles ? (
             'Average'
+          ) : allMonthsRatioTotal === undefined ? (
+            'N/A'
           ) : (
             <Percentage pretty numbersAfterPoint={1} value={allMonthsRatioTotal} />
           )}
@@ -77,6 +88,8 @@ export const MonthlySavingsRatioRow = ({
         <div key="total" className={allMonthsClassName}>
           {titles ? (
             'Total'
+          ) : allMonthsRatioTotal === undefined ? (
+            'N/A'
           ) : (
             <Percentage pretty numbersAfterPoint={1} value={allMonthsRatioTotal} />
           )}
