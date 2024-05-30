@@ -68,9 +68,9 @@ importers:
       '@babel/eslint-parser':
         specifier: ^7.19.1
         version: 7.19.1(@babel/core@7.23.2)(eslint@8.28.0)
-      '@babel/plugin-transform-class-properties':
-        specifier: ^7.24.6
-        version: 7.24.6(@babel/core@7.23.2)
+      '@babel/plugin-proposal-class-properties':
+        specifier: ^7.18.6
+        version: 7.18.6(@babel/core@7.23.2)
       '@babel/preset-env':
         specifier: ^7.20.2
         version: 7.20.2(@babel/core@7.23.2)
@@ -1016,15 +1016,6 @@ packages:
     resolution:
       {
         integrity: sha512-EcACl1i5fSQ6bt+YGuU/XGCeZKStLmyVGytWkpyhCLeQVA0eu6Wtiw92V+I1T/hnezUv7j74dA/Ro69gWcU+hg==,
-      }
-    engines: { node: '>=6.9.0' }
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-
-  '@babel/plugin-transform-class-properties@7.24.6':
-    resolution:
-      {
-        integrity: sha512-j6dZ0Z2Z2slWLR3kt9aOmSIrBvnntWjMDN/TVcMPxhXMLmJVqX605CBRlcGI4b32GMbfifTEsdEjGjiE+j/c3A==,
       }
     engines: { node: '>=6.9.0' }
     peerDependencies:
@@ -9512,10 +9503,8 @@ snapshots:
   '@babel/plugin-proposal-class-properties@7.18.6(@babel/core@7.23.2)':
     dependencies:
       '@babel/core': 7.23.2
-      '@babel/helper-create-class-features-plugin': 7.22.5(@babel/core@7.23.2)
-      '@babel/helper-plugin-utils': 7.22.5
-    transitivePeerDependencies:
-      - supports-color
+      '@babel/helper-create-class-features-plugin': 7.24.6(@babel/core@7.23.2)
+      '@babel/helper-plugin-utils': 7.24.6
 
   '@babel/plugin-proposal-class-static-block@7.18.6(@babel/core@7.23.2)':
     dependencies:
@@ -9743,12 +9732,6 @@ snapshots:
     dependencies:
       '@babel/core': 7.23.2
       '@babel/helper-plugin-utils': 7.22.5
-
-  '@babel/plugin-transform-class-properties@7.24.6(@babel/core@7.23.2)':
-    dependencies:
-      '@babel/core': 7.23.2
-      '@babel/helper-create-class-features-plugin': 7.24.6(@babel/core@7.23.2)
-      '@babel/helper-plugin-utils': 7.24.6
 
   '@babel/plugin-transform-classes@7.20.2(@babel/core@7.23.2)':
     dependencies:
