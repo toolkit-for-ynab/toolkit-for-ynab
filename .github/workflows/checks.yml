@@ -33,7 +33,7 @@ jobs:
         with:
           node-version-file: '.nvmrc'
       - name: Prepare
-        run: yarn build:check
+        run: pnpm run build:check
       - name: Run
         run: |
           . ${{ matrix.check }}

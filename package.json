@@ -2,6 +2,10 @@
   "name": "toolkit-for-ynab",
   "version": "3.13.1",
   "private": true,
+  "engines": {
+    "node": ">=18.12.1",
+    "pnpm": ">=9.1.4"
+  },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
@@ -175,10 +179,6 @@
     "webpack-cli": "^5.0.0",
     "webpack-dev-server": "^4.11.1",
     "yargs": "^17.6.2"
-  },
-  "engines": {
-    "node": ">=18.12.1",
-    "pnpm": ">=9.1.4"
   },
   "packageManager": "pnpm@9.1.4"
 }

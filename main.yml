@@ -26,9 +26,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-      - uses: borales/actions-yarn@v2.3.0
-        with:
-          cmd: install
-      - uses:
-        with:
-          cmd: lint
+      - uses: pnpm/action-setup@v4
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Run Lint
+        run: pnpm run lint

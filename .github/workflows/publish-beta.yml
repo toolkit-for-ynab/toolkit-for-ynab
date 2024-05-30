@@ -12,15 +12,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-      - uses: borales/actions-yarn@v4
-        with:
-          cmd: install
-      - uses: borales/actions-yarn@v4
-        with:
-          cmd: build:beta
-      - uses: borales/actions-yarn@v4
-        with:
-          cmd: publish:chrome
+      - uses: pnpm/action-setup@v4
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Build Beta
+        run: pnpm run build:beta
+      - name: Publish Chrome
+        run: pnpm run publish:chrome
         env:
           CHROME_EXTENSION_ID: mkgdgjnaaejddflnldinkilabeglghlo
           CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}

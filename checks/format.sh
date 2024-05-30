@@ -7,8 +7,8 @@ export PREPUSH=1
 
 check() {
   if is_ci; then
-    yarn pretty-quick --check
+    pnpm pretty-quick --check
   else
-    yarn pretty-quick --staged
+    pnpm pretty-quick --staged
   fi
 }

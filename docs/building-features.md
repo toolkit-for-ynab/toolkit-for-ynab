@@ -62,7 +62,7 @@ module.exports = {
 };
 ```
 
-5. Run `yarn build:development` or `yarn watch` to build the extension for all the browsers.
+5. Run `pnpm run build:development` or `pnpm run watch` to build the extension for all the browsers.
 6. In Chrome, go to `chrome://extensions` and turn on "Developer mode". Then "Load
    unpacked extension". Select `/dist/extension/` and it will load into chrome.
 7. Reload YNAB!

@@ -19,7 +19,7 @@
     }
   },
   "include": ["./src", "./scripts"],
-  "exclude": ["./dist", "./.yarn", "./node_modules"],
+  "exclude": ["./dist", "./node_modules"],
   "ts-node": {
     "transpileOnly": true,
     "files": true,

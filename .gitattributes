@@ -137,6 +137,3 @@ TODO         text
 browserslist   text
 Makefile       text
 makefile       text
-
-## YARN RELEASES
-.yarn/releases/*.js linguist-vendored
