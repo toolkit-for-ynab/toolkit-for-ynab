@@ -218,7 +218,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
       return;
     }
 
-    if (changedNodes.has('budget-inspector-button')) {
+    if (changedNodes.has('to-be-budgeted-amount')) {
       this.addMonthlyGoalsOverview();
     }
   }
