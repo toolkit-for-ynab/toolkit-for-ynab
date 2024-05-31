@@ -79,6 +79,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
 
+      - name: Install Dependencies
+        run: pnpm run build:check
+
       - name: Run
         run: |
           . ${{ matrix.check }}

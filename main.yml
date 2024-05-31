@@ -47,7 +47,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm run build:check
 
       - name: Run Lint
         run: pnpm run lint
