@@ -1,3 +1,5 @@
+import { YNABBudgetMonthDisplayItem } from 'toolkit/types/ynab/services/YNABBudgetService';
+
 export const GOAL_TABLE_CELL_CLASSNAME = 'tk-budget-table-cell-goal';
 
 import { serviceLookup } from 'toolkit/extension/utils/ember';
@@ -41,7 +43,9 @@ export function ensureGoalColumn(element: HTMLElement | null): boolean {
   return true;
 }
 
-export function getBudgetMonthDisplaySubCategory(entityId: string | undefined | null) {
+export function getBudgetMonthDisplaySubCategory(
+  entityId: string | undefined | null
+): YNABBudgetMonthDisplayItem | null {
   if (!entityId) {
     return null;
   }
