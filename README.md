@@ -2,7 +2,6 @@
   <img src="http://i.imgur.com/SJhwBpU.png" alt="Toolkit for YNAB">
 </p>
 
-[![Checks](https://github.com/toolkit-for-ynab/toolkit-for-ynab/actions/workflows/checks.yml/badge.svg)](https://github.com/toolkit-for-ynab/toolkit-for-ynab/actions/workflows/checks.yml)
 [![Chat](https://img.shields.io/discord/743988612382589010?logo=discord)](https://discord.gg/jFKzZR2)
 
 # **Maintenence Mode (Looking for Maintainers)**
