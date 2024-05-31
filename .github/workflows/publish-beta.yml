@@ -7,20 +7,26 @@ jobs:
   publish-beta:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
       - name: Set Node.js from .nvmrc
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
-      - uses: borales/actions-yarn@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
         with:
-          cmd: install
-      - uses: borales/actions-yarn@v4
-        with:
-          cmd: build:beta
-      - uses: borales/actions-yarn@v4
-        with:
-          cmd: publish:chrome
+          run_install: false
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build Beta
+        run: pnpm run build:beta
+
+      - name: Publish Chrome
+        run: pnpm run publish:chrome
         env:
           CHROME_EXTENSION_ID: mkgdgjnaaejddflnldinkilabeglghlo
           CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}

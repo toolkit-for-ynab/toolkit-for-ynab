@@ -18,10 +18,6 @@ save-commands.json
 .python-version
 *.pyc
 
-# we use yarn -- ignore package-lock in case someone npm installed
-package-lock.json
-yarn-error.log
-
 # build directory
 dist/
 outDir/

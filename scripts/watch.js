@@ -39,8 +39,8 @@ watcher.on('all', function (event, path) {
 });
 
 function spawnBuildProcess() {
-  const yarnCLI = /^win/.test(process.platform) ? 'yarn.cmd' : 'yarn';
-  const buildProcess = spawn(yarnCLI, ['build:development'], {
+  const pnpmCLI = /^win/.test(process.platform) ? 'pnpm.cmd' : 'pnpm';
+  const buildProcess = spawn(pnpmCLI, ['build:development'], {
     stdio: 'inherit',
   });
 

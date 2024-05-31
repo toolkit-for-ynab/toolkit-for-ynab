@@ -3,7 +3,7 @@
   "tasks": [
     {
       "label": "build",
-      "command": "yarn build:development",
+      "command": "pnpm run build:development",
       "type": "shell",
       "group": {
         "kind": "build",
@@ -12,32 +12,32 @@
     },
     {
       "label": "build-prod",
-      "command": "yarn build:production",
+      "command": "pnpm run build:production",
       "type": "shell"
     },
     {
       "label": "install",
-      "command": "yarn install",
+      "command": "pnpm run install",
       "type": "shell"
     },
     {
       "label": "lint",
-      "command": "yarn lint",
+      "command": "pnpm run lint",
       "type": "shell"
     },
     {
       "label": "lint-fix",
-      "command": "yarn lint:fix",
+      "command": "pnpm run lint:fix",
       "type": "shell"
     },
     {
       "label": "setup",
-      "command": "yarn install && yarn build:development",
+      "command": "pnpm run install && pnpm run build:development",
       "type": "shell"
     },
     {
       "label": "test",
-      "command": "yarn test",
+      "command": "pnpm run test",
       "type": "shell",
       "group": {
         "kind": "test",
@@ -46,7 +46,7 @@
     },
     {
       "label": "watch",
-      "command": "yarn watch",
+      "command": "pnpm run watch",
       "type": "shell"
     }
   ]

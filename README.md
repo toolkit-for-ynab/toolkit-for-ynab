@@ -59,19 +59,19 @@ This extension uses three main things in its build process:
   content scripts) into single files and manages most of the build process.
 
 1.  Clone the repository.
-2.  Install Node.js (>=18.12.1) and Yarn (>= v1.10.0).
+2.  Install Node.js and pnpm (see [package.json](./package.json) for versions).
 
     - On **macOS** both prerequisites can be setup using `brew`. Ensure command line developer tools (`xcode-select --install`) are also installed.
-    - On **Windows** `node` and `yarn` can be installed via Chocolatey (`choco`) package manager.
+    - On **Windows** `node` and `pnpm` can be installed via Chocolatey (`choco`) package manager.
 
 3.  If on VS Code you can Run Task Setup to skip steps 4 & 5. Other Tasks to run are available in the Command Pallet.
-4.  Run `yarn install` within the folder you cloned. This will install all the dependencies needed for the project.
-5.  Run `yarn build:development` from within the folder you cloned which will build the Toolkit.
+4.  Run `pnpm run install` within the folder you cloned. This will install all the dependencies needed for the project.
+5.  Run `pnpm run build:development` from within the folder you cloned which will build the Toolkit.
 
-    - Whilst developing, you may prefer to run `yarn watch` which will monitor the project
-      directory for changes and run `yarn build:development` automatically for you. If you're
+    - Whilst developing, you may prefer to run `pnpm run watch` which will monitor the project
+      directory for changes and run `pnpm run build:development` automatically for you. If you're
       not going to add new features and plan to work only on existing ones (i.e. your changes
-      don't require regenerating indexes) you can use `yarn watch:webpack`, this will compile
+      don't require regenerating indexes) you can use `pnpm run watch:webpack`, this will compile
       changes only your changes to code, without regenerating indexes which might noticeably
       speed up the development.
 
@@ -86,15 +86,15 @@ This extension uses three main things in its build process:
 
       - Install web-ext
 
-            $ yarn global add web-ext
+            $ pnpm run global add web-ext
 
       - _Also, make sure PATH is set up. Something like this in ~/.bash_profile_
 
-            $ PATH=$PATH:$(yarn global bin)
+            $ PATH=$PATH:$(pnpm run global bin)
 
       - Build and run in Firefox
 
-            $ yarn run manifest:firefox && web-ext run --source-dir dist/extension/
+            $ pnpm run manifest:firefox && web-ext run --source-dir dist/extension/
 
       - You can also disable reloading like this:
 
