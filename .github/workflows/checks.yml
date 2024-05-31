@@ -10,7 +10,34 @@ jobs:
     outputs:
       files: ${{ steps.find.outputs.files }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
+      - name: Set Node.js from .nvmrc
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v4
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install Dependencies
+        run: pnpm run build:check
+
       # Get the list of checks for the check job
       - name: Find Check Files
         id: find
@@ -27,13 +54,16 @@ jobs:
       matrix: ${{ fromJson(needs.setup.outputs.files) }}
     name: ${{ matrix.check }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
       - name: Set Node.js from .nvmrc
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-      - name: Prepare
+
+      - name: Install Dependencies
         run: pnpm run build:check
+
       - name: Run
         run: |
           . ${{ matrix.check }}

@@ -7,16 +7,24 @@ jobs:
   publish-beta:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+
       - name: Set Node.js from .nvmrc
         uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
+
       - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          run_install: false
+
       - name: Install Dependencies
         run: pnpm install
+
       - name: Build Beta
         run: pnpm run build:beta
+
       - name: Publish Chrome
         run: pnpm run publish:chrome
         env:

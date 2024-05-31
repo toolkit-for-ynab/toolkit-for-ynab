@@ -9,7 +9,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
-    "build:check": "pnpm run && pnpm run gen",
+    "build:check": "pnpm install && pnpm run gen",
     "build:webpack": "webpack",
     "build:beta": "pnpm run build:check && pnpm run webpack:beta && pnpm run manifest:beta && pnpm run compress",
     "build:development": "pnpm run build:check && pnpm run webpack:development && pnpm run manifest:development",
