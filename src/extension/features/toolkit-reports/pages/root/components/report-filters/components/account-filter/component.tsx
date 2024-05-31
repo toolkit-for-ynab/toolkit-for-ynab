@@ -45,8 +45,10 @@ export class AccountFilterComponent extends React.Component<
 
   get closedAccounts(): YNABAccount[] {
     const closedAccounts = this._accountsCollection.getClosedAccounts();
-    return (closedAccounts as YNABAccount[]).filter((account) => {
-      return !(!account.onBudget && !this.props.includeTrackingAccounts);
+    return (closedAccounts.toArray() as YNABAccount[]).filter((account) => {
+      if (!account.onBudget && !this.props.includeTrackingAccounts) {
+        return false;
+      }
     });
   }
 
