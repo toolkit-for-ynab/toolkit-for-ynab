@@ -2,7 +2,6 @@
   <img src="http://i.imgur.com/SJhwBpU.png" alt="Toolkit for YNAB">
 </p>
 
-[![Build Status](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab.svg?branch=main)](https://travis-ci.org/toolkit-for-ynab/toolkit-for-ynab)
 [![Chat](https://img.shields.io/discord/743988612382589010?logo=discord)](https://discord.gg/jFKzZR2)
 
 # **Maintenence Mode (Looking for Maintainers)**
@@ -26,14 +25,14 @@ features to be on or off.
 
 ### Installing
 
-The Toolkit is available for Chrome and Firefox. The extension is built using [Browser (Web) Extension APIs](https://developer.mozilla.org/en-US/Add-ons/WebExtensions)
-which means support for Edge should be imminent as well.
+The Toolkit is available for Chrome, Firefox and Edge. The extension is built using [Browser (Web) Extension APIs](https://developer.mozilla.org/en-US/Add-ons/WebExtensions)
 
 If you don't want to build the extension from the source yourself, you can get it for
 each browser at the following links:
 
 - Chrome on the [Chrome Web Store](https://chrome.google.com/webstore/detail/toolkit-for-ynab/lmhdkkhepllpnondndgpgclfjnlofgjl)
 - Firefox on the [Firefox Add-on Repository](https://addons.mozilla.org/firefox/addon/toolkit-for-ynab/)
+- Microsoft Edge on the [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/toolkit-for-ynab/ldhelmfcfdmaeondkcdgcnbhneihejgc)
 
 Note: Since the extension is built with Web Extensions and that is not supported by Safari,
 the extension itself is not supported on Safari. When/if Safari decides to support Web Extensions
@@ -44,7 +43,7 @@ we will do what we can to provide support for their browser.
 Contributions are greatly welcomed. If you want to contribute, it's best if you can let
 us know so we don't double up on effort. You can see what is being worked on and by whom
 on the roadmap. If you can't find what you want to build on the roadmap, feel free to put
-a note up on the github issues board to let the team know you're working on something new.
+a note up on the GitHub issues board to let the team know you're working on something new.
 When your code is ready, submit a pull request.
 
 For documentation on how to build a feature, [see the documentation](https://github.com/toolkit-for-ynab/toolkit-for-ynab/blob/main/docs/building-features.md).
@@ -109,9 +108,7 @@ _You may need to reload the Chrome plugin if it's been already installed. Visit 
 #### ES2015? What's that?
 
 We've decided that it's better to use the latest and greatest than to wait for browsers to
-support all the nice newer syntax landing in Javascript. If you have any concerns or questions
-don't hesitate to reach out to us in an issue and ask for an invite to our Slack so you can
-collaborate with the team.
+support all the nice newer syntax landing in Javascript.
 
 #### Your ESLint style checker is annoying as heck! I don't code that way!
 
