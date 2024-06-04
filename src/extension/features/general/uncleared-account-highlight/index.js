@@ -1,9 +1,14 @@
 import { Feature } from 'toolkit/extension/features/feature';
 
 import { getAccountsService } from 'toolkit/extension/utils/ynab';
+import debounce from 'debounce';
 
 const INDICATOR_CLASS = 'tk-uncleared-account-indicator';
-const INDICATOR_ELEMENT = `<div class="${INDICATOR_CLASS} flaticon solid copyright"></div>`;
+const INDICATOR_ELEMENT = `<svg class="ynab-new-icon ${INDICATOR_CLASS} " width="16" height="16"><use href="#icon_sprite_cleared_circle"></use></svg>`;
+
+function isUnclearedTransaction(transaction) {
+  return transaction && transaction.cleared === ynab.constants.TransactionState.Uncleared;
+}
 
 export class UnclearedAccountHighlight extends Feature {
   injectCSS() {
@@ -14,37 +19,28 @@ export class UnclearedAccountHighlight extends Feature {
     return true;
   }
 
-  isUnclearedTransaction(transaction) {
-    return (
-      transaction &&
-      transaction.cleared !== ynab.constants.TransactionState.Cleared &&
-      transaction.cleared !== ynab.constants.TransactionState.Reconciled &&
-      transaction.displayItemType !== ynab.constants.TransactionDisplayItemType.SubTransaction &&
-      transaction.displayItemType !==
-        ynab.constants.TransactionDisplayItemType.ScheduledTransaction &&
-      transaction.displayItemType !==
-        ynab.constants.TransactionDisplayItemType.ScheduledSubTransaction
-    );
-  }
-
-  updateSidebarIndicator(element) {
+  updateSidebarIndicator() {
     // the nav-account-icons-right container is hard-coded as 1rem, when we add the
     // cleared icon to it, that's not enough space if there's already an icon in the space
     // so we need to add a class which overrides it to 2rem.
-    let hasAnyClearedIndicator = false;
-    let hasOtherNavAccountRightIcons = false;
-    const navAccounts = element.querySelectorAll('.nav-account-row');
+    $('.nav-account-row').each((_, navAccount) => {
+      let hasOtherNavAccountRightIcons = false;
 
-    navAccounts.forEach((navAccount) => {
-      const account = getAccountsService().activeAccounts.find(({ itemId }) => {
-        return itemId === element.dataset.accountId;
-      });
-      if (!account) {
+      const account = getAccountsService().getAccountById(navAccount.dataset.accountId);
+
+      const unclearedTransactions = account
+        .getTransactions()
+        .filter((transaction) => isUnclearedTransaction(transaction));
+
+      if (unclearedTransactions.length === 0) {
+        if (navAccount.querySelector(`.${INDICATOR_CLASS}`) !== null) {
+          navAccount.querySelector(`.${INDICATOR_CLASS}`).remove();
+        }
         return;
       }
 
-      const accountCalculation = account.getAccountCalculation();
-      const shouldShowIndicator = !!accountCalculation.unclearedBalance;
+      console.log(unclearedTransactions);
+
       const isIndicatorShowing = navAccount.querySelector(`.${INDICATOR_CLASS}`) !== null;
       const navAccountIconsRight = navAccount.querySelector('.nav-account-icons-right');
 
@@ -52,26 +48,30 @@ export class UnclearedAccountHighlight extends Feature {
         hasOtherNavAccountRightIcons = true;
       }
 
-      if (shouldShowIndicator) {
-        hasAnyClearedIndicator = true;
+      if (!isIndicatorShowing) {
+        $(navAccountIconsRight).append(INDICATOR_ELEMENT);
+      }
 
-        if (!isIndicatorShowing) {
-          $(navAccountIconsRight).append(INDICATOR_ELEMENT);
-        }
-      } else if (isIndicatorShowing) {
-        navAccount.querySelector(`.${INDICATOR_CLASS}`).remove();
+      if (hasOtherNavAccountRightIcons) {
+        navAccount.classList.add('tk-nav-account-icons-right-space');
+      } else {
+        navAccount.classList.remove('tk-nav-account-icons-right-space');
       }
     });
-
-    if (hasAnyClearedIndicator && hasOtherNavAccountRightIcons) {
-      element.classList.add('tk-nav-account-icons-right-space');
-    } else {
-      element.classList.remove('tk-nav-account-icons-right-space');
-    }
   }
 
+  debouncedInvoke = debounce(this.invoke, 100);
+
   invoke() {
-    this.addToolkitEmberHook('accounts-list', 'didRender', this.updateSidebarIndicator);
+    this.updateSidebarIndicator();
+  }
+
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (changedNodes.has('nav-account-value')) {
+      this.debouncedInvoke();
+    }
   }
 
   destroy() {
