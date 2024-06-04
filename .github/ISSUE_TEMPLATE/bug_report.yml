@@ -1,0 +1,64 @@
+name: Bug Report
+description: Create a report to help us improve
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: details
+    attributes:
+      label: What happened?
+      description: Also tell us, what did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How did this bug happen?
+      placeholder: |-
+        Go to '...'
+        Click on '....'
+        Scroll down to '....'
+        See error
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: What browsers are you seeing the problem on?
+      description: A browser version would be helpful too.
+      placeholder: Chrome v125.0.6422.113
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: What OSs are you seeing the problem on?
+      placeholder: macOS 14.5
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: What Toolkit Version are you running?
+      placeholder: ' 3.13.1'
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add any screenshots or videos to help explain your problem.
+  - type: textarea
+    id: settings
+    attributes:
+      label: Setting Export
+      description: >-
+        Please paste below with your exported Toolkit settings. You can export
+        these by going to the Toolkit Options page, click the Import/Export
+        Settings button at the top right and copying the text in the modal which
+        appears.
+      render: json
