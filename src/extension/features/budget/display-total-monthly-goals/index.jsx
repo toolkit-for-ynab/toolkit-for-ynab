@@ -1,3 +1,4 @@
+import debounce from 'debounce';
 import React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { componentBefore } from 'toolkit/extension/utils/react';
@@ -209,17 +210,13 @@ export class DisplayTotalMonthlyGoals extends Feature {
     );
   }
 
-  invoke() {
-    return null;
-  }
+  debouncedInvoke = debounce(this.addMonthlyGoalsOverview, 100);
 
   observe(changedNodes) {
-    if (!this.shouldInvoke()) {
-      return;
-    }
+    if (!this.shouldInvoke()) return;
 
     if (changedNodes.has('budget-inspector-button')) {
-      this.addMonthlyGoalsOverview();
+      this.debouncedInvoke();
     }
   }
 }
