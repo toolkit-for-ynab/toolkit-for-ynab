@@ -345,10 +345,6 @@ Makes the uncleared, cleared and reconciled icons slightly larger and easier to 
 
 Add support for links in memos on the accounts page.
 
-## Keyboard Shortcut: Approve Transaction [A] or [Enter]
-
-Approve scheduled or linked transactions by pressing 'A' or 'Enter' on your keyboard selecting any number of transactions. Alternately, approve single scheduled or linked transactions by right clicking on the blue 'i' or link icon.
-
 ## Keyboard Shortcut: Clear Transaction [CTRL + Enter]
 
 Clear a new or edited transaction by pressing CTRL+Enter (CMD on Mac) while it's selected.
