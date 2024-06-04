@@ -26,7 +26,7 @@ export class AccountFilterComponent extends React.Component<
 
   get onBudgetAccounts(): YNABAccount[] {
     const onBudgetAccounts = this._accountsCollection.getOnBudgetAccounts();
-    return onBudgetAccounts ? onBudgetAccounts.toArray() : [];
+    return onBudgetAccounts ? onBudgetAccounts : [];
   }
 
   get offBudgetAccounts(): YNABAccount[] {
@@ -35,22 +35,18 @@ export class AccountFilterComponent extends React.Component<
     }
 
     const offBudgetAccounts = this._accountsCollection.getTrackingAccounts();
-    return offBudgetAccounts ? offBudgetAccounts.toArray() : [];
+    return offBudgetAccounts ? offBudgetAccounts : [];
   }
 
   get loanAccounts(): YNABAccount[] {
     const loanAccounts = this._accountsCollection.getLoanAccounts();
-    return loanAccounts ? loanAccounts.toArray() : [];
+    return loanAccounts ? loanAccounts : [];
   }
 
   get closedAccounts(): YNABAccount[] {
     const closedAccounts = this._accountsCollection.getClosedAccounts();
-    return (closedAccounts.toArray() as YNABAccount[]).filter((account) => {
-      if (account.onBudget === false && !this.props.includeTrackingAccounts) {
-        return false;
-      }
-
-      return true;
+    return (closedAccounts as YNABAccount[]).filter((account) => {
+      return account.onBudget || this.props.includeTrackingAccounts;
     });
   }
 
