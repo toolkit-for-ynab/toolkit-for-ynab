@@ -151,7 +151,7 @@ export class FilterCategories extends Feature {
     $('.budget-table-container .is-master-category').addClass('tk-categories-filter-hidden');
 
     $('.budget-table-container .is-sub-category').each((_, el) => {
-      const { category } = getBudgetMonthDisplaySubCategory(el.dataset.entityId);
+      const category = getBudgetMonthDisplaySubCategory(el.dataset.entityId);
       if (!category) {
         return;
       }
