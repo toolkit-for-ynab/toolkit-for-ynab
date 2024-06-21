@@ -49,7 +49,7 @@ export class FundHalf extends Feature {
   }
 
   updateDOM() {
-    if (!isCurrentMonthSelected()) return;
+    // if (!isCurrentMonthSelected()) return;
     if (!$('.budget-inspector').length) return;
     if (!$('.inspector-quick-budget').length) return;
     if ($('.budget-inspector-button.fund-half').length) return;
