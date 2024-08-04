@@ -403,6 +403,10 @@ Change the default credit card payment value to use the Cleared Balance instead 
 
 <details><summary>Reports (Click to Expand/Collapse)</summary>
 
+## Visually separate transactions between months
+
+Add a thick line in the transactions table after the last transactions of a month to visually separate from the next month.
+
 ## Compact Income vs. Expense
 
 Modifies styling of the Income vs. Expense report so it doesn't use too much white space on the page.
