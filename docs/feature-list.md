@@ -399,13 +399,13 @@ Place the Cleared column on the left and the Flagged column on the right sides o
 
 ## Use Cleared Balance for "Record Payment"
 
-Change the default credit card payment value to use the Cleared Balance instead of the Working Balance to avoid overpaying credit card bills. _**Note**: If you don't have enough budgeted in Payment to cover the selected option, it will use the Payment value instead to avoid overbudgeting_</details>
-
-<details><summary>Reports (Click to Expand/Collapse)</summary>
+Change the default credit card payment value to use the Cleared Balance instead of the Working Balance to avoid overpaying credit card bills. _**Note**: If you don't have enough budgeted in Payment to cover the selected option, it will use the Payment value instead to avoid overbudgeting_
 
 ## Visually separate transactions between months
 
-Add a thick line in the transactions table after the last transactions of a month to visually separate from the next month.
+Add a thick line in the transactions table after the last transactions of a month to visually separate from the next month.</details>
+
+<details><summary>Reports (Click to Expand/Collapse)</summary>
 
 ## Compact Income vs. Expense
 
