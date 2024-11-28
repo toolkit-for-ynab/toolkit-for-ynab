@@ -11,5 +11,5 @@ function mapReportContextToProps(context: ReportContextType) {
 }
 
 export const SpendingByCategory = withReportContext(mapReportContextToProps)(
-  SpendingByCategoryComponent
+  SpendingByCategoryComponent,
 );

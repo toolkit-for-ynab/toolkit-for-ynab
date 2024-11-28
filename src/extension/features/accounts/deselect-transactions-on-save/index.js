@@ -26,7 +26,7 @@ export class DeselectTransactionsOnSave extends Feature {
   destroy() {
     $('.ynab-grid-actions-buttons .button.button-primary:not(.button-another').off(
       'click',
-      this.handleSaveButtonClicked
+      this.handleSaveButtonClicked,
     );
   }
 

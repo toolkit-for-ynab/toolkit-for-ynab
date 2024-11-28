@@ -68,20 +68,20 @@ export class LiveOnLastMonthsIncome extends Feature {
                 .append(
                   $('<div>', { id: 'tk-income-in-month' })
                     .append($('<div>', { class: 'tk-title' }))
-                    .append($('<div>', { class: 'tk-value currency' }))
+                    .append($('<div>', { class: 'tk-value currency' })),
                 )
                 .append(
                   $('<div>', { id: 'tk-assigned-in-month' })
                     .append($('<div>', { class: 'tk-title' }))
-                    .append($('<div>', { class: 'tk-value currency' }))
+                    .append($('<div>', { class: 'tk-value currency' })),
                 )
                 .append(
                   $('<div>', { id: 'tk-variance-in-month' })
                     .append($('<div>').text(l10n('toolkit.varianceIn', 'Variance')))
-                    .append($('<div>', { class: 'tk-value currency' }))
-                )
-            )
-          )
+                    .append($('<div>', { class: 'tk-value currency' })),
+                ),
+            ),
+          ),
       );
     }
 
@@ -90,12 +90,12 @@ export class LiveOnLastMonthsIncome extends Feature {
 
     // Create variance line
     $('#tk-last-months-income .tk-title').text(
-      `${l10n('toolkit.incomeIn', 'Income In')} ${incomeMonthName}`
+      `${l10n('toolkit.incomeIn', 'Income In')} ${incomeMonthName}`,
     );
     $('#tk-last-months-income .tk-value').text(formatCurrency(income));
 
     $('#tk-assigned-in-month .tk-title').text(
-      `${l10n('toolkit.assignedIn', 'Assigned in')} ${currentMonthName}`
+      `${l10n('toolkit.assignedIn', 'Assigned in')} ${currentMonthName}`,
     );
     $('#tk-assigned-in-month .tk-value').text(formatCurrency(budgeted));
     $('#tk-variance-in-month .tk-value').text(formatCurrency(income - budgeted));

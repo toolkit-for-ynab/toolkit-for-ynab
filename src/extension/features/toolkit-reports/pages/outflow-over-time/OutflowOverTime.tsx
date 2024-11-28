@@ -23,7 +23,7 @@ export const OutflowOverTimeComponent = ({
   // Using CumulativeSum will show a growing trendline over the dates.
   const [cumulativeSum, setCumulativeSum] = useLocalStorage(
     'outflow-over-time-useCumulativeSum',
-    true
+    true,
   );
 
   useEffect(() => {
@@ -42,11 +42,11 @@ export const OutflowOverTimeComponent = ({
           groupTransactions(
             filterTransactions(
               filterTransactionsByDate(allReportableTransactions, fromDate, toDate),
-              filterOutAccounts
-            )
-          )
-        )
-      )
+              filterOutAccounts,
+            ),
+          ),
+        ),
+      ),
     );
   }, [allReportableTransactions, filters, cumulativeSum]);
 

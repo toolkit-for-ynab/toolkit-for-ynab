@@ -10,7 +10,7 @@ export const FEATURE_LIST_MD = path.join(WORKSPACE_ROOT, 'docs/feature-list.md')
 export function assertExtensionDirectoryExists() {
   if (!fs.existsSync(EXTENSION_DIRECTORY)) {
     throw new Error(
-      "The dist/extension directory doesn't exist yet. Run `yarn build` to create it."
+      "The dist/extension directory doesn't exist yet. Run `yarn build` to create it.",
     );
   }
 }

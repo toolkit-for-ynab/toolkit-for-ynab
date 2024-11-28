@@ -25,7 +25,7 @@ describe('toolkit error utils', () => {
       const innerFunction = jest.fn();
       const wrappedFunc = withToolkitError(innerFunction, 'doesntexist' as FeatureName);
       expect(console.warn).toHaveBeenCalledWith(
-        "Second argument to withToolkitError should either be Feature Class or Feature Name as found in the feature's settings.js file"
+        "Second argument to withToolkitError should either be Feature Class or Feature Name as found in the feature's settings.js file",
       );
       expect(wrappedFunc).toEqual(expect.any(Function));
     });
@@ -81,7 +81,7 @@ describe('toolkit error utils', () => {
   - Feature Setting: false
   - Function: observe
   - Message: mock error`,
-        mockError.stack
+        mockError.stack,
       );
     });
 
@@ -106,7 +106,7 @@ describe('toolkit error utils', () => {
           },
           type: 'ynab-toolkit-error',
         },
-        '*'
+        '*',
       );
     });
   });

@@ -65,9 +65,9 @@ export class SpareChange extends Feature {
                 id: 'tk-spare-change-amount',
                 class: `currency ${emphasis}`,
                 text: formatCurrency(runningAmount),
-              })
+              }),
             )
-            .append($('<div>', { class: 'accounts-header-label', text: 'Spare Change' }))
+            .append($('<div>', { class: 'accounts-header-label', text: 'Spare Change' })),
         );
       }
     });

@@ -3,7 +3,7 @@ const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
 const defaultFeatures = JSON.parse(
-  fs.readFileSync(path.join(__dirname, '..', 'package.json'))
+  fs.readFileSync(path.join(__dirname, '..', 'package.json')),
 ).defaultFeatures;
 
 const NEW_SETTINGS_PROJECT_DIR = 'src/extension/features';
@@ -68,7 +68,7 @@ function run(callback) {
       },
       (reason) => {
         callback(reason);
-      }
+      },
     )
     .catch((exception) => {
       callback(exception.stack);
@@ -84,7 +84,7 @@ function gatherNewSettings() {
         files.map((file) => {
           const setting = require(path.join(__dirname, '..', file)); // eslint-disable-line global-require
           return { file, setting };
-        })
+        }),
       );
     });
   });
@@ -124,7 +124,7 @@ function validateSetting(settingObj) {
   if (!['checkbox', 'select', 'color'].includes(featureSettings.type)) {
     logFatal(
       settingFilename,
-      `type "${featureSettings.type}" is invalid. Allowed types are: "select", "checkbox", and "color"`
+      `type "${featureSettings.type}" is invalid. Allowed types are: "select", "checkbox", and "color"`,
     );
   }
 
@@ -135,7 +135,7 @@ function validateSetting(settingObj) {
   ) {
     logWarning(
       settingFilename,
-      `${featureSettings.name} is not expected to be defaulted to on. If this default was intentional, add the feature name to the defaultFeatures array found in package.json`
+      `${featureSettings.name} is not expected to be defaulted to on. If this default was intentional, add the feature name to the defaultFeatures array found in package.json`,
     );
   }
 
@@ -176,7 +176,7 @@ export const settingsMap: Record<FeatureName, FeatureSettingConfig> = ${JSON.str
       return settings;
     }, {}),
     null,
-    2
+    2,
   )};
 
 export const settingMigrationMap: {

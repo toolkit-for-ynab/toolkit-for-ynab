@@ -9,13 +9,13 @@ export function useDarkModeSetter() {
   React.useEffect(() => {
     localToolkitStorage.onStorageItemChanged(
       'toolkit-feature:options.dark-mode',
-      handleDarkModeChanged
+      handleDarkModeChanged,
     );
 
     return () => {
       localToolkitStorage.offStorageItemChanged(
         'toolkit-feature:options.dark-mode',
-        handleDarkModeChanged
+        handleDarkModeChanged,
       );
     };
   });

@@ -156,7 +156,7 @@ export class DisplayTargetGoalAmount extends Feature {
         $('<div>', {
           class: `tk-target-goal-amount currency ${applyEmphasis ? 'tk-goal-emphasis' : ''}`,
           text: formatCurrency(goalAmount),
-        })
+        }),
       );
     }
   }

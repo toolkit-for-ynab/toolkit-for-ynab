@@ -68,7 +68,7 @@ export class ToggleTransactionFilters extends Feature {
           <ToggleButton stateField="scheduled" showLabel={showLabel} />
           <ToggleButton stateField="reconciled" showLabel={showLabel} />
         </span>,
-        document.querySelector('.js-transaction-search')
+        document.querySelector('.js-transaction-search'),
       );
     }
   }

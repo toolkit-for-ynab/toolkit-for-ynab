@@ -66,7 +66,7 @@ export class ToggleAccountColumns extends Feature {
           defaultIsShown={this.getShowMemoState()}
           toggleState={this.updateShowMemoState}
         />,
-        element.getElementsByClassName('modal-account-view-options-status')[0]
+        element.getElementsByClassName('modal-account-view-options-status')[0],
       );
     }
   }

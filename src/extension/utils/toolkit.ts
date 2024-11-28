@@ -113,7 +113,7 @@ export function addToolkitEmberHook(
   componentKey: string,
   lifecycleHook: SupportedEmberHook,
   fn: (element: HTMLElement) => void,
-  guard?: (element: HTMLElement) => boolean
+  guard?: (element: HTMLElement) => boolean,
 ) {
   const componentPrototype = factoryLookup<EmberComponent>(componentKey)?.class?.prototype;
   if (!componentPrototype) {
@@ -138,7 +138,7 @@ export function addToolkitEmberHook(
 export function removeToolkitEmberHook(
   componentKey: string,
   lifecycleHook: SupportedEmberHook,
-  fn: (element: HTMLElement) => void
+  fn: (element: HTMLElement) => void,
 ) {
   const componentPrototype = factoryLookup<EmberComponent>(componentKey)?.class?.prototype;
   if (!componentPrototype) {
@@ -148,7 +148,7 @@ export function removeToolkitEmberHook(
   let hooks = componentPrototype[emberComponentToolkitHookKey(lifecycleHook)];
   if (hooks) {
     componentPrototype[emberComponentToolkitHookKey(lifecycleHook)] = hooks.filter(
-      (hook) => hook.fn !== fn
+      (hook) => hook.fn !== fn,
     );
   }
 }

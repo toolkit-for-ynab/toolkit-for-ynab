@@ -316,7 +316,7 @@ export class NetWorthComponent extends React.Component<NetWorthProps, NetWorthSt
           debtRatios: filteredDebtRatios,
         },
       },
-      this._renderReport
+      this._renderReport,
     );
   }
 }

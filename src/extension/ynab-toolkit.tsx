@@ -30,7 +30,7 @@ export const EMBER_COMPONENT_TOOLKIT_HOOKS: SupportedEmberHook[] = [
   'didUpdate',
 ];
 export const emberComponentToolkitHookKey = (
-  hookName: SupportedEmberHook
+  hookName: SupportedEmberHook,
 ): `_tk_${SupportedEmberHook}_hooks_` => `_tk_${hookName}_hooks_`;
 
 window.__toolkitUtils = {
@@ -50,7 +50,9 @@ export class YNABToolkit {
 
   private applyFeatureCSS() {
     $('head').append(
-      $('<style>', { id: 'tk-global-styles', type: 'text/css' }).text(require('./ynab-toolkit.css'))
+      $('<style>', { id: 'tk-global-styles', type: 'text/css' }).text(
+        require('./ynab-toolkit.css'),
+      ),
     );
 
     this.featureInstances.forEach((feature) => {
@@ -63,7 +65,7 @@ export class YNABToolkit {
   private injectFeatureCSS(featureInstance: Feature) {
     const wrappedInjectCSS = withToolkitError(
       featureInstance.injectCSS.bind(featureInstance),
-      featureInstance
+      featureInstance,
     );
 
     const featureStyleID = `tk-feature-styles-${featureInstance.constructor.name}`;
@@ -169,7 +171,7 @@ export class YNABToolkit {
         }
 
         const featureInstance = this.featureInstances.find(
-          ({ constructor }) => constructor.name === name
+          ({ constructor }) => constructor.name === name,
         );
 
         if (featureInstance) {
@@ -257,7 +259,7 @@ export class YNABToolkit {
           onClose={() => document.querySelector('#tk-modal-container')?.remove()}
         />
       </div>,
-      document.querySelector('.layout')
+      document.querySelector('.layout'),
     );
   };
 

@@ -53,7 +53,7 @@ export function pacingForCategory(budgetMonthDisplayItem) {
     .concat(
       allSubTransactions.filter((transaction) => {
         return transaction.transaction?.date.equalsByMonth(today);
-      })
+      }),
     );
 
   const paceAmount = Math.round(balancePriorToSpending * monthPace + activity);

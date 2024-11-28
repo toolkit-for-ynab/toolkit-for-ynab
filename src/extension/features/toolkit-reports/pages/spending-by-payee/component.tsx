@@ -139,7 +139,7 @@ export class SpendingByPayeeComponent extends React.Component<
       {
         spendingByPayeeData: sortedSpendingData,
       },
-      this._renderReport
+      this._renderReport,
     );
   }
 
@@ -220,7 +220,7 @@ export class SpendingByPayeeComponent extends React.Component<
               return `${
                 this.point.name
               }<br><span class="currency">${formattedNumber}</span> (${Math.round(
-                this.percentage
+                this.percentage,
               )}%)`;
             },
             style: {

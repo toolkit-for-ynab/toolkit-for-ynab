@@ -187,7 +187,7 @@ export class DateFilterComponent extends React.Component<DateFilterProps, DateFi
       options.push(
         <option key={date.getYear()} value={date.getYear()}>
           {date.getYear()}
-        </option>
+        </option>,
       );
 
       date.addYears(1);
@@ -250,7 +250,7 @@ export class DateFilterComponent extends React.Component<DateFilterProps, DateFi
 
   _getSelectedFromDates(
     fromDate: FiltersType['dateFilter']['fromDate'],
-    toDate: FiltersType['dateFilter']['fromDate']
+    toDate: FiltersType['dateFilter']['fromDate'],
   ) {
     const eligibleFromDate = this._getEligibleMonth(fromDate.getMonth(), fromDate.getYear());
     const eligibleToDate = this._getEligibleMonth(toDate.getMonth(), toDate.getYear());

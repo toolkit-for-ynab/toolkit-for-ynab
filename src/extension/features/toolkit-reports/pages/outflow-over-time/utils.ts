@@ -10,7 +10,7 @@ declare module 'moment' {
 
 export function filterTransactions(
   transactions: YNABTransaction[],
-  filterOutAccounts: ReadonlySet<string>
+  filterOutAccounts: ReadonlySet<string>,
 ) {
   return transactions
     .filter((transaction) => {
@@ -39,7 +39,7 @@ export function filterTransactions(
 export function filterTransactionsByDate(
   transactions: YNABTransaction[],
   startDate: DateWithoutTime,
-  endDate: DateWithoutTime
+  endDate: DateWithoutTime,
 ) {
   return transactions.filter((transaction) => {
     return transaction.date >= startDate && transaction.date <= endDate;
@@ -54,7 +54,7 @@ export function groupTransactions(transactions: YNABTransaction[]) {
 
   for (const key of Object.keys(groupedByMonth)) {
     groupedByMonthAndDate[key] = groupBy(groupedByMonth[key], (transaction) =>
-      transaction.date.toUTCMoment().date()
+      transaction.date.toUTCMoment().date(),
     );
   }
 
@@ -73,8 +73,8 @@ export function calculateOutflowPerDate(transactions: GroupedTransactions) {
       (dateData): OutflowData => ({
         transactions: dateData,
         value: dateData.reduce((s, a) => s + a.outflow!, 0),
-      })
-    )
+      }),
+    ),
   );
 }
 
@@ -95,7 +95,7 @@ export function calculateCumulativeOutflowPerDate(transactions: GroupedTransacti
 }
 
 export function toHighchartsSeries(
-  transactions: Record<string, Record<string, OutflowData>>
+  transactions: Record<string, Record<string, OutflowData>>,
 ): Highcharts.SeriesLineOptions[] {
   return Object.entries(transactions).map(([month, data]) => ({
     name: moment(month, 'YYYY-MM').format('MMM YYYY'),
@@ -112,7 +112,7 @@ export function toHighchartsSeries(
 // it's just a slightly better typed / more readable fromEntries+entries use
 function mapValues<T extends object, V>(obj: T, map: (item: T[keyof T]) => V) {
   return Object.fromEntries(
-    Object.entries(obj).map(([key, item]) => [key, map(item)] as const)
+    Object.entries(obj).map(([key, item]) => [key, map(item)] as const),
   ) as Record<keyof T, V>;
 }
 
@@ -121,18 +121,18 @@ function mapValues<T extends object, V>(obj: T, map: (item: T[keyof T]) => V) {
 // basic version
 function groupBy<T extends object, K extends number | string>(
   list: readonly T[],
-  key: (item: T) => K
+  key: (item: T) => K,
 ): Record<K, T[]>;
 // shorthand version
 function groupBy<T extends object, K extends keyof T>(
   list: readonly (T & Record<K, number | string>)[],
-  key: K
+  key: K,
 ): Record<T[K] & (number | string), T[]>;
 // generics in the implementation are more for checking the implementation
 // there will be type errors in callsites if the overloads are removed
 function groupBy<T extends object, K extends keyof T | ((item: T) => number | string)>(
   list: readonly (T & Record<Extract<K, keyof T>, number | string>)[],
-  keyProp: K
+  keyProp: K,
 ) {
   type ResultK =
     | (T[Extract<K, keyof T>] & (number | string))

@@ -36,11 +36,11 @@ export const BalanceOverTimeComponent = ({
   // Options to group accounts, use a step graph and/or generate trendlines
   const [shouldGroupAccounts, setShouldGroupAccounts] = useLocalStorage(
     'balance-over-time-shouldGroupAccounts',
-    false
+    false,
   );
   const [shouldGroupAccountsByType, setShouldGroupAccountsByType] = useLocalStorage(
     'balance-over-time-shouldGroupAccountsByType',
-    false
+    false,
   );
   const [useStepGraph, setUseStepGraph] = useLocalStorage('balance-over-time-useStepGraph', true);
   const [useTrendLine, setUseTrendLine] = useLocalStorage('balance-over-time-useTrendline', false);

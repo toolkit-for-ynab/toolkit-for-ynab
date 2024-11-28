@@ -9,7 +9,7 @@ export function withToolkitError(wrappedFunction: Function, feature: Feature | F
   const featureSetting = ynabToolKit.options[featureName];
   if (typeof featureSetting === 'undefined') {
     console.warn(
-      "Second argument to withToolkitError should either be Feature Class or Feature Name as found in the feature's settings.js file"
+      "Second argument to withToolkitError should either be Feature Class or Feature Name as found in the feature's settings.js file",
     );
   }
 
@@ -49,7 +49,7 @@ export function logToolkitError({
 
   const routeName = window.location.pathname.replace(
     /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g,
-    'omitted'
+    'omitted',
   );
   let message = `Toolkit Error:
   - Feature: ${featureName}
@@ -71,6 +71,6 @@ export function logToolkitError({
         serializedError,
       },
     },
-    '*'
+    '*',
   );
 }

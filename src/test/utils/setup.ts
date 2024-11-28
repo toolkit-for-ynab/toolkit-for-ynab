@@ -3,7 +3,7 @@ interface StorageOptions {
 }
 
 export function setupWithWebExtensionStorage<Suite, SuiteOptions>(
-  setupFn: (opts?: SuiteOptions) => Suite
+  setupFn: (opts?: SuiteOptions) => Suite,
 ): (opts?: SuiteOptions & StorageOptions) => Suite {
   return (options) => {
     const mockStorage = options?.storage || {};
@@ -17,7 +17,7 @@ interface LocalStorageOptions {
 }
 
 export function setupWithLocalStorage<Suite, SuiteOptions>(
-  setupFn: (opts?: SuiteOptions) => Suite
+  setupFn: (opts?: SuiteOptions) => Suite,
 ): (opts?: SuiteOptions & LocalStorageOptions) => Suite {
   return (options) => {
     const mockLocalStorage = options?.localStorage || {};

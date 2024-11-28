@@ -77,7 +77,7 @@ export class Feature {
         element.id,
         window.setTimeout(() => {
           fn.call(this, element);
-        }, timeout)
+        }, timeout),
       );
     };
   }
@@ -86,7 +86,7 @@ export class Feature {
     componentKey: string,
     lifecycleHook: SupportedEmberHook,
     fn: (element: HTMLElement) => void,
-    options?: { debounce?: number; guard?: (element: HTMLElement) => boolean }
+    options?: { debounce?: number; guard?: (element: HTMLElement) => boolean },
   ): void {
     const wrappedAddToolkitEmberHook = withToolkitError(() => {
       if (options?.debounce != null) {
@@ -114,7 +114,7 @@ export class Feature {
   removeToolkitEmberHook(
     componentKey: string,
     lifecycleHook: SupportedEmberHook,
-    fn: (element: HTMLElement) => void
+    fn: (element: HTMLElement) => void,
   ): void {
     const wrappedRemoveToolkitEmberHook = withToolkitError(() => {
       removeToolkitEmberHook(componentKey, lifecycleHook, fn);

@@ -95,12 +95,12 @@ export class ObserveListener {
     }
 
     const isDuplicate = Array.from(this.changedNodes).every((element) =>
-      this.lastChangedNodes.has(element)
+      this.lastChangedNodes.has(element),
     );
     if (isDuplicate && ++this.duplicateCount % 100 === 0) {
       console.warn(
         `Changed nodes have been the same for ${this.duplicateCount} emits. A feature is likely always updating DOM elements inside an observe without an proper exit condition.`,
-        this.changedNodes
+        this.changedNodes,
       );
     } else if (!isDuplicate) {
       this.duplicateCount = 0;
@@ -137,7 +137,7 @@ export class ObserveListener {
               : featureElapsed < 50
               ? 'color: yellow'
               : 'color: red',
-            ''
+            '',
           );
         }
       }, 0);
