@@ -55,7 +55,7 @@ export const OutflowOverTimeComponent = ({
         )
       )
     );
-  }, [allReportableTransactions, filters, cumulativeSum]);
+  }, [allReportableTransactions, filters, cumulativeSum, includeInflows]);
 
   return (
     <div className="tk-flex tk-flex-column tk-flex-grow">
