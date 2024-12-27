@@ -10,7 +10,7 @@ declare module 'moment' {
 
 export function filterTransactions(
   transactions: YNABTransaction[],
-  includeInflow: boolean,
+  includeInflows: boolean,
   filterOutAccounts: ReadonlySet<string>
 ) {
   return transactions
@@ -21,7 +21,7 @@ export function filterTransactions(
         (transaction.inflow === undefined || transaction.inflow === 0);
 
       const isInflow =
-        includeInflow &&
+        includeInflows &&
         transaction.inflow !== undefined &&
         transaction.inflow > 0 &&
         transaction.subCategoryNameWrapped !== 'Inflow: Ready to Assign';
