@@ -4,9 +4,9 @@
 
 [![Chat](https://img.shields.io/discord/743988612382589010?logo=discord)](https://discord.gg/jFKzZR2)
 
-# **Maintenence Mode (Looking for Maintainers)**
+# **Maintenance Mode (Looking for Maintainers)**
 
-**The Toolkit for YNAB is officially in maintenence mode. This means updates will be much more infrequent and will likely only contain bug fixes and not new features. We're actively looking for some new maintainers who are willing to take on the duties of the approving and releasing updates. Please reach out to Josh Madewell in our [Discord](https://discord.gg/jFKzZR2).**
+**The Toolkit for YNAB is officially in maintenance mode. This means updates will be much more infrequent and will likely only contain bug fixes and not new features. We're actively looking for some new maintainers who are willing to take on the duties of the approving and releasing updates. Please reach out to Josh Madewell in our [Discord](https://discord.gg/jFKzZR2).**
 
 Toolkit for YNAB is a browser extension that enhances your experience with the YNAB Web Application.
 
