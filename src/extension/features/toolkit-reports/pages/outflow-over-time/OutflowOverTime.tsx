@@ -69,7 +69,7 @@ export const OutflowOverTimeComponent = ({
         <LabeledCheckbox
           id="tk-outflow-over-time-include-inflows-option"
           checked={includeInflows}
-          label="Include inflows which are not in category 'Inflow: Ready to Assign')"
+          label="Include inflows which are not in category 'Inflow: Ready to Assign'"
           onChange={() => setIncludeInflows(!includeInflows)}
         />
       </AdditionalReportSettings>
