@@ -14,3 +14,7 @@
 .income-expense-level2 .income-expense-column:first-child {
   font-weight: 500;
 }
+
+.income-expense-table {
+  min-width: 100%;
+}
