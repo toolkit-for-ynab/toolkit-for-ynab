@@ -26,6 +26,12 @@ export const OutflowOverTimeComponent = ({
     true
   );
 
+  // Using IncludeInflows will include inflows which are not in category 'Inflow: Ready to Assign').
+  const [includeInflows, setIncludeInflows] = useLocalStorage(
+    'outflow-over-time-includeInflows',
+    true
+  );
+
   useEffect(() => {
     if (!filters) return;
     const filterOutAccounts = filters.accountFilterIds;
@@ -42,22 +48,29 @@ export const OutflowOverTimeComponent = ({
           groupTransactions(
             filterTransactions(
               filterTransactionsByDate(allReportableTransactions, fromDate, toDate),
+              includeInflows,
               filterOutAccounts
             )
           )
         )
       )
     );
-  }, [allReportableTransactions, filters, cumulativeSum]);
+  }, [allReportableTransactions, filters, cumulativeSum, includeInflows]);
 
   return (
     <div className="tk-flex tk-flex-column tk-flex-grow">
       <AdditionalReportSettings>
         <LabeledCheckbox
-          id="tk-balance-over-time-stepgraph-option"
+          id="tk-outflow-over-time-cumulative-sum-option"
           checked={cumulativeSum}
           label="Cumulative sum"
           onChange={() => setCumulativeSum(!cumulativeSum)}
+        />
+        <LabeledCheckbox
+          id="tk-outflow-over-time-include-inflows-option"
+          checked={includeInflows}
+          label="Include inflows which are not in category 'Inflow: Ready to Assign'"
+          onChange={() => setIncludeInflows(!includeInflows)}
         />
       </AdditionalReportSettings>
       <OutflowGraph series={outflowSeries} />

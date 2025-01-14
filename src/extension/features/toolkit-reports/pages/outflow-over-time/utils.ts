@@ -10,22 +10,30 @@ declare module 'moment' {
 
 export function filterTransactions(
   transactions: YNABTransaction[],
+  includeInflows: boolean,
   filterOutAccounts: ReadonlySet<string>
 ) {
   return transactions
     .filter((transaction) => {
-      return (
+      const isOutflow =
         transaction.outflow !== undefined &&
         transaction.outflow !== 0 &&
-        (transaction.inflow === undefined || transaction.inflow === 0)
-      );
+        (transaction.inflow === undefined || transaction.inflow === 0);
+
+      const isInflow =
+        includeInflows &&
+        transaction.inflow !== undefined &&
+        transaction.inflow > 0 &&
+        transaction.subCategoryNameWrapped !== 'Inflow: Ready to Assign';
+
+      return isOutflow || isInflow;
     })
-    .filter((transactionsWithoutInflow) => {
-      if (transactionsWithoutInflow.transferAccountId) {
+    .filter((transactions) => {
+      if (transactions.transferAccountId) {
         // discard unless it transfers outside the selected account list
-        return filterOutAccounts.has(transactionsWithoutInflow.transferAccountId);
+        return filterOutAccounts.has(transactions.transferAccountId);
       }
-      return !filterOutAccounts.has(transactionsWithoutInflow.accountId);
+      return !filterOutAccounts.has(transactions.accountId);
     });
 }
 
@@ -68,28 +76,39 @@ interface OutflowData {
 
 export function calculateOutflowPerDate(transactions: GroupedTransactions) {
   return mapValues(transactions, (monthData) =>
-    mapValues(
-      monthData,
-      (dateData): OutflowData => ({
+    mapValues(monthData, (dateData): OutflowData => {
+      const netOutflow = dateData.reduce((sum, tx) => {
+        const outflow = tx.outflow ?? 0;
+        const inflow = tx.inflow ?? 0;
+        return sum + outflow - inflow;
+      }, 0);
+
+      return {
         transactions: dateData,
-        value: dateData.reduce((s, a) => s + a.outflow!, 0),
-      })
-    )
+        value: netOutflow,
+      };
+    })
   );
 }
 
 export function calculateCumulativeOutflowPerDate(transactions: GroupedTransactions) {
-  return mapValues(calculateOutflowPerDate(transactions), (monthData) => {
-    const cumulativeSum = Object.entries(monthData).reduce((acc, [key, n]) => {
-      acc.push([
-        key,
-        {
-          ...n,
-          value: (acc.length > 0 ? acc[acc.length - 1][1].value : 0) + n.value,
-        },
-      ]);
-      return acc;
-    }, [] as [keyof typeof monthData, OutflowData][]);
+  const netOutflowByDate = calculateOutflowPerDate(transactions);
+
+  return mapValues(netOutflowByDate, (monthData) => {
+    const cumulativeSum = Object.entries(monthData)
+      .sort(([dateA], [dateB]) => parseInt(dateA) - parseInt(dateB))
+      .reduce((acc, [dayKey, outflowData]) => {
+        const previousValue = acc.length > 0 ? acc[acc.length - 1][1].value : 0;
+        const newValue = previousValue + outflowData.value;
+        acc.push([
+          dayKey,
+          {
+            ...outflowData,
+            value: newValue,
+          },
+        ]);
+        return acc;
+      }, [] as [string, OutflowData][]);
     return Object.fromEntries(cumulativeSum);
   });
 }
