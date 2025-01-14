@@ -16,7 +16,7 @@ describe('Utils', () => {
     it('should filter out inflow transactions', () => {
       const transactions = [{ outflow: 1 }, { inflow: 2 }, { outflow: 3 }];
       const expected = [{ outflow: 1 }, { outflow: 3 }];
-      expect(filterTransactions(transactions, new Set())).toEqual(expected);
+      expect(filterTransactions(transactions, false, new Set())).toEqual(expected);
     });
 
     it('should filter out transactions to filtered accounts', () => {
@@ -29,7 +29,7 @@ describe('Utils', () => {
       const filteredAccounts = new Set();
       filteredAccounts.add(1);
       filteredAccounts.add(3);
-      expect(filterTransactions(transactions, filteredAccounts)).toEqual(expected);
+      expect(filterTransactions(transactions, false, filteredAccounts)).toEqual(expected);
     });
   });
 
