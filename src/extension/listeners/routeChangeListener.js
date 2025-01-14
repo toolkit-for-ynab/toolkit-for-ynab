@@ -43,6 +43,6 @@ export class RouteChangeListener {
   }
 
   removeFeature(feature) {
-    this.features.removeAt(this.features.indexOf(feature));
+    this.features.splice(this.features.indexOf(feature), 1);
   }
 }
