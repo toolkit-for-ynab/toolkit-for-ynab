@@ -29,19 +29,17 @@ body {
   */
 
     /* Negative */
-    --calloutSectionNegativeAccent: var(--tk-custom-colours-negative-l100c100) !important;
-    --calloutSectionNegativeButtonBackground: var(--tk-custom-colours-negative-l100c100) !important;
-    --calloutSectionNegativeButtonBackgroundActive: var(
-      --tk-custom-colours-negative-l075c080
-    ) !important;
-    --calloutSectionNegativeButtonForeground: var(--tk-custom-colours-negative-l215c010) !important;
-    --calloutSectionNegativeLabel: var(--tk-custom-colours-negative-l025c035) !important;
-    --calloutSectionNegativeStrongBackground: var(--tk-custom-colours-negative-l175c040) !important;
-    --calloutSectionNegativeStrongBackgroundEmphasis: var(
+    --calloutNegativeAccent: var(--tk-custom-colours-negative-l100c100) !important;
+    --calloutNegativeButtonBackground: var(--tk-custom-colours-negative-l100c100) !important;
+    --calloutNegativeButtonBackgroundActive: var(--tk-custom-colours-negative-l075c080) !important;
+    --calloutNegativeButtonForeground: var(--tk-custom-colours-negative-l215c010) !important;
+    --calloutNegativeLabel: var(--tk-custom-colours-negative-l025c035) !important;
+    --calloutNegativeProminentBackground: var(--tk-custom-colours-negative-l175c040) !important;
+    --calloutNegativeProminentBackgroundEmphasis: var(
       --tk-custom-colours-negative-l150c070
     ) !important;
-    --calloutSectionNegativeSubtleBackground: var(--tk-custom-colours-negative-l215c010) !important;
-    --calloutSectionNegativeSubtleBackgroundEmphasis: var(
+    --calloutNegativeSubtleBackground: var(--tk-custom-colours-negative-l215c010) !important;
+    --calloutNegativeSubtleBackgroundEmphasis: var(
       --tk-custom-colours-negative-l175c040
     ) !important;
     --categoryBalanceAlternateNegativeBackground: var(
@@ -62,19 +60,17 @@ body {
     --statusNegative: var(--tk-custom-colours-negative-l100c100) !important;
 
     /* Positive */
-    --calloutSectionPositiveAccent: var(--tk-custom-colours-positive-l100c100) !important;
-    --calloutSectionPositiveButtonBackground: var(--tk-custom-colours-positive-l075c080) !important;
-    --calloutSectionPositiveButtonBackgroundActive: var(
-      --tk-custom-colours-positive-l050c060
-    ) !important;
-    --calloutSectionPositiveButtonForeground: var(--tk-custom-colours-positive-l140c010) !important;
-    --calloutSectionPositiveLabel: var(--tk-custom-colours-positive-l025c030) !important;
-    --calloutSectionPositiveStrongBackground: var(--tk-custom-colours-positive-l125c055) !important;
-    --calloutSectionPositiveStrongbackgroundEmphasis: var(
+    --calloutPositiveAccent: var(--tk-custom-colours-positive-l100c100) !important;
+    --calloutPositiveButtonBackground: var(--tk-custom-colours-positive-l075c080) !important;
+    --calloutPositiveButtonBackgroundActive: var(--tk-custom-colours-positive-l050c060) !important;
+    --calloutPositiveButtonForeground: var(--tk-custom-colours-positive-l140c010) !important;
+    --calloutPositiveLabel: var(--tk-custom-colours-positive-l025c030) !important;
+    --calloutPositiveProminentBackground: var(--tk-custom-colours-positive-l125c055) !important;
+    --calloutPositiveProminentbackgroundEmphasis: var(
       --tk-custom-colours-positive-l115c100
     ) !important;
-    --calloutSectionPositiveSubtleBackground: var(--tk-custom-colours-positive-l140c010) !important;
-    --calloutSectionPositiveSubtleBackgroundEmphasis: var(
+    --calloutPositiveSubtleBackground: var(--tk-custom-colours-positive-l140c010) !important;
+    --calloutPositiveSubtleBackgroundEmphasis: var(
       --tk-custom-colours-positive-l125c055
     ) !important;
     --categoryBalancePositiveBackground: var(--tk-custom-colours-positive-l125c055) !important;
@@ -88,25 +84,17 @@ body {
     --statusPositive: var(--tk-custom-colours-positive-l100c100) !important;
 
     /* Warning */
-    --calloutSectionWarningAccent: var(--tk-custom-colours-warning-l190c165) !important;
-    --calloutSectionWarningButtonBackground: var(--tk-custom-colours-warning-l220c175) !important;
-    --calloutSectionWarningButtonForeground: var(--tk-custom-colours-warning-l050c055) !important;
-    --calloutSectionWarningProminentBackground: var(
-      --tk-custom-colours-warning-l240c100
-    ) !important;
-    --calloutSectionWarningProminentBackgroundEmphasis: var(
+    --calloutWarningAccent: var(--tk-custom-colours-warning-l190c165) !important;
+    --calloutWarningButtonBackground: var(--tk-custom-colours-warning-l220c175) !important;
+    --calloutWarningButtonForeground: var(--tk-custom-colours-warning-l050c055) !important;
+    --calloutWarningProminentBackground: var(--tk-custom-colours-warning-l240c100) !important;
+    --calloutWarningProminentBackgroundEmphasis: var(
       --tk-custom-colours-warning-l190c165
     ) !important;
-    --calloutSectionWarningProminentBackgroundLabel: var(
-      --tk-custom-colours-warning-l050c055
-    ) !important;
-    --calloutSectionWarningSubtleBackground: var(--tk-custom-colours-warning-l260c015) !important;
-    --calloutSectionWarningSubtleBackgroundEmphasis: var(
-      --tk-custom-colours-warning-l240c100
-    ) !important;
-    --calloutSectionWarningSubtleBackgroundLabel: var(
-      --tk-custom-colours-warning-l050c055
-    ) !important;
+    --calloutWarningProminentBackgroundLabel: var(--tk-custom-colours-warning-l050c055) !important;
+    --calloutWarningSubtleBackground: var(--tk-custom-colours-warning-l260c015) !important;
+    --calloutWarningSubtleBackgroundEmphasis: var(--tk-custom-colours-warning-l240c100) !important;
+    --calloutWarningSubtleBackgroundLabel: var(--tk-custom-colours-warning-l050c055) !important;
     --categoryBalanceAlternateWarningBackground: var(
       --tk-custom-colours-warning-l220c175
     ) !important;

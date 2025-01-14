@@ -21,8 +21,8 @@
 }
 
 span.cc-budget-mismatch {
-  border: 1px solid var(--calloutSectionWarningAccent);
-  color: var(--calloutSectionWarningAccent);
+  border: 1px solid var(--calloutWarningAccent);
+  color: var(--calloutWarningAccent);
   border-radius: 0.5em;
   margin-left: 0.25em;
   padding: 0 0.25em;
