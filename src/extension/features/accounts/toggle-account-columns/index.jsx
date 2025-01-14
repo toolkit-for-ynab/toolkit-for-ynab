@@ -19,19 +19,26 @@ export const ShowMemoButton = ({ defaultIsShown, id, toggleState }) => {
     <li>
       <div className="modal-account-view-menu" id={id}>
         <button
+          className={`ynab-checkbox ynab-checkbox-button modal-account-view-options-show-flag ${
+            defaultIsShown ? 'is-checked' : ''
+          }`}
           onClick={toggleHidden}
-          aria-label={l10n('toolkit.checkShowMenuColumn', 'Check Show Memo Column')}
           role="checkbox"
+          type="button"
         >
-          <div
-            className={`flaticon stroke ynab-checkbox-button-square ${
+          <svg
+            className={`ynab-new-icon ynab-checkbox-button-square ${
               defaultIsShown ? 'is-checked' : ''
             }`}
-          ></div>
+            width="13"
+            height="13"
+          >
+            <use href="#icon_sprite_check"></use>
+          </svg>
+          <div class="label-checkbox">
+            {l10n('toolkit.showMemoColumn', 'Show Memo Column')}
+          </div>
         </button>
-        <label onClick={toggleHidden} className="label-checkbox">
-          &nbsp;&nbsp;{l10n('toolkit.showMemoColumn', 'Show Memo Column')}
-        </label>
       </div>
     </li>
   );
