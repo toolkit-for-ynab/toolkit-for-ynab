@@ -18,6 +18,16 @@ export function readyYNAB(options = {}) {
 
   global.$ = $;
   global.ynabToolKit = options.ynabToolKit || { options: toolkitOptions };
+  global.YNAB = {
+    NAMESPACES: [
+      {
+        lookup: jest.fn(),
+        __container__: {
+          cache: {},
+        },
+      },
+    ],
+  };
 }
 
 export function unreadyYNAB() {
