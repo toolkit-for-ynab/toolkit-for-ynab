@@ -14,6 +14,15 @@ import { PointWithPayload } from '../../utils/types';
 import { YNABPayee } from 'toolkit/types/ynab/data/payee';
 import { YNABMasterCategory } from 'toolkit/types/ynab/data/master-category';
 import { YNABSubCategory } from 'toolkit/types/ynab/data/sub-category';
+import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
+
+const STORAGE_KEYS = {
+  showIncome: 'income-breakdown-show-income',
+  showExpense: 'income-breakdown-show-expense',
+  showSubCategories: 'income-breakdown-show-sub-categories',
+  showLossGain: 'income-breakdown-show-loss-gain',
+  groupPositiveCategories: 'income-breakdown-group-positive-categories',
+};
 
 type IncomeBreakdownProps = Pick<ReportContextType, 'filteredTransactions' | 'filters'>;
 
@@ -55,11 +64,11 @@ export class IncomeBreakdownComponent extends React.Component<
     this.state = {
       incomes: new Map(),
       expenses: new Map(),
-      showIncome: true,
-      showExpense: true,
-      showSubCategories: true,
-      showLossGain: true,
-      groupPositiveCategories: false,
+      showIncome: getToolkitStorageKey(STORAGE_KEYS.showIncome, true),
+      showExpense: getToolkitStorageKey(STORAGE_KEYS.showExpense, true),
+      showSubCategories: getToolkitStorageKey(STORAGE_KEYS.showSubCategories, true),
+      showLossGain: getToolkitStorageKey(STORAGE_KEYS.showLossGain, true),
+      groupPositiveCategories: getToolkitStorageKey(STORAGE_KEYS.groupPositiveCategories, false),
     };
   }
 
@@ -130,30 +139,35 @@ export class IncomeBreakdownComponent extends React.Component<
 
   toggleLossGainEntry: ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
     const { checked } = currentTarget;
+    setToolkitStorageKey('income-breakdown-show-loss-gain', checked);
     this.setState({ showLossGain: checked });
     this._calculateData();
   };
 
   togglePositiveCategories: ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
     const { checked } = currentTarget;
+    setToolkitStorageKey('income-breakdown-group-positive-categories', checked);
     this.setState({ groupPositiveCategories: checked });
     this._calculateData();
   };
 
   toggleIncome: ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
     const { checked } = currentTarget;
+    setToolkitStorageKey('income-breakdown-show-income', checked);
     this.setState({ showIncome: checked });
     this._calculateData();
   };
 
   toggleExpense: ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
     const { checked } = currentTarget;
+    setToolkitStorageKey('income-breakdown-show-expense', checked);
     this.setState({ showExpense: checked });
     this._calculateData();
   };
 
   toggleSubCategories: ChangeEventHandler<HTMLInputElement> = ({ currentTarget }) => {
     const { checked } = currentTarget;
+    setToolkitStorageKey('income-breakdown-show-subcategories', checked);
     this.setState({ showSubCategories: checked });
     this._calculateData();
   };
