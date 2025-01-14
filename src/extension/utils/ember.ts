@@ -1,13 +1,7 @@
 import type { YNABRouter } from 'toolkit/types/ynab/controllers/YNABRouter';
-import type { Ember as EmberInstance } from 'toolkit/types/ynab/ember';
-import type {
-  EmberView,
-  EmberViewRegistry,
-  RenderTreeNode,
-} from 'toolkit/types/ynab/ember/ember-view';
+import type { EmberView, EmberViewRegistry } from 'toolkit/types/ynab/ember/ember-view';
 
-export const Ember = window.requireModule<{ default: EmberInstance }>('ember').default;
-export const __ynabapp__ = Ember.Namespace.NAMESPACES[0];
+export const __ynabapp__ = YNAB.NAMESPACES[0];
 
 const viewCache = new Map();
 

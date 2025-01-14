@@ -1,4 +1,4 @@
-import type { YNABGlobal } from './ynab/window';
+import type { YNABApp, YNABGlobal } from './ynab/window';
 import type { YNABToolkitObject } from './toolkit';
 
 declare global {
@@ -6,9 +6,12 @@ declare global {
   const ynabToolKit: YNABToolkitObject;
   const __toolkitUtils: unknown;
 
+  const YNAB: {
+    NAMESPACES: [YNABApp];
+  };
+
   interface Window {
     __toolkitUtils: unknown;
     ynabToolKit: YNABToolkitObject;
-    requireModule<T>(moduleName: string): T;
   }
 }

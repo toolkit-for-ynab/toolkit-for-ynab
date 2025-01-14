@@ -14,7 +14,7 @@ export class AutoDistributeSplits extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('register/grid-actions', 'didRender', this.injectDistributeButton);
+    // this.addToolkitEmberHook('register/grid-actions', 'didRender', this.injectDistributeButton);
   }
 
   injectDistributeButton(element) {

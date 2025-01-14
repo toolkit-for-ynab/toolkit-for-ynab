@@ -1,12 +1,4 @@
-import {
-  EMBER_COMPONENT_TOOLKIT_HOOKS,
-  emberComponentToolkitHookKey,
-  SupportedEmberHook,
-} from 'toolkit/extension/ynab-toolkit';
-import { factoryLookup } from 'toolkit/extension/utils/ember';
 import type { YNABAccountType } from 'toolkit/types/ynab/window/ynab-enums';
-import { Feature } from '../features/feature';
-import type { EmberComponent } from 'toolkit/types/ynab/ember';
 
 const MONTHS_SHORT = [
   'Jan',
@@ -105,50 +97,5 @@ export function l10nAccountType(accountType: YNABAccountType) {
       return l10n('OtherAsset', 'Asset (e.g. Investment)');
     case ynab.enums.AccountType.OtherLiability:
       return l10n('OtherLiability', 'Liability (e.g. Mortgage)');
-  }
-}
-
-export function addToolkitEmberHook(
-  context: Feature,
-  componentKey: string,
-  lifecycleHook: SupportedEmberHook,
-  fn: (element: HTMLElement) => void,
-  guard?: (element: HTMLElement) => boolean
-) {
-  const componentPrototype = factoryLookup<EmberComponent>(componentKey)?.class?.prototype;
-  if (!componentPrototype) {
-    return;
-  }
-
-  if (!EMBER_COMPONENT_TOOLKIT_HOOKS.includes(lifecycleHook)) {
-    return;
-  }
-
-  let hooks = componentPrototype[emberComponentToolkitHookKey(lifecycleHook)];
-  if (!hooks) {
-    hooks = [{ context, fn, guard }];
-    componentPrototype[emberComponentToolkitHookKey(lifecycleHook)] = hooks;
-  } else if (hooks && !hooks.some(({ fn: fnExists }) => fn === fnExists)) {
-    hooks.push({ context, fn, guard });
-  }
-
-  ynabToolKit.hookedComponents.add(componentKey);
-}
-
-export function removeToolkitEmberHook(
-  componentKey: string,
-  lifecycleHook: SupportedEmberHook,
-  fn: (element: HTMLElement) => void
-) {
-  const componentPrototype = factoryLookup<EmberComponent>(componentKey)?.class?.prototype;
-  if (!componentPrototype) {
-    return;
-  }
-
-  let hooks = componentPrototype[emberComponentToolkitHookKey(lifecycleHook)];
-  if (hooks) {
-    componentPrototype[emberComponentToolkitHookKey(lifecycleHook)] = hooks.filter(
-      (hook) => hook.fn !== fn
-    );
   }
 }

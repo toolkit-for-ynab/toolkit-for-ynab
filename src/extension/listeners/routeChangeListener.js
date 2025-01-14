@@ -1,8 +1,5 @@
 import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
 import { getRouter } from 'toolkit/extension/utils/ember';
-import { ynabRequire } from '../utils/ynab';
-
-const { later, scheduleOnce } = ynabRequire('@ember/runloop');
 
 export class RouteChangeListener {
   constructor() {
@@ -14,7 +11,7 @@ export class RouteChangeListener {
       routeChangeListener.features.forEach((feature) => {
         const observe = feature.onRouteChanged.bind(feature, currentRoute);
         const wrapped = withToolkitError(observe, feature);
-        later(wrapped, 0);
+        setTimeout(wrapped, 0);
       });
     }
 
@@ -23,17 +20,17 @@ export class RouteChangeListener {
       routeChangeListener.features.forEach((feature) => {
         const observe = feature.onBudgetChanged.bind(feature, currentRoute);
         const wrapped = withToolkitError(observe, feature);
-        later(wrapped, 0);
+        setTimeout(wrapped, 0);
       });
     }
 
     getRouter().addObserver('currentState', ({ location, targetState: { routerJsState } }) => {
       if (routerJsState && routerJsState.params && routerJsState.params.index) {
         if (location.location.href.includes(routerJsState.params.index.budgetVersionId)) {
-          scheduleOnce('afterRender', null, emitSameBudgetRouteChange);
+          setTimeout(emitSameBudgetRouteChange, 0);
         } else {
-          scheduleOnce('afterRender', null, emitBudgetRouteChange);
-          scheduleOnce('afterRender', null, emitSameBudgetRouteChange);
+          setTimeout(emitBudgetRouteChange, 0);
+          setTimeout(emitSameBudgetRouteChange, 0);
         }
       }
     });

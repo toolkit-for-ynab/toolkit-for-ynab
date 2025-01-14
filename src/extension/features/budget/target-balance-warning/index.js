@@ -8,7 +8,7 @@ export class TargetBalanceWarning extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('budget-table-row', 'didRender', this.modifyBudgetRow);
+    // this.addToolkitEmberHook('budget-table-row', 'didRender', this.modifyBudgetRow);
   }
 
   observe(changedNodes) {

@@ -12,7 +12,7 @@ export class StealingFromFuture extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('budget-header', 'didRender', this.updateReadyToAssign);
+    // this.addToolkitEmberHook('budget-header', 'didRender', this.updateReadyToAssign);
   }
 
   destroy() {

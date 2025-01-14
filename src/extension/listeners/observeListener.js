@@ -1,7 +1,4 @@
 import { withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
-import { ynabRequire } from '../utils/ynab';
-
-const { later } = ynabRequire('@ember/runloop');
 
 const IGNORE_UPDATES = new Set([
   // every time you hover a budget row, one of these nodes change which is _just a lot_.
@@ -123,7 +120,7 @@ export class ObserveListener {
     this.features.forEach((feature) => {
       const observe = feature.observe.bind(feature, this.changedNodes);
       const wrapped = withToolkitError(observe, feature);
-      later(() => {
+      setTimeout(() => {
         const startFeatureObserve = Date.now();
 
         wrapped();
