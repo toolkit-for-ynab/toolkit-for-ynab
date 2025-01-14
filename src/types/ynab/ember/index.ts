@@ -1,14 +1,6 @@
 import Component from '@ember/component';
-import { run } from '@ember/runloop';
-import { Feature } from 'toolkit/extension/features/feature';
 import type { YNABApp } from '../window';
 import { RenderTreeNode } from './ember-view';
-
-interface ToolkitEmberHook {
-  context: Feature;
-  fn(element: HTMLElement): void;
-  guard?: (element: HTMLElement) => boolean;
-}
 
 interface EmberComponentPrototype {
   element: Element;
@@ -20,10 +12,6 @@ interface EmberComponentPrototype {
   willRender: Component['willRender'];
   willUpdate: Component['willUpdate'];
   didInsertElement(): void;
-
-  _tk_didRender_hooks_?: ToolkitEmberHook[];
-  _tk_didInsertElement_hooks_?: ToolkitEmberHook[];
-  _tk_didUpdate_hooks_?: ToolkitEmberHook[];
 }
 
 export interface EmberComponent extends Component, EmberComponentPrototype {
@@ -35,7 +23,6 @@ export interface EmberComponent extends Component, EmberComponentPrototype {
 
 export interface Ember {
   _captureRenderTree(app: YNABApp['__container__']): RenderTreeNode[];
-  run: typeof run;
   Component: EmberComponent;
   Namespace: {
     NAMESPACES: [YNABApp];

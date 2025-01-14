@@ -19,8 +19,8 @@ export class AccountsStripedRows extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('register/grid-row', 'didRender', this.setTimeout);
-    this.addToolkitEmberHook('register/grid-sub', 'didRender', this.setTimeout);
+    // this.addToolkitEmberHook('register/grid-row', 'didRender', this.setTimeout);
+    // this.addToolkitEmberHook('register/grid-sub', 'didRender', this.setTimeout);
   }
 
   destroy() {

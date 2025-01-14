@@ -6,32 +6,18 @@ import * as Collections from 'toolkit/extension/utils/collections';
 import { isFeatureEnabled } from 'toolkit/extension/utils/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
-import { Ember, forEachRenderedComponent } from './utils/ember';
 import { compareSemanticVersion } from './utils/helpers';
 import { componentAppend } from './utils/react';
 import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-modal';
 import { Feature } from './features/feature';
 import { InboundMessage, InboundMessageType, OutboundMessageType } from 'toolkit/core/messages';
 import { ObserveListener, RouteChangeListener } from './listeners';
-import type { EmberComponent } from 'toolkit/types/ynab/ember';
-const { later } = ynabUtils.ynabRequire('@ember/runloop');
 
 export let observeListener: ObserveListener;
 export let routeChangeListener: RouteChangeListener;
 
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
-
-export type SupportedEmberHook = 'didRender' | 'didInsertElement' | 'didUpdate';
-
-export const EMBER_COMPONENT_TOOLKIT_HOOKS: SupportedEmberHook[] = [
-  'didRender',
-  'didInsertElement',
-  'didUpdate',
-];
-export const emberComponentToolkitHookKey = (
-  hookName: SupportedEmberHook
-): `_tk_${SupportedEmberHook}_hooks_` => `_tk_${hookName}_hooks_`;
 
 window.__toolkitUtils = {
   ...(window.__toolkitUtils as any),
@@ -107,7 +93,6 @@ export class YNABToolkit {
     }
 
     feature.removeListeners();
-    feature.removeToolkitEmberHooks();
 
     const wrappedDestroy = feature.destroy.bind(feature);
     wrappedDestroy();
@@ -153,7 +138,6 @@ export class YNABToolkit {
         window.ynabToolKit = {
           ...window.ynabToolKit,
           ...event.data.ynabToolKit,
-          hookedComponents: new Set(),
         };
 
         this.setupErrorTracking();
@@ -211,45 +195,6 @@ export class YNABToolkit {
     });
   };
 
-  private addToolkitEmberHooks = () => {
-    EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
-      Ember.Component.prototype[lifecycleName] = function () {
-        const self = this;
-        const hooks = self[emberComponentToolkitHookKey(lifecycleName)];
-        if (hooks) {
-          hooks.forEach(({ context, fn, guard }) => {
-            if (guard && !guard(self.element as HTMLElement)) {
-              return;
-            }
-
-            fn.call(context, self.element as HTMLElement);
-          });
-        }
-      };
-    });
-  };
-
-  private invokeAllHooks = () => {
-    window.ynabToolKit.hookedComponents.forEach((key) => {
-      forEachRenderedComponent(key, (view) => {
-        EMBER_COMPONENT_TOOLKIT_HOOKS.forEach((lifecycleName) => {
-          const hooks = (view as any as EmberComponent)[
-            emberComponentToolkitHookKey(lifecycleName)
-          ];
-          if (hooks) {
-            hooks.forEach((hook) => {
-              if (hook.guard && !hook.guard(view.element)) {
-                return;
-              }
-
-              hook.fn.call(hook.context, view.element);
-            });
-          }
-        });
-      });
-    });
-  };
-
   private showReleaseModal = () => {
     componentAppend(
       <div id="tk-modal-container">
@@ -294,8 +239,6 @@ export class YNABToolkit {
         window.ynabToolKit.invokeFeature = self.invokeFeature;
         window.ynabToolKit.destroyFeature = self.destroyFeature;
 
-        self.addToolkitEmberHooks();
-
         observeListener = new ObserveListener();
         routeChangeListener = new RouteChangeListener();
 
@@ -306,8 +249,6 @@ export class YNABToolkit {
 
         // Hook up listeners and then invoke any features that are ready to go.
         self.invokeFeatureInstances();
-
-        later(self.invokeAllHooks, 100);
       } else {
         setTimeout(poll, 250);
       }

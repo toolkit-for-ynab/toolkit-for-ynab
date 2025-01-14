@@ -1,11 +1,7 @@
 import { observeListener, routeChangeListener } from 'toolkit/extension/ynab-toolkit';
 import { logToolkitError, withToolkitError } from 'toolkit/core/common/errors/with-toolkit-error';
-import { SupportedEmberHook } from '../ynab-toolkit';
-import { addToolkitEmberHook, removeToolkitEmberHook } from '../utils/toolkit';
-import { forEachRenderedComponent } from '../utils/ember';
 
 export class Feature {
-  private __hooks = new Map<string, (element: HTMLElement) => void>();
   featureName = this.constructor.name as FeatureName;
 
   settings = {
@@ -80,54 +76,5 @@ export class Feature {
         }, timeout)
       );
     };
-  }
-
-  addToolkitEmberHook(
-    componentKey: string,
-    lifecycleHook: SupportedEmberHook,
-    fn: (element: HTMLElement) => void,
-    options?: { debounce?: number; guard?: (element: HTMLElement) => boolean }
-  ): void {
-    const wrappedAddToolkitEmberHook = withToolkitError(() => {
-      if (options?.debounce != null) {
-        fn = this.debounce(fn, options.debounce);
-      }
-
-      addToolkitEmberHook(this, componentKey, lifecycleHook, fn, options?.guard);
-
-      this.__hooks.set(`${componentKey}:${lifecycleHook}`, fn);
-
-      forEachRenderedComponent(componentKey, (view: { element: HTMLElement }) => {
-        if (view.element) {
-          if (options?.guard && !options.guard(view.element)) {
-            return;
-          }
-
-          fn.call(this, view.element);
-        }
-      });
-    }, this.featureName);
-
-    wrappedAddToolkitEmberHook();
-  }
-
-  removeToolkitEmberHook(
-    componentKey: string,
-    lifecycleHook: SupportedEmberHook,
-    fn: (element: HTMLElement) => void
-  ): void {
-    const wrappedRemoveToolkitEmberHook = withToolkitError(() => {
-      removeToolkitEmberHook(componentKey, lifecycleHook, fn);
-      this.__hooks.delete(`${componentKey}:${lifecycleHook}`);
-    }, this.featureName);
-
-    wrappedRemoveToolkitEmberHook();
-  }
-
-  removeToolkitEmberHooks(): void {
-    this.__hooks.forEach((fn, key) => {
-      const [componentKey, lifecycleHook] = key.split(':') as [string, SupportedEmberHook];
-      this.removeToolkitEmberHook(componentKey, lifecycleHook, fn);
-    });
   }
 }

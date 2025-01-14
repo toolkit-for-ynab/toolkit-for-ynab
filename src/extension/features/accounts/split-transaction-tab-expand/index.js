@@ -6,7 +6,7 @@ export class SplitTransactionTabExpand extends Feature {
   }
 
   invoke() {
-    this.addToolkitEmberHook('register/grid-split', 'didRender', this.addEventListeners);
+    // this.addToolkitEmberHook('register/grid-split', 'didRender', this.addEventListeners);
   }
 
   addEventListeners() {

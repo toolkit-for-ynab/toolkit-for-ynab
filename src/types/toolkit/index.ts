@@ -6,7 +6,6 @@ export interface YNABToolkitObject {
   };
   environment: 'development' | 'beta' | 'production';
   extensionId: string;
-  hookedComponents: Set<string>;
   invokeFeature(featureName: FeatureName, options?: { force: boolean }): void;
   destroyFeature(featureName: FeatureName): void;
   options: {

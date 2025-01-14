@@ -6,4 +6,5 @@ module.exports = {
   title: 'Add "Auto Distribute" Button To Split Transactions',
   description:
     'Distributes the remaining total of a split transaction proportionally to all other splits which contain an amount.',
+  hidden: true,
 };
