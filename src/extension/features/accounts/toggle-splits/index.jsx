@@ -16,7 +16,7 @@ export class ToggleSplits extends Feature {
 
     componentAfter(
       <ToggleSplitButton />,
-      document.querySelector('.js-accounts-toolbar-file-import-transactions')
+      document.querySelector('.js-accounts-toolbar-file-import-transactions'),
     );
   }
 

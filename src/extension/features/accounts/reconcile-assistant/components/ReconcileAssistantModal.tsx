@@ -33,7 +33,7 @@ export const ReconcileAssistantModal = ({
 }: ReconcileAssistantModalProps) => {
   const [transactionPowerset, setTransactionPowerset] = useState<Array<Array<YNABTransaction>>>([]);
   const [matchingTransactions, setMatchingTransactions] = useState<Array<Array<YNABTransaction>>>(
-    []
+    [],
   );
   const [chosenTransactionSet, setChosenSelectionSet] = useState<Array<YNABTransaction>>([]);
   const [transactionArrIndex, setTransactionArrIndex] = useState<number>(0);
@@ -191,7 +191,7 @@ export const ReconcileAssistantModal = ({
             </div>
           </div>
         </div>,
-        document.getElementById(portalId)!
+        document.getElementById(portalId)!,
       )}
     </>
   );

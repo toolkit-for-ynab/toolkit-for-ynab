@@ -91,7 +91,7 @@ export function setInspectorMessageValues(values) {
 function getInspectorMessageObjects() {
   const localizedMessageText = l10n(
     'inspector.availableMessage.afterUpcoming',
-    'Available After Upcoming'
+    'Available After Upcoming',
   );
 
   const $ynabAvailableAfterUpcoming = $('.inspector-message-label').filter(function () {
@@ -132,7 +132,7 @@ function getInspectorMessageEntries(entries) {
             <span class="user-data currency ${currencyClass}">${amount}</span>
           </div>
         </div>
-      `)
+      `),
     );
   }
 
@@ -146,7 +146,7 @@ function setInspectorMessageEntries() {
     elementId: 'tk-inspector-message-previous-upcoming',
     title: l10n(
       'toolkit.inspectorMessagePreviousUpcoming',
-      'Upcoming Transactions (Previous Months)'
+      'Upcoming Transactions (Previous Months)',
     ),
     amount: null,
   };

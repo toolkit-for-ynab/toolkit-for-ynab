@@ -291,7 +291,7 @@ export class InflowOutflowComponent extends React.Component<
           savings: filteredSavings,
         },
       },
-      this._renderReport
+      this._renderReport,
     );
   }
 }

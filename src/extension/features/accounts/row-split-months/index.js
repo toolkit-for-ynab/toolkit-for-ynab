@@ -32,12 +32,12 @@ export class RowSplitMonths extends Feature {
       const transaction = getRegisterGridService().visibleTransactionDisplayItems.find(
         ({ entityId }) => {
           return entityId === element.dataset.rowId;
-        }
+        },
       );
       const nextTransaction = getRegisterGridService().visibleTransactionDisplayItems.find(
         ({ entityId }) => {
           return entityId === nextRow.dataset.rowId;
-        }
+        },
       );
 
       if (!transaction || !nextTransaction) {

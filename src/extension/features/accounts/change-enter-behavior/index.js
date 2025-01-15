@@ -10,7 +10,7 @@ export class ChangeEnterBehavior extends Feature {
     const $editRows = $('.ynab-grid-body-row.is-editing');
     const $editInputs = $(
       '.ynab-grid-cell-memo input, .ynab-grid-cell-outflow input, .ynab-grid-cell-inflow input',
-      $editRows
+      $editRows,
     );
     $editInputs.each((_, input) => {
       if (!input.getAttribute('data-toolkit-save-behavior')) {

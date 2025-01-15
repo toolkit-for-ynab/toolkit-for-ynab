@@ -59,14 +59,14 @@ export class ToolkitStorage {
     return Promise.all(
       settingNames.map((settingName) => {
         return this.getStorageItem(featureSettingKey(settingName), getFeatureSettingsOptions);
-      })
+      }),
     );
   }
 
   setFeatureSetting(
     settingName: FeatureName,
     value: FeatureSetting,
-    options: Partial<SetOptions> = {}
+    options: Partial<SetOptions> = {},
   ) {
     return this.setStorageItem(featureSettingKey(settingName), value, options);
   }
@@ -120,7 +120,7 @@ export class ToolkitStorage {
       const listeners = this.storageListeners.get(storageKey);
       this.storageListeners.set(
         storageKey,
-        listeners!.filter((listener) => listener !== callback)
+        listeners!.filter((listener) => listener !== callback),
       );
     }
   }

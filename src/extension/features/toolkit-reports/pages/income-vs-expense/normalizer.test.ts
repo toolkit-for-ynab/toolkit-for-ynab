@@ -40,7 +40,7 @@ function generateMockMonthlyTotals(
   startDate: Moment,
   numMonths: number,
   numTransactions: number,
-  negativeAmounts: boolean
+  negativeAmounts: boolean,
 ): MonthlyTotals[] {
   const monthlyTotals: MonthlyTotals[] = [];
   let nextDate = startDate;
@@ -108,7 +108,7 @@ describe('normalizer', () => {
           laterStartDate,
           numMonthsForLaterStart,
           transactionsPerMonth,
-          true
+          true,
         ),
       };
       let mockIncome: Partial<NormalizedIncomes> = {
@@ -116,21 +116,21 @@ describe('normalizer', () => {
           earlierStartDate,
           numMonthsForEarlyStart,
           transactionsPerMonth,
-          false
+          false,
         ),
       };
 
       const normalizedNetIncomes = normalizeNetIncomes(
         mockExpenses as NormalizedExpenses,
-        mockIncome as NormalizedIncomes
+        mockIncome as NormalizedIncomes,
       );
 
       expect(normalizedNetIncomes.length).toBe(totalMonths);
       expect(normalizedNetIncomes[0].date.toUTCMoment().toISOString()).toEqual(
-        earlierStartDate.toISOString()
+        earlierStartDate.toISOString(),
       );
       expect(
-        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString()
+        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString(),
       ).toEqual(expectedEndDate.toISOString());
     });
 
@@ -155,7 +155,7 @@ describe('normalizer', () => {
           earlierStartDate,
           numMonthsForEarlyStart,
           transactionsPerMonth,
-          true
+          true,
         ),
       };
       let mockIncome: Partial<NormalizedIncomes> = {
@@ -163,21 +163,21 @@ describe('normalizer', () => {
           laterStartDate,
           numMonthsForLaterStart,
           transactionsPerMonth,
-          false
+          false,
         ),
       };
 
       const normalizedNetIncomes = normalizeNetIncomes(
         mockExpenses as NormalizedExpenses,
-        mockIncome as NormalizedIncomes
+        mockIncome as NormalizedIncomes,
       );
 
       expect(normalizedNetIncomes.length).toBe(totalMonths);
       expect(normalizedNetIncomes[0].date.toUTCMoment().toISOString()).toEqual(
-        earlierStartDate.toISOString()
+        earlierStartDate.toISOString(),
       );
       expect(
-        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString()
+        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString(),
       ).toEqual(expectedEndDate.toISOString());
     });
 
@@ -204,7 +204,7 @@ describe('normalizer', () => {
           earlierStartDate,
           numMonthsForEarlyStart,
           transactionsPerMonth,
-          true
+          true,
         ),
       };
       let mockIncome: Partial<NormalizedIncomes> = {
@@ -212,21 +212,21 @@ describe('normalizer', () => {
           laterStartDate,
           numMonthsForLaterStart,
           transactionsPerMonth,
-          false
+          false,
         ),
       };
 
       const normalizedNetIncomes = normalizeNetIncomes(
         mockExpenses as NormalizedExpenses,
-        mockIncome as NormalizedIncomes
+        mockIncome as NormalizedIncomes,
       );
 
       expect(normalizedNetIncomes.length).toBe(totalMonths);
       expect(normalizedNetIncomes[0].date.toUTCMoment().toISOString()).toEqual(
-        earlierStartDate.toISOString()
+        earlierStartDate.toISOString(),
       );
       expect(
-        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString()
+        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString(),
       ).toEqual(expectedEndDate.toISOString());
     });
 
@@ -253,7 +253,7 @@ describe('normalizer', () => {
           laterStartDate,
           numMonthsForLaterStart,
           transactionsPerMonth,
-          true
+          true,
         ),
       };
       let mockIncome: Partial<NormalizedIncomes> = {
@@ -261,21 +261,21 @@ describe('normalizer', () => {
           earlierStartDate,
           numMonthsForEarlyStart,
           transactionsPerMonth,
-          false
+          false,
         ),
       };
 
       const normalizedNetIncomes = normalizeNetIncomes(
         mockExpenses as NormalizedExpenses,
-        mockIncome as NormalizedIncomes
+        mockIncome as NormalizedIncomes,
       );
 
       expect(normalizedNetIncomes.length).toBe(totalMonths);
       expect(normalizedNetIncomes[0].date.toUTCMoment().toISOString()).toEqual(
-        earlierStartDate.toISOString()
+        earlierStartDate.toISOString(),
       );
       expect(
-        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString()
+        normalizedNetIncomes[normalizedNetIncomes.length - 1].date.toUTCMoment().toISOString(),
       ).toEqual(expectedEndDate.toISOString());
     });
   });

@@ -29,11 +29,11 @@ export class ToggleMasterCategories extends Feature {
     $('.budget-table-header .budget-table-cell-collapse').off('click', this.handleToggleCategories);
     $('.budget-table-header .budget-table-cell-collapse').off(
       'contextmenu',
-      this.handleToggleSoloMode
+      this.handleToggleSoloMode,
     );
     $('.budget-table-row.is-master-category .budget-table-cell-collapse').off(
       'click',
-      this.handleRowExpandedToggle
+      this.handleRowExpandedToggle,
     );
   }
 
@@ -59,7 +59,7 @@ export class ToggleMasterCategories extends Feature {
     } else {
       controllerLookup('budget').send(
         'toggleCollapseMasterCategories',
-        !this.isAnyCategoryCollapsed
+        !this.isAnyCategoryCollapsed,
       );
     }
 
@@ -75,7 +75,7 @@ export class ToggleMasterCategories extends Feature {
       setToolkitStorageKey('catSoloMode', false);
       $('.budget-table-row.is-master-category .budget-table-cell-collapse').off(
         'click',
-        this.handleRowExpandedToggle
+        this.handleRowExpandedToggle,
       );
     } else {
       event.currentTarget.dataset.tkCategoryToggle = 'solo';
@@ -89,7 +89,7 @@ export class ToggleMasterCategories extends Feature {
   enableSoloCategoryMode() {
     $('.budget-table-row.is-master-category .budget-table-cell-collapse').on(
       'click',
-      this.handleRowExpandedToggle
+      this.handleRowExpandedToggle,
     );
 
     controllerLookup('budget').send('toggleCollapseMasterCategories', true);
@@ -110,7 +110,7 @@ export class ToggleMasterCategories extends Feature {
     } else {
       $('#tk-master-category-toggle-direction', $toggle).attr(
         'href',
-        `#icon_sprite_caret_${this.isAnyCategoryCollapsed ? 'right' : 'down'}`
+        `#icon_sprite_caret_${this.isAnyCategoryCollapsed ? 'right' : 'down'}`,
       );
     }
 

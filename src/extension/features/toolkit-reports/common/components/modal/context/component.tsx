@@ -60,7 +60,7 @@ export function withModalContextProvider<T extends object>(InnerComponent: Compo
 }
 
 export function withModalContext<T extends object>(
-  mapContextToProps: (ctx: ModalContextType) => T
+  mapContextToProps: (ctx: ModalContextType) => T,
 ) {
   return function <P extends object>(InnerComponent: ComponentType<P>) {
     return class WithModalContextProvider extends React.Component {

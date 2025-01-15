@@ -15,7 +15,7 @@ export class ResetColumnWidths extends Feature {
         .css({ float: 'left' })
         .on('click', () => {
           getRegisterGridService()?.saveColumnSizes();
-        })
+        }),
     );
   }
 

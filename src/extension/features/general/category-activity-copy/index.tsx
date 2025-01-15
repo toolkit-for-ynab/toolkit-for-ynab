@@ -36,7 +36,7 @@ export class CategoryActivityCopy extends Feature {
       if (Array.isArray(transactions) && transactions.length > 0) {
         componentAppend(
           <CopyTransactionsButton transactions={transactions} />,
-          modal.querySelector('.modal-actions')
+          modal.querySelector('.modal-actions'),
         );
       }
     }

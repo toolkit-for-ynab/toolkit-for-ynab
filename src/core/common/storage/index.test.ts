@@ -149,7 +149,7 @@ describe('ToolkitStorage', () => {
       storage.setStorageItem('item', 'test');
       expect(getBrowser().storage.local.set).toHaveBeenCalledWith(
         { item: 'test' },
-        expect.any(Function)
+        expect.any(Function),
       );
     });
   });
