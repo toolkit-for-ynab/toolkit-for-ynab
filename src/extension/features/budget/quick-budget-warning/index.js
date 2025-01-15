@@ -9,7 +9,7 @@ export class QuickBudgetWarning extends Feature {
   destroy() {
     $('.budget-breakdown-auto-assign button.budget-inspector-button').off(
       'click',
-      this.confirmClick
+      this.confirmClick,
     );
   }
 
@@ -19,11 +19,11 @@ export class QuickBudgetWarning extends Feature {
     // items added by the Toolkit
     $('.budget-breakdown-auto-assign button.budget-inspector-button').off(
       'click',
-      this.confirmClick
+      this.confirmClick,
     );
     $('.budget-breakdown-auto-assign button.budget-inspector-button').on(
       'click',
-      this.confirmClick
+      this.confirmClick,
     );
   }
 
@@ -31,7 +31,7 @@ export class QuickBudgetWarning extends Feature {
     // if nothing is budgeted, skip the confirmation
     let allZero = true;
     $(
-      'div.budget-table ul.budget-table-row.is-checked li.budget-table-cell-budgeted .currency'
+      'div.budget-table ul.budget-table-row.is-checked li.budget-table-cell-budgeted .currency',
     ).each(function () {
       if (!$(this).hasClass('zero')) {
         allZero = false;

@@ -40,7 +40,7 @@ export class BulkManagePayees extends Feature {
         <li><hr /><li>
       `).on('click', () => {
         serviceLookup('accounts').openPayeeModal();
-      })
+      }),
     );
   }
 }

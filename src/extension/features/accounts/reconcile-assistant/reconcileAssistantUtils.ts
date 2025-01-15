@@ -39,7 +39,7 @@ export function generatePowerset(array: Array<YNABTransaction>): Array<Array<YNA
  */
 export function findMatchingSum(
   transactionsPowerset: Array<Array<YNABTransaction>>,
-  target: number
+  target: number,
 ): Array<Array<YNABTransaction>> {
   let matchingTargets: Array<Array<YNABTransaction>> = [];
   transactionsPowerset.forEach((transactionArray) => {
@@ -53,7 +53,7 @@ export function findMatchingSum(
 }
 
 export function getUnclearedTransactions(
-  transactions: Array<YNABTransaction>
+  transactions: Array<YNABTransaction>,
 ): Array<YNABTransaction> {
   return transactions.filter((txn) => txn.cleared && txn.isUncleared?.() && !txn.isTombstone);
 }

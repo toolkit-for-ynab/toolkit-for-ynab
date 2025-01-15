@@ -23,13 +23,13 @@ export const OutflowOverTimeComponent = ({
   // Using CumulativeSum will show a growing trendline over the dates.
   const [cumulativeSum, setCumulativeSum] = useLocalStorage(
     'outflow-over-time-useCumulativeSum',
-    true
+    true,
   );
 
   // Using IncludeInflows will include inflows which are not in category 'Inflow: Ready to Assign').
   const [includeInflows, setIncludeInflows] = useLocalStorage(
     'outflow-over-time-includeInflows',
-    true
+    true,
   );
 
   useEffect(() => {
@@ -49,11 +49,11 @@ export const OutflowOverTimeComponent = ({
             filterTransactions(
               filterTransactionsByDate(allReportableTransactions, fromDate, toDate),
               includeInflows,
-              filterOutAccounts
-            )
-          )
-        )
-      )
+              filterOutAccounts,
+            ),
+          ),
+        ),
+      ),
     );
   }, [allReportableTransactions, filters, cumulativeSum, includeInflows]);
 

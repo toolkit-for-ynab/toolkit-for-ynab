@@ -32,7 +32,7 @@ export class ReportFiltersComponent extends React.Component<ReportFiltersProps> 
       'tk-button--text',
       {
         'tk-button--disabled': disableCategoryFilter,
-      }
+      },
     );
 
     return (
@@ -57,7 +57,7 @@ export class ReportFiltersComponent extends React.Component<ReportFiltersProps> 
               className="tk-button tk-button--hollow tk-button--medium tk-button--text"
             >
               {`${localizedMonthAndYear(dateFilter.fromDate)} - ${localizedMonthAndYear(
-                dateFilter.toDate
+                dateFilter.toDate,
               )}`}
             </button>
           </div>

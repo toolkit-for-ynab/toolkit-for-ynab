@@ -44,7 +44,7 @@ export const generateRunningBalanceMap = (reportedTransactions: YNABTransaction[
 
   // Get the date of the very first transaction
   let sortedTransactions = reportedTransactions.sort(
-    (t1, t2) => t1.date.getUTCTime() - t2.date.getUTCTime()
+    (t1, t2) => t1.date.getUTCTime() - t2.date.getUTCTime(),
   );
 
   // Add in the datapoints for each of the accounts
@@ -59,7 +59,7 @@ export const generateRunningBalanceMap = (reportedTransactions: YNABTransaction[
   accountsToTransactionsMap.forEach((transactionsForAcc, accountId) => {
     calculatedRunningBalanceMap.set(
       accountId,
-      generateDataPointsForAccount(accountId, dateToTransactionsMap, firstTransactionDate, now)
+      generateDataPointsForAccount(accountId, dateToTransactionsMap, firstTransactionDate, now),
     );
   });
   // Want: Account ID -> Map<Date, Object>
@@ -133,7 +133,7 @@ export const generateDataPointsForAccount = (
   accountId: string,
   dateToAllTransactions: Map<number, YNABTransaction[]>,
   startDate: Moment,
-  endDate: Moment
+  endDate: Moment,
 ) => {
   let datapoints = generateEmptyDateMap(startDate, endDate);
   let currDate = startDate.clone();
@@ -236,7 +236,7 @@ export const combineDataPoints = (datapointsArray: Map<number, Datapoint>[]) => 
 export const applyDateFiltersToDataPoints = (
   fromDate: DateWithoutTime,
   toDate: DateWithoutTime,
-  datapoints: Map<number, Datapoint>
+  datapoints: Map<number, Datapoint>,
 ) => {
   let filteredDatapoints = new Map<number, Datapoint>();
   datapoints.forEach((data, dateUTC) => {

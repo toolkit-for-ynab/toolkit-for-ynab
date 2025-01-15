@@ -64,7 +64,7 @@ export class FundHalf extends Feature {
       this.lowHalf = this._getSelectedCategoriesFundAmounts(selectedBudgetCategories, HalfType.Low);
       this.highHalf = this._getSelectedCategoriesFundAmounts(
         selectedBudgetCategories,
-        HalfType.High
+        HalfType.High,
       );
 
       let lowHalfSum: number = 0;
@@ -100,7 +100,7 @@ export class FundHalf extends Feature {
       selectedBudgetCategories.forEach((selectedBudgetCategory) => {
         this._fundAmountToBudgetCategory(
           selectedBudgetCategory.budgetCategoryId,
-          selectedBudgetCategory.amount
+          selectedBudgetCategory.amount,
         );
       });
     });
@@ -108,7 +108,7 @@ export class FundHalf extends Feature {
 
   _getSelectedCategoriesFundAmounts(
     selectedBudgetCategories: YNABBudgetMonthDisplayItem[],
-    halfType: HalfType
+    halfType: HalfType,
   ): BudgetCategoryAmount[] {
     const selectedBudgetCategoryAmounts: BudgetCategoryAmount[] = [];
     selectedBudgetCategories.forEach((selectedBudgetCategory) => {

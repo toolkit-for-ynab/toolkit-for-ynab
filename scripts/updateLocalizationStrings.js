@@ -129,13 +129,13 @@ getLocalizations((toolkitStrings, otherStrings) => {
   fs.writeFileSync(`${localizationDir}/en.json`, `${allStringsJSON}\n`);
   fs.writeFileSync(
     `${localizationDir}/default.js`,
-    `/* eslint-disable */\n// prettier-ignore\nynabToolKit.l10nData = ${allStringsJSON}\n`
+    `/* eslint-disable */\n// prettier-ignore\nynabToolKit.l10nData = ${allStringsJSON}\n`,
   );
 
   if (process.argv[2]) {
     console.log('Crowdin API Key detected, uploading en.json...');
     exec(
-      `curl -F "files[en.json]=@${localizationDir}/en.json" https://api.crowdin.com/api/project/toolkit-for-ynab/update-file?key=${process.argv[2]}`
+      `curl -F "files[en.json]=@${localizationDir}/en.json" https://api.crowdin.com/api/project/toolkit-for-ynab/update-file?key=${process.argv[2]}`,
     );
   } else {
     console.log('No Crowdin API Key, skipping upload.');

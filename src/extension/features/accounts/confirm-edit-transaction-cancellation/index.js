@@ -11,7 +11,7 @@ export class ConfirmEditTransactionCancellation extends Feature {
     const $cancelButton = $('.ynab-grid-actions-buttons .button.button-cancel');
     const confirmationText = l10n(
       'toolkit.confirmCancellationOfTransactionChanges',
-      'Discard changes to this transaction?'
+      'Discard changes to this transaction?',
     );
     const guardedKeydownEventCode = 'Enter';
 

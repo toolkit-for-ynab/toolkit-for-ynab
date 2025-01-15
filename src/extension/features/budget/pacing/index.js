@@ -33,7 +33,7 @@ export class Pacing extends Feature {
 
     const budgetRows = $('.js-budget-table-row');
     const budgetRowsWithoutPacing = budgetRows.filter(
-      (_, el) => !el.querySelector('.tk-budget-table-cell-pacing')
+      (_, el) => !el.querySelector('.tk-budget-table-cell-pacing'),
     );
     const nBudgetRowsWithoutPacing = budgetRowsWithoutPacing.length;
 
@@ -65,7 +65,7 @@ export class Pacing extends Feature {
   ensureHeader() {
     if (!$('.budget-table-header .tk-budget-table-cell-pacing').length) {
       $('.budget-table-header .budget-table-cell-available').after(
-        `<div class="tk-budget-table-cell-pacing">${l10n('toolkit.pacing', 'PACING')}</div>`
+        `<div class="tk-budget-table-cell-pacing">${l10n('toolkit.pacing', 'PACING')}</div>`,
       );
     }
   }
@@ -74,7 +74,7 @@ export class Pacing extends Feature {
     if (element.classList.contains('is-master-category')) {
       if (!element.querySelector('.tk-budget-table-cell-pacing')) {
         $('.budget-table-cell-available', element).after(
-          `<div class="tk-budget-table-cell-pacing"></div>`
+          `<div class="tk-budget-table-cell-pacing"></div>`,
         );
       }
 
@@ -84,7 +84,7 @@ export class Pacing extends Feature {
     if (element.classList.contains('is-debt-payment-category')) {
       if (!element.querySelector('.tk-budget-table-cell-pacing')) {
         $('.budget-table-cell-available', element).after(
-          `<div class="tk-budget-table-cell-pacing"></div>`
+          `<div class="tk-budget-table-cell-pacing"></div>`,
         );
       }
 
@@ -109,7 +109,7 @@ export class Pacing extends Feature {
         setDeemphasizedCategories(
           deemphasizedCategories.filter((id) => {
             return id !== subCategoryId;
-          })
+          }),
         );
       } else {
         $button.addClass('deemphasized');

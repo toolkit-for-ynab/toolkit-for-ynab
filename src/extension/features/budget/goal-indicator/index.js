@@ -57,7 +57,7 @@ export class GoalIndicator extends Feature {
     const hasUpcomingTransactions =
       monthlySubCategoryBudgetCalculation?.upcomingTransactionsCount > 0;
     const goalTypeElement = element.querySelector(
-      '.tk-goal-indicator:not(.tk-goal-indicator--upcoming)'
+      '.tk-goal-indicator:not(.tk-goal-indicator--upcoming)',
     );
     const upcomingElement = element.querySelector('.tk-goal-indicator--upcoming');
 
@@ -79,7 +79,7 @@ export class GoalIndicator extends Feature {
             class: 'tk-goal-indicator',
             title: GoalTypeLabels[goalType][1],
             text: GoalTypeLabels[goalType][0],
-          })
+          }),
         );
       }
     }
@@ -94,7 +94,7 @@ export class GoalIndicator extends Feature {
           class: 'tk-goal-indicator tk-goal-indicator--upcoming',
           title: 'Upcoming transactions',
           text: 'U',
-        })
+        }),
       );
     }
   }

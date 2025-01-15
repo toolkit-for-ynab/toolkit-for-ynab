@@ -44,7 +44,7 @@ export function ensureGoalColumn(element: HTMLElement | null): boolean {
 }
 
 export function getBudgetMonthDisplaySubCategory(
-  entityId: string | undefined | null
+  entityId: string | undefined | null,
 ): YNABBudgetMonthDisplayItem | null {
   if (!entityId) {
     return null;

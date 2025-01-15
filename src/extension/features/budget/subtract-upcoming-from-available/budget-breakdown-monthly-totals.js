@@ -44,7 +44,7 @@ function setBudgetBreakdown(totals, context) {
   let $budgetBreakdownEntries = getBudgetBreakdownEntries(budgetBreakdownEntries);
 
   $budgetBreakdownEntries = $budgetBreakdownEntries.add(
-    $('<div id="tk-available-after-upcoming-hr"><hr style="width:100%"></div>')
+    $('<div id="tk-available-after-upcoming-hr"><hr style="width:100%"></div>'),
   );
 
   const $totalAvailableAfterSavings = $('#tk-total-available-after-savings', context);
@@ -72,7 +72,7 @@ export function getBudgetBreakdownEntries(entries) {
             <span class="user-data currency ${currencyClass}">${amount}</span>
           </div>
         </div>
-      `)
+      `),
     );
   }
 
