@@ -20,7 +20,7 @@ export const OutflowGraph = ({ series }: { series: Highcharts.SeriesLineOptions[
       series: series,
       yAxis: {
         title: {
-          text: 'Balance',
+          text: 'Outflow',
           style: { color: textColor },
         },
         labels: {
