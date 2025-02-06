@@ -53,3 +53,8 @@ body.theme-dark {
 .budget-header .tk-highlight-current-month .budget-header-calendar-note {
   color: var(--tk-current-month-note-color);
 }
+
+/* Set equal height */
+.to-be-budgeted {
+  height: 100%;
+}
