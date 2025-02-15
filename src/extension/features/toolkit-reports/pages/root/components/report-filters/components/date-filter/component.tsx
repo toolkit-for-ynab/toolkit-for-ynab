@@ -9,8 +9,9 @@ import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
 const Options = {
   ThisMonth: 'This Month',
   LastMonth: 'Last Month',
-  LatestThree: 'Latest Three Months',
-  LatestSix: 'Latest Six Months',
+  LatestThree: 'Latest 3 Months',
+  LatestSix: 'Latest 6 Months',
+  LatestTwelve: 'Latest 12 Months',
   ThisYear: 'This Year',
   LastYear: 'Last Year',
   AllDates: 'All Dates',
@@ -78,6 +79,13 @@ export class DateFilterComponent extends React.Component<DateFilterProps, DateFi
             onClick={this._handleOptionSelected}
           >
             {Options.LatestSix}
+          </button>
+          <button
+            name={Options.LatestTwelve}
+            className="tk-button tk-button--small tk-button--text tk-mg-l-05"
+            onClick={this._handleOptionSelected}
+          >
+            {Options.LatestTwelve}
           </button>
           <button
             name={Options.ThisYear}
@@ -280,6 +288,9 @@ export class DateFilterComponent extends React.Component<DateFilterProps, DateFi
         break;
       case Options.LatestSix:
         selectedDates = this._getSelectedFromDates(today.clone().subtractMonths(5), today);
+        break;
+      case Options.LatestTwelve:
+        selectedDates = this._getSelectedFromDates(today.clone().subtractMonths(11), today);
         break;
       case Options.ThisYear:
         selectedDates = this._getSelectedFromDates(today.clone().startOfYear(), today);
