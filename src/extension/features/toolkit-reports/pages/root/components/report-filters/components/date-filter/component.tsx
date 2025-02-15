@@ -9,8 +9,9 @@ import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
 const Options = {
   ThisMonth: 'This Month',
   LastMonth: 'Last Month',
-  LatestThree: 'Latest Three Months',
-  LatestSix: 'Latest Six Months',
+  LastThree: 'Last 3 Months',
+  LastSix: 'Last 6 Months',
+  LastTwelve: 'Last 12 Months',
   ThisYear: 'This Year',
   LastYear: 'Last Year',
   AllDates: 'All Dates',
@@ -66,18 +67,25 @@ export class DateFilterComponent extends React.Component<DateFilterProps, DateFi
             {Options.LastMonth}
           </button>
           <button
-            name={Options.LatestThree}
+            name={Options.LastThree}
             className="tk-button tk-button--small tk-button--text tk-mg-l-05"
             onClick={this._handleOptionSelected}
           >
-            {Options.LatestThree}
+            {Options.LastThree}
           </button>
           <button
-            name={Options.LatestSix}
+            name={Options.LastSix}
             className="tk-button tk-button--small tk-button--text tk-mg-l-05"
             onClick={this._handleOptionSelected}
           >
-            {Options.LatestSix}
+            {Options.LastSix}
+          </button>
+          <button
+            name={Options.LastTwelve}
+            className="tk-button tk-button--small tk-button--text tk-mg-l-05"
+            onClick={this._handleOptionSelected}
+          >
+            {Options.LastTwelve}
           </button>
           <button
             name={Options.ThisYear}
@@ -275,11 +283,14 @@ export class DateFilterComponent extends React.Component<DateFilterProps, DateFi
         const lastMonth = today.clone().subtractMonths(1);
         selectedDates = this._getSelectedFromDates(lastMonth, lastMonth);
         break;
-      case Options.LatestThree:
+      case Options.LastThree:
         selectedDates = this._getSelectedFromDates(today.clone().subtractMonths(2), today);
         break;
-      case Options.LatestSix:
+      case Options.LastSix:
         selectedDates = this._getSelectedFromDates(today.clone().subtractMonths(5), today);
+        break;
+      case Options.LastTwelve:
+        selectedDates = this._getSelectedFromDates(today.clone().subtractMonths(11), today);
         break;
       case Options.ThisYear:
         selectedDates = this._getSelectedFromDates(today.clone().startOfYear(), today);
