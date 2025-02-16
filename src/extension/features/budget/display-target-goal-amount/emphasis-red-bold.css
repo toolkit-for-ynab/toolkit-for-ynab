@@ -1,0 +1,4 @@
+.tk-goal-emphasis {
+  color: var(--labelNegative);
+  font-weight: bold;
+}

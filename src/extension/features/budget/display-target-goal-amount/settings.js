@@ -9,5 +9,6 @@ module.exports = {
     { name: 'Display target amount with no emphasis', value: '3' },
     { name: 'Display target amount and emphasize overbudget with red', value: '1' },
     { name: 'Display target amount and emphasize funded targets as green', value: '2' },
+    { name: 'Display target amount and emphasize over-activity with bold red', value: '4' },
   ],
 };

@@ -13,6 +13,7 @@ export const Settings = {
   WarnBudgetOverTarget: '1',
   GreenBudgetOverTarget: '2',
   NoEmphasis: '3',
+  WarnActivityOverTarget: '4',
 };
 
 export class DisplayTargetGoalAmount extends Feature {
@@ -23,6 +24,10 @@ export class DisplayTargetGoalAmount extends Feature {
 
     if (this.settings.enabled === Settings.GreenBudgetOverTarget) {
       return require('./emphasis-green.css');
+    }
+
+    if (this.settings.enabled === Settings.WarnActivityOverTarget) {
+      return require('./emphasis-red-bold.css');
     }
   }
 
@@ -99,7 +104,8 @@ export class DisplayTargetGoalAmount extends Feature {
     }
 
     const goalType = category.goalType;
-    const { subCategory, monthlySubCategoryBudget, monthlySubCategoryBudgetCalculation } = category;
+    const { subCategory, monthlySubCategoryBudget, monthlySubCategoryBudgetCalculation, activity } =
+      category;
 
     if (!subCategory || !monthlySubCategoryBudgetCalculation || !monthlySubCategoryBudget) {
       return;
@@ -113,12 +119,12 @@ export class DisplayTargetGoalAmount extends Feature {
     let applyEmphasis = false;
     if (isGoalValidForMonth) {
       switch (goalType) {
+        case ynab.constants.SubCategoryGoalType.Needed:
         case ynab.constants.SubCategoryGoalType.TargetBalance:
           goalAmount = goalTargetAmount;
           goalFundedThreshold = goalTargetAmount;
           break;
         case ynab.constants.SubCategoryGoalType.MonthlyFunding:
-        case ynab.constants.SubCategoryGoalType.Needed:
         case ynab.constants.SubCategoryGoalType.TargetBalanceOnDate:
         case ynab.constants.SubCategoryGoalType.DebtPayment:
           goalAmount = goalTarget;
@@ -128,6 +134,11 @@ export class DisplayTargetGoalAmount extends Feature {
 
       if (goalAmount) {
         if (userSetting === Settings.WarnBudgetOverTarget && budgeted > goalFundedThreshold) {
+          applyEmphasis = true;
+        } else if (
+          userSetting === Settings.WarnActivityOverTarget &&
+          -activity > goalFundedThreshold
+        ) {
           applyEmphasis = true;
         } else if (
           userSetting === Settings.GreenBudgetOverTarget &&
