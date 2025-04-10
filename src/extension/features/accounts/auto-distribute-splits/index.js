@@ -31,7 +31,7 @@ export class AutoDistributeSplits extends Feature {
         }).on('click', (event) => {
           this.distribute();
           $(event.currentTarget).trigger('blur');
-        })
+        }),
       );
     } else {
       $(`#${DISTRIBUTE_BUTTON_ID}`).remove();
@@ -73,7 +73,7 @@ export class AutoDistributeSplits extends Feature {
   alertCannotDistribute() {
     // eslint-disable-next-line no-alert
     alert(
-      `Please fill in the transaction total and at least one sub-transaction in order to auto-distribute the remaining amount between sub-transactions`
+      `Please fill in the transaction total and at least one sub-transaction in order to auto-distribute the remaining amount between sub-transactions`,
     );
   }
 
@@ -84,7 +84,7 @@ export class AutoDistributeSplits extends Feature {
   confirmSubtraction() {
     // eslint-disable-next-line no-alert
     return window.confirm(
-      'Sub-transactions add up to more than the total, are you sure you want to subtract from them?'
+      'Sub-transactions add up to more than the total, are you sure you want to subtract from them?',
     );
   }
 

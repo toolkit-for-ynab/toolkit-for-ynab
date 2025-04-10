@@ -20,7 +20,7 @@ function makeWeeks(transactions: YNABTransaction[]): Record<number, number> {
 
   return range(startWeek, endWeek).reduce((accumulator, current) => {
     const matches = transactions.filter(
-      (t) => getWeekNumber(t.date.toUTCMoment()) === current && t.payeeName !== 'Starting Balance'
+      (t) => getWeekNumber(t.date.toUTCMoment()) === current && t.payeeName !== 'Starting Balance',
     );
     return {
       ...accumulator,
@@ -51,11 +51,11 @@ function generateForecast(weeks: Record<number | string, number>, netWorth: numb
 export function generateForecasts(
   transactions: YNABTransaction[],
   allReportableTransactions: YNABTransaction[],
-  filters: ReportContextType['filters']
+  filters: ReportContextType['filters'],
 ) {
   const weeks = makeWeeks(transactions);
   const netWorth = calculateNetWorth(
-    allReportableTransactions.filter((t) => !filters?.accountFilterIds.has(t.accountId))
+    allReportableTransactions.filter((t) => !filters?.accountFilterIds.has(t.accountId)),
   );
 
   return range(0, 99)

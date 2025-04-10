@@ -22,7 +22,7 @@ export class HideHelp extends Feature {
 
     componentAppend(
       <HideHelpButton toggleHiddenState={this.setHiddenState} />,
-      element.getElementsByClassName('modal-list')[0]
+      element.getElementsByClassName('modal-list')[0],
     );
   }
 

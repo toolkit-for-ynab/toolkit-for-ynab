@@ -132,7 +132,7 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
             (transaction) =>
               !transaction.isSplit &&
               !transaction.isScheduledTransaction &&
-              !transaction.isScheduledSubTransaction
+              !transaction.isScheduledSubTransaction,
           );
 
           this.setState(
@@ -142,9 +142,9 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
             },
             () => {
               this._applyFilters(this.state.activeReportKey);
-            }
+            },
           );
-        }
+        },
       );
     }
 

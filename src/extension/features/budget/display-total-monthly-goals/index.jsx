@@ -147,7 +147,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
 
     componentBefore(
       this.createInspectorElement(income, budgeted, spent, savingsGoals, spendingGoals),
-      target[0]
+      target[0],
     );
   }
 

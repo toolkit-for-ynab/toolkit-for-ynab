@@ -39,7 +39,7 @@ const createPayeeMap = (payee: YNABPayee, monthlyTotals: MonthlyTotalsMap): Paye
 
 const createMasterCategoryMap = (
   masterCategory: YNABMasterCategory,
-  monthlyTotals: MonthlyTotalsMap
+  monthlyTotals: MonthlyTotalsMap,
 ): MasterCategoryMap => ({
   masterCategory,
   monthlyTotals,
@@ -48,7 +48,7 @@ const createMasterCategoryMap = (
 
 const createSubCategoryMap = (
   subCategory: YNABSubCategory,
-  monthlyTotals: MonthlyTotalsMap
+  monthlyTotals: MonthlyTotalsMap,
 ): SubCategoryMap => ({
   subCategory,
   monthlyTotals,
@@ -253,7 +253,7 @@ export class IncomeVsExpenseComponent extends React.Component<
   _assignIncomeTransaction(
     incomes: Incomes,
     transaction: YNABTransaction,
-    transactionPayee: YNABPayee
+    transactionPayee: YNABPayee,
   ) {
     const allPayeesData = incomes.payees;
     const transactionPayeeId = transactionPayee?.entityId!;
@@ -273,7 +273,7 @@ export class IncomeVsExpenseComponent extends React.Component<
   _assignExpenseTransaction(
     expenses: Expenses,
     transaction: YNABTransaction,
-    transactionSubCategory: YNABSubCategory
+    transactionSubCategory: YNABSubCategory,
   ) {
     // global monthly expense totals
     this._addTransactionToMonthlyTotals(transaction, expenses.monthlyTotals);
@@ -283,7 +283,7 @@ export class IncomeVsExpenseComponent extends React.Component<
     const transactionMasterCategoryId = transactionSubCategory.masterCategoryId!;
     const allMasterCategoriesReportData = expenses.masterCategories;
     const masterCategory = this._masterCategoriesCollection.findItemByEntityId(
-      transactionMasterCategoryId
+      transactionMasterCategoryId,
     );
     const masterCategoryReportData =
       allMasterCategoriesReportData[transactionMasterCategoryId] ||
@@ -410,7 +410,7 @@ export class IncomeVsExpenseComponent extends React.Component<
 
   _normalizeNetIncomes(
     expenses: NormalizedExpenses,
-    incomes: NormalizedIncomes
+    incomes: NormalizedIncomes,
   ): NormalizedNetIncome[] {
     return normalizeNetIncomes(expenses, incomes);
   }

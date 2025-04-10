@@ -65,7 +65,7 @@ export class CalculateIRR extends Feature {
           <span id="tk-total-irr"></span>
           <div id="tk-accounts-header-total-irr-label"></div>
         </div>
-      </div>`
+      </div>`,
       );
     }
 
@@ -250,12 +250,12 @@ export class CalculateIRR extends Feature {
     var filterFrom = ynab.utilities.DateWithoutTime.createFromYearMonthDate(
       filter.fromYear,
       filter.fromMonth,
-      1
+      1,
     );
     var filterTo = ynab.utilities.DateWithoutTime.createFromYearMonthDate(
       filter.toYear,
       filter.toMonth,
-      15
+      15,
     ).endOfMonth();
 
     return { filterFrom, filterTo };

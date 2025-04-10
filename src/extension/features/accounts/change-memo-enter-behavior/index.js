@@ -31,7 +31,7 @@ export class ChangeMemoEnterBehavior extends Feature {
       event.stopPropagation();
 
       const $closestAddEditRow = $(this).closest(
-        $('.ynab-grid-body-row.is-adding, .ynab-grid-body-row.is-editing')
+        $('.ynab-grid-body-row.is-adding, .ynab-grid-body-row.is-editing'),
       );
       const $memoColumn = $('.ynab-grid-cell-memo', $closestAddEditRow);
       const $columns = $closestAddEditRow.children();

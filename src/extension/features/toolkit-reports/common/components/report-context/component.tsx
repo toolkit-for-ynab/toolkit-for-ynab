@@ -44,7 +44,7 @@ const { Provider, Consumer } = createContext<ReportContextType>({
 export const ReportContextProvider = Provider;
 
 export function withReportContext<T extends { [key: string]: any }>(
-  mapContextToProps: (ctx: ReportContextType) => T
+  mapContextToProps: (ctx: ReportContextType) => T,
 ) {
   return function <P extends object>(InnerComponent: ComponentType<P>) {
     return function WithReportContextProvider(props: Omit<P, keyof T>) {

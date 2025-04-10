@@ -25,7 +25,7 @@ export function ToolkitPopup() {
       <img
         className="logo"
         src={runtime.getURL(
-          `assets/images/logos/toolkitforynab-logo-200${isToolkitDisabled ? '-disabled' : ''}.png`
+          `assets/images/logos/toolkitforynab-logo-200${isToolkitDisabled ? '-disabled' : ''}.png`,
         )}
       ></img>
 

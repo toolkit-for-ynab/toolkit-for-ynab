@@ -212,17 +212,17 @@ export class IncomeBreakdownComponent extends React.Component<
         incomes: incomes,
         expenses: expenses,
       },
-      this._renderReport
+      this._renderReport,
     );
   }
 
   _assignExpenseTransaction(
     expenses: IncomeBreakdownState['expenses'],
     transaction: YNABTransaction,
-    transactionSubCategory: YNABSubCategory
+    transactionSubCategory: YNABSubCategory,
   ) {
     const transactionMasterCategory = this._masterCategoriesCollection.findItemByEntityId(
-      transactionSubCategory.masterCategoryId
+      transactionSubCategory.masterCategoryId,
     );
 
     let amount = transaction.amount;
@@ -235,14 +235,14 @@ export class IncomeBreakdownComponent extends React.Component<
     }
     subCategoryMap?.set(
       transactionSubCategory,
-      (subCategoryMap.get(transactionSubCategory) || 0) + amount
+      (subCategoryMap.get(transactionSubCategory) || 0) + amount,
     );
   }
 
   _assignIncomeTransaction(
     incomes: IncomeBreakdownState['incomes'],
     transaction: YNABTransaction,
-    transactionPayee: YNABPayee
+    transactionPayee: YNABPayee,
   ) {
     let amount = transaction.amount;
     if (incomes.has(transactionPayee)) {

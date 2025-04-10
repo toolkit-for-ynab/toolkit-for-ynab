@@ -33,5 +33,5 @@ function mapModalContextToProps({ closeModal, showModal }: ModalContextType) {
 }
 
 export const ReportFilters = withModalContext(mapModalContextToProps)(
-  withReportContext(mapReportContextToProps)(ReportFiltersComponent)
+  withReportContext(mapReportContextToProps)(ReportFiltersComponent),
 );

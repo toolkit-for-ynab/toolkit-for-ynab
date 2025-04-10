@@ -27,7 +27,7 @@ function sendToolkitBootstrap(options) {
         version: manifest.version,
       },
     },
-    '*'
+    '*',
   );
 }
 

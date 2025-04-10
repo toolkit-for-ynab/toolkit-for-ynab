@@ -61,7 +61,7 @@ export class CategoryFilterComponent extends React.Component<
             label={masterCategory.name}
             onChange={this._handleMasterCategoryToggled}
           />
-        </div>
+        </div>,
       );
 
       subCategories.sort(sortableIndexCompare).forEach((subCategory) => {
@@ -78,7 +78,7 @@ export class CategoryFilterComponent extends React.Component<
               label={subCategory.name}
               onChange={this._handleSubCategoryToggled}
             />
-          </div>
+          </div>,
         );
       });
     });

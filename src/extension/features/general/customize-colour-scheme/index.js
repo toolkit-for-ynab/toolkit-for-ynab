@@ -289,7 +289,7 @@ export class CustomizeColourScheme extends Feature {
           <input type="color" value="${value}" class="tk-custom-colours-picker" style="background-color: ${value};"></input>
         </div>
         <div class="ynab-new-theme-switcher-label">${label}</div>
-      </button>`
+      </button>`,
     );
 
     const colourInput = $('input', button);
@@ -326,7 +326,7 @@ export class CustomizeColourScheme extends Feature {
       `<div class="tk-custom-colours-square-option">
         <input type="checkbox" id="tk-custom-colours-${name}-square" ${square ? 'checked' : ''}>
         <label for="tk-custom-colours-${name}-square">Square Corners</label>
-      </div>`
+      </div>`,
     );
     $('input', option).on('click', (e) => {
       this.setSquare(name, e.target.checked);
@@ -347,7 +347,7 @@ export class CustomizeColourScheme extends Feature {
         <input type="checkbox" class="tk-custom-colours-option-enable" ${
           this.getEnabled() ? 'checked' : ''
         }></div>
-      </div>`
+      </div>`,
     );
 
     $('input', optionsMenu).on('click', (e) => {

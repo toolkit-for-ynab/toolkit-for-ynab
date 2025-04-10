@@ -36,7 +36,7 @@ export class ReconcileBalance extends Feature {
         `<div class="tk-accounts-header-balances-reconciled">
           <span id="${TK_RECONCILE_BALANCE_ID}">${reconciledBalance}</span>
           <div class="tk-accounts-header-reconcile-balance-label">Reconciled Balance</div>
-        </div>`
+        </div>`,
       );
     }
 

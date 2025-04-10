@@ -68,7 +68,7 @@ export class ScrollableEditMenu extends Feature {
 
   addScrollWrappers(modalContainer) {
     const view = Ember.ViewUtils.getElementView(
-      document.querySelector('.modal-account-register-action-bar')
+      document.querySelector('.modal-account-register-action-bar'),
     );
     view.isScrolledIfOverflowedOutOfWindow = true;
     view.makeScrollableIfOverflowed = this.overrideMSIO;

@@ -2,7 +2,7 @@ import type { NormalizedExpenses, NormalizedIncomes, NormalizedNetIncome } from 
 
 export function normalizeNetIncomes(
   expenses: NormalizedExpenses,
-  incomes: NormalizedIncomes
+  incomes: NormalizedIncomes,
 ): NormalizedNetIncome[] {
   const expensesMonthlyTotals = expenses.monthlyTotals;
   const incomesMonthlyTotals = incomes.monthlyTotals;

@@ -126,10 +126,10 @@ async function uploadSourcemapsToSentry({ sentryAuthToken }) {
 
                 console.log(`${filePath}: success`);
                 resolve();
-              }
+              },
             );
           });
-        })
+        }),
       );
     } catch (error) {
       console.log('Error uploading files: ', error);
@@ -143,7 +143,7 @@ async function publishForChrome() {
   if (!environmentVariables.githubRef.includes('beta')) {
     console.log(`githubRef is '${environmentVariables.githubRef}'.`);
     console.log(
-      "Either we're on the wrong branch or this isn't a GitHub action. Either way, no need to publish."
+      "Either we're on the wrong branch or this isn't a GitHub action. Either way, no need to publish.",
     );
     process.exit(0);
   }

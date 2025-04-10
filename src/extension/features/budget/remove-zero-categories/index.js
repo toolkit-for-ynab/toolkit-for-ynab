@@ -37,7 +37,7 @@ export class RemoveZeroCategories extends Feature {
         } else {
           hideSectionItem = false;
         }
-      }
+      },
     );
 
     if (lastSectionItem && hideSectionItem) {

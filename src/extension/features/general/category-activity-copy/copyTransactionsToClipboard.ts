@@ -34,7 +34,7 @@ export default function copyTransactionsToClipboard(transactions: YNABTransactio
   const replacer = (_key: string, value: null | string) => (value === null ? '' : value);
   const header = Object.keys(activities[0]) as (keyof Activities)[];
   let csv = activities.map((row) =>
-    header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join('\t')
+    header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join('\t'),
   );
   csv.unshift(header.join('\t'));
   navigator.clipboard.writeText(csv.join('\r\n'));

@@ -19,18 +19,18 @@ export const MonthlySavingsRatioRow = ({
   const monthlyExpenses = expenses.monthlyTotals;
   const allMonthsIncomeTotal = monthlyIncomes.reduce(
     (reduced, monthData) => reduced + monthData.total,
-    0
+    0,
   );
   const allMonthsExpenseTotal = monthlyExpenses.reduce(
     (reduced, monthData) => reduced + monthData.total,
-    0
+    0,
   );
 
   let allMonthsRatioTotal: undefined | number = undefined;
   if (allMonthsIncomeTotal !== 0) {
     allMonthsRatioTotal = Math.min(
       Math.max(allMonthsExpenseTotal / allMonthsIncomeTotal + 1, 0),
-      1
+      1,
     );
   }
 

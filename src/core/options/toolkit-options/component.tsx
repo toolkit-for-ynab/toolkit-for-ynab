@@ -113,12 +113,12 @@ function ImportExportModal({
         keys.map((settingKey) =>
           localToolkitStorage
             .getFeatureSetting(settingKey)
-            .then((settingValue) => ({ key: settingKey, value: settingValue }))
-        )
+            .then((settingValue) => ({ key: settingKey, value: settingValue })),
+        ),
       ).then((allSettings) => {
         setAllToolkitSettings(JSON.stringify(allSettings));
         setIsLoading(false);
-      })
+      }),
     );
   }, [isOpen]);
 
@@ -131,7 +131,7 @@ function ImportExportModal({
     }
 
     Promise.all(
-      parsedSettings.map(({ key, value }) => localToolkitStorage.setFeatureSetting(key, value))
+      parsedSettings.map(({ key, value }) => localToolkitStorage.setFeatureSetting(key, value)),
     ).then(() => {
       setIsOpen(false);
     });
@@ -404,7 +404,7 @@ function Section({
           onExitViewportRef.current?.();
         }
       },
-      { threshold: 0, rootMargin: '-30% 0% -68%' }
+      { threshold: 0, rootMargin: '-30% 0% -68%' },
     );
     if (ref.current) {
       observer.observe(ref.current);

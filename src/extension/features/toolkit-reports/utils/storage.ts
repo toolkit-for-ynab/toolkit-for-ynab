@@ -20,14 +20,14 @@ export function getStoredFilters(reportKey: string): FiltersType {
 export function storeAccountFilters(reportKey: string, accountFilterIds: Set<string>) {
   setToolkitStorageKey(
     generateStorageKey(reportKey, FilterType.Account),
-    Array.from(accountFilterIds)
+    Array.from(accountFilterIds),
   );
 }
 
 export function storeCategoryFilters(reportKey: string, categoryFilterIds: Set<string>) {
   setToolkitStorageKey(
     generateStorageKey(reportKey, FilterType.Category),
-    Array.from(categoryFilterIds)
+    Array.from(categoryFilterIds),
   );
 }
 
@@ -46,7 +46,7 @@ function generateStorageKey(reportKey: string, filterType: FilterType) {
 function getStoredAccountFilters(reportKey: string) {
   const accountFilterIds = getToolkitStorageKey(
     generateStorageKey(reportKey, FilterType.Account),
-    []
+    [],
   );
   return new Set<string>(accountFilterIds);
 }
@@ -54,7 +54,7 @@ function getStoredAccountFilters(reportKey: string) {
 function getStoredCategoryFilters(reportKey: string) {
   const categoryFilterIds = getToolkitStorageKey(
     generateStorageKey(reportKey, FilterType.Category),
-    []
+    [],
   );
   return new Set<string>(categoryFilterIds);
 }

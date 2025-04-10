@@ -38,5 +38,5 @@ export const RootComponent = ({
 };
 
 export const Root = withReportContextProvider(
-  withModalContextProvider(withReportContext(mapContextToProps)(RootComponent))
+  withModalContextProvider(withReportContext(mapContextToProps)(RootComponent)),
 );

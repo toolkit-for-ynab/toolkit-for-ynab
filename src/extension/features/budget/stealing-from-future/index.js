@@ -42,16 +42,16 @@ export class StealingFromFuture extends Feature {
                 $('<div>', {
                   class: 'to-be-budgeted-amount',
                   text: formatCurrency(negativeFutureBudgetedMonth.available),
-                })
+                }),
               )
               .append(
                 $('<div>', {
                   class: 'to-be-budgeted-label',
                   text: negativeFutureBudgetedMonth.availableLabel,
-                })
-              )
-          )
-        )
+                }),
+              ),
+          ),
+        ),
       );
     }
   }

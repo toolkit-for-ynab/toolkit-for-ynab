@@ -67,7 +67,7 @@ export class AccountFilterComponent extends React.Component<
             label={accountName}
             onChange={this._handleAccountToggled}
           />
-        </div>
+        </div>,
       );
     });
 
@@ -81,7 +81,7 @@ export class AccountFilterComponent extends React.Component<
             label={accountName}
             onChange={this._handleAccountToggled}
           />
-        </div>
+        </div>,
       );
     });
 
@@ -95,7 +95,7 @@ export class AccountFilterComponent extends React.Component<
             label={accountName}
             onChange={this._handleAccountToggled}
           />
-        </div>
+        </div>,
       );
     });
 
@@ -109,21 +109,21 @@ export class AccountFilterComponent extends React.Component<
             label={accountName}
             onChange={this._handleAccountToggled}
           />
-        </div>
+        </div>,
       );
     });
 
     const areAllOnBudgetAccountsIgnored = onBudgetAccounts.every(({ entityId }) =>
-      accountFilterIds.has(entityId)
+      accountFilterIds.has(entityId),
     );
     const areAllOffBudgetAccountsIgnored = offBudgetAccounts.every(({ entityId }) =>
-      accountFilterIds.has(entityId)
+      accountFilterIds.has(entityId),
     );
     const areAllLoanAccountsIgnored = loanAccounts.every(({ entityId }) =>
-      accountFilterIds.has(entityId)
+      accountFilterIds.has(entityId),
     );
     const areAllClosedAccountsIgnored = closedAccounts.every(({ entityId }) =>
-      accountFilterIds.has(entityId)
+      accountFilterIds.has(entityId),
     );
 
     return (

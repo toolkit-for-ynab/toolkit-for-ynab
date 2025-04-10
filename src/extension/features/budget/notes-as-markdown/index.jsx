@@ -71,7 +71,7 @@ export class NotesAsMarkdown extends Feature {
           }}
         >
           {note}
-        </ReactMarkdown>
+        </ReactMarkdown>,
       );
     } else {
       toolkitNoteContainer.classList.add('tk-hidden');

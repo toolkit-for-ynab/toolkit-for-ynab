@@ -43,7 +43,7 @@ export class ReconcileAssistant extends Feature {
           <ReconcileAssistantContainer
             reconcileInputValue={this._reconcileInputValue}
             portalId={RECONCILE_ASSISTANT_MODAL_PORTAL}
-          />
+          />,
         );
       }
     }, 50);

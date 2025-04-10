@@ -29,7 +29,7 @@ describe('Background', () => {
 
       await pause();
       expect(mockToolkitStorage.getFeatureSetting).toHaveBeenCalledWith(
-        DISABLE_TOOLKIT_FEATURE_KEY
+        DISABLE_TOOLKIT_FEATURE_KEY,
       );
       expect(chrome.action.setIcon).toHaveBeenCalledWith({
         path: expect.stringMatching(/\/\/assets\/images\/icons\/button.png/),
@@ -41,7 +41,7 @@ describe('Background', () => {
 
       await pause();
       expect(mockToolkitStorage.getFeatureSetting).toHaveBeenCalledWith(
-        DISABLE_TOOLKIT_FEATURE_KEY
+        DISABLE_TOOLKIT_FEATURE_KEY,
       );
       expect(chrome.action.setIcon).toHaveBeenCalledWith({
         path: expect.stringMatching(/\/\/assets\/images\/icons\/button-disabled.png/),
@@ -60,7 +60,7 @@ describe('Background', () => {
       const { background } = setup();
       background.initListeners();
       expect(mockToolkitStorage.onToolkitDisabledChanged).toHaveBeenCalledWith(
-        expect.any(Function)
+        expect.any(Function),
       );
     });
 
@@ -115,7 +115,7 @@ describe('Background', () => {
           await pause();
           expect(mockToolkitStorage.setStorageItem).toHaveBeenCalledWith(
             NEXT_UPDATE_CHECK_STORAGE_KEY,
-            1000 + 1000 * 60 * 60
+            1000 + 1000 * 60 * 60,
           );
         });
 
@@ -128,7 +128,7 @@ describe('Background', () => {
           await pause();
           expect(mockToolkitStorage.setStorageItem).toHaveBeenCalledWith(
             NEXT_UPDATE_CHECK_STORAGE_KEY,
-            1000 + 1000 * 60 * 60 * 2
+            1000 + 1000 * 60 * 60 * 2,
           );
         });
       });

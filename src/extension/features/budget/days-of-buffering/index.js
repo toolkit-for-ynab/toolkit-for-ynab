@@ -68,15 +68,15 @@ export class DaysOfBuffering extends Feature {
             $('<div>', {
               class: 'budget-header-days-age',
               title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
-            })
+            }),
           )
           .append(
             $('<div>', {
               class: 'budget-header-days-label',
               text: l10n('toolkit.dob.title', 'Days of Buffering'),
               title: l10n('toolkit.dob.tooltip', "Don't like AoM? Try this out instead!"),
-            })
-          )
+            }),
+          ),
       );
 
       $('.budget-header-flexbox').append($displayElement);
@@ -85,7 +85,7 @@ export class DaysOfBuffering extends Feature {
     let text = '???';
     let title = l10n(
       'toolkit.dob.noHistory',
-      'Your budget history is less than 15 days. Go on with YNAB a while.'
+      'Your budget history is less than 15 days. Go on with YNAB a while.',
     );
 
     if (!calculation.notEnoughDates) {
@@ -98,7 +98,7 @@ export class DaysOfBuffering extends Feature {
       title = `${l10n('toolkit.dob.outflow', 'Total outflow')}: ${formatCurrency(totalOutflow)}`;
       title += `\n${l10n('toolkit.dob.days', 'Total days of budgeting')}: ${availableDates}`;
       title += `\n${l10n('toolkit.dob.avgOutflow', 'Average daily outflow')}: ~${formatCurrency(
-        averageDailyOutflow
+        averageDailyOutflow,
       )}`;
 
       const dateOfBuffering = this._getDateOfBuffering(daysOfBuffering);
@@ -127,7 +127,7 @@ export class DaysOfBuffering extends Feature {
         reduced.totalOutflow += amount;
         return reduced;
       },
-      { dates: [], totalOutflow: 0, uniqueDates: new Map() }
+      { dates: [], totalOutflow: 0, uniqueDates: new Map() },
     );
 
     const minDate = moment.min(dates);

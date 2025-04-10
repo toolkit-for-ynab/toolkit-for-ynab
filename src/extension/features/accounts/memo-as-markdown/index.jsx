@@ -36,7 +36,7 @@ export class MemoAsMarkdown extends Feature {
 
       const note = row?.memo;
       const originalMemo = transactionElement.querySelector(
-        '.ynab-grid-cell-memo span:not(.tk-markdown-memo)'
+        '.ynab-grid-cell-memo span:not(.tk-markdown-memo)',
       );
       if (note && originalMemo) {
         $(originalMemo).hide();
@@ -61,7 +61,7 @@ export class MemoAsMarkdown extends Feature {
             }}
           >
             {note}
-          </ReactMarkdown>
+          </ReactMarkdown>,
         );
         const memoCell = transactionElement.querySelector('.ynab-grid-cell-memo');
         if (memoCell) {

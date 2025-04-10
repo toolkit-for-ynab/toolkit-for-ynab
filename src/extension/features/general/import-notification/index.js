@@ -22,7 +22,7 @@ export class ImportNotification extends Feature {
       // handler being called when the user does something like "approve a transaction". That's why this feature
       // has a blocking mechanism (the isActive flag).
       ynab.YNABSharedLib.defaultInstance.entityManager._transactionEntityPropertyChanged.addHandler(
-        this.invoke
+        this.invoke,
       );
     }
   }
@@ -79,7 +79,7 @@ export class ImportNotification extends Feature {
         if (account.isDirectImportActive) {
           let t = new ynab.managers.DirectImportManager(
             ynab.YNABSharedLib.defaultInstance.entityManager,
-            account
+            account,
           );
           let transactions = t.getImportTransactionsForAccount(account);
 

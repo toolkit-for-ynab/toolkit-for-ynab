@@ -64,7 +64,7 @@ export class BudgetProgressBars extends Feature {
         to right,
         var(--tk-color-goal-fill) ${goalPercentageComplete}%,
         var(--backgroundTableRow) ${goalPercentageComplete}%
-      )`
+      )`,
     );
   };
 
@@ -98,8 +98,8 @@ export class BudgetProgressBars extends Feature {
               'var(--tk-color-progress-bar-month-indicator)',
               'var(--backgroundTableRow)',
             ],
-            [cappedBudgetedPace, monthPace - PROGRESS_INDICATOR_WIDTH, monthPace]
-          )
+            [cappedBudgetedPace, monthPace - PROGRESS_INDICATOR_WIDTH, monthPace],
+          ),
         );
       } else {
         $(toElement).css(
@@ -111,8 +111,8 @@ export class BudgetProgressBars extends Feature {
               'var(--tk-color-pacing-fill)',
               'var(--backgroundTableRow)',
             ],
-            [monthPace - PROGRESS_INDICATOR_WIDTH, monthPace, cappedBudgetedPace]
-          )
+            [monthPace - PROGRESS_INDICATOR_WIDTH, monthPace, cappedBudgetedPace],
+          ),
         );
       }
     } else {
@@ -124,8 +124,8 @@ export class BudgetProgressBars extends Feature {
             'var(--tk-color-progress-bar-month-indicator)',
             'var(--backgroundTableRow)',
           ],
-          [monthPace - PROGRESS_INDICATOR_WIDTH, monthPace]
-        )
+          [monthPace - PROGRESS_INDICATOR_WIDTH, monthPace],
+        ),
       );
     }
   };
@@ -176,6 +176,6 @@ function generateProgressBarStyle(colors, points) {
       `${color} ${pointsPercent[index]}%, ${color} ${pointsPercent[index + 1]}%${
         index + 1 === colors.length ? ')' : ', '
       }`,
-    'linear-gradient(to right, '
+    'linear-gradient(to right, ',
   );
 }

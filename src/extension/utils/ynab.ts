@@ -33,7 +33,7 @@ export function isCurrentRouteAccountsPage() {
 }
 
 export function isCurrentRouteReportPage(
-  report?: 'spending' | 'income-expense' | 'net-worth' | 'any'
+  report?: 'spending' | 'income-expense' | 'net-worth' | 'any',
 ) {
   const currentRoute = getCurrentRouteName();
   if (report === 'any' || !report) {

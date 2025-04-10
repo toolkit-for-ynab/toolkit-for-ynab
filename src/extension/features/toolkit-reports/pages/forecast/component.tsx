@@ -22,7 +22,7 @@ export function ForecastComponent({
     const newForecasts = generateForecasts(
       filteredTransactions,
       allReportableTransactions,
-      filters
+      filters,
     );
     setForecasts(newForecasts);
     setNetWorth(newForecasts[0][0]);
@@ -84,7 +84,7 @@ export function ForecastComponent({
               .format('YYYY-MM-DD');
 
             return `${series}: <b>${formatCurrency(
-              this.point.y
+              this.point.y,
             )}</b><br />APY: ${apyString}<br />${date}`;
           },
         },
@@ -94,7 +94,7 @@ export function ForecastComponent({
           name: `${c}%`,
           data: forecasts[c - 1],
         })),
-      })
+      }),
     );
   }, [chartRef, forecasts]);
 

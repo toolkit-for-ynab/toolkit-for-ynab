@@ -8,7 +8,7 @@ const desktopUpdatesPath = path.join(
   workspaceRoot,
   '..',
   'toolkit-for-ynab-gh-pages',
-  'desktop-updates'
+  'desktop-updates',
 );
 
 // Clear out the directory and create it clean.
@@ -27,5 +27,5 @@ fs.copyFileSync(filesToCopy[0], path.join(desktopUpdatesPath, 'toolkitforynab_de
 // And now we can copy over the manifest too.
 fs.copyFileSync(
   path.join(workspaceRoot, 'dist', 'extension', 'manifest.json'),
-  path.join(desktopUpdatesPath, 'manifest.json')
+  path.join(desktopUpdatesPath, 'manifest.json'),
 );

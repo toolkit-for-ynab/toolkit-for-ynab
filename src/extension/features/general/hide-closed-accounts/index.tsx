@@ -39,7 +39,7 @@ export class HideClosedAccounts extends Feature {
     if ($('#tk-hide-closed-accounts').length === 0) {
       componentAppend(
         <HideClosedButton toggleHiddenState={this.setHiddenState} />,
-        element.getElementsByClassName('modal-list')[0]
+        element.getElementsByClassName('modal-list')[0],
       );
     }
   }

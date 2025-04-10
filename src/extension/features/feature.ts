@@ -73,7 +73,7 @@ export class Feature {
         element.id,
         window.setTimeout(() => {
           fn.call(this, element);
-        }, timeout)
+        }, timeout),
       );
     };
   }

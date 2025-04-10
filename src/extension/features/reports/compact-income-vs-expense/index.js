@@ -41,7 +41,7 @@ export class CompactIncomeVsExpense extends Feature {
         position: 'relative',
         maxWidth:
           $(
-            '.income-expense-level2 .income-expense-row .income-expense-column:first-child'
+            '.income-expense-level2 .income-expense-row .income-expense-column:first-child',
           ).outerWidth() || 200,
         left:
           e.currentTarget.scrollLeft - parseFloat($('.reports-content').css('padding-left') || 0),

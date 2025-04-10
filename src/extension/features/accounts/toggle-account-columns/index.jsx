@@ -35,9 +35,7 @@ export const ShowMemoButton = ({ defaultIsShown, id, toggleState }) => {
           >
             <use href="#icon_sprite_check"></use>
           </svg>
-          <div class="label-checkbox">
-            {l10n('toolkit.showMemoColumn', 'Show Memo Column')}
-          </div>
+          <div class="label-checkbox">{l10n('toolkit.showMemoColumn', 'Show Memo Column')}</div>
         </button>
       </div>
     </li>
@@ -73,7 +71,7 @@ export class ToggleAccountColumns extends Feature {
           defaultIsShown={this.getShowMemoState()}
           toggleState={this.updateShowMemoState}
         />,
-        element.getElementsByClassName('modal-account-view-options-status')[0]
+        element.getElementsByClassName('modal-account-view-options-status')[0],
       );
     }
   }

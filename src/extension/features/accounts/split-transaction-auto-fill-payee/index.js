@@ -8,7 +8,7 @@ export class SplitTransactionAutoFillPayee extends Feature {
 
   invoke() {
     const cells = document.querySelectorAll(
-      '.is-editing .ynab-grid-cell-payeeName .ember-text-field'
+      '.is-editing .ynab-grid-cell-payeeName .ember-text-field',
     );
 
     cells.forEach((cell, i) => {

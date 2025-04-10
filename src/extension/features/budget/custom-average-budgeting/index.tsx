@@ -46,7 +46,7 @@ export class CustomAverageBudgeting extends Feature {
     const startMonth = ynab.utilities.DateWithoutTime.createFromYearMonthDate(
       startDate.getFullYear(),
       startDate.getMonth(),
-      1
+      1,
     );
 
     const endDate = new Date();
@@ -54,7 +54,7 @@ export class CustomAverageBudgeting extends Feature {
     const endMonth = ynab.utilities.DateWithoutTime.createFromYearMonthDate(
       endDate.getFullYear(),
       endDate.getMonth(),
-      1
+      1,
     );
 
     let sum = 0;
@@ -133,7 +133,7 @@ export class CustomAverageBudgeting extends Feature {
         average={this._calculateAverage()}
         onClick={this._quickBudgetHandler}
       />,
-      target[0]
+      target[0],
     );
   };
 }

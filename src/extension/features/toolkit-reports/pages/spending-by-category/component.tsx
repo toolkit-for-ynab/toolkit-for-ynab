@@ -146,7 +146,7 @@ export class SpendingByCategoryComponent extends React.Component<
 
       const transactionMasterCategoryId = transactionSubCategory.masterCategoryId;
       const transactionMasterCategory = this._masterCategoriesCollection.findItemByEntityId(
-        transactionMasterCategoryId
+        transactionMasterCategoryId,
       );
       const transactionAmount = transaction.amount;
       const masterCategoryData =
@@ -169,7 +169,7 @@ export class SpendingByCategoryComponent extends React.Component<
       {
         spendingByMasterCategory: sortedSpendingData,
       },
-      this._renderReport
+      this._renderReport,
     );
   }
 
@@ -255,7 +255,7 @@ export class SpendingByCategoryComponent extends React.Component<
           drillup: () => {
             chart.setTitle({
               text: `Total Spending<br><span class="currency">${formatCurrency(
-                totalSpending
+                totalSpending,
               )}</span>`,
             });
             _this.setState({ currentDrillDownId: null });
@@ -270,7 +270,7 @@ export class SpendingByCategoryComponent extends React.Component<
               return `${
                 this.point.name
               }<br><span class="currency">${formattedNumber}</span> (${Math.round(
-                this.percentage
+                this.percentage,
               )}%)`;
             },
             style: {
@@ -356,7 +356,7 @@ export class SpendingByCategoryComponent extends React.Component<
               source: subCategoryData.subCategory,
               total: subCategoryData.total * -1,
               transactions: subCategoryData.transactions,
-            })
+            }),
           );
 
         return {

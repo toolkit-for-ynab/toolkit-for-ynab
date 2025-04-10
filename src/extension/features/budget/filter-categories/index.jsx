@@ -13,7 +13,7 @@ function CategorySearchInput({ applySearch }) {
       setValue(newValue);
       applySearch(newValue);
     },
-    [applySearch]
+    [applySearch],
   );
 
   React.useEffect(() => {
@@ -176,7 +176,7 @@ export class FilterCategories extends Feature {
     if (document.querySelector('#tk-categories-filter') === null) {
       componentPrepend(
         <CategorySearchInput applySearch={this.applySearch} />,
-        document.querySelector('.budget-toolbar')
+        document.querySelector('.budget-toolbar'),
       );
     }
 

@@ -24,7 +24,7 @@ export class GoogleFontsSelector extends Feature {
   injectCSS() {
     if (this.settings.enabled === '1') {
       this.injectStylesheetLink(
-        'https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700'
+        'https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700',
       );
       return this.createStyleRule("'Open Sans', sans-serif");
     }
@@ -34,7 +34,7 @@ export class GoogleFontsSelector extends Feature {
     }
     if (this.settings.enabled === '3') {
       this.injectStylesheetLink(
-        'https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,400italic'
+        'https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,400italic',
       );
       return this.createStyleRule("'Roboto Condensed', sans-serif");
     }
@@ -49,7 +49,7 @@ export class GoogleFontsSelector extends Feature {
     if (this.settings.enabled === '6') {
       this.injectStylesheetLink('https://fonts.googleapis.com/css?family=Roboto:400,700,400italic');
       return this.createStyleRule(
-        "system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Cantarell', sans-serif"
+        "system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Noto Sans', 'Ubuntu', 'Cantarell', sans-serif",
       );
     }
   }
