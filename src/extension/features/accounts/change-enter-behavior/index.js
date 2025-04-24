@@ -38,12 +38,6 @@ export class ChangeEnterBehavior extends Feature {
       // Trigger blur event so YNAB can apply the value
       $(this).trigger(jQuery.Event('blur'));
 
-      // Added to support CtrlEnterCleared when ChangeEnterBehavior is enabled
-      if (ynabToolKit.options.CtrlEnterCleared === true && (event.metaKey || event.ctrlKey)) {
-        let $markClearedButton = $('.is-editing .ynab-cleared:not(.is-cleared)');
-        $markClearedButton.trigger('click');
-      }
-
       const $saveButton = $('.ynab-grid-actions-buttons .button-save');
       $saveButton.trigger('click');
     }
