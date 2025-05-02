@@ -9,7 +9,11 @@ const INDICATOR_ICON_CLEARED = '#icon_sprite_cleared_circle_fill';
 const INDICATOR_ELEMENT = `<svg class="ynab-new-icon ${INDICATOR_CLASS} " width="16" height="16"><use href="${INDICATOR_ICON_CLEARED}"></use></svg>`;
 
 function isUnclearedTransaction(transaction) {
-  return transaction && transaction.cleared === ynab.constants.TransactionState.Uncleared;
+  return (
+    transaction &&
+    transaction.accepted &&
+    transaction.cleared === ynab.constants.TransactionState.Uncleared
+  );
 }
 
 function isUnreconciledTransaction(transaction) {
