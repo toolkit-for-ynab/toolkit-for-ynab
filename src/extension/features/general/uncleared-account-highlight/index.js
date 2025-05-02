@@ -69,7 +69,7 @@ export class UnclearedAccountHighlight extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (changedNodes.has('nav-account-value')) {
+    if (changedNodes.has('nav-account-value') || changedNodes.has('ynab-grid-body')) {
       this.debouncedInvoke();
     }
   }
