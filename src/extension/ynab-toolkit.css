@@ -17,7 +17,7 @@ body.theme-classic {
   --tk-zero-currency-color: #cfd5d8;
 }
 
-body.theme-var-dark {
+body.theme-dark {
   --tk-modal-backdrop: rgba(99, 99, 99, 0.5);
   --tk-default-background-color: #2c2c2e;
   --tk-default-font-color: #ffffff;

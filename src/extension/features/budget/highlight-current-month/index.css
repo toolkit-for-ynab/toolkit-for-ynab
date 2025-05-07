@@ -12,7 +12,7 @@ body.theme-classic {
   --tk-current-month-note-color: rgba(255, 255, 255, 0.6);
 }
 
-body.theme-var-dark {
+body.theme-dark {
   --tk-current-month-control-color: #ffffff;
   --tk-current-month-header-color: #ffffff;
   --tk-current-month-note-color: rgba(255, 255, 255, 0.6);

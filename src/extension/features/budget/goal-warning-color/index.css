@@ -6,7 +6,7 @@
   --tk-color-goal-warning-underfunded-message-border: #70b3ff;
 }
 
-body.theme-var-dark {
+body.theme-dark {
   --tk-color-goal-warning-underfunded: #429aff;
   --tk-color-goal-warning-underfunded-hover: #61abff;
   --tk-color-goal-warning-underfunded-message-bg: #0f1e2d;
