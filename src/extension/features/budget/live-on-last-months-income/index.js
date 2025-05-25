@@ -52,15 +52,19 @@ export class LiveOnLastMonthsIncome extends Feature {
 
     // Add the income from last month section and structure, if not already in place
     if ($('#tk-last-months-income').length === 0) {
-      $('.budget-breakdown .card[class="card"]').after(
+      const summaryCard = $('.budget-breakdown .card').filter(function () {
+        return this.className.trim() === 'card';
+      });
+
+      summaryCard.after(
         $('<section>', {
           class: 'card',
           id: 'tk-last-months-income',
         })
           .append(
-            $('<button>', { class: 'card-roll-up', type: 'button' })
-              .append('<h2>')
-              .text("Live on Last Month's Income"),
+            $('<button>', { class: 'card-roll-up', type: 'button' }).append(
+              $('<h2>').text("Live on Last Month's Income"),
+            ),
           )
           .append(
             $('<div>', {
