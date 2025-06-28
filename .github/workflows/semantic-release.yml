@@ -2,7 +2,7 @@ name: CI/CD Semantic Release
 
 on:
   push:
-    branches: ['main', 'test']
+    branches: ['main']
     paths-ignore:
       - '**.md'
       - './scripts/**'
