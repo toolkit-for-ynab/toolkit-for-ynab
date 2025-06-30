@@ -1,0 +1,59 @@
+name: CI/CD Semantic Release
+
+on:
+  push:
+    branches: ['main']
+    paths-ignore:
+      - '**.md'
+      - './scripts/**'
+      - './release.config.cjs'
+  workflow_dispatch: {}
+
+env:
+  HUSKY: 0
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+permissions:
+  packages: write
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+          fetch-tags: true
+
+      - name: Setup Node.js from .nvmrc
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release --debug
+
+      - name: Merge main branch -> develop
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          from_branch: ${{ github.ref_name }}
+          target_branch: develop
+          message: 'chore(ci): sync develop with ${{ github.ref_name }} [skip ci]'

@@ -325,14 +325,6 @@ Enables Markdown parsing for memos, allowing support for links and other formatt
 
 Makes the uncleared, cleared and reconciled icons slightly larger and easier to click.
 
-## Hyperlinks in the memo field
-
-Add support for links in memos on the accounts page.
-
-## Keyboard Shortcut: Clear Transaction [CTRL + Enter]
-
-Clear a new or edited transaction by pressing CTRL+Enter (CMD on Mac) while it's selected.
-
 ## Modify First Day of the Week
 
 Adjust the first day of the week in the calendar to whichever day you chose when editing or adding a transaction.

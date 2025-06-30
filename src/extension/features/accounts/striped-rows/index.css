@@ -4,7 +4,7 @@ body.theme-classic {
   --tk-striped-transaction-row-color: #fafafa;
 }
 
-body.theme-var-dark {
+body.theme-dark {
   --tk-striped-transaction-row-color: #1e1e1f;
 }
 

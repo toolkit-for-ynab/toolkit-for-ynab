@@ -4,7 +4,7 @@ body.theme-new-default {
   --tk-emphasize-inflow-color-selected: #248f24;
 }
 
-body.theme-var-dark,
+body.theme-dark,
 body.theme-classic {
   --tk-emphasize-inflow-color: #33cc33;
   --tk-emphasize-inflow-color-selected: #70db70;

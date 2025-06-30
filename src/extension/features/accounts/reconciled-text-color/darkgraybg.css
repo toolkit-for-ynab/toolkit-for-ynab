@@ -5,7 +5,7 @@ body.theme-classic {
   --tk-reconciled-background-color: #e7faeb;
 }
 
-body.theme-var-dark {
+body.theme-dark {
   --tk-reconciled-font-color: #5a5a5a;
   --tk-reconciled-background-color: #07190a;
 }

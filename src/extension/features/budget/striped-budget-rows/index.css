@@ -10,7 +10,7 @@ body.theme-classic {
   --tk-striped-budget-row-selected-color: #094e5f;
 }
 
-body.theme-var-dark {
+body.theme-dark {
   --tk-striped-budget-row-color: #2b2b2e;
   --tk-striped-budget-row-selected-color: #2f4969;
   --backgroundTableHeader: #343437;

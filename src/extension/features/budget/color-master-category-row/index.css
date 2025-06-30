@@ -4,7 +4,7 @@ body.theme-new-default {
   --tk-master-category-row-color: var(--neutral300);
 }
 
-body.theme-var-dark {
+body.theme-dark {
   --tk-master-category-row-color: var(--neutral700);
 }
 
