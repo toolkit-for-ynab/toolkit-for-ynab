@@ -124,10 +124,10 @@ const EditMemo = () => {
             {editMode === ADD_SUFFIX_EDIT_MODE && (
               <li className="button-list button-disabled">{makeAddSuffixLabel()}</li>
             )}
-            <div className="button-list">
+            <div className="tk-memo-edit-container">
               <input
                 autoFocus
-                className="accounts-text-field"
+                className="accounts-text-field tk-memo-input"
                 value={memoInputValue}
                 onChange={(e) => setMemoInputValue(e.target.value)}
               />

@@ -8,3 +8,10 @@
   padding: 0.4em 0.6em;
   margin-right: 5px;
 }
+
+.tk-memo-edit-container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 12px;
+  padding-right: 12px;
+}
