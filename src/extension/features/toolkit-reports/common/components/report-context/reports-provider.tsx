@@ -19,6 +19,13 @@ import {
 } from '../../../utils/storage';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 import { ForecastHelp } from '../../../pages/forecast/help';
+import {
+  parseToolkitReportsURL,
+  isValidReportTab,
+  getDefaultReportTab,
+  navigateToToolkitReports,
+  urlToReportKey,
+} from '../../../utils/url-navigation';
 
 const ACTIVE_REPORT_KEY = 'active-report';
 
@@ -113,17 +120,26 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
 
     constructor(props: T) {
       super(props);
-      const activeReportKey = getToolkitStorageKey(ACTIVE_REPORT_KEY, REPORT_TYPES[0].key);
+
+      // Determine the initial active report key from URL or storage
+      const initialReportKey = this._getInitialReportKey();
 
       this.state = {
-        activeReportKey,
+        activeReportKey: initialReportKey,
         filteredTransactions: [],
-        filters: getStoredFilters(activeReportKey),
+        filters: getStoredFilters(initialReportKey),
         allReportableTransactions: [],
       };
     }
 
     componentDidMount() {
+      // Add event listener for URL changes
+      window.addEventListener(
+        'toolkit-reports-url-changed',
+        this._handleURLChanged as EventListener,
+      );
+      window.addEventListener('hashchange', this._handleHashChange as EventListener);
+
       ynab.YNABSharedLib.getBudgetViewModel_AllAccountsViewModel().then(
         (transactionsViewModel: any) => {
           const visibleTransactionDisplayItems =
@@ -148,6 +164,15 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
       );
     }
 
+    componentWillUnmount() {
+      // Remove event listeners
+      window.removeEventListener(
+        'toolkit-reports-url-changed',
+        this._handleURLChanged as EventListener,
+      );
+      window.removeEventListener('hashchange', this._handleHashChange as EventListener);
+    }
+
     render() {
       return (
         <React.Fragment>
@@ -167,8 +192,45 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
       );
     }
 
+    _getInitialReportKey(): string {
+      // First, try to get the report tab from the URL
+      const urlParams = parseToolkitReportsURL(window.location.href);
+      if (urlParams?.reportTab) {
+        const reportKey = urlToReportKey(urlParams.reportTab);
+        if (reportKey && isValidReportTab(reportKey)) {
+          return reportKey;
+        }
+      }
+
+      // Fall back to stored preference or default
+      return getToolkitStorageKey(ACTIVE_REPORT_KEY, getDefaultReportTab());
+    }
+
+    _handleURLChanged = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const { reportTab } = customEvent.detail || {};
+
+      if (reportTab && isValidReportTab(reportTab) && reportTab !== this.state.activeReportKey) {
+        this._setActiveReportKey(reportTab);
+      }
+    };
+
+    _handleHashChange = (event: Event) => {
+      // Check if the new hash is a toolkit reports URL
+      const urlParams = parseToolkitReportsURL(window.location.href);
+      if (urlParams?.reportTab) {
+        const reportKey = urlToReportKey(urlParams.reportTab);
+        if (reportKey && isValidReportTab(reportKey) && reportKey !== this.state.activeReportKey) {
+          this._setActiveReportKey(reportKey);
+        }
+      }
+    };
+
     _setActiveReportKey = (activeReportKey: string) => {
       setToolkitStorageKey(ACTIVE_REPORT_KEY, activeReportKey);
+
+      // Update the URL to reflect the new report tab
+      navigateToToolkitReports(activeReportKey);
 
       // const filters = getStoredFilters(activeReportKey);
       // this.setState({ activeReportKey, filters }, this._applyFilters);

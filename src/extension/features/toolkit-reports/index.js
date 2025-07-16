@@ -3,6 +3,11 @@ import * as ReactDOM from 'react-dom/client';
 import { Feature } from 'toolkit/extension/features/feature';
 import { Root } from './pages/root';
 import { l10n } from 'toolkit/extension/utils/toolkit';
+import {
+  isToolkitReportsURL,
+  navigateToToolkitReports,
+  getCurrentBudgetId,
+} from './utils/url-navigation';
 import './common/scss/helpers.scss';
 
 const TOOLKIT_REPORTS_CONTAINER_ID = 'toolkit-reports';
@@ -30,6 +35,10 @@ export class ToolkitReports extends Feature {
   destroy() {
     $(TOOLKIT_REPORTS_NAVLINK_SELECTOR).remove();
     $('#TOOLKIT_REPORTS_CONTAINER_ID').remove();
+
+    // Remove event listeners
+    window.removeEventListener('popstate', this._handlePopState);
+    window.removeEventListener('toolkit-reports-url-changed', this._handleURLChanged);
   }
 
   invoke() {
@@ -64,9 +73,68 @@ export class ToolkitReports extends Feature {
       toolkitReportsLink.click(() => {
         this._updateNavigation();
         this._renderToolkitReports();
+        // Navigate to toolkit reports URL without a specific tab (will use default or last accessed)
+        navigateToToolkitReports();
       });
 
       $('.nav-main .navlink-reports').after(toolkitReportsLink);
+    }
+
+    // Add event listeners for URL navigation
+    this._setupURLEventListeners();
+
+    // Check if we should show toolkit reports based on current URL
+    // Use a small delay to ensure DOM elements are ready
+    setTimeout(() => {
+      this._checkURLForToolkitReports();
+    }, 100);
+  }
+
+  _setupURLEventListeners() {
+    // Listen for browser back/forward navigation
+    window.addEventListener('popstate', this._handlePopState);
+
+    // Listen for custom URL change events
+    window.addEventListener('toolkit-reports-url-changed', this._handleURLChanged);
+  }
+
+  _handlePopState = () => {
+    // Check if the new URL is a toolkit reports URL
+    if (isToolkitReportsURL(window.location.href)) {
+      this._updateNavigation();
+      this._renderToolkitReports();
+    } else {
+      this._removeToolkitReports();
+    }
+  };
+
+  _handleURLChanged = () => {
+    // If toolkit reports is already active, just update the report tab
+    if ($(TOOLKIT_REPORTS_NAVLINK_SELECTOR).hasClass('active')) {
+      // The report tab will be updated by the React component listening to URL changes
+      return;
+    }
+
+    // Otherwise, activate toolkit reports
+    this._updateNavigation();
+    this._renderToolkitReports();
+  };
+
+  _checkURLForToolkitReports() {
+    if (isToolkitReportsURL(window.location.href)) {
+      // If we're on a toolkit reports URL but toolkit reports isn't active, activate it
+      if (!$(TOOLKIT_REPORTS_NAVLINK_SELECTOR).hasClass('active')) {
+        // Make sure the navigation link exists before trying to activate it
+        if ($(TOOLKIT_REPORTS_NAVLINK_SELECTOR).length) {
+          this._updateNavigation();
+          this._renderToolkitReports();
+        } else {
+          // If the navigation link doesn't exist yet, try again after a short delay
+          setTimeout(() => {
+            this._checkURLForToolkitReports();
+          }, 50);
+        }
+      }
     }
   }
 
@@ -103,6 +171,15 @@ export class ToolkitReports extends Feature {
     } else if ($currentTarget.hasClass(YNAB_NAVACCOUNT_CLASS)) {
       $currentTarget.addClass('is-selected');
     }
+
+    // If we're currently on a toolkit reports URL, navigate back to the budget page
+    if (isToolkitReportsURL(window.location.href)) {
+      const budgetId = getCurrentBudgetId();
+      if (budgetId) {
+        const budgetURL = `${window.location.origin}/${budgetId}/budget`;
+        window.history.pushState({}, '', budgetURL);
+      }
+    }
   };
 
   _renderToolkitReports = () => {
@@ -124,5 +201,11 @@ export class ToolkitReports extends Feature {
 
   onRouteChanged() {
     this.invoke();
+
+    // Also check for toolkit reports URLs after route changes
+    // This handles cases where the user navigates directly to a toolkit reports URL
+    setTimeout(() => {
+      this._checkURLForToolkitReports();
+    }, 100);
   }
 }
