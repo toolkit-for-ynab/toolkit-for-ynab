@@ -65,19 +65,66 @@ const EditMemo = () => {
       : l10n('toolkit.editMemoSuffixMany', 'Add suffix to each memo');
 
   return (
-    <>
-      <li className="tk-bulk-edit-memo">
-        {displayMode === DEFAULT_DISPLAY_MODE && (
-          <button className="button-list" onClick={() => setDisplayMode(MENU_DISPLAY_MODE)}>
-            <svg className="ynab-new-icon" width="16" height="16">
-              <use href="#icon_sprite_document"></use>
-            </svg>
-            {makeEditLabel()}
+    <li className="tk-bulk-edit-memo">
+      {displayMode === DEFAULT_DISPLAY_MODE && (
+        <button className="button-list" onClick={() => setDisplayMode(MENU_DISPLAY_MODE)}>
+          <svg className="ynab-new-icon" width="16" height="16">
+            <use href="#icon_sprite_document"></use>
+          </svg>
+          {makeEditLabel()}
+        </button>
+      )}
+      {displayMode === MENU_DISPLAY_MODE && (
+        <>
+          <button
+            autoFocus
+            className="button-list"
+            onClick={() => {
+              setDisplayMode(EDIT_DISPLAY_MODE);
+              setEditMode(REPLACE_EDIT_MODE);
+            }}
+          >
+            {makeReplacelabel()}
           </button>
-        )}
-        {displayMode === MENU_DISPLAY_MODE && (
-          <>
-            <button
+          <button
+            className="button-list"
+            onClick={() => {
+              setDisplayMode(EDIT_DISPLAY_MODE);
+              setEditMode(ADD_PREFIX_EDIT_MODE);
+            }}
+          >
+            {makeAddPrefixLabel()}
+          </button>
+          <button
+            className="button-list"
+            onClick={() => {
+              setDisplayMode(EDIT_DISPLAY_MODE);
+              setEditMode(ADD_SUFFIX_EDIT_MODE);
+            }}
+          >
+            {makeAddSuffixLabel()}
+          </button>
+          <button
+            className="button-list button-cancel tk-memo-cancel"
+            onClick={() => setDisplayMode(DEFAULT_DISPLAY_MODE)}
+          >
+            {l10n('toolkit.editMemoCancel', 'Cancel')}
+          </button>
+        </>
+      )}
+      {displayMode === EDIT_DISPLAY_MODE && (
+        <>
+          {editMode === REPLACE_EDIT_MODE && (
+            <li className="button-list button-disabled">{makeReplacelabel()}</li>
+          )}
+          {editMode === ADD_PREFIX_EDIT_MODE && (
+            <li className="button-list button-disabled">{makeAddPrefixLabel()}</li>
+          )}
+          {editMode === ADD_SUFFIX_EDIT_MODE && (
+            <li className="button-list button-disabled">{makeAddSuffixLabel()}</li>
+          )}
+          <div className="button-list">
+            <input
               autoFocus
               className="button-list"
               onClick={() => {
@@ -143,13 +190,10 @@ const EditMemo = () => {
                 </button>
               </div>
             </div>
-          </>
-        )}
-      </li>
-      <li>
-        <hr />
-      </li>
-    </>
+          </div>
+        </>
+      )}
+    </li>
   );
 };
 
