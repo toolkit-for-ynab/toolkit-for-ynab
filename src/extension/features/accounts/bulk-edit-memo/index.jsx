@@ -123,7 +123,7 @@ const EditMemo = () => {
           {editMode === ADD_SUFFIX_EDIT_MODE && (
             <li className="button-list button-disabled">{makeAddSuffixLabel()}</li>
           )}
-          <div className="tk-memo-edit-container">
+          <div className="tk-memo-edit-container test">
             <input
               autoFocus
               className="accounts-text-field tk-memo-input"
