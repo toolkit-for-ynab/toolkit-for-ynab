@@ -114,8 +114,14 @@ export type WithReportContextHocState = {
 
 export function withReportContextProvider<T extends object>(InnerComponent: ComponentType<T>) {
   return class WithReportContextProvider extends React.Component<T, WithReportContextHocState> {
+    private isUpdatingFromURL = false;
+
     get selectedReport() {
       return REPORT_COMPONENTS.find(({ key }) => key === this.state.activeReportKey);
+    }
+
+    _isURLNavigationEnabled() {
+      return ynabToolKit?.options?.ToolkitReportsURLNavigation || false;
     }
 
     constructor(props: T) {
@@ -133,12 +139,14 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
     }
 
     componentDidMount() {
-      // Add event listener for URL changes
-      window.addEventListener(
-        'toolkit-reports-url-changed',
-        this._handleURLChanged as EventListener,
-      );
-      window.addEventListener('hashchange', this._handleHashChange as EventListener);
+      // Add event listener for URL changes (only if URL navigation is enabled)
+      if (this._isURLNavigationEnabled()) {
+        window.addEventListener(
+          'toolkit-reports-url-changed',
+          this._handleURLChanged as EventListener,
+        );
+        window.addEventListener('hashchange', this._handleHashChange as EventListener);
+      }
 
       ynab.YNABSharedLib.getBudgetViewModel_AllAccountsViewModel().then(
         (transactionsViewModel: any) => {
@@ -165,12 +173,14 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
     }
 
     componentWillUnmount() {
-      // Remove event listeners
-      window.removeEventListener(
-        'toolkit-reports-url-changed',
-        this._handleURLChanged as EventListener,
-      );
-      window.removeEventListener('hashchange', this._handleHashChange as EventListener);
+      // Remove event listeners (only if URL navigation was enabled)
+      if (this._isURLNavigationEnabled()) {
+        window.removeEventListener(
+          'toolkit-reports-url-changed',
+          this._handleURLChanged as EventListener,
+        );
+        window.removeEventListener('hashchange', this._handleHashChange as EventListener);
+      }
     }
 
     render() {
@@ -193,47 +203,86 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
     }
 
     _getInitialReportKey(): string {
-      // First, try to get the report tab from the URL
-      const urlParams = parseToolkitReportsURL(window.location.href);
-      if (urlParams?.reportTab) {
-        const reportKey = urlToReportKey(urlParams.reportTab);
-        if (reportKey && isValidReportTab(reportKey)) {
-          return reportKey;
-        }
+      // First, try to get the report tab from the URL (only if URL navigation is enabled)
+      if (!this._isURLNavigationEnabled()) {
+        return getToolkitStorageKey(ACTIVE_REPORT_KEY, getDefaultReportTab());
       }
 
-      // Fall back to stored preference or default
-      return getToolkitStorageKey(ACTIVE_REPORT_KEY, getDefaultReportTab());
+      const urlParams = parseToolkitReportsURL(window.location.href);
+      if (!urlParams?.reportTab) {
+        return getToolkitStorageKey(ACTIVE_REPORT_KEY, getDefaultReportTab());
+      }
+
+      const reportKey = urlToReportKey(urlParams.reportTab);
+      if (!reportKey || !isValidReportTab(reportKey)) {
+        return getToolkitStorageKey(ACTIVE_REPORT_KEY, getDefaultReportTab());
+      }
+
+      return reportKey;
     }
 
     _handleURLChanged = (event: Event) => {
+      // Prevent handling if we're already updating from URL
+      if (this.isUpdatingFromURL) {
+        return;
+      }
+
       const customEvent = event as CustomEvent;
       const { reportTab } = customEvent.detail || {};
 
+      // Don't process if the report tab is the same as current
       if (reportTab && isValidReportTab(reportTab) && reportTab !== this.state.activeReportKey) {
-        this._setActiveReportKey(reportTab);
+        this.isUpdatingFromURL = true;
+        this._setActiveReportKeyFromURL(reportTab);
+        // Reset flag after a short delay
+        setTimeout(() => {
+          this.isUpdatingFromURL = false;
+        }, 100);
       }
     };
 
     _handleHashChange = (event: Event) => {
+      // Prevent handling if we're already updating from URL
+      if (this.isUpdatingFromURL) {
+        return;
+      }
+
       // Check if the new hash is a toolkit reports URL
       const urlParams = parseToolkitReportsURL(window.location.href);
       if (urlParams?.reportTab) {
         const reportKey = urlToReportKey(urlParams.reportTab);
+        // Don't process if the report key is the same as current
         if (reportKey && isValidReportTab(reportKey) && reportKey !== this.state.activeReportKey) {
-          this._setActiveReportKey(reportKey);
+          this.isUpdatingFromURL = true;
+          this._setActiveReportKeyFromURL(reportKey);
+          // Reset flag after a short delay
+          setTimeout(() => {
+            this.isUpdatingFromURL = false;
+          }, 100);
         }
       }
     };
 
     _setActiveReportKey = (activeReportKey: string) => {
+      // Prevent updating if we're already updating from URL
+      if (this.isUpdatingFromURL) {
+        return;
+      }
+
       setToolkitStorageKey(ACTIVE_REPORT_KEY, activeReportKey);
 
-      // Update the URL to reflect the new report tab
-      navigateToToolkitReports(activeReportKey);
+      // Update the URL to reflect the new report tab (only if URL navigation is enabled)
+      if (this._isURLNavigationEnabled()) {
+        navigateToToolkitReports(activeReportKey);
+      }
 
-      // const filters = getStoredFilters(activeReportKey);
-      // this.setState({ activeReportKey, filters }, this._applyFilters);
+      this._applyFilters(activeReportKey);
+    };
+
+    _setActiveReportKeyFromURL = (activeReportKey: string) => {
+      setToolkitStorageKey(ACTIVE_REPORT_KEY, activeReportKey);
+
+      // Don't update the URL since this was triggered by a URL change
       this._applyFilters(activeReportKey);
     };
 
