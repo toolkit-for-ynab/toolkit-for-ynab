@@ -32,6 +32,10 @@ export class ToolkitReports extends Feature {
     return true;
   }
 
+  _isURLNavigationEnabled() {
+    return ynabToolKit?.options?.ToolkitReportsURLNavigation || false;
+  }
+
   destroy() {
     $(TOOLKIT_REPORTS_NAVLINK_SELECTOR).remove();
     $('#TOOLKIT_REPORTS_CONTAINER_ID').remove();
@@ -74,20 +78,24 @@ export class ToolkitReports extends Feature {
         this._updateNavigation();
         this._renderToolkitReports();
         // Navigate to toolkit reports URL without a specific tab (will use default or last accessed)
-        navigateToToolkitReports();
+        if (this._isURLNavigationEnabled()) {
+          navigateToToolkitReports();
+        }
       });
 
       $('.nav-main .navlink-reports').after(toolkitReportsLink);
     }
 
-    // Add event listeners for URL navigation
-    this._setupURLEventListeners();
+    // Add event listeners for URL navigation only if enabled
+    if (this._isURLNavigationEnabled()) {
+      this._setupURLEventListeners();
 
-    // Check if we should show toolkit reports based on current URL
-    // Use a small delay to ensure DOM elements are ready
-    setTimeout(() => {
-      this._checkURLForToolkitReports();
-    }, 100);
+      // Check if we should show toolkit reports based on current URL
+      // Use a small delay to ensure DOM elements are ready
+      setTimeout(() => {
+        this._checkURLForToolkitReports();
+      }, 100);
+    }
   }
 
   _setupURLEventListeners() {
@@ -121,21 +129,29 @@ export class ToolkitReports extends Feature {
   };
 
   _checkURLForToolkitReports() {
-    if (isToolkitReportsURL(window.location.href)) {
-      // If we're on a toolkit reports URL but toolkit reports isn't active, activate it
-      if (!$(TOOLKIT_REPORTS_NAVLINK_SELECTOR).hasClass('active')) {
-        // Make sure the navigation link exists before trying to activate it
-        if ($(TOOLKIT_REPORTS_NAVLINK_SELECTOR).length) {
-          this._updateNavigation();
-          this._renderToolkitReports();
-        } else {
-          // If the navigation link doesn't exist yet, try again after a short delay
-          setTimeout(() => {
-            this._checkURLForToolkitReports();
-          }, 50);
-        }
-      }
+    if (!this._isURLNavigationEnabled()) {
+      return;
     }
+
+    if (!isToolkitReportsURL(window.location.href)) {
+      return;
+    }
+
+    if ($(TOOLKIT_REPORTS_NAVLINK_SELECTOR).hasClass('active')) {
+      return;
+    }
+
+    // Make sure the navigation link exists before trying to activate it
+    if ($(TOOLKIT_REPORTS_NAVLINK_SELECTOR).length) {
+      this._updateNavigation();
+      this._renderToolkitReports();
+      return;
+    }
+
+    // If the navigation link doesn't exist yet, try again after a short delay
+    setTimeout(() => {
+      this._checkURLForToolkitReports();
+    }, 50);
   }
 
   _updateNavigation() {
@@ -173,12 +189,20 @@ export class ToolkitReports extends Feature {
     }
 
     // If we're currently on a toolkit reports URL, navigate back to the budget page
-    if (isToolkitReportsURL(window.location.href)) {
-      const budgetId = getCurrentBudgetId();
-      if (budgetId) {
-        const budgetURL = `${window.location.origin}/${budgetId}/budget`;
-        window.history.pushState({}, '', budgetURL);
-      }
+    if (!this._isURLNavigationEnabled() || !isToolkitReportsURL(window.location.href)) {
+      return;
+    }
+
+    const budgetId = getCurrentBudgetId();
+    if (!budgetId) {
+      return;
+    }
+
+    const budgetURL = `${window.location.origin}/${budgetId}/budget`;
+    try {
+      window.history.pushState({}, '', budgetURL);
+    } catch (error) {
+      console.error('Error navigating away from toolkit reports:', error);
     }
   };
 
@@ -204,8 +228,10 @@ export class ToolkitReports extends Feature {
 
     // Also check for toolkit reports URLs after route changes
     // This handles cases where the user navigates directly to a toolkit reports URL
-    setTimeout(() => {
-      this._checkURLForToolkitReports();
-    }, 100);
+    if (this._isURLNavigationEnabled()) {
+      setTimeout(() => {
+        this._checkURLForToolkitReports();
+      }, 100);
+    }
   }
 }

@@ -47,26 +47,64 @@ export function buildToolkitReportsURL(reportTab?: string): string {
   return `${baseURL}${hash}`;
 }
 
-export function navigateToToolkitReports(reportTab?: string) {
-  // If no report tab is specified, get the last visited tab from storage
-  let targetReportTab = reportTab;
-  if (!targetReportTab) {
-    const { getToolkitStorageKey } = require('toolkit/extension/utils/toolkit');
-    const ACTIVE_REPORT_KEY = 'active-report';
-    targetReportTab = getToolkitStorageKey(ACTIVE_REPORT_KEY, getDefaultReportTab());
+// Debounce mechanism to prevent rapid URL updates
+let navigationTimeout: NodeJS.Timeout | null = null;
+let isUpdatingFromEvent = false;
+
+export function navigateToToolkitReports(reportTab?: string, skipEvent = false) {
+  // Clear any pending navigation
+  if (navigationTimeout) {
+    clearTimeout(navigationTimeout);
   }
 
-  const newURL = buildToolkitReportsURL(targetReportTab);
+  // Reset the flag if we're not skipping events
+  if (!skipEvent) {
+    isUpdatingFromEvent = false;
+  }
 
-  // Use pushState to update the URL without triggering a page reload
-  window.history.pushState({}, '', newURL);
+  // Debounce the navigation to prevent rapid API calls
+  navigationTimeout = setTimeout(() => {
+    // If no report tab is specified, get the last visited tab from storage
+    let targetReportTab = reportTab;
+    if (!targetReportTab) {
+      const { getToolkitStorageKey } = require('toolkit/extension/utils/toolkit');
+      const ACTIVE_REPORT_KEY = 'active-report';
+      targetReportTab = getToolkitStorageKey(ACTIVE_REPORT_KEY, getDefaultReportTab());
+    }
 
-  // Dispatch a custom event to notify components of the URL change
-  window.dispatchEvent(
-    new CustomEvent('toolkit-reports-url-changed', {
-      detail: { reportTab: targetReportTab },
-    }),
-  );
+    const newURL = buildToolkitReportsURL(targetReportTab);
+
+    // Check if the URL is already correct to avoid unnecessary updates
+    // Compare the pathname and hash separately to handle encoding differences
+    const currentURL = new URL(window.location.href);
+    const newURLObj = new URL(newURL);
+
+    if (currentURL.pathname === newURLObj.pathname && currentURL.hash === newURLObj.hash) {
+      return;
+    }
+
+    try {
+      // Use pushState to update the URL without triggering a page reload
+      window.history.pushState({}, '', newURL);
+
+      // Only dispatch event if not skipping and not already updating from an event
+      if (!skipEvent && !isUpdatingFromEvent) {
+        isUpdatingFromEvent = true;
+        // Dispatch a custom event to notify components of the URL change
+        window.dispatchEvent(
+          new CustomEvent('toolkit-reports-url-changed', {
+            detail: { reportTab: targetReportTab },
+          }),
+        );
+        // Reset flag after a short delay
+        setTimeout(() => {
+          isUpdatingFromEvent = false;
+        }, 100);
+      }
+    } catch (error) {
+      console.error('Error updating URL for toolkit reports:', error);
+    }
+  }, 50); // 50ms debounce
 }
 
 export function getCurrentBudgetId(): string | null {

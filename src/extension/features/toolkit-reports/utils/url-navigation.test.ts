@@ -179,14 +179,26 @@ describe('URL Navigation Utilities', () => {
       // Get the mocked function
       const toolkitUtils = require('toolkit/extension/utils/toolkit');
       mockGetToolkitStorageKey = toolkitUtils.getToolkitStorageKey;
+
+      // Use fake timers for testing debounced functions
+      jest.useFakeTimers();
     });
 
     afterEach(() => {
       jest.clearAllMocks();
+      jest.useRealTimers();
+
+      // Reset the isUpdatingFromEvent flag by advancing timers
+      jest.useFakeTimers();
+      jest.advanceTimersByTime(101);
+      jest.useRealTimers();
     });
 
-    it('should navigate with provided report tab', () => {
+    it('should navigate with provided report tab', async () => {
       navigateToToolkitReports('net-worth');
+
+      // Advance timers to trigger the debounced function and the setTimeout
+      jest.advanceTimersByTime(51);
 
       expect(mockPushState).toHaveBeenCalledWith(
         {},
@@ -202,10 +214,13 @@ describe('URL Navigation Utilities', () => {
       );
     });
 
-    it('should use stored report tab when none provided', () => {
+    it('should use stored report tab when none provided', async () => {
       mockGetToolkitStorageKey.mockReturnValue('stored-tab');
 
       navigateToToolkitReports();
+
+      // Advance timers to trigger the debounced function and the setTimeout
+      jest.advanceTimersByTime(51);
 
       expect(mockGetToolkitStorageKey).toHaveBeenCalledWith('active-report', 'net-worth');
       expect(mockPushState).toHaveBeenCalledWith(
@@ -221,10 +236,13 @@ describe('URL Navigation Utilities', () => {
       );
     });
 
-    it('should use default report tab when storage returns null', () => {
+    it('should use default report tab when storage returns null', async () => {
       mockGetToolkitStorageKey.mockReturnValue(null);
 
       navigateToToolkitReports();
+
+      // Advance timers to trigger the debounced function and the setTimeout
+      jest.advanceTimersByTime(51);
 
       expect(mockGetToolkitStorageKey).toHaveBeenCalledWith('active-report', 'net-worth');
       expect(mockPushState).toHaveBeenCalledWith(
@@ -240,10 +258,13 @@ describe('URL Navigation Utilities', () => {
       );
     });
 
-    it('should use default report tab when storage returns undefined', () => {
+    it('should use default report tab when storage returns undefined', async () => {
       mockGetToolkitStorageKey.mockReturnValue(undefined);
 
       navigateToToolkitReports();
+
+      // Advance timers to trigger the debounced function and the setTimeout
+      jest.advanceTimersByTime(51);
 
       expect(mockGetToolkitStorageKey).toHaveBeenCalledWith('active-report', 'net-worth');
       expect(mockPushState).toHaveBeenCalledWith(
@@ -259,8 +280,11 @@ describe('URL Navigation Utilities', () => {
       );
     });
 
-    it('should handle different report tabs correctly', () => {
+    it('should handle different report tabs correctly', async () => {
       navigateToToolkitReports('forecast');
+
+      // Advance timers to trigger the debounced function and the setTimeout
+      jest.advanceTimersByTime(51);
 
       expect(mockPushState).toHaveBeenCalledWith(
         {},
