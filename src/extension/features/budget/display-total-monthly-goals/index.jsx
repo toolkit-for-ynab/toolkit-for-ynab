@@ -36,6 +36,10 @@ export class DisplayTotalMonthlyGoals extends Feature {
     return true;
   }
 
+  invoke() {
+    this.addMonthlyGoalsOverview();
+  }
+
   destroy() {
     document.querySelector('.' + this.containerClass)?.remove();
   }
@@ -83,6 +87,10 @@ export class DisplayTotalMonthlyGoals extends Feature {
 
   getCreditActivity() {
     const budgetService = getBudgetService();
+    if (!budgetService?.budgetMonthDisplayItems) {
+      return 0;
+    }
+
     const category = budgetService.budgetMonthDisplayItems.find((item) => {
       return item.isCreditCardPaymentCategory;
     });
