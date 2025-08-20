@@ -1,11 +1,12 @@
 import debounce from 'debounce';
 import React from 'react';
 import { Feature } from 'toolkit/extension/features/feature';
-import { componentBefore } from 'toolkit/extension/utils/react';
+import { componentAfter } from 'toolkit/extension/utils/react';
 import {
   getBudgetService,
   getCurrentBudgetDate,
   getEntityManager,
+  isCurrentRouteBudgetPage,
 } from 'toolkit/extension/utils/ynab';
 
 import { FormattedCurrency } from './FormattedCurrency';
@@ -33,7 +34,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteBudgetPage();
   }
 
   destroy() {
@@ -134,20 +135,25 @@ export class DisplayTotalMonthlyGoals extends Feature {
     };
   }
 
-  addMonthlyGoalsOverview(element) {
+  addMonthlyGoalsOverview() {
     const [income, budgeted, spent] = this.calculateTotalAssigned();
     const { savings: savingsGoals, spending: spendingGoals } = this.calculateTotalGoals();
 
     $('.' + this.containerClass).remove();
 
-    const target = $('.card.budget-breakdown-monthly-totals', element);
-    if (!target.length) {
+    // Look for the first card in the budget inspector (month's Summary)
+    // We'll inject our component after this card
+    const $firstCard = $('.budget-inspector-content .card').first();
+
+    if (!$firstCard.length) {
+      console.warn('No first card found in budget inspector, returning early');
       return;
     }
 
-    componentBefore(
+    // Create our component and insert it after the first card using componentAfter
+    componentAfter(
       this.createInspectorElement(income, budgeted, spent, savingsGoals, spendingGoals),
-      target[0],
+      $firstCard[0],
     );
   }
 
@@ -208,6 +214,10 @@ export class DisplayTotalMonthlyGoals extends Feature {
         )}
       </div>
     );
+  }
+
+  invoke() {
+    this.addMonthlyGoalsOverview();
   }
 
   debouncedInvoke = debounce(this.addMonthlyGoalsOverview, 100);
