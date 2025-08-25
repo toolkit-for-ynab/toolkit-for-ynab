@@ -12,7 +12,7 @@ export class HideClosedAccounts extends Feature {
   }
 
   shouldInvoke() {
-    return false;
+    return true;
   }
 
   invoke() {
