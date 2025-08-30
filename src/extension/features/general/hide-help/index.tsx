@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { componentAppend } from 'toolkit/extension/utils/react';
+import { componentAfter } from 'toolkit/extension/utils/react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { HideHelpButton } from './HideHelpButton';
@@ -20,9 +20,9 @@ export class HideHelp extends Feature {
       return;
     }
 
-    componentAppend(
+    componentAfter(
       <HideHelpButton toggleHiddenState={this.setHiddenState} />,
-      element.getElementsByClassName('modal-list')[0],
+      element.getElementsByClassName('modal-select-import-from')[0],
     );
   }
 
@@ -39,7 +39,7 @@ export class HideHelp extends Feature {
   }
 
   observe(nodes: Set<string>) {
-    if (nodes.has('modal-overlay active ynab-u ynab-new-settings-menu')) {
+    if (nodes.has('ynab-new-settings-menu')) {
       this.invoke();
     }
   }
