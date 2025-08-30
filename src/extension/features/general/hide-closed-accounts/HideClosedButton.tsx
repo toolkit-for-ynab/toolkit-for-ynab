@@ -17,13 +17,11 @@ export const HideClosedButton = ({ toggleHiddenState }: Props) => {
   };
 
   return (
-    <li onClick={toggleHidden} id="tk-hide-closed-accounts">
-      <button>
-        <svg className="ynab-new-icon" width="16" height="16">
-          <use href="#icon_sprite_lock"></use>
-        </svg>
-        {` ${label}`} Closed Accounts
-      </button>
-    </li>
+    <button onClick={toggleHidden} id="tk-hide-closed-accounts" className="menu-item js-menu-item">
+      <svg className="ynab-new-icon" width="16" height="16">
+        <use href="#icon_sprite_lock"></use>
+      </svg>
+      {` ${label}`} Closed Accounts
+    </button>
   );
 };
