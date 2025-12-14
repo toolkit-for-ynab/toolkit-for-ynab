@@ -80,9 +80,8 @@ schemes:
         Toolkit for YNAB Extension: all
     run:
       config: Debug
-      askForAppToLaunch: true
-      debugEnabled: true
-      launchAutomaticallySubstyle: 2
+      executable: Toolkit for YNAB
+      debugEnabled: false
     test:
       config: Debug
     profile:
