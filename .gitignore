@@ -33,3 +33,10 @@ scripts/settings.json
 # created at build time with tasks/generateFeatureIndex.js
 src/extension/features/index.ts
 
+# Safari extension resources (populated by build:safari)
+safari/Extension/Resources/*
+!safari/Extension/Resources/.gitkeep
+
+# Generated Xcode project (use xcodegen to regenerate)
+safari/*.xcodeproj/
+
