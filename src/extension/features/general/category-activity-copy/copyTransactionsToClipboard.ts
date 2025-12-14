@@ -1,4 +1,5 @@
 import { getEntityManager } from 'toolkit/extension/utils/ynab';
+import { isSafariBrowser } from 'toolkit/core/common/web-extensions';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 
 interface Activities {
@@ -37,5 +38,33 @@ export default function copyTransactionsToClipboard(transactions: YNABTransactio
     header.map((fieldName) => JSON.stringify(row[fieldName], replacer)).join('\t'),
   );
   csv.unshift(header.join('\t'));
-  navigator.clipboard.writeText(csv.join('\r\n'));
+
+  const csvContent = csv.join('\r\n');
+  const clipboardApiAvailable = typeof navigator !== 'undefined' && navigator.clipboard?.writeText;
+
+  if (clipboardApiAvailable && !isSafariBrowser()) {
+    navigator.clipboard.writeText(csvContent);
+    return;
+  }
+
+  const textarea = document.createElement('textarea');
+  textarea.value = csvContent;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'absolute';
+  textarea.style.left = '-9999px';
+
+  document.body.appendChild(textarea);
+
+  const selection = document.getSelection();
+  const selectedRange = selection?.rangeCount ? selection.getRangeAt(0) : null;
+
+  textarea.select();
+  document.execCommand('copy');
+
+  document.body.removeChild(textarea);
+
+  if (selectedRange && selection) {
+    selection.removeAllRanges();
+    selection.addRange(selectedRange);
+  }
 }

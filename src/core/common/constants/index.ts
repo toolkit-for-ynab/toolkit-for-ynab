@@ -2,12 +2,14 @@ export enum Browser {
   Chrome = 'chrome',
   Edge = 'edge',
   Firefox = 'firefox',
+  Safari = 'safari',
 }
 
 export const BrowserExtensionPrefix = {
   [Browser.Chrome]: 'chrome-extension://',
   [Browser.Edge]: 'ms-browser-extension://',
   [Browser.Firefox]: 'moz-extension://',
+  [Browser.Safari]: 'safari-web-extension://',
 };
 
 export enum Environment {
