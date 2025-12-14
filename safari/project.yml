@@ -1,0 +1,92 @@
+name: Toolkit for YNAB
+
+options:
+  bundleIdPrefix: com.toolkitforynab
+  deploymentTarget:
+    macOS: '14.0'
+  xcodeVersion: '15.0'
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    MARKETING_VERSION: 3.19.0
+    CURRENT_PROJECT_VERSION: 1
+    SWIFT_VERSION: '5.0'
+    # Set your development team ID here or via xcodebuild -DEVELOPMENT_TEAM=XXXXXXXXXX
+    # DEVELOPMENT_TEAM: XXXXXXXXXX
+
+targets:
+  Toolkit for YNAB:
+    type: application
+    platform: macOS
+    deploymentTarget: '14.0'
+    sources:
+      - path: HostApp
+        excludes:
+          - '**/.DS_Store'
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.toolkitforynab.macos
+        PRODUCT_NAME: Toolkit for YNAB
+        INFOPLIST_FILE: HostApp/Info.plist
+        CODE_SIGN_ENTITLEMENTS: HostApp/HostApp.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: YES
+        LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+        ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES
+    dependencies:
+      - target: Toolkit for YNAB Extension
+        embed: true
+        codeSign: true
+        copy:
+          destination: plugins
+
+  Toolkit for YNAB Extension:
+    type: app-extension
+    platform: macOS
+    deploymentTarget: '14.0'
+    sources:
+      - path: Extension
+        excludes:
+          - '**/.DS_Store'
+          - Resources
+      - path: Extension/Resources
+        buildPhase: resources
+        type: folder
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.toolkitforynab.macos.Extension
+        PRODUCT_NAME: Toolkit for YNAB Extension
+        INFOPLIST_FILE: Extension/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Extension/Extension.entitlements
+        LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          - '@executable_path/../../../../Frameworks'
+        SKIP_INSTALL: YES
+        OTHER_LDFLAGS:
+          - $(inherited)
+          - '-framework'
+          - SafariServices
+
+schemes:
+  Toolkit for YNAB:
+    build:
+      targets:
+        Toolkit for YNAB: all
+        Toolkit for YNAB Extension: all
+    run:
+      config: Debug
+      askForAppToLaunch: true
+      debugEnabled: true
+      launchAutomaticallySubstyle: 2
+    test:
+      config: Debug
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release

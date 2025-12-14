@@ -1,0 +1,4 @@
+# This directory contains the built extension resources.
+# Run `yarn build:safari` from the project root, then copy or symlink
+# the contents of `dist/extension/` to this directory before building
+# the Xcode project.
