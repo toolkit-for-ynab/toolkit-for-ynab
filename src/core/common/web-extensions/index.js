@@ -28,8 +28,29 @@ export function getBrowserName() {
   if (URL.startsWith(BrowserExtensionPrefix[Browser.Edge])) {
     return Browser.Edge;
   }
+  if (URL.startsWith(BrowserExtensionPrefix[Browser.Safari])) {
+    return Browser.Safari;
+  }
+
+  const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+  if (isSafariBrowser(userAgent)) {
+    return Browser.Safari;
+  }
 
   return '';
+}
+
+export function isSafariBrowser(userAgent = '') {
+  if (!userAgent && typeof navigator !== 'undefined') {
+    userAgent = navigator.userAgent;
+  }
+
+  if (!userAgent) {
+    return false;
+  }
+
+  const isSafari = userAgent.includes('Safari') && !userAgent.match(/Chrome|Chromium|Edg|OPR/);
+  return Boolean(isSafari);
 }
 
 export function getEnvironment() {

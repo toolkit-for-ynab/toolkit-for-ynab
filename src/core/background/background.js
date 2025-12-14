@@ -1,5 +1,5 @@
 import Raven from 'raven-js';
-import { getBrowser, getBrowserName } from 'toolkit/core/common/web-extensions';
+import { getBrowser, getBrowserName, isSafariBrowser } from 'toolkit/core/common/web-extensions';
 import { ToolkitStorage } from 'toolkit/core/common/storage';
 import { getEnvironment } from 'toolkit/core/common/web-extensions';
 import { Browser } from 'toolkit/core/common/constants';
@@ -19,8 +19,14 @@ export class Background {
   }
 
   initListeners() {
-    this._browser.runtime.onMessage.addListener(this._handleMessage);
-    this._browser.runtime.onUpdateAvailable.addListener(this._handleUpdateAvailable);
+    if (this._browser.runtime?.onMessage?.addListener) {
+      this._browser.runtime.onMessage.addListener(this._handleMessage);
+    }
+
+    if (!isSafariBrowser() && this._browser.runtime?.onUpdateAvailable?.addListener) {
+      this._browser.runtime.onUpdateAvailable.addListener(this._handleUpdateAvailable);
+    }
+
     this._storage.onToolkitDisabledChanged((_, isToolkitDisabled) =>
       this._updatePopupIcon(isToolkitDisabled),
     );
@@ -80,6 +86,11 @@ export class Background {
   };
 
   _handleStorageMessage = (request, callback) => {
+    if (typeof localStorage === 'undefined') {
+      callback(null);
+      return;
+    }
+
     switch (request.type) {
       case 'keys':
         callback(Object.keys(localStorage));
