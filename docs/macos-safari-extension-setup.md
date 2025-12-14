@@ -1,93 +1,100 @@
-# Safari extension setup (slow, kid-gloves version)
+# macOS Safari Web Extension project setup
 
-These steps assume you have **zero** experience with Xcode or Safari extensions. Follow them in order on your **Mac**. I’ll say exactly where to click and where to type.
+This repository only contains the WebExtension source; the macOS host app and Safari Web Extension Xcode project need to be created on a Mac. The steps below give you a ready-to-open Xcode project, assign bundle identifiers, add entitlements, and keep the host app metadata aligned with the WebExtension manifest.
 
-## Before you start
-1. **Install Xcode 15 or newer** from the Mac App Store. Open it once so it finishes installing.
-2. **Find your Apple Developer Team ID.**
-   - Open **Xcode** > **Settings** > **Accounts**.
-   - Sign in with your Apple ID (the one linked to your Developer account).
-   - Click your team name; you’ll see a 10-character Team ID like `ABCDE12345`. Write it down.
-3. **Open Terminal.**
-   - Press **Command + Space**, type **Terminal**, press **Return**. You will type commands here.
-4. **Get the project code on your Mac.**
-   - In Terminal, type `cd` followed by a space, then drag your project folder into the Terminal window and press **Return**. Now Terminal is “inside” the project folder.
+## Prerequisites (on your Mac)
+- Xcode 15 or later with the **Safari Web Extension Converter** (`xcrun safari-web-extension-converter`).
+- An Apple Developer Team ID.
+- The built extension assets. From the repo root run `yarn build:ios` (or `yarn build:production`) to produce `dist/extension`, which is what the converter ingests.
 
-## Part 1 — Build the web extension files
-You only do this when you change the web code. It prepares the files Xcode will wrap.
+## 1) Create the Xcode project from the existing WebExtension
+```bash
+# From the repo root on macOS
+yarn install
+yarn build:ios
+xcrun safari-web-extension-converter ./dist/extension \
+  --app-name "Toolkit for YNAB" \
+  --project-location ./macos \
+  --bundle-identifier com.example.toolkit
+```
+- The converter creates `./macos/Toolkit for YNAB/Toolkit for YNAB.xcodeproj` with a **macOS host app** and a **Safari Web Extension** target.
+- Use your own bundle root (e.g., `com.yourcompany.toolkit`). The extension target will be suffixed automatically (e.g., `.Extension`).
 
-1. In Terminal, type each line below and press **Return** after each line. (Copy/paste is fine.)
-   ```bash
-   yarn install
-   yarn build:ios
-   ```
-2. When the commands finish, a folder named `dist/extension` will exist. That folder is what Xcode will use.
+## 2) Set unique bundle identifiers
+In Xcode **Targets**:
+- **Host app**: set **Bundle Identifier** to something like `com.yourcompany.toolkit.macos`.
+- **Safari Web Extension** target: set **Bundle Identifier** to `com.yourcompany.toolkit.extension` (it must differ from the host app).
 
-## Part 2 — Create the Xcode project with Apple’s converter
-This turns the web extension into a Mac app + Safari extension project.
+## 3) Assign your Apple Developer Team
+In Xcode **Signing & Capabilities** for both targets:
+- Select your Apple ID under **Team**.
+- Ensure **Automatically manage signing** is enabled so provisioning profiles are generated.
 
-1. In Terminal (still in the project folder), type the block below and press **Return** after the last line:
-   ```bash
-   xcrun safari-web-extension-converter ./dist/extension \
-     --app-name "Toolkit for YNAB" \
-     --project-location ./macos \
-     --bundle-identifier com.yourcompany.toolkit
-   ```
-   - Change `com.yourcompany.toolkit` to your own base bundle ID if you want.
-2. The converter creates a new folder: `macos/Toolkit for YNAB/`. Inside it is `Toolkit for YNAB.xcodeproj`.
-3. Double-click `Toolkit for YNAB.xcodeproj` to open it in Xcode.
+## 4) Add required entitlements
+In the host app and extension **Signing & Capabilities** tabs, add:
+- **App Sandbox** (host app): required for Mac App Store distribution.
+- **Network** and **Outgoing Connections (Client)** inside the sandbox (host app) so the injected code can talk to YNAB.
+- **Safari Web Extension** entitlement (extension target) is added by the converter; keep it enabled.
+- If you use shared containers or app groups later, add them here for both targets with matching IDs.
 
-## Part 3 — Set signing so builds succeed
-1. In Xcode’s left sidebar, under **PROJECT** > **Toolkit for YNAB**, click **Targets** and select **Toolkit for YNAB** (the app). Then click **Signing & Capabilities**.
-2. Check **Automatically manage signing**.
-3. Set **Team** to your Team (the one with the Team ID you wrote down).
-4. Repeat steps 1–3 for the **Toolkit for YNAB Extension** target.
+## 5) Align Info.plist metadata with the WebExtension manifest
+- Open `Toolkit for YNAB/Info.plist` (host app target) and set:
+  - `CFBundleDisplayName` = `Toolkit for YNAB`
+  - `CFBundleShortVersionString` = `3.19.0`
+  - `CFBundleVersion` can start at `1` and increment per build.
+- Keep these values in sync with `src/manifest.json` (`name` and `version`). After bumping the manifest version, update `CFBundleShortVersionString` to match.
 
-## Part 4 — Make bundle identifiers unique
-1. Still in **Signing & Capabilities** for the app target, set **Bundle Identifier** to something like `com.yourcompany.toolkit.macos`.
-2. Select the **Toolkit for YNAB Extension** target. Set its **Bundle Identifier** to `com.yourcompany.toolkit.extension`. The app and extension IDs must be different.
-
-## Part 5 — Add required entitlements (permissions)
-In Xcode’s **Signing & Capabilities** tab:
-1. **App target (Toolkit for YNAB):**
-   - Click **+ Capability**.
-   - Add **App Sandbox**.
-   - Under App Sandbox, turn on **Network** and **Outgoing Connections (Client)**.
-2. **Extension target (Toolkit for YNAB Extension):**
-   - The converter should already add **Safari Web Extension**. Make sure it stays there.
-   - If you later use shared containers or app groups, add matching IDs here and in the app target.
-
-## Part 6 — Match the app’s display name and version to the web manifest
-1. In Xcode’s left sidebar, open `Toolkit for YNAB/Info.plist` (the one under the app target).
-2. Set these keys:
-   - `CFBundleDisplayName`: `Toolkit for YNAB` (this is the name shown to users).
-   - `CFBundleShortVersionString`: match the `version` in `src/manifest.json` (for example `3.19.0`).
-   - `CFBundleVersion`: start at `1` and increase it each time you build.
-3. Whenever you bump the version in `src/manifest.json`, update `CFBundleShortVersionString` to the same value.
-
-## Part 7 — Refresh the Xcode project after web changes
-Whenever you change the web extension code:
-1. In Terminal (project folder):
+## 6) Refresh the extension payload when code changes
+When you update the WebExtension code:
+1. Rebuild the extension bundle:
    ```bash
    yarn build:ios
    ```
-2. Re-run the converter command from Part 2 (same flags). If Xcode was open, close and reopen the project so it reloads the new files.
+2. Re-run the converter with the same flags to refresh the Xcode project’s `Resources` and scripts. If Xcode is open, close/reopen or let it re-index after regeneration.
 
-## Part 8 — Run and debug
-1. In Xcode’s toolbar, make sure the scheme is **Toolkit for YNAB** and the destination is **My Mac**.
-2. Press **Command + R** to run. Safari will open and ask to enable the extension—follow the prompts.
-3. To inspect the extension: in Safari, go to **Develop > Web Extension Background Pages** and pick the extension. You can view logs and console output there.
+## 7) Debugging tips for a first-time Safari extension setup
+- In Xcode **Scheme** choose **My Mac** and run; Safari will prompt to enable the extension.
+- Use **Develop > Web Extension Background Pages** in Safari to inspect the extension’s background and content scripts.
+- If signing errors occur, re-check bundle identifiers, Team selection, and that entitlements match between Xcode targets and your provisioning profiles.
 
-## Quick checklist (copy/paste and tick off)
-- [ ] Xcode installed and Apple ID added; Team ID noted.
-- [ ] Ran `yarn install` and `yarn build:ios` in Terminal.
-- [ ] Ran `xcrun safari-web-extension-converter ...` in Terminal to create `macos/Toolkit for YNAB.xcodeproj`.
-- [ ] Opened the project in Xcode.
-- [ ] Set **Team** and **Automatically manage signing** for **both targets**.
-- [ ] Set bundle IDs: app = `...macos`, extension = `...extension`.
-- [ ] Added entitlements: App Sandbox + Network/Outgoing (app); Safari Web Extension (extension).
-- [ ] `Info.plist` display name and version match `src/manifest.json`.
-- [ ] Rebuilt (`yarn build:ios`) and reran converter after any web changes.
-- [ ] Ran the app (My Mac) and enabled the extension in Safari.
+## 8) If you prefer a generator-driven project
+You can use [XcodeGen](https://github.com/yonaskolb/XcodeGen) instead of keeping the `.xcodeproj` in Git. A minimal `project.yml` (placed in `macos/`) could look like:
+```yaml
+name: Toolkit for YNAB
+options:
+  bundleIdPrefix: com.yourcompany.toolkit
+packages: {}
+targets:
+  Toolkit:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    bundleId: com.yourcompany.toolkit.macos
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: Toolkit for YNAB
+        CFBundleShortVersionString: 3.19.0
+        CFBundleVersion: "1"
+    sources: [HostApp]
+    entitlements: HostApp/HostApp.entitlements
+    settings:
+      base:
+        DEVELOPMENT_TEAM: YOURTEAMID
+  ToolkitExtension:
+    type: safari-web-extension
+    platform: macOS
+    deploymentTarget: "14.0"
+    bundleId: com.yourcompany.toolkit.extension
+    info:
+      path: Extension/Info.plist
+    sources: [Extension]
+    entitlements: Extension/Extension.entitlements
+    settings:
+      base:
+        DEVELOPMENT_TEAM: YOURTEAMID
+```
+Run `xcodegen generate` to build the `.xcodeproj` locally, then open it in Xcode.
 
-If any step fails, check bundle IDs, Team selection, and entitlements—they cause most errors. When stuck, rerun the converter to regenerate the project and reopen it in Xcode.
+---
+Following the steps above will give you a working macOS host app + Safari Web Extension project that mirrors this repo’s `src/manifest.json` metadata and is ready for signing with your Apple Developer account.
