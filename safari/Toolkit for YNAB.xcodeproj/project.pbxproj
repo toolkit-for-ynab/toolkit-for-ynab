@@ -1,0 +1,500 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05C3B78EA34BC197C0A79C8A /* popup in Resources */ = {isa = PBXBuildFile; fileRef = F4D240598137B62296125E34 /* popup */; };
+		220BAD965D4A7B3B17F73DF7 /* web-accessibles in Resources */ = {isa = PBXBuildFile; fileRef = 147749BF442583FF530EDCAD /* web-accessibles */; };
+		3566142C5D157FEBF9F028A3 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = DA9610BB2877819DD7ACB166 /* assets */; };
+		425766547FA6330702E13590 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71CE5F8BB3511116A389B9C8 /* Main.storyboard */; };
+		557897369719CF50D5F85A8A /* background in Resources */ = {isa = PBXBuildFile; fileRef = 9B3E6E07F370E1C4E3FF06CF /* background */; };
+		5D00B4A6FB527E4232CB1D0A /* options in Resources */ = {isa = PBXBuildFile; fileRef = 69B729B4ACA29B3B9A6BC55E /* options */; };
+		836F18EB23729596D7BEFC98 /* content-scripts in Resources */ = {isa = PBXBuildFile; fileRef = D7B6C02704ACF331DD079B42 /* content-scripts */; };
+		8E52019E44083518A168563A /* Toolkit for YNAB Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D30D359A44CD41BFAA4BEA2D /* Toolkit for YNAB Extension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A426F0A79569C387B53F3667 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4CFC860BF16A01D382813450 /* manifest.json */; };
+		EE6AB6BDF27E361AD5DF1E7A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C85C816F58FEADCE9F06ADD2 /* AppDelegate.swift */; };
+		EFC14B616DF9227BF39F4B99 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A42F6ACA0A820B4921F6AC /* SafariWebExtensionHandler.swift */; };
+		F1E213BFCEE082E55CEE7C4B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38D9666CEC0700D8956F2AE /* ViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2924F1CD6C4C6EA381B6FEC3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A5758E5BB1A8F30132A770AD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5A301A28F636CAC07411D971;
+			remoteInfo = "Toolkit for YNAB Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1B46141837580FED6B058525 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				8E52019E44083518A168563A /* Toolkit for YNAB Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0A418A4A6C1864FBA578600A /* Toolkit for YNAB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Toolkit for YNAB.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		147749BF442583FF530EDCAD /* web-accessibles */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "web-accessibles"; path = "Extension/_Resources/web-accessibles"; sourceTree = SOURCE_ROOT; };
+		20E337A30A1605A814AD646A /* Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Extension.entitlements; sourceTree = "<group>"; };
+		41B12AB152D2749BD44C4A18 /* HostApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HostApp.entitlements; sourceTree = "<group>"; };
+		42199C49AB3C03E62821FD9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4CFC860BF16A01D382813450 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = manifest.json; sourceTree = "<group>"; };
+		69B729B4ACA29B3B9A6BC55E /* options */ = {isa = PBXFileReference; lastKnownFileType = folder; name = options; path = Extension/_Resources/options; sourceTree = SOURCE_ROOT; };
+		71CE5F8BB3511116A389B9C8 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		9B3E6E07F370E1C4E3FF06CF /* background */ = {isa = PBXFileReference; lastKnownFileType = folder; name = background; path = Extension/_Resources/background; sourceTree = SOURCE_ROOT; };
+		A5A42F6ACA0A820B4921F6AC /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		C38D9666CEC0700D8956F2AE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C85C816F58FEADCE9F06ADD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D30D359A44CD41BFAA4BEA2D /* Toolkit for YNAB Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Toolkit for YNAB Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7B6C02704ACF331DD079B42 /* content-scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "content-scripts"; path = "Extension/_Resources/content-scripts"; sourceTree = SOURCE_ROOT; };
+		DA9610BB2877819DD7ACB166 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = Extension/_Resources/assets; sourceTree = SOURCE_ROOT; };
+		F4D240598137B62296125E34 /* popup */ = {isa = PBXFileReference; lastKnownFileType = folder; name = popup; path = Extension/_Resources/popup; sourceTree = SOURCE_ROOT; };
+		FF04D6C8150B92DB14C55C97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		6E3BE80440E6CEDDE1290E0A /* HostApp */ = {
+			isa = PBXGroup;
+			children = (
+				C85C816F58FEADCE9F06ADD2 /* AppDelegate.swift */,
+				41B12AB152D2749BD44C4A18 /* HostApp.entitlements */,
+				42199C49AB3C03E62821FD9A /* Info.plist */,
+				71CE5F8BB3511116A389B9C8 /* Main.storyboard */,
+				C38D9666CEC0700D8956F2AE /* ViewController.swift */,
+			);
+			path = HostApp;
+			sourceTree = "<group>";
+		};
+		6FB900B414D542787E877941 /* _Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DA9610BB2877819DD7ACB166 /* assets */,
+				9B3E6E07F370E1C4E3FF06CF /* background */,
+				D7B6C02704ACF331DD079B42 /* content-scripts */,
+				4CFC860BF16A01D382813450 /* manifest.json */,
+				69B729B4ACA29B3B9A6BC55E /* options */,
+				F4D240598137B62296125E34 /* popup */,
+				147749BF442583FF530EDCAD /* web-accessibles */,
+			);
+			path = _Resources;
+			sourceTree = "<group>";
+		};
+		8AD29109B391A532D10CE6FA = {
+			isa = PBXGroup;
+			children = (
+				D296C1CD4F6D17CDABF61C21 /* Extension */,
+				6E3BE80440E6CEDDE1290E0A /* HostApp */,
+				E18A38E00CFD6D97BF0F6C58 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D296C1CD4F6D17CDABF61C21 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				6FB900B414D542787E877941 /* _Resources */,
+				20E337A30A1605A814AD646A /* Extension.entitlements */,
+				FF04D6C8150B92DB14C55C97 /* Info.plist */,
+				A5A42F6ACA0A820B4921F6AC /* SafariWebExtensionHandler.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		E18A38E00CFD6D97BF0F6C58 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D30D359A44CD41BFAA4BEA2D /* Toolkit for YNAB Extension.appex */,
+				0A418A4A6C1864FBA578600A /* Toolkit for YNAB.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5A301A28F636CAC07411D971 /* Toolkit for YNAB Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F3F117C550A8C45A6C4612C6 /* Build configuration list for PBXNativeTarget "Toolkit for YNAB Extension" */;
+			buildPhases = (
+				5C91D9AC155C2E348D0428C4 /* Sources */,
+				B2F144021C13EA182A88ECCD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Toolkit for YNAB Extension";
+			packageProductDependencies = (
+			);
+			productName = "Toolkit for YNAB Extension";
+			productReference = D30D359A44CD41BFAA4BEA2D /* Toolkit for YNAB Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		948248D9B3DC083E09986731 /* Toolkit for YNAB */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F3C79EACC1095000FCD81622 /* Build configuration list for PBXNativeTarget "Toolkit for YNAB" */;
+			buildPhases = (
+				A97D0787C549A180FBFE21CB /* Sources */,
+				518E255625314D7F5DFDE363 /* Resources */,
+				1B46141837580FED6B058525 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				950CA8E229393AED82B67B95 /* PBXTargetDependency */,
+			);
+			name = "Toolkit for YNAB";
+			packageProductDependencies = (
+			);
+			productName = "Toolkit for YNAB";
+			productReference = 0A418A4A6C1864FBA578600A /* Toolkit for YNAB.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A5758E5BB1A8F30132A770AD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					5A301A28F636CAC07411D971 = {
+						ProvisioningStyle = Automatic;
+					};
+					948248D9B3DC083E09986731 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = FC796D92B2F3186A8891EE0B /* Build configuration list for PBXProject "Toolkit for YNAB" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 8AD29109B391A532D10CE6FA;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				948248D9B3DC083E09986731 /* Toolkit for YNAB */,
+				5A301A28F636CAC07411D971 /* Toolkit for YNAB Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		518E255625314D7F5DFDE363 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				425766547FA6330702E13590 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B2F144021C13EA182A88ECCD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3566142C5D157FEBF9F028A3 /* assets in Resources */,
+				557897369719CF50D5F85A8A /* background in Resources */,
+				836F18EB23729596D7BEFC98 /* content-scripts in Resources */,
+				A426F0A79569C387B53F3667 /* manifest.json in Resources */,
+				5D00B4A6FB527E4232CB1D0A /* options in Resources */,
+				05C3B78EA34BC197C0A79C8A /* popup in Resources */,
+				220BAD965D4A7B3B17F73DF7 /* web-accessibles in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5C91D9AC155C2E348D0428C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EFC14B616DF9227BF39F4B99 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A97D0787C549A180FBFE21CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE6AB6BDF27E361AD5DF1E7A /* AppDelegate.swift in Sources */,
+				F1E213BFCEE082E55CEE7C4B /* ViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		950CA8E229393AED82B67B95 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5A301A28F636CAC07411D971 /* Toolkit for YNAB Extension */;
+			targetProxy = 2924F1CD6C4C6EA381B6FEC3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		5FB48EBDE8EB31F0D446A41F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 3.19.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		83AAEDA29D6EF22F70C16A3D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HostApp/HostApp.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = HostApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.toolkitforynab.macos;
+				PRODUCT_NAME = "Toolkit for YNAB";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		89A5A009B15486EE4BB5E09B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 3.19.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A02FF298EA6634FBA2D80C97 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/Extension.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Extension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.toolkitforynab.macos.Extension;
+				PRODUCT_NAME = "Toolkit for YNAB Extension";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		B7A4E9D19449B19BDCBFCCAA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = HostApp/HostApp.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = HostApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.toolkitforynab.macos;
+				PRODUCT_NAME = "Toolkit for YNAB";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CF0ED01012E02334E5EFBE5A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = Extension/Extension.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Extension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.toolkitforynab.macos.Extension;
+				PRODUCT_NAME = "Toolkit for YNAB Extension";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F3C79EACC1095000FCD81622 /* Build configuration list for PBXNativeTarget "Toolkit for YNAB" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B7A4E9D19449B19BDCBFCCAA /* Debug */,
+				83AAEDA29D6EF22F70C16A3D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F3F117C550A8C45A6C4612C6 /* Build configuration list for PBXNativeTarget "Toolkit for YNAB Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A02FF298EA6634FBA2D80C97 /* Debug */,
+				CF0ED01012E02334E5EFBE5A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FC796D92B2F3186A8891EE0B /* Build configuration list for PBXProject "Toolkit for YNAB" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				89A5A009B15486EE4BB5E09B /* Debug */,
+				5FB48EBDE8EB31F0D446A41F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A5758E5BB1A8F30132A770AD /* Project object */;
+}

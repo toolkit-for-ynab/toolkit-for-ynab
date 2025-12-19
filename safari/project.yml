@@ -1,0 +1,114 @@
+name: Toolkit for YNAB
+options:
+  bundleIdPrefix: com.toolkitforynab
+  deploymentTarget:
+    macOS: "12.0"
+  xcodeVersion: "15.0"
+  groupSortPosition: top
+  generateEmptyDirectories: true
+  createIntermediateGroups: true
+
+settings:
+  base:
+    MARKETING_VERSION: "3.19.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+targets:
+  Toolkit for YNAB:
+    type: application
+    platform: macOS
+    sources:
+      - path: HostApp
+        excludes:
+          - "**/.DS_Store"
+    info:
+      path: HostApp/Info.plist
+      properties:
+        CFBundleDisplayName: Toolkit for YNAB
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSApplicationCategoryType: public.app-category.productivity
+        NSMainStoryboardFile: Main
+        NSPrincipalClass: NSApplication
+    entitlements:
+      path: HostApp/HostApp.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.toolkitforynab.Toolkit-for-YNAB
+        PRODUCT_NAME: "Toolkit for YNAB"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "-"
+        ENABLE_HARDENED_RUNTIME: YES
+    dependencies:
+      - target: Toolkit for YNAB Extension
+        embed: true
+        codeSign: true
+        copyPhase:
+          destination: plugins
+    scheme:
+      testTargets: []
+      gatherCoverageData: false
+
+  Toolkit for YNAB Extension:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: Extension
+        excludes:
+          - "**/.DS_Store"
+          - _Resources
+      - path: Extension/_Resources/manifest.json
+        buildPhase: resources
+      - path: Extension/_Resources/assets
+        buildPhase: resources
+        type: folder
+      - path: Extension/_Resources/background
+        buildPhase: resources
+        type: folder
+      - path: Extension/_Resources/content-scripts
+        buildPhase: resources
+        type: folder
+      - path: Extension/_Resources/options
+        buildPhase: resources
+        type: folder
+      - path: Extension/_Resources/popup
+        buildPhase: resources
+        type: folder
+      - path: Extension/_Resources/web-accessibles
+        buildPhase: resources
+        type: folder
+    info:
+      path: Extension/Info.plist
+      properties:
+        CFBundleDisplayName: Toolkit for YNAB Extension
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.Safari.web-extension
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).SafariWebExtensionHandler
+    entitlements:
+      path: Extension/Extension.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.toolkitforynab.Toolkit-for-YNAB.Extension
+        PRODUCT_NAME: "Toolkit for YNAB Extension"
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_IDENTITY: "-"
+        GENERATE_INFOPLIST_FILE: NO
+        OTHER_LDFLAGS: ["-framework", "SafariServices"]
+
+schemes:
+  Toolkit for YNAB:
+    build:
+      targets:
+        Toolkit for YNAB: all
+        Toolkit for YNAB Extension: all
+    run:
+      config: Debug
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
