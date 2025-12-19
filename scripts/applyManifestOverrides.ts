@@ -5,14 +5,14 @@ import path from 'path';
 import yargs from 'yargs';
 import { MANIFEST_PATH, WORKSPACE_ROOT } from './lib/paths';
 
-const validOverrides = ['beta', 'development', 'ios', 'firefox'] as const;
+const validOverrides = ['beta', 'development', 'ios', 'firefox', 'safari'] as const;
 
 async function main() {
   const { type } = await yargs.choices('type', validOverrides).demandOption('type').parse();
 
   const manifest = require(MANIFEST_PATH);
 
-  if (type === 'ios' || type === 'firefox') {
+  if (type === 'ios' || type === 'firefox' || type === 'safari') {
     delete manifest.host_permissions;
     delete manifest.action;
   }

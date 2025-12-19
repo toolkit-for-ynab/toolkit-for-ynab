@@ -1,0 +1,246 @@
+@use '../../common/styles/toolkit-ui-styles.scss' as ui;
+
+.tk-options-root {
+  max-width: 1000px;
+  min-width: min(100vw, 1000px);
+  box-sizing: border-box;
+  margin: 0 auto;
+  display: grid;
+  gap: 2rem;
+  padding: 1rem;
+  grid-template-columns: 150px 1fr;
+  grid-template-rows: 50px 1fr;
+
+  header {
+    grid-row: 1/2;
+    grid-column: 2/3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    img {
+      height: 50px;
+
+      @include ui.dark-mode {
+        filter: drop-shadow(0px 0px 5px white);
+      }
+    }
+
+    .tk-search-input {
+      border: none;
+      padding: 0.5rem 0.75rem;
+      border-radius: 999999px;
+      background: var(--tk-search-bg);
+      color: var(--tk-search-text);
+      font-weight: 500;
+      font-family: inherit;
+      max-width: 200px;
+      flex: 1;
+      text-align: center;
+
+      &::placeholder {
+        color: var(--tk-search-placeholder);
+        font-weight: 400;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--tk-search-outline-focus);
+        background: var(--tk-search-bg-focus);
+      }
+    }
+
+    .tk-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+
+  nav.tk-toc {
+    grid-row: 2/3;
+    grid-column: 1/2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+    position: sticky;
+    top: 2rem;
+    align-self: flex-start;
+  }
+
+  .tk-content {
+    grid-column: 2/3;
+    grid-row: 2/3;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding-bottom: 80vh;
+
+    section {
+      h2 {
+        margin: 0;
+        margin-bottom: 1rem;
+        margin-left: 5rem;
+        font-weight: 500;
+        font-size: 2rem;
+      }
+
+      .tk-settings-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+      }
+    }
+  }
+}
+
+.setting {
+  display: flex;
+  align-items: center;
+
+  &__toggle {
+    margin-bottom: auto;
+  }
+
+  &__options {
+    max-height: 1000px;
+    transform: scaleY(1);
+    transform-origin: top;
+    margin-top: 1rem;
+
+    transition: max-height 0.15s ease-in-out, transform 0.15s ease-in-out,
+      margin-top 0.15s ease-in-out;
+
+    &--hidden {
+      max-height: 0px;
+      transform: scaleY(0);
+      transform-origin: top;
+      margin-top: 0rem;
+
+      transition: max-height 0.15s cubic-bezier(0, 1, 0, 1), transform 0.15s ease-in-out,
+        margin-top 0.15s ease-in-out;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+  }
+
+  &__title {
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  &__description {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.2rem;
+  }
+
+  &--select {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 6rem;
+
+    .setting__info {
+      margin-left: 0;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  position: relative;
+  padding: 1rem 2rem;
+  color: white;
+  border-radius: 9999999px;
+
+  &--danger {
+    background-color: var(--tk-alert-danger-background);
+  }
+
+  &--content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.import-export {
+  &__modal {
+    width: 800px;
+  }
+
+  &__textarea {
+    font-size: 1rem;
+    width: 100%;
+    background-color: var(--tk-background-color);
+    color: var(--tk-text-color);
+    padding: 0.1rem;
+    resize: vertical;
+  }
+
+  &__instructions {
+    margin-bottom: 1rem;
+    background: var(--tk-search-bg);
+    border-left: 0.25rem solid var(--tk-search-outline-focus);
+    padding: 1rem;
+  }
+}
+
+.help-text {
+  line-height: 1.5;
+}
+
+.color-picker {
+  position: relative;
+  border: 2px solid var(--tk-colorpicker-border);
+  border-radius: 5px;
+
+  &__input {
+    position: absolute;
+    visibility: hidden;
+    left: 0;
+    bottom: 0;
+  }
+
+  &__selector {
+    display: block;
+    width: 4rem;
+    height: 2rem;
+    border-bottom: 2px solid var(--tk-colorpicker-border);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 0.3rem 0px;
+
+    &:first-child {
+      border-right: 1px solid var(--tk-colorpicker-border);
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__action {
+    font-size: 0.8rem;
+    color: var(--tk-colorpicker-action);
+  }
+
+  &__icon {
+    cursor: pointer;
+  }
+}

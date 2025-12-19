@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "author": "Toolkit for YNAB",
+  "name": "Toolkit for YNAB",
+  "description": "UI customizations and tweaks for the web version of YNAB.",
+  "version": "3.19.0",
+  "content_scripts": [
+    {
+      "matches": ["*://*.youneedabudget.com/*", "*://*.ynab.com/*"],
+      "all_frames": true,
+      "run_at": "document_idle",
+      "js": ["content-scripts/extension-bridge.js"]
+    },
+    {
+      "matches": ["*://*.youneedabudget.com/*", "*://*.ynab.com/*"],
+      "all_frames": true,
+      "run_at": "document_start",
+      "js": ["content-scripts/enable-ember-debug.js"]
+    }
+  ],
+  "icons": {
+    "1024": "assets/images/icons/icon1024.png",
+    "512": "assets/images/icons/icon512.png",
+    "256": "assets/images/icons/icon256.png",
+    "128": "assets/images/icons/icon128.png",
+    "100": "assets/images/icons/icon100.png",
+    "64": "assets/images/icons/icon64.png",
+    "48": "assets/images/icons/icon48.png",
+    "32": "assets/images/icons/icon32.png",
+    "16": "assets/images/icons/button.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*", "web-accessibles/*"],
+      "matches": ["*://*.youneedabudget.com/*", "*://*.ynab.com/*"]
+    }
+  ],
+  "background": {
+    "service_worker": "background/background.js"
+  },
+  "homepage_url": "https://github.com/toolkit-for-ynab/toolkit-for-ynab/",
+  "options_ui": {
+    "open_in_tab": true,
+    "page": "options/index.html"
+  },
+
+  "action": {
+    "default_icon": "assets/images/icons/button.png",
+    "default_title": "Toolkit for YNAB",
+    "default_popup": "popup/index.html"
+  },
+  "permissions": ["storage"],
+  "host_permissions": ["*://*.youneedabudget.com/*", "*://*.ynab.com/*"]
+}

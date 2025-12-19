@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "content_scripts": [
+    {
+      "matches": ["https://*.youneedabudget.com/*", "https://*.ynab.com/*"],
+      "all_frames": true,
+      "run_at": "document_idle",
+      "js": ["content-scripts/extension-bridge.js"]
+    },
+    {
+      "matches": ["https://*.youneedabudget.com/*", "https://*.ynab.com/*"],
+      "all_frames": true,
+      "run_at": "document_start",
+      "js": ["content-scripts/enable-ember-debug.js"]
+    }
+  ],
+  "web_accessible_resources": ["assets/*", "web-accessibles/*"],
+  "background": {
+    "scripts": ["background/background.js"],
+    "persistent": false
+  },
+  "options_ui": {
+    "open_in_tab": true,
+    "page": "options/index.html"
+  },
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "browser_action": {
+    "default_icon": "assets/images/icons/button.png",
+    "default_title": "Toolkit for YNAB",
+    "default_popup": "popup/index.html"
+  },
+  "permissions": ["https://*.youneedabudget.com/*", "https://*.ynab.com/*", "storage"]
+}
