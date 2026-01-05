@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { componentAppend } from 'toolkit/extension/utils/react';
+import { componentAfter } from 'toolkit/extension/utils/react';
 import { Feature } from 'toolkit/extension/features/feature';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { HideClosedButton } from './HideClosedButton';
@@ -12,7 +12,7 @@ export class HideClosedAccounts extends Feature {
   }
 
   shouldInvoke() {
-    return false;
+    return true;
   }
 
   invoke() {
@@ -30,16 +30,16 @@ export class HideClosedAccounts extends Feature {
   }
 
   observe(changedNodes: Set<string>) {
-    if (changedNodes.has('modal-overlay active ynab-u ynab-new-settings-menu')) {
+    if (changedNodes.has('ynab-new-settings-menu')) {
       this.invoke();
     }
   }
 
   insertHideClosed(element: Element) {
     if ($('#tk-hide-closed-accounts').length === 0) {
-      componentAppend(
+      componentAfter(
         <HideClosedButton toggleHiddenState={this.setHiddenState} />,
-        element.getElementsByClassName('modal-list')[0],
+        element.getElementsByClassName('modal-select-import-from')[0],
       );
     }
   }
