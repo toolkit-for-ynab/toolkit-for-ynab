@@ -10,4 +10,5 @@ export interface YNABEntityManager {
   getTransactionsBySubCategoryId(subCategoryId: string): YNABTransaction[];
   transactionsCollection: YNABTransactionCollection;
   payeesCollection: YNABPayeeCollection;
+  performAsSingleChangeSet(changeSetFunction: () => void): void;
 }

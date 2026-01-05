@@ -1,0 +1,28 @@
+.tk-grid-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tk-bulk-edit-date .tk-grid-actions button.tk-memo-cancel {
+  border: 2px solid var(--actionSecondary);
+  padding: 0.4em 0.6em;
+  margin-right: 5px;
+}
+
+.tk-date-edit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  margin-bottom: 8px;
+}
+
+.modal-popup .tk-date-input {
+  margin-bottom: 0px;
+}
+
+#tk-bulk-edit-date-save:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
