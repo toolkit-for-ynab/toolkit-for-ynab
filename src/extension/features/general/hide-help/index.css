@@ -5,3 +5,19 @@ body.toolkit-hide-help .chat-widget {
 body.toolkit-hide-help #beacon-container {
   display: none !important;
 }
+#tk-hide-help {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  gap: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+#tk-hide-help:hover {
+  background-color: var(--backgroundSecondaryElevated);
+}
+#tk-hide-help svg {
+  color: rgb(155, 156, 170);
+}

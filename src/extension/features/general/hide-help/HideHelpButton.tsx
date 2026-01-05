@@ -17,13 +17,11 @@ export const HideHelpButton = ({ toggleHiddenState }: Props) => {
   };
 
   return (
-    <li onClick={toggleHidden} id="tk-hide-help">
-      <button>
-        <svg className="ynab-new-icon" width="16" height="16">
-          <use href="#icon_sprite_question_mark_circle"></use>
-        </svg>
-        {` ${label}`} Help Button
-      </button>
-    </li>
+    <button onClick={toggleHidden} id="tk-hide-help">
+      <svg className="ynab-new-icon" width="16" height="16">
+        <use href="#icon_sprite_question_mark_circle"></use>
+      </svg>
+      {` ${label}`} Help Button
+    </button>
   );
 };
