@@ -9,5 +9,8 @@
 .nav-accounts .nav-account-icons-right {
   display: flex;
   align-items: center;
+}
+
+.nav-account-row .nav-account-icons.nav-account-icons-right {
   width: 2rem;
 }
