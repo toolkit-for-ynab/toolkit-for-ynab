@@ -22,10 +22,10 @@ export class ShowAvailableAfterSavings extends Feature {
   handleBudgetBreakdown() {
     this.removeAvailableAfterSavings();
 
-    const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals');
-    if (!$budgetBreakdownMonthlyTotals.length) return;
+    const $budgetBreakdown = $('.budget-breakdown');
+    if (!$budgetBreakdown.length) return;
 
-    this.showAvailableAfterSavings($budgetBreakdownMonthlyTotals);
+    this.showAvailableAfterSavings($budgetBreakdown);
   }
 
   showAvailableAfterSavings(context) {
