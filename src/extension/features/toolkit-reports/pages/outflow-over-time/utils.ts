@@ -115,10 +115,12 @@ export function calculateCumulativeOutflowPerDate(transactions: GroupedTransacti
 
 export function toHighchartsSeries(
   transactions: Record<string, Record<string, OutflowData>>,
+  options?: { dashStyle?: Highcharts.DashStyleValue; nameSuffix?: string },
 ): Highcharts.SeriesLineOptions[] {
   return Object.entries(transactions).map(([month, data]) => ({
-    name: moment(month, 'YYYY-MM').format('MMM YYYY'),
+    name: moment(month, 'YYYY-MM').format('MMM YYYY') + (options?.nameSuffix ?? ''),
     type: 'line',
+    dashStyle: options?.dashStyle,
     data: Object.entries(data).map(([date, { value, transactions }]) => ({
       x: parseInt(date),
       y: value,
