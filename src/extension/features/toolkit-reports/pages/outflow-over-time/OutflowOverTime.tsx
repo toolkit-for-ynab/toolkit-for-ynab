@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import {
+  calculateAverageDailyForecast,
   calculateCumulativeOutflowPerDate,
   calculateOutflowPerDate,
   filterTransactions,
@@ -16,11 +18,12 @@ import { ReportContextType } from '../../common/components/report-context';
 
 export const OutflowOverTimeComponent = ({
   filteredTransactions,
+  allReportableTransactions,
   allScheduledTransactions,
   filters,
 }: Pick<
   ReportContextType,
-  'filteredTransactions' | 'allScheduledTransactions' | 'filters'
+  'filteredTransactions' | 'allReportableTransactions' | 'allScheduledTransactions' | 'filters'
 >) => {
   const [outflowSeries, setOutflowSeries] = useState<Highcharts.SeriesLineOptions[]>([]);
 
@@ -38,6 +41,13 @@ export const OutflowOverTimeComponent = ({
 
   // Show forecast overlays dotted series for scheduled transactions.
   const [showForecast, setShowForecast] = useLocalStorage('outflow-over-time-showForecast', false);
+
+  // Show average forecast based on historical spending in the last N months.
+  const [showAverageForecast, setShowAverageForecast] = useLocalStorage(
+    'outflow-over-time-showAverageForecast',
+    false,
+  );
+  const [averageMonths, setAverageMonths] = useLocalStorage('outflow-over-time-averageMonths', 3);
 
   useEffect(() => {
     if (!filters) return;
@@ -60,6 +70,8 @@ export const OutflowOverTimeComponent = ({
         ),
       ),
     );
+
+    const combined = [...regularSeries];
 
     if (showForecast) {
       // Scheduled sub-transactions (split children) carry per-category amounts but not the
@@ -105,17 +117,52 @@ export const OutflowOverTimeComponent = ({
           })
         : forecastSeries;
 
-      setOutflowSeries([...regularSeries, ...adjustedForecastSeries]);
-    } else {
-      setOutflowSeries(regularSeries);
+      combined.push(...adjustedForecastSeries);
     }
+
+    if (showAverageForecast) {
+      const avgData = calculateAverageDailyForecast(
+        filterTransactions(allReportableTransactions, includeInflows, filterOutAccounts),
+        averageMonths,
+        moment(),
+      );
+
+      if (avgData.length > 0) {
+        let cumulativeOffset = 0;
+        if (cumulativeSum) {
+          const currentMonthName = moment().format('MMM YYYY');
+          const actualSeries = regularSeries.find((s) => s.name === currentMonthName);
+          const actualData = actualSeries?.data as Array<{ x: number; y: number }> | undefined;
+          cumulativeOffset = actualData?.length ? actualData[actualData.length - 1].y : 0;
+        }
+
+        let runningTotal = cumulativeOffset;
+        combined.push({
+          name: `${averageMonths}-mo average`,
+          type: 'line',
+          dashStyle: 'LongDash',
+          data: avgData.map(({ day, value }) => {
+            if (cumulativeSum) {
+              runningTotal += value;
+              return { x: day, y: runningTotal, custom: [] };
+            }
+            return { x: day, y: value, custom: [] };
+          }),
+        });
+      }
+    }
+
+    setOutflowSeries(combined);
   }, [
     filteredTransactions,
+    allReportableTransactions,
     allScheduledTransactions,
     filters,
     cumulativeSum,
     includeInflows,
     showForecast,
+    showAverageForecast,
+    averageMonths,
   ]);
 
   return (
@@ -139,6 +186,31 @@ export const OutflowOverTimeComponent = ({
           label="Show forecast (scheduled transactions)"
           onChange={() => setShowForecast(!showForecast)}
         />
+        <LabeledCheckbox
+          id="tk-outflow-over-time-show-average-forecast-option"
+          checked={showAverageForecast}
+          label="Show average forecast (historical spending)"
+          onChange={() => setShowAverageForecast(!showAverageForecast)}
+        />
+        {showAverageForecast && (
+          <div
+            className="tk-flex tk-align-items-center tk-gap-small"
+            style={{ marginLeft: '24px' }}
+          >
+            <label htmlFor="tk-outflow-over-time-average-months">Months to average:</label>
+            <select
+              id="tk-outflow-over-time-average-months"
+              value={averageMonths}
+              onChange={(e) => setAverageMonths(parseInt(e.target.value, 10))}
+            >
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </AdditionalReportSettings>
       <OutflowGraph series={outflowSeries} />
     </div>

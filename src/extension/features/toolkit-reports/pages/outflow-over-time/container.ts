@@ -8,6 +8,7 @@ const mapReportContextToProps = (context: ReportContextType) => {
   return {
     filters: context.filters,
     filteredTransactions: context.filteredTransactions,
+    allReportableTransactions: context.allReportableTransactions,
     allScheduledTransactions: context.allScheduledTransactions,
   };
 };
