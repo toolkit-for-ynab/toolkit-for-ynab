@@ -1,38 +1,39 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getBudgetService, isCurrentRouteBudgetPage } from 'toolkit/extension/utils/ynab';
 
-export class DateOfMoney extends Feature {
-  injectCSS() {
-    return require('./index.css');
-  }
+const REFLECT_AOM_SELECTORS = [
+  '[data-testid="age-of-money-days"]',
+  '[data-testid="ageOfMoneyDays"]',
+  '.age-of-money-days',
+  '[class*="ageOfMoney"] [class*="days"]',
+  '[class*="age-of-money"] [class*="days"]',
+];
 
+export class DateOfMoneyTooltip extends Feature {
   shouldInvoke() {
-    return isCurrentRouteBudgetPage();
-  }
-
-  onRouteChanged() {
-    if (this.shouldInvoke()) {
-      this.invoke();
-    }
-  }
-
-  destroy() {
-    document.querySelector('.budget-header-days-age').setAttribute('title', '');
+    return (
+      document.location.hash.includes('reflect') ||
+      document.location.pathname.includes('/reflect')
+    );
   }
 
   invoke() {
-    const budgetHeaderDaysAgeContainer = document.querySelector('.budget-header-days-age');
-    if (!budgetHeaderDaysAgeContainer) {
+    const ageElement = this._findAomElement();
+    if (!ageElement || ageElement.getAttribute('data-toolkit-dom') === 'date-of-money') {
       return;
     }
 
-    const budgetController = getBudgetService();
-    const ageOfMoney =
-      budgetController?.budgetViewModel?.monthlyBudgetCalculationForCurrentMonth?.ageOfMoney;
+    const days = parseInt(ageElement.textContent.trim(), 10);
+    if (isNaN(days) || days <= 0) return;
 
-    // Calculate the Date Of Money by subtracting AOM from today's date
-    const today = ynab.utilities.DateWithoutTime.createForToday();
-    const dateOfMoney = today.subtractDays(ageOfMoney);
-    budgetHeaderDaysAgeContainer.setAttribute('title', ynab.formatDate(dateOfMoney.format()));
-  }
-}
+    const earnedDate = new Date();
+    earnedDate.setDate(earnedDate.getDate() - days);
+
+    const dateString = earnedDate.toLocaleDateString(undefined, {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+
+    ageElement.setAttribute('title', `Money earned around: ${dateString}`);
+    ageElement.setAt
