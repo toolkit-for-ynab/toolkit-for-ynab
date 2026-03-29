@@ -1,5 +1,5 @@
 export function linkifyMemoCell(memo) {
-  if (memo.dataset.isLink === 'true' || memo.dataset.isLink === true) {
+  if (memo.dataset.isLink === 'true') {
     return;
   }
 
