@@ -92,10 +92,6 @@ export class Background {
     }
   };
 
-  _handleUpdateAvailable = () => {
-    this._browser.runtime.reload();
-  };
-
   _initializeSentry() {
     const environment = getEnvironment();
     const context = {

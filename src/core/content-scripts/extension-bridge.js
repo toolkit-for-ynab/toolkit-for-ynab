@@ -2,47 +2,70 @@ import { getBrowser } from 'toolkit/core/common/web-extensions';
 import { ToolkitStorage, FEATURE_SETTING_PREFIX } from 'toolkit/core/common/storage';
 import { allToolkitSettings, getUserSettings } from 'toolkit/core/settings';
 import { getEnvironment } from 'toolkit/core/common/web-extensions';
-import { InboundMessageType, OutboundMessageType } from '../messages';
+import { createFeatureSettingValidator } from 'toolkit/core/content-scripts/feature-setting-validation';
+import { InboundMessageType, OutboundMessageType, TOOLKIT_MESSAGE_CHANNEL } from '../messages';
 
 const storage = new ToolkitStorage();
 
 let toolkitInitiated = false;
+const TRUSTED_ORIGIN = window.location.origin;
+const validateFeatureSettingValue = createFeatureSettingValidator(allToolkitSettings);
+
+function postToolkitMessage(payload) {
+  window.postMessage(
+    {
+      channel: TOOLKIT_MESSAGE_CHANNEL,
+      ...payload,
+    },
+    TRUSTED_ORIGIN,
+  );
+}
+
+function isTrustedToolkitMessage(event) {
+  return (
+    event &&
+    event.source === window &&
+    event.origin === TRUSTED_ORIGIN &&
+    event.data?.channel === TOOLKIT_MESSAGE_CHANNEL &&
+    typeof event.data?.type === 'string'
+  );
+}
 
 function sendToolkitBootstrap(options) {
   const browser = getBrowser();
   const environment = getEnvironment();
   const manifest = browser.runtime.getManifest();
 
-  window.postMessage(
-    {
-      type: InboundMessageType.Bootstrap,
-      ynabToolKit: {
-        assets: {
-          logo: browser.runtime.getURL('assets/images/logos/toolkitforynab-logo-200.png'),
-        },
-        environment,
-        extensionId: browser.runtime.id,
-        name: manifest.name,
-        options,
-        version: manifest.version,
+  postToolkitMessage({
+    type: InboundMessageType.Bootstrap,
+    ynabToolKit: {
+      assets: {
+        logo: browser.runtime.getURL('assets/images/logos/toolkitforynab-logo-200.png'),
       },
+      environment,
+      extensionId: browser.runtime.id,
+      name: manifest.name,
+      options,
+      version: manifest.version,
     },
-    '*',
-  );
+  });
 }
 
 function toolkitMessageHandler(event) {
-  if (event.data && event.data.type) {
-    switch (event.data.type) {
-      case OutboundMessageType.ToolkitLoaded:
-        initializeYNABToolkit();
-        break;
-      case 'ynab-toolkit-error':
-        handleToolkitError(event.data.context);
-        break;
-      case 'ynab-toolkit-set-setting':
-        handleSetFeatureSetting(event.data.setting);
-    }
+  if (!isTrustedToolkitMessage(event)) {
+    return;
+  }
+
+  switch (event.data.type) {
+    case OutboundMessageType.ToolkitLoaded:
+      initializeYNABToolkit();
+      break;
+    case OutboundMessageType.ToolkitError:
+      handleToolkitError(event.data.context);
+      break;
+    case 'ynab-toolkit-set-setting':
+      handleSetFeatureSetting(event.data.setting);
+      break;
   }
 }
 
@@ -51,12 +74,18 @@ function handleToolkitError(context) {
 }
 
 function handleSetFeatureSetting({ name, value }) {
-  storage.setFeatureSetting(name, value);
+  const normalizedValue = validateFeatureSettingValue(name, value);
+  if (normalizedValue === null) {
+    console.warn('Ignoring invalid feature setting update', { name, value });
+    return;
+  }
+
+  storage.setFeatureSetting(name, normalizedValue);
 }
 
 function handleFeatureSettingChanged(settingName, newValue) {
   if (settingName.startsWith(FEATURE_SETTING_PREFIX)) {
-    window.postMessage({
+    postToolkitMessage({
       type: InboundMessageType.SettingChanged,
       setting: {
         name: settingName.slice(FEATURE_SETTING_PREFIX.length),

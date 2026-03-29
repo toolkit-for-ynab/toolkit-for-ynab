@@ -6,7 +6,12 @@ import { YNABToolkit } from './ynab-toolkit';
 import { allToolkitSettings } from 'toolkit/core/settings';
 import { isYNABReady } from 'toolkit/extension/utils/ynab';
 import { readyYNAB, unreadyYNAB } from 'toolkit/test/setup';
-import { OutboundMessageType, InboundMessageType, BootstrapMessage } from 'toolkit/core/messages';
+import {
+  OutboundMessageType,
+  InboundMessageType,
+  BootstrapMessage,
+  TOOLKIT_MESSAGE_CHANNEL,
+} from 'toolkit/core/messages';
 import type { YNABToolkitObject } from 'toolkit/types/toolkit';
 
 const mockIsYNABReady = isYNABReady as jest.Mock;
@@ -26,8 +31,14 @@ const setup = (setupOptions = {}) => {
     });
 
   const postMessageSpy = jest.spyOn(window, 'postMessage');
-  const callMessageListener = (...args: any[]) => {
-    messageCallback.apply(null, args as any);
+  const callMessageListener = (eventOverrides: Partial<MessageEvent> = {}) => {
+    const defaultEvent = {
+      source: window,
+      origin: window.location.origin,
+      data: bootstrapData,
+    } as unknown as MessageEvent;
+
+    messageCallback({ ...defaultEvent, ...eventOverrides } as unknown as MessageEvent);
   };
 
   const ynabToolkit = new YNABToolkit();
@@ -36,6 +47,7 @@ const setup = (setupOptions = {}) => {
   }
 
   const bootstrapData: BootstrapMessage['data'] = {
+    channel: TOOLKIT_MESSAGE_CHANNEL,
     type: InboundMessageType.Bootstrap,
     ynabToolKit: {
       assets: {
@@ -54,10 +66,7 @@ const setup = (setupOptions = {}) => {
   });
 
   if (options.sendBootstrap) {
-    callMessageListener({
-      source: window,
-      data: bootstrapData,
-    });
+    callMessageListener();
   }
 
   return {
@@ -88,7 +97,13 @@ describe('YNABToolkit', () => {
     it('should postMessage the toolkit loaded message', () => {
       const { postMessageSpy, ynabToolkit } = setup({ initialize: false });
       ynabToolkit.initializeToolkit();
-      expect(postMessageSpy).toHaveBeenCalledWith({ type: OutboundMessageType.ToolkitLoaded }, '*');
+      expect(postMessageSpy).toHaveBeenCalledWith(
+        {
+          channel: TOOLKIT_MESSAGE_CHANNEL,
+          type: OutboundMessageType.ToolkitLoaded,
+        },
+        window.location.origin,
+      );
     });
   });
 
@@ -133,6 +148,21 @@ describe('YNABToolkit', () => {
         setup({ sendBootstrap: true });
         expect($('head #tk-global-styles').length).toEqual(1);
       });
+    });
+  });
+
+  describe('message validation', () => {
+    it('ignores messages sent without the toolkit channel token', () => {
+      const { callMessageListener, bootstrapData } = setup();
+      callMessageListener({ data: { ...bootstrapData, channel: 'invalid-channel' } as any });
+
+      expect(window.ynabToolKit).toBeUndefined();
+    });
+
+    it('ignores messages from other origins', () => {
+      const { callMessageListener } = setup();
+      callMessageListener({ origin: 'https://example.com' } as any);
+      expect(window.ynabToolKit).toBeUndefined();
     });
   });
 });

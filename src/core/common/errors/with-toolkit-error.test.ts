@@ -1,5 +1,6 @@
 import { logToolkitError, withToolkitError } from './with-toolkit-error';
 import { readyYNAB } from 'toolkit/test/setup';
+import { OutboundMessageType, TOOLKIT_MESSAGE_CHANNEL } from 'toolkit/core/messages';
 
 describe('toolkit error utils', () => {
   const originalConsoleWarn = global.console.warn.bind(global.console);
@@ -97,6 +98,7 @@ describe('toolkit error utils', () => {
 
       expect(postMessageSpy).toHaveBeenCalledWith(
         {
+          channel: TOOLKIT_MESSAGE_CHANNEL,
           context: {
             featureName: 'mock feature',
             featureSetting: 'false',
@@ -104,9 +106,9 @@ describe('toolkit error utils', () => {
             routeName: '/omitted/budget/201802',
             serializedError: mockError!.stack!.toString(),
           },
-          type: 'ynab-toolkit-error',
+          type: OutboundMessageType.ToolkitError,
         },
-        '*',
+        window.location.origin,
       );
     });
   });
