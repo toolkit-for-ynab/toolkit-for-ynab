@@ -14,8 +14,8 @@ const validateFeatureSettingValue = createFeatureSettingValidator(allToolkitSett
 function postToolkitMessage(payload) {
   window.postMessage(
     {
-      channel: TOOLKIT_MESSAGE_CHANNEL,
       ...payload,
+      channel: TOOLKIT_MESSAGE_CHANNEL,
     },
     TRUSTED_ORIGIN,
   );
