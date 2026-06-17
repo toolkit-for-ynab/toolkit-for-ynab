@@ -34,5 +34,6 @@ scripts/settings.json
 src/extension/features/index.ts
 
 
-# maintainer-only Claude Code config
-.claude/
+# local Claude Code overrides (project skills in .claude/commands/ are shareable)
+.claude/settings.local.json
+.claude/memory/
