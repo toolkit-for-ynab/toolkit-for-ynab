@@ -23,13 +23,13 @@ module.exports = function (env) {
       'options/options': path.resolve(`${CODE_SOURCE_DIR}/core/options/index.tsx`),
       'popup/popup': path.resolve(`${CODE_SOURCE_DIR}/core/popup/index.tsx`),
       'content-scripts/extension-bridge': path.resolve(
-        `${CODE_SOURCE_DIR}/core/content-scripts/extension-bridge.js`
+        `${CODE_SOURCE_DIR}/core/content-scripts/extension-bridge.js`,
       ),
       'content-scripts/enable-ember-debug': path.resolve(
-        `${CODE_SOURCE_DIR}/core/content-scripts/enable-ember-debug.js`
+        `${CODE_SOURCE_DIR}/core/content-scripts/enable-ember-debug.js`,
       ),
       'web-accessibles/enable-ember-debug': path.resolve(
-        `${CODE_SOURCE_DIR}/core/web-accessibles/enable-ember-debug.js`
+        `${CODE_SOURCE_DIR}/core/web-accessibles/enable-ember-debug.js`,
       ),
       'web-accessibles/ynab-toolkit': path.resolve(`${CODE_SOURCE_DIR}/extension/index.js`),
     },
@@ -46,7 +46,7 @@ module.exports = function (env) {
         toolkit: path.resolve(__dirname, CODE_SOURCE_DIR),
         'toolkit-reports': path.resolve(
           __dirname,
-          path.join(CODE_SOURCE_DIR, 'extension', 'features', 'toolkit-reports')
+          path.join(CODE_SOURCE_DIR, 'extension', 'features', 'toolkit-reports'),
         ),
       },
       extensions: ['.js', '.jsx', '.ts', '.tsx'],

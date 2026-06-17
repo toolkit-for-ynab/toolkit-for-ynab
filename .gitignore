@@ -33,3 +33,7 @@ scripts/settings.json
 # created at build time with tasks/generateFeatureIndex.js
 src/extension/features/index.ts
 
+
+# local Claude Code overrides (project skills in .claude/commands/ are shareable)
+.claude/settings.local.json
+.claude/memory/

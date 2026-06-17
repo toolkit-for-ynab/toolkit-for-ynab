@@ -89,7 +89,7 @@ const config = {
     [
       '@semantic-release/exec',
       {
-        publishCmd: 'yarn build:ci-test', // UPDATE TO 'yarn build:ci' when in 'production'
+        publishCmd: 'yarn build:ci',
       },
     ],
     [
