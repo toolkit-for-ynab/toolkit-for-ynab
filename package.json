@@ -14,6 +14,7 @@
     "build:ci-test": "yarn gen && yarn build:production",
     "compress:firefox": "ts-node scripts/compressSrc.ts --browser=firefox && ts-node scripts/compressDist.ts --browser=firefox",
     "compress:chrome": "ts-node scripts/compressSrc.ts --browser=chrome && ts-node scripts/compressDist.ts --browser=chrome",
+    "release": "git fetch origin && git checkout main && git pull origin main && git merge origin/develop && git push origin main && git checkout develop",
     "deploy:beta": "git fetch origin main:beta && git push origin beta",
     "manifest:beta": "ts-node scripts/applyManifestOverrides.ts --type=beta",
     "manifest:development": "ts-node scripts/applyManifestOverrides.ts --type=development",
