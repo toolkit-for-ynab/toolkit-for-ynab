@@ -105,6 +105,19 @@ const config = {
         assets: ['dist/*.zip'],
       },
     ],
+    [
+      'semantic-release-chrome',
+      {
+        extensionId: 'lmhdkkhepllpnondndgpgclfjnlofgjl',
+        asset: 'dist/toolkit-for-ynab-v*-chrome.zip',
+      },
+    ],
+    [
+      '@semantic-release/exec',
+      {
+        publishCmd: 'node scripts/publishForFirefox.js',
+      },
+    ],
   ],
 };
 
