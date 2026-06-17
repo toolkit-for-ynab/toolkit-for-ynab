@@ -6,12 +6,11 @@ on:
     paths-ignore:
       - '**.md'
       - './scripts/**'
-      - './release.config.cjs'
+      - '.config/releaserc.js'
   workflow_dispatch: {}
 
 env:
   HUSKY: 0
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
   packages: write
@@ -46,14 +45,14 @@ jobs:
 
       - name: Semantic Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release --debug
 
       - name: Merge main branch -> develop
         uses: devmasx/merge-branch@master
         with:
           type: now
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_TOKEN }}
           from_branch: ${{ github.ref_name }}
           target_branch: develop
           message: 'chore(ci): sync develop with ${{ github.ref_name }} [skip ci]'
