@@ -2097,6 +2097,65 @@
     lodash-es "^4.17.21"
     read-package-up "^11.0.0"
 
+"@sentry/cli-darwin@3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@sentry/cli-darwin/-/cli-darwin-3.5.1.tgz#a5493c3f9636a5c14fc47f95e59224cb59ed6481"
+  integrity sha512-GxHAtZaXRA650egcepQXU0pR0dZ8ZNvQS8eq3wBxhCK8os5VQpLyBABIaN6AdrE/b8M7UvqGjsuVm0giI1GZ7w==
+
+"@sentry/cli-linux-arm64@3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@sentry/cli-linux-arm64/-/cli-linux-arm64-3.5.1.tgz#48637c57bb8c278ab9605948a01c509d8a8593ac"
+  integrity sha512-Qa0NLXG/FSYWGhKjdm2mxp/GgpluFFkj/J+CpmVzwvezNC/Uy1omquv7J+VficqskNYuptjsoB4dNIPPcXpbxg==
+
+"@sentry/cli-linux-arm@3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@sentry/cli-linux-arm/-/cli-linux-arm-3.5.1.tgz#4cec807c212772636869d3d5d43a1aa69756ee30"
+  integrity sha512-JOfgXCDZKbxQpw8Z4Kbkt8Hl+ASW5pYVUYw8Hc2msPN3HtfTmsc1z0y6jq3TCUWDWbWpWbI1zfXa0v02vQf3gw==
+
+"@sentry/cli-linux-i686@3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@sentry/cli-linux-i686/-/cli-linux-i686-3.5.1.tgz#c2cfc1ddddf471371a59955ad5b8eeb096f1d778"
+  integrity sha512-/Bqcl8EyS6T8RIjBeeMYUPgjMJ8kb4plF0w3QOG6TY+bUEqHEnZyfzKJWZY/OqhmrSgj+ZYynaSHIIR6dWluMA==
+
+"@sentry/cli-linux-x64@3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@sentry/cli-linux-x64/-/cli-linux-x64-3.5.1.tgz#a1a64b5409db64ffd0c92388cb46bd83b50dba94"
+  integrity sha512-iUJT2GI/soc0myi1sSnXdu71oBkUER3fBeXn10bcEZX+UK9GomsqL40OLlygDipZZ6FqhODORqLeTxHdHbRuOw==
+
+"@sentry/cli-win32-arm64@3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@sentry/cli-win32-arm64/-/cli-win32-arm64-3.5.1.tgz#2db5c7658b79b8ce6f5597cfa9fa9dda0da015e4"
+  integrity sha512-Hs4jHOsTKrrI2W8c4wEIvQzSuHqvrjsDHT7iwujHjp4oeAOnYjBUm+/BgDH2Eg1/jL5ilEnJbpnAn2AE2KQUXQ==
+
+"@sentry/cli-win32-i686@3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@sentry/cli-win32-i686/-/cli-win32-i686-3.5.1.tgz#2512439eb1bcb35fcad5ee6de714dd636f4fb789"
+  integrity sha512-Op+9MYAg0RbVWOQ9/NtFunWcknS8MlqhEa03ENFUrRDQE0m+iHioknGOagKrNXYXj1UbGEf0G9UzIMcRwB/UCQ==
+
+"@sentry/cli-win32-x64@3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@sentry/cli-win32-x64/-/cli-win32-x64-3.5.1.tgz#7ebcf29759a994ada669f84f1ba7d0c20da5dcdd"
+  integrity sha512-Vf+CtFPkuGzjddD6dJoAVKszw5QB7P1ffc++yAbU54ditqJdgswo45oyTFOiQFO2isCmhgICzimqe8SkU+p2Mw==
+
+"@sentry/cli@^3.5.1":
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-3.5.1.tgz#f786c3cc2c4383023b0e8ca9bcdb1b09f8a70f3e"
+  integrity sha512-h710aEXT8At4lg7GbXDZkatDDq0uA5QKZmSiF/8Hy6jJZ/9dh6EBDZZpTYnDpNrwRvE8tqhnwEjTZDlHjOhPNQ==
+  dependencies:
+    progress "^2.0.3"
+    proxy-from-env "^1.1.0"
+    undici "^6.22.0"
+    which "^2.0.2"
+  optionalDependencies:
+    "@sentry/cli-darwin" "3.5.1"
+    "@sentry/cli-linux-arm" "3.5.1"
+    "@sentry/cli-linux-arm64" "3.5.1"
+    "@sentry/cli-linux-i686" "3.5.1"
+    "@sentry/cli-linux-x64" "3.5.1"
+    "@sentry/cli-win32-arm64" "3.5.1"
+    "@sentry/cli-win32-i686" "3.5.1"
+    "@sentry/cli-win32-x64" "3.5.1"
+
 "@sigstore/bundle@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@sigstore/bundle/-/bundle-3.1.0.tgz#74f8f3787148400ddd364be8a9a9212174c66646"
@@ -9611,6 +9670,11 @@ proggy@^3.0.0:
   resolved "https://registry.yarnpkg.com/proggy/-/proggy-3.0.0.tgz#874e91fed27fe00a511758e83216a6b65148bd6c"
   integrity sha512-QE8RApCM3IaRRxVzxrjbgNMpQEX6Wu0p0KBeoSiSEw5/bsGwZHsshF4LCxH2jp/r6BU+bqA3LrMDEYNfJnpD8Q==
 
+progress@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
+  integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
+
 promise-all-reject-late@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/promise-all-reject-late/-/promise-all-reject-late-1.0.1.tgz#f8ebf13483e5ca91ad809ccc2fcf25f26f8643c2"
@@ -9670,6 +9734,11 @@ proxy-addr@~2.0.7:
   dependencies:
     forwarded "0.2.0"
     ipaddr.js "1.9.1"
+
+proxy-from-env@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
+  integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
 
 ps-tree@^1.2.0:
   version "1.2.0"
@@ -11450,6 +11519,11 @@ unbox-primitive@^1.0.2:
     has-symbols "^1.0.3"
     which-boxed-primitive "^1.0.2"
 
+undici@^6.22.0:
+  version "6.27.0"
+  resolved "https://registry.yarnpkg.com/undici/-/undici-6.27.0.tgz#41f9e48f7c5a40d27376caaead8c9a9fc7bca9c4"
+  integrity sha512-YmfV3YnEDzXRC5lZ2jWtWWHKGUm1zIt8AhesR1tens+HTNv+YZlN/dp6G727LOvMJ8xjP9Be7Y2Sdr96LDm+pg==
+
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"
   resolved "https://registry.npmjs.org/unicode-canonical-property-names-ecmascript/-/unicode-canonical-property-names-ecmascript-1.0.4.tgz"
@@ -11907,7 +11981,7 @@ which-boxed-primitive@^1.0.2:
     is-string "^1.0.5"
     is-symbol "^1.0.3"
 
-which@^2.0.1:
+which@^2.0.1, which@^2.0.2:
   version "2.0.2"
   resolved "https://registry.npmjs.org/which/-/which-2.0.2.tgz"
   integrity sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==
