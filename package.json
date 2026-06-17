@@ -181,7 +181,7 @@
     "yargs": "^17.6.2"
   },
   "engines": {
-    "node": ">=18.12.1",
+    "node": ">=24.0.0",
     "yarn": "1.22.19"
   },
   "packageManager": "yarn@1.22.19"
