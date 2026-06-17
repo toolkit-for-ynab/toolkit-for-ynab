@@ -93,7 +93,7 @@ jobs:
         run: yarn install
 
       - name: Download release artifacts
-        run: mkdir -p dist && gh release download --latest --pattern "*.zip" --dir dist/
+        run: mkdir -p dist && gh release download "$(gh release view --json tagName -q .tagName)" --pattern "*.zip" --dir dist/
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
@@ -122,7 +122,7 @@ jobs:
         run: yarn install
 
       - name: Download release artifacts
-        run: mkdir -p dist && gh release download --latest --pattern "*.zip" --dir dist/
+        run: mkdir -p dist && gh release download "$(gh release view --json tagName -q .tagName)" --pattern "*.zip" --dir dist/
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
