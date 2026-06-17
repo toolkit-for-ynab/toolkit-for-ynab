@@ -42,7 +42,7 @@ const REPORT_COMPONENTS: SelectedReportContextPropType[] = [
     component: OutflowOverTime,
     key: ReportKeys.OutflowOverTime,
     filterSettings: {
-      disableCategoryFilter: true,
+      disableCategoryFilter: false,
       includeTrackingAccounts: true,
     },
   },

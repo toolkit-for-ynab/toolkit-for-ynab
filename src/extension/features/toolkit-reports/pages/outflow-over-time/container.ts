@@ -7,7 +7,7 @@ import { OutflowOverTimeComponent } from './OutflowOverTime';
 const mapReportContextToProps = (context: ReportContextType) => {
   return {
     filters: context.filters,
-    allReportableTransactions: context.allReportableTransactions,
+    filteredTransactions: context.filteredTransactions,
   };
 };
 export const OutflowOverTime = withReportContext(mapReportContextToProps)(OutflowOverTimeComponent);

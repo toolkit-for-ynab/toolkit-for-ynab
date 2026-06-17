@@ -15,9 +15,9 @@ import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-rep
 import { ReportContextType } from '../../common/components/report-context';
 
 export const OutflowOverTimeComponent = ({
-  allReportableTransactions,
+  filteredTransactions,
   filters,
-}: Pick<ReportContextType, 'allReportableTransactions' | 'filters'>) => {
+}: Pick<ReportContextType, 'filteredTransactions' | 'filters'>) => {
   const [outflowSeries, setOutflowSeries] = useState<Highcharts.SeriesLineOptions[]>([]);
 
   // Using CumulativeSum will show a growing trendline over the dates.
@@ -47,7 +47,7 @@ export const OutflowOverTimeComponent = ({
         calculateOutflow(
           groupTransactions(
             filterTransactions(
-              filterTransactionsByDate(allReportableTransactions, fromDate, toDate),
+              filterTransactionsByDate(filteredTransactions, fromDate, toDate),
               includeInflows,
               filterOutAccounts,
             ),
@@ -55,7 +55,7 @@ export const OutflowOverTimeComponent = ({
         ),
       ),
     );
-  }, [allReportableTransactions, filters, cumulativeSum, includeInflows]);
+  }, [filteredTransactions, filters, cumulativeSum, includeInflows]);
 
   return (
     <div className="tk-flex tk-flex-column tk-flex-grow">
