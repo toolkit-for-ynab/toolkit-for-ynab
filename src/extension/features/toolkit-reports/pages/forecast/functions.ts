@@ -15,8 +15,14 @@ function range(start: number, end: number) {
 function makeWeeks(transactions: YNABTransaction[]): Record<number, number> {
   if (!transactions?.length) return [];
 
-  const startWeek = getWeekNumber(transactions[0].date.toUTCMoment());
-  const endWeek = getWeekNumber(transactions[transactions.length - 1].date.toUTCMoment());
+  const sortedTransactions = [...transactions].sort((a, b) => {
+    return a.date.toUTCMoment().valueOf() - b.date.toUTCMoment().valueOf();
+  });
+
+  const startWeek = getWeekNumber(sortedTransactions[0].date.toUTCMoment());
+  const endWeek = getWeekNumber(
+    sortedTransactions[sortedTransactions.length - 1].date.toUTCMoment(),
+  );
 
   return range(startWeek, endWeek).reduce((accumulator, current) => {
     const matches = transactions.filter(
