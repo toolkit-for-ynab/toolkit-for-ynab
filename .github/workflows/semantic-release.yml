@@ -26,6 +26,8 @@ jobs:
       issues: write
       pull-requests: write
       id-token: write
+    outputs:
+      released: ${{ steps.check-release.outputs.released }}
 
     steps:
       - name: Checkout Repository
@@ -44,16 +46,25 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
+      - name: Record current tag
+        id: pre-release-tag
+        run: echo "tag=$(git describe --tags --abbrev=0 2>/dev/null || echo '')" >> $GITHUB_OUTPUT
+
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          GOOGLE_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
-          GOOGLE_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
-          GOOGLE_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
-          AMO_JWT_KEY: ${{ secrets.AMO_JWT_KEY }}
-          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
         run: npx semantic-release --debug
+
+      - name: Check for new release
+        id: check-release
+        run: |
+          NEW_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ "$NEW_TAG" != "${{ steps.pre-release-tag.outputs.tag }}" ]; then
+            echo "released=true" >> $GITHUB_OUTPUT
+          else
+            echo "released=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Merge main branch -> develop
         uses: devmasx/merge-branch@master
@@ -63,3 +74,60 @@ jobs:
           from_branch: ${{ github.ref_name }}
           target_branch: develop
           message: 'chore(ci): sync develop with ${{ github.ref_name }} [skip ci]'
+
+  deploy-chrome:
+    needs: [release]
+    if: needs.release.outputs.released == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js from .nvmrc
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Download release artifacts
+        run: mkdir -p dist && gh release download --latest --pattern "*.zip" --dir dist/
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Publish to Chrome Web Store
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+        run: node scripts/publishForChromeProd.js
+
+  deploy-firefox:
+    needs: [release]
+    if: needs.release.outputs.released == 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js from .nvmrc
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Download release artifacts
+        run: mkdir -p dist && gh release download --latest --pattern "*.zip" --dir dist/
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Publish to Firefox AMO
+        env:
+          AMO_JWT_KEY: ${{ secrets.AMO_JWT_KEY }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: node scripts/publishForFirefox.js
