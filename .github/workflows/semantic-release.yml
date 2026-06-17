@@ -48,9 +48,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
-          CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
-          CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          GOOGLE_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
           AMO_JWT_KEY: ${{ secrets.AMO_JWT_KEY }}
           AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
         run: npx semantic-release --debug
