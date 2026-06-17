@@ -10,7 +10,7 @@
     "build:development": "yarn build:check && yarn webpack:development && yarn manifest:development",
     "build:production": "yarn build:check && yarn webpack:production && yarn compress:chrome && yarn manifest:firefox && yarn compress:firefox",
     "build:ios": "yarn build:check && yarn webpack:production && yarn manifest:ios",
-    "build:ci": "yarn gen && yarn sentry:create && yarn build:production && yarn sentry:upload --rewrite",
+    "build:ci": "yarn gen && yarn sentry:create && yarn build:production && yarn sentry:upload",
     "build:ci-test": "yarn gen && yarn build:production",
     "compress:firefox": "ts-node scripts/compressSrc.ts --browser=firefox && ts-node scripts/compressDist.ts --browser=firefox",
     "compress:chrome": "ts-node scripts/compressSrc.ts --browser=chrome && ts-node scripts/compressDist.ts --browser=chrome",
@@ -39,7 +39,7 @@
     "l10n:update": "node scripts/updateLocalizationStrings.js",
     "l10n:pull": "scripts/get_l10ns",
     "sentry:create": "sentry-cli releases -o toolkit-for-ynab -p toolkit-for-ynab new $npm_package_version",
-    "sentry:upload": "sentry-cli releases -o toolkit-for-ynab -p toolkit-for-ynab files $npm_package_version upload-sourcemaps ./dist/extension/",
+    "sentry:upload": "sentry-cli sourcemaps upload -o toolkit-for-ynab -p toolkit-for-ynab --release $npm_package_version ./dist/extension/",
     "type-check": "tsc --skipLibCheck"
   },
   "jest": {
