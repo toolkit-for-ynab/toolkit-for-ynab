@@ -89,7 +89,7 @@ const config = {
     [
       '@semantic-release/exec',
       {
-        publishCmd: 'yarn build:ci',
+        prepareCmd: 'yarn build:ci',
       },
     ],
     [
@@ -103,19 +103,6 @@ const config = {
       '@semantic-release/github',
       {
         assets: ['dist/*.zip'],
-      },
-    ],
-    [
-      'semantic-release-chrome',
-      {
-        extensionId: 'lmhdkkhepllpnondndgpgclfjnlofgjl',
-        asset: 'dist/toolkit-for-ynab-v*-chrome.zip',
-      },
-    ],
-    [
-      '@semantic-release/exec',
-      {
-        publishCmd: 'node scripts/publishForFirefox.js',
       },
     ],
   ],
