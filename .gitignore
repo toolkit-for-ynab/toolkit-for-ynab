@@ -33,3 +33,6 @@ scripts/settings.json
 # created at build time with tasks/generateFeatureIndex.js
 src/extension/features/index.ts
 
+
+# maintainer-only Claude Code config
+.claude/
