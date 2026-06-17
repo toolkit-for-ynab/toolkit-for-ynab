@@ -1,4 +1,7 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { OutboundMessageType, TOOLKIT_MESSAGE_CHANNEL } from 'toolkit/core/messages';
+
+const TRUSTED_ORIGIN = window.location.origin;
 
 export function withToolkitError(wrappedFunction: Function, feature: Feature | FeatureName) {
   if (typeof wrappedFunction !== 'function') {
@@ -62,7 +65,8 @@ export function logToolkitError({
   const serializedError = errorStack ? errorStack.toString() : errorMessage;
   window.postMessage(
     {
-      type: 'ynab-toolkit-error',
+      channel: TOOLKIT_MESSAGE_CHANNEL,
+      type: OutboundMessageType.ToolkitError,
       context: {
         featureName,
         featureSetting,
@@ -71,6 +75,6 @@ export function logToolkitError({
         serializedError,
       },
     },
-    '*',
+    TRUSTED_ORIGIN,
   );
 }

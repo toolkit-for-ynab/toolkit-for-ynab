@@ -10,7 +10,12 @@ import { compareSemanticVersion } from './utils/helpers';
 import { componentAppend } from './utils/react';
 import { ToolkitReleaseModal } from 'toolkit/core/components/toolkit-release-modal';
 import { Feature } from './features/feature';
-import { InboundMessage, InboundMessageType, OutboundMessageType } from 'toolkit/core/messages';
+import {
+  InboundMessage,
+  InboundMessageType,
+  OutboundMessageType,
+  TOOLKIT_MESSAGE_CHANNEL,
+} from 'toolkit/core/messages';
 import { ObserveListener, RouteChangeListener } from './listeners';
 
 export let observeListener: ObserveListener;
@@ -18,6 +23,8 @@ export let routeChangeListener: RouteChangeListener;
 
 export const TOOLKIT_LOADED_MESSAGE = 'ynab-toolkit-loaded';
 export const TOOLKIT_BOOTSTRAP_MESSAGE = 'ynab-toolkit-bootstrap';
+
+const TRUSTED_ORIGIN = window.location.origin;
 
 window.__toolkitUtils = {
   ...(window.__toolkitUtils as any),
@@ -31,7 +38,13 @@ export class YNABToolkit {
 
   public initializeToolkit() {
     window.addEventListener('message', this.onBackgroundMessage);
-    window.postMessage({ type: OutboundMessageType.ToolkitLoaded }, '*');
+    window.postMessage(
+      {
+        channel: TOOLKIT_MESSAGE_CHANNEL,
+        type: OutboundMessageType.ToolkitLoaded,
+      },
+      TRUSTED_ORIGIN,
+    );
   }
 
   private applyFeatureCSS() {
@@ -131,7 +144,11 @@ export class YNABToolkit {
   };
 
   private onBackgroundMessage = (event: InboundMessage) => {
-    if (event.source !== window) {
+    if (
+      event.source !== window ||
+      event.origin !== TRUSTED_ORIGIN ||
+      event.data?.channel !== TOOLKIT_MESSAGE_CHANNEL
+    ) {
       return;
     }
 
@@ -143,7 +160,9 @@ export class YNABToolkit {
         };
 
         this.setupErrorTracking();
-        features.forEach((Feature) => this.featureInstances.push(new Feature()));
+        features.forEach((FeatureConstructor: typeof Feature) => {
+          this.featureInstances.push(new FeatureConstructor());
+        });
         this._waitForUserSettings();
         break;
       }
@@ -155,7 +174,7 @@ export class YNABToolkit {
         }
 
         const featureInstance = this.featureInstances.find(
-          ({ constructor }) => constructor.name === name,
+          (instance) => instance.constructor.name === name,
         );
 
         if (featureInstance) {
