@@ -46,6 +46,7 @@ async function main() {
         channel: 'listed',
         apiKey,
         apiSecret,
+        amoBaseUrl: 'https://addons.mozilla.org/api/v5/',
         uploadSourceCode: sourceZip,
         approvalTimeout: 0,
         noInput: true,
