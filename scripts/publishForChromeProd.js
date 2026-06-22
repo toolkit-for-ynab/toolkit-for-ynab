@@ -22,7 +22,7 @@ async function main() {
   const zips = glob.sync('toolkit-for-ynab-v*-chrome.zip', { cwd: DIST_DIR, absolute: true });
   if (zips.length !== 1) throw new Error(`Expected 1 Chrome zip, found ${zips.length}`);
 
-  const webStore = require('chrome-webstore-upload')({
+  const webStore = require('chrome-webstore-upload').default({
     extensionId: EXTENSION_ID,
     clientId,
     clientSecret,
