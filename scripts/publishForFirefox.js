@@ -3,7 +3,7 @@ const path = require('path');
 const crypto = require('crypto');
 const glob = require('glob');
 
-const ADDON_ID = '4F1FB113-D7D8-40AE-A5BA-9300EAEA0F51';
+const ADDON_ID = 'toolkit-for-ynab';
 const AMO_API_BASE = 'https://addons.mozilla.org/api/v5';
 const DIST_DIR = path.join(__dirname, '..', 'dist');
 
