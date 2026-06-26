@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import moment from 'moment';
 import { RunningBalanceGraph } from './RunningBalanceGraph';
 import { LabeledCheckbox } from 'toolkit/extension/features/toolkit-reports/common/components/labeled-checkbox';
 import { WarningMessage } from './WarningMessage';
@@ -9,11 +10,13 @@ import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-rep
 import {
   dataPointsToHighChartSeries,
   generateRunningBalanceMap,
+  appendScheduledTransactionsToBalanceMap,
   applyDateFiltersToDataPoints,
   combineDataPoints,
   generateTrendLine,
   checkSeriesLimitReached,
   NUM_DATAPOINTS_LIMIT,
+  SCHEDULED_PROJECTION_MONTHS,
   Datapoint,
   PointPayload,
 } from './utils';
@@ -28,8 +31,12 @@ export type Serie = {
 
 export const BalanceOverTimeComponent = ({
   allReportableTransactions,
+  allReportableScheduledTransactions,
   filters,
-}: Pick<ReportContextType, 'allReportableTransactions' | 'filters'>) => {
+}: Pick<
+  ReportContextType,
+  'allReportableTransactions' | 'allReportableScheduledTransactions' | 'filters'
+>) => {
   const GROUPED_LABEL = 'Selected Accounts';
   const TRENDLINE_PREFIX = 'Trendline for ';
 
@@ -44,6 +51,10 @@ export const BalanceOverTimeComponent = ({
   );
   const [useStepGraph, setUseStepGraph] = useLocalStorage('balance-over-time-useStepGraph', true);
   const [useTrendLine, setUseTrendLine] = useLocalStorage('balance-over-time-useTrendline', false);
+  const [showScheduledTransactions, setShowScheduledTransactions] = useLocalStorage(
+    'balance-over-time-showScheduledTransactions',
+    false,
+  );
 
   // Map of accounts to their corresponding datapoints for each date
   const [runningBalanceMap, setRunningBalanceMap] = useState(new Map());
@@ -63,11 +74,29 @@ export const BalanceOverTimeComponent = ({
     const { fromDate, toDate } = filters.dateFilter;
     let newSeries = [];
 
+    // When projecting scheduled transactions, extend the running balance into the future and let
+    // the graph run past the selected end date out to the projection horizon.
+    const projectionEndDate = moment()
+      .utc()
+      .startOf('day')
+      .add(SCHEDULED_PROJECTION_MONTHS, 'months');
+    const sourceBalanceMap = showScheduledTransactions
+      ? appendScheduledTransactionsToBalanceMap(
+          runningBalanceMap,
+          allReportableScheduledTransactions,
+          projectionEndDate,
+        )
+      : runningBalanceMap;
+    const toDateUTC = showScheduledTransactions ? projectionEndDate.valueOf() : toDate.getUTCTime();
+
     // Filter the overall running balance to only the datapoints what we want
     let filteredData = new Map<string, Map<number, Datapoint>>();
-    runningBalanceMap.forEach((datapoints, accountId) => {
+    sourceBalanceMap.forEach((datapoints, accountId) => {
       if (!accountFilters.has(accountId)) {
-        filteredData.set(accountId, applyDateFiltersToDataPoints(fromDate, toDate, datapoints));
+        filteredData.set(
+          accountId,
+          applyDateFiltersToDataPoints(fromDate.getUTCTime(), toDateUTC, datapoints),
+        );
       }
     });
 
@@ -133,11 +162,13 @@ export const BalanceOverTimeComponent = ({
     setSeries(newSeries);
   }, [
     runningBalanceMap,
+    allReportableScheduledTransactions,
     filters,
     shouldGroupAccounts,
     shouldGroupAccountsByType,
     useStepGraph,
     useTrendLine,
+    showScheduledTransactions,
   ]);
 
   if (datapointLimitReached) {
@@ -175,6 +206,12 @@ export const BalanceOverTimeComponent = ({
           checked={useStepGraph}
           label="Use Step Graph"
           onChange={() => setUseStepGraph(!useStepGraph)}
+        />
+        <LabeledCheckbox
+          id="tk-balance-over-time-scheduled-option"
+          checked={showScheduledTransactions}
+          label="Scheduled Transactions"
+          onChange={() => setShowScheduledTransactions(!showScheduledTransactions)}
         />
       </AdditionalReportSettings>
       <RunningBalanceGraph series={series} />

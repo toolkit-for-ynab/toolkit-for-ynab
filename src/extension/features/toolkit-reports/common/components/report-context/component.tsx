@@ -30,6 +30,7 @@ export type ReportContextType = {
   setActiveReportKey: (newKey: string) => void;
   setFilters: (newFilters: any) => void;
   allReportableTransactions: YNABTransaction[];
+  allReportableScheduledTransactions: YNABTransaction[];
 };
 
 const { Provider, Consumer } = createContext<ReportContextType>({
@@ -39,6 +40,7 @@ const { Provider, Consumer } = createContext<ReportContextType>({
   setActiveReportKey: () => {},
   setFilters: () => {},
   allReportableTransactions: [],
+  allReportableScheduledTransactions: [],
 });
 
 export const ReportContextProvider = Provider;

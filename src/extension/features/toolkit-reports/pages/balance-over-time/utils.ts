@@ -229,18 +229,18 @@ export const combineDataPoints = (datapointsArray: Map<number, Datapoint>[]) => 
 
 /**
  * Apply a date filter to the datapoints and return all datapoints within the date range
- * @param {} fromDate The starting date to filter from
- * @param {*} toDate The end date to filter to
+ * @param {number} fromDateUTC The starting date (UTC time) to filter from
+ * @param {number} toDateUTC The end date (UTC time) to filter to
  * @param {Map} datapoints Map of dates in UTC to their corresponding datapoint
  */
 export const applyDateFiltersToDataPoints = (
-  fromDate: DateWithoutTime,
-  toDate: DateWithoutTime,
+  fromDateUTC: number,
+  toDateUTC: number,
   datapoints: Map<number, Datapoint>,
 ) => {
   let filteredDatapoints = new Map<number, Datapoint>();
   datapoints.forEach((data, dateUTC) => {
-    if (dateUTC >= fromDate.getUTCTime() && dateUTC <= toDate.getUTCTime()) {
+    if (dateUTC >= fromDateUTC && dateUTC <= toDateUTC) {
       filteredDatapoints.set(dateUTC, data);
     }
   });
@@ -253,4 +253,131 @@ export const applyDateFiltersToDataPoints = (
  */
 export const checkSeriesLimitReached = (series?: { data: unknown[] }) => {
   return series && series.data && series.data.length >= NUM_DATAPOINTS_LIMIT;
+};
+
+// How many months into the future to project scheduled (future) transactions.
+export const SCHEDULED_PROJECTION_MONTHS = 12;
+
+// Maps YNAB scheduled transaction frequencies to the interval between occurrences.
+// A `null` value means the transaction does not repeat (a single future occurrence).
+const FREQUENCY_INTERVALS: Record<
+  string,
+  { unit: moment.unitOfTime.DurationConstructor; amount: number } | null
+> = {
+  never: null,
+  daily: { unit: 'days', amount: 1 },
+  weekly: { unit: 'weeks', amount: 1 },
+  everyOtherWeek: { unit: 'weeks', amount: 2 },
+  twiceAMonth: { unit: 'days', amount: 15 },
+  every4Weeks: { unit: 'weeks', amount: 4 },
+  monthly: { unit: 'months', amount: 1 },
+  everyOtherMonth: { unit: 'months', amount: 2 },
+  every3Months: { unit: 'months', amount: 3 },
+  every4Months: { unit: 'months', amount: 4 },
+  twiceAYear: { unit: 'months', amount: 6 },
+  yearly: { unit: 'years', amount: 1 },
+  everyOtherYear: { unit: 'years', amount: 2 },
+};
+
+/**
+ * Expand a single scheduled transaction into every occurrence (UTC time) that falls within
+ * `(afterDateUTC, endDate]`, based on its frequency. Non-repeating schedules yield a single
+ * occurrence at their date.
+ */
+export const expandScheduledTransactionDates = (
+  scheduledTransaction: YNABTransaction,
+  afterDateUTC: number,
+  endDate: Moment,
+): number[] => {
+  const dates: number[] = [];
+  if (!scheduledTransaction.date) return dates;
+
+  const interval =
+    scheduledTransaction.frequency != null
+      ? FREQUENCY_INTERVALS[scheduledTransaction.frequency]
+      : null;
+  let occurrence = moment(scheduledTransaction.date.getUTCTime()).utc().startOf('day');
+
+  while (occurrence.isSameOrBefore(endDate)) {
+    const occurrenceUTC = occurrence.valueOf();
+    if (occurrenceUTC > afterDateUTC) {
+      dates.push(occurrenceUTC);
+    }
+    // Non-repeating schedules only contribute a single occurrence.
+    if (!interval) break;
+    occurrence = occurrence.clone().add(interval.amount, interval.unit);
+  }
+  return dates;
+};
+
+/**
+ * Extend an existing (actual) running balance map with projected datapoints generated from
+ * upcoming scheduled transactions. For each account, the projection continues from its current
+ * balance (the last actual datapoint) forward to `projectionEndDate`, accumulating the net change
+ * of every scheduled occurrence along the way.
+ *
+ * @param {Map} runningBalanceMap Map of account ids to their actual datapoints (date -> datapoint)
+ * @param {YNABTransaction[]} scheduledTransactions Upcoming scheduled transactions to project
+ * @param {Moment} projectionEndDate How far into the future to project
+ * @return {Map} A new map (clone of the input) with projected future datapoints appended
+ */
+export const appendScheduledTransactionsToBalanceMap = (
+  runningBalanceMap: Map<string, Map<number, Datapoint>>,
+  scheduledTransactions: YNABTransaction[],
+  projectionEndDate: Moment,
+) => {
+  // Group the scheduled occurrences by account and date so we can look them up per day.
+  const accountToScheduledByDate = new Map<string, Map<number, YNABTransaction[]>>();
+
+  runningBalanceMap.forEach((datapoints, accountId) => {
+    const lastActualDateUTC = Math.max(...datapoints.keys());
+    const occurrencesByDate = new Map<number, YNABTransaction[]>();
+
+    scheduledTransactions
+      .filter((transaction) => transaction.accountId === accountId)
+      .forEach((transaction) => {
+        expandScheduledTransactionDates(transaction, lastActualDateUTC, projectionEndDate).forEach(
+          (dateUTC) => {
+            if (!occurrencesByDate.has(dateUTC)) {
+              occurrencesByDate.set(dateUTC, []);
+            }
+            occurrencesByDate.get(dateUTC)!.push(transaction);
+          },
+        );
+      });
+
+    accountToScheduledByDate.set(accountId, occurrencesByDate);
+  });
+
+  // Build the projected map: clone each account's actual datapoints, then walk forward day-by-day
+  // from the last actual date carrying the running total and applying scheduled occurrences.
+  const projectedMap = new Map<string, Map<number, Datapoint>>();
+  runningBalanceMap.forEach((datapoints, accountId) => {
+    const projectedDatapoints = new Map<number, Datapoint>(datapoints);
+    const lastActualDateUTC = Math.max(...datapoints.keys());
+    const occurrencesByDate = accountToScheduledByDate.get(accountId)!;
+
+    let runningTotal = datapoints.get(lastActualDateUTC)!.runningTotal;
+    let currDate = moment(lastActualDateUTC).utc().add(1, 'days');
+
+    while (currDate.isSameOrBefore(projectionEndDate)) {
+      const dateUTC = currDate.valueOf();
+      const occurrences = occurrencesByDate.get(dateUTC) || [];
+      const netChange = occurrences.reduce(
+        (accum, transaction) => accum - transaction.outflow + transaction.inflow,
+        0,
+      );
+      runningTotal += netChange;
+      projectedDatapoints.set(dateUTC, {
+        transactions: occurrences,
+        runningTotal,
+        netChange,
+      });
+      currDate = currDate.add(1, 'days');
+    }
+
+    projectedMap.set(accountId, projectedDatapoints);
+  });
+
+  return projectedMap;
 };

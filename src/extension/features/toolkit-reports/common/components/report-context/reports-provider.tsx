@@ -110,6 +110,7 @@ export type WithReportContextHocState = {
   filteredTransactions: YNABTransaction[];
   filters: FiltersType;
   allReportableTransactions: YNABTransaction[];
+  allReportableScheduledTransactions: YNABTransaction[];
 };
 
 export function withReportContextProvider<T extends object>(InnerComponent: ComponentType<T>) {
@@ -135,6 +136,7 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
         filteredTransactions: [],
         filters: getStoredFilters(initialReportKey),
         allReportableTransactions: [],
+        allReportableScheduledTransactions: [],
       };
     }
 
@@ -158,11 +160,19 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
               !transaction.isScheduledTransaction &&
               !transaction.isScheduledSubTransaction,
           );
+          // Upcoming scheduled transactions (the next occurrence of each schedule). These are
+          // kept separate from `allReportableTransactions` so existing reports are unaffected,
+          // but are available to reports that want to project future balances.
+          const allReportableScheduledTransactions = visibleTransactionDisplayItems.filter(
+            (transaction) =>
+              transaction.isScheduledTransaction && !transaction.isScheduledSubTransaction,
+          );
 
           this.setState(
             {
               filteredTransactions: [],
               allReportableTransactions,
+              allReportableScheduledTransactions,
             },
             () => {
               this._applyFilters(this.state.activeReportKey);
@@ -194,6 +204,7 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
               setActiveReportKey: this._setActiveReportKey,
               setFilters: this._setFilters,
               allReportableTransactions: this.state.allReportableTransactions,
+              allReportableScheduledTransactions: this.state.allReportableScheduledTransactions,
             }}
           >
             <InnerComponent {...this.props} />
