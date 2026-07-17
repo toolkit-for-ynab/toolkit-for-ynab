@@ -45,11 +45,18 @@ export class ShowCategoryBalance extends Feature {
       // if there's no budget data (could be an income/credit category) skip it.
       if (!budgetData) return;
 
-      const title = $('.ynab-grid-cell-subCategoryName', element).attr('title');
+      const emberTooltipId = $('.ynab-grid-cell-subCategoryName', element).attr('aria-describedby');
+
+      // There should always be an associated ember tooltip, but just in case.
+      if (!emberTooltipId) return;
+
+      const emberSelector = `#${emberTooltipId}`;
+      const title = $(emberSelector).text();
+
       const newTitle = `${title.replace(/\(Balance.*/, '').trim()} (Balance: ${formatCurrency(
         budgetData.balance,
       )})`;
-      $('.ynab-grid-cell-subCategoryName', element).attr('title', newTitle);
+      $(emberSelector).text(newTitle);
     });
   }
 }
