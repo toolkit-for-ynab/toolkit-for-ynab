@@ -120,24 +120,22 @@ export class ObserveListener {
     this.features.forEach((feature) => {
       const observe = feature.observe.bind(feature, this.changedNodes);
       const wrapped = withToolkitError(observe, feature);
-      setTimeout(() => {
-        const startFeatureObserve = Date.now();
+      const startFeatureObserve = Date.now();
 
-        wrapped();
+      wrapped();
 
-        const featureElapsed = Date.now() - startFeatureObserve;
-        if (window.ynabToolKit.enableProfiling && featureElapsed > 0) {
-          console.log(
-            `${feature.constructor.name}.observe() took %c${featureElapsed}ms%c to run`,
-            featureElapsed < 10
-              ? 'color: green'
-              : featureElapsed < 50
-              ? 'color: yellow'
-              : 'color: red',
-            '',
-          );
-        }
-      }, 0);
+      const featureElapsed = Date.now() - startFeatureObserve;
+      if (window.ynabToolKit.enableProfiling && featureElapsed > 0) {
+        console.log(
+          `${feature.constructor.name}.observe() took %c${featureElapsed}ms%c to run`,
+          featureElapsed < 10
+            ? 'color: green'
+            : featureElapsed < 50
+            ? 'color: yellow'
+            : 'color: red',
+          '',
+        );
+      }
     });
   }
 }

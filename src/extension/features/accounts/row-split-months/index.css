@@ -1,3 +1,4 @@
 .tk-rsm-last {
-  border-bottom-width: 0.5rem;
+  /* !important is required to override is-checked styling */
+  border-bottom-width: 0.5rem !important;
 }
