@@ -10,6 +10,9 @@ const IGNORE_UPDATES = new Set([
   'js-budget-toolbar-open-category-moves',
   'budget-table-cell-category-moves js-budget-toolbar-open-category-moves category-moves-hidden',
   'category-moves-hidden',
+  'tooltip-content tooltip-visible',
+  'tooltip-content',
+  'tooltip-visible',
   // when you scroll on an accounts page :D
   'ynab-grid-container scrolling',
   'ynab-grid-container',
