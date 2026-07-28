@@ -21,10 +21,18 @@ const IGNORE_UPDATES = new Set([
   'scrolling',
 ]);
 
+// How many times a single feature's observe() can run within OBSERVE_LOOP_WINDOW_MS before
+// we warn that it's likely stuck re-triggering itself (e.g. mutating the DOM in a way that
+// satisfies its own trigger condition again, with nothing left to force a yield between calls).
+const OBSERVE_LOOP_THRESHOLD = 30;
+const OBSERVE_LOOP_WINDOW_MS = 250;
+
 export class ObserveListener {
   lastChangedNodes = new Set();
 
   duplicateCount = 0;
+
+  featureInvocationTimestamps = new Map();
 
   constructor() {
     this.features = [];
@@ -126,6 +134,10 @@ export class ObserveListener {
       const observe = feature.observe.bind(feature, this.changedNodes);
       const wrapped = withToolkitError(observe, feature);
       setTimeout(() => {
+        if (ynabToolKit.environment === 'development') {
+          this.detectObserveLoop(feature);
+        }
+
         const startFeatureObserve = Date.now();
 
         wrapped();
@@ -144,5 +156,33 @@ export class ObserveListener {
         }
       }, 0);
     });
+  }
+
+  /**
+   * Dev-only: warns if a single feature's observe() is firing many times in a very short
+   * window, which usually means its DOM mutation satisfies its own trigger condition again
+   * (e.g. adding a class without checking it's not already there) and it's stuck re-running
+   * itself with nothing forcing a yield in between.
+   */
+  detectObserveLoop(feature) {
+    const name = feature.constructor.name;
+    const now = Date.now();
+    const recentCalls = (this.featureInvocationTimestamps.get(name) || []).filter(
+      (timestamp) => now - timestamp < OBSERVE_LOOP_WINDOW_MS,
+    );
+    recentCalls.push(now);
+    this.featureInvocationTimestamps.set(name, recentCalls);
+
+    if (recentCalls.length > OBSERVE_LOOP_THRESHOLD) {
+      console.error(
+        `Possible infinite observe() loop in %c${name}%c: it ran ${recentCalls.length} times in the last ${OBSERVE_LOOP_WINDOW_MS}ms.\n` +
+          'This usually means observe()/invoke() mutates the DOM in a way that re-satisfies its own trigger condition on every pass ' +
+          '(e.g. adding a class without checking classList.contains() first). Add a guard so the mutation is a no-op once already applied.',
+        'font-weight: bold; color: red',
+        '',
+      );
+      // Reset so we don't spam the console on every subsequent call while the loop continues.
+      this.featureInvocationTimestamps.set(name, []);
+    }
   }
 }
