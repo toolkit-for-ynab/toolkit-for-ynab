@@ -31,11 +31,11 @@ export type Serie = {
 
 export const BalanceOverTimeComponent = ({
   allReportableTransactions,
-  allReportableScheduledTransactions,
+  allScheduledTransactions,
   filters,
 }: Pick<
   ReportContextType,
-  'allReportableTransactions' | 'allReportableScheduledTransactions' | 'filters'
+  'allReportableTransactions' | 'allScheduledTransactions' | 'filters'
 >) => {
   const GROUPED_LABEL = 'Selected Accounts';
   const TRENDLINE_PREFIX = 'Trendline for ';
@@ -83,7 +83,7 @@ export const BalanceOverTimeComponent = ({
     const sourceBalanceMap = showScheduledTransactions
       ? appendScheduledTransactionsToBalanceMap(
           runningBalanceMap,
-          allReportableScheduledTransactions,
+          allScheduledTransactions,
           projectionEndDate,
         )
       : runningBalanceMap;
@@ -162,7 +162,7 @@ export const BalanceOverTimeComponent = ({
     setSeries(newSeries);
   }, [
     runningBalanceMap,
-    allReportableScheduledTransactions,
+    allScheduledTransactions,
     filters,
     shouldGroupAccounts,
     shouldGroupAccountsByType,

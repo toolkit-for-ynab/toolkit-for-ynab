@@ -317,7 +317,10 @@ export const expandScheduledTransactionDates = (
  * of every scheduled occurrence along the way.
  *
  * @param {Map} runningBalanceMap Map of account ids to their actual datapoints (date -> datapoint)
- * @param {YNABTransaction[]} scheduledTransactions Upcoming scheduled transactions to project
+ * @param {YNABTransaction[]} scheduledTransactions Scheduled transactions to project. May include
+ *   both split parents and their sub-transactions; sub-transactions are excluded here since they
+ *   don't carry their own recurrence `frequency` and their amount is already covered by their
+ *   parent's total.
  * @param {Moment} projectionEndDate How far into the future to project
  * @return {Map} A new map (clone of the input) with projected future datapoints appended
  */
@@ -326,6 +329,10 @@ export const appendScheduledTransactionsToBalanceMap = (
   scheduledTransactions: YNABTransaction[],
   projectionEndDate: Moment,
 ) => {
+  const projectableScheduledTransactions = scheduledTransactions.filter(
+    (transaction) => !transaction.isScheduledSubTransaction,
+  );
+
   // Group the scheduled occurrences by account and date so we can look them up per day.
   const accountToScheduledByDate = new Map<string, Map<number, YNABTransaction[]>>();
 
@@ -333,7 +340,7 @@ export const appendScheduledTransactionsToBalanceMap = (
     const lastActualDateUTC = Math.max(...datapoints.keys());
     const occurrencesByDate = new Map<number, YNABTransaction[]>();
 
-    scheduledTransactions
+    projectableScheduledTransactions
       .filter((transaction) => transaction.accountId === accountId)
       .forEach((transaction) => {
         expandScheduledTransactionDates(transaction, lastActualDateUTC, projectionEndDate).forEach(

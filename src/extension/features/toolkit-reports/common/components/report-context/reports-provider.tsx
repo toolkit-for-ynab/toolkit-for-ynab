@@ -110,7 +110,7 @@ export type WithReportContextHocState = {
   filteredTransactions: YNABTransaction[];
   filters: FiltersType;
   allReportableTransactions: YNABTransaction[];
-  allReportableScheduledTransactions: YNABTransaction[];
+  allScheduledTransactions: YNABTransaction[];
 };
 
 export function withReportContextProvider<T extends object>(InnerComponent: ComponentType<T>) {
@@ -136,7 +136,7 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
         filteredTransactions: [],
         filters: getStoredFilters(initialReportKey),
         allReportableTransactions: [],
-        allReportableScheduledTransactions: [],
+        allScheduledTransactions: [],
       };
     }
 
@@ -160,19 +160,19 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
               !transaction.isScheduledTransaction &&
               !transaction.isScheduledSubTransaction,
           );
-          // Upcoming scheduled transactions (the next occurrence of each schedule). These are
-          // kept separate from `allReportableTransactions` so existing reports are unaffected,
-          // but are available to reports that want to project future balances.
-          const allReportableScheduledTransactions = visibleTransactionDisplayItems.filter(
+          // Scheduled transactions (kept separate from `allReportableTransactions` so existing
+          // reports are unaffected). Includes both split parents and their sub-transactions;
+          // see the JSDoc on `ReportContextType.allScheduledTransactions` for how to use this.
+          const allScheduledTransactions = visibleTransactionDisplayItems.filter(
             (transaction) =>
-              transaction.isScheduledTransaction && !transaction.isScheduledSubTransaction,
+              transaction.isScheduledTransaction || transaction.isScheduledSubTransaction,
           );
 
           this.setState(
             {
               filteredTransactions: [],
               allReportableTransactions,
-              allReportableScheduledTransactions,
+              allScheduledTransactions,
             },
             () => {
               this._applyFilters(this.state.activeReportKey);
@@ -204,7 +204,7 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
               setActiveReportKey: this._setActiveReportKey,
               setFilters: this._setFilters,
               allReportableTransactions: this.state.allReportableTransactions,
-              allReportableScheduledTransactions: this.state.allReportableScheduledTransactions,
+              allScheduledTransactions: this.state.allScheduledTransactions,
             }}
           >
             <InnerComponent {...this.props} />
