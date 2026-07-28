@@ -10,7 +10,7 @@ jobs:
     outputs:
       files: ${{ steps.find.outputs.files }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       # Get the list of checks for the check job
       - name: Find Check Files
         id: find
@@ -27,9 +27,9 @@ jobs:
       matrix: ${{ fromJson(needs.setup.outputs.files) }}
     name: ${{ matrix.check }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set Node.js from .nvmrc
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.nvmrc'
       - name: Prepare
