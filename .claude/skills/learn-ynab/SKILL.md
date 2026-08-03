@@ -12,9 +12,10 @@ the live app in a browser. This skill drives that same process: open the real
 app, navigate to the page in question, and interrogate the running Ember
 application to find out what's actually there right now.
 
-Read `CLAUDE.md` at the repo root first if you haven't already — it covers
-the extension architecture (`Feature` lifecycle, `observe()`/`shouldInvoke()`,
-the container-lookup bridge) this skill assumes.
+Read `docs/architecture.md` and `docs/ynab-internals.md` first if you
+haven't already — they cover the extension architecture (`Feature`
+lifecycle, `observe()`/`shouldInvoke()`, the container-lookup bridge) this
+skill assumes.
 
 ## Before you start
 
@@ -76,7 +77,7 @@ window.ynab.utilities;
 If a lookup throws (service not yet instantiated for this route), that's
 itself useful information — it means code shouldn't assume that service is
 present without navigating to the page that creates it first, same lesson as
-the `ShowCategoryBalance` bug (see `CLAUDE.md`).
+the `ShowCategoryBalance` bug (see `docs/ynab-internals.md`).
 
 To find the DOM classes a feature's `observe()` should key off of, use
 `read_page` or the `javascript_tool` to inspect `element.className` on the
