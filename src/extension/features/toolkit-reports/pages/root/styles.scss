@@ -2,6 +2,16 @@
   left: 260px;
 }
 
+.tk-reports-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  flex-shrink: 0;
+  background-color: var(--headerBackground);
+}
+
 .tk-highcharts-report-container {
   display: flex;
   flex-grow: 1;
