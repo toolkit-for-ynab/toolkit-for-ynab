@@ -110,6 +110,7 @@ export type WithReportContextHocState = {
   filteredTransactions: YNABTransaction[];
   filters: FiltersType;
   allReportableTransactions: YNABTransaction[];
+  allScheduledTransactions: YNABTransaction[];
 };
 
 export function withReportContextProvider<T extends object>(InnerComponent: ComponentType<T>) {
@@ -135,6 +136,7 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
         filteredTransactions: [],
         filters: getStoredFilters(initialReportKey),
         allReportableTransactions: [],
+        allScheduledTransactions: [],
       };
     }
 
@@ -158,11 +160,19 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
               !transaction.isScheduledTransaction &&
               !transaction.isScheduledSubTransaction,
           );
+          // Scheduled transactions (kept separate from `allReportableTransactions` so existing
+          // reports are unaffected). Includes both split parents and their sub-transactions;
+          // see the JSDoc on `ReportContextType.allScheduledTransactions` for how to use this.
+          const allScheduledTransactions = visibleTransactionDisplayItems.filter(
+            (transaction) =>
+              transaction.isScheduledTransaction || transaction.isScheduledSubTransaction,
+          );
 
           this.setState(
             {
               filteredTransactions: [],
               allReportableTransactions,
+              allScheduledTransactions,
             },
             () => {
               this._applyFilters(this.state.activeReportKey);
@@ -194,6 +204,7 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
               setActiveReportKey: this._setActiveReportKey,
               setFilters: this._setFilters,
               allReportableTransactions: this.state.allReportableTransactions,
+              allScheduledTransactions: this.state.allScheduledTransactions,
             }}
           >
             <InnerComponent {...this.props} />

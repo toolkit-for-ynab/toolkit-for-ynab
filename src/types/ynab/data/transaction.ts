@@ -21,6 +21,7 @@ export interface YNABTransaction {
   dateEnteredFromSchedule: DateWithoutTime | null;
   entityId: string;
   flag: string | null;
+  frequency?: string | null;
   importedDate: DateWithoutTime | null;
   importedPayee: YNABPayee | null;
   isScheduledSubTransaction?: boolean;
