@@ -4,6 +4,7 @@ import {
   calculateOutflowPerDate,
   calculateCumulativeOutflowPerDate,
   toHighchartsSeries,
+  calculateAverageDailyForecast,
 } from './utils';
 import moment from 'moment';
 
@@ -210,6 +211,122 @@ describe('Utils', () => {
       ];
 
       expect(toHighchartsSeries(transactions)).toEqual(excpected);
+    });
+
+    it('should append nameSuffix to each series name', () => {
+      const transactions = { '2022-01': { 4: { value: 100, transactions: [] } } };
+      const result = toHighchartsSeries(transactions, { nameSuffix: ' (Scheduled)' });
+      expect(result[0].name).toBe('Jan 2022 (Scheduled)');
+    });
+
+    it('should apply dashStyle to each series', () => {
+      const transactions = { '2022-01': { 4: { value: 100, transactions: [] } } };
+      const result = toHighchartsSeries(transactions, { dashStyle: 'ShortDot' });
+      expect(result[0].dashStyle).toBe('ShortDot');
+    });
+
+    it('should apply both nameSuffix and dashStyle together', () => {
+      const transactions = { '2022-01': { 4: { value: 100, transactions: [] } } };
+      const result = toHighchartsSeries(transactions, {
+        nameSuffix: ' (Scheduled)',
+        dashStyle: 'LongDash',
+      });
+      expect(result[0].name).toBe('Jan 2022 (Scheduled)');
+      expect(result[0].dashStyle).toBe('LongDash');
+    });
+  });
+
+  describe('calculateAverageDailyForecast', () => {
+    // Helpers — mirror the shape the real YNAB objects expose to these functions.
+    const tx = (month, isoDate, outflow, inflow = 0) => ({
+      month,
+      outflow,
+      inflow,
+      date: { toUTCMoment: () => moment(isoDate) },
+    });
+
+    // Anchor: March 29 2024 → 2 days remaining (days 30 and 31).
+    // Feb 2024 has 29 days (leap year); last 2 = Feb 28 & Feb 29.
+    // Jan 2024 has 31 days;            last 2 = Jan 30 & Jan 31.
+    const TODAY = moment('2024-03-29');
+
+    it('should return an empty array when today is the last day of the month', () => {
+      expect(calculateAverageDailyForecast([], 3, moment('2024-03-31'))).toEqual([]);
+    });
+
+    it('should return one entry per remaining day with the correct day numbers', () => {
+      const result = calculateAverageDailyForecast([], 1, TODAY);
+      expect(result).toHaveLength(2);
+      expect(result[0].day).toBe(30);
+      expect(result[1].day).toBe(31);
+    });
+
+    it('should return zero values when no lookback months have transactions', () => {
+      const result = calculateAverageDailyForecast([], 3, TODAY);
+      expect(result.every((r) => r.value === 0)).toBe(true);
+    });
+
+    it('should return per-day spending from a single lookback month', () => {
+      const transactions = [
+        tx('2024-02', '2024-02-28', 100), // position 0 → day 30
+        tx('2024-02', '2024-02-29', 200), // position 1 → day 31
+      ];
+      const result = calculateAverageDailyForecast(transactions, 1, TODAY);
+      expect(result[0]).toEqual({ day: 30, value: 100 });
+      expect(result[1]).toEqual({ day: 31, value: 200 });
+    });
+
+    it('should average spending across multiple lookback months', () => {
+      const transactions = [
+        tx('2024-02', '2024-02-28', 100), // position 0
+        tx('2024-02', '2024-02-29', 200), // position 1
+        tx('2024-01', '2024-01-30', 300), // position 0
+        tx('2024-01', '2024-01-31', 400), // position 1
+      ];
+      const result = calculateAverageDailyForecast(transactions, 2, TODAY);
+      expect(result[0]).toEqual({ day: 30, value: (100 + 300) / 2 });
+      expect(result[1]).toEqual({ day: 31, value: (200 + 400) / 2 });
+    });
+
+    it('should skip lookback months with no transactions entirely', () => {
+      // Only Feb has data; Jan is empty and must not dilute the average.
+      const transactions = [tx('2024-02', '2024-02-28', 100), tx('2024-02', '2024-02-29', 200)];
+      const result = calculateAverageDailyForecast(transactions, 2, TODAY);
+      // Average is over 1 month, not 2.
+      expect(result[0]).toEqual({ day: 30, value: 100 });
+      expect(result[1]).toEqual({ day: 31, value: 200 });
+    });
+
+    it('should count days with no transactions within a valid month as zero', () => {
+      // Feb has a transaction on Feb 29 only; Feb 28 (position 0) is $0.
+      const transactions = [tx('2024-02', '2024-02-29', 200)];
+      const result = calculateAverageDailyForecast(transactions, 1, TODAY);
+      expect(result[0]).toEqual({ day: 30, value: 0 });
+      expect(result[1]).toEqual({ day: 31, value: 200 });
+    });
+
+    it('should compute net spending as outflow minus inflow', () => {
+      const transactions = [
+        tx('2024-02', '2024-02-28', 0), // position 0 — no spend
+        tx('2024-02', '2024-02-29', 300, 50), // position 1 — net 250
+      ];
+      const result = calculateAverageDailyForecast(transactions, 1, TODAY);
+      expect(result[0]).toEqual({ day: 30, value: 0 });
+      expect(result[1]).toEqual({ day: 31, value: 250 });
+    });
+
+    it('should handle a short lookback month gracefully (fewer days than daysRemaining)', () => {
+      // today = Jan 31 2024 → daysRemaining = 0. Use Jan 30 instead.
+      // today = March 3 → daysRemaining = 28. Feb 2024 has 29 days → histStartDay = 2.
+      // All 28 positions should map to valid Feb days (Feb 2–29).
+      const today = moment('2024-03-03');
+      const transactions = [tx('2024-02', '2024-02-29', 100)];
+      const result = calculateAverageDailyForecast(transactions, 1, today);
+      expect(result).toHaveLength(28);
+      // Position 27 (last) → histDay = 2 + 27 = 29 → Feb 29
+      expect(result[27]).toEqual({ day: 31, value: 100 });
+      // All other positions have no transactions → zero
+      expect(result.slice(0, 27).every((r) => r.value === 0)).toBe(true);
     });
   });
 });

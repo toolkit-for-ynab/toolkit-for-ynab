@@ -8,6 +8,15 @@ declare module 'moment' {
   }
 }
 
+/**
+ * Filter transactions to only outflows, and optionally non-Ready to Assign inflows.
+ * Transfers are kept only when the counterpart account is itself filtered out
+ * (i.e. the transfer leaves the visible account set).
+ * @param transactions The transactions to filter.
+ * @param includeInflows When true, inflows not categorised as "Inflow: Ready to Assign" are included.
+ * @param filterOutAccounts Account IDs whose transactions should be excluded.
+ * @returns Filtered transactions.
+ */
 export function filterTransactions(
   transactions: YNABTransaction[],
   includeInflows: boolean,
@@ -56,6 +65,11 @@ export function filterTransactionsByDate(
 
 type GroupedTransactions = Record<string, Record<string, YNABTransaction[]>>;
 
+/**
+ * Group transactions into a two-level map of month key → day-of-month → transactions.
+ * @param transactions The transactions to group.
+ * @returns A record keyed by 'YYYY-MM', whose values are records keyed by day-of-month.
+ */
 export function groupTransactions(transactions: YNABTransaction[]) {
   const groupedByMonth = groupBy(transactions, 'month');
   const groupedByMonthAndDate: GroupedTransactions = {};
@@ -74,6 +88,11 @@ interface OutflowData {
   value: number;
 }
 
+/**
+ * Compute the net outflow (outflow minus inflow) for each day within each month.
+ * @param transactions Grouped transactions produced by {@link groupTransactions}.
+ * @returns A two-level record of month key → day-of-month → OutflowData.
+ */
 export function calculateOutflowPerDate(transactions: GroupedTransactions) {
   return mapValues(transactions, (monthData) =>
     mapValues(monthData, (dateData): OutflowData => {
@@ -91,6 +110,12 @@ export function calculateOutflowPerDate(transactions: GroupedTransactions) {
   );
 }
 
+/**
+ * Compute a running cumulative net outflow per day within each month.
+ * Each day's value is the sum of all net outflows from day 1 through that day.
+ * @param transactions Grouped transactions produced by {@link groupTransactions}.
+ * @returns A two-level record of month key → day-of-month → cumulative OutflowData.
+ */
 export function calculateCumulativeOutflowPerDate(transactions: GroupedTransactions) {
   const netOutflowByDate = calculateOutflowPerDate(transactions);
 
@@ -113,12 +138,84 @@ export function calculateCumulativeOutflowPerDate(transactions: GroupedTransacti
   });
 }
 
+/**
+ * Forecast the average daily spending for the remaining days of the current month
+ * by examining the same positional window (last N calendar days) across recent
+ * historical months.
+ *
+ * For each lookback month, the last `daysRemaining` days of that month are
+ * examined.
+ * Months with no transactions at all are skipped to avoid diluting the average
+ * with periods that predate YNAB tracking.
+ *
+ * @param transactions All reportable transactions, filtered for accounts and inflows
+ *   but NOT filtered by the report date range (lookback needs unrestricted history).
+ * @param lookbackMonths Number of historical months to average over (1–12).
+ * @param today The current date, used to determine days remaining and the lookback window.
+ * @returns An array of `{ day, value }` pairs where `day` is the calendar day in the
+ *   current month and `value` is the average net outflow for that positional slot.
+ *   Returns an empty array when today is the last day of the month.
+ */
+export function calculateAverageDailyForecast(
+  transactions: YNABTransaction[],
+  lookbackMonths: number,
+  today: Moment,
+): Array<{ day: number; value: number }> {
+  const currentDay = today.date();
+  const daysInCurrentMonth = today.daysInMonth();
+  const daysRemaining = daysInCurrentMonth - currentDay;
+
+  if (daysRemaining === 0) return [];
+
+  // For each positional slot (0 = first remaining day), collect daily spending from historical months.
+  const spendingByPosition: number[][] = Array.from({ length: daysRemaining }, () => []);
+
+  for (let i = 1; i <= lookbackMonths; i++) {
+    const hist = today.clone().subtract(i, 'months');
+    const histMonthKey = hist.format('YYYY-MM');
+    const daysInHistMonth = hist.daysInMonth();
+
+    // Option B: take the last `daysRemaining` days of the historical month.
+    const histStartDay = daysInHistMonth - daysRemaining + 1;
+
+    const monthTxs = transactions.filter((t) => t.month === histMonthKey);
+    // Skip months with no transactions — they likely predate YNAB tracking and
+    // would dilute the average with artificial zeros.
+    if (monthTxs.length === 0) continue;
+
+    const byDay = groupBy(monthTxs, (t) => t.date.toUTCMoment().date());
+
+    for (let pos = 0; pos < daysRemaining; pos++) {
+      const histDay = histStartDay + pos;
+      if (histDay < 1 || histDay > daysInHistMonth) continue;
+      const dayTxs = byDay[histDay] ?? [];
+      const spending = dayTxs.reduce((sum, t) => sum + (t.outflow ?? 0) - (t.inflow ?? 0), 0);
+      spendingByPosition[pos].push(spending);
+    }
+  }
+
+  return spendingByPosition.map((values, pos) => ({
+    day: currentDay + 1 + pos,
+    value: values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : 0,
+  }));
+}
+
+/**
+ * Convert a month/day outflow map into Highcharts line series, one series per month.
+ * @param transactions A two-level record of month key ('YYYY-MM') → day-of-month → OutflowData.
+ * @param options Optional display overrides applied to every produced series.
+ * @param options.dashStyle Highcharts dash style (e.g. 'ShortDot' for forecast overlays).
+ * @param options.nameSuffix String appended to each series name (e.g. ' (Scheduled)').
+ * @returns An array of Highcharts SeriesLineOptions, one entry per month.
+ */
 export function toHighchartsSeries(
   transactions: Record<string, Record<string, OutflowData>>,
+  options?: { dashStyle?: Highcharts.DashStyleValue; nameSuffix?: string },
 ): Highcharts.SeriesLineOptions[] {
   return Object.entries(transactions).map(([month, data]) => ({
-    name: moment(month, 'YYYY-MM').format('MMM YYYY'),
+    name: moment(month, 'YYYY-MM').format('MMM YYYY') + (options?.nameSuffix ?? ''),
     type: 'line',
+    dashStyle: options?.dashStyle,
     data: Object.entries(data).map(([date, { value, transactions }]) => ({
       x: parseInt(date),
       y: value,
