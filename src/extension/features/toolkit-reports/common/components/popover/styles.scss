@@ -1,0 +1,12 @@
+.tk-popover {
+  display: inline-flex;
+}
+
+.tk-popover__content {
+  position: fixed;
+  z-index: 1000;
+  overflow-y: auto;
+  border-radius: 0.5rem;
+  background-color: var(--backgroundPrimaryElevated);
+  box-shadow: 0 0.25rem 1.5rem 0 rgba(0, 0, 0, 0.35);
+}

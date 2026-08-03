@@ -30,8 +30,10 @@ export const RootComponent = ({
 
   return (
     <div className="tk-reports-root tk-flex tk-flex-column tk-full-height">
-      <ReportSelector />
-      <ReportFilters />
+      <div className="tk-reports-toolbar">
+        <ReportSelector />
+        <ReportFilters />
+      </div>
       <Report />
     </div>
   );
