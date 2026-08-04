@@ -8,6 +8,7 @@ const mapReportContextToProps = (context: ReportContextType) => {
   return {
     filters: context.filters,
     allReportableTransactions: context.allReportableTransactions,
+    allScheduledTransactions: context.allScheduledTransactions,
   };
 };
 export const BalanceOverTime = withReportContext(mapReportContextToProps)(BalanceOverTimeComponent);

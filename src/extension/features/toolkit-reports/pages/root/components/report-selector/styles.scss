@@ -1,32 +1,55 @@
-.tk-report-selector {
-  background-color: var(--headerBackground);
-  color: var(--sidebarLabelPrimary);
-  padding: 0.5rem;
+.tk-report-selector__trigger {
   display: flex;
-  gap: 0.5rem;
   align-items: center;
-  flex-wrap: wrap;
+  gap: 0.5em;
+  cursor: pointer;
+  border: 0;
+  border-radius: 1000px;
+  font-size: 0.9em;
+  padding: 0.4em 1em;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--sidebarLabelPrimary);
+  background-color: var(--buttonPrimaryBackground);
 
-  &__item {
-    cursor: pointer;
-    border-radius: 1000px;
-    font-size: 0.9em;
-    padding: 0.4em 1em;
-    font-weight: 500;
-    white-space: nowrap;
-    color: var(--buttonSecondaryLabel);
-    background-color: var(--buttonSecondaryBackground);
+  &:hover {
+    background-color: var(--buttonPrimaryBackgroundActive);
+  }
+}
 
+.tk-report-selector__trigger-caret {
+  width: 0;
+  height: 0;
+  border-left: 0.3em solid transparent;
+  border-right: 0.3em solid transparent;
+  border-top: 0.35em solid currentColor;
+}
+
+.tk-report-selector__menu {
+  display: flex;
+  flex-direction: column;
+  min-width: 12rem;
+  padding: 0.4rem;
+}
+
+.tk-report-selector__item {
+  cursor: pointer;
+  border-radius: 0.4rem;
+  font-size: 0.9em;
+  padding: 0.5em 0.75em;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--buttonSecondaryLabel);
+
+  &:hover {
+    background-color: var(--buttonSecondaryBackgroundActive);
+  }
+
+  &--active {
+    color: var(--sidebarLabelPrimary);
+    background-color: var(--buttonPrimaryBackground);
     &:hover {
-      background-color: var(--buttonSecondaryBackgroundActive);
-    }
-
-    &--active {
-      color: var(--sidebarLabelPrimary);
       background-color: var(--buttonPrimaryBackground);
-      &:hover {
-        background-color: var(--buttonPrimaryBackground);
-      }
     }
   }
 }

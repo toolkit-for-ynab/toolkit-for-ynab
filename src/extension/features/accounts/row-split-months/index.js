@@ -14,7 +14,7 @@ export class RowSplitMonths extends Feature {
   observe(changedNodes) {
     if (!this.shouldInvoke()) return;
 
-    if (changedNodes.has('ynab-grid-body')) {
+    if (changedNodes.has('ynab-grid-body') || changedNodes.has('ynab-grid-body-row')) {
       this.invoke();
     }
   }
@@ -26,6 +26,12 @@ export class RowSplitMonths extends Feature {
       const nextRow = allRows.eq(ix + 1)?.[0];
 
       if (!nextRow) {
+        return;
+      }
+
+      // This element already has the necessary styling, so we can skip the extra look
+      // up (and prevent infinite updates)
+      if (element.classList.contains('tk-rsm-last')) {
         return;
       }
 

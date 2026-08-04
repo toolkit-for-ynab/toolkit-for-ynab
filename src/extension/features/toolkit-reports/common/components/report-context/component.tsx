@@ -30,6 +30,16 @@ export type ReportContextType = {
   setActiveReportKey: (newKey: string) => void;
   setFilters: (newFilters: any) => void;
   allReportableTransactions: YNABTransaction[];
+  /**
+   * All scheduled transaction rows, unfiltered with respect to splits: this includes both
+   * split parent rows (which carry the total amount and the real recurrence `frequency`) and
+   * their scheduled sub-transaction children (which carry per-category amounts but always
+   * report `frequency: 'Never'`). Consumers must pick one or the other before using this —
+   * summing amounts requires filtering to `!isSplit` (leaf rows) to avoid double-counting a
+   * split's total against its own children, while anything that needs the recurrence schedule
+   * must filter to `!isScheduledSubTransaction` (parent rows), since children don't carry it.
+   */
+  allScheduledTransactions: YNABTransaction[];
 };
 
 const { Provider, Consumer } = createContext<ReportContextType>({
@@ -39,6 +49,7 @@ const { Provider, Consumer } = createContext<ReportContextType>({
   setActiveReportKey: () => {},
   setFilters: () => {},
   allReportableTransactions: [],
+  allScheduledTransactions: [],
 });
 
 export const ReportContextProvider = Provider;

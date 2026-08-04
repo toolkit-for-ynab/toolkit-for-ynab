@@ -51,7 +51,7 @@ export class DateFilterComponent extends React.Component<DateFilterProps, DateFi
     return (
       <div className="tk-pd-1">
         <h3 className="tk-mg-0">Date Range</h3>
-        <div className="tk-flex tk-mg-t-1 tk-mg-b-05 tk-pd-y-05 tk-border-y tk-modal-content__header-actions">
+        <div className="tk-flex tk-date-filter__options tk-mg-t-1 tk-mg-b-05 tk-pd-y-05 tk-border-y tk-modal-content__header-actions">
           <button
             name={Options.ThisMonth}
             className="tk-button tk-button--small tk-button--text"

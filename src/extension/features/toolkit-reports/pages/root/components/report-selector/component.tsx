@@ -1,36 +1,54 @@
 import * as React from 'react';
 import { REPORT_TYPES } from 'toolkit/extension/features/toolkit-reports/common/constants/report-types';
+import { Popover } from 'toolkit/extension/features/toolkit-reports/common/components/popover';
 import classnames from 'classnames';
 import './styles.scss';
 
-export class ReportSelectorComponent extends React.Component<{
+export function ReportSelectorComponent({
+  activeReportKey,
+  setActiveReportKey,
+}: {
   activeReportKey: string;
   setActiveReportKey: (key: string) => void;
-}> {
-  render() {
-    return (
-      <div className="tk-report-selector">
-        {REPORT_TYPES.map(({ key, name }) => {
-          const reportNameClasses = classnames('tk-report-selector__item', {
-            'tk-report-selector__item--active': this.props.activeReportKey === key,
-          });
+}) {
+  const activeReport = REPORT_TYPES.find(({ key }) => key === activeReportKey);
 
-          return (
-            <div
-              className={reportNameClasses}
-              data-report-key={key}
-              key={key}
-              onClick={this._onSelect}
-            >
-              {name}
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
+  return (
+    <Popover
+      renderTrigger={({ toggle, isOpen }) => (
+        <button
+          type="button"
+          className="tk-report-selector__trigger"
+          onClick={toggle}
+          aria-expanded={isOpen}
+        >
+          {activeReport?.name}
+          <span className="tk-report-selector__trigger-caret" />
+        </button>
+      )}
+    >
+      {({ close }) => (
+        <div className="tk-report-selector__menu">
+          {REPORT_TYPES.map(({ key, name }) => {
+            const itemClasses = classnames('tk-report-selector__item', {
+              'tk-report-selector__item--active': activeReportKey === key,
+            });
 
-  _onSelect = ({ currentTarget }: React.MouseEvent<HTMLDivElement>) => {
-    this.props.setActiveReportKey(currentTarget.dataset.reportKey!);
-  };
+            return (
+              <div
+                className={itemClasses}
+                key={key}
+                onClick={() => {
+                  setActiveReportKey(key);
+                  close();
+                }}
+              >
+                {name}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </Popover>
+  );
 }

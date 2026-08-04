@@ -2,4 +2,8 @@
   &__select {
     width: auto;
   }
+
+  &__options {
+    flex-wrap: wrap;
+  }
 }
