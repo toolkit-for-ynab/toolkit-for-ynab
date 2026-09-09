@@ -21,6 +21,8 @@ export class DisplayUpcomingAmount extends Feature {
     $('.tk-activity-upcoming').removeClass('.tk-activity-upcoming');
     $('.tk-activity-upcoming-amount').remove();
 
+    const customColor = ynabToolKit.options.DisplayUpcomingAmountColor;
+
     $('.budget-table-row.is-sub-category').each((_, element) => {
       const category = getBudgetMonthDisplaySubCategory(element.dataset.entityId);
 
@@ -40,6 +42,7 @@ export class DisplayUpcomingAmount extends Feature {
           class: 'tk-activity-upcoming-amount currency',
           title: `Total upcoming transaction amount in this month for ${subCategory.name}`,
           text: formatCurrency(monthlySubCategoryBudgetCalculation.upcomingTransactions),
+          css: { color: customColor },
         });
 
         let moneyMoves = $('.budget-table-cell-category-moves', activity);
