@@ -164,6 +164,9 @@ Adds "Overspending" to the budget inspector, which displays the total overspendi
 ## Show Upcoming Transaction Total
 Add the total of upcoming transactions alongside activity for each category.
 
+## Show Upcoming Transaction Total: Color
+Select a custom color for the upcoming transaction totals.
+
 ## Striped Budget Rows
 Shows a light gray background on alternating category rows.
 
