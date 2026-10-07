@@ -17,6 +17,7 @@ export type SelectedReportContextPropType = {
 export type FiltersType = {
   accountFilterIds: Set<string>;
   categoryFilterIds: Set<string>;
+  categoryGroupFilterIds: Set<string>;
   dateFilter: {
     fromDate: DateWithoutTime;
     toDate: DateWithoutTime;

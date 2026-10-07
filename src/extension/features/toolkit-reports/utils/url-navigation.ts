@@ -135,6 +135,7 @@ export function urlToReportKey(urlPath: string): string | null {
     'net-worth': ReportKeys.NetWorth,
     'inflow-outflow': ReportKeys.InflowOutflow,
     'spending-by-category': ReportKeys.SpendingByCategory,
+    'spending-by-category-over-time': ReportKeys.SpendingByCategoryOverTime,
     'spending-by-payee': ReportKeys.SpendingByPayee,
     'income-vs-expense': ReportKeys.IncomeVsExpense,
     'income-breakdown': ReportKeys.IncomeBreakdown,

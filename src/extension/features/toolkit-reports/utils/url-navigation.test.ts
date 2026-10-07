@@ -355,6 +355,9 @@ describe('URL Navigation Utilities', () => {
       expect(urlToReportKey('net-worth')).toBe(ReportKeys.NetWorth);
       expect(urlToReportKey('inflow-outflow')).toBe(ReportKeys.InflowOutflow);
       expect(urlToReportKey('spending-by-category')).toBe(ReportKeys.SpendingByCategory);
+      expect(urlToReportKey('spending-by-category-over-time')).toBe(
+        ReportKeys.SpendingByCategoryOverTime,
+      );
       expect(urlToReportKey('spending-by-payee')).toBe(ReportKeys.SpendingByPayee);
       expect(urlToReportKey('income-vs-expense')).toBe(ReportKeys.IncomeVsExpense);
       expect(urlToReportKey('income-breakdown')).toBe(ReportKeys.IncomeBreakdown);

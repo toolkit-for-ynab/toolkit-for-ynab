@@ -19,17 +19,18 @@ Where:
 
 The following report tabs are supported with their corresponding URL paths:
 
-| Report Name          | URL Path               |
-| -------------------- | ---------------------- |
-| Net Worth            | `net-worth`            |
-| Inflow/Outflow       | `inflow-outflow`       |
-| Spending By Category | `spending-by-category` |
-| Spending By Payee    | `spending-by-payee`    |
-| Income vs. Expense   | `income-vs-expense`    |
-| Income Breakdown     | `income-breakdown`     |
-| Balance Over Time    | `balance-over-time`    |
-| Outflow Over Time    | `outflow-over-time`    |
-| Forecast             | `forecast`             |
+| Report Name                    | URL Path                         |
+| ------------------------------ | -------------------------------- |
+| Net Worth                      | `net-worth`                      |
+| Inflow/Outflow                 | `inflow-outflow`                 |
+| Spending By Category           | `spending-by-category`           |
+| Spending by Category Over Time | `spending-by-category-over-time` |
+| Spending By Payee              | `spending-by-payee`              |
+| Income vs. Expense             | `income-vs-expense`              |
+| Income Breakdown               | `income-breakdown`               |
+| Balance Over Time              | `balance-over-time`              |
+| Outflow Over Time              | `outflow-over-time`              |
+| Forecast                       | `forecast`                       |
 
 ## Examples
 

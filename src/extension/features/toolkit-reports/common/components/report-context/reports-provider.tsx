@@ -5,6 +5,7 @@ import { BalanceOverTime } from 'toolkit/extension/features/toolkit-reports/page
 import { OutflowOverTime } from 'toolkit/extension/features/toolkit-reports/pages/outflow-over-time';
 import { SpendingByPayee } from 'toolkit/extension/features/toolkit-reports/pages/spending-by-payee';
 import { SpendingByCategory } from 'toolkit/extension/features/toolkit-reports/pages/spending-by-category';
+import { SpendingByCategoryOverTime } from 'toolkit/extension/features/toolkit-reports/pages/spending-by-category-over-time';
 import { IncomeBreakdown } from 'toolkit/extension/features/toolkit-reports/pages/income-breakdown/container';
 import { Forecast } from 'toolkit/extension/features/toolkit-reports/pages/forecast';
 import { REPORT_TYPES, ReportKeys } from '../../constants/report-types';
@@ -14,11 +15,13 @@ import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/ut
 import {
   getStoredFilters,
   storeAccountFilters,
+  storeCategoryGroupFilters,
   storeCategoryFilters,
   storeDateFilters,
 } from '../../../utils/storage';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 import { ForecastHelp } from '../../../pages/forecast/help';
+import { CategoryGroupFilter } from '../../../pages/root/components/report-filters/components/category-group-filter';
 import {
   parseToolkitReportsURL,
   isValidReportTab,
@@ -77,6 +80,15 @@ const REPORT_COMPONENTS: SelectedReportContextPropType[] = [
       disableTrackingAccounts: true,
       includeTrackingAccounts: false,
     },
+  },
+  {
+    component: SpendingByCategoryOverTime,
+    key: ReportKeys.SpendingByCategoryOverTime,
+    filterSettings: {
+      disableTrackingAccounts: true,
+      includeTrackingAccounts: false,
+    },
+    filtersExtraComponent: CategoryGroupFilter,
   },
   {
     component: IncomeVsExpense,
@@ -300,6 +312,7 @@ export function withReportContextProvider<T extends object>(InnerComponent: Comp
     _setFilters = (filters: FiltersType) => {
       storeAccountFilters(this.state.activeReportKey, filters.accountFilterIds);
       storeCategoryFilters(this.state.activeReportKey, filters.categoryFilterIds);
+      storeCategoryGroupFilters(this.state.activeReportKey, filters.categoryGroupFilterIds);
       storeDateFilters(this.state.activeReportKey, filters.dateFilter);
 
       // this.setState({ filters }, this._applyFilters);

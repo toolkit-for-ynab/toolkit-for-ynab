@@ -6,6 +6,7 @@ import { FiltersType } from '../common/components/report-context';
 enum FilterType {
   Account = 'account-filters',
   Category = 'category-filters',
+  CategoryGroup = 'category-group-filters',
   Date = 'date-filters',
 }
 
@@ -13,6 +14,7 @@ export function getStoredFilters(reportKey: string): FiltersType {
   return {
     accountFilterIds: getStoredAccountFilters(reportKey),
     categoryFilterIds: getStoredCategoryFilters(reportKey),
+    categoryGroupFilterIds: getStoredCategoryGroupFilters(reportKey),
     dateFilter: getStoredDateFilters(reportKey),
   };
 }
@@ -28,6 +30,13 @@ export function storeCategoryFilters(reportKey: string, categoryFilterIds: Set<s
   setToolkitStorageKey(
     generateStorageKey(reportKey, FilterType.Category),
     Array.from(categoryFilterIds),
+  );
+}
+
+export function storeCategoryGroupFilters(reportKey: string, categoryGroupFilterIds: Set<string>) {
+  setToolkitStorageKey(
+    generateStorageKey(reportKey, FilterType.CategoryGroup),
+    Array.from(categoryGroupFilterIds),
   );
 }
 
@@ -57,6 +66,14 @@ function getStoredCategoryFilters(reportKey: string) {
     [],
   );
   return new Set<string>(categoryFilterIds);
+}
+
+function getStoredCategoryGroupFilters(reportKey: string) {
+  const categoryGroupFilterIds = getToolkitStorageKey(
+    generateStorageKey(reportKey, FilterType.CategoryGroup),
+    [],
+  );
+  return new Set<string>(categoryGroupFilterIds);
 }
 
 function getStoredDateFilters(reportKey: string) {
