@@ -158,6 +158,9 @@ Highlights credit card category balances with a yellow warning and adds an alert
 ## Show Available After Savings
 Shows "Available After Savings" in the budget breakdown. This allows you to see how much you have available if you exclude your savings. Any categories under a category group that includes "Savings" in its name will be taken into account. You can also add "Savings" anywhere in the name of a category to mark it.
 
+## Show Plan Vision in the Plan header
+Displays the notes from your “Plan Vision” category beneath the Plan header, including when that category is hidden.
+
 ## Show Total Overspent
 Adds "Overspending" to the budget inspector, which displays the total overspending from selected categories.
 
