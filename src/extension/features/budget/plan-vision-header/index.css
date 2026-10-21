@@ -1,0 +1,17 @@
+.tk-plan-vision-header {
+  box-sizing: border-box;
+  margin: 0 auto 1rem;
+  padding: 0.75rem 1rem;
+  max-width: 1200px;
+  border-left: 3px solid currentColor;
+}
+
+.tk-plan-vision-header__label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.tk-plan-vision-header__content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
