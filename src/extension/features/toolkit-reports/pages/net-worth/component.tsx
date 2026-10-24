@@ -10,6 +10,7 @@ import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/ut
 import { AdditionalReportSettings } from 'toolkit/extension/features/toolkit-reports/common/components/additional-settings';
 import { ReportContextType } from '../../common/components/report-context';
 import { DateWithoutTime } from 'toolkit/types/ynab/window/ynab-utilities';
+import { getEntityManager } from 'toolkit/extension/utils/ynab';
 
 const STORAGE_KEYS = {
   inverseDebt: 'net-worth-inverse-debt',
@@ -254,6 +255,17 @@ export class NetWorthComponent extends React.Component<NetWorthProps, NetWorthSt
         accounts.set(transactionAccountId, accounts.get(transactionAccountId) + transactionAmount);
       } else {
         accounts.set(transactionAccountId, transactionAmount);
+      }
+    });
+
+    // YNAB accrues interest on loan and mortgage accounts straight into the account balance
+    // without creating transactions, so summing transactions understates those debts. We can't
+    // tell which month the interest belongs to, so true the latest month up to the real balance.
+    accounts.forEach((total, accountId) => {
+      const account = getEntityManager().getAccountById(accountId);
+      const balance = account?.accountCalculation?.balance;
+      if (account?.isDebtAccount && typeof balance === 'number') {
+        accounts.set(accountId, balance);
       }
     });
 

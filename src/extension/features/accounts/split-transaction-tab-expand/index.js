@@ -1,12 +1,29 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 export class SplitTransactionTabExpand extends Feature {
   shouldInvoke() {
-    return true;
+    return isCurrentRouteAccountsPage();
   }
 
-  invoke() {
-    // this.addToolkitEmberHook('register/grid-split', 'didRender', this.addEventListeners);
+  invoke() {}
+
+  // This used to run from an Ember render hook that no longer exists, which left
+  // the feature doing nothing; re-attach whenever a split is being edited instead.
+  observe() {
+    if (!this.shouldInvoke()) return;
+    if (!document.querySelector('.ynab-grid-split-add-sub-transaction')) return;
+
+    const lastInput = $('.ynab-grid-body-row.is-editing input').last();
+    if (!lastInput.length || lastInput.attr('data-toolkit-tab-expand')) return;
+
+    this.addEventListeners();
+  }
+
+  destroy() {
+    const inputs = $('input[data-toolkit-tab-expand]');
+    inputs.off('keydown', this.applyNewTabBehavior);
+    inputs.removeAttr('data-toolkit-tab-expand');
   }
 
   addEventListeners() {

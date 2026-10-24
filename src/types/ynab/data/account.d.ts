@@ -9,4 +9,6 @@ export interface YNABAccount {
   accountCalculation: YNABAccountCalculation;
   getTransactions(): YNABTransaction[];
   onBudget: boolean;
+  // loan/mortgage accounts; YNAB accrues their interest into the balance without transactions
+  isDebtAccount?: boolean;
 }

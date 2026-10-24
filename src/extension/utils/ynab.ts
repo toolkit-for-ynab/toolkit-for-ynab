@@ -32,15 +32,36 @@ export function isCurrentRouteAccountsPage() {
   );
 }
 
+// YNAB moved its reports from `reports.*` routes to `reflect.*` routes (the old
+// names still exist but only redirect), so accept either prefix.
+const REPORT_ROUTE_PREFIXES = ['reports.', 'reflect.'];
+
 export function isCurrentRouteReportPage(
   report?: 'spending' | 'income-expense' | 'net-worth' | 'any',
 ) {
   const currentRoute = getCurrentRouteName();
-  if (report === 'any' || !report) {
-    return currentRoute?.includes('reports.');
+  if (!currentRoute) {
+    return false;
   }
 
-  return currentRoute === `reports.${report}`;
+  if (report === 'any' || !report) {
+    return REPORT_ROUTE_PREFIXES.some((prefix) => currentRoute.startsWith(prefix));
+  }
+
+  return REPORT_ROUTE_PREFIXES.some(
+    (prefix) =>
+      currentRoute === `${prefix}${report}` || currentRoute.startsWith(`${prefix}${report}-`),
+  );
+}
+
+// The item in YNAB's plan settings menu that Toolkit toggles are inserted after.
+// "Import from..." no longer exists in the menu, so fall back to "Display Options".
+export function getSettingsMenuAnchor(menu: Element): HTMLElement | null {
+  return (
+    menu.querySelector<HTMLElement>('.modal-select-import-from') ??
+    menu.querySelector<HTMLElement>('.modal-select-theme-switcher') ??
+    menu.querySelector<HTMLElement>('.menu-item:last-child')
+  );
 }
 
 export function getSelectedAccount() {

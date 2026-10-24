@@ -2,7 +2,8 @@ body.toolkit-hide-help .chat-widget {
   display: none !important;
 }
 
-body.toolkit-hide-help #beacon-container {
+body.toolkit-hide-help #beacon-container,
+body.toolkit-hide-help #kustomer-ui-sdk-iframe {
   display: none !important;
 }
 #tk-hide-help {

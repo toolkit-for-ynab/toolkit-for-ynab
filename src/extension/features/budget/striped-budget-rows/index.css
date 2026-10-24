@@ -16,10 +16,16 @@ body.theme-dark {
   --backgroundTableHeader: #343437;
 }
 
-.budget-table-row.is-sub-category:nth-of-type(even):not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
+/* Category group rows and category rows are siblings, so count only category
+   rows when alternating; otherwise every group header shifts the stripes. */
+.budget-table-row.is-sub-category:nth-child(even
+    of
+    .is-sub-category):not(.is-checked):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
   background-color: var(--tk-striped-budget-row-color);
 }
 
-.budget-table-row.is-sub-category:nth-of-type(even):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
+.budget-table-row.is-sub-category.is-checked:nth-child(even
+    of
+    .is-sub-category):not(.is-editing):not(.ynab-grid-body-empty):not(.ynab-grid-actions) {
   background-color: var(--tk-striped-budget-row-selected-color);
 }

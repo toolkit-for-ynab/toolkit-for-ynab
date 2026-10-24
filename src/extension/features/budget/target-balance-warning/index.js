@@ -8,7 +8,7 @@ export class TargetBalanceWarning extends Feature {
   }
 
   invoke() {
-    // this.addToolkitEmberHook('budget-table-row', 'didRender', this.modifyBudgetRow);
+    this.modifyBudgetRows();
   }
 
   observe(changedNodes) {
@@ -17,6 +17,17 @@ export class TargetBalanceWarning extends Feature {
     if (changedNodes.has('budget-inspector-button')) {
       this.modifyInspector();
     }
+
+    // rows used to be handled from an Ember render hook that no longer exists
+    if (changedNodes.has('budget-table-row')) {
+      this.modifyBudgetRows();
+    }
+  }
+
+  modifyBudgetRows() {
+    document.querySelectorAll('.budget-table-row.is-sub-category').forEach((element) => {
+      this.modifyBudgetRow(element);
+    });
   }
 
   destroy() {

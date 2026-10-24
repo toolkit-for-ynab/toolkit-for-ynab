@@ -39,7 +39,9 @@ export class DisplayTotalOverspent extends Feature {
     const currencyClass = displayOverspent === 0 ? 'zero' : 'negative';
 
     $('.tk-display-total-overspent').remove();
-    $('.ynab-breakdown').append(`
+    // only the first breakdown (month summary or selected category); other
+    // inspector cards such as Live on Last Month's Income also use .ynab-breakdown
+    $('.budget-breakdown .ynab-breakdown').first().append(`
       <div class="tk-display-total-overspent">
         <div>Overspending</div>
         <div class="user-data">

@@ -1,4 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
+import { isCurrentRouteAccountsPage } from 'toolkit/extension/utils/ynab';
 
 const STRIPED_ROW_CLASS = 'tk-striped-transaction-row';
 const EXCLUDED_ROW_CLASSES = [
@@ -15,12 +16,28 @@ export class AccountsStripedRows extends Feature {
   }
 
   shouldInvoke() {
-    return true;
+    return isCurrentRouteAccountsPage();
   }
 
   invoke() {
-    // this.addToolkitEmberHook('register/grid-row', 'didRender', this.setTimeout);
-    // this.addToolkitEmberHook('register/grid-sub', 'didRender', this.setTimeout);
+    this.setTimeout();
+  }
+
+  // This used to run from Ember render hooks that no longer exist. Restriping
+  // only changes rows whose stripe is wrong, so the class changes it makes
+  // settle after one pass.
+  observe(changedNodes) {
+    if (!this.shouldInvoke()) return;
+
+    if (changedNodes.has('ynab-grid-body') || changedNodes.has('ynab-grid-body-row')) {
+      this.setTimeout();
+    }
+  }
+
+  onRouteChanged() {
+    if (this.shouldInvoke()) {
+      this.invoke();
+    }
   }
 
   destroy() {

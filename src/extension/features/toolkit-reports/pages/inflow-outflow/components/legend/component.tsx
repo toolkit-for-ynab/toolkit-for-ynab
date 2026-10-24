@@ -57,7 +57,14 @@ export const Legend = (props: LegendProps) => (
           <div className="tk-inflow-outflow-legend__icon-inflow-outflows" />
           <div>Savings Ratio</div>
         </div>
-        <Percentage value={props.savings} numbersAfterPoint={1} pretty />
+        <div
+          className={classnames({
+            'tk-inflow-outflow-legend__savings--below-target':
+              props.savings < parseFloat(ynabToolKit.options.SavingsRatio as string),
+          })}
+        >
+          <Percentage value={props.savings} numbersAfterPoint={1} pretty />
+        </div>
       </div>
     )}
   </React.Fragment>

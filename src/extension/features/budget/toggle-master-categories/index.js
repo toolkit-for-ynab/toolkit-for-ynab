@@ -4,6 +4,8 @@ import { controllerLookup } from 'toolkit/extension/utils/ember';
 import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/utils/toolkit';
 import { getBudgetMonthDisplayMasterCategory } from '../utils';
 
+const SOLO_ROW_TOGGLE_SELECTOR = '.budget-table-row.is-master-category .budget-table-cell-collapse';
+
 export class ToggleMasterCategories extends Feature {
   get isAnyCategoryCollapsed() {
     const { budgetMonthDisplayItems } = getBudgetService();
@@ -31,10 +33,7 @@ export class ToggleMasterCategories extends Feature {
       'contextmenu',
       this.handleToggleSoloMode,
     );
-    $('.budget-table-row.is-master-category .budget-table-cell-collapse').off(
-      'click',
-      this.handleRowExpandedToggle,
-    );
+    $(document).off('click', SOLO_ROW_TOGGLE_SELECTOR, this.handleRowExpandedToggle);
   }
 
   invoke() {
@@ -73,10 +72,7 @@ export class ToggleMasterCategories extends Feature {
     if (isSoloModeEnabled) {
       event.currentTarget.dataset.tkCategoryToggle = 'toggle';
       setToolkitStorageKey('catSoloMode', false);
-      $('.budget-table-row.is-master-category .budget-table-cell-collapse').off(
-        'click',
-        this.handleRowExpandedToggle,
-      );
+      $(document).off('click', SOLO_ROW_TOGGLE_SELECTOR, this.handleRowExpandedToggle);
     } else {
       event.currentTarget.dataset.tkCategoryToggle = 'solo';
       setToolkitStorageKey('catSoloMode', true);
@@ -87,10 +83,9 @@ export class ToggleMasterCategories extends Feature {
   };
 
   enableSoloCategoryMode() {
-    $('.budget-table-row.is-master-category .budget-table-cell-collapse').on(
-      'click',
-      this.handleRowExpandedToggle,
-    );
+    // delegate so rows YNAB re-renders keep the handler
+    $(document).off('click', SOLO_ROW_TOGGLE_SELECTOR, this.handleRowExpandedToggle);
+    $(document).on('click', SOLO_ROW_TOGGLE_SELECTOR, this.handleRowExpandedToggle);
 
     controllerLookup('budget').send('toggleCollapseMasterCategories', true);
   }
@@ -127,15 +122,16 @@ export class ToggleMasterCategories extends Feature {
       return;
     }
 
+    // YNAB's own collapse button already toggles the clicked group, so only
+    // collapse the others. Toggling the clicked group here as well undid YNAB's
+    // toggle, and setting the others to `false` expanded them instead.
     getBudgetService().budgetMonthDisplayItems.forEach((item) => {
       if (!item.isMasterCategory) {
         return;
       }
 
-      if (item?.masterCategory?.entityId === masterCategory.categoryId) {
-        item.isCollapsed = !item.isCollapsed;
-      } else {
-        item.isCollapsed = false;
+      if (item?.masterCategory?.entityId !== masterCategory.categoryId) {
+        item.isCollapsed = true;
       }
     });
   };

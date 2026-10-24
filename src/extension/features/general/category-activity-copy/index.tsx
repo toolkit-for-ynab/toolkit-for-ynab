@@ -9,11 +9,17 @@ import { componentAppend } from 'toolkit/extension/utils/react';
 import CopyTransactionsButton from './CopyTransactionsButtons';
 import { YNABTransaction } from 'toolkit/types/ynab/data/transaction';
 
+// YNAB's modal service no longer exposes `isModalOpen`; `currentModal` is set
+// to the open modal's name and cleared when it closes.
+function isModalOpen() {
+  return !!getModalService()?.currentModal;
+}
+
 export class CategoryActivityCopy extends Feature {
   shouldInvoke() {
     return (
       $('#tk-copy-transactions').length === 0 &&
-      !!getModalService()?.isModalOpen &&
+      isModalOpen() &&
       !!document.querySelector('.modal-budget-activity')
     );
   }
@@ -22,7 +28,7 @@ export class CategoryActivityCopy extends Feature {
     const modal = document.querySelector('.modal-budget-activity');
     const modalService = getModalService();
 
-    if (modal && modalService && modalService.isModalOpen) {
+    if (modal && modalService && isModalOpen()) {
       let transactions: YNABTransaction[] | undefined = undefined;
       if (modalService.currentModal === 'modals/budget/activity' && isCurrentRouteBudgetPage()) {
         transactions = modalService.modalValue?.selectedActivityTransactions;

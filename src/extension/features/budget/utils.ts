@@ -43,6 +43,18 @@ export function ensureGoalColumn(element: HTMLElement | null): boolean {
   return true;
 }
 
+// The month summary card in the budget inspector. YNAB dropped its
+// `budget-breakdown-monthly-totals` class, so fall back to finding the card by
+// the summary rows it contains.
+export function getMonthlySummaryCard(): JQuery<HTMLElement> {
+  const $legacyCard = $('.budget-breakdown-monthly-totals');
+  if ($legacyCard.length) {
+    return $legacyCard;
+  }
+
+  return $('.budget-breakdown .ynab-breakdown-assigned-in-month').closest('.card').first();
+}
+
 export function getBudgetMonthDisplaySubCategory(
   entityId: string | undefined | null,
 ): YNABBudgetMonthDisplayItem | null {

@@ -5,6 +5,7 @@ import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/ut
 import { HideHelpButton } from './HideHelpButton';
 import { serviceLookup } from 'toolkit/extension/utils/ember';
 import { YNABModalService } from 'toolkit/types/ynab/services/YNABModalService';
+import { getSettingsMenuAnchor } from 'toolkit/extension/utils/ynab';
 
 export class HideHelp extends Feature {
   injectCSS() {
@@ -22,7 +23,7 @@ export class HideHelp extends Feature {
 
     componentAfter(
       <HideHelpButton toggleHiddenState={this.setHiddenState} />,
-      element.getElementsByClassName('modal-select-import-from')[0],
+      getSettingsMenuAnchor(element),
     );
   }
 

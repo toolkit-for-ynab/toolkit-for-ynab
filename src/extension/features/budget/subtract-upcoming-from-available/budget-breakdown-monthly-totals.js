@@ -5,6 +5,7 @@ import { getBudgetService } from 'toolkit/extension/utils/ynab';
 import * as categories from './categories';
 import { removeBudgetBreakdownEntries } from './destroy-helpers';
 import { shouldRun } from './index';
+import { getMonthlySummaryCard } from '../utils';
 
 export function handleBudgetBreakdownMonthlyTotals() {
   // Remove budget breakdown entries if they exist.
@@ -12,7 +13,7 @@ export function handleBudgetBreakdownMonthlyTotals() {
 
   if (!shouldRun()) return;
 
-  const $budgetBreakdownMonthlyTotals = $('.budget-breakdown-monthly-totals');
+  const $budgetBreakdownMonthlyTotals = getMonthlySummaryCard();
   if (!$budgetBreakdownMonthlyTotals.length) return;
 
   const inspectorCategories = getBudgetService()?.inspectorCategories;
@@ -48,7 +49,7 @@ function setBudgetBreakdown(totals, context) {
   );
 
   const $totalAvailableAfterSavings = $('#tk-total-available-after-savings', context);
-  const $ynabBreakdown = $('.ynab-breakdown', context);
+  const $ynabBreakdown = $('.ynab-breakdown', context).first();
 
   if (ynabToolKit.options.ShowAvailableAfterSavings && $totalAvailableAfterSavings.length)
     $budgetBreakdownEntries.insertAfter($totalAvailableAfterSavings);

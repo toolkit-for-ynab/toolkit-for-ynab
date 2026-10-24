@@ -5,6 +5,7 @@ import { getToolkitStorageKey, setToolkitStorageKey } from 'toolkit/extension/ut
 import { HideClosedButton } from './HideClosedButton';
 import { serviceLookup } from 'toolkit/extension/utils/ember';
 import { YNABModalService } from 'toolkit/types/ynab/services/YNABModalService';
+import { getSettingsMenuAnchor } from 'toolkit/extension/utils/ynab';
 
 export class HideClosedAccounts extends Feature {
   injectCSS() {
@@ -39,7 +40,7 @@ export class HideClosedAccounts extends Feature {
     if ($('#tk-hide-closed-accounts').length === 0) {
       componentAfter(
         <HideClosedButton toggleHiddenState={this.setHiddenState} />,
-        element.getElementsByClassName('modal-select-import-from')[0],
+        getSettingsMenuAnchor(element),
       );
     }
   }

@@ -14,11 +14,20 @@ export class AutoDistributeSplits extends Feature {
   }
 
   invoke() {
-    // this.addToolkitEmberHook('register/grid-actions', 'didRender', this.injectDistributeButton);
+    this.injectDistributeButton();
   }
 
-  injectDistributeButton(element) {
-    if ($(`#${DISTRIBUTE_BUTTON_ID}`, element).length) {
+  // This used to run from an Ember render hook that no longer exists
+  observe() {
+    if (!this.shouldInvoke()) return;
+    this.injectDistributeButton();
+  }
+
+  injectDistributeButton() {
+    if ($(`#${DISTRIBUTE_BUTTON_ID}`).length) {
+      if (!$('.ynab-grid-split-add-sub-transaction').length) {
+        $(`#${DISTRIBUTE_BUTTON_ID}`).remove();
+      }
       return;
     }
 
@@ -66,7 +75,9 @@ export class AutoDistributeSplits extends Feature {
 
   canDistribute(total, subValues) {
     return (
-      actualNumber(total) && !subValues.every((value) => value === 0) && subValues.any(actualNumber)
+      actualNumber(total) &&
+      !subValues.every((value) => value === 0) &&
+      subValues.some(actualNumber)
     );
   }
 

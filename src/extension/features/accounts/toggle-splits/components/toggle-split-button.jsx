@@ -18,7 +18,11 @@ export class ToggleSplitButton extends React.Component {
 
   render() {
     return (
-      <button className="button tk-toggle-splits" onClick={this.toggleSplits}>
+      // match the classes YNAB uses for the other account toolbar buttons
+      <button
+        className="ghost-button primary type-body tk-toggle-splits"
+        onClick={this.toggleSplits}
+      >
         {this.state.areAllSplitsExpanded && (
           <svg className="ynab-new-icon" width="10" height="10">
             <use href={`#icon_sprite_caret_down`} />

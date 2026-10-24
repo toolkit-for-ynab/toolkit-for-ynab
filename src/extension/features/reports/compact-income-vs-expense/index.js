@@ -1,5 +1,5 @@
 import { Feature } from 'toolkit/extension/features/feature';
-import { getCurrentRouteName } from 'toolkit/extension/utils/ynab';
+import { isCurrentRouteReportPage } from 'toolkit/extension/utils/ynab';
 
 export class CompactIncomeVsExpense extends Feature {
   injectCSS() {
@@ -7,7 +7,7 @@ export class CompactIncomeVsExpense extends Feature {
   }
 
   shouldInvoke() {
-    return getCurrentRouteName().includes('reports.income-expense');
+    return isCurrentRouteReportPage('income-expense');
   }
 
   destroy() {
@@ -27,8 +27,8 @@ export class CompactIncomeVsExpense extends Feature {
 
   handleScroll = (e) => {
     const header = $('.income-expense-header');
-    const scrollTop = $('.ember-view.reports-income-expense').scrollTop();
-    const scrollLeft = $('.ember-view.reports-income-expense').scrollLeft();
+    const scrollTop = e.currentTarget.scrollTop;
+    const scrollLeft = e.currentTarget.scrollLeft;
     if (scrollLeft < 40) {
       $('.income-expense-first-column').css({
         position: 'static',
@@ -59,14 +59,16 @@ export class CompactIncomeVsExpense extends Feature {
       $('.income-expense-table').css('padding-top', 0);
     } else {
       var leftPos = $('.income-expense-income').offset().left;
+      // pin the header to the top of the scrolling report container; YNAB's
+      // `.reports-controls` bar no longer exists, so measure the container itself
       header.css({
         position: 'fixed',
-        top: $('.reports-header').outerHeight() + $('.reports-controls').outerHeight(),
+        top: e.currentTarget.getBoundingClientRect().top,
         width: $('.income-expense-income').width(),
-        marginLeft: -($(e).scrollLeft() || 0),
+        marginLeft: 0,
         left: leftPos,
       });
-      $('.income-expense-table').css('padding-top', $('.reports-header').outerHeight());
+      $('.income-expense-table').css('padding-top', header.outerHeight());
     }
   };
 

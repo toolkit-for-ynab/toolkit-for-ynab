@@ -18,6 +18,7 @@ export class CheckCreditBalances extends Feature {
 
   invoke() {
     this.addRectifyDifferenceButton();
+    this.checkAllCategoriesForDifference();
   }
 
   observe(changedNodes) {
@@ -27,12 +28,16 @@ export class CheckCreditBalances extends Feature {
       this.addRectifyDifferenceButton();
     }
 
-    if (changedNodes.has('budget-table-container')) {
-      const debtRows = document.querySelectorAll('.is-debt-payment-category');
-      debtRows.forEach((row) => {
-        this.checkCategoryForDifference(row);
-      });
+    // YNAB updates individual rows in place, so the table container isn't always re-rendered
+    if (changedNodes.has('budget-table-container') || changedNodes.has('budget-table-row')) {
+      this.checkAllCategoriesForDifference();
     }
+  }
+
+  checkAllCategoriesForDifference() {
+    document.querySelectorAll('.budget-table-row.is-debt-payment-category').forEach((row) => {
+      this.checkCategoryForDifference(row);
+    });
   }
 
   onRouteChanged() {

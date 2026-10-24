@@ -17,7 +17,8 @@ export class DateOfMoney extends Feature {
   }
 
   destroy() {
-    document.querySelector('.budget-header-days-age').setAttribute('title', '');
+    // YNAB moved Age of Money out of the budget header, so the element may not exist
+    document.querySelector('.budget-header-days-age')?.setAttribute('title', '');
   }
 
   invoke() {
