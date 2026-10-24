@@ -14,7 +14,7 @@ export class CalculateIRR extends Feature {
 
   invoke() {
     let { filters, selectedAccount, selectedAccountId } = getAccountsService();
-    if (selectedAccountId.onBudget) {
+    if (selectedAccount?.onBudget) {
       return;
     }
 
@@ -109,7 +109,11 @@ export class CalculateIRR extends Feature {
 
     if (
       transactions.reduce((reduced, transaction) => {
-        if (transaction.flag === this.settings.enabled && transaction.cleared !== 'Uncleared') {
+        if (
+          transaction.flag === this.settings.enabled &&
+          transaction.cleared !== 'Uncleared' &&
+          !transaction.isTombstone
+        ) {
           return reduced + transaction.amount;
         }
         return reduced;
@@ -160,6 +164,7 @@ export class CalculateIRR extends Feature {
 
     let contributions = transactions.filter((trans) => {
       return (
+        !trans.isTombstone &&
         trans.flag === this.settings.enabled &&
         trans.cleared !== 'Uncleared' &&
         (trans.date.isAfter(fromDate) || trans.date.equalsDateWithoutTime(fromDate)) &&
@@ -207,11 +212,42 @@ export class CalculateIRR extends Feature {
       });
     } while (continueLoop && ++iteration < iterMax);
 
-    if (continueLoop) {
-      return NaN;
+    if (continueLoop || !Number.isFinite(approximatedRate)) {
+      // Newton-Raphson can diverge with many contributions, fall back to bisection
+      return this._bisectIRR({
+        startingValue,
+        fromDate,
+        transaction: contributions,
+        currentValue,
+        toDate,
+      });
     }
 
     return approximatedRate;
+  };
+
+  _bisectIRR = (inputs) => {
+    const npvAt = (rate) => this._npv({ ...inputs, rate });
+    let low = -0.9999;
+    let high = 1;
+    while (npvAt(low) * npvAt(high) > 0 && high < 1e6) {
+      high *= 2;
+    }
+
+    if (!(npvAt(low) * npvAt(high) <= 0)) {
+      return NaN;
+    }
+
+    for (let i = 0; i < 200 && high - low > 1e-10; i++) {
+      const mid = (low + high) / 2;
+      if (npvAt(low) * npvAt(mid) <= 0) {
+        high = mid;
+      } else {
+        low = mid;
+      }
+    }
+
+    return (low + high) / 2;
   };
 
   _npv = (inputs) => {

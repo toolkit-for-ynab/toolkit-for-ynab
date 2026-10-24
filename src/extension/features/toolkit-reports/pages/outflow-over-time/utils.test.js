@@ -172,6 +172,19 @@ describe('Utils', () => {
       expect(toHighchartsSeries({})).toEqual([]);
     });
 
+    it('should order series chronologically regardless of input order', () => {
+      const transactions = {
+        '2024-03': { 1: { value: 1, transactions: [] } },
+        '2023-12': { 1: { value: 1, transactions: [] } },
+        '2024-01': { 1: { value: 1, transactions: [] } },
+      };
+      expect(toHighchartsSeries(transactions).map(({ name }) => name)).toEqual([
+        'Dec 2023',
+        'Jan 2024',
+        'Mar 2024',
+      ]);
+    });
+
     it('should transform the transactions to Highcharts Series', () => {
       const rawData = Symbol(); // placeholder to check for passthrough
       const transactions = {

@@ -16,7 +16,8 @@ export class ShowAvailableAfterSavings extends Feature {
   }
 
   removeAvailableAfterSavings() {
-    $('#tk-total-available-after-savings').remove();
+    // attribute selector removes every copy, `#id` would only match the first
+    $('[id="tk-total-available-after-savings"]').remove();
   }
 
   handleBudgetBreakdown() {
@@ -37,7 +38,8 @@ export class ShowAvailableAfterSavings extends Feature {
 
     if (totalAvailableAfterSavings === totalAvailable) return;
 
-    const $ynabBreakdown = $('.ynab-breakdown', context);
+    // other inspector cards (e.g. Live on Last Month's Income) also contain a .ynab-breakdown
+    const $ynabBreakdown = $('.ynab-breakdown', context).first();
 
     getBudgetBreakdownEntries({
       availableAfterSavings: {

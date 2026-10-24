@@ -357,7 +357,9 @@ export class IncomeBreakdownComponent extends React.Component<
       }
     }
 
-    return { totalIncome, seriesData };
+    // With a net loss the Budget node holds income plus the loss, i.e. all expenses
+    const budgetTotal = Math.max(totalIncome, totalExpense);
+    return { budgetTotal, seriesData };
   }
 
   _getNodeData() {
@@ -390,7 +392,7 @@ export class IncomeBreakdownComponent extends React.Component<
   }
 
   _renderReport = () => {
-    const { totalIncome, seriesData } = this._getSeriesData();
+    const { budgetTotal, seriesData } = this._getSeriesData();
     const linksHover = (point: Point, state: 'hover' | '') => {
       if (point.isNode) {
         point.linksTo.forEach((l) => {
@@ -438,7 +440,7 @@ export class IncomeBreakdownComponent extends React.Component<
             // @ts-ignore incorrect types in Highcharts library
             pointFormatter: function (this: Point) {
               const formattedNumber = formatCurrency(this.weight);
-              const percentage = (this.weight / totalIncome) * 100;
+              const percentage = (this.weight / budgetTotal) * 100;
               return `${this.fromNode.name} → ${
                 this.toNode.name
               }: <b>${formattedNumber} (${percentage.toFixed(2)}%)</b>`;

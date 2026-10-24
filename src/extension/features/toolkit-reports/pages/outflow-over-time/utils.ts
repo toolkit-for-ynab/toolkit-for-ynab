@@ -212,7 +212,9 @@ export function toHighchartsSeries(
   transactions: Record<string, Record<string, OutflowData>>,
   options?: { dashStyle?: Highcharts.DashStyleValue; nameSuffix?: string },
 ): Highcharts.SeriesLineOptions[] {
-  return Object.entries(transactions).map(([month, data]) => ({
+  // Keys are 'YYYY-MM', so a string sort keeps the legend in chronological order
+  const sortedEntries = Object.entries(transactions).sort(([a], [b]) => a.localeCompare(b));
+  return sortedEntries.map(([month, data]) => ({
     name: moment(month, 'YYYY-MM').format('MMM YYYY') + (options?.nameSuffix ?? ''),
     type: 'line',
     dashStyle: options?.dashStyle,

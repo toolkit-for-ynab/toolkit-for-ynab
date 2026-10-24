@@ -37,8 +37,17 @@ export class DisplayTotalMonthlyGoals extends Feature {
     return isCurrentRouteBudgetPage();
   }
 
+  rootClass = 'tk-monthly-goals-overview-root';
+
   destroy() {
-    document.querySelector('.' + this.containerClass)?.remove();
+    this.removeOverview();
+  }
+
+  // React renders into the root asynchronously, so remove the root wrappers we
+  // inserted rather than the rendered container, which may not exist yet
+  removeOverview() {
+    $(`.${this.rootClass}`).remove();
+    $(`.${this.containerClass}`).remove();
   }
 
   extractCategoryGoalInformation(element) {
@@ -139,7 +148,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
     const [income, budgeted, spent] = this.calculateTotalAssigned();
     const { savings: savingsGoals, spending: spendingGoals } = this.calculateTotalGoals();
 
-    $('.' + this.containerClass).remove();
+    this.removeOverview();
 
     // Look for the first card in the budget inspector (month's Summary)
     // We'll inject our component after this card
@@ -155,6 +164,7 @@ export class DisplayTotalMonthlyGoals extends Feature {
       this.createInspectorElement(income, budgeted, spent, savingsGoals, spendingGoals),
       $firstCard[0],
     );
+    $firstCard[0].nextElementSibling?.classList.add(this.rootClass);
   }
 
   createInspectorElement(income, budgeted, spent, savingsGoals, spendingGoals) {

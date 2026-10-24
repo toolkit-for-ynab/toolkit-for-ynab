@@ -302,11 +302,11 @@ export class NetWorthComponent extends React.Component<NetWorthProps, NetWorthSt
     this.setState(
       {
         hoveredData: {
-          label: labels[labels.length - 1] || '',
-          assets: assets[assets.length - 1] || 0,
-          debts: debts[debts.length - 1] || 0,
-          debtRatio: debtRatios[debtRatios.length - 1] || 0,
-          netWorth: netWorths[netWorths.length - 1] || 0,
+          label: filteredLabels[filteredLabels.length - 1] || '',
+          assets: filteredAssets[filteredAssets.length - 1] || 0,
+          debts: filteredDebts[filteredDebts.length - 1] || 0,
+          debtRatio: filteredDebtRatios[filteredDebtRatios.length - 1] || 0,
+          netWorth: filteredNetWorths[filteredNetWorths.length - 1] || 0,
         },
         reportData: {
           labels: filteredLabels,

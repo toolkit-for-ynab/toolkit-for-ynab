@@ -24,6 +24,19 @@ export class DaysOfBuffering extends Feature {
   }
 
   invoke() {
+    // YNAB lazily loads older transactions, so on a fresh page load the entity manager only
+    // holds recent ones. Loading the all-accounts view model pulls in the full history.
+    if (!this._requestedAllTransactions) {
+      this._requestedAllTransactions = true;
+      ynab.YNABSharedLib.getBudgetViewModel_AllAccountsViewModel()
+        ?.then(() => {
+          if (this.shouldInvoke()) {
+            this.invoke();
+          }
+        })
+        .catch(() => {});
+    }
+
     const eligibleTransactions = getEntityManager()
       .getAllTransactions()
       .filter(this._eligibleTransactionFilter);
